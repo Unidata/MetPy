@@ -1660,9 +1660,19 @@ class BarbPlot(PlotVector, ValidationMixin):
 
         wind_slice = (slice(None, None, self.skip[0]), slice(None, None, self.skip[1]))
 
+        # If too many of the winds/vectors to plot have excessively high magnitudes,
+        # the call to ax.barbs will cause matplotlib to draw so many pennants that all
+        # memory will be consumed, possibly hanging the system.  Thus, here we check
+        # what we are about to plot to avoid the hang.
+        u_vals = u.values[wind_slice]
+        v_vals = v.values[wind_slice]
+        speeds = np.hypot(u_vals, v_vals)
+        if np.median(speeds) > 50000:
+            msg = "Too many large wind barbs to plot.  Perhaps 'scale' is too high?"
+            raise ValueError(msg)
+
         self.handle = self.parent.ax.barbs(
-            x_like[wind_slice], y_like[wind_slice],
-            u.values[wind_slice], v.values[wind_slice],
+            x_like[wind_slice], y_like[wind_slice], u_vals, v_vals,
             color=self.color, pivot=self.pivot, length=self.barblength, zorder=2, **kwargs)
 
 
