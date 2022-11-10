@@ -1163,8 +1163,12 @@ def parse_grid_arguments(func):
                 else:
                     raise ValueError('Latitude and longitude must be either 1D or 2D.')
                 factors = proj.get_factors(xx, yy)
-                bound_args.arguments['parallel_scale'] = factors.parallel_scale
-                bound_args.arguments['meridional_scale'] = factors.meridional_scale
+                coords = list(grid_prototype.metpy.coordinates('latitude', 'longitude'))
+                bound_args.arguments['parallel_scale'] = xr.DataArray(
+                    factors.parallel_scale, coords=coords).broadcast_like(
+                    grid_prototype)
+                bound_args.arguments['meridional_scale'] = xr.DataArray(
+                    factors.meridional_scale, coords=coords).broadcast_like(grid_prototype)
 
 
         # # Fill in latitude
