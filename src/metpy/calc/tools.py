@@ -1527,9 +1527,9 @@ def _vector_derivative(
     map_factor_correction = parallel_scale is not None and meridional_scale is not None
 
     # Add in the map factor derivatives if needed
-    if map_factor_correction and 'du/dx' in derivatives or 'dv/dx' in derivatives:
+    if map_factor_correction and ('du/dx' in derivatives or 'dv/dx' in derivatives):
         derivatives['dp/dy'] = None
-    if map_factor_correction and 'du/dy' in derivatives or 'dv/dy' in derivatives:
+    if map_factor_correction and ('du/dy' in derivatives or 'dv/dy' in derivatives):
         derivatives['dm/dx'] = None
 
     # Compute the Cartesian derivatives
