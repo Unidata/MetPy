@@ -565,6 +565,31 @@ def test_no_field_error_barbs():
         barbs.draw()
 
 
+@needs_cartopy
+def test_too_big_error_barbs():
+    """Make sure we get an error when we are about to draw too many pennants."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False)).squeeze()
+
+    bp = BarbPlot()
+    bp.data = data
+    bp.field = ['u_wind', 'v_wind']
+    bp.level = 500
+    bp.scale = 1e4
+    bp.skip = [8, 8]
+
+    mp = MapPanel()
+    mp.layout = (1, 1, 1)
+    mp.area = (-100, -70, 30, 45)
+    mp.plots = [bp]
+
+    pc = PanelContainer()
+    pc.size = (10, 8)
+    pc.panels = [mp]
+
+    with pytest.raises(ValueError):
+        pc.draw()
+
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.377)
 def test_projection_object(ccrs, cfeature):
     """Test that we can pass a custom map projection."""
