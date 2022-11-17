@@ -17,7 +17,7 @@ flake8-requirements==1.7.4
 flake8-simplify==0.19.3
 pep8-naming==0.13.2
 
-flake8-rst-docstrings==0.2.7
+flake8-rst-docstrings==0.3.0
 flake8-docstrings==1.6.0
 pydocstyle==6.1.1
 
