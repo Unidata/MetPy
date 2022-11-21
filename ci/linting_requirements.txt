@@ -7,7 +7,7 @@ flake8-builtins==2.0.1
 flake8-comprehensions==3.10.1
 flake8-continuation==1.0.5
 flake8-copyright==0.2.3
-flake8-isort==5.0.0
+flake8-isort==5.0.3
 isort==5.10.1
 flake8-mutable==1.2.0
 flake8-pie==0.16.0
