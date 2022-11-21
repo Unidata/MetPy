@@ -1032,6 +1032,10 @@ def parse_grid_arguments(func):
     from ..xarray import dataarray_arguments
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
+        # Arguments longitude, latitude, and crs are handled here and not in the definition
+        lat = kwargs.pop('latitude', None)
+        lon = kwargs.pop('longitude', None)
+        crs = kwargs.pop('crs', None)
         bound_args = signature(func).bind(*args, **kwargs)
         bound_args.apply_defaults()
 
@@ -1090,18 +1094,10 @@ def parse_grid_arguments(func):
                 grid_deltas = grid_prototype.metpy.grid_deltas
                 bound_args.arguments['dx'] = grid_deltas['dx']
                 bound_args.arguments['dy'] = grid_deltas['dy']
-            elif (
-                bound_args.arguments.get('longitude', None) is not None
-                and bound_args.arguments.get('latitude', None) is not None
-                and bound_args.arguments.get('crs', None) is not None
-            ):
+            elif lon is not None and lat is not None and crs is not None:
                 # TODO: de-duplicate .metpy.grid_deltas code
                 bound_args.arguments['dx'], bound_args.arguments['dy'] = (
-                    nominal_lat_lon_grid_deltas(
-                        bound_args.arguments['longitude'],
-                        bound_args.arguments['latitude'],
-                        bound_args.arguments['crs'].get_geod()
-                    )
+                    nominal_lat_lon_grid_deltas(lon, lat, crs.get_geod())
                 )
             elif 'dz' in bound_args.arguments:
                 # Handle advection case, allowing dx/dy to be None but dz to not be None
@@ -1125,7 +1121,6 @@ def parse_grid_arguments(func):
             and 'meridional_scale' in bound_args.arguments
             and bound_args.arguments['meridional_scale'] is None
         ):
-            cartesian = False
             if grid_prototype is not None:
                 try:
                     proj = grid_prototype.metpy.pyproj_proj
@@ -1133,29 +1128,28 @@ def parse_grid_arguments(func):
                     latitude_from_xarray = lat
                     lat = lat.metpy.unit_array
                     lon = lon.metpy.unit_array
+                    calculate_scales = True
                 except AttributeError:
-                    # Fall back to cartesian calculation if we don't have a CRS or we are
+                    # Fall back to basic cartesian calculation if we don't have a CRS or we are
                     # unable to get the coordinates needed for map factor calculation (either
                     # exiting lat/lon or lat/lon computed from y/x)
-                    cartesian = True
-            else:
+                    calculate_scales = False
+            elif lat is not None and lon is not None:
                 try:
-                    proj = Proj(bound_args.arguments['crs'])
-                except:
-                    # Fall back to cartesian calculation if CRS is not provided or invalid
-                    cartesian = True
-
-                lat = bound_args.arguments['latitude']
-                lon = bound_args.arguments['longitude']
-
-                if lat is not None and lon is not None:
-                    # Whoops, cartesian intended to be False, but lack valid CRS to do so.
+                    proj = Proj(crs)
+                    calculate_scales = True
+                except Exception as e:
+                    # Whoops, intended to use
                     raise ValueError(
-                        'Latitude and longitude arguments provided so as to make calculation '
-                        'projection-correct, however, projection CRS is missing or invalid.'
-                    )
+                        'Latitude and longitude arguments provided so as to make '
+                        'calculation projection-correct, however, projection CRS is '
+                        'missing or invalid.'
+                    ) from e
+            else:
+                calculate_scales = False
 
-            if not cartesian:
+            # Do we have everything we need to sensibly calculate the scale arrays?
+            if calculate_scales:
                 if lat.ndim == 1 and lon.ndim == 1:
                     xx, yy = np.meshgrid(lon.m_as('degrees'), lat.m_as('degrees'))
                 elif lat.ndim == 2 and lon.ndim == 2:
@@ -1163,13 +1157,18 @@ def parse_grid_arguments(func):
                 else:
                     raise ValueError('Latitude and longitude must be either 1D or 2D.')
                 factors = proj.get_factors(xx, yy)
-                coords = list(grid_prototype.metpy.coordinates('latitude', 'longitude'))
-                bound_args.arguments['parallel_scale'] = xr.DataArray(
-                    factors.parallel_scale, coords=coords).broadcast_like(
-                    grid_prototype)
-                bound_args.arguments['meridional_scale'] = xr.DataArray(
-                    factors.meridional_scale, coords=coords).broadcast_like(grid_prototype)
+                p_scale = factors.parallel_scale
+                m_scale = factors.meridional_scale
 
+                if grid_prototype is not None:
+                    coords = list(grid_prototype.metpy.coordinates('latitude', 'longitude'))
+                    p_scale = xr.DataArray(p_scale,
+                                           coords=coords).broadcast_like(grid_prototype)
+                    m_scale = xr.DataArray(m_scale,
+                                           coords=coords).broadcast_like(grid_prototype)
+
+                bound_args.arguments['parallel_scale'] = p_scale
+                bound_args.arguments['meridional_scale'] = m_scale
 
         # # Fill in latitude
         # TODO: reorder and fixup latitude insertion logic

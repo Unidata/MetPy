@@ -4,6 +4,7 @@
 """Test the `kinematics` module."""
 
 import numpy as np
+import pyproj
 import pytest
 import xarray as xr
 
@@ -186,6 +187,18 @@ def test_vorticity():
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
     v = vorticity(u.T, u.T, dx=1 * units.meter, dy=1 * units.meter)
+    true_v = np.ones_like(u) / units.sec
+    assert_array_equal(v, true_v)
+
+
+def test_vorticity_geographic():
+    """Test vorticity for simple case on geographic coordinates."""
+    a = np.arange(3)
+    lons = np.array([-100, -90, -80]) * units.degree
+    lats = np.array([45, 55, 65]) * units.degree
+    u = np.c_[a, a, a] * units('m/s')
+    v = vorticity(u.T, u.T, longitude=lons, latitude=lats,
+                  crs=pyproj.CRS('+proj=lcc lat_1=25'))
     true_v = np.ones_like(u) / units.sec
     assert_array_equal(v, true_v)
 

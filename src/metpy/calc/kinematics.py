@@ -22,7 +22,7 @@ exporter = Exporter(globals())
 @preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]', dx='[length]', dy='[length]')
 def vorticity(
-    u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2, longitude=None, latitude=None, crs=None,
+    u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
     parallel_scale=None, meridional_scale=None
 ):
     r"""Calculate the vertical vorticity of the horizontal wind.
@@ -50,7 +50,7 @@ def vorticity(
 
     .. math:: \zeta = \frac{\partial v}{\partial x} - \frac{\partial u}{\partial y}
 
-    If sufficient grid projection information is provided, these partial deriviatives are
+    If sufficient grid projection information is provided, these partial derivatives are
     taken from the projection-correct derivative matrix of the vector wind. Otherwise, they
     are evaluated as scalar derivatives on a Cartesian grid.
 
@@ -66,10 +66,11 @@ def vorticity(
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(wrap_like='u')
 @check_units(dx='[length]', dy='[length]')
-def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
+def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
+               parallel_scale=None, meridional_scale=None):
     r"""Calculate the horizontal divergence of a vector.
 
     Parameters
@@ -114,8 +115,10 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
        Changed signature from ``(u, v, dx, dy)``
 
     """
-    dudx = first_derivative(u, delta=dx, axis=x_dim)
-    dvdy = first_derivative(v, delta=dy, axis=y_dim)
+    dudx, dvdy = _vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale, return_only = ('du/dx', 'dv/dy')
+    )
     return dudx + dvdy
 
 
