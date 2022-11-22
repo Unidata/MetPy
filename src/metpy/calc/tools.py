@@ -1540,8 +1540,7 @@ def _vector_derivative(
         scalar = {
             'du': u, 'dv': v, 'dp': parallel_scale, 'dm': meridional_scale
         }[component[:2]]
-        delta = dx if component[-2:] == 'dx' else dy
-        dim = x_dim if component[-2:] == 'dx' else y_dim
+        delta, dim = (dx, x_dim) if component[-2:] == 'dx' else (dy, y_dim)
         derivatives[component] = first_derivative(scalar, delta=delta, axis=dim)
 
     # Apply map factor corrections
