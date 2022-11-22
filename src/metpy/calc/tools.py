@@ -1550,17 +1550,17 @@ def _vector_derivative(
         if 'dp/dy' in derivatives:
             dx_correction = meridional_scale / parallel_scale * derivatives['dp/dy']
         if 'dm/dx' in derivatives:
-            dy_correction = - parallel_scale / meridional_scale * derivatives['dm/dx']
+            dy_correction = parallel_scale / meridional_scale * derivatives['dm/dx']
 
         # Corrected terms
         if 'du/dx' in derivatives:
             derivatives['du/dx'] = parallel_scale * derivatives['du/dx'] - v * dx_correction
         if 'du/dy' in derivatives:
-            derivatives['du/dy'] = meridional_scale * derivatives['du/dy'] - v * dy_correction
+            derivatives['du/dy'] = meridional_scale * derivatives['du/dy'] + v * dy_correction
         if 'dv/dx' in derivatives:
             derivatives['dv/dx'] = parallel_scale * derivatives['dv/dx'] + u * dx_correction
         if 'dv/dy' in derivatives:
-            derivatives['dv/dy'] = meridional_scale * derivatives['dv/dy'] + u * dy_correction
+            derivatives['dv/dy'] = meridional_scale * derivatives['dv/dy'] - u * dy_correction
 
     # Build return collection
     if return_only is None:
