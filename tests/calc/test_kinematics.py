@@ -9,8 +9,9 @@ import pytest
 import xarray as xr
 
 from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind, divergence,
-                        frontogenesis, geostrophic_wind, inertial_advective_wind,
-                        lat_lon_grid_deltas, montgomery_streamfunction, potential_temperature,
+                        first_derivative, frontogenesis, geostrophic_wind,
+                        inertial_advective_wind, lat_lon_grid_deltas,
+                        montgomery_streamfunction, potential_temperature,
                         potential_vorticity_baroclinic, potential_vorticity_barotropic,
                         q_vector, shearing_deformation, static_stability,
                         storm_relative_helicity, stretching_deformation, total_deformation,
@@ -193,14 +194,31 @@ def test_vorticity():
 
 def test_vorticity_geographic():
     """Test vorticity for simple case on geographic coordinates."""
-    a = np.arange(3)
-    lons = np.array([-100, -90, -80]) * units.degree
+
+    # Generate a field of u and v on a lat/lon grid
+    crs = pyproj.CRS('+proj=lcc lat_1=25')
+    lons = np.array([-100, -90, -80, -70]) * units.degree
     lats = np.array([45, 55, 65]) * units.degree
-    u = np.c_[a, a, a] * units('m/s')
-    v = vorticity(u.T, u.T, longitude=lons, latitude=lats,
-                  crs=pyproj.CRS('+proj=lcc lat_1=25'))
-    true_v = np.ones_like(u) / units.sec
-    assert_array_equal(v, true_v)
+    a = np.arange(4)[None, :]
+    u = v = np.r_[a, a, a] * units('m/s')
+    vort = vorticity(u, v, longitude=lons, latitude=lats, crs=crs)
+
+    # Set up everything to do the map scaling manually
+    proj = pyproj.Proj(crs)
+    lon_arr, lat_arr = np.meshgrid(lons.m_as('degree'), lats.m_as('degree'))
+    factors = proj.get_factors(lon_arr, lat_arr)
+    mx = factors.parallel_scale
+    my = factors.meridional_scale
+    dx = lat_lon_grid_deltas(lons.m, np.zeros_like(lons.m), geod=crs.get_geod())[0][0]
+    dy = lat_lon_grid_deltas(np.zeros_like(lats.m), lats.m, geod=crs.get_geod())[1][:, 0]
+
+    # Calculate the true field using known map-correct approach
+    truth = (mx * first_derivative(v, delta=dx, axis=1)
+             - my * first_derivative(u, delta=dy, axis=0)
+             - (v * mx / my) * first_derivative(my, delta=dx, axis=1)
+             + (u * my / mx) * first_derivative(mx, delta=dy, axis=0))
+
+    assert_array_almost_equal(vort, truth, 12)
 
 
 def test_vorticity_asym():
