@@ -149,7 +149,7 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
     """
     dudx, dvdy = _vector_derivative(
         u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
-        meridional_scale=meridional_scale, return_only = ('du/dx', 'dv/dy')
+        meridional_scale=meridional_scale, return_only=('du/dx', 'dv/dy')
     )
     return dudx + dvdy
 
