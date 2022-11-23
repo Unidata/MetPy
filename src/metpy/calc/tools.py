@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of generally useful calculation tools."""
 import functools
-from inspect import signature
+from inspect import Parameter, signature
 from operator import itemgetter
 import warnings
 
@@ -976,24 +976,11 @@ def xarray_derivative_wrap(func):
     return wrapper
 
 
-horizontal_grid_parameter_description = """dx : `pint.Quantity`, optional
-        The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
-        latitude/longitude coordinates used as input. Also optional if one-dimensional
-        longitude and latitude arguments are given for your data on a non-projected grid.      
-        Keyword-only argument.
-    dy : `pint.Quantity`, optional
-        The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
-        latitude/longitude coordinates used as input. Also optional if one-dimensional
-        longitude and latitude arguments are given for your data on a non-projected grid.      
-        Keyword-only argument.
-    x_dim : int, optional
-        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`. Keyword-only argument.
-    y_dim : int, optional
-        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+def _add_grid_params_to_docstring(docstring: str) -> str:
+    """Add documentation for some dynamically added grid parameters to the docstring."""
+    other_params = docstring.find('Other Parameters')
+    blank = docstring.find('\n\n', other_params)
+    return docstring[:blank] + """
     longitude : `pint.Quantity`, optional
         Longitude of data. Optional if `xarray.DataArray` with latitude/longitude coordinates
         used as input. Also optional if parallel_scale and meridional_scale are given. If
@@ -1008,18 +995,7 @@ horizontal_grid_parameter_description = """dx : `pint.Quantity`, optional
         Coordinate Reference System of data. Optional if `xarray.DataArray` with MetPy CRS
         used as input. Also optional if parallel_scale and meridional_scale are given. If
         otherwise omitted, calculation will be carried out on a Cartesian, rather than
-        geospatial, grid. Keyword-only argument.
-    parallel_scale : `pint.Quantity`, optional
-        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
-        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
-        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
-        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
-    meridional_scale : `pint.Quantity`, optional
-        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
-        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
-        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
-        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
-"""
+        geospatial, grid. Keyword-only argument.""" + docstring[blank:]
 
 
 def parse_grid_arguments(func):
@@ -1030,14 +1006,23 @@ def parse_grid_arguments(func):
     # u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2, longitude=None, latitude=None, crs=None,
     # parallel_scale=None, meridional_scale=None, return_only=None
     from ..xarray import dataarray_arguments
+
+    # Dynamically add new parameters for lat, lon, and crs to the function signature
+    # which is used to handle arguments inside the wrapper
+    sig = signature(func)
+    newsig = sig.replace(parameters=[
+        *sig.parameters.values(),
+        Parameter('latitude', Parameter.KEYWORD_ONLY, default=None),
+        Parameter('longitude', Parameter.KEYWORD_ONLY, default=None),
+        Parameter('crs', Parameter.KEYWORD_ONLY, default=None)])
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        # Arguments longitude, latitude, and crs are handled here and not in the definition
-        lat = kwargs.pop('latitude', None)
-        lon = kwargs.pop('longitude', None)
-        crs = kwargs.pop('crs', None)
-        bound_args = signature(func).bind(*args, **kwargs)
+        bound_args = newsig.bind(*args, **kwargs)
         bound_args.apply_defaults()
+        lat = bound_args.arguments.pop('latitude')
+        lon = bound_args.arguments.pop('longitude')
+        crs = bound_args.arguments.pop('crs')
 
         # Choose the first DataArray argument to act as grid prototype
         grid_prototype = next(dataarray_arguments(bound_args), None)
@@ -1180,6 +1165,13 @@ def parse_grid_arguments(func):
         #                          'latitude/longitude coordinates.')
 
         return func(*bound_args.args, **bound_args.kwargs)
+
+    # Override the wrapper function's signature with a better signature. Also add docstrings
+    # for our added parameters.
+    wrapper.__signature__ = newsig
+    if getattr(wrapper, '__doc__', None) is not None:
+        wrapper.__doc__ = _add_grid_params_to_docstring(wrapper.__doc__)
+
     return wrapper
 
 
@@ -1481,21 +1473,21 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
               for ind, axis in enumerate(axes)]
     return sum(derivs)
 
+
 @exporter.export
 @parse_grid_arguments
 def vector_derivative(
-    u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2, longitude=None, latitude=None, crs=None,
+    u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
     parallel_scale=None, meridional_scale=None, return_only=None):
     # noinspection PyStatementEffect
     r"""Calculate the projection-correct derivative matrix of a 2D vector.
-    
+
     Parameters
     ----------
     u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the vector
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the vector
-    """ + horizontal_grid_parameter_description + """
     return_only : str or sequence of str, optional
         Sequence of which components of the derivative matrix to compute and return. If none,
         returns the full matrix as a tuple of tuples (('du/dx', 'du/dy'), ('dv/dx', 'dv/dy')).
@@ -1506,6 +1498,37 @@ def vector_derivative(
     -------
     `pint.Quantity`, tuple of `pint.Quantity`, or tuple of tuple of `pint.Quantity`
         Component(s) of vector derivative
+
+    Other Parameters
+    ----------------
+    dx : `pint.Quantity`, optional
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    dy : `pint.Quantity`, optional
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
     See Also
     --------
