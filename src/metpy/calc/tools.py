@@ -1476,10 +1476,8 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
 
 @exporter.export
 @parse_grid_arguments
-def vector_derivative(
-    u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
-    parallel_scale=None, meridional_scale=None, return_only=None):
-    # noinspection PyStatementEffect
+def vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
+                      parallel_scale=None, meridional_scale=None, return_only=None):
     r"""Calculate the projection-correct derivative matrix of a 2D vector.
 
     Parameters
@@ -1535,15 +1533,14 @@ def vector_derivative(
     gradient
 
     """
-
     return _vector_derivative(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
                               parallel_scale=parallel_scale, meridional_scale=meridional_scale,
                               return_only=return_only)
 
-def _vector_derivative(
-    u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
-    parallel_scale=None, meridional_scale=None, return_only=None
-):
+
+def _vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
+                       parallel_scale=None, meridional_scale=None, return_only=None):
+    """Perform map projection-aware vector derivatives."""
     # Determine which derivatives to calculate
     derivatives = {
         component: None

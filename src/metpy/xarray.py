@@ -20,9 +20,7 @@ import functools
 from inspect import signature
 from itertools import chain
 import logging
-from math import radians
 import re
-from typing import final
 import warnings
 
 import numpy as np
@@ -455,9 +453,9 @@ class MetPyDataArrayAccessor:
                     # Try to compute on the fly
                     try:
                         latitude, longitude = _build_latitude_longitude(self._data_array)
-                    except:
+                    except Exception:
                         # Attempt failed, re-raise original error
-                        raise exc
+                        raise exc from None
                     # Otherwise, warn and yield result
                     warnings.warn(
                         'Latitude and longitude computed on-demand, which may be an '
@@ -474,7 +472,7 @@ class MetPyDataArrayAccessor:
                     yield latitude
                 elif arg == 'longitude' and longitude is not None:
                     # We have this from previous computation
-                    yield longitude   
+                    yield longitude
                 else:
                     raise exc
 
@@ -509,7 +507,7 @@ class MetPyDataArrayAccessor:
         return self._axis('longitude')
 
     def coordinates_identical(self, other):
-        """Return whether or not the coordinates of other match this DataArray's."""
+        """Return whether the coordinates of other match this DataArray's."""
         return (len(self._data_array.coords) == len(other.coords)
                 and all(coord_name in other.coords and other[coord_name].identical(coord_var)
                         for coord_name, coord_var in self._data_array.coords.items()))
@@ -546,7 +544,6 @@ class MetPyDataArrayAccessor:
                 )
 
         return {'dx': dx, 'dy': dy}
-
 
     def find_axis_name(self, axis):
         """Return the name of the axis corresponding to the given identifier.
