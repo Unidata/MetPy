@@ -130,6 +130,16 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
     See Also
     --------
@@ -155,10 +165,11 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
+def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
+                         parallel_scale=None, meridional_scale=None):
     r"""Calculate the shearing deformation of the horizontal wind.
 
     Parameters
@@ -167,20 +178,6 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
         x component of the wind
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
-    dx : `pint.Quantity`, optional
-        The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
-        latitude/longitude coordinates used as input.
-    dy : `pint.Quantity`, optional
-        The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
-        latitude/longitude coordinates used as input.
-    x_dim : int, optional
-        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`.
-    y_dim : int, optional
-        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
@@ -191,29 +188,8 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     .. versionchanged:: 1.0
        Changed signature from ``(u, v, dx, dy)``
 
-    See Also
-    --------
-    stretching_deformation, total_deformation
-
-    """
-    dudy = first_derivative(u, delta=dy, axis=y_dim)
-    dvdx = first_derivative(v, delta=dx, axis=x_dim)
-    return dvdx + dudy
-
-
-@exporter.export
-@add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]', '[length]', '[length]')
-def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
-    r"""Calculate the stretching deformation of the horizontal wind.
-
-    Parameters
-    ----------
-    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        x component of the wind
-    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        y component of the wind
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -228,6 +204,43 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+
+    See Also
+    --------
+    stretching_deformation, total_deformation
+
+    """
+    dudy, dvdx = _vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale, return_only=('du/dy', 'dv/dx')
+    )
+    return dvdx + dudy
+
+
+@exporter.export
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='u')
+@check_units('[speed]', '[speed]', '[length]', '[length]')
+def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
+                           parallel_scale=None, meridional_scale=None):
+    r"""Calculate the stretching deformation of the horizontal wind.
+
+    Parameters
+    ----------
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        x component of the wind
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        y component of the wind
 
     Returns
     -------
@@ -238,29 +251,8 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     .. versionchanged:: 1.0
        Changed signature from ``(u, v, dx, dy)``
 
-    See Also
-    --------
-    shearing_deformation, total_deformation
-
-    """
-    dudx = first_derivative(u, delta=dx, axis=x_dim)
-    dvdy = first_derivative(v, delta=dy, axis=y_dim)
-    return dudx - dvdy
-
-
-@exporter.export
-@add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]', '[length]', '[length]')
-def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
-    r"""Calculate the total deformation of the horizontal wind.
-
-    Parameters
-    ----------
-    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        x component of the wind
-    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        y component of the wind
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -275,11 +267,75 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+
+    See Also
+    --------
+    shearing_deformation, total_deformation
+
+    """
+    dudx, dvdy = _vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale, return_only=('du/dx', 'dv/dy')
+    )
+    return dudx - dvdy
+
+
+@exporter.export
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='u')
+@check_units('[speed]', '[speed]', '[length]', '[length]')
+def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
+                      parallel_scale=None, meridional_scale=None):
+    r"""Calculate the total deformation of the horizontal wind.
+
+    Parameters
+    ----------
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        x component of the wind
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        y component of the wind
 
     Returns
     -------
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         Total Deformation
+
+    Other Parameters
+    ----------------
+    dx : `pint.Quantity`, optional
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
     See Also
     --------
@@ -294,8 +350,10 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
        Changed signature from ``(u, v, dx, dy)``
 
     """
-    dudy, dudx = gradient(u, deltas=(dy, dx), axes=(y_dim, x_dim))
-    dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(y_dim, x_dim))
+    (dudx, dudy), (dvdx, dvdy) = _vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale
+    )
     return np.sqrt((dvdx + dudy)**2 + (dudx - dvdy)**2)
 
 
