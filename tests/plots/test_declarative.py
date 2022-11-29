@@ -836,7 +836,7 @@ def test_declarative_arrow_changes():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.434)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.491)
 @needs_cartopy
 def test_declarative_barb_earth_relative():
     """Test making a contour plot."""
