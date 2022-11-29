@@ -189,13 +189,20 @@ from metpy.units import is_quantity, units
      Metar('KGYR', 33.42, -112.37, 295, datetime(2017, 5, 7, 21, 47), 120, 6.0, np.nan,
            np.nan, np.nan, np.nan, np.nan, 'FEW', 10000, 'SCT', 25000, np.nan, np.nan,
            np.nan, np.nan, 4, 41, 14, 29.92, 0, 0, 0,
-           ''))],
+           '')),
+    # Manual visibility can be [1,3,5]/16SM Unidata/Metpy#2807
+    ('KDEN 241600Z 02010KT 1/16SM R35L/1000V1200FT FZFG VV001 M01/M02 A2954 RMK AO2 SFC VIS '
+     'M1/4 T10111022',
+     Metar('KDEN', 39.85, -104.65, 1640, datetime(2017, 5, 24, 16, 00), 20, 10.0, np.nan,
+           units.Quantity(1 / 16, 'mi').m_as('m'), 'FZFG', np.nan, np.nan, 'VV', 100,
+           np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, 8, -1, -2, 29.54, 49, 0, 0,
+           'AO2 SFC VIS M1/4 T10111022'))],
     ids=['missing station', 'BKN', 'FEW', 'current weather', 'smoke', 'CAVOK', 'vis fraction',
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
          '-DZ', 'sky cover CB', '5 sky levels', '-FZUP', 'VV group', 'COR placement',
          'M1/4SM vis', 'variable vis', 'runway vis', 'odd COR', 'IC', 'NSW',
          'variable vis no dir', 'swapped wind and vis', 'space in wx code', 'truncated VV',
-         'vis div zero'])
+         'vis div zero', 'vis 1/16'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth
