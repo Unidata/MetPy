@@ -167,7 +167,7 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
 @parse_grid_arguments
 @preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
+def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
                          parallel_scale=None, meridional_scale=None):
     r"""Calculate the shearing deformation of the horizontal wind.
 
@@ -230,7 +230,7 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
 @parse_grid_arguments
 @preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
+def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
                            parallel_scale=None, meridional_scale=None):
     r"""Calculate the stretching deformation of the horizontal wind.
 
@@ -293,7 +293,7 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
 @parse_grid_arguments
 @preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
+def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
                       parallel_scale=None, meridional_scale=None):
     r"""Calculate the total deformation of the horizontal wind.
 
@@ -774,7 +774,7 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, s
 @parse_grid_arguments
 @preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
+def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2, *,
                        parallel_scale=None, meridional_scale=None):
     """Calculate the absolute vorticity of the horizontal wind.
 
