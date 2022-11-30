@@ -1033,8 +1033,8 @@ def parse_grid_arguments(func):
     def wrapper(*args, **kwargs):
         bound_args = newsig.bind(*args, **kwargs)
         bound_args.apply_defaults()
-        latitude = bound_args.arguments.pop('latitude')
-        longitude = bound_args.arguments.pop('longitude')
+        scale_lat = latitude = bound_args.arguments.pop('latitude')
+        scale_lon = longitude = bound_args.arguments.pop('longitude')
         crs = bound_args.arguments.pop('crs')
 
         # Choose the first DataArray argument to act as grid prototype
@@ -1123,6 +1123,8 @@ def parse_grid_arguments(func):
                     proj = grid_prototype.metpy.pyproj_proj
                     latitude, longitude = grid_prototype.metpy.coordinates('latitude',
                                                                            'longitude')
+                    scale_lat = latitude.metpy.unit_array
+                    scale_lon = longitude.metpy.unit_array
                     calculate_scales = True
                 except AttributeError:
                     # Fall back to basic cartesian calculation if we don't have a CRS or we are
@@ -1145,8 +1147,8 @@ def parse_grid_arguments(func):
 
             # Do we have everything we need to sensibly calculate the scale arrays?
             if calculate_scales:
-                scale_lat = latitude.metpy.unit_array.squeeze().m_as('degrees')
-                scale_lon = longitude.metpy.unit_array.squeeze().m_as('degrees')
+                scale_lat = scale_lat.squeeze().m_as('degrees')
+                scale_lon = scale_lon.squeeze().m_as('degrees')
                 if scale_lat.ndim == 1 and scale_lon.ndim == 1:
                     scale_lon, scale_lat = np.meshgrid(scale_lon, scale_lat)
                 elif scale_lat.ndim != 2 or scale_lon.ndim != 2:
