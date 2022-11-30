@@ -5,12 +5,12 @@
 
 Computation times
 =================
-**00:12.342** total execution time for **examples_formats** files:
+**00:12.153** total execution time for **examples_formats** files:
 
 +--------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_formats_NEXRAD_Level_2_File.py` (``NEXRAD_Level_2_File.py``) | 00:08.930 | 0.0 MB |
+| :ref:`sphx_glr_examples_formats_NEXRAD_Level_2_File.py` (``NEXRAD_Level_2_File.py``) | 00:08.830 | 0.0 MB |
 +--------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_formats_NEXRAD_Level_3_File.py` (``NEXRAD_Level_3_File.py``) | 00:02.269 | 0.0 MB |
+| :ref:`sphx_glr_examples_formats_NEXRAD_Level_3_File.py` (``NEXRAD_Level_3_File.py``) | 00:02.192 | 0.0 MB |
 +--------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_formats_GINI_Water_Vapor.py` (``GINI_Water_Vapor.py``)       | 00:01.143 | 0.0 MB |
+| :ref:`sphx_glr_examples_formats_GINI_Water_Vapor.py` (``GINI_Water_Vapor.py``)       | 00:01.131 | 0.0 MB |
 +--------------------------------------------------------------------------------------+-----------+--------+
