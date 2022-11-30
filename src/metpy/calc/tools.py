@@ -1123,8 +1123,6 @@ def parse_grid_arguments(func):
                     proj = grid_prototype.metpy.pyproj_proj
                     latitude, longitude = grid_prototype.metpy.coordinates('latitude',
                                                                            'longitude')
-                    latitude = latitude.metpy.unit_array
-                    longitude = longitude.metpy.unit_array
                     calculate_scales = True
                 except AttributeError:
                     # Fall back to basic cartesian calculation if we don't have a CRS or we are
@@ -1147,8 +1145,8 @@ def parse_grid_arguments(func):
 
             # Do we have everything we need to sensibly calculate the scale arrays?
             if calculate_scales:
-                scale_lat = latitude.squeeze().m_as('degrees')
-                scale_lon = longitude.squeeze().m_as('degrees')
+                scale_lat = latitude.metpy.unit_array.squeeze().m_as('degrees')
+                scale_lon = longitude.metpy.unit_array.squeeze().m_as('degrees')
                 if scale_lat.ndim == 1 and scale_lon.ndim == 1:
                     scale_lon, scale_lat = np.meshgrid(scale_lon, scale_lat)
                 elif scale_lat.ndim != 2 or scale_lon.ndim != 2:
