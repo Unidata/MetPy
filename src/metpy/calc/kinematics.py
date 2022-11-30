@@ -70,7 +70,7 @@ def vorticity(
 
     See Also
     --------
-    divergence
+    divergence, absolute_vorticity
 
     Notes
     -----
@@ -183,10 +183,6 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         Shearing Deformation
 
-
-    .. versionchanged:: 1.0
-       Changed signature from ``(u, v, dx, dy)``
-
     Other Parameters
     ----------------
     dx : `pint.Quantity`, optional
@@ -213,6 +209,10 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
         with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
         longitude, latitude, and crs are given. If otherwise omitted, calculation will be
         carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, dx, dy)``
 
     See Also
     --------
@@ -246,10 +246,6 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         Stretching Deformation
 
-
-    .. versionchanged:: 1.0
-       Changed signature from ``(u, v, dx, dy)``
-
     Other Parameters
     ----------------
     dx : `pint.Quantity`, optional
@@ -276,6 +272,10 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
         with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
         longitude, latitude, and crs are given. If otherwise omitted, calculation will be
         carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, dx, dy)``
 
     See Also
     --------
@@ -820,6 +820,10 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
         with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
         longitude, latitude, and crs are given. If otherwise omitted, calculation will be
         carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+
+    See Also
+    --------
+    absolute_vorticity
 
     .. versionchanged:: 1.0
        Changed signature from ``(u, v, dx, dy, lats, dim_order='yx')``
