@@ -1016,8 +1016,6 @@ def parse_grid_arguments(func):
 
     TODO: use this to completely replace add_grid_arguments_from_xarray
     """
-    # u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2, longitude=None, latitude=None, crs=None,
-    # parallel_scale=None, meridional_scale=None, return_only=None
     from ..xarray import dataarray_arguments
 
     # Dynamically add new parameters for lat, lon, and crs to the function signature
