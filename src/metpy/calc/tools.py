@@ -1547,6 +1547,37 @@ def vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
                               return_only=return_only)
 
 
+@exporter.export
+@parse_grid_arguments
+def geospatial_gradient(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
+                      parallel_scale=None, meridional_scale=None, return_only=None):
+    r"""
+
+    """
+    derivatives = {component: None
+                   for component in ('df/dx', 'df/dy')
+                   if (return_only is None or component in return_only)}
+
+    scales = {'df/dx': parallel_scale, 'df/dy': meridional_scale}
+
+    map_factor_correction = parallel_scale is not None and meridional_scale is not None
+
+    for component in derivatives:
+        delta, dim = (dx, x_dim) if component[-2:] == 'dx' else (dy, y_dim)
+        derivatives[component] = first_derivative(f, delta=delta, axis=dim)
+
+        if map_factor_correction:
+            derivatives[component] = derivatives[component] * scales[component]
+
+    # Build return collection
+    if return_only is None:
+        return (derivatives['df/dx'], derivatives['df/dy'])
+    elif isinstance(return_only, str):
+        return derivatives[return_only]
+    else:
+        return tuple(derivatives[component] for component in return_only)
+
+
 def _vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
                        parallel_scale=None, meridional_scale=None, return_only=None):
     """Perform map projection-aware vector derivatives."""
@@ -1590,7 +1621,6 @@ def _vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
         if 'dv/dy' in derivatives:
             derivatives['dv/dy'] = meridional_scale * derivatives['dv/dy'] - u * dy_correction
 
-    # Build return collection
     if return_only is None:
         return (
             (derivatives['du/dx'], derivatives['du/dy']),
