@@ -40,18 +40,6 @@ def basic_dataset():
     return xr.Dataset({'u': u, 'v': v, 'height': z, 'temperature': t}).metpy.parse_cf()
 
 
-@pytest.fixture()
-def nam_conus_dataset():
-    """Fixture to create dataset on NAM 12km Lambert Conformal grid."""
-    assert False
-
-
-@pytest.fixture()
-def polar_stereographic_dataset():
-    """Fixture to create dataset on NCEP Grid 104 Polar Stereographic grid."""
-    assert False
-
-
 def test_default_order():
     """Test using the default array ordering."""
     u = np.ones((3, 3)) * units('m/s')
