@@ -868,6 +868,10 @@ def nominal_lat_lon_grid_deltas(longitude, latitude, geod=None):
     else:
         g = geod
 
+    # This allows working with coordinates that have been manually broadcast
+    longitude = longitude.squeeze()
+    latitude = latitude.squeeze()
+
     if longitude.ndim != 1 or latitude.ndim != 1:
         raise ValueError(
             'Cannot calculate nominal grid spacing from longitude and latitude arguments '
@@ -976,26 +980,35 @@ def xarray_derivative_wrap(func):
     return wrapper
 
 
-def _add_grid_params_to_docstring(docstring: str) -> str:
+def _add_grid_params_to_docstring(docstring: str, orig_includes: dict[str, bool]) -> str:
     """Add documentation for some dynamically added grid parameters to the docstring."""
     other_params = docstring.find('Other Parameters')
     blank = docstring.find('\n\n', other_params)
-    return docstring[:blank] + """
+
+    entries = {
+        'longitude': """
     longitude : `pint.Quantity`, optional
         Longitude of data. Optional if `xarray.DataArray` with latitude/longitude coordinates
         used as input. Also optional if parallel_scale and meridional_scale are given. If
         otherwise omitted, calculation will be carried out on a Cartesian, rather than
-        geospatial, grid. Keyword-only argument.
+        geospatial, grid. Keyword-only argument.""",
+        'latitude': """
     latitude : `pint.Quantity`, optional
         Latitude of data. Optional if `xarray.DataArray` with latitude/longitude coordinates
         used as input. Also optional if parallel_scale and meridional_scale are given. If
         otherwise omitted, calculation will be carried out on a Cartesian, rather than
-        geospatial, grid. Keyword-only argument.
+        geospatial, grid. Keyword-only argument.""",
+        'crs': """
     crs : `pyproj.CRS`, optional
         Coordinate Reference System of data. Optional if `xarray.DataArray` with MetPy CRS
         used as input. Also optional if parallel_scale and meridional_scale are given. If
         otherwise omitted, calculation will be carried out on a Cartesian, rather than
-        geospatial, grid. Keyword-only argument.""" + docstring[blank:]
+        geospatial, grid. Keyword-only argument."""
+    }
+
+    return ''.join([docstring[:blank],
+                    *(entries[p] for p, included in orig_includes.items() if not included),
+                    docstring[blank:]])
 
 
 def parse_grid_arguments(func):
@@ -1008,20 +1021,22 @@ def parse_grid_arguments(func):
     from ..xarray import dataarray_arguments
 
     # Dynamically add new parameters for lat, lon, and crs to the function signature
-    # which is used to handle arguments inside the wrapper
+    # which is used to handle arguments inside the wrapper--but only if they're not in the
+    # original signature
     sig = signature(func)
-    newsig = sig.replace(parameters=[
-        *sig.parameters.values(),
-        Parameter('latitude', Parameter.KEYWORD_ONLY, default=None),
-        Parameter('longitude', Parameter.KEYWORD_ONLY, default=None),
-        Parameter('crs', Parameter.KEYWORD_ONLY, default=None)])
+    orig_func_uses = {param: param in sig.parameters
+                      for param in ('latitude', 'longitude', 'crs')}
+    newsig = sig.replace(parameters=[*sig.parameters.values(),
+                                     *(Parameter(name, Parameter.KEYWORD_ONLY, default=None)
+                                       for name, needed in orig_func_uses.items()
+                                       if not needed)])
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         bound_args = newsig.bind(*args, **kwargs)
         bound_args.apply_defaults()
-        lat = bound_args.arguments.pop('latitude')
-        lon = bound_args.arguments.pop('longitude')
+        latitude = bound_args.arguments.pop('latitude')
+        longitude = bound_args.arguments.pop('longitude')
         crs = bound_args.arguments.pop('crs')
 
         # Choose the first DataArray argument to act as grid prototype
@@ -1079,10 +1094,10 @@ def parse_grid_arguments(func):
                 grid_deltas = grid_prototype.metpy.grid_deltas
                 bound_args.arguments['dx'] = grid_deltas['dx']
                 bound_args.arguments['dy'] = grid_deltas['dy']
-            elif lon is not None and lat is not None and crs is not None:
+            elif longitude is not None and latitude is not None and crs is not None:
                 # TODO: de-duplicate .metpy.grid_deltas code
                 bound_args.arguments['dx'], bound_args.arguments['dy'] = (
-                    nominal_lat_lon_grid_deltas(lon, lat, crs.get_geod())
+                    nominal_lat_lon_grid_deltas(longitude, latitude, crs.get_geod())
                 )
             elif 'dz' in bound_args.arguments:
                 # Handle advection case, allowing dx/dy to be None but dz to not be None
@@ -1098,8 +1113,7 @@ def parse_grid_arguments(func):
                     'CRS.'
                 )
 
-        # Fill in parallel_scale and meridional_scale (possibly saving latitude for later)
-        latitude_from_xarray = None
+        # Fill in parallel_scale and meridional_scale
         if (
             'parallel_scale' in bound_args.arguments
             and bound_args.arguments['parallel_scale'] is None
@@ -1109,17 +1123,17 @@ def parse_grid_arguments(func):
             if grid_prototype is not None:
                 try:
                     proj = grid_prototype.metpy.pyproj_proj
-                    lat, lon = grid_prototype.metpy.coordinates('latitude', 'longitude')
-                    latitude_from_xarray = lat
-                    lat = lat.metpy.unit_array
-                    lon = lon.metpy.unit_array
+                    latitude, longitude = grid_prototype.metpy.coordinates('latitude',
+                                                                           'longitude')
+                    latitude = latitude.metpy.unit_array
+                    longitude = longitude.metpy.unit_array
                     calculate_scales = True
                 except AttributeError:
                     # Fall back to basic cartesian calculation if we don't have a CRS or we are
                     # unable to get the coordinates needed for map factor calculation (either
                     # exiting lat/lon or lat/lon computed from y/x)
                     calculate_scales = False
-            elif lat is not None and lon is not None:
+            elif latitude is not None and longitude is not None:
                 try:
                     proj = Proj(crs)
                     calculate_scales = True
@@ -1135,13 +1149,13 @@ def parse_grid_arguments(func):
 
             # Do we have everything we need to sensibly calculate the scale arrays?
             if calculate_scales:
-                if lat.ndim == 1 and lon.ndim == 1:
-                    xx, yy = np.meshgrid(lon.m_as('degrees'), lat.m_as('degrees'))
-                elif lat.ndim == 2 and lon.ndim == 2:
-                    xx, yy = lon.m_as('degrees'), lat.m_as('degrees')
-                else:
+                scale_lat = latitude.squeeze().m_as('degrees')
+                scale_lon = longitude.squeeze().m_as('degrees')
+                if scale_lat.ndim == 1 and scale_lon.ndim == 1:
+                    scale_lon, scale_lat = np.meshgrid(scale_lon, scale_lat)
+                elif scale_lat.ndim != 2 or scale_lon.ndim != 2:
                     raise ValueError('Latitude and longitude must be either 1D or 2D.')
-                factors = proj.get_factors(xx, yy)
+                factors = proj.get_factors(scale_lon, scale_lat)
                 p_scale = factors.parallel_scale
                 m_scale = factors.meridional_scale
 
@@ -1155,14 +1169,11 @@ def parse_grid_arguments(func):
                 bound_args.arguments['parallel_scale'] = p_scale
                 bound_args.arguments['meridional_scale'] = m_scale
 
-        # # Fill in latitude
-        # TODO: reorder and fixup latitude insertion logic
-        # if 'latitude' in bound_args.arguments and bound_args.arguments['latitude'] is None:
-        #     if latitude_from_xarray is not None:
-        #         bound_args.arguments['latitude'] = latitude_from_xarray
-        #     else:
-        #         raise ValueError('Must provide latitude argument or input DataArray with '
-        #                          'latitude/longitude coordinates.')
+        # If the original function uses any of the arguments that are otherwise dynamically
+        # added, be sure to pass them to the original function.
+        local_namespace = vars()
+        bound_args.arguments.update({param: local_namespace[param]
+                                     for param, uses in orig_func_uses.items() if uses})
 
         return func(*bound_args.args, **bound_args.kwargs)
 
@@ -1170,7 +1181,7 @@ def parse_grid_arguments(func):
     # for our added parameters.
     wrapper.__signature__ = newsig
     if getattr(wrapper, '__doc__', None) is not None:
-        wrapper.__doc__ = _add_grid_params_to_docstring(wrapper.__doc__)
+        wrapper.__doc__ = _add_grid_params_to_docstring(wrapper.__doc__, orig_func_uses)
 
     return wrapper
 

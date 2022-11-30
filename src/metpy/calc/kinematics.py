@@ -771,10 +771,11 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, s
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
+def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
+                       parallel_scale=None, meridional_scale=None):
     """Calculate the absolute vorticity of the horizontal wind.
 
     Parameters
@@ -783,6 +784,14 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
         x component of the wind
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        absolute vorticity
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -801,19 +810,25 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        absolute vorticity
-
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
     .. versionchanged:: 1.0
        Changed signature from ``(u, v, dx, dy, lats, dim_order='yx')``
 
     """
     f = coriolis_parameter(latitude)
-    relative_vorticity = vorticity(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim)
+    relative_vorticity = vorticity(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                                   parallel_scale=parallel_scale,
+                                   meridional_scale=meridional_scale)
     return relative_vorticity + f
 
 
