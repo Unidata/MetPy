@@ -282,7 +282,7 @@ class MetPyDataArrayAccessor:
 
     @property
     def pyproj_proj(self):
-        """Return the Proj object cooresponding to the coordinate reference system (CRS)."""
+        """Return the Proj object corresponding to the coordinate reference system (CRS)."""
         return Proj(self.pyproj_crs)
 
     def _fixup_coordinate_map(self, coord_map):
