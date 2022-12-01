@@ -6,7 +6,7 @@ import numpy as np
 
 from . import coriolis_parameter
 from .tools import (_vector_derivative, first_derivative, get_layer_heights,
-                    geospatial_gradient, gradient, parse_grid_arguments)
+                    geospatial_gradient, parse_grid_arguments)
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
