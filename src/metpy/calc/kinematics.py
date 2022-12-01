@@ -570,7 +570,7 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like=('height', 'height'),
     broadcast=('height', 'u', 'v', 'latitude')
@@ -582,7 +582,8 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
     dy='[length]',
     latitude='[dimensionless]'
 )
-def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
+def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
+                      *, parallel_scale=None, meridional_scale=None):
     r"""Calculate the ageostrophic wind given from the height or geopotential.
 
     Parameters
@@ -629,7 +630,9 @@ def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y
         dy,
         latitude,
         x_dim=x_dim,
-        y_dim=y_dim
+        y_dim=y_dim,
+        parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale
     )
     return u - u_geostrophic, v - v_geostrophic
 
