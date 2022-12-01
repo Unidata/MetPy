@@ -357,7 +357,7 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(wrap_like='scalar', broadcast=('scalar', 'u', 'v', 'w'))
 def advection(
     scalar,
@@ -370,7 +370,9 @@ def advection(
     dz=None,
     x_dim=-1,
     y_dim=-2,
-    vertical_dim=-3
+    vertical_dim=-3,
+    parallel_scale=None,
+    meridional_scale=None
 ):
     r"""Calculate the advection of a scalar field by the wind.
 
@@ -413,14 +415,25 @@ def advection(
        Changed signature from ``(scalar, wind, deltas)``
 
     """
+    # Create appropriately-dimensioned wind vector
+    wind_vector = [component for component in (u, v, w) if component is not None]
+
+    # Calculate scalar gradients across provided dimensions
+    return_only = ['df/dx']
+    if v is not None:
+        return_only.append('df/dy')
+
+    gradient_vector = geospatial_gradient(scalar, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                                          parallel_scale=parallel_scale,
+                                          meridional_scale=meridional_scale,
+                                          return_only=return_only)
+    if w is not None:
+        gradient_vector = (*gradient_vector,
+                           first_derivative(scalar, axis=vertical_dim, delta=dz))
+
     return -sum(
-        wind * first_derivative(scalar, axis=axis, delta=delta)
-        for wind, delta, axis in (
-            (u, dx, x_dim),
-            (v, dy, y_dim),
-            (w, dz, vertical_dim)
-        )
-        if wind is not None
+        wind * gradient
+        for wind, gradient in zip(wind_vector, gradient_vector)
     )
 
 
