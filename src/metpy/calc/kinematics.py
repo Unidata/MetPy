@@ -1110,7 +1110,7 @@ def inertial_advective_wind(
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like=('u', 'u'),
     broadcast=('u', 'v', 'temperature', 'pressure', 'static_stability')
@@ -1125,7 +1125,10 @@ def q_vector(
     dy=None,
     static_stability=1,
     x_dim=-1,
-    y_dim=-2
+    y_dim=-2,
+    *,
+    parallel_scale=None,
+    meridional_scale=None
 ):
     r"""Calculate Q-vector at a given pressure level using the u, v winds and temperature.
 
@@ -1186,9 +1189,13 @@ def q_vector(
     static_stability
 
     """
-    dudy, dudx = gradient(u, deltas=(dy, dx), axes=(y_dim, x_dim))
-    dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(y_dim, x_dim))
-    dtempdy, dtempdx = gradient(temperature, deltas=(dy, dx), axes=(y_dim, x_dim))
+    (dudx, dudy), (dvdx, dvdy) = _vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+        parallel_scale=parallel_scale, meridional_scale=meridional_scale)
+
+    dtempdx, dtempdy = geospatial_gradient(
+        temperature, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+        parallel_scale=parallel_scale, meridional_scale=meridional_scale)
 
     q1 = -mpconsts.Rd / (pressure * static_stability) * (dudx * dtempdx + dvdx * dtempdy)
     q2 = -mpconsts.Rd / (pressure * static_stability) * (dudy * dtempdx + dvdy * dtempdy)
