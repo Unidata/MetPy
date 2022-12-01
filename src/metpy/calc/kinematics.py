@@ -1037,7 +1037,7 @@ def potential_vorticity_barotropic(
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like=('u', 'u'),
     broadcast=('u', 'v', 'u_geostrophic', 'v_geostrophic', 'latitude')
@@ -1053,7 +1053,10 @@ def inertial_advective_wind(
     dy=None,
     latitude=None,
     x_dim=-1,
-    y_dim=-2
+    y_dim=-2,
+    *,
+    parallel_scale=None,
+    meridional_scale=None
 ):
     r"""Calculate the inertial advective wind.
 
@@ -1118,8 +1121,14 @@ def inertial_advective_wind(
     """
     f = coriolis_parameter(latitude)
 
-    dugdy, dugdx = gradient(u_geostrophic, deltas=(dy, dx), axes=(y_dim, x_dim))
-    dvgdy, dvgdx = gradient(v_geostrophic, deltas=(dy, dx), axes=(y_dim, x_dim))
+    dugdx, dugdy = geospatial_gradient(u_geostrophic, dx=dx, dy=dy,
+                                       x_dim=x_dim, y_dim=y_dim,
+                                       parallel_scale=parallel_scale,
+                                       meridional_scale=meridional_scale)
+    dvgdx, dvgdy = geospatial_gradient(v_geostrophic, dx=dx, dy=dy,
+                                       x_dim=x_dim, y_dim=y_dim,
+                                       parallel_scale=parallel_scale,
+                                       meridional_scale=meridional_scale)
 
     u_component = -(u * dvgdx + v * dvgdy) / f
     v_component = (u * dugdx + v * dugdy) / f
