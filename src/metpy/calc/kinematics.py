@@ -866,7 +866,7 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like='potential_temperature',
     broadcast=('potential_temperature', 'pressure', 'u', 'v', 'latitude')
@@ -883,7 +883,10 @@ def potential_vorticity_baroclinic(
     latitude=None,
     x_dim=-1,
     y_dim=-2,
-    vertical_dim=-3
+    vertical_dim=-3,
+    *,
+    parallel_scale=None,
+    meridional_scale=None
 ):
     r"""Calculate the baroclinic potential vorticity.
 
@@ -956,7 +959,8 @@ def potential_vorticity_baroclinic(
         raise ValueError('Length of potential temperature along the vertical axis '
                          '{} must be at least 3.'.format(vertical_dim))
 
-    avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim)
+    avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim,
+                              parallel_scale=parallel_scale, meridional_scale=meridional_scale)
     dthetadp = first_derivative(potential_temperature, x=pressure, axis=vertical_dim)
 
     if (
@@ -966,8 +970,10 @@ def potential_vorticity_baroclinic(
         dthetady = units.Quantity(0, 'K/m')  # axis=y_dim only has one dimension
         dthetadx = units.Quantity(0, 'K/m')  # axis=x_dim only has one dimension
     else:
-        dthetady = first_derivative(potential_temperature, delta=dy, axis=y_dim)
-        dthetadx = first_derivative(potential_temperature, delta=dx, axis=x_dim)
+        dthetadx, dthetady = geospatial_gradient(potential_temperature, dx=dx, dy=dy,
+                                                 x_dim=x_dim, y_dim=y_dim,
+                                                 parallel_scale=parallel_scale,
+                                                 meridional_scale=meridional_scale)
     dudp = first_derivative(u, x=pressure, axis=vertical_dim)
     dvdp = first_derivative(v, x=pressure, axis=vertical_dim)
 
