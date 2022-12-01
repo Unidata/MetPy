@@ -5,8 +5,8 @@
 import numpy as np
 
 from . import coriolis_parameter
-from .tools import (_vector_derivative, first_derivative, get_layer_heights, gradient,
-                    parse_grid_arguments)
+from .tools import (_vector_derivative, first_derivative, get_layer_heights,
+                    geospatial_gradient, gradient, parse_grid_arguments)
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
@@ -425,13 +425,14 @@ def advection(
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like='potential_temperature',
     broadcast=('potential_temperature', 'u', 'v')
 )
 @check_units('[temperature]', '[speed]', '[speed]', '[length]', '[length]')
-def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
+def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
+                  *, parallel_scale=None, meridional_scale=None):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
 
     The implementation is a form of the Petterssen Frontogenesis and uses the formula
@@ -483,19 +484,29 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
     """
     # Get gradients of potential temperature in both x and y
-    ddy_theta = first_derivative(potential_temperature, delta=dy, axis=y_dim)
-    ddx_theta = first_derivative(potential_temperature, delta=dx, axis=x_dim)
+    ddy_theta, ddx_theta = geospatial_gradient(potential_temperature, dx=dx, dy=dy,
+                                               x_dim=x_dim, y_dim=y_dim,
+                                               parallel_scale=parallel_scale,
+                                               meridional_scale=meridional_scale,
+                                               return_only=('df/dy', 'df/dx'))
 
     # Compute the magnitude of the potential temperature gradient
     mag_theta = np.sqrt(ddx_theta**2 + ddy_theta**2)
 
     # Get the shearing, stretching, and total deformation of the wind field
-    shrd = shearing_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
-    strd = stretching_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
-    tdef = total_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
+    shrd = shearing_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim,
+                                parallel_scale=parallel_scale,
+                                meridional_scale=meridional_scale)
+    strd = stretching_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim,
+                                parallel_scale=parallel_scale,
+                                meridional_scale=meridional_scale)
+    tdef = total_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim,
+                                parallel_scale=parallel_scale,
+                                meridional_scale=meridional_scale)
 
     # Get the divergence of the wind field
-    div = divergence(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim)
+    div = divergence(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                     parallel_scale=parallel_scale, meridional_scale=meridional_scale)
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
