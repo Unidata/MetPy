@@ -516,10 +516,11 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(wrap_like=('height', 'height'), broadcast=('height', 'latitude'))
 @check_units(dx='[length]', dy='[length]', latitude='[dimensionless]')
-def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
+def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
+                     *, parallel_scale=None, meridional_scale=None):
     r"""Calculate the geostrophic wind given from the height or geopotential.
 
     Parameters
@@ -562,8 +563,9 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
     else:
         norm_factor = mpconsts.g / f
 
-    dhdy = first_derivative(height, delta=dy, axis=y_dim)
-    dhdx = first_derivative(height, delta=dx, axis=x_dim)
+    dhdx, dhdy = geospatial_gradient(height, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                                     parallel_scale=parallel_scale,
+                                     meridional_scale=meridional_scale)
     return -norm_factor * dhdy, norm_factor * dhdx
 
 
