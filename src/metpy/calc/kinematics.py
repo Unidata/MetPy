@@ -10,7 +10,7 @@ from .tools import (_vector_derivative, first_derivative, geospatial_gradient,
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
-from ..xarray import add_grid_arguments_from_xarray, preprocess_and_wrap
+from ..xarray import preprocess_and_wrap
 
 exporter = Exporter(globals())
 
