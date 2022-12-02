@@ -394,6 +394,14 @@ def advection(
         likewise use 3 positional arguments in order for u, v, and w winds respectively or
         specify u, v, and w as keyword arguments (either way, with `dx`, `dy`, `dz` for grid
         spacings and `x_dim`, `y_dim`, and `vertical_dim` for axes).
+
+    Returns
+    -------
+    `pint.Quantity` or `xarray.DataArray`
+        An N-dimensional array containing the advection at all grid points.
+
+    Other Parameters
+    ----------------
     dx, dy, dz: `pint.Quantity` or None, optional
         Grid spacing in applicable dimension(s). If using arrays, each array should have one
         item less than the size of `scalar` along the applicable axis. If `scalar` is an
@@ -404,11 +412,16 @@ def advection(
         Axis number in applicable dimension(s). Defaults to -1, -2, and -3 respectively for
         (..., Z, Y, X) dimension ordering. If `scalar` is an `xarray.DataArray`, these are
         automatically determined from its coordinates. These are keyword-only arguments.
-
-    Returns
-    -------
-    `pint.Quantity` or `xarray.DataArray`
-        An N-dimensional array containing the advection at all grid points.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
 
     .. versionchanged:: 1.0
@@ -467,6 +480,14 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
         x component of the wind
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        2D Frontogenesis in [temperature units]/m/s
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -481,11 +502,16 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        2D Frontogenesis in [temperature units]/m/s
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
     Notes
     -----
@@ -540,6 +566,14 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
     ----------
     height : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The height or geopotential field.
+
+    Returns
+    -------
+    A 2-item tuple of arrays
+        A tuple of the u-component and v-component of the geostrophic wind.
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -559,11 +593,16 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    A 2-item tuple of arrays
-        A tuple of the u-component and v-component of the geostrophic wind.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
 
     .. versionchanged:: 1.0
@@ -607,6 +646,14 @@ def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y
         The u wind field.
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The u wind field.
+
+    Returns
+    -------
+    A 2-item tuple of arrays
+        A tuple of the u-component and v-component of the ageostrophic wind
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -626,11 +673,16 @@ def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    A 2-item tuple of arrays
-        A tuple of the u-component and v-component of the ageostrophic wind
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
 
     .. versionchanged:: 1.0
@@ -906,6 +958,14 @@ def potential_vorticity_baroclinic(
         x component of the wind
     v : (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
+
+    Returns
+    -------
+    (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
+        baroclinic potential vorticity
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -927,11 +987,16 @@ def potential_vorticity_baroclinic(
     vertical_dim : int, optional
         Axis number of vertical dimension. Defaults to -3 (implying [..., Z, Y, X] order).
         Automatically parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
-        baroclinic potential vorticity
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
     Notes
     -----
@@ -1089,6 +1154,16 @@ def inertial_advective_wind(
         x component of the geostrophic (advected) wind
     v_geostrophic : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the geostrophic (advected) wind
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        x component of inertial advective wind
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        y component of inertial advective wind
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -1107,13 +1182,16 @@ def inertial_advective_wind(
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        x component of inertial advective wind
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        y component of inertial advective wind
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
     Notes
     -----
@@ -1190,6 +1268,14 @@ def q_vector(
         Array of temperature at pressure level
     pressure : `pint.Quantity`
         Pressure at level
+
+    Returns
+    -------
+    tuple of (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        The components of the Q-vector in the u- and v-directions respectively
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -1207,11 +1293,16 @@ def q_vector(
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    tuple of (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        The components of the Q-vector in the u- and v-directions respectively
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
 
     .. versionchanged:: 1.0
