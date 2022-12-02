@@ -980,7 +980,7 @@ def xarray_derivative_wrap(func):
     return wrapper
 
 
-def _add_grid_params_to_docstring(docstring: str, orig_includes: dict[str, bool]) -> str:
+def _add_grid_params_to_docstring(docstring: str, orig_includes: dict) -> str:
     """Add documentation for some dynamically added grid parameters to the docstring."""
     other_params = docstring.find('Other Parameters')
     blank = docstring.find('\n\n', other_params)
