@@ -20,8 +20,9 @@ from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersec
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
-                              DIR_STRS, UND)
-from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
+                              DIR_STRS, parse_grid_arguments, UND)
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
+                           get_test_data)
 from metpy.units import units
 from metpy.xarray import grid_deltas_from_dataarray
 
@@ -1250,3 +1251,27 @@ def test_remove_nans():
     y_expected = np.array([0, 1, 3, 4])
     assert_array_almost_equal(x_expected, x_test, 0)
     assert_almost_equal(y_expected, y_test, 0)
+
+
+@pytest.mark.parametrize('datafile', ('GFS_test.nc', 'NAM_test.nc'))
+def test_parse_grid_arguments_xarray(datafile):
+    """Test the operation of parse_grid_arguments with xarray data."""
+    @parse_grid_arguments
+    def check_params(scalar, parallel_scale=None, meridional_scale=None, latitude=None):
+        return scalar, parallel_scale, meridional_scale, latitude
+
+    data = xr.open_dataset(get_test_data(datafile, as_file_obj=False))
+    temp = data.metpy.parse_cf('Temperature_isobaric')
+    t, p, m, lat = check_params(temp)
+
+    assert t is temp
+
+    assert p.shape == t.shape
+    assert_array_equal(p.metpy.x, t.metpy.x)
+    assert_array_equal(p.metpy.y, t.metpy.y)
+
+    assert m.shape == t.shape
+    assert_array_equal(m.metpy.x, t.metpy.x)
+    assert_array_equal(m.metpy.y, t.metpy.y)
+
+    assert_array_almost_equal(lat, data.lat, 5)

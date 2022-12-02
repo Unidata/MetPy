@@ -1158,7 +1158,16 @@ def parse_grid_arguments(func):
                 m_scale = factors.meridional_scale
 
                 if grid_prototype is not None:
-                    coords = list(grid_prototype.metpy.coordinates('latitude', 'longitude'))
+                    # Find appropriate coordinates to assign to the scales from the original
+                    # lat/lon DataArrays
+                    coords = dict(latitude.coords)
+                    coords.update({c: v for c, v in longitude.coords.items() if c not in
+                                   coords})
+                    coords.pop('metpy_crs', None)
+
+                    # Because of the uses of these arrays in derivatives alongside the data
+                    # fields, they need to have the same number and order of dimensions as
+                    # the data field.
                     p_scale = xr.DataArray(p_scale,
                                            coords=coords).broadcast_like(grid_prototype)
                     m_scale = xr.DataArray(m_scale,
