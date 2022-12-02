@@ -1254,7 +1254,7 @@ def test_remove_nans():
 
 
 @pytest.mark.parametrize('subset', (False, True))
-@pytest.mark.parametrize('datafile', ('GFS_test.nc','NAM_test.nc'))
+@pytest.mark.parametrize('datafile', ('GFS_test.nc', 'NAM_test.nc'))
 def test_parse_grid_arguments_xarray(datafile, subset):
     """Test the operation of parse_grid_arguments with xarray data."""
     @parse_grid_arguments

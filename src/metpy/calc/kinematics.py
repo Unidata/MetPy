@@ -5,8 +5,8 @@
 import numpy as np
 
 from . import coriolis_parameter
-from .tools import (_vector_derivative, first_derivative, get_layer_heights,
-                    geospatial_gradient, parse_grid_arguments)
+from .tools import (_vector_derivative, first_derivative, geospatial_gradient,
+                    get_layer_heights, parse_grid_arguments)
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
@@ -511,11 +511,11 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
                                 parallel_scale=parallel_scale,
                                 meridional_scale=meridional_scale)
     strd = stretching_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim,
-                                parallel_scale=parallel_scale,
-                                meridional_scale=meridional_scale)
+                                  parallel_scale=parallel_scale,
+                                  meridional_scale=meridional_scale)
     tdef = total_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim,
-                                parallel_scale=parallel_scale,
-                                meridional_scale=meridional_scale)
+                             parallel_scale=parallel_scale,
+                             meridional_scale=meridional_scale)
 
     # Get the divergence of the wind field
     div = divergence(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,

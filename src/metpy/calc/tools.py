@@ -1559,8 +1559,58 @@ def vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
 @exporter.export
 @parse_grid_arguments
 def geospatial_gradient(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
-                      parallel_scale=None, meridional_scale=None, return_only=None):
-    r"""
+                        parallel_scale=None, meridional_scale=None, return_only=None):
+    r"""Calculate the projection-correct derivative matrix of a 2D vector.
+
+    Parameters
+    ----------
+    f : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        scalar field for which the gradient should be calculated
+    return_only : str or sequence of str, optional
+        Sequence of which components of the derivative matrix to compute and return. If none,
+        returns the full matrix as a tuple of tuples (('du/dx', 'du/dy'), ('dv/dx', 'dv/dy')).
+        Otherwise, matches the return pattern of the given strings. Only valid strings are
+        'du/dx', 'du/dy', 'dv/dx', and 'dv/dy'.
+
+    Returns
+    -------
+    `pint.Quantity`, tuple of `pint.Quantity`, or tuple of tuple of `pint.Quantity`
+        Component(s) of vector derivative
+
+    Other Parameters
+    ----------------
+    dx : `pint.Quantity`, optional
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    dy : `pint.Quantity`, optional
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+
+    See Also
+    --------
+    vector_derivative, gradient
 
     """
     derivatives = {component: None
@@ -1576,11 +1626,11 @@ def geospatial_gradient(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
         derivatives[component] = first_derivative(f, delta=delta, axis=dim)
 
         if map_factor_correction:
-            derivatives[component] = derivatives[component] * scales[component]
+            derivatives[component] *= scales[component]
 
     # Build return collection
     if return_only is None:
-        return (derivatives['df/dx'], derivatives['df/dy'])
+        return derivatives['df/dx'], derivatives['df/dy']
     elif isinstance(return_only, str):
         return derivatives[return_only]
     else:
