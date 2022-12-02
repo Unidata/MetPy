@@ -1159,11 +1159,11 @@ def parse_grid_arguments(func):
 
                 if grid_prototype is not None:
                     # Find appropriate coordinates to assign to the scales from the original
-                    # lat/lon DataArrays
-                    coords = dict(latitude.coords)
-                    coords.update({c: v for c, v in longitude.coords.items() if c not in
-                                   coords})
-                    coords.pop('metpy_crs', None)
+                    # lat/lon DataArrays. Checking size eliminates the metpy_crs coordinate
+                    # well as any spurious coordinates hanging around in subsets due to
+                    # pydata/xarray#7350.
+                    coords = {c: v for c, v in {**latitude.coords, **longitude.coords}.items()
+                              if v.size > 1}
 
                     # Because of the uses of these arrays in derivatives alongside the data
                     # fields, they need to have the same number and order of dimensions as

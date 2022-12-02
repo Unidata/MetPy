@@ -1253,8 +1253,9 @@ def test_remove_nans():
     assert_almost_equal(y_expected, y_test, 0)
 
 
-@pytest.mark.parametrize('datafile', ('GFS_test.nc', 'NAM_test.nc'))
-def test_parse_grid_arguments_xarray(datafile):
+@pytest.mark.parametrize('subset', (False, True))
+@pytest.mark.parametrize('datafile', ('GFS_test.nc','NAM_test.nc'))
+def test_parse_grid_arguments_xarray(datafile, subset):
     """Test the operation of parse_grid_arguments with xarray data."""
     @parse_grid_arguments
     def check_params(scalar, parallel_scale=None, meridional_scale=None, latitude=None):
@@ -1262,6 +1263,8 @@ def test_parse_grid_arguments_xarray(datafile):
 
     data = xr.open_dataset(get_test_data(datafile, as_file_obj=False))
     temp = data.metpy.parse_cf('Temperature_isobaric')
+    if subset:
+        temp = temp.isel(time=0).metpy.sel(vertical=500 * units.hPa)
     t, p, m, lat = check_params(temp)
 
     assert t is temp
