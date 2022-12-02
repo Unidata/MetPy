@@ -149,6 +149,7 @@ Mathematical Functions
 
       cross_section_components
       first_derivative
+      geospatial_gradient
       gradient
       laplacian
       lat_lon_grid_deltas
@@ -156,6 +157,7 @@ Mathematical Functions
       second_derivative
       tangential_component
       unit_vectors_from_cross_section
+      vector_derivative
 
 
 Apparent Temperature
