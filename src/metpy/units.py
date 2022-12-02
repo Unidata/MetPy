@@ -63,8 +63,9 @@ def setup_registry(reg):
         if pre not in reg.preprocessors:
             reg.preprocessors.append(pre)
 
-    # Add a percent unit
-    reg.define('percent = 0.01 = %')
+    # Add a percent unit if it's not already present, it was added in 0.21
+    if 'percent' not in reg:
+        reg.define('percent = 0.01 = %')
 
     # Define commonly encountered units not defined by pint
     reg.define('degrees_north = degree = degrees_N = degreesN = degree_north = degree_N '
