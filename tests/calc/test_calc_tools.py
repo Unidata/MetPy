@@ -8,15 +8,15 @@ from collections import namedtuple
 import numpy as np
 import numpy.ma as ma
 import pandas as pd
-from pyproj import Geod
+from pyproj import CRS, Geod, Proj
 import pytest
 import xarray as xr
 
 from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersections,
-                        first_derivative, get_layer, get_layer_heights, gradient, laplacian,
-                        lat_lon_grid_deltas, nearest_intersection_idx, parse_angle,
-                        pressure_to_height_std, reduce_point_density, resample_nn_1d,
-                        second_derivative)
+                        first_derivative, geospatial_gradient, get_layer, get_layer_heights,
+                        gradient, laplacian, lat_lon_grid_deltas, nearest_intersection_idx,
+                        parse_angle, pressure_to_height_std, reduce_point_density,
+                        resample_nn_1d, second_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
@@ -1029,6 +1029,34 @@ def test_2d_gradient_4d_data_2_axes_1_deltas(deriv_4d_data):
     with pytest.raises(ValueError) as exc:
         gradient(deriv_4d_data, deltas=(1, ), axes=(1, 2))
     assert 'cannot be less than that of "axes"' in str(exc.value)
+
+
+@pytest.mark.parametrize('crs_str', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'))
+def test_geospatial_gradient_geographic(crs_str):
+    """Test geospatial_gradient on geographic coordinates."""
+    # Generate a field of temperature on a lat/lon grid
+    crs = CRS(crs_str)
+    lons = np.array([-100, -90, -80, -70]) * units.degree
+    lats = np.array([45, 55, 65]) * units.degree
+    a = np.linspace(20, 25, 4)[None, :]
+    temperature = np.r_[a, a, a] * units('K')
+    grad_x, grad_y = geospatial_gradient(temperature, longitude=lons, latitude=lats, crs=crs)
+
+    # Set up everything to do the map scaling manually
+    proj = Proj(crs)
+    lon_arr, lat_arr = np.meshgrid(lons.m_as('degree'), lats.m_as('degree'))
+    factors = proj.get_factors(lon_arr, lat_arr)
+    mx = factors.parallel_scale
+    my = factors.meridional_scale
+    dx = lat_lon_grid_deltas(lons.m, np.zeros_like(lons.m), geod=crs.get_geod())[0][0]
+    dy = lat_lon_grid_deltas(np.zeros_like(lats.m), lats.m, geod=crs.get_geod())[1][:, 0]
+
+    # Calculate the true fields using known map-correct approach
+    truth_x = mx * first_derivative(temperature, delta=dx, axis=1)
+    truth_y = my * first_derivative(temperature, delta=dy, axis=0)
+
+    assert_array_almost_equal(grad_x, truth_x)
+    assert_array_almost_equal(grad_y, truth_y)
 
 
 def test_first_derivative_xarray_lonlat(test_da_lonlat):
