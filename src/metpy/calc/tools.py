@@ -1380,7 +1380,7 @@ def second_derivative(f, axis=None, x=None, delta=None):
 
 @exporter.export
 def gradient(f, axes=None, coordinates=None, deltas=None):
-    """Calculate the gradient of a scalar quantity.
+    """Calculate the gradient of a scalar quantity, assuming Cartesian coordinates.
 
     Works for both regularly-spaced data, and grids with varying spacing.
 
@@ -1418,15 +1418,16 @@ def gradient(f, axes=None, coordinates=None, deltas=None):
 
     See Also
     --------
-    laplacian, first_derivative, vector_derivative
+    laplacian, first_derivative, vector_derivative, geospatial_gradient
 
     Notes
     -----
     If this function is used without the `axes` parameter, the length of `coordinates` or
     `deltas` (as applicable) should match the number of dimensions of `f`.
 
-    This will not give projection-correct results when applied to the components of a vector
-    quantity. Instead, for vector quantities, use `vector_derivative`.
+    This will not give projection-correct results for horizontal geospatial fields. Instead,
+    for vector quantities, use `vector_derivative`, and for scalar quantities, use
+    `geospatial_gradient`.
 
     .. versionchanged:: 1.0
        Changed signature from ``(f, **kwargs)``
@@ -1560,17 +1561,16 @@ def vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
 @parse_grid_arguments
 def geospatial_gradient(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
                         parallel_scale=None, meridional_scale=None, return_only=None):
-    r"""Calculate the projection-correct derivative matrix of a 2D vector.
+    r"""Calculate the projection-correct gradient of a 2D scalar field.
 
     Parameters
     ----------
     f : (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        scalar field for which the gradient should be calculated
+        scalar field for which the horizontal gradient should be calculated
     return_only : str or sequence of str, optional
-        Sequence of which components of the derivative matrix to compute and return. If none,
-        returns the full matrix as a tuple of tuples (('du/dx', 'du/dy'), ('dv/dx', 'dv/dy')).
-        Otherwise, matches the return pattern of the given strings. Only valid strings are
-        'du/dx', 'du/dy', 'dv/dx', and 'dv/dy'.
+        Sequence of which components of the gradient to compute and return. If none,
+        returns the gradient tuple ('df/dx', 'df/dy'). Otherwise, matches the return
+        pattern of the given strings. Only valid strings are 'df/dx', 'df/dy'.
 
     Returns
     -------
