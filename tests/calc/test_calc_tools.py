@@ -24,7 +24,7 @@ from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data)
 from metpy.units import units
-from metpy.xarray import grid_deltas_from_dataarray
+from metpy.xarray import grid_deltas_from_dataarray, preprocess_and_wrap
 
 FULL_CIRCLE_DEGREES = np.arange(0, 360, BASE_DEGREE_MULTIPLIER.m) * units.degree
 
@@ -1282,15 +1282,27 @@ def test_remove_nans():
 
 
 @pytest.mark.parametrize('subset', (False, True))
-@pytest.mark.parametrize('datafile', ('GFS_test.nc', 'NAM_test.nc'))
-def test_parse_grid_arguments_xarray(datafile, subset):
+@pytest.mark.parametrize('datafile, assign_lat_lon, drop_crs',
+                         [('GFS_test.nc', False, False),
+                          ('NAM_test.nc', False, False), ('NAM_test.nc', True, False)])
+def test_parse_grid_arguments_xarray(datafile, assign_lat_lon, drop_crs, subset):
     """Test the operation of parse_grid_arguments with xarray data."""
     @parse_grid_arguments
+    @preprocess_and_wrap(broadcast=['scalar', 'parallel_scale', 'meridional_scale'],
+                         wrap_like=('scalar', 'scalar', 'scalar', 'latitude'))
     def check_params(scalar, parallel_scale=None, meridional_scale=None, latitude=None):
         return scalar, parallel_scale, meridional_scale, latitude
 
     data = xr.open_dataset(get_test_data(datafile, as_file_obj=False))
-    temp = data.metpy.parse_cf('Temperature_isobaric')
+
+    if drop_crs:
+        data = data.drop_vars(('LatLon_Projection',))
+        temp = data.Temperature_isobaric
+    else:
+        temp = data.metpy.parse_cf('Temperature_isobaric')
+
+    if assign_lat_lon:
+        temp = temp.metpy.assign_latitude_longitude(force=True)
     if subset:
         temp = temp.isel(time=0).metpy.sel(vertical=500 * units.hPa)
     t, p, m, lat = check_params(temp)

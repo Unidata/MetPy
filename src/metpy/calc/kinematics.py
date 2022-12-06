@@ -17,7 +17,7 @@ exporter = Exporter(globals())
 
 @exporter.export
 @parse_grid_arguments
-@preprocess_and_wrap(wrap_like='u')
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
 @check_units('[speed]', '[speed]', dx='[length]', dy='[length]')
 def vorticity(
     u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
@@ -95,7 +95,7 @@ def vorticity(
 
 @exporter.export
 @parse_grid_arguments
-@preprocess_and_wrap(wrap_like='u')
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
 @check_units(dx='[length]', dy='[length]')
 def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
                parallel_scale=None, meridional_scale=None):
@@ -165,7 +165,7 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
 
 @exporter.export
 @parse_grid_arguments
-@preprocess_and_wrap(wrap_like='u')
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
 @check_units('[speed]', '[speed]', '[length]', '[length]')
 def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
                          parallel_scale=None, meridional_scale=None):
@@ -228,7 +228,7 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
 
 @exporter.export
 @parse_grid_arguments
-@preprocess_and_wrap(wrap_like='u')
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
 @check_units('[speed]', '[speed]', '[length]', '[length]')
 def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
                            parallel_scale=None, meridional_scale=None):
@@ -291,7 +291,7 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
 
 @exporter.export
 @parse_grid_arguments
-@preprocess_and_wrap(wrap_like='u')
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
 @check_units('[speed]', '[speed]', '[length]', '[length]')
 def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
                       parallel_scale=None, meridional_scale=None):
@@ -358,7 +358,8 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
 
 @exporter.export
 @parse_grid_arguments
-@preprocess_and_wrap(wrap_like='scalar', broadcast=('scalar', 'u', 'v', 'w'))
+@preprocess_and_wrap(wrap_like='scalar',
+                     broadcast=('scalar', 'u', 'v', 'w', 'parallel_scale', 'meridional_scale'))
 def advection(
     scalar,
     u=None,
@@ -454,7 +455,7 @@ def advection(
 @parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like='potential_temperature',
-    broadcast=('potential_temperature', 'u', 'v')
+    broadcast=('potential_temperature', 'u', 'v', 'parallel_scale', 'meridional_scale')
 )
 @check_units('[temperature]', '[speed]', '[speed]', '[length]', '[length]')
 def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
@@ -556,7 +557,8 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
 @exporter.export
 @parse_grid_arguments
-@preprocess_and_wrap(wrap_like=('height', 'height'), broadcast=('height', 'latitude'))
+@preprocess_and_wrap(wrap_like=('height', 'height'),
+                     broadcast=('height', 'latitude', 'parallel_scale', 'meridional_scale'))
 @check_units(dx='[length]', dy='[length]', latitude='[dimensionless]')
 def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
                      *, parallel_scale=None, meridional_scale=None):
@@ -625,7 +627,7 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 @parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like=('height', 'height'),
-    broadcast=('height', 'u', 'v', 'latitude')
+    broadcast=('height', 'u', 'v', 'latitude', 'parallel_scale', 'meridional_scale')
 )
 @check_units(
     u='[speed]',
@@ -853,7 +855,8 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, s
 
 @exporter.export
 @parse_grid_arguments
-@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
+@preprocess_and_wrap(wrap_like='u',
+                     broadcast=('u', 'v', 'latitude', 'parallel_scale', 'meridional_scale'))
 @check_units('[speed]', '[speed]', '[length]', '[length]')
 def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2, *,
                        parallel_scale=None, meridional_scale=None):
@@ -921,7 +924,8 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 @parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like='potential_temperature',
-    broadcast=('potential_temperature', 'pressure', 'u', 'v', 'latitude')
+    broadcast=('potential_temperature', 'pressure', 'u', 'v', 'latitude', 'parallel_scale',
+               'meridional_scale')
 )
 @check_units('[temperature]', '[pressure]', '[speed]', '[speed]',
              '[length]', '[length]', '[dimensionless]')
@@ -1048,7 +1052,9 @@ def potential_vorticity_baroclinic(
 
 @exporter.export
 @parse_grid_arguments
-@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'u', 'v', 'latitude'))
+@preprocess_and_wrap(wrap_like='height',
+                     broadcast=('height', 'u', 'v', 'latitude', 'parallel_scale',
+                                'meridional_scale'))
 @check_units('[length]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
 def potential_vorticity_barotropic(
     height,
@@ -1128,7 +1134,8 @@ def potential_vorticity_barotropic(
 @parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like=('u', 'u'),
-    broadcast=('u', 'v', 'u_geostrophic', 'v_geostrophic', 'latitude')
+    broadcast=('u', 'v', 'u_geostrophic', 'v_geostrophic', 'latitude', 'parallel_scale',
+               'meridional_scale')
 )
 @check_units('[speed]', '[speed]', '[speed]', '[speed]', '[length]', '[length]',
              '[dimensionless]')
@@ -1241,7 +1248,8 @@ def inertial_advective_wind(
 @parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like=('u', 'u'),
-    broadcast=('u', 'v', 'temperature', 'pressure', 'static_stability')
+    broadcast=('u', 'v', 'temperature', 'pressure', 'static_stability', 'parallel_scale',
+               'meridional_scale')
 )
 @check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]')
 def q_vector(

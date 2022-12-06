@@ -1158,20 +1158,12 @@ def parse_grid_arguments(func):
                 m_scale = factors.meridional_scale
 
                 if grid_prototype is not None:
-                    # Find appropriate coordinates to assign to the scales from the original
-                    # lat/lon DataArrays. Checking size eliminates the metpy_crs coordinate
-                    # well as any spurious coordinates hanging around in subsets due to
-                    # pydata/xarray#7350.
-                    coords = {c: v for c, v in {**latitude.coords, **longitude.coords}.items()
-                              if v.size > 1}
-
-                    # Because of the uses of these arrays in derivatives alongside the data
-                    # fields, they need to have the same number and order of dimensions as
-                    # the data field.
-                    p_scale = xr.DataArray(p_scale,
-                                           coords=coords).broadcast_like(grid_prototype)
-                    m_scale = xr.DataArray(m_scale,
-                                           coords=coords).broadcast_like(grid_prototype)
+                    # Set the dims and coords using the original from the input lat/lon.
+                    # This particular implementation relies on them being 1D/2D for the dims.
+                    xr_kwargs = {'coords': {**latitude.coords, **longitude.coords},
+                                 'dims': (latitude.dims[0], longitude.dims[-1])}
+                    p_scale = xr.DataArray(p_scale, **xr_kwargs)
+                    m_scale = xr.DataArray(m_scale, **xr_kwargs)
 
                 bound_args.arguments['parallel_scale'] = p_scale
                 bound_args.arguments['meridional_scale'] = m_scale
