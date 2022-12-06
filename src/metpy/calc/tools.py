@@ -999,7 +999,7 @@ def _add_grid_params_to_docstring(docstring: str, orig_includes: dict) -> str:
         otherwise omitted, calculation will be carried out on a Cartesian, rather than
         geospatial, grid. Keyword-only argument.""",
         'crs': """
-    crs : `pyproj.CRS`, optional
+    crs : `pyproj.crs.CRS`, optional
         Coordinate Reference System of data. Optional if `xarray.DataArray` with MetPy CRS
         used as input. Also optional if parallel_scale and meridional_scale are given. If
         otherwise omitted, calculation will be carried out on a Cartesian, rather than
