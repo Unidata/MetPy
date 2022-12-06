@@ -864,7 +864,7 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
 def nominal_lat_lon_grid_deltas(longitude, latitude, geod=None):
     """Calculate the nominal deltas along axes of a latitude/longitude grid."""
     if geod is None:
-        g = Geod(ellps='sphere')
+        g = CRS('+proj=latlon').get_geod()
     else:
         g = geod
 
@@ -1094,8 +1094,9 @@ def parse_grid_arguments(func):
                 bound_args.arguments['dy'] = grid_deltas['dy']
             elif longitude is not None and latitude is not None and crs is not None:
                 # TODO: de-duplicate .metpy.grid_deltas code
+                geod = None if crs is None else crs.get_geod()
                 bound_args.arguments['dx'], bound_args.arguments['dy'] = (
-                    nominal_lat_lon_grid_deltas(longitude, latitude, crs.get_geod())
+                    nominal_lat_lon_grid_deltas(longitude, latitude, geod)
                 )
             elif 'dz' in bound_args.arguments:
                 # Handle advection case, allowing dx/dy to be None but dz to not be None
