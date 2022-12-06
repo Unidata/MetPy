@@ -154,9 +154,27 @@ def test_vorticity_xarray(basic_dataset):
     assert_array_almost_equal(d, truth)
 
 
-def test_vorticity_grid_pole(basic_dataset):
+def test_vorticity_grid_pole():
     """Test vorticity consistency at a pole (#2582)."""
-    assert False
+    xy = [-25067.525, 0., 25067.525]
+    us = np.ones((len(xy), len(xy)))
+    vs = us * np.linspace(-1, 0, len(xy))[None, :]
+    grid = {'grid_mapping_name': 'lambert_azimuthal_equal_area',
+            'longitude_of_projection_origin': 0, 'latitude_of_projection_origin': 90,
+            'false_easting': 0, 'false_northing': 0}
+
+    x = xr.DataArray(
+        xy, name='x', attrs={'standard_name': 'projection_x_coordinate', 'units': 'm'})
+    y = xr.DataArray(
+        xy, name='y', attrs={'standard_name': 'projection_y_coordinate', 'units': 'm'})
+    u = xr.DataArray(us, name='u', coords=(y, x), dims=('y', 'x'), attrs={'units': 'm/s'})
+    v = xr.DataArray(vs, name='v', coords=(y, x), dims=('y', 'x'), attrs={'units': 'm/s'})
+
+    ds = xr.merge((u, v)).metpy.assign_crs(grid)
+
+    vort = vorticity(ds.u, ds.v)
+
+    assert_array_almost_equal(vort.isel(y=0), vort.isel(y=-1), decimal=9)
 
 
 def test_zero_divergence():
