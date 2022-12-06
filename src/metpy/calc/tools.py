@@ -1108,8 +1108,8 @@ def parse_grid_arguments(func):
             else:
                 raise ValueError(
                     'Must provide dx/dy arguments, input DataArray with interpretable '
-                    'dimension coordinates, or 1D longitude/latitude arguments with a PyProj '
-                    'CRS.'
+                    'dimension coordinates, or 1D longitude/latitude arguments with an '
+                    'optional PyProj CRS.'
                 )
 
         # Fill in parallel_scale and meridional_scale
