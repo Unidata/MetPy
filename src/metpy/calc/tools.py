@@ -10,7 +10,7 @@ import warnings
 import numpy as np
 from numpy.core.numeric import normalize_axis_index
 import numpy.ma as ma
-from pyproj import Geod, Proj
+from pyproj import CRS, Geod, Proj
 from scipy.spatial import cKDTree
 import xarray as xr
 
@@ -1119,17 +1119,20 @@ def parse_grid_arguments(func):
             and bound_args.arguments['meridional_scale'] is None
         ):
             if grid_prototype is not None:
-                try:
+                latitude, longitude = grid_prototype.metpy.coordinates('latitude',
+                                                                       'longitude')
+                scale_lat = latitude.metpy.unit_array
+                scale_lon = longitude.metpy.unit_array
+                calculate_scales = True
+
+                if hasattr(grid_prototype.metpy, 'pyproj_proj'):
                     proj = grid_prototype.metpy.pyproj_proj
-                    latitude, longitude = grid_prototype.metpy.coordinates('latitude',
-                                                                           'longitude')
-                    scale_lat = latitude.metpy.unit_array
-                    scale_lon = longitude.metpy.unit_array
-                    calculate_scales = True
-                except AttributeError:
-                    # Fall back to basic cartesian calculation if we don't have a CRS or we are
-                    # unable to get the coordinates needed for map factor calculation (either
-                    # exiting lat/lon or lat/lon computed from y/x)
+                elif latitude.squeeze().ndim == 1 and longitude.squeeze().ndim == 1:
+                    proj = Proj(CRS('+proj=latlon'))
+                else:
+                    # Fall back to basic cartesian calculation if we don't have a CRS or we
+                    # are unable to get the coordinates needed for map factor calculation
+                    # (either existing lat/lon or lat/lon computed from y/x)
                     calculate_scales = False
             elif latitude is not None and longitude is not None:
                 try:

@@ -522,15 +522,18 @@ class MetPyDataArrayAccessor:
     def grid_deltas(self):
         """Return the horizontal dimensional grid deltas suitable for vector derivatives."""
         if (
-            hasattr(self, 'crs')
-            and self.crs._attrs['grid_mapping_name'] == 'latitude_longitude'
+                (hasattr(self, 'crs')
+                 and self.crs._attrs['grid_mapping_name'] == 'latitude_longitude')
+                or (hasattr(self, 'longitude') and self.longitude.squeeze().ndim == 1
+                    and hasattr(self, 'latitude') and self.latitude.squeeze().ndim == 1)
         ):
             # Calculate dx and dy on ellipsoid (on equator and 0 deg meridian, respectively)
             from .calc.tools import nominal_lat_lon_grid_deltas
+            crs = getattr(self, 'pyproj_crs', CRS('+proj=latlon'))
             dx, dy = nominal_lat_lon_grid_deltas(
                 self.longitude.metpy.unit_array,
                 self.latitude.metpy.unit_array,
-                self.pyproj_crs.get_geod()
+                crs.get_geod()
             )
         else:
             # Calculate dx and dy in projection space
@@ -1374,7 +1377,8 @@ def _wrap_output_like_not_matching_units(result, match):
     ):
         result = units.Quantity(result)
     return (
-        xr.DataArray(result, coords=match.coords, dims=match.dims) if output_xarray
+        xr.DataArray(result, coords=match.coords, dims=match.dims)
+        if output_xarray and result is not None
         else result
     )
 
