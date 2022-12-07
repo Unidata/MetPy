@@ -429,25 +429,32 @@ def advection(
        Changed signature from ``(scalar, wind, deltas)``
 
     """
-    # Create appropriately-dimensioned wind vector
-    wind_vector = [component for component in (u, v, w) if component is not None]
+    # Set up full vectors
+    wind_vector = {'u': u, 'v': v, 'w': w}
+    return_only_horizontal = {'u': 'df/dx', 'v': 'df/dy'}
+    gradient_vector = ()
 
-    # Calculate scalar gradients across provided dimensions
-    return_only = ['df/dx']
-    if v is not None:
-        return_only.append('df/dy')
+    # Remove unused components
+    wind_vector = {key: value for key, value in wind_vector.items() if value is not None}
+    return_only_horizontal = {key: value
+                              for key, value in return_only_horizontal.items()
+                              if key in wind_vector}
 
-    gradient_vector = geospatial_gradient(scalar, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
-                                          parallel_scale=parallel_scale,
-                                          meridional_scale=meridional_scale,
-                                          return_only=return_only)
-    if w is not None:
+    # Calculate horizontal components of gradient, if needed
+    if return_only_horizontal:
+        gradient_vector = geospatial_gradient(scalar, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                                              parallel_scale=parallel_scale,
+                                              meridional_scale=meridional_scale,
+                                              return_only=return_only_horizontal.values())
+
+    # Calculate vertical component of gradient, if needed
+    if 'w' in wind_vector:
         gradient_vector = (*gradient_vector,
                            first_derivative(scalar, axis=vertical_dim, delta=dz))
 
     return -sum(
         wind * gradient
-        for wind, gradient in zip(wind_vector, gradient_vector)
+        for wind, gradient in zip(wind_vector.values(), gradient_vector)
     )
 
 

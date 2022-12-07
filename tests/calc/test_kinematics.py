@@ -415,12 +415,14 @@ def test_advection_2d():
     assert_array_equal(a, truth)
 
 
-def test_advection_z_x():
-    """Test advection in varying 2D z-x field."""
-    u = np.ones((3, 3)) * units('m/s')
+def test_advection_z_y():
+    """Test advection in varying 2D z-y field."""
     v = 2 * np.ones((3, 3)) * units('m/s')
+    w = np.ones((3, 3)) * units('m/s')
     s = np.array([[1, 2, 1], [2, 4, 2], [1, 2, 1]]) * units.kelvin
-    a = advection(s.T, v.T, w=u.T, dx=1 * units.meter, dz=1 * units.meter, vertical_dim=-2)
+    a = advection(s.T, v=v.T, w=w.T,
+                  dy=1 * units.meter, dz=1 * units.meter,
+                  y_dim=-1, vertical_dim=-2)
     truth = np.array([[-6, -4, 2], [-8, 0, 8], [-2, 4, 6]]) * units('K/sec')
     assert_array_equal(a, truth)
 
