@@ -8,8 +8,8 @@ import pytest
 import xarray as xr
 
 from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind, coriolis_parameter,
-                        divergence, first_derivative, frontogenesis, geostrophic_wind,
-                        inertial_advective_wind, lat_lon_grid_deltas,
+                        divergence, first_derivative, frontogenesis, geospatial_laplacian,
+                        geostrophic_wind, inertial_advective_wind, lat_lon_grid_deltas,
                         montgomery_streamfunction, potential_temperature,
                         potential_vorticity_baroclinic, potential_vorticity_barotropic,
                         q_vector, shearing_deformation, static_stability,
@@ -1857,3 +1857,22 @@ def test_q_vector_4d(data_4d):
                             -3.90242255e-13]]]]) * units('m^2 kg^-1 s^-1')
     assert_array_almost_equal(q1.data, q1_truth, 15)
     assert_array_almost_equal(q2.data, q2_truth, 15)
+
+
+@pytest.mark.parametrize('geog_data', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'),
+                         indirect=True)
+def test_geospatial_laplacian_geographic(geog_data):
+    """Test..."""
+    crs, lons, lats, _, arr, mx, my, dx, dy = geog_data
+    laplac = geospatial_laplacian(arr, longitude=lons, latitude=lats, crs=crs)
+
+    # Calculate the true fields using known map-correct approach
+    u = mx * first_derivative(arr, delta=dx, axis=1)
+    v = my * first_derivative(arr, delta=dy, axis=0)
+
+    truth = (mx * first_derivative(u, delta=dx, axis=1)
+             + my * first_derivative(v, delta=dy, axis=0)
+             - (u * mx / my) * first_derivative(my, delta=dx, axis=1)
+             - (v * my / mx) * first_derivative(mx, delta=dy, axis=0))
+
+    assert_array_almost_equal(laplac, truth)
