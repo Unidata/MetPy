@@ -150,6 +150,7 @@ Mathematical Functions
       cross_section_components
       first_derivative
       geospatial_gradient
+      geospatial_laplacian
       gradient
       laplacian
       lat_lon_grid_deltas
