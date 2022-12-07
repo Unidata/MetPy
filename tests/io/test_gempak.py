@@ -305,7 +305,7 @@ def test_special_surface_observation():
     gsf = GempakSurface(sfc)
     stn = gsf.nearest_time('202109071601',
                            station_id='MSN',
-                           include_special==True)[0]['values']
+                           include_special=True)[0]['values']
 
     assert_almost_equal(stn['pmsl'], 1003.81, 2)
     assert stn['alti'] == 29.66
