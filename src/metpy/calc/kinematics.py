@@ -360,6 +360,7 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
 @parse_grid_arguments
 @preprocess_and_wrap(wrap_like='scalar',
                      broadcast=('scalar', 'u', 'v', 'w', 'parallel_scale', 'meridional_scale'))
+@check_units(dx='[length]', dy='[length]')
 def advection(
     scalar,
     u=None,

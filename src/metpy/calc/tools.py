@@ -1491,6 +1491,9 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
 
 @exporter.export
 @parse_grid_arguments
+@preprocess_and_wrap(wrap_like=('u', 'u', 'u', 'u'),
+                     broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
+@check_units(dx='[length]', dy='[length]')
 def vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
                       parallel_scale=None, meridional_scale=None, return_only=None):
     r"""Calculate the projection-correct derivative matrix of a 2D vector.
@@ -1555,6 +1558,9 @@ def vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
 
 @exporter.export
 @parse_grid_arguments
+@preprocess_and_wrap(wrap_like=('f', 'f'),
+                     broadcast=('f', 'parallel_scale', 'meridional_scale'))
+@check_units(dx='[length]', dy='[length]')
 def geospatial_gradient(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
                         parallel_scale=None, meridional_scale=None, return_only=None):
     r"""Calculate the projection-correct gradient of a 2D scalar field.
