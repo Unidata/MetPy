@@ -1501,7 +1501,7 @@ def vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
         x component of the vector
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the vector
-    return_only : str or sequence of str, optional
+    return_only : str or Sequence[str], optional
         Sequence of which components of the derivative matrix to compute and return. If none,
         returns the full matrix as a tuple of tuples (('du/dx', 'du/dy'), ('dv/dx', 'dv/dy')).
         Otherwise, matches the return pattern of the given strings. Only valid strings are
@@ -1563,14 +1563,14 @@ def geospatial_gradient(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
     ----------
     f : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         scalar field for which the horizontal gradient should be calculated
-    return_only : str or sequence of str, optional
+    return_only : str or Sequence[str], optional
         Sequence of which components of the gradient to compute and return. If none,
         returns the gradient tuple ('df/dx', 'df/dy'). Otherwise, matches the return
         pattern of the given strings. Only valid strings are 'df/dx', 'df/dy'.
 
     Returns
     -------
-    `pint.Quantity`, tuple of `pint.Quantity`, or tuple of tuple of `pint.Quantity`
+    `pint.Quantity`, tuple of `pint.Quantity`, or tuple of pairs of `pint.Quantity`
         Component(s) of vector derivative
 
     Other Parameters
