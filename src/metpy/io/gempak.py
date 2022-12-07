@@ -2662,7 +2662,8 @@ class GempakSurface(GempakFile):
 
         return station
 
-    def nearest_time(self, date_time, station_id=None, station_number=None):
+    def nearest_time(self, date_time, station_id=None, station_number=None,
+                     include_special=False):
         """Get nearest observation to given time for selected stations.
 
         Parameters
@@ -2676,6 +2677,10 @@ class GempakSurface(GempakFile):
 
         station_number : int or Sequence[int]
             Station number of the surface station.
+
+        include_special : bool
+            If True, parse special observations that are stored
+            as raw METAR text. Default is False.
 
         Returns
         -------
@@ -2709,7 +2714,7 @@ class GempakSurface(GempakFile):
         time_matched = []
         if station_id:
             for stn in station_id:
-                matched = self.sfjson(station_id=stn)
+                matched = self.sfjson(station_id=stn, include_special=include_special)
 
                 nearest = min(
                     matched,
@@ -2720,7 +2725,7 @@ class GempakSurface(GempakFile):
 
         if station_number:
             for stn in station_id:
-                matched = self.sfjson(station_number=stn)
+                matched = self.sfjson(station_number=stn, include_special=include_special)
 
                 nearest = min(
                     matched,
@@ -2732,7 +2737,8 @@ class GempakSurface(GempakFile):
         return time_matched
 
     def sfjson(self, station_id=None, station_number=None,
-               date_time=None, state=None, country=None):
+               date_time=None, state=None, country=None,
+               include_special=False):
         """Select surface stations and output as list of JSON objects.
 
         Subset the data by parameter values. The default is to not
@@ -2755,6 +2761,10 @@ class GempakSurface(GempakFile):
 
         country : str or Sequence[str]
             Country where surface station is located.
+
+        include_special : bool
+            If True, parse special observations that are stored
+            as raw METAR text. Default is False.
 
         Returns
         -------
@@ -2842,7 +2852,7 @@ class GempakSurface(GempakFile):
 
         stnarr = []
         for stn in data:
-            if 'SPCL' in stn:
+            if 'SPCL' in stn and include_special:
                 stn = self._decode_special_observation(stn, self.prod_desc.missing_float)
             props = {'date_time': datetime.combine(stn.pop('DATE'), stn.pop('TIME')),
                      'station_id': stn.pop('STID') + stn.pop('STD2'),
