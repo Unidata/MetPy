@@ -66,25 +66,30 @@ def test_vorticity():
     assert_array_equal(v, true_v)
 
 
-@pytest.mark.parametrize('crs_str', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'))
-def test_vorticity_geographic(crs_str):
-    """Test vorticity for simple case on geographic coordinates."""
+@pytest.fixture
+def geog_data(request):
+    """Create data to use for testing calculations on geographic coordinates."""
     # Generate a field of u and v on a lat/lon grid
-    crs = pyproj.CRS(crs_str)
+    crs = pyproj.CRS(request.param)
+    proj = pyproj.Proj(crs)
+    a = np.arange(4)[None, :]
+    arr = np.r_[a, a, a] * units('m/s')
     lons = np.array([-100, -90, -80, -70]) * units.degree
     lats = np.array([45, 55, 65]) * units.degree
-    a = np.arange(4)[None, :]
-    u = v = np.r_[a, a, a] * units('m/s')
-    vort = vorticity(u, v, longitude=lons, latitude=lats, crs=crs)
-
-    # Set up everything to do the map scaling manually
-    proj = pyproj.Proj(crs)
     lon_arr, lat_arr = np.meshgrid(lons.m_as('degree'), lats.m_as('degree'))
     factors = proj.get_factors(lon_arr, lat_arr)
-    mx = factors.parallel_scale
-    my = factors.meridional_scale
-    dx = lat_lon_grid_deltas(lons.m, np.zeros_like(lons.m), geod=crs.get_geod())[0][0]
-    dy = lat_lon_grid_deltas(np.zeros_like(lats.m), lats.m, geod=crs.get_geod())[1][:, 0]
+
+    return (crs, lons, lats, arr, arr, factors.parallel_scale, factors.meridional_scale,
+            lat_lon_grid_deltas(lons.m, np.zeros_like(lons.m), geod=crs.get_geod())[0][0],
+            lat_lon_grid_deltas(np.zeros_like(lats.m), lats.m, geod=crs.get_geod())[1][:, 0])
+
+
+@pytest.mark.parametrize('geog_data', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'),
+                         indirect=True)
+def test_vorticity_geographic(geog_data):
+    """Test vorticity for simple case on geographic coordinates."""
+    crs, lons, lats, u, v, mx, my, dx, dy = geog_data
+    vort = vorticity(u, v, longitude=lons, latitude=lats, crs=crs)
 
     # Calculate the true field using known map-correct approach
     truth = (mx * first_derivative(v, delta=dx, axis=1)
@@ -95,25 +100,13 @@ def test_vorticity_geographic(crs_str):
     assert_array_almost_equal(vort, truth, 12)
 
 
-@pytest.mark.parametrize('crs_str', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'))
-def test_abs_vorticity_geographic(crs_str):
+@pytest.mark.parametrize('geog_data', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'),
+                         indirect=True)
+def test_abs_vorticity_geographic(geog_data):
     """Test absolute_vorticity for simple case on geographic coordinates."""
     # Generate a field of u and v on a lat/lon grid
-    crs = pyproj.CRS(crs_str)
-    lons = np.array([-100, -90, -80, -70]) * units.degree
-    lats = np.array([45, 55, 65]) * units.degree
-    a = np.arange(4)[None, :]
-    u = v = np.r_[a, a, a] * units('m/s')
+    crs, lons, lats, u, v, mx, my, dx, dy = geog_data
     vort = absolute_vorticity(u, v, longitude=lons, latitude=lats[:, None], crs=crs)
-
-    # Set up everything to do the map scaling manually
-    proj = pyproj.Proj(crs)
-    lon_arr, lat_arr = np.meshgrid(lons.m_as('degree'), lats.m_as('degree'))
-    factors = proj.get_factors(lon_arr, lat_arr)
-    mx = factors.parallel_scale
-    my = factors.meridional_scale
-    dx = lat_lon_grid_deltas(lons.m, np.zeros_like(lons.m), geod=crs.get_geod())[0][0]
-    dy = lat_lon_grid_deltas(np.zeros_like(lats.m), lats.m, geod=crs.get_geod())[1][:, 0]
 
     # Calculate the true field using known map-correct approach
     truth = ((mx * first_derivative(v, delta=dx, axis=1)
@@ -195,25 +188,13 @@ def test_divergence():
     assert_array_equal(c, true_c)
 
 
-@pytest.mark.parametrize('crs_str', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'))
-def test_divergence_geographic(crs_str):
+@pytest.mark.parametrize('geog_data', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'),
+                         indirect=True)
+def test_divergence_geographic(geog_data):
     """Test divergence for simple case on geographic coordinates."""
     # Generate a field of u and v on a lat/lon grid
-    crs = pyproj.CRS(crs_str)
-    lons = np.array([-100, -90, -80, -70]) * units.degree
-    lats = np.array([45, 55, 65]) * units.degree
-    a = np.arange(4)[None, :]
-    u = v = np.r_[a, a, a] * units('m/s')
+    crs, lons, lats, u, v, mx, my, dx, dy = geog_data
     div = divergence(u, v, longitude=lons, latitude=lats, crs=crs)
-
-    # Set up everything to do the map scaling manually
-    proj = pyproj.Proj(crs)
-    lon_arr, lat_arr = np.meshgrid(lons.m_as('degree'), lats.m_as('degree'))
-    factors = proj.get_factors(lon_arr, lat_arr)
-    mx = factors.parallel_scale
-    my = factors.meridional_scale
-    dx = lat_lon_grid_deltas(lons.m, np.zeros_like(lons.m), geod=crs.get_geod())[0][0]
-    dy = lat_lon_grid_deltas(np.zeros_like(lats.m), lats.m, geod=crs.get_geod())[1][:, 0]
 
     # Calculate the true field using known map-correct approach
     truth = (mx * first_derivative(u, delta=dx, axis=1)
@@ -270,25 +251,13 @@ def test_divergence_xarray(basic_dataset):
     assert_array_almost_equal(d, truth, 4)
 
 
-@pytest.mark.parametrize('crs_str', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'))
-def test_shearing_deformation_geographic(crs_str):
+@pytest.mark.parametrize('geog_data', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'),
+                         indirect=True)
+def test_shearing_deformation_geographic(geog_data):
     """Test shearing deformation for simple case on geographic coordinates."""
     # Generate a field of u and v on a lat/lon grid
-    crs = pyproj.CRS(crs_str)
-    lons = np.array([-100, -90, -80, -70]) * units.degree
-    lats = np.array([45, 55, 65]) * units.degree
-    a = np.arange(4)[None, :]
-    u = v = np.r_[a, a, a] * units('m/s')
+    crs, lons, lats, u, v, mx, my, dx, dy = geog_data
     shear = shearing_deformation(u, v, longitude=lons, latitude=lats, crs=crs)
-
-    # Set up everything to do the map scaling manually
-    proj = pyproj.Proj(crs)
-    lon_arr, lat_arr = np.meshgrid(lons.m_as('degree'), lats.m_as('degree'))
-    factors = proj.get_factors(lon_arr, lat_arr)
-    mx = factors.parallel_scale
-    my = factors.meridional_scale
-    dx = lat_lon_grid_deltas(lons.m, np.zeros_like(lons.m), geod=crs.get_geod())[0][0]
-    dy = lat_lon_grid_deltas(np.zeros_like(lats.m), lats.m, geod=crs.get_geod())[1][:, 0]
 
     # Calculate the true field using known map-correct approach
     truth = (mx * first_derivative(v, delta=dx, axis=1)
@@ -308,25 +277,13 @@ def test_shearing_deformation_asym():
     assert_array_equal(sh, true_sh)
 
 
-@pytest.mark.parametrize('crs_str', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'))
-def test_stretching_deformation_geographic(crs_str):
+@pytest.mark.parametrize('geog_data', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'),
+                         indirect=True)
+def test_stretching_deformation_geographic(geog_data):
     """Test divergence for simple case on geographic coordinates."""
     # Generate a field of u and v on a lat/lon grid
-    crs = pyproj.CRS(crs_str)
-    lons = np.array([-100, -90, -80, -70]) * units.degree
-    lats = np.array([45, 55, 65]) * units.degree
-    a = np.arange(4)[None, :]
-    u = v = np.r_[a, a, a] * units('m/s')
+    crs, lons, lats, u, v, mx, my, dx, dy = geog_data
     stretch = stretching_deformation(u, v, longitude=lons, latitude=lats, crs=crs)
-
-    # Set up everything to do the map scaling manually
-    proj = pyproj.Proj(crs)
-    lon_arr, lat_arr = np.meshgrid(lons.m_as('degree'), lats.m_as('degree'))
-    factors = proj.get_factors(lon_arr, lat_arr)
-    mx = factors.parallel_scale
-    my = factors.meridional_scale
-    dx = lat_lon_grid_deltas(lons.m, np.zeros_like(lons.m), geod=crs.get_geod())[0][0]
-    dy = lat_lon_grid_deltas(np.zeros_like(lats.m), lats.m, geod=crs.get_geod())[1][:, 0]
 
     # Calculate the true field using known map-correct approach
     truth = (mx * first_derivative(u, delta=dx, axis=1)
