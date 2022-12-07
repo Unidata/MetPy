@@ -1545,7 +1545,7 @@ def vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
 
     See Also
     --------
-    gradient
+    geospatial_gradient, geospatial_laplacian, first_derivative
 
     """
     return _vector_derivative(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
@@ -1606,7 +1606,7 @@ def geospatial_gradient(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
 
     See Also
     --------
-    vector_derivative, gradient
+    vector_derivative, gradient, geospatial_laplacian
 
     """
     derivatives = {component: None
