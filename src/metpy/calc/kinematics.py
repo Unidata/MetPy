@@ -5,8 +5,8 @@
 import numpy as np
 
 from . import coriolis_parameter
-from .tools import (_vector_derivative, first_derivative, geospatial_gradient,
-                    get_layer_heights, parse_grid_arguments)
+from .tools import (first_derivative, geospatial_gradient, get_layer_heights,
+                    parse_grid_arguments, vector_derivative)
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
@@ -86,7 +86,7 @@ def vorticity(
        Changed signature from ``(u, v, dx, dy)``
 
     """
-    dudy, dvdx = _vector_derivative(
+    dudy, dvdx = vector_derivative(
         u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
         meridional_scale=meridional_scale, return_only=('du/dy', 'dv/dx')
     )
@@ -156,7 +156,7 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
        Changed signature from ``(u, v, dx, dy)``
 
     """
-    dudx, dvdy = _vector_derivative(
+    dudx, dvdy = vector_derivative(
         u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
         meridional_scale=meridional_scale, return_only=('du/dx', 'dv/dy')
     )
@@ -219,7 +219,7 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
     stretching_deformation, total_deformation
 
     """
-    dudy, dvdx = _vector_derivative(
+    dudy, dvdx = vector_derivative(
         u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
         meridional_scale=meridional_scale, return_only=('du/dy', 'dv/dx')
     )
@@ -282,7 +282,7 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
     shearing_deformation, total_deformation
 
     """
-    dudx, dvdy = _vector_derivative(
+    dudx, dvdy = vector_derivative(
         u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
         meridional_scale=meridional_scale, return_only=('du/dx', 'dv/dy')
     )
@@ -349,7 +349,7 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
        Changed signature from ``(u, v, dx, dy)``
 
     """
-    dudx, dudy, dvdx, dvdy = _vector_derivative(
+    dudx, dudy, dvdx, dvdy = vector_derivative(
         u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
         meridional_scale=meridional_scale
     )
@@ -1347,7 +1347,7 @@ def q_vector(
     static_stability
 
     """
-    dudx, dudy, dvdx, dvdy = _vector_derivative(
+    dudx, dudy, dvdx, dvdy = vector_derivative(
         u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
         parallel_scale=parallel_scale, meridional_scale=meridional_scale)
 

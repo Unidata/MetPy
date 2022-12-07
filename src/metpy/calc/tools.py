@@ -1551,9 +1551,55 @@ def vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
     geospatial_gradient, geospatial_laplacian, first_derivative
 
     """
-    return _vector_derivative(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
-                              parallel_scale=parallel_scale, meridional_scale=meridional_scale,
-                              return_only=return_only)
+    # Determine which derivatives to calculate
+    derivatives = {
+        component: None
+        for component in ('du/dx', 'du/dy', 'dv/dx', 'dv/dy')
+        if (return_only is None or component in return_only)
+    }
+    map_factor_correction = parallel_scale is not None and meridional_scale is not None
+
+    # Add in the map factor derivatives if needed
+    if map_factor_correction and ('du/dx' in derivatives or 'dv/dx' in derivatives):
+        derivatives['dp/dy'] = None
+    if map_factor_correction and ('du/dy' in derivatives or 'dv/dy' in derivatives):
+        derivatives['dm/dx'] = None
+
+    # Compute the Cartesian derivatives
+    for component in derivatives:
+        scalar = {
+            'du': u, 'dv': v, 'dp': parallel_scale, 'dm': meridional_scale
+        }[component[:2]]
+        delta, dim = (dx, x_dim) if component[-2:] == 'dx' else (dy, y_dim)
+        derivatives[component] = first_derivative(scalar, delta=delta, axis=dim)
+
+    # Apply map factor corrections
+    if map_factor_correction:
+        # Factor against opposite component
+        if 'dp/dy' in derivatives:
+            dx_correction = meridional_scale / parallel_scale * derivatives['dp/dy']
+        if 'dm/dx' in derivatives:
+            dy_correction = parallel_scale / meridional_scale * derivatives['dm/dx']
+
+        # Corrected terms
+        if 'du/dx' in derivatives:
+            derivatives['du/dx'] = parallel_scale * derivatives['du/dx'] - v * dx_correction
+        if 'du/dy' in derivatives:
+            derivatives['du/dy'] = meridional_scale * derivatives['du/dy'] + v * dy_correction
+        if 'dv/dx' in derivatives:
+            derivatives['dv/dx'] = parallel_scale * derivatives['dv/dx'] + u * dx_correction
+        if 'dv/dy' in derivatives:
+            derivatives['dv/dy'] = meridional_scale * derivatives['dv/dy'] - u * dy_correction
+
+    if return_only is None:
+        return (
+            derivatives['du/dx'], derivatives['du/dy'],
+            derivatives['dv/dx'], derivatives['dv/dy']
+        )
+    elif isinstance(return_only, str):
+        return derivatives[return_only]
+    else:
+        return tuple(derivatives[component] for component in return_only)
 
 
 @exporter.export
@@ -1633,60 +1679,6 @@ def geospatial_gradient(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
     # Build return collection
     if return_only is None:
         return derivatives['df/dx'], derivatives['df/dy']
-    elif isinstance(return_only, str):
-        return derivatives[return_only]
-    else:
-        return tuple(derivatives[component] for component in return_only)
-
-
-def _vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
-                       parallel_scale=None, meridional_scale=None, return_only=None):
-    """Perform map projection-aware vector derivatives."""
-    # Determine which derivatives to calculate
-    derivatives = {
-        component: None
-        for component in ('du/dx', 'du/dy', 'dv/dx', 'dv/dy')
-        if (return_only is None or component in return_only)
-    }
-    map_factor_correction = parallel_scale is not None and meridional_scale is not None
-
-    # Add in the map factor derivatives if needed
-    if map_factor_correction and ('du/dx' in derivatives or 'dv/dx' in derivatives):
-        derivatives['dp/dy'] = None
-    if map_factor_correction and ('du/dy' in derivatives or 'dv/dy' in derivatives):
-        derivatives['dm/dx'] = None
-
-    # Compute the Cartesian derivatives
-    for component in derivatives:
-        scalar = {
-            'du': u, 'dv': v, 'dp': parallel_scale, 'dm': meridional_scale
-        }[component[:2]]
-        delta, dim = (dx, x_dim) if component[-2:] == 'dx' else (dy, y_dim)
-        derivatives[component] = first_derivative(scalar, delta=delta, axis=dim)
-
-    # Apply map factor corrections
-    if map_factor_correction:
-        # Factor against opposite component
-        if 'dp/dy' in derivatives:
-            dx_correction = meridional_scale / parallel_scale * derivatives['dp/dy']
-        if 'dm/dx' in derivatives:
-            dy_correction = parallel_scale / meridional_scale * derivatives['dm/dx']
-
-        # Corrected terms
-        if 'du/dx' in derivatives:
-            derivatives['du/dx'] = parallel_scale * derivatives['du/dx'] - v * dx_correction
-        if 'du/dy' in derivatives:
-            derivatives['du/dy'] = meridional_scale * derivatives['du/dy'] + v * dy_correction
-        if 'dv/dx' in derivatives:
-            derivatives['dv/dx'] = parallel_scale * derivatives['dv/dx'] + u * dx_correction
-        if 'dv/dy' in derivatives:
-            derivatives['dv/dy'] = meridional_scale * derivatives['dv/dy'] - u * dy_correction
-
-    if return_only is None:
-        return (
-            derivatives['du/dx'], derivatives['du/dy'],
-            derivatives['dv/dx'], derivatives['dv/dy']
-        )
     elif isinstance(return_only, str):
         return derivatives[return_only]
     else:
