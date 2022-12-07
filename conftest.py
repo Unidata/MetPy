@@ -182,3 +182,23 @@ def array_type(request):
         return lambda d, u, *, mask=None: quantity(numpy.array(d), u)
     else:
         raise ValueError(f'Unsupported array_type option {request.param}')
+
+
+@pytest.fixture
+def geog_data(request):
+    """Create data to use for testing calculations on geographic coordinates."""
+    # Generate a field of u and v on a lat/lon grid
+    crs = pyproj.CRS(request.param)
+    proj = pyproj.Proj(crs)
+    a = numpy.arange(4)[None, :]
+    arr = numpy.r_[a, a, a] * metpy.units.units('m/s')
+    lons = numpy.array([-100, -90, -80, -70]) * metpy.units.units.degree
+    lats = numpy.array([45, 55, 65]) * metpy.units.units.degree
+    lon_arr, lat_arr = numpy.meshgrid(lons.m_as('degree'), lats.m_as('degree'))
+    factors = proj.get_factors(lon_arr, lat_arr)
+
+    return (crs, lons, lats, arr, arr, factors.parallel_scale, factors.meridional_scale,
+            metpy.calc.lat_lon_grid_deltas(lons.m, numpy.zeros_like(lons.m),
+                                           geod=crs.get_geod())[0][0],
+            metpy.calc.lat_lon_grid_deltas(numpy.zeros_like(lats.m), lats.m,
+                                           geod=crs.get_geod())[1][:, 0])

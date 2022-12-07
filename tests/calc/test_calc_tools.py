@@ -8,7 +8,7 @@ from collections import namedtuple
 import numpy as np
 import numpy.ma as ma
 import pandas as pd
-from pyproj import CRS, Geod, Proj
+from pyproj import Geod
 import pytest
 import xarray as xr
 
@@ -1031,25 +1031,15 @@ def test_2d_gradient_4d_data_2_axes_1_deltas(deriv_4d_data):
     assert 'cannot be less than that of "axes"' in str(exc.value)
 
 
-@pytest.mark.parametrize('crs_str', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'))
-def test_geospatial_gradient_geographic(crs_str):
+@pytest.mark.parametrize('geog_data', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'),
+                         indirect=True)
+def test_geospatial_gradient_geographic(geog_data):
     """Test geospatial_gradient on geographic coordinates."""
     # Generate a field of temperature on a lat/lon grid
-    crs = CRS(crs_str)
-    lons = np.array([-100, -90, -80, -70]) * units.degree
-    lats = np.array([45, 55, 65]) * units.degree
+    crs, lons, lats, _, _, mx, my, dx, dy = geog_data
     a = np.linspace(20, 25, 4)[None, :]
     temperature = np.r_[a, a, a] * units('K')
     grad_x, grad_y = geospatial_gradient(temperature, longitude=lons, latitude=lats, crs=crs)
-
-    # Set up everything to do the map scaling manually
-    proj = Proj(crs)
-    lon_arr, lat_arr = np.meshgrid(lons.m_as('degree'), lats.m_as('degree'))
-    factors = proj.get_factors(lon_arr, lat_arr)
-    mx = factors.parallel_scale
-    my = factors.meridional_scale
-    dx = lat_lon_grid_deltas(lons.m, np.zeros_like(lons.m), geod=crs.get_geod())[0][0]
-    dy = lat_lon_grid_deltas(np.zeros_like(lats.m), lats.m, geod=crs.get_geod())[1][:, 0]
 
     # Calculate the true fields using known map-correct approach
     truth_x = mx * first_derivative(temperature, delta=dx, axis=1)
