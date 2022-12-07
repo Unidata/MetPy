@@ -1359,3 +1359,68 @@ def q_vector(
     q2 = -mpconsts.Rd / (pressure * static_stability) * (dudy * dtempdx + dvdy * dtempdy)
 
     return q1.to_base_units(), q2.to_base_units()
+
+
+@exporter.export
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='f', broadcast=('f', 'parallel_scale', 'meridional_scale'))
+@check_units(dx='[length]', dy='[length]')
+def geospatial_laplacian(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
+                         parallel_scale=None, meridional_scale=None):
+    r"""Calculate the projection-correct laplacian of a 2D scalar field.
+
+    Parameters
+    ----------
+    f : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        scalar field for which the horizontal gradient should be calculated
+    return_only : str or Sequence[str], optional
+        Sequence of which components of the gradient to compute and return. If none,
+        returns the gradient tuple ('df/dx', 'df/dy'). Otherwise, matches the return
+        pattern of the given strings. Only valid strings are 'df/dx', 'df/dy'.
+
+    Returns
+    -------
+    `pint.Quantity`, tuple of `pint.Quantity`, or tuple of pairs of `pint.Quantity`
+        Component(s) of vector derivative
+
+    Other Parameters
+    ----------------
+    dx : `pint.Quantity`, optional
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    dy : `pint.Quantity`, optional
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+
+    See Also
+    --------
+    vector_derivative, geospatial_gradient, laplacian
+
+    """
+    grad_u, grad_y = geospatial_gradient(f, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                                         parallel_scale=parallel_scale,
+                                         meridional_scale=meridional_scale)
+    return divergence(grad_u, grad_y, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                      parallel_scale=parallel_scale, meridional_scale=meridional_scale)
