@@ -1036,14 +1036,12 @@ def test_2d_gradient_4d_data_2_axes_1_deltas(deriv_4d_data):
 def test_geospatial_gradient_geographic(geog_data):
     """Test geospatial_gradient on geographic coordinates."""
     # Generate a field of temperature on a lat/lon grid
-    crs, lons, lats, _, _, mx, my, dx, dy = geog_data
-    a = np.linspace(20, 25, 4)[None, :]
-    temperature = np.r_[a, a, a] * units('K')
-    grad_x, grad_y = geospatial_gradient(temperature, longitude=lons, latitude=lats, crs=crs)
+    crs, lons, lats, _, arr, mx, my, dx, dy = geog_data
+    grad_x, grad_y = geospatial_gradient(arr, longitude=lons, latitude=lats, crs=crs)
 
     # Calculate the true fields using known map-correct approach
-    truth_x = mx * first_derivative(temperature, delta=dx, axis=1)
-    truth_y = my * first_derivative(temperature, delta=dy, axis=0)
+    truth_x = mx * first_derivative(arr, delta=dx, axis=1)
+    truth_y = my * first_derivative(arr, delta=dy, axis=0)
 
     assert_array_almost_equal(grad_x, truth_x)
     assert_array_almost_equal(grad_y, truth_y)
