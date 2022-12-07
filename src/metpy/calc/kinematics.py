@@ -349,7 +349,7 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
        Changed signature from ``(u, v, dx, dy)``
 
     """
-    (dudx, dudy), (dvdx, dvdy) = _vector_derivative(
+    dudx, dudy, dvdx, dvdy = _vector_derivative(
         u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
         meridional_scale=meridional_scale
     )
@@ -1346,7 +1346,7 @@ def q_vector(
     static_stability
 
     """
-    (dudx, dudy), (dvdx, dvdy) = _vector_derivative(
+    dudx, dudy, dvdx, dvdy = _vector_derivative(
         u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
         parallel_scale=parallel_scale, meridional_scale=meridional_scale)
 

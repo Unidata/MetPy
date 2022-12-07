@@ -1678,8 +1678,8 @@ def _vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
 
     if return_only is None:
         return (
-            (derivatives['du/dx'], derivatives['du/dy']),
-            (derivatives['dv/dx'], derivatives['dv/dy'])
+            derivatives['du/dx'], derivatives['du/dy'],
+            derivatives['dv/dx'], derivatives['dv/dy']
         )
     elif isinstance(return_only, str):
         return derivatives[return_only]
