@@ -2858,7 +2858,8 @@
 
         <span class="k">return</span> <span class="n">station</span>
 
-<div class="viewcode-block" id="GempakSurface.nearest_time"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.nearest_time">[docs]</a>    <span class="k">def</span> <span class="nf">nearest_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date_time</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GempakSurface.nearest_time"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.nearest_time">[docs]</a>    <span class="k">def</span> <span class="nf">nearest_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date_time</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">include_special</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get nearest observation to given time for selected stations.</span>
 
 <span class="sd">        Parameters</span>
@@ -2872,6 +2873,10 @@
 
 <span class="sd">        station_number : int or Sequence[int]</span>
 <span class="sd">            Station number of the surface station.</span>
+
+<span class="sd">        include_special : bool</span>
+<span class="sd">            If True, parse special observations that are stored</span>
+<span class="sd">            as raw METAR text. Default is False.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -2905,7 +2910,7 @@
         <span class="n">time_matched</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">station_id</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">stn</span> <span class="ow">in</span> <span class="n">station_id</span><span class="p">:</span>
-                <span class="n">matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sfjson</span><span class="p">(</span><span class="n">station_id</span><span class="o">=</span><span class="n">stn</span><span class="p">)</span>
+                <span class="n">matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sfjson</span><span class="p">(</span><span class="n">station_id</span><span class="o">=</span><span class="n">stn</span><span class="p">,</span> <span class="n">include_special</span><span class="o">=</span><span class="n">include_special</span><span class="p">)</span>
 
                 <span class="n">nearest</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
                     <span class="n">matched</span><span class="p">,</span>
@@ -2916,7 +2921,7 @@
 
         <span class="k">if</span> <span class="n">station_number</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">stn</span> <span class="ow">in</span> <span class="n">station_id</span><span class="p">:</span>
-                <span class="n">matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sfjson</span><span class="p">(</span><span class="n">station_number</span><span class="o">=</span><span class="n">stn</span><span class="p">)</span>
+                <span class="n">matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sfjson</span><span class="p">(</span><span class="n">station_number</span><span class="o">=</span><span class="n">stn</span><span class="p">,</span> <span class="n">include_special</span><span class="o">=</span><span class="n">include_special</span><span class="p">)</span>
 
                 <span class="n">nearest</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
                     <span class="n">matched</span><span class="p">,</span>
@@ -2928,7 +2933,8 @@
         <span class="k">return</span> <span class="n">time_matched</span></div>
 
 <div class="viewcode-block" id="GempakSurface.sfjson"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.sfjson">[docs]</a>    <span class="k">def</span> <span class="nf">sfjson</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-               <span class="n">date_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+               <span class="n">date_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">include_special</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Select surface stations and output as list of JSON objects.</span>
 
 <span class="sd">        Subset the data by parameter values. The default is to not</span>
@@ -2951,6 +2957,10 @@
 
 <span class="sd">        country : str or Sequence[str]</span>
 <span class="sd">            Country where surface station is located.</span>
+
+<span class="sd">        include_special : bool</span>
+<span class="sd">            If True, parse special observations that are stored</span>
+<span class="sd">            as raw METAR text. Default is False.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -3038,7 +3048,7 @@
 
         <span class="n">stnarr</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">stn</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;SPCL&#39;</span> <span class="ow">in</span> <span class="n">stn</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;SPCL&#39;</span> <span class="ow">in</span> <span class="n">stn</span> <span class="ow">and</span> <span class="n">include_special</span><span class="p">:</span>
                 <span class="n">stn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decode_special_observation</span><span class="p">(</span><span class="n">stn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">missing_float</span><span class="p">)</span>
             <span class="n">props</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;date_time&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">stn</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;DATE&#39;</span><span class="p">),</span> <span class="n">stn</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TIME&#39;</span><span class="p">)),</span>
                      <span class="s1">&#39;station_id&#39;</span><span class="p">:</span> <span class="n">stn</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;STID&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">stn</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;STD2&#39;</span><span class="p">),</span>
