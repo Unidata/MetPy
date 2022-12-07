@@ -914,7 +914,8 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 
     See Also
     --------
-    vorticity
+    vorticity, coriolis_parameter
+
 
     .. versionchanged:: 1.0
        Changed signature from ``(u, v, dx, dy, lats, dim_order='yx')``
