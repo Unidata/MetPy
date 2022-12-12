@@ -1311,3 +1311,55 @@ def test_parse_grid_arguments_xarray(datafile, assign_lat_lon, no_crs, subset):
     assert dy.check('m')
 
     assert_array_almost_equal(lat, data.lat, 5)
+
+
+# Ported from original test for add_grid_arguments_from_xarray
+def test_parse_grid_arguments_from_dataarray():
+    """Test the parse grid arguments decorator for adding in arguments from xarray."""
+    @parse_grid_arguments
+    def return_the_kwargs(
+        da,
+        dz=None,
+        dy=None,
+        dx=None,
+        vertical_dim=None,
+        y_dim=None,
+        x_dim=None,
+        latitude=None,
+        parallel_scale=None,
+        meridional_scale=None
+    ):
+        return {
+            'dz': dz,
+            'dy': dy,
+            'dx': dx,
+            'vertical_dim': vertical_dim,
+            'y_dim': y_dim,
+            'x_dim': x_dim,
+            'latitude': latitude
+        }
+
+    data = xr.DataArray(
+        np.zeros((1, 2, 2, 2)),
+        dims=('time', 'isobaric', 'lat', 'lon'),
+        coords={
+            'time': ['2020-01-01T00:00Z'],
+            'isobaric': (('isobaric',), [850., 700.], {'units': 'hPa'}),
+            'lat': (('lat',), [30., 40.], {'units': 'degrees_north'}),
+            'lon': (('lon',), [-100., -90.], {'units': 'degrees_east'})
+        }
+    ).to_dataset(name='zeros').metpy.parse_cf('zeros')
+    result = return_the_kwargs(data)
+    assert_array_almost_equal(result['dz'], [-150.] * units.hPa)
+    assert_array_almost_equal(result['dy'], 1109415.632 * units.meter, 2)
+    assert_array_almost_equal(result['dx'], 1113194.90793274 * units.meter, 2)
+    assert result['vertical_dim'] == 1
+    assert result['y_dim'] == 2
+    assert result['x_dim'] == 3
+    assert_array_almost_equal(
+        result['latitude'].metpy.unit_array,
+        [30., 40.] * units.degrees_north
+    )
+    # Verify latitude is xarray so can be broadcast,
+    # see https://github.com/Unidata/MetPy/pull/1490#discussion_r483198245
+    assert isinstance(result['latitude'], xr.DataArray)

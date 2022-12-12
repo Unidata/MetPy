@@ -1012,10 +1012,7 @@ def _add_grid_params_to_docstring(docstring: str, orig_includes: dict) -> str:
 
 
 def parse_grid_arguments(func):
-    """Parse arguments to functions involving derivatives on a grid.
-
-    TODO: use this to completely replace add_grid_arguments_from_xarray
-    """
+    """Parse arguments to functions involving derivatives on a grid."""
     from ..xarray import dataarray_arguments
 
     # Dynamically add new parameters for lat, lon, and crs to the function signature
