@@ -1270,17 +1270,21 @@ def test_remove_nans():
 
 
 @pytest.mark.parametrize('subset', (False, True))
-@pytest.mark.parametrize('datafile, assign_lat_lon, no_crs',
-                         [('GFS_test.nc', False, False), ('GFS_test.nc', False, True),
-                          ('NAM_test.nc', False, False), ('NAM_test.nc', True, False)])
-def test_parse_grid_arguments_xarray(datafile, assign_lat_lon, no_crs, subset):
+@pytest.mark.parametrize('datafile, assign_lat_lon, no_crs, transpose',
+                         [('GFS_test.nc', False, False, False),
+                          ('GFS_test.nc', False, True, False),
+                          ('NAM_test.nc', False, False, False),
+                          ('NAM_test.nc', True, False, False),
+                          ('NAM_test.nc', True, False, True)])
+def test_parse_grid_arguments_xarray(datafile, assign_lat_lon, no_crs, transpose, subset):
     """Test the operation of parse_grid_arguments with xarray data."""
     @parse_grid_arguments
     @preprocess_and_wrap(broadcast=['scalar', 'parallel_scale', 'meridional_scale'],
-                         wrap_like=('scalar', 'dx', 'dy', 'scalar', 'scalar', 'latitude'))
+                         wrap_like=('scalar', 'dx', 'dy', 'scalar', 'scalar', 'latitude',
+                                    None, None))
     def check_params(scalar, dx=None, dy=None, parallel_scale=None, meridional_scale=None,
-                     latitude=None):
-        return scalar, dx, dy, parallel_scale, meridional_scale, latitude
+                     latitude=None, x_dim=-1, y_dim=-2):
+        return scalar, dx, dy, parallel_scale, meridional_scale, latitude, x_dim, y_dim
 
     data = xr.open_dataset(get_test_data(datafile, as_file_obj=False))
 
@@ -1290,12 +1294,29 @@ def test_parse_grid_arguments_xarray(datafile, assign_lat_lon, no_crs, subset):
     else:
         temp = data.metpy.parse_cf('Temperature_isobaric')
 
+    if transpose:
+        temp = temp.transpose(..., 'x', 'y')
+
     if assign_lat_lon:
         temp = temp.metpy.assign_latitude_longitude()
     if subset:
         temp = temp.isel(time=0).metpy.sel(vertical=500 * units.hPa)
 
-    t, dx, dy, p, m, lat = check_params(temp)
+    t, dx, dy, p, m, lat, x_dim, y_dim = check_params(temp)
+
+    if transpose:
+        if subset:
+            assert x_dim == 0
+            assert y_dim == 1
+        else:
+            assert x_dim == 2
+            assert y_dim == 3
+    elif subset:
+        assert x_dim == 1
+        assert y_dim == 0
+    else:
+        assert x_dim == 3
+        assert y_dim == 2
 
     assert_array_equal(t, temp)
 
@@ -1311,6 +1332,41 @@ def test_parse_grid_arguments_xarray(datafile, assign_lat_lon, no_crs, subset):
     assert dy.check('m')
 
     assert_array_almost_equal(lat, data.lat, 5)
+
+
+@pytest.mark.parametrize('xy_order', (False, True))
+def test_parse_grid_arguments_cartesian(test_da_xy, xy_order):
+    """Test the operation of parse_grid_arguments with no lat/lon info."""
+    @parse_grid_arguments
+    @preprocess_and_wrap(broadcast=['scalar', 'parallel_scale', 'meridional_scale'],
+                         wrap_like=('scalar', 'dx', 'dy', 'scalar', 'scalar', 'latitude',
+                                    None, None))
+    def check_params(scalar, dx=None, dy=None, x_dim=-1, y_dim=-2,
+                     parallel_scale=None, meridional_scale=None, latitude=None):
+        return scalar, dx, dy, parallel_scale, meridional_scale, latitude, x_dim, y_dim
+
+    # Remove CRS from dataarray
+    data = test_da_xy.reset_coords('metpy_crs', drop=True)
+    del data.attrs['grid_mapping']
+
+    if xy_order:
+        data = data.transpose(..., 'x', 'y')
+
+    t, dx, dy, p, m, lat, x_dim, y_dim = check_params(data)
+    if xy_order:
+        assert x_dim == 2
+        assert y_dim == 3
+    else:
+        assert x_dim == 3
+        assert y_dim == 2
+
+    assert_array_almost_equal(t, data)
+    assert_array_almost_equal(dx, 500 * units.km)
+    assert_array_almost_equal(dy, 500 * units.km)
+
+    assert p is None
+    assert m is None
+    assert lat is None
 
 
 # Ported from original test for add_grid_arguments_from_xarray

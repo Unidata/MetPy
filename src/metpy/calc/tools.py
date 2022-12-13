@@ -2,6 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of generally useful calculation tools."""
+import contextlib
 import functools
 from inspect import Parameter, signature
 from operator import itemgetter
@@ -1114,26 +1115,23 @@ def parse_grid_arguments(func):
             and 'meridional_scale' in bound_args.arguments
             and bound_args.arguments['meridional_scale'] is None
         ):
+            proj = None
             if grid_prototype is not None:
-                latitude, longitude = grid_prototype.metpy.coordinates('latitude',
-                                                                       'longitude')
-                scale_lat = latitude.metpy.unit_array
-                scale_lon = longitude.metpy.unit_array
-                calculate_scales = True
-
-                if hasattr(grid_prototype.metpy, 'pyproj_proj'):
-                    proj = grid_prototype.metpy.pyproj_proj
-                elif latitude.squeeze().ndim == 1 and longitude.squeeze().ndim == 1:
-                    proj = Proj(CRS('+proj=latlon'))
-                else:
-                    # Fall back to basic cartesian calculation if we don't have a CRS or we
-                    # are unable to get the coordinates needed for map factor calculation
-                    # (either existing lat/lon or lat/lon computed from y/x)
-                    calculate_scales = False
+                # Fall back to basic cartesian calculation if we don't have a CRS or we
+                # are unable to get the coordinates needed for map factor calculation
+                # (either existing lat/lon or lat/lon computed from y/x)
+                with contextlib.suppress(AttributeError):
+                    latitude, longitude = grid_prototype.metpy.coordinates('latitude',
+                                                                           'longitude')
+                    scale_lat = latitude.metpy.unit_array
+                    scale_lon = longitude.metpy.unit_array
+                    if hasattr(grid_prototype.metpy, 'pyproj_proj'):
+                        proj = grid_prototype.metpy.pyproj_proj
+                    elif latitude.squeeze().ndim == 1 and longitude.squeeze().ndim == 1:
+                        proj = Proj(CRS('+proj=latlon'))
             elif latitude is not None and longitude is not None:
                 try:
                     proj = Proj(crs)
-                    calculate_scales = True
                 except Exception as e:
                     # Whoops, intended to use
                     raise ValueError(
@@ -1141,11 +1139,9 @@ def parse_grid_arguments(func):
                         'calculation projection-correct, however, projection CRS is '
                         'missing or invalid.'
                     ) from e
-            else:
-                calculate_scales = False
 
             # Do we have everything we need to sensibly calculate the scale arrays?
-            if calculate_scales:
+            if proj is not None:
                 scale_lat = scale_lat.squeeze().m_as('degrees')
                 scale_lon = scale_lon.squeeze().m_as('degrees')
                 if scale_lat.ndim == 1 and scale_lon.ndim == 1:
