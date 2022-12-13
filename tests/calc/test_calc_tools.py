@@ -8,7 +8,7 @@ from collections import namedtuple
 import numpy as np
 import numpy.ma as ma
 import pandas as pd
-from pyproj import Geod
+from pyproj import CRS, Geod
 import pytest
 import xarray as xr
 
@@ -1045,6 +1045,21 @@ def test_geospatial_gradient_geographic(geog_data):
 
     assert_array_almost_equal(grad_x, truth_x)
     assert_array_almost_equal(grad_y, truth_y)
+
+
+@pytest.mark.parametrize('return_only,length', [(None, 2), ('df/dx', 3), (('df/dx',), 1)])
+def test_geospatial_gradient_return_subset(return_only, length):
+    """Test geospatial_gradient's return_only as string and tuple subset."""
+    a = np.arange(4)[None, :]
+    arr = np.r_[a, a, a] * units('m/s')
+    lons = np.array([-100, -90, -80, -70]) * units('degree')
+    lats = np.array([45, 55, 65]) * units('degree')
+    crs = CRS('+proj=latlon')
+
+    ddx = geospatial_gradient(
+        arr, longitude=lons, latitude=lats, crs=crs, return_only=return_only)
+
+    assert len(ddx) == length
 
 
 def test_first_derivative_xarray_lonlat(test_da_lonlat):
