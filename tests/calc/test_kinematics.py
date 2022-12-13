@@ -365,6 +365,17 @@ def test_advection_z_y():
     assert_array_equal(a, truth)
 
 
+def test_advection_4d_vertical(data_4d):
+    """Test 4-d vertical advection with parsed dims."""
+    data_4d['w'] = -abs(data_4d['u'])
+    data_4d['w'].attrs['units'] = 'Pa/s'
+
+    a = advection(data_4d.temperature, w=data_4d.w)
+
+    assert (a < 0).sum() == 0
+    assert a.data.units == units.Unit('K/s')
+
+
 def test_advection_2d_asym():
     """Test advection in asymmetric varying 2D field."""
     u = np.arange(9).reshape(3, 3) * units('m/s')
