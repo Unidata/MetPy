@@ -864,9 +864,7 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
 def nominal_lat_lon_grid_deltas(longitude, latitude, geod=None):
     """Calculate the nominal deltas along axes of a latitude/longitude grid."""
     if geod is None:
-        g = CRS('+proj=latlon').get_geod()
-    else:
-        g = geod
+        geod = CRS('+proj=latlon').get_geod()
 
     # This allows working with coordinates that have been manually broadcast
     longitude = longitude.squeeze()
@@ -878,11 +876,11 @@ def nominal_lat_lon_grid_deltas(longitude, latitude, geod=None):
             'that are not one dimensional.'
         )
 
-    dx = units.Quantity(g.a * np.diff(longitude).m_as('radian'), 'meter')
+    dx = units.Quantity(geod.a * np.diff(longitude).m_as('radian'), 'meter')
     lat = latitude.m_as('degree')
     lon_meridian_diff = np.zeros(len(lat) - 1, dtype=lat.dtype)
-    forward_az, _, dy = g.inv(lon_meridian_diff, lat[:-1], lon_meridian_diff, lat[1:],
-                              radians=False)
+    forward_az, _, dy = geod.inv(lon_meridian_diff, lat[:-1], lon_meridian_diff, lat[1:],
+                                 radians=False)
     dy[(forward_az < -90.) | (forward_az > 90.)] *= -1
     dy = units.Quantity(dy, 'meter')
 

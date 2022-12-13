@@ -20,7 +20,7 @@ from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersec
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
-                              DIR_STRS, parse_grid_arguments, UND)
+                              DIR_STRS, nominal_lat_lon_grid_deltas, parse_grid_arguments, UND)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data)
 from metpy.units import units
@@ -1363,3 +1363,31 @@ def test_parse_grid_arguments_from_dataarray():
     # Verify latitude is xarray so can be broadcast,
     # see https://github.com/Unidata/MetPy/pull/1490#discussion_r483198245
     assert isinstance(result['latitude'], xr.DataArray)
+
+
+def test_nominal_grid_deltas():
+    """Test nominal_lat_lon_grid_deltas with basic params and non-default Geod."""
+    lat = np.array([25., 35., 45.]) * units.degree
+    lon = np.array([-105, -100, -95, -90]) * units.degree
+
+    dx, dy = nominal_lat_lon_grid_deltas(lon, lat, Geod(a=4370997))
+    assert_array_almost_equal(dx, 381441.44622397297 * units.m)
+    assert_array_almost_equal(dy, [762882.89244795, 762882.89244795] * units.m)
+
+
+def test_nominal_grid_deltas_trivial_nd():
+    """Test that we can pass arrays with only one real dimension."""
+    lat = np.array([25., 35., 45.]).reshape(1, 1, -1, 1) * units.degree
+    lon = np.array([-105, -100, -95, -90]).reshape(1, 1, 1, -1) * units.degree
+
+    dx, dy = nominal_lat_lon_grid_deltas(lon, lat)
+    assert_array_almost_equal(dx, 556597.45396637 * units.m)
+    assert_array_almost_equal(dy, [1108538.7325489, 1110351.4762828] * units.m)
+
+
+def test_nominal_grid_deltas_raises():
+    """Test that nominal_lat_lon_grid_deltas raises with full 2D inputs."""
+    lat = np.array([[25.] * 4, [35.] * 4, [45.] * 4])
+    lon = np.array([[-105, -100, -95, -90]] * 3)
+    with pytest.raises(ValueError, match='one dimensional'):
+        nominal_lat_lon_grid_deltas(lon, lat)
