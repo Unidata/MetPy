@@ -1377,7 +1377,7 @@ def test_parse_grid_arguments_unknown_dims():
                                     None, None))
     def check_params(scalar, dx=None, dy=None, x_dim=-1, y_dim=-2, parallel_scale=None,
                      meridional_scale=None, latitude=None):
-        return scalar, dx, dy, parallel_scale, meridional_scale, latitude, x_dim, y_dim
+        """Test parameter passing and filling."""
 
     lat, lon = np.meshgrid(np.array([38., 40., 42]), np.array([263., 265., 267.]))
     test_da = xr.DataArray(
