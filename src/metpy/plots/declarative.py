@@ -2212,9 +2212,9 @@ class PlotGeometry(MetPyHasTraits):
         # largest Polygon or LineString from the collection. If MultiPoint, associate the label
         # with one of the Points in the MultiPoint, chosen based on the label hash.
         if isinstance(geo_obj, (MultiPolygon, MultiLineString)):
-            geo_obj = max(geo_obj, key=lambda x: x.length)
+            geo_obj = max(geo_obj.geoms, key=lambda x: x.length)
         elif isinstance(geo_obj, MultiPoint):
-            geo_obj = geo_obj[label_hash % len(geo_obj)]
+            geo_obj = geo_obj.geoms[label_hash % len(geo_obj.geoms)]
 
         # Get the list of coordinates of the polygon/line/point
         if isinstance(geo_obj, Polygon):
@@ -2291,7 +2291,7 @@ class PlotGeometry(MetPyHasTraits):
                 self.parent.ax.add_geometries([geo_obj], edgecolor=stroke,
                                               facecolor='none', crs=ccrs.PlateCarree())
             elif isinstance(geo_obj, MultiPoint):
-                for point in geo_obj:
+                for point in geo_obj.geoms:
                     lon, lat = point.coords[0]
                     self.parent.ax.plot(lon, lat, color=fill, marker=self.marker,
                                         transform=ccrs.PlateCarree())
