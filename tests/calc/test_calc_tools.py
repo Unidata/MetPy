@@ -16,7 +16,7 @@ from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersec
                         first_derivative, geospatial_gradient, get_layer, get_layer_heights,
                         gradient, laplacian, lat_lon_grid_deltas, nearest_intersection_idx,
                         parse_angle, pressure_to_height_std, reduce_point_density,
-                        resample_nn_1d, second_derivative)
+                        resample_nn_1d, second_derivative, vector_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
@@ -1489,3 +1489,21 @@ def test_nominal_grid_deltas_raises():
     lon = np.array([[-105, -100, -95, -90]] * 3)
     with pytest.raises(ValueError, match='one dimensional'):
         nominal_lat_lon_grid_deltas(lon, lat)
+
+
+@pytest.mark.parametrize('return_only,length', [(None, 4),
+                                                ('du/dx', 3),
+                                                (('du/dx', 'dv/dy'), 2),
+                                                (('du/dx',), 1)])
+def test_vector_derivative_return_subset(return_only, length):
+    """Test vector_derivative's return_only as string and tuple subset."""
+    a = np.arange(4)[None, :]
+    u = v = np.r_[a, a, a] * units('m/s')
+    lons = np.array([-100, -90, -80, -70]) * units('degree')
+    lats = np.array([45, 55, 65]) * units('degree')
+    crs = CRS('+proj=latlon')
+
+    ddx = vector_derivative(
+        u, v, longitude=lons, latitude=lats, crs=crs, return_only=return_only)
+
+    assert len(ddx) == length
