@@ -1862,7 +1862,7 @@ def test_q_vector_4d(data_4d):
 @pytest.mark.parametrize('geog_data', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'),
                          indirect=True)
 def test_geospatial_laplacian_geographic(geog_data):
-    """Test..."""
+    """Test geospatial_laplacian across projections."""
     crs, lons, lats, _, arr, mx, my, dx, dy = geog_data
     laplac = geospatial_laplacian(arr, longitude=lons, latitude=lats, crs=crs)
 
