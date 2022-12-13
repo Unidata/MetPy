@@ -1384,14 +1384,11 @@ def test_parse_grid_arguments_cartesian(test_da_xy, xy_order):
     assert lat is None
 
 
-def test_parse_grid_arguments_unknown_dims():
-    """Test parse_grid_arguments with data with unknown dimensions."""
+def test_parse_grid_arguments_missing_coords():
+    """Test parse_grid_arguments with data with missing dimension coordinates."""
     @parse_grid_arguments
-    @preprocess_and_wrap(broadcast=['scalar', 'parallel_scale', 'meridional_scale'],
-                         wrap_like=('scalar', 'dx', 'dy', 'scalar', 'scalar', 'latitude',
-                                    None, None))
-    def check_params(scalar, dx=None, dy=None, x_dim=-1, y_dim=-2, parallel_scale=None,
-                     meridional_scale=None, latitude=None):
+    @preprocess_and_wrap()
+    def check_params(scalar, dx=None, dy=None, x_dim=-1, y_dim=-2):
         """Test parameter passing and filling."""
 
     lat, lon = np.meshgrid(np.array([38., 40., 42]), np.array([263., 265., 267.]))
@@ -1409,6 +1406,33 @@ def test_parse_grid_arguments_unknown_dims():
     with pytest.raises(AttributeError,
                        match='horizontal dimension coordinates cannot be found.'):
         check_params(test_da)
+
+
+def test_parse_grid_arguments_unknown_dims():
+    """Test parse_grid_arguments with data with unknown dimensions."""
+    @parse_grid_arguments
+    @preprocess_and_wrap(broadcast=['scalar', 'parallel_scale', 'meridional_scale'])
+    def check_params(scalar, dx=None, dy=None, x_dim=-1, y_dim=-2, parallel_scale=None,
+                     meridional_scale=None, latitude=None):
+        return x_dim, y_dim
+
+    dim0 = np.arange(3)
+    dim1 = np.arange(5, 11, 2)
+    test_da = xr.DataArray(
+        np.linspace(300, 250, 3 * 3).reshape((3, 3)),
+        name='temperature',
+        dims=('dim_0', 'dim_1'),
+        coords={
+            'dim_0': xr.DataArray(dim0, dims=('dim_0',), attrs={'units': 'm'}),
+            'dim_1': xr.DataArray(dim1, dims=('dim_1',), attrs={'units': 'm'}),
+        },
+        attrs={'units': 'K'}).to_dataset().metpy.parse_cf('temperature')
+
+    with pytest.warns(UserWarning,
+                      match='Horizontal dimension numbers not found.'):
+        x_dim, y_dim = check_params(test_da, dx=2.0 * units.m, dy=1.0 * units.m)
+        assert y_dim == -2
+        assert x_dim == -1
 
 
 # Ported from original test for add_grid_arguments_from_xarray
