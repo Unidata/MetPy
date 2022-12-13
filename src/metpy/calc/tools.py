@@ -1482,7 +1482,7 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
 
 @exporter.export
 @parse_grid_arguments
-@preprocess_and_wrap(wrap_like=('u', 'u', 'u', 'u'),
+@preprocess_and_wrap(wrap_like=None,
                      broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
 @check_units(dx='[length]', dy='[length]')
 def vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
@@ -1595,7 +1595,7 @@ def vector_derivative(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
 
 @exporter.export
 @parse_grid_arguments
-@preprocess_and_wrap(wrap_like=('f', 'f'),
+@preprocess_and_wrap(wrap_like=None,
                      broadcast=('f', 'parallel_scale', 'meridional_scale'))
 @check_units(dx='[length]', dy='[length]')
 def geospatial_gradient(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
