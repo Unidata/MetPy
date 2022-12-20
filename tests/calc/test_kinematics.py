@@ -376,6 +376,20 @@ def test_advection_4d_vertical(data_4d):
     assert a.data.units == units.Unit('K/sec')
 
 
+def test_advection_1d_vertical():
+    """Test 1-d vertical advection with parsed dims."""
+    pressure = xr.DataArray(
+        np.array([1000., 950., 900.]), dims='pressure', attrs={'units': 'hPa'})
+    omega = xr.DataArray(
+        np.array([20., 30., 40.]), coords={'pressure': pressure}, attrs={'units': 'hPa/sec'})
+    s = xr.DataArray(
+        np.array([25., 20., 15.]), coords={'pressure': pressure}, attrs={'units': 'degC'})
+    a = advection(s, w=omega)
+    truth = xr.DataArray(-np.array([2, 3, 4]) * units('K/sec'), coords=a.coords)
+
+    assert_array_almost_equal(a, truth)
+
+
 def test_advection_2d_asym():
     """Test advection in asymmetric varying 2D field."""
     u = np.arange(9).reshape(3, 3) * units('m/s')
