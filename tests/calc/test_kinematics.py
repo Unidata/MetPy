@@ -381,11 +381,14 @@ def test_advection_1d_vertical():
     pressure = xr.DataArray(
         np.array([1000., 950., 900.]), dims='pressure', attrs={'units': 'hPa'})
     omega = xr.DataArray(
-        np.array([20., 30., 40.]), coords={'pressure': pressure}, attrs={'units': 'hPa/sec'})
+        np.array([20., 30., 40.]),
+        coords=[pressure], dims=['pressure'], attrs={'units': 'hPa/sec'})
     s = xr.DataArray(
-        np.array([25., 20., 15.]), coords={'pressure': pressure}, attrs={'units': 'degC'})
+        np.array([25., 20., 15.]),
+        coords=[pressure], dims=['pressure'], attrs={'units': 'degC'})
     a = advection(s, w=omega)
-    truth = xr.DataArray(-np.array([2, 3, 4]) * units('K/sec'), coords=a.coords)
+    truth = xr.DataArray(
+        -np.array([2, 3, 4]) * units('K/sec'), coords=[pressure], dims=['pressure'])
 
     assert_array_almost_equal(a, truth)
 
