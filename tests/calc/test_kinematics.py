@@ -373,7 +373,7 @@ def test_advection_4d_vertical(data_4d):
     a = advection(data_4d.temperature, w=data_4d.w)
 
     assert (a < 0).sum() == 0
-    assert a.data.units == units.Unit('K/s')
+    assert a.data.units == units.Unit('K/sec')
 
 
 def test_advection_2d_asym():
