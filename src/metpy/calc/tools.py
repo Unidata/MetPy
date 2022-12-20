@@ -1069,15 +1069,21 @@ def parse_grid_arguments(func):
         if (
             grid_prototype is not None
             and 'dz' in bound_args.arguments
-            and bound_args.arguments['dz'] is None
         ):
-            try:
-                vertical_coord = grid_prototype.metpy.vertical
-                bound_args.arguments['dz'] = np.diff(vertical_coord.metpy.unit_array)
-            except (AttributeError, ValueError):
-                # Skip, since this only comes up in advection, where dz is optional (may not
-                # need vertical at all)
-                pass
+            if bound_args.arguments['dz'] is None:
+                try:
+                    vertical_coord = grid_prototype.metpy.vertical
+                    bound_args.arguments['dz'] = np.diff(vertical_coord.metpy.unit_array)
+                except (AttributeError, ValueError):
+                    # Skip, since this only comes up in advection, where dz is optional
+                    # (may not need vertical at all)
+                    pass
+            if (
+                func.__name__.endswith('advection')
+                and bound_args.arguments['u'] is None
+                and bound_args.arguments['v'] is None
+            ):
+                return func(*bound_args.args, **bound_args.kwargs)
 
         # Fill in dx and dy
         if (
