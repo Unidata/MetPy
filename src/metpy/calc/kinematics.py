@@ -430,16 +430,14 @@ def advection(
        Changed signature from ``(scalar, wind, deltas)``
 
     """
-    # Set up full vectors
-    wind_vector = {'u': u, 'v': v, 'w': w}
-    return_only_horizontal = {'u': 'df/dx', 'v': 'df/dy'}
-    gradient_vector = ()
-
-    # Remove unused components
-    wind_vector = {key: value for key, value in wind_vector.items() if value is not None}
+    # Set up vectors of provided components
+    wind_vector = {key: value
+                   for key, value in {'u': u, 'v': v, 'w': w}.items()
+                   if value is not None}
     return_only_horizontal = {key: value
-                              for key, value in return_only_horizontal.items()
+                              for key, value in {'u': 'df/dx', 'v': 'df/dy'}.items()
                               if key in wind_vector}
+    gradient_vector = ()
 
     # Calculate horizontal components of gradient, if needed
     if return_only_horizontal:
