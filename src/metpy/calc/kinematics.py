@@ -5,12 +5,12 @@
 import numpy as np
 
 from . import coriolis_parameter
+from .thermo import brunt_vaisala_frequency
 from .tools import first_derivative, get_layer_heights, gradient
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
 from ..xarray import add_grid_arguments_from_xarray, preprocess_and_wrap
-
 exporter = Exporter(globals())
 
 
@@ -1074,3 +1074,50 @@ def q_vector(
     q2 = -mpconsts.Rd / (pressure * static_stability) * (dudy * dtempdx + dvdy * dtempdy)
 
     return q1.to_base_units(), q2.to_base_units()
+
+
+@exporter.export
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(broadcast=('height', 'u', 'latitude', 'potential_temperature'))
+@check_units('[temperature]', '[speed]', '[length]', '[dimensionless]')
+def eady_growth_rate(potential_temperature, u, height, latitude, vertical_dim=0):
+    r"""Calculate Eady growth rate (EGR) which is measure of baroclinic instability.
+    .. math::  \frac{0.3098 g}{|f|} \frac{|du/dheight|}{N}
+    * :math:`g` is the gravitational acceleration
+    * :math:`f` is the Coriolis parameter
+    * :math:`N` is the Brunt-Vaisala frequency
+    
+    Parameters
+    ----------
+    potential_temperature : (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
+        potential temperature
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        zonal wind    
+    height : `xarray.DataArray` or `pint.Quantity`
+        Atmospheric (geopotential) height
+    latitude : `xarray.DataArray` or `pint.Quantity`
+        The latitude,Note that an argument without units is treated as
+        dimensionless, which is equivalent to radians.    
+
+    Returns
+    -------
+     (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
+        Eady_growth_rate
+    
+    Examples
+    --------
+    >>> from metpy.calc import eady_growth_rate
+    >>> from metpy.units import units
+    >>> # set needed values of potential_temperature, u, height, latitude
+    >>> potential_temperature = [1.012, 1.925, 1.850, 2.700, 2.500, 4.400] * units.K
+    >>> h = [0.250, 0.700, 0.1500, 0.3100, 0.5720, 0.7120] * units.meters
+    >>> u = [0.165, 0.180, 0.190, 0.210, 0.220, 0.250] * units('m/s')
+    >>> latitude = [5, 0.5, 0.20, 0.30, 0.50, 0.60] * units('degree') 
+    >>> eady_growth_rate(potential_temperature, u, h, latitude)
+    """
+   
+    dudheight = first_derivative(u, x=height, axis=vertical_dim)
+    egr = 0.3098 * mpconsts.earth_gravity * np.abs(1 / coriolis_parameter(latitude)) * np.abs(dudheight) / brunt_vaisala_frequency(height, potential_temperature)
+    return egr
+    
+
