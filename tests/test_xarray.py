@@ -173,6 +173,20 @@ def test_convert_coordinate_units(test_ds_generic):
     assert result['b'].metpy.units == units.percent
 
 
+def test_latlon_default_units(test_var_multidim_full):
+    """Test that lat/lon are given degree units by default."""
+    del test_var_multidim_full.lat.attrs['units']
+    del test_var_multidim_full.lon.attrs['units']
+
+    lat = test_var_multidim_full.metpy.latitude.metpy.unit_array
+    assert lat.units == units.degrees
+    assert lat.max() > 50 * units.degrees
+
+    lon = test_var_multidim_full.metpy.longitude.metpy.unit_array
+    assert lon.units == units.degrees
+    assert lon.min() < -100 * units.degrees
+
+
 def test_quantify(test_ds_generic):
     """Test quantify method for converting data to Quantity."""
     original = test_ds_generic['test'].values
