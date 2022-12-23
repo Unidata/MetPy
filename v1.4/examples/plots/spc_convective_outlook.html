@@ -1,0 +1,738 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>NOAA SPC Convective Outlook &#8212; MetPy 1.4</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/doc_shared.js"></script>
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Combined Plotting" href="Combined_plotting.html" />
+    <link rel="prev" title="Raster Plots using Declarative Syntax" href="raster_declarative.html" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-92978945-1', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/plots/spc_convective_outlook.html" />
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../index.html">
+  <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class=" collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../userguide/index.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../api/index.html">
+  Reference Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../devel/index.html">
+  Developer’s Guide
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  Example Gallery
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../userguide/SUPPORT.html">
+  Support
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/Unidata/MetPy" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/MetPy" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+  </nav>
+
+
+    <div class="container-fluid" id="banner"></div>
+
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  Version 1.4
+</a>
+<div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../XArray_Projections.html">
+   XArray Projection Handling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sigma_to_pressure_interpolation.html">
+   Sigma to Pressure Interpolation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Advanced_Sounding.html">
+   Advanced Sounding
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../cross_section.html">
+   Cross Section Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Four_Panel_Map.html">
+   Four Panel Map
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../isentropic_example.html">
+   Isentropic Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../meteogram_metpy.html">
+   Meteogram
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../calculations/index.html">
+   Calculations
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Parse_Angles.html">
+     Parse angles
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Dewpoint_and_Mixing_Ratio.html">
+     Dewpoint and Mixing Ratio
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Angle_to_Direction.html">
+     Angle to Direction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Wind_Speed.html">
+     Wind Speed
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Divergence.html">
+     Divergence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Vorticity.html">
+     Vorticity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Absolute_Vorticity.html">
+     Absolute Vorticity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Total_Deformation.html">
+     Total Deformation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Shearing_Deformation.html">
+     Shearing Deformation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Stretching_Deformation.html">
+     Stretching Deformation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Static_Stability.html">
+     Static Stability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Mean_Pressure_Weighted.html">
+     Mean Pressure Weighted
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Mountain_Problem.html">
+     Mountain Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Bulk_Shear.html">
+     Bulk Shear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Thickness_Hydrostatic.html">
+     Hydrostatic Thickness
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Equivalent_Potential_Temperature.html">
+     Equivalent Potential Temperature
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Advection.html">
+     Advection
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Gradient.html">
+     Gradient
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/QVector.html">
+     Q-Vector
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Smoothing.html">
+     Smoothing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculations/Sounding_Calculations.html">
+     Sounding Calculation Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../formats/index.html">
+   File Formats
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../formats/GINI_Water_Vapor.html">
+     GINI Water Vapor Imagery
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../formats/NEXRAD_Level_3_File.html">
+     NEXRAD Level 3 File
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../formats/NEXRAD_Level_2_File.html">
+     NEXRAD Level 2 File
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../gridding/index.html">
+   Gridding
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gridding/Find_Natural_Neighbors_Verification.html">
+     Find Natural Neighbors Verification
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gridding/Wind_SLP_Interpolation.html">
+     Wind and Sea Level Pressure Interpolation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gridding/Point_Interpolation.html">
+     Point Interpolation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gridding/Inverse_Distance_Verification.html">
+     Inverse Distance Verification: Cressman and Barnes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gridding/Natural_Neighbor_Verification.html">
+     Natural Neighbor Verification
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Plotting
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="Simplified_Image_Plot.html">
+     Simple Plotting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="US_Counties.html">
+     US Counties
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="raster_declarative.html">
+     Raster Plots using Declarative Syntax
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     NOAA SPC Convective Outlook
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Combined_plotting.html">
+     Combined Plotting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="surface_declarative.html">
+     Surface Analysis using Declarative Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="upperair_declarative.html">
+     Upper Air Analysis using Declarative Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="nhc_wind_probabilities.html">
+     NOAA NHC Wind Speed Probabilities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Skew-T_Layout.html">
+     Skew-T with Complex Layout
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Hodograph_Inset.html">
+     Hodograph Inset
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Sounding_LCL_Dataset.html">
+     Sounding as Dataset Example
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Simple_Sounding.html">
+     Simple Sounding
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Mesonet_Stationplot.html">
+     Mesonet Station Plot
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Station_Plot.html">
+     Station Plot
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Station_Plot_with_Layout.html">
+     Station Plot with Layout
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-plots-spc-convective-outlook-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="noaa-spc-convective-outlook">
+<span id="sphx-glr-examples-plots-spc-convective-outlook-py"></span><h1>NOAA SPC Convective Outlook<a class="headerlink" href="#noaa-spc-convective-outlook" title="Permalink to this headline">#</a></h1>
+<p>Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy’s simplified
+plotting interface. This example walks through plotting the Day 1 Convective Outlook from NOAA
+Storm Prediction Center. The geoJSON file was retrieved from the <a class="reference external" href="https://www.spc.noaa.gov/archive/">Storm Prediction Center’s
+archives</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">geopandas</span>
+
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PanelContainer</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PlotGeometry</span></a>
+</pre></div>
+</div>
+<p>Read in the geoJSON file containing the convective outlook.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">day1_outlook</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;spc_day1otlk_20210317_1200_lyr.geojson&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Preview the data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">day1_outlook</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>DN</th>
+      <th>VALID</th>
+      <th>EXPIRE</th>
+      <th>ISSUE</th>
+      <th>LABEL</th>
+      <th>LABEL2</th>
+      <th>stroke</th>
+      <th>fill</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>202103171200</td>
+      <td>202103181200</td>
+      <td>202103170552</td>
+      <td>TSTM</td>
+      <td>General Thunderstorms Risk</td>
+      <td>#55BB55</td>
+      <td>#C1E9C1</td>
+      <td>MULTIPOLYGON (((-75.21498 35.85713, -75.12000 ...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>202103171200</td>
+      <td>202103181200</td>
+      <td>202103170552</td>
+      <td>MRGL</td>
+      <td>Marginal Risk</td>
+      <td>#005500</td>
+      <td>#66A366</td>
+      <td>MULTIPOLYGON (((-85.71646 29.55317, -85.76700 ...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4</td>
+      <td>202103171200</td>
+      <td>202103181200</td>
+      <td>202103170552</td>
+      <td>SLGT</td>
+      <td>Slight Risk</td>
+      <td>#DDAA00</td>
+      <td>#FFE066</td>
+      <td>MULTIPOLYGON (((-85.95065 29.84763, -85.98500 ...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5</td>
+      <td>202103171200</td>
+      <td>202103181200</td>
+      <td>202103170552</td>
+      <td>ENH</td>
+      <td>Enhanced Risk</td>
+      <td>#FF6600</td>
+      <td>#FFA366</td>
+      <td>MULTIPOLYGON (((-88.40000 30.20000, -90.09000 ...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>6</td>
+      <td>202103171200</td>
+      <td>202103181200</td>
+      <td>202103170552</td>
+      <td>MDT</td>
+      <td>Moderate Risk</td>
+      <td>#CC0000</td>
+      <td>#E06666</td>
+      <td>MULTIPOLYGON (((-87.07000 31.68000, -88.65000 ...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>8</td>
+      <td>202103171200</td>
+      <td>202103181200</td>
+      <td>202103170552</td>
+      <td>HIGH</td>
+      <td>High Risk</td>
+      <td>#CC00CC</td>
+      <td>#EE99EE</td>
+      <td>MULTIPOLYGON (((-91.88000 32.99000, -89.82000 ...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><p>Plot the shapes from the ‘geometry’ column. Give the shapes their fill and stroke color by
+providing the ‘fill’ and ‘stroke’ columns. Use text from the ‘LABEL’ column as labels for the
+shapes.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PlotGeometry</span></a><span class="p">()</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span><span class="o">.</span><span class="n">geometry</span></a> <span class="o">=</span> <span class="n">day1_outlook</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span><span class="o">.</span><span class="n">fill</span></a> <span class="o">=</span> <span class="n">day1_outlook</span><span class="p">[</span><span class="s1">&#39;fill&#39;</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span><span class="o">.</span><span class="n">stroke</span></a> <span class="o">=</span> <span class="n">day1_outlook</span><span class="p">[</span><span class="s1">&#39;stroke&#39;</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span><span class="o">.</span><span class="n">labels</span></a> <span class="o">=</span> <span class="n">day1_outlook</span><span class="p">[</span><span class="s1">&#39;LABEL&#39;</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span><span class="o">.</span><span class="n">label_fontsize</span></a> <span class="o">=</span> <span class="s1">&#39;large&#39;</span>
+</pre></div>
+</div>
+<p>Add the geometry plot to a panel and container.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">()</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">title</span></a> <span class="o">=</span> <span class="s1">&#39;SPC Day 1 Convective Outlook (Valid 12z Mar 17 2021)&#39;</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">plots</span></a> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span></a><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">area</span></a> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="o">-</span><span class="mi">75</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">projection</span></a> <span class="o">=</span> <span class="s1">&#39;lcc&#39;</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">layers</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lakes&#39;</span><span class="p">,</span> <span class="s1">&#39;land&#39;</span><span class="p">,</span> <span class="s1">&#39;ocean&#39;</span><span class="p">,</span> <span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="s1">&#39;coastline&#39;</span><span class="p">,</span> <span class="s1">&#39;borders&#39;</span><span class="p">]</span>
+
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pc</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PanelContainer</span></a><span class="p">()</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pc</span><span class="o">.</span><span class="n">size</span></a> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pc</span><span class="o">.</span><span class="n">panels</span></a> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span></a><span class="p">]</span>
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_spc_convective_outlook_001.png" srcset="../../_images/sphx_glr_spc_convective_outlook_001.png" alt="SPC Day 1 Convective Outlook (Valid 12z Mar 17 2021)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  8.595 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-spc-convective-outlook-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/440a38f198ce4b5f811d3749b2ed9089/spc_convective_outlook.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">spc_convective_outlook.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/0c4829bf9f81fa07605c78ac7049bb69/spc_convective_outlook.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">spc_convective_outlook.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="raster_declarative.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Raster Plots using Declarative Syntax</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="Combined_plotting.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Combined Plotting</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2008–2022, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

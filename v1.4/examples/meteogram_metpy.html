@@ -1,0 +1,826 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Meteogram &#8212; MetPy 1.4</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/doc_shared.js"></script>
+    <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Calculations" href="calculations/index.html" />
+    <link rel="prev" title="Isentropic Analysis" href="isentropic_example.html" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-92978945-1', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/meteogram_metpy.html" />
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../index.html">
+  <img src="../_static/metpy_horizontal.png" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class=" collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../userguide/index.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../api/index.html">
+  Reference Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../devel/index.html">
+  Developer’s Guide
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Example Gallery
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../userguide/SUPPORT.html">
+  Support
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/Unidata/MetPy" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/MetPy" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+  </nav>
+
+
+    <div class="container-fluid" id="banner"></div>
+
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  Version 1.4
+</a>
+<div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="XArray_Projections.html">
+   XArray Projection Handling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sigma_to_pressure_interpolation.html">
+   Sigma to Pressure Interpolation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Advanced_Sounding.html">
+   Advanced Sounding
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_section.html">
+   Cross Section Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Four_Panel_Map.html">
+   Four Panel Map
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="isentropic_example.html">
+   Isentropic Analysis
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Meteogram
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="calculations/index.html">
+   Calculations
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Parse_Angles.html">
+     Parse angles
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Dewpoint_and_Mixing_Ratio.html">
+     Dewpoint and Mixing Ratio
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Angle_to_Direction.html">
+     Angle to Direction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Wind_Speed.html">
+     Wind Speed
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Divergence.html">
+     Divergence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Vorticity.html">
+     Vorticity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Absolute_Vorticity.html">
+     Absolute Vorticity
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Total_Deformation.html">
+     Total Deformation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Shearing_Deformation.html">
+     Shearing Deformation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Stretching_Deformation.html">
+     Stretching Deformation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Static_Stability.html">
+     Static Stability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Mean_Pressure_Weighted.html">
+     Mean Pressure Weighted
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Mountain_Problem.html">
+     Mountain Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Bulk_Shear.html">
+     Bulk Shear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Thickness_Hydrostatic.html">
+     Hydrostatic Thickness
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Equivalent_Potential_Temperature.html">
+     Equivalent Potential Temperature
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Advection.html">
+     Advection
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Gradient.html">
+     Gradient
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/QVector.html">
+     Q-Vector
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Smoothing.html">
+     Smoothing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculations/Sounding_Calculations.html">
+     Sounding Calculation Examples
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="formats/index.html">
+   File Formats
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="formats/GINI_Water_Vapor.html">
+     GINI Water Vapor Imagery
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="formats/NEXRAD_Level_3_File.html">
+     NEXRAD Level 3 File
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="formats/NEXRAD_Level_2_File.html">
+     NEXRAD Level 2 File
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="gridding/index.html">
+   Gridding
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gridding/Find_Natural_Neighbors_Verification.html">
+     Find Natural Neighbors Verification
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gridding/Wind_SLP_Interpolation.html">
+     Wind and Sea Level Pressure Interpolation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gridding/Point_Interpolation.html">
+     Point Interpolation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gridding/Inverse_Distance_Verification.html">
+     Inverse Distance Verification: Cressman and Barnes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gridding/Natural_Neighbor_Verification.html">
+     Natural Neighbor Verification
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="plots/index.html">
+   Plotting
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/Simplified_Image_Plot.html">
+     Simple Plotting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/US_Counties.html">
+     US Counties
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/raster_declarative.html">
+     Raster Plots using Declarative Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/spc_convective_outlook.html">
+     NOAA SPC Convective Outlook
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/Combined_plotting.html">
+     Combined Plotting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/surface_declarative.html">
+     Surface Analysis using Declarative Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/upperair_declarative.html">
+     Upper Air Analysis using Declarative Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/nhc_wind_probabilities.html">
+     NOAA NHC Wind Speed Probabilities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/Skew-T_Layout.html">
+     Skew-T with Complex Layout
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/Hodograph_Inset.html">
+     Hodograph Inset
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/Sounding_LCL_Dataset.html">
+     Sounding as Dataset Example
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/Simple_Sounding.html">
+     Simple Sounding
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/Mesonet_Stationplot.html">
+     Mesonet Station Plot
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/Station_Plot.html">
+     Station Plot
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plots/Station_Plot_with_Layout.html">
+     Station Plot with Layout
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-meteogram-metpy-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="meteogram">
+<span id="sphx-glr-examples-meteogram-metpy-py"></span><h1>Meteogram<a class="headerlink" href="#meteogram" title="Permalink to this headline">#</a></h1>
+<p>Plots time series data as a meteogram.</p>
+<img src="../_images/sphx_glr_meteogram_metpy_001.png" srcset="../_images/sphx_glr_meteogram_metpy_001.png" alt="meteogram metpy" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:74: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+  self.ax1.set_ylim(plot_range[0], plot_range[1], plot_range[2])
+/home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:75: MatplotlibDeprecationWarning: The &#39;b&#39; parameter of grid() has been renamed &#39;visible&#39; since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
+  self.ax1.grid(b=True, which=&#39;major&#39;, axis=&#39;y&#39;, color=&#39;k&#39;, linestyle=&#39;--&#39;,
+/home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:107: MatplotlibDeprecationWarning: The &#39;b&#39; parameter of grid() has been renamed &#39;visible&#39; since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
+  self.ax2.grid(b=True, which=&#39;major&#39;, axis=&#39;y&#39;, color=&#39;k&#39;, linestyle=&#39;--&#39;,
+/home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:109: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+  self.ax2.set_ylim(plot_range[0], plot_range[1], plot_range[2])
+/home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:115: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+  ax_twin.set_ylim(plot_range[0], plot_range[1], plot_range[2])
+/home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:136: MatplotlibDeprecationWarning: The &#39;b&#39; parameter of grid() has been renamed &#39;visible&#39; since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
+  self.ax3.grid(b=True, which=&#39;major&#39;, axis=&#39;y&#39;, color=&#39;k&#39;, linestyle=&#39;--&#39;,
+/home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:138: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+  self.ax3.set_ylim(plot_range[0], plot_range[1], plot_range[2])
+/home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:144: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+  axtwin.set_ylim(plot_range[0], plot_range[1], plot_range[2])
+/home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:159: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+  self.ax4.set_ylim(plot_range[0], plot_range[1], plot_range[2])
+/home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:162: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+  axtwin.set_ylim(plot_range[0], plot_range[1], plot_range[2])
+/home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:167: MatplotlibDeprecationWarning: The &#39;b&#39; parameter of grid() has been renamed &#39;visible&#39; since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
+  self.ax4.grid(b=True, which=&#39;major&#39;, axis=&#39;y&#39;, color=&#39;k&#39;, linestyle=&#39;--&#39;,
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <a href="../api/generated/metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">dewpoint_from_relative_humidity</span></a>
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_metpy_logo</span></a>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a>
+
+
+<span class="k">def</span> <span class="nf">calc_mslp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.0065</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mf">0.0065</span> <span class="o">*</span> <span class="n">h</span> <span class="o">+</span> <span class="mf">273.15</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mf">5.257</span><span class="p">)</span>
+
+
+<span class="c1"># Make meteogram plot</span>
+<span class="k">class</span> <span class="nc">Meteogram</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Plot a time series of meteorological data from a particular station as a</span>
+<span class="sd">    meteogram with standard variables to visualize, including thermodynamic,</span>
+<span class="sd">    kinematic, and pressure. The functions below control the plotting of each</span>
+<span class="sd">    variable.</span>
+<span class="sd">    TO DO: Make the subplot creation dynamic so the number of rows is not</span>
+<span class="sd">    static as it is currently. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">probeid</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Required input:</span>
+<span class="sd">            fig: figure object</span>
+<span class="sd">            dates: array of dates corresponding to the data</span>
+<span class="sd">            probeid: ID of the station</span>
+<span class="sd">        Optional Input:</span>
+<span class="sd">            time: Time the data is to be plotted</span>
+<span class="sd">            axis: number that controls the new axis to be plotted (FOR FUTURE)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">time</span><span class="p">:</span>
+            <span class="n">time</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span></a><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">dates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">dates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">axis_num</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dates</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/dates_api.html#matplotlib.dates.date2num" title="matplotlib.dates.date2num" class="sphx-glr-backref-module-matplotlib-dates sphx-glr-backref-type-py-function"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span></a><span class="p">(</span><span class="n">dates</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M UTC&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Latest Ob Time: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="si">}</span><span class="se">\n</span><span class="s1">Probe ID: </span><span class="si">{</span><span class="n">probeid</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="k">def</span> <span class="nf">plot_winds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ws</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wd</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wsmax</span></a><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Required input:</span>
+<span class="sd">            ws: Wind speeds (knots)</span>
+<span class="sd">            wd: Wind direction (degrees)</span>
+<span class="sd">            wsmax: Wind gust (knots)</span>
+<span class="sd">        Optional Input:</span>
+<span class="sd">            plot_range: Data range for making figure (list of (min,max,step))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># PLOT WIND SPEED AND WIND DIRECTION</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax1</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot" title="matplotlib.figure.Figure.add_subplot" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span></a><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ln1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ws</span></a><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Wind Speed&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax1</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ws</span></a><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">plot_range</span><span class="p">:</span>
+            <span class="n">plot_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Wind Speed (knots)&#39;</span><span class="p">,</span> <span class="n">multialignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">plot_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+                      <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">ln2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wsmax</span></a><span class="p">,</span> <span class="s1">&#39;.r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;3-sec Wind Speed Max&#39;</span><span class="p">)</span>
+
+        <span class="n">ax7</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+        <span class="n">ln3</span> <span class="o">=</span> <span class="n">ax7</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wd</span></a><span class="p">,</span> <span class="s1">&#39;.k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Wind Direction&#39;</span><span class="p">)</span>
+        <span class="n">ax7</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Wind</span><span class="se">\n</span><span class="s1">Direction</span><span class="se">\n</span><span class="s1">(degrees)&#39;</span><span class="p">,</span> <span class="n">multialignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="n">ax7</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+        <span class="n">ax7</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="mi">405</span><span class="p">,</span> <span class="mi">90</span><span class="p">))</span>
+        <span class="n">ax7</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s1">&#39;NE&#39;</span><span class="p">,</span> <span class="s1">&#39;SE&#39;</span><span class="p">,</span> <span class="s1">&#39;SW&#39;</span><span class="p">,</span> <span class="s1">&#39;NW&#39;</span><span class="p">])</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">ln1</span> <span class="o">+</span> <span class="n">ln2</span> <span class="o">+</span> <span class="n">ln3</span>
+        <span class="n">labs</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">get_label</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+        <span class="n">ax7</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><a href="https://matplotlib.org/stable/api/dates_api.html#matplotlib.dates.DateFormatter" title="matplotlib.dates.DateFormatter" class="sphx-glr-backref-module-matplotlib-dates sphx-glr-backref-type-py-class"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%H UTC&#39;</span><span class="p">))</span>
+        <span class="n">ax7</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">labs</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span>
+                   <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">plot_thermo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Required input:</span>
+<span class="sd">            T: Temperature (deg F)</span>
+<span class="sd">            TD: Dewpoint (deg F)</span>
+<span class="sd">        Optional Input:</span>
+<span class="sd">            plot_range: Data range for making figure (list of (min,max,step))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># PLOT TEMPERATURE AND DEWPOINT</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">plot_range</span><span class="p">:</span>
+            <span class="n">plot_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot" title="matplotlib.figure.Figure.add_subplot" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span></a><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ax1</span><span class="p">)</span>
+        <span class="n">ln4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Temperature&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature</span><span class="se">\n</span><span class="s1">(F)&#39;</span><span class="p">,</span> <span class="n">multialignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+                      <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">plot_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">ln5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Dewpoint&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+
+        <span class="n">ax_twin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+        <span class="n">ax_twin</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">plot_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">ln4</span> <span class="o">+</span> <span class="n">ln5</span>
+        <span class="n">labs</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">get_label</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+        <span class="n">ax_twin</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><a href="https://matplotlib.org/stable/api/dates_api.html#matplotlib.dates.DateFormatter" title="matplotlib.dates.DateFormatter" class="sphx-glr-backref-module-matplotlib-dates sphx-glr-backref-type-py-class"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%H UTC&#39;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">labs</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span>
+                        <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">plot_rh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh</span></a><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Required input:</span>
+<span class="sd">            RH: Relative humidity (%)</span>
+<span class="sd">        Optional Input:</span>
+<span class="sd">            plot_range: Data range for making figure (list of (min,max,step))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># PLOT RELATIVE HUMIDITY</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">plot_range</span><span class="p">:</span>
+            <span class="n">plot_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot" title="matplotlib.figure.Figure.add_subplot" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span></a><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ax1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh</span></a><span class="p">,</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Relative Humidity&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.22</span><span class="p">),</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+                      <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">plot_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh</span></a><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Relative Humidity</span><span class="se">\n</span><span class="s1">(%)&#39;</span><span class="p">,</span> <span class="n">multialignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><a href="https://matplotlib.org/stable/api/dates_api.html#matplotlib.dates.DateFormatter" title="matplotlib.dates.DateFormatter" class="sphx-glr-backref-module-matplotlib-dates sphx-glr-backref-type-py-class"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%H UTC&#39;</span><span class="p">))</span>
+        <span class="n">axtwin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+        <span class="n">axtwin</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">plot_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">plot_pressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Required input:</span>
+<span class="sd">            P: Mean Sea Level Pressure (hPa)</span>
+<span class="sd">        Optional Input:</span>
+<span class="sd">            plot_range: Data range for making figure (list of (min,max,step))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># PLOT PRESSURE</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">plot_range</span><span class="p">:</span>
+            <span class="n">plot_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">970</span><span class="p">,</span> <span class="mi">1030</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax4</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot" title="matplotlib.figure.Figure.add_subplot" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span></a><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ax1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax4</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Mean Sea Level Pressure&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax4</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Mean Sea</span><span class="se">\n</span><span class="s1">Level Pressure</span><span class="se">\n</span><span class="s1">(mb)&#39;</span><span class="p">,</span> <span class="n">multialignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax4</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">plot_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">axtwin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax4</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+        <span class="n">axtwin</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">plot_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">axtwin</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">axtwin</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
+        <span class="n">axtwin</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><a href="https://matplotlib.org/stable/api/dates_api.html#matplotlib.dates.DateFormatter" title="matplotlib.dates.DateFormatter" class="sphx-glr-backref-module-matplotlib-dates sphx-glr-backref-type-py-class"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%H UTC&#39;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax4</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">),</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax4</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+                      <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="c1"># OTHER OPTIONAL AXES TO PLOT</span>
+        <span class="c1"># plot_irradiance</span>
+        <span class="c1"># plot_precipitation</span>
+
+
+<span class="c1"># set the starttime and endtime for plotting, 24 hour range</span>
+<a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">endtime</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span></a><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">starttime</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">endtime</span></a> <span class="o">-</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="datetime.timedelta" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span></a><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+
+<span class="c1"># Height of the station to calculate MSLP</span>
+<a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">hgt_example</span></a> <span class="o">=</span> <span class="mf">292.</span>
+
+
+<span class="c1"># Parse dates from .csv file, knowing their format as a string and convert to datetime</span>
+<span class="k">def</span> <span class="nf">parse_date</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">date</span></a><span class="p">):</span>
+    <span class="k">return</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span></a><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">date</span><span class="o">.</span><span class="n">decode</span></a><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">),</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span>
+
+
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">testdata</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.genfromtxt.html#numpy.genfromtxt" title="numpy.genfromtxt" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;timeseries.csv&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span> <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">usecols</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">)),</span>
+                         <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;DATE&#39;</span><span class="p">:</span> <span class="n">parse_date</span><span class="p">},</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+<span class="c1"># Temporary variables for ease</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temp</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">testdata</span></a><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">]</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pressure</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">testdata</span></a><span class="p">[</span><span class="s1">&#39;P&#39;</span><span class="p">]</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">testdata</span></a><span class="p">[</span><span class="s1">&#39;RH&#39;</span><span class="p">]</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ws</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">testdata</span></a><span class="p">[</span><span class="s1">&#39;WS&#39;</span><span class="p">]</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wsmax</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">testdata</span></a><span class="p">[</span><span class="s1">&#39;WSMAX&#39;</span><span class="p">]</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wd</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">testdata</span></a><span class="p">[</span><span class="s1">&#39;WD&#39;</span><span class="p">]</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">date</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">testdata</span></a><span class="p">[</span><span class="s1">&#39;DATE&#39;</span><span class="p">]</span>
+
+<span class="c1"># ID For Plotting on Meteogram</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">probe_id</span></a> <span class="o">=</span> <span class="s1">&#39;0102A&#39;</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;wind_speed&#39;</span><span class="p">:</span> <span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ws</span></a><span class="p">)</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;knots&#39;</span><span class="p">)),</span>
+        <span class="s1">&#39;wind_speed_max&#39;</span><span class="p">:</span> <span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wsmax</span></a><span class="p">)</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;knots&#39;</span><span class="p">)),</span>
+        <span class="s1">&#39;wind_direction&#39;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wd</span></a><span class="p">)</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;degrees&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;dewpoint&#39;</span><span class="p">:</span> <a href="../api/generated/metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">dewpoint_from_relative_humidity</span></a><span class="p">((</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temp</span></a><span class="p">)</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.util.Unit" class="sphx-glr-backref-module-pint-util sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">degC</span></a><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.util.Unit" class="sphx-glr-backref-module-pint-util sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">K</span></a><span class="p">),</span>
+                                                    <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh</span></a><span class="p">)</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;degF&#39;</span><span class="p">)),</span>
+        <span class="s1">&#39;air_temperature&#39;</span><span class="p">:</span> <span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temp</span></a><span class="p">)</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;degF&#39;</span><span class="p">)),</span>
+        <span class="s1">&#39;mean_slp&#39;</span><span class="p">:</span> <span class="n">calc_mslp</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temp</span></a><span class="p">),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pressure</span></a><span class="p">),</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">hgt_example</span></a><span class="p">)</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;hPa&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;relative_humidity&#39;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh</span></a><span class="p">),</span> <span class="s1">&#39;times&#39;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">date</span></a><span class="p">)}</span>
+
+<a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+<a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_metpy_logo</span></a><span class="p">(</span><a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+<span class="n">meteogram</span> <span class="o">=</span> <span class="n">Meteogram</span><span class="p">(</span><a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">],</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">probe_id</span></a><span class="p">)</span>
+<span class="n">meteogram</span><span class="o">.</span><span class="n">plot_winds</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;wind_speed&#39;</span><span class="p">],</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;wind_direction&#39;</span><span class="p">],</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;wind_speed_max&#39;</span><span class="p">])</span>
+<span class="n">meteogram</span><span class="o">.</span><span class="n">plot_thermo</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;air_temperature&#39;</span><span class="p">],</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;dewpoint&#39;</span><span class="p">])</span>
+<span class="n">meteogram</span><span class="o">.</span><span class="n">plot_rh</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;relative_humidity&#39;</span><span class="p">])</span>
+<span class="n">meteogram</span><span class="o">.</span><span class="n">plot_pressure</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;mean_slp&#39;</span><span class="p">])</span>
+<a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.subplots_adjust" title="matplotlib.figure.Figure.subplots_adjust" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span></a><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.199 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-meteogram-metpy-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/133a14b679bd8a5b58cfff249184243a/meteogram_metpy.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">meteogram_metpy.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/4ffa5cd26bc6bf5eedb6ebf217b5c874/meteogram_metpy.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">meteogram_metpy.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="isentropic_example.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Isentropic Analysis</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="calculations/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Calculations</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2008–2022, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

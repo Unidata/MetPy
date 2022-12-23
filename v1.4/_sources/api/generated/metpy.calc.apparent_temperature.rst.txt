@@ -1,0 +1,12 @@
+apparent_temperature
+===============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: apparent_temperature
+
+.. include:: metpy.calc.apparent_temperature.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

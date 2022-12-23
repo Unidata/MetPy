@@ -1,0 +1,12 @@
+get_layer
+====================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: get_layer
+
+.. include:: metpy.calc.get_layer.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

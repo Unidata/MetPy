@@ -1,0 +1,12 @@
+remove_nan_observations
+=========================================
+
+.. currentmodule:: metpy.interpolate
+
+.. autofunction:: remove_nan_observations
+
+.. include:: metpy.interpolate.remove_nan_observations.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

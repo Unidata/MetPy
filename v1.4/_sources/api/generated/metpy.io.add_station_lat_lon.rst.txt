@@ -1,0 +1,12 @@
+add_station_lat_lon
+============================
+
+.. currentmodule:: metpy.io
+
+.. autofunction:: add_station_lat_lon
+
+.. include:: metpy.io.add_station_lat_lon.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

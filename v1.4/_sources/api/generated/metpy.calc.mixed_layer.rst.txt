@@ -1,0 +1,12 @@
+mixed_layer
+======================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: mixed_layer
+
+.. include:: metpy.calc.mixed_layer.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

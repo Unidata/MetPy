@@ -1,0 +1,12 @@
+laplacian
+====================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: laplacian
+
+.. include:: metpy.calc.laplacian.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

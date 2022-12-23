@@ -1,0 +1,12 @@
+smooth_circular
+==========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: smooth_circular
+
+.. include:: metpy.calc.smooth_circular.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
