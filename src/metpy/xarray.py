@@ -134,7 +134,12 @@ class MetPyDataArrayAccessor:
         if is_quantity(self._data_array.variable._data):
             return self._data_array.variable._data.units
         else:
-            return units.parse_units(self._data_array.attrs.get('units', 'dimensionless'))
+            axis = self._data_array.attrs.get('_metpy_axis', '')
+            if 'latitude' in axis or 'longitude' in axis:
+                default_unit = 'degrees'
+            else:
+                default_unit = 'dimensionless'
+            return units.parse_units(self._data_array.attrs.get('units', default_unit))
 
     @property
     def magnitude(self):
