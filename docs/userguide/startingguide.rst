@@ -348,7 +348,7 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
 * `PyART`_: read and visualize radar data
 
 .. _Siphon: https://unidata.github.io/siphon/
-.. _THREDDS Data Servers: https://www.unidata.ucar.edu/software/tds/current/
+.. _THREDDS Data Servers: https://docs.unidata.ucar.edu/tds/current/userguide/index.html
 .. _netCDF4-python: https://unidata.github.io/netcdf4-python/
 .. _netCDF: https://www.unidata.ucar.edu/software/netcdf/
 .. _Xarray: https://docs.xarray.dev/en/stable/
