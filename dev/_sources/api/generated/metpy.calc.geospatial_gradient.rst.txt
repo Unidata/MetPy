@@ -1,0 +1,12 @@
+geospatial_gradient
+==============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: geospatial_gradient
+
+.. include:: metpy.calc.geospatial_gradient.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

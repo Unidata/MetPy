@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="laplacian" href="metpy.calc.laplacian.html" />
-    <link rel="prev" title="first_derivative" href="metpy.calc.first_derivative.html" />
+    <link rel="prev" title="geospatial_laplacian" href="metpy.calc.geospatial_laplacian.html" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -817,6 +817,16 @@
      first_derivative
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.geospatial_gradient.html">
+     geospatial_gradient
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.geospatial_laplacian.html">
+     geospatial_laplacian
+    </a>
+   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      gradient
@@ -850,6 +860,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.calc.unit_vectors_from_cross_section.html">
      unit_vectors_from_cross_section
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.vector_derivative.html">
+     vector_derivative
     </a>
    </li>
    <li class="toctree-l2">
@@ -1338,7 +1353,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.gradient">
 <span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deltas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.gradient" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the gradient of a grid of values.</p>
+<dd><p>Calculate the gradient of a scalar quantity, assuming Cartesian coordinates.</p>
 <p>Works for both regularly-spaced data, and grids with varying spacing.</p>
 <p>Either <em class="xref py py-obj">coordinates</em> or <em class="xref py py-obj">deltas</em> must be specified, or <em class="xref py py-obj">f</em> must be given as an
 <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.12.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with  attached coordinate and projection information. If <em class="xref py py-obj">f</em> is an
@@ -1370,11 +1385,14 @@ axis.</p></li>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="metpy.calc.laplacian.html#metpy.calc.laplacian" title="metpy.calc.laplacian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplacian</span></code></a>, <a class="reference internal" href="metpy.calc.first_derivative.html#metpy.calc.first_derivative" title="metpy.calc.first_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_derivative</span></code></a></p>
+<p><a class="reference internal" href="metpy.calc.laplacian.html#metpy.calc.laplacian" title="metpy.calc.laplacian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplacian</span></code></a>, <a class="reference internal" href="metpy.calc.first_derivative.html#metpy.calc.first_derivative" title="metpy.calc.first_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_derivative</span></code></a>, <a class="reference internal" href="metpy.calc.vector_derivative.html#metpy.calc.vector_derivative" title="metpy.calc.vector_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_derivative</span></code></a>, <a class="reference internal" href="metpy.calc.geospatial_gradient.html#metpy.calc.geospatial_gradient" title="metpy.calc.geospatial_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geospatial_gradient</span></code></a></p>
 </div>
 <p class="rubric">Notes</p>
 <p>If this function is used without the <em class="xref py py-obj">axes</em> parameter, the length of <em class="xref py py-obj">coordinates</em> or
 <em class="xref py py-obj">deltas</em> (as applicable) should match the number of dimensions of <em class="xref py py-obj">f</em>.</p>
+<p>This will not give projection-correct results for horizontal geospatial fields. Instead,
+for vector quantities, use <a class="reference internal" href="metpy.calc.vector_derivative.html#metpy.calc.vector_derivative" title="metpy.calc.vector_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_derivative</span></code></a>, and for scalar quantities, use
+<a class="reference internal" href="metpy.calc.geospatial_gradient.html#metpy.calc.geospatial_gradient" title="metpy.calc.geospatial_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geospatial_gradient</span></code></a>.</p>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.0: </span>Changed signature from <code class="docutils literal notranslate"><span class="pre">(f,</span> <span class="pre">**kwargs)</span></code></p>
 </div>
@@ -1394,11 +1412,11 @@ axis.</p></li>
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="metpy.calc.first_derivative.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="metpy.calc.geospatial_laplacian.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">first_derivative</p>
+            <p class="prev-next-title">geospatial_laplacian</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="metpy.calc.laplacian.html" title="next page">

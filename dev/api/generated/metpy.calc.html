@@ -818,6 +818,16 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.geospatial_gradient.html">
+     geospatial_gradient
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.geospatial_laplacian.html">
+     geospatial_laplacian
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="metpy.calc.gradient.html">
      gradient
     </a>
@@ -850,6 +860,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.calc.unit_vectors_from_cross_section.html">
      unit_vectors_from_cross_section
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.vector_derivative.html">
+     vector_derivative
     </a>
    </li>
    <li class="toctree-l2">
@@ -1646,7 +1661,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter" title="metpy.calc.coriolis_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coriolis_parameter</span></code></a>(latitude)</p></td>
 <td><p>Calculate the Coriolis parameter at each point.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.divergence.html#metpy.calc.divergence" title="metpy.calc.divergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divergence</span></code></a>(u, v, *[, dx, dy, x_dim, y_dim])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.divergence.html#metpy.calc.divergence" title="metpy.calc.divergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divergence</span></code></a>(u, v, *[, dx, dy, x_dim, y_dim, ...])</p></td>
 <td><p>Calculate the horizontal divergence of a vector.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.exner_function.html#metpy.calc.exner_function" title="metpy.calc.exner_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exner_function</span></code></a>(pressure[, reference_pressure])</p></td>
@@ -1682,10 +1697,10 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation" title="metpy.calc.stretching_deformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stretching_deformation</span></code></a>(u, v[, dx, dy, ...])</p></td>
 <td><p>Calculate the stretching deformation of the horizontal wind.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.total_deformation.html#metpy.calc.total_deformation" title="metpy.calc.total_deformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_deformation</span></code></a>(u, v[, dx, dy, x_dim, y_dim])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.total_deformation.html#metpy.calc.total_deformation" title="metpy.calc.total_deformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_deformation</span></code></a>(u, v[, dx, dy, x_dim, ...])</p></td>
 <td><p>Calculate the total deformation of the horizontal wind.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.vorticity.html#metpy.calc.vorticity" title="metpy.calc.vorticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vorticity</span></code></a>(u, v, *[, dx, dy, x_dim, y_dim])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.vorticity.html#metpy.calc.vorticity" title="metpy.calc.vorticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vorticity</span></code></a>(u, v, *[, dx, dy, x_dim, y_dim, ...])</p></td>
 <td><p>Calculate the vertical vorticity of the horizontal wind.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.wind_components.html#metpy.calc.wind_components" title="metpy.calc.wind_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wind_components</span></code></a>(speed, wind_direction)</p></td>
@@ -1747,8 +1762,14 @@
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.first_derivative.html#metpy.calc.first_derivative" title="metpy.calc.first_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_derivative</span></code></a>(f[, axis, x, delta])</p></td>
 <td><p>Calculate the first derivative of a grid of values.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.geospatial_gradient.html#metpy.calc.geospatial_gradient" title="metpy.calc.geospatial_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geospatial_gradient</span></code></a>(f, *[, dx, dy, x_dim, ...])</p></td>
+<td><p>Calculate the projection-correct gradient of a 2D scalar field.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.geospatial_laplacian.html#metpy.calc.geospatial_laplacian" title="metpy.calc.geospatial_laplacian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geospatial_laplacian</span></code></a>(f, *[, dx, dy, x_dim, ...])</p></td>
+<td><p>Calculate the projection-correct laplacian of a 2D scalar field.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.gradient.html#metpy.calc.gradient" title="metpy.calc.gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gradient</span></code></a>(f[, axes, coordinates, deltas])</p></td>
-<td><p>Calculate the gradient of a grid of values.</p></td>
+<td><p>Calculate the gradient of a scalar quantity, assuming Cartesian coordinates.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.laplacian.html#metpy.calc.laplacian" title="metpy.calc.laplacian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplacian</span></code></a>(f[, axes, coordinates, deltas])</p></td>
 <td><p>Calculate the laplacian of a grid of values.</p></td>
@@ -1767,6 +1788,9 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.unit_vectors_from_cross_section.html#metpy.calc.unit_vectors_from_cross_section" title="metpy.calc.unit_vectors_from_cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unit_vectors_from_cross_section</span></code></a>(cross[, index])</p></td>
 <td><p>Calculate the unit tangent and unit normal vectors from a cross-section.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.vector_derivative.html#metpy.calc.vector_derivative" title="metpy.calc.vector_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_derivative</span></code></a>(u, v, *[, dx, dy, x_dim, ...])</p></td>
+<td><p>Calculate the projection-correct derivative matrix of a 2D vector.</p></td>
 </tr>
 </tbody>
 </table>

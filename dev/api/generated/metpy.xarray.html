@@ -818,6 +818,16 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.geospatial_gradient.html">
+     geospatial_gradient
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.geospatial_laplacian.html">
+     geospatial_laplacian
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="metpy.calc.gradient.html">
      gradient
     </a>
@@ -850,6 +860,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.calc.unit_vectors_from_cross_section.html">
      unit_vectors_from_cross_section
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.vector_derivative.html">
+     vector_derivative
     </a>
    </li>
    <li class="toctree-l2">
@@ -1523,12 +1538,15 @@ subsetting!</p>
 <p>This method is designed for use with multiple coordinates; it returns a generator. To
 access a single coordinate, use the appropriate attribute on the accessor, or use tuple
 unpacking.</p>
+<p>If latitude and/or longitude are requested here, and yet are not present on the
+DataArray, an on-the-fly computation from the CRS and y/x dimension coordinates is
+attempted.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.coordinates_identical">
 <span class="sig-name descname"><span class="pre">coordinates_identical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.coordinates_identical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.coordinates_identical" title="Permalink to this definition">#</a></dt>
-<dd><p>Return whether or not the coordinates of other match this DataArray’s.</p>
+<dd><p>Return whether the coordinates of other match this DataArray’s.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -1568,6 +1586,12 @@ name (string) or a standard axis type (string).</p>
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.grid_deltas">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid_deltas</span></span><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.grid_deltas" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the horizontal dimensional grid deltas suitable for vector derivatives.</p>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.latitude">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.latitude" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the latitude coordinate (if it exists).</p>
@@ -1595,6 +1619,12 @@ name (string) or a standard axis type (string).</p>
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.pyproj_crs">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pyproj_crs</span></span><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.pyproj_crs" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the coordinate reference system (CRS) as a pyproj object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.pyproj_proj">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pyproj_proj</span></span><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.pyproj_proj" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the Proj object corresponding to the coordinate reference system (CRS).</p>
 </dd></dl>
 
 <dl class="py method">
