@@ -14,9 +14,8 @@ from metpy.plots.mapping import CFProjection
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data)
 from metpy.units import DimensionalityError, is_quantity, units
-from metpy.xarray import (add_grid_arguments_from_xarray, add_vertical_dim_from_xarray,
-                          check_axis, check_matching_coordinates, grid_deltas_from_dataarray,
-                          preprocess_and_wrap)
+from metpy.xarray import (add_vertical_dim_from_xarray, check_axis, check_matching_coordinates,
+                          grid_deltas_from_dataarray, preprocess_and_wrap)
 
 
 @pytest.fixture
@@ -1476,55 +1475,6 @@ def test_grid_deltas_from_dataarray_invalid_kind(test_da_xy):
     """Test grid_deltas_from_dataarray when kind is invalid."""
     with pytest.raises(ValueError):
         grid_deltas_from_dataarray(test_da_xy, kind='invalid')
-
-
-def test_add_grid_arguments_from_dataarray():
-    """Test the grid argument decorator for adding in arguments from xarray."""
-    @add_grid_arguments_from_xarray
-    def return_the_kwargs(
-        da,
-        dz=None,
-        dy=None,
-        dx=None,
-        vertical_dim=None,
-        y_dim=None,
-        x_dim=None,
-        latitude=None
-    ):
-        return {
-            'dz': dz,
-            'dy': dy,
-            'dx': dx,
-            'vertical_dim': vertical_dim,
-            'y_dim': y_dim,
-            'x_dim': x_dim,
-            'latitude': latitude
-        }
-
-    data = xr.DataArray(
-        np.zeros((1, 2, 2, 2)),
-        dims=('time', 'isobaric', 'lat', 'lon'),
-        coords={
-            'time': ['2020-01-01T00:00Z'],
-            'isobaric': (('isobaric',), [850., 700.], {'units': 'hPa'}),
-            'lat': (('lat',), [30., 40.], {'units': 'degrees_north'}),
-            'lon': (('lon',), [-100., -90.], {'units': 'degrees_east'})
-        }
-    ).to_dataset(name='zeros').metpy.parse_cf('zeros')
-    result = return_the_kwargs(data)
-    assert_array_almost_equal(result['dz'], [-150.] * units.hPa)
-    assert_array_almost_equal(result['dy'], [[[[1109415.632] * 2]]] * units.meter, 2)
-    assert_array_almost_equal(result['dx'], [[[[964555.967], [853490.014]]]] * units.meter, 2)
-    assert result['vertical_dim'] == 1
-    assert result['y_dim'] == 2
-    assert result['x_dim'] == 3
-    assert_array_almost_equal(
-        result['latitude'].metpy.unit_array,
-        [30., 40.] * units.degrees_north
-    )
-    # Verify latitude is xarray so can be broadcast,
-    # see https://github.com/Unidata/MetPy/pull/1490#discussion_r483198245
-    assert isinstance(result['latitude'], xr.DataArray)
 
 
 def test_add_vertical_dim_from_xarray():
