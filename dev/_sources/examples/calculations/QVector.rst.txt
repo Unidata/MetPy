@@ -41,7 +41,7 @@ Dataset and plotting using Matplotlib.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.10.9/x64/lib/python3.10/site-packages/metpy/xarray.py:1488: UserWarning: Vertical dimension number not found. Defaulting to (..., Z, Y, X) order.
+    /opt/hostedtoolcache/Python/3.10.9/x64/lib/python3.10/site-packages/metpy/xarray.py:1493: UserWarning: Vertical dimension number not found. Defaulting to (..., Z, Y, X) order.
       warnings.warn(
 
 
