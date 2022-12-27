@@ -1,6 +1,6 @@
 importlib_resources==5.10.1
 matplotlib==3.6.2
-numpy==1.24.0
+numpy==1.24.1
 pandas==1.5.2
 pooch==1.6.0
 pint==0.20.1
