@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>metpy.plots.skewt &#8212; MetPy 0.0dev</title>
+    <title>metpy.plots.skewt &#8212; MetPy 1.4dev</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -165,7 +165,7 @@
             <!-- Only show if we have sidebars configured, else just a small margin  -->
             <div class="col-12 col-md-3 bd-sidebar">
               <div class="sidebar-start-items"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  Version 0.0dev
+  Version 1.4dev
 </a>
 <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
@@ -228,14 +228,14 @@
 
 
 <span class="k">class</span> <span class="nc">SkewTTransform</span><span class="p">(</span><span class="n">transforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Perform Skew transform for Skew-T plotting.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform Skew transform for Skew-T plotting.</span>
 
 <span class="sd">    This works in pixel space, so is designed to be applied after the normal plotting</span>
 <span class="sd">    transformations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bbox</span><span class="p">,</span> <span class="n">rot</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize skew transform.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize skew transform.</span>
 
 <span class="sd">        This needs a reference to the parent bounding box to do the appropriate math and</span>
 <span class="sd">        to register it as a child so that the transform is invalidated and regenerated if</span>
@@ -251,7 +251,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_rot_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">rot</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">get_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return transformation matrix.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return transformation matrix.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid</span><span class="p">:</span>
             <span class="c1"># The following matrix is equivalent to the following:</span>
             <span class="c1"># x0, y0 = self._bbox.xmin, self._bbox.ymin</span>
@@ -269,7 +269,7 @@
 
 
 <span class="k">class</span> <span class="nc">SkewXTick</span><span class="p">(</span><span class="n">maxis</span><span class="o">.</span><span class="n">XTick</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make x-axis ticks for Skew-T plots.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make x-axis ticks for Skew-T plots.</span>
 
 <span class="sd">    This class adds to the standard :class:`matplotlib.axis.XTick` dynamic checking</span>
 <span class="sd">    for whether a top or bottom tick is actually within the data limits at that part</span>
@@ -279,7 +279,7 @@
     <span class="c1"># Taken from matplotlib&#39;s SkewT example to update for matplotlib 3.1&#39;s changes to</span>
     <span class="c1"># state management for ticks. See matplotlib/matplotlib#10088</span>
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Draw the tick.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the tick.&quot;&quot;&quot;</span>
         <span class="c1"># When adding the callbacks with `stack.callback`, we fetch the current</span>
         <span class="c1"># visibility state of the artist with `get_visible`; the ExitStack will</span>
         <span class="c1"># restore these states (`set_visible`) at the end of the block (after</span>
@@ -298,23 +298,23 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">lower_in_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Whether the lower part of the tick is in bounds.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether the lower part of the tick is in bounds.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">lower_xlim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">())</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">upper_in_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Whether the upper part of the tick is in bounds.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether the upper part of the tick is in bounds.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">upper_xlim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">())</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">grid_in_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Whether any of the tick grid line is in bounds.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether any of the tick grid line is in bounds.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_view_interval</span><span class="p">(),</span>
                                             <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">())</span>
 
 
 <span class="k">class</span> <span class="nc">SkewXAxis</span><span class="p">(</span><span class="n">maxis</span><span class="o">.</span><span class="n">XAxis</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make an x-axis that works properly for Skew-T plots.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make an x-axis that works properly for Skew-T plots.</span>
 
 <span class="sd">    This class exists to force the use of our custom :class:`SkewXTick` as well</span>
 <span class="sd">    as provide a custom value for interval that combines the extents of the</span>
@@ -326,7 +326,7 @@
 
     <span class="c1"># Needed to properly handle tight bbox</span>
     <span class="k">def</span> <span class="nf">_get_ticklabel_bboxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ticks</span><span class="p">,</span> <span class="n">renderer</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return lists of bboxes for ticks&#39; label1&#39;s and label2&#39;s.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return lists of bboxes for ticks&#39; label1&#39;s and label2&#39;s.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">([</span><span class="n">tick</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
                  <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ticks</span> <span class="k">if</span> <span class="n">tick</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">tick</span><span class="o">.</span><span class="n">lower_in_bounds</span><span class="p">],</span>
                 <span class="p">[</span><span class="n">tick</span><span class="o">.</span><span class="n">label2</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
@@ -336,12 +336,12 @@
     <span class="n">_get_tick_bboxes</span> <span class="o">=</span> <span class="n">_get_ticklabel_bboxes</span>
 
     <span class="k">def</span> <span class="nf">get_view_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the view interval.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the view interval.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">upper_xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">lower_xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
 
 <span class="k">class</span> <span class="nc">SkewSpine</span><span class="p">(</span><span class="n">mspines</span><span class="o">.</span><span class="n">Spine</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make an x-axis spine that works properly for Skew-T plots.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make an x-axis spine that works properly for Skew-T plots.</span>
 
 <span class="sd">    This class exists to use the separate x-limits from the axes to properly</span>
 <span class="sd">    locate the spine.</span>
@@ -356,7 +356,7 @@
 
 
 <span class="k">class</span> <span class="nc">SkewXAxes</span><span class="p">(</span><span class="n">Axes</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make a set of axes for Skew-T plots.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make a set of axes for Skew-T plots.</span>
 
 <span class="sd">    This class handles registration of the skew-xaxes as a projection as well as setting up</span>
 <span class="sd">    the appropriate transformations. It also makes sure we use our instances for spines</span>
@@ -370,7 +370,7 @@
     <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;skewx&#39;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize `SkewXAxes`.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize `SkewXAxes`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -405,7 +405,7 @@
                 <span class="s1">&#39;right&#39;</span><span class="p">:</span> <span class="n">mspines</span><span class="o">.</span><span class="n">Spine</span><span class="o">.</span><span class="n">linear_spine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">)}</span>
 
     <span class="k">def</span> <span class="nf">_set_lim_and_transforms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set limits and transforms.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set limits and transforms.</span>
 
 <span class="sd">        This is called once when the plot is created to set up all the</span>
 <span class="sd">        transforms for the data, text and grids.</span>
@@ -426,12 +426,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">lower_xlim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the data limits for the x-axis along the bottom of the axes.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the data limits for the x-axis along the bottom of the axes.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">viewLim</span><span class="o">.</span><span class="n">intervalx</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">upper_xlim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the data limits for the x-axis along the top of the axes.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the data limits for the x-axis along the top of the axes.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transData</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="bp">self</span><span class="o">.</span><span class="n">bbox</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bbox</span><span class="o">.</span><span class="n">ymax</span><span class="p">],</span>
                                                     <span class="bp">self</span><span class="o">.</span><span class="n">bbox</span><span class="o">.</span><span class="n">max</span><span class="p">])[:,</span> <span class="mi">0</span><span class="p">]</span>
 
@@ -442,7 +442,7 @@
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">SkewT</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make Skew-T log-P plots of data.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make Skew-T log-P plots of data.</span>
 
 <span class="sd">    This class simplifies the process of creating Skew-T log-P plots in</span>
 <span class="sd">    using matplotlib. It handles requesting the appropriate skewed projection,</span>
@@ -458,7 +458,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SkewT.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">subplot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mf">80.5</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create SkewT - logP plots.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create SkewT - logP plots.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -535,7 +535,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="n">aspect</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SkewT.plot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot data.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot data.</span>
 
 <span class="sd">        Simple wrapper around plot so that pressure is the first (independent)</span>
 <span class="sd">        input. This is essentially a wrapper around `plot`.</span>
@@ -567,7 +567,7 @@
 
 <div class="viewcode-block" id="SkewT.plot_barbs"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_barbs">[docs]</a>    <span class="k">def</span> <span class="nf">plot_barbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xloc</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">x_clip_radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                    <span class="n">y_clip_radius</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot wind barbs.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot wind barbs.</span>
 
 <span class="sd">        Adds wind barbs to the skew-T plot. This is a wrapper around the</span>
 <span class="sd">        `barbs` command that adds to appropriate transform to place the</span>
@@ -639,7 +639,7 @@
         <span class="k">return</span> <span class="n">b</span></div>
 
 <div class="viewcode-block" id="SkewT.plot_dry_adiabats"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_dry_adiabats">[docs]</a>    <span class="k">def</span> <span class="nf">plot_dry_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot dry adiabats.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot dry adiabats.</span>
 
 <span class="sd">        Adds dry adiabats (lines of constant potential temperature) to the</span>
 <span class="sd">        plot. The default style of these lines is dashed red lines with an alpha</span>
@@ -697,7 +697,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span></div>
 
 <div class="viewcode-block" id="SkewT.plot_moist_adiabats"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_moist_adiabats">[docs]</a>    <span class="k">def</span> <span class="nf">plot_moist_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot moist adiabats.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot moist adiabats.</span>
 
 <span class="sd">        Adds saturated pseudo-adiabats (lines of constant equivalent potential</span>
 <span class="sd">        temperature) to the plot. The default style of these lines is dashed</span>
@@ -756,7 +756,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span></div>
 
 <div class="viewcode-block" id="SkewT.plot_mixing_lines"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_mixing_lines">[docs]</a>    <span class="k">def</span> <span class="nf">plot_mixing_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot lines of constant mixing ratio.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot lines of constant mixing ratio.</span>
 
 <span class="sd">        Adds lines of constant mixing ratio (isohumes) to the</span>
 <span class="sd">        plot. The default style of these lines is dashed green lines with an</span>
@@ -811,7 +811,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mixing_lines</span></div>
 
 <div class="viewcode-block" id="SkewT.shade_area"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_area">[docs]</a>    <span class="k">def</span> <span class="nf">shade_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade area between two curves.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade area between two curves.</span>
 
 <span class="sd">        Shades areas between curves. Area can be where one is greater or less than the other</span>
 <span class="sd">        or all areas shaded.</span>
@@ -866,7 +866,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">,</span> <span class="o">**</span><span class="n">fill_args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SkewT.shade_cape"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_cape">[docs]</a>    <span class="k">def</span> <span class="nf">shade_cape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade areas of Convective Available Potential Energy (CAPE).</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade areas of Convective Available Potential Energy (CAPE).</span>
 
 <span class="sd">        Shades areas where the parcel is warmer than the environment (areas of positive</span>
 <span class="sd">        buoyancy.</span>
@@ -897,7 +897,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shade_area</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SkewT.shade_cin"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_cin">[docs]</a>    <span class="k">def</span> <span class="nf">shade_cin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="n">dewpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade areas of Convective INhibition (CIN).</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade areas of Convective INhibition (CIN).</span>
 
 <span class="sd">        Shades areas where the parcel is cooler than the environment (areas of negative</span>
 <span class="sd">        buoyancy). If `dewpoint` is passed in, negative area below the lifting condensation</span>
@@ -938,7 +938,7 @@
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">Hodograph</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make a hodograph of wind data.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make a hodograph of wind data.</span>
 
 <span class="sd">    Plots the u and v components of the wind along the x and y axes, respectively.</span>
 
@@ -954,7 +954,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Hodograph.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a Hodograph instance.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a Hodograph instance.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -978,7 +978,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">max_range</span> <span class="o">=</span> <span class="mf">1.4142135</span> <span class="o">*</span> <span class="n">component_range</span></div>
 
 <div class="viewcode-block" id="Hodograph.add_grid"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.add_grid">[docs]</a>    <span class="k">def</span> <span class="nf">add_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add grid lines to hodograph.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add grid lines to hodograph.</span>
 
 <span class="sd">        Creates lines for the x- and y-axes, as well as circles denoting wind speed values.</span>
 
@@ -1020,13 +1020,13 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_form_line_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Simplify taking the default line style and extending with kwargs.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Simplify taking the default line style and extending with kwargs.&quot;&quot;&quot;</span>
         <span class="n">def_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;linewidth&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
         <span class="n">def_args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">def_args</span>
 
 <div class="viewcode-block" id="Hodograph.plot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot u, v data.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot u, v data.</span>
 
 <span class="sd">        Plots the wind data on the hodograph.</span>
 
@@ -1054,7 +1054,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">line_args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Hodograph.wind_vectors"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.wind_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">wind_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot u, v data as wind vectors.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot u, v data as wind vectors.</span>
 
 <span class="sd">        Plot the wind data as vectors for each level, beginning at the origin.</span>
 
@@ -1080,7 +1080,7 @@
                               <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">quiver_args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Hodograph.plot_colormapped"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.plot_colormapped">[docs]</a>    <span class="k">def</span> <span class="nf">plot_colormapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">intervals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot u, v data, with line colored based on a third set of data.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot u, v data, with line colored based on a third set of data.</span>
 
 <span class="sd">        Plots the wind data on the hodograph, but with a colormapped line. Takes a third</span>
 <span class="sd">        variable besides the winds (e.g. heights or pressure levels) and either a colormap to</span>
@@ -1185,7 +1185,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2008–2022, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
+    &copy; Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
 </p>
     </div>
     

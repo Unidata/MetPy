@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>metpy.io.gini &#8212; MetPy 0.0dev</title>
+    <title>metpy.io.gini &#8212; MetPy 1.4dev</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -165,7 +165,7 @@
             <!-- Only show if we have sidebars configured, else just a small margin  -->
             <div class="col-12 col-md-3 bd-sidebar">
               <div class="sidebar-start-items"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  Version 0.0dev
+  Version 1.4dev
 </a>
 <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
@@ -224,7 +224,7 @@
 
 
 <span class="k">def</span> <span class="nf">_make_datetime</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert 7 bytes from a GINI file to a `datetime` instance.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert 7 bytes from a GINI file to a `datetime` instance.&quot;&quot;&quot;</span>
     <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">cs</span> <span class="o">=</span> <span class="n">s</span>
     <span class="k">if</span> <span class="n">year</span> <span class="o">&lt;</span> <span class="mi">70</span><span class="p">:</span>
         <span class="n">year</span> <span class="o">+=</span> <span class="mi">100</span>
@@ -232,7 +232,7 @@
 
 
 <span class="k">def</span> <span class="nf">_scaled_int</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert a 3 byte string to a signed integer value.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert a 3 byte string to a signed integer value.&quot;&quot;&quot;</span>
     <span class="c1"># Get leftmost bit (sign) as 1 (if 0) or -1 (if 1)</span>
     <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x80</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">6</span><span class="p">)</span>
 
@@ -245,7 +245,7 @@
 
 
 <span class="k">def</span> <span class="nf">_name_lookup</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create an io helper to convert an integer to a named value.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create an io helper to convert an integer to a named value.&quot;&quot;&quot;</span>
     <span class="n">mapper</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)),</span> <span class="n">names</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
@@ -254,7 +254,7 @@
 
 
 <span class="k">class</span> <span class="nc">GiniProjection</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Represents projection values in GINI files.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Represents projection values in GINI files.&quot;&quot;&quot;</span>
 
     <span class="n">mercator</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">lambert_conformal</span> <span class="o">=</span> <span class="mi">3</span>
@@ -263,7 +263,7 @@
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">GiniFile</span><span class="p">(</span><span class="n">AbstractDataStore</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A class that handles reading the GINI format satellite images from the NWS.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class that handles reading the GINI format satellite images from the NWS.</span>
 
 <span class="sd">    This class attempts to decode every byte that is in a given GINI file.</span>
 
@@ -332,7 +332,7 @@
                            <span class="p">(</span><span class="s1">&#39;ur_lon&#39;</span><span class="p">,</span> <span class="s1">&#39;3s&#39;</span><span class="p">,</span> <span class="n">_scaled_int</span><span class="p">)],</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Navigation&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GiniFile.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create an instance of `GiniFile`.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create an instance of `GiniFile`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -429,7 +429,7 @@
                                             <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">nx</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">_process_wmo_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Read off the WMO header from the file, if necessary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read off the WMO header from the file, if necessary.&quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">get_next</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
         <span class="n">match</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wmo_finder</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
@@ -438,7 +438,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a string representation of the product.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a string representation of the product.&quot;&quot;&quot;</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39;: </span><span class="si">{0.creating_entity}</span><span class="s1"> </span><span class="si">{0.sector_id}</span><span class="s1"> </span><span class="si">{0.channel}</span><span class="s1">&#39;</span><span class="p">,</span>
                  <span class="s1">&#39;Time: </span><span class="si">{0.datetime}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;Size: </span><span class="si">{0.ny}</span><span class="s1">x</span><span class="si">{0.nx}</span><span class="s1">&#39;</span><span class="p">,</span>
                  <span class="s1">&#39;Projection: </span><span class="si">{0.projection.name}</span><span class="s1">&#39;</span><span class="p">,</span>
@@ -555,7 +555,7 @@
         <span class="k">return</span> <span class="p">[(</span><span class="n">proj_var_name</span><span class="p">,</span> <span class="n">proj_var</span><span class="p">),</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data_var</span><span class="p">)]</span>
 
 <div class="viewcode-block" id="GiniFile.get_variables"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_variables">[docs]</a>    <span class="k">def</span> <span class="nf">get_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get all variables in the file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get all variables in the file.</span>
 
 <span class="sd">        This is used by `xarray.open_dataset`.</span>
 
@@ -567,7 +567,7 @@
         <span class="k">return</span> <span class="n">FrozenDict</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GiniFile.get_attrs"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_attrs">[docs]</a>    <span class="k">def</span> <span class="nf">get_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the global attributes.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the global attributes.</span>
 
 <span class="sd">        This is used by `xarray.open_dataset`.</span>
 
@@ -577,10 +577,10 @@
 
 
 <span class="k">class</span> <span class="nc">GiniXarrayBackend</span><span class="p">(</span><span class="n">BackendEntrypoint</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Entry point for direct reading of GINI data into Xarray.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Entry point for direct reading of GINI data into Xarray.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">open_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename_or_obj</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">drop_variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Open the GINI datafile as a Xarray dataset.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Open the GINI datafile as a Xarray dataset.</span>
 
 <span class="sd">        This is the main entrypoint for plugging into Xarray read support.</span>
 
@@ -598,7 +598,7 @@
         <span class="k">return</span> <span class="n">Dataset</span><span class="p">({</span><span class="n">proj_name</span><span class="p">:</span> <span class="n">proj_var</span><span class="p">,</span> <span class="n">data_name</span><span class="p">:</span> <span class="n">decoded_data_var</span><span class="p">},</span> <span class="n">coords</span><span class="p">,</span> <span class="n">gini_attrs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">guess_can_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename_or_obj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Try to guess whether we can read this file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Try to guess whether we can read this file.</span>
 
 <span class="sd">        This allows files ending in &#39;.gini&#39; to be automatically opened by xarray.</span>
 
@@ -628,7 +628,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2008–2022, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
+    &copy; Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
 </p>
     </div>
     

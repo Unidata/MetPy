@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>metpy.io.gempak &#8212; MetPy 0.0dev</title>
+    <title>metpy.io.gempak &#8212; MetPy 1.4dev</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -165,7 +165,7 @@
             <!-- Only show if we have sidebars configured, else just a small margin  -->
             <div class="col-12 col-md-3 bd-sidebar">
               <div class="sidebar-start-items"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  Version 0.0dev
+  Version 1.4dev
 </a>
 <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
@@ -260,7 +260,7 @@
 
 
 <span class="k">class</span> <span class="nc">FileTypes</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;GEMPAK file type.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;GEMPAK file type.&quot;&quot;&quot;</span>
 
     <span class="n">surface</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">sounding</span> <span class="o">=</span> <span class="mi">2</span>
@@ -268,7 +268,7 @@
 
 
 <span class="k">class</span> <span class="nc">DataTypes</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Data management library data types.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data management library data types.&quot;&quot;&quot;</span>
 
     <span class="n">real</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">integer</span> <span class="o">=</span> <span class="mi">2</span>
@@ -278,7 +278,7 @@
 
 
 <span class="k">class</span> <span class="nc">VerticalCoordinates</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Vertical coordinates.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Vertical coordinates.&quot;&quot;&quot;</span>
 
     <span class="n">none</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">pres</span> <span class="o">=</span> <span class="mi">1</span>
@@ -292,7 +292,7 @@
 
 
 <span class="k">class</span> <span class="nc">PackingType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;GRIB packing type.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;GRIB packing type.&quot;&quot;&quot;</span>
 
     <span class="n">none</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">grib</span> <span class="o">=</span> <span class="mi">1</span>
@@ -303,7 +303,7 @@
 
 
 <span class="k">class</span> <span class="nc">ForecastType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Forecast type.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Forecast type.&quot;&quot;&quot;</span>
 
     <span class="n">analysis</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">forecast</span> <span class="o">=</span> <span class="mi">1</span>
@@ -312,7 +312,7 @@
 
 
 <span class="k">class</span> <span class="nc">DataSource</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Data source.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data source.&quot;&quot;&quot;</span>
 
     <span class="n">model</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">airway_surface</span> <span class="o">=</span> <span class="mi">1</span>
@@ -369,17 +369,17 @@
 
 
 <span class="k">def</span> <span class="nf">_check_nan</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check for nan values and replace with missing.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check for nan values and replace with missing.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">missing</span> <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span>
 
 
 <span class="k">def</span> <span class="nf">convert_degc_to_k</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert scalar values from degC to K, handling missing values.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert scalar values from degC to K, handling missing values.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">val</span> <span class="o">+</span> <span class="n">constants</span><span class="o">.</span><span class="n">nounit</span><span class="o">.</span><span class="n">zero_degc</span> <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="n">missing</span> <span class="k">else</span> <span class="n">val</span>
 
 
 <span class="k">def</span> <span class="nf">_data_source</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get data source from stored integer.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get data source from stored integer.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">DataSource</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
@@ -389,12 +389,12 @@
 
 
 <span class="k">def</span> <span class="nf">_word_to_position</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">bytes_per_word</span><span class="o">=</span><span class="n">BYTES_PER_WORD</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return beginning position of a word in bytes.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return beginning position of a word in bytes.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">word</span> <span class="o">*</span> <span class="n">bytes_per_word</span><span class="p">)</span> <span class="o">-</span> <span class="n">bytes_per_word</span>
 
 
 <span class="k">def</span> <span class="nf">_interp_logp_data</span><span class="p">(</span><span class="n">sounding</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Interpolate missing sounding data.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interpolate missing sounding data.</span>
 
 <span class="sd">    This function is similar to the MR_MISS subroutine in GEMPAK.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -442,7 +442,7 @@
 
 
 <span class="k">def</span> <span class="nf">_interp_logp_height</span><span class="p">(</span><span class="n">sounding</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Interpolate height linearly with respect to log p.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interpolate height linearly with respect to log p.</span>
 
 <span class="sd">    This function mimics the functionality of the MR_INTZ</span>
 <span class="sd">    subroutine in GEMPAK.</span>
@@ -514,7 +514,7 @@
 
 
 <span class="k">def</span> <span class="nf">_interp_logp_pressure</span><span class="p">(</span><span class="n">sounding</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Interpolate pressure from heights.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interpolate pressure from heights.</span>
 
 <span class="sd">    This function is similar to the MR_INTP subroutine from GEMPAK.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -550,7 +550,7 @@
 
 
 <span class="k">def</span> <span class="nf">_interp_moist_height</span><span class="p">(</span><span class="n">sounding</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Interpolate moist hydrostatic height.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interpolate moist hydrostatic height.</span>
 
 <span class="sd">    This function mimics the functionality of the MR_SCMZ</span>
 <span class="sd">    subroutine in GEMPAK. This the default behavior when</span>
@@ -644,7 +644,7 @@
 
 
 <span class="k">def</span> <span class="nf">_interp_parameters</span><span class="p">(</span><span class="n">vlev</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">bdata</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;General interpolation with respect to log-p.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;General interpolation with respect to log-p.</span>
 
 <span class="sd">    See the PC_INTP subroutine in GEMPAK.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -685,7 +685,7 @@
 
 
 <span class="k">def</span> <span class="nf">_wx_to_wnum</span><span class="p">(</span><span class="n">wx1</span><span class="p">,</span> <span class="n">wx2</span><span class="p">,</span> <span class="n">wx3</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert METAR present weather code to GEMPAK weather number.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert METAR present weather code to GEMPAK weather number.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -739,7 +739,7 @@
 
 
 <span class="k">def</span> <span class="nf">_convert_clouds</span><span class="p">(</span><span class="n">cover</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert METAR cloud cover to GEMPAK code.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert METAR cloud cover to GEMPAK code.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -765,7 +765,7 @@
 
 
 <span class="k">class</span> <span class="nc">GempakFile</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Base class for GEMPAK files.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for GEMPAK files.</span>
 
 <span class="sd">    Reads ubiquitous GEMPAK file headers (i.e., the data management portion of</span>
 <span class="sd">    each file).</span>
@@ -819,7 +819,7 @@
                            <span class="o">+</span> <span class="p">[(</span><span class="s1">&#39;free_word</span><span class="si">{:d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="s1">&#39;i&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">29</span><span class="p">)])</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate GempakFile object from file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate GempakFile object from file.&quot;&quot;&quot;</span>
         <span class="n">fobj</span> <span class="o">=</span> <span class="n">open_as_needed</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">fobj</span><span class="p">):</span>
@@ -959,7 +959,7 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">attr</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_binary</span><span class="p">(</span><span class="o">*</span><span class="n">fmt</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_swap_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binary</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Swap between little and big endian.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Swap between little and big endian.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">swaped_bytes</span> <span class="o">=</span> <span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;@i&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="n">binary</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">swaped_bytes</span><span class="p">:</span>
@@ -974,7 +974,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">endian</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">byteorder</span>
 
     <span class="k">def</span> <span class="nf">_process_gempak_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Read the GEMPAK header from the file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the GEMPAK header from the file.&quot;&quot;&quot;</span>
         <span class="n">fmt</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;28s&#39;</span><span class="p">,</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">),</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span>
 
         <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="n">NamedStruct</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;GempakHeader&#39;</span><span class="p">))</span>
@@ -983,7 +983,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_convert_dattim</span><span class="p">(</span><span class="n">dattim</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert GEMPAK DATTIM integer to datetime object.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert GEMPAK DATTIM integer to datetime object.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dattim</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">dattim</span> <span class="o">&lt;</span> <span class="mi">100000000</span><span class="p">:</span>
                 <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dattim</span><span class="si">:</span><span class="s1">06d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;%y%m</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -995,7 +995,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_convert_ftime</span><span class="p">(</span><span class="n">ftime</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert GEMPAK forecast time and type integer.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert GEMPAK forecast time and type integer.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">ftime</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">iftype</span> <span class="o">=</span> <span class="n">ForecastType</span><span class="p">(</span><span class="n">ftime</span> <span class="o">//</span> <span class="mi">100000</span><span class="p">)</span>
             <span class="n">iftime</span> <span class="o">=</span> <span class="n">ftime</span> <span class="o">-</span> <span class="n">iftype</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mi">100000</span>
@@ -1008,7 +1008,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_convert_level</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert levels.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert levels.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="ow">and</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">level</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1016,7 +1016,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_convert_vertical_coord</span><span class="p">(</span><span class="n">coord</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert integer vertical coordinate to name.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert integer vertical coordinate to name.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">coord</span> <span class="o">&lt;=</span> <span class="mi">8</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">VerticalCoordinates</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1024,7 +1024,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_fortran_ishift</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">shift</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Python-friendly bit shifting.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Python-friendly bit shifting.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">shift</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># Shift left and only keep low 32 bits</span>
             <span class="n">ret</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">shift</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
@@ -1039,22 +1039,22 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_decode_strip</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Decode bytes to string and strip whitespace.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decode bytes to string and strip whitespace.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">b</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_make_date</span><span class="p">(</span><span class="n">dattim</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make a date object from GEMPAK DATTIM integer.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make a date object from GEMPAK DATTIM integer.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">GempakFile</span><span class="o">.</span><span class="n">_convert_dattim</span><span class="p">(</span><span class="n">dattim</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_make_time</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make a time object from GEMPAK FTIME integer.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make a time object from GEMPAK FTIME integer.&quot;&quot;&quot;</span>
         <span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:04d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;%H%M&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_unpack_real</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Unpack floating point data packed in integers.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack floating point data packed in integers.</span>
 
 <span class="sd">        Similar to DP_UNPK subroutine in GEMPAK.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1111,7 +1111,7 @@
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">GempakGrid</span><span class="p">(</span><span class="n">GempakFile</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Subclass of GempakFile specific to GEMPAK gridded data.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of GempakFile specific to GEMPAK gridded data.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GempakGrid.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakGrid.html#metpy.io.GempakGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
@@ -1172,11 +1172,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_coordinates</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="GempakGrid.gdinfo"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakGrid.html#metpy.io.GempakGrid.gdinfo">[docs]</a>    <span class="k">def</span> <span class="nf">gdinfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return grid information.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return grid information.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gdinfo</span></div>
 
     <span class="k">def</span> <span class="nf">_get_crs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create CRS from GEMPAK navigation block.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create CRS from GEMPAK navigation block.&quot;&quot;&quot;</span>
         <span class="n">gemproj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigation_block</span><span class="o">.</span><span class="n">projection</span>
         <span class="n">proj</span><span class="p">,</span> <span class="n">ptype</span> <span class="o">=</span> <span class="n">GEMPROJ_TO_PROJ</span><span class="p">[</span><span class="n">gemproj</span><span class="p">]</span>
         <span class="n">radius_sph</span> <span class="o">=</span> <span class="mf">6371200.0</span>
@@ -1228,7 +1228,7 @@
                                              <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">radius_sph</span><span class="p">})</span>
 
     <span class="k">def</span> <span class="nf">_set_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Use GEMPAK navigation block to define coordinates.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use GEMPAK navigation block to define coordinates.</span>
 
 <span class="sd">        Defines geographic and projection coordinates for the object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1245,7 +1245,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_unpack_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">packing_type</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Read raw GEMPAK grid integers and unpack into floats.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read raw GEMPAK grid integers and unpack into floats.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">packing_type</span> <span class="o">==</span> <span class="n">PackingType</span><span class="o">.</span><span class="n">none</span><span class="p">:</span>
             <span class="n">lendat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_header_length</span> <span class="o">-</span> <span class="n">part</span><span class="o">.</span><span class="n">header_length</span> <span class="o">-</span> <span class="mi">1</span>
 
@@ -1395,7 +1395,7 @@
 
 <div class="viewcode-block" id="GempakGrid.gdxarray"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakGrid.html#metpy.io.GempakGrid.gdxarray">[docs]</a>    <span class="k">def</span> <span class="nf">gdxarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">coordinate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_time2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Select grids and output as list of xarray DataArrays.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select grids and output as list of xarray DataArrays.</span>
 
 <span class="sd">        Subset the data by parameter values. The default is to not</span>
 <span class="sd">        subset and return the entire dataset.</span>
@@ -1570,7 +1570,7 @@
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">GempakSounding</span><span class="p">(</span><span class="n">GempakFile</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Subclass of GempakFile specific to GEMPAK sounding data.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of GempakFile specific to GEMPAK sounding data.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GempakSounding.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSounding.html#metpy.io.GempakSounding.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
@@ -1636,11 +1636,11 @@
                     <span class="p">)</span></div>
 
 <div class="viewcode-block" id="GempakSounding.sninfo"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSounding.html#metpy.io.GempakSounding.sninfo">[docs]</a>    <span class="k">def</span> <span class="nf">sninfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return sounding information.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return sounding information.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sninfo</span></div>
 
     <span class="k">def</span> <span class="nf">_unpack_merged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sndno</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Unpack merged sounding data.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack merged sounding data.&quot;&quot;&quot;</span>
         <span class="n">soundings</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">irow</span><span class="p">,</span> <span class="n">row_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_headers</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">icol</span><span class="p">,</span> <span class="n">col_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_headers</span><span class="p">):</span>
@@ -1707,7 +1707,7 @@
         <span class="k">return</span> <span class="n">soundings</span>
 
     <span class="k">def</span> <span class="nf">_unpack_unmerged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sndno</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Unpack unmerged sounding data.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack unmerged sounding data.&quot;&quot;&quot;</span>
         <span class="n">soundings</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">irow</span><span class="p">,</span> <span class="n">row_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_headers</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">icol</span><span class="p">,</span> <span class="n">col_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_headers</span><span class="p">):</span>
@@ -1780,7 +1780,7 @@
         <span class="k">return</span> <span class="n">soundings</span>
 
     <span class="k">def</span> <span class="nf">_merge_significant_temps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">merged</span><span class="p">,</span> <span class="n">parts</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">pbot</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Process and merge a significant temperature sections.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process and merge a significant temperature sections.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">isigt</span><span class="p">,</span> <span class="n">press</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="n">section</span><span class="p">][</span><span class="s1">&#39;PRES&#39;</span><span class="p">]):</span>
             <span class="n">press</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">press</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">missing_float</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
@@ -1808,7 +1808,7 @@
         <span class="k">return</span> <span class="n">pbot</span>
 
     <span class="k">def</span> <span class="nf">_merge_tropopause_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">merged</span><span class="p">,</span> <span class="n">parts</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">pbot</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Process and merge tropopause sections.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process and merge tropopause sections.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">itrp</span><span class="p">,</span> <span class="n">press</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="n">section</span><span class="p">][</span><span class="s1">&#39;PRES&#39;</span><span class="p">]):</span>
             <span class="n">press</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">press</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">missing_float</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
@@ -1840,7 +1840,7 @@
         <span class="k">return</span> <span class="n">pbot</span>
 
     <span class="k">def</span> <span class="nf">_merge_mandatory_temps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">merged</span><span class="p">,</span> <span class="n">parts</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">qcman</span><span class="p">,</span> <span class="n">bgl</span><span class="p">,</span> <span class="n">plast</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Process and merge mandatory temperature sections.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process and merge mandatory temperature sections.&quot;&quot;&quot;</span>
         <span class="n">num_levels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="n">section</span><span class="p">][</span><span class="s1">&#39;PRES&#39;</span><span class="p">])</span>
         <span class="n">start_level</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;TTAA&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
@@ -1869,7 +1869,7 @@
         <span class="k">return</span> <span class="n">bgl</span><span class="p">,</span> <span class="n">plast</span>
 
     <span class="k">def</span> <span class="nf">_merge_mandatory_winds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">merged</span><span class="p">,</span> <span class="n">parts</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">qcman</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Process and merge manadatory wind sections.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process and merge manadatory wind sections.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">iwind</span><span class="p">,</span> <span class="n">press</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="n">section</span><span class="p">][</span><span class="s1">&#39;PRES&#39;</span><span class="p">]):</span>
             <span class="k">if</span> <span class="n">press</span> <span class="ow">in</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;PRES&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">:]:</span>
                 <span class="n">loc</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;PRES&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">press</span><span class="p">)</span>
@@ -1890,7 +1890,7 @@
                     <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;HGHT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">missing_float</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_merge_winds_pressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">merged</span><span class="p">,</span> <span class="n">parts</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">pbot</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Process and merge wind sections on pressure surfaces.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process and merge wind sections on pressure surfaces.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">ilevel</span><span class="p">,</span> <span class="n">press</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="n">section</span><span class="p">][</span><span class="s1">&#39;PRES&#39;</span><span class="p">]):</span>
             <span class="n">press</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">press</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">missing_float</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
@@ -1922,7 +1922,7 @@
         <span class="k">return</span> <span class="n">pbot</span>
 
     <span class="k">def</span> <span class="nf">_merge_winds_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">merged</span><span class="p">,</span> <span class="n">parts</span><span class="p">,</span> <span class="n">nsgw</span><span class="p">,</span> <span class="n">nasw</span><span class="p">,</span> <span class="n">istart</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Merge wind sections on height surfaces.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Merge wind sections on height surfaces.&quot;&quot;&quot;</span>
         <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">merged</span><span class="p">[</span><span class="s1">&#39;HGHT&#39;</span><span class="p">])</span>
         <span class="n">psfc</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;PRES&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">zsfc</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;HGHT&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -2023,7 +2023,7 @@
                 <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">def</span> <span class="nf">_merge_sounding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parts</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Merge unmerged sounding data.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Merge unmerged sounding data.&quot;&quot;&quot;</span>
         <span class="n">merged</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;STID&#39;</span><span class="p">:</span> <span class="n">parts</span><span class="p">[</span><span class="s1">&#39;STID&#39;</span><span class="p">],</span>
                   <span class="s1">&#39;STNM&#39;</span><span class="p">:</span> <span class="n">parts</span><span class="p">[</span><span class="s1">&#39;STNM&#39;</span><span class="p">],</span>
                   <span class="s1">&#39;SLAT&#39;</span><span class="p">:</span> <span class="n">parts</span><span class="p">[</span><span class="s1">&#39;SLAT&#39;</span><span class="p">],</span>
@@ -2319,7 +2319,7 @@
 
 <div class="viewcode-block" id="GempakSounding.snxarray"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSounding.html#metpy.io.GempakSounding.snxarray">[docs]</a>    <span class="k">def</span> <span class="nf">snxarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">date_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Select soundings and output as list of xarray Datasets.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select soundings and output as list of xarray Datasets.</span>
 
 <span class="sd">        Subset the data by parameter values. The default is to not</span>
 <span class="sd">        subset and return the entire dataset.</span>
@@ -2474,7 +2474,7 @@
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">GempakSurface</span><span class="p">(</span><span class="n">GempakFile</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Subclass of GempakFile specific to GEMPAK surface data.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of GempakFile specific to GEMPAK surface data.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GempakSurface.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
@@ -2584,11 +2584,11 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Unknown surface type </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="GempakSurface.sfinfo"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.sfinfo">[docs]</a>    <span class="k">def</span> <span class="nf">sfinfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return station information.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return station information.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sfinfo</span></div>
 
     <span class="k">def</span> <span class="nf">_get_surface_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Determine type of surface file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine type of surface file.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_headers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span> <span class="o">=</span> <span class="s1">&#39;ship&#39;</span>
         <span class="k">elif</span> <span class="s1">&#39;DATE&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_keys</span><span class="p">:</span>
@@ -2599,7 +2599,7 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Unknown surface data type&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_key_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Determine header information from a set of keys.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine header information from a set of keys.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;4s&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decode_strip</span><span class="p">)</span> <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;STID&#39;</span>
                 <span class="k">else</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;STNM&#39;</span>
                 <span class="k">else</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span> <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;SLAT&#39;</span>
@@ -2614,7 +2614,7 @@
                 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_unpack_climate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sfcno</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Unpack a climate surface data file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack a climate surface data file.&quot;&quot;&quot;</span>
         <span class="n">stations</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">icol</span><span class="p">,</span> <span class="n">col_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_headers</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">irow</span><span class="p">,</span> <span class="n">row_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_headers</span><span class="p">):</span>
@@ -2685,7 +2685,7 @@
         <span class="k">return</span> <span class="n">stations</span>
 
     <span class="k">def</span> <span class="nf">_unpack_ship</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sfcno</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Unpack ship (moving observation) surface data file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack ship (moving observation) surface data file.&quot;&quot;&quot;</span>
         <span class="n">stations</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">irow</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">icol</span><span class="p">,</span> <span class="n">col_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_headers</span><span class="p">):</span>
@@ -2756,7 +2756,7 @@
         <span class="k">return</span> <span class="n">stations</span>
 
     <span class="k">def</span> <span class="nf">_unpack_standard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sfcno</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Unpack a standard surface data file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack a standard surface data file.&quot;&quot;&quot;</span>
         <span class="n">stations</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">irow</span><span class="p">,</span> <span class="n">row_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_headers</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">icol</span><span class="p">,</span> <span class="n">col_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_headers</span><span class="p">):</span>
@@ -2826,7 +2826,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_decode_special_observation</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Decode raw special obsrvation text.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decode raw special obsrvation text.&quot;&quot;&quot;</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">station</span><span class="p">[</span><span class="s1">&#39;SPCL&#39;</span><span class="p">]</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s1">&#39;DATE&#39;</span><span class="p">],</span> <span class="n">station</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">])</span>
         <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_metar</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
@@ -2860,7 +2860,7 @@
 
 <div class="viewcode-block" id="GempakSurface.nearest_time"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.nearest_time">[docs]</a>    <span class="k">def</span> <span class="nf">nearest_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date_time</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">include_special</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get nearest observation to given time for selected stations.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get nearest observation to given time for selected stations.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2935,7 +2935,7 @@
 <div class="viewcode-block" id="GempakSurface.sfjson"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.sfjson">[docs]</a>    <span class="k">def</span> <span class="nf">sfjson</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">date_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">include_special</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Select surface stations and output as list of JSON objects.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select surface stations and output as list of JSON objects.</span>
 
 <span class="sd">        Subset the data by parameter values. The default is to not</span>
 <span class="sd">        subset and return the entire dataset.</span>
@@ -3086,7 +3086,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2008–2022, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
+    &copy; Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
 </p>
     </div>
     
