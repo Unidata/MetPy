@@ -19,7 +19,7 @@ pep8-naming==0.13.3
 
 flake8-rst-docstrings==0.3.0
 flake8-docstrings==1.6.0
-pydocstyle==6.1.1
+pydocstyle==6.2.1
 
 doc8==1.1.1
 restructuredtext_lint==1.4.0
