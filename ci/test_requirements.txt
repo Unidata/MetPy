@@ -1,5 +1,5 @@
 pytest==7.2.0
 pytest-mpl==0.16.1
 netCDF4==1.6.2
-coverage==7.0.3
+coverage==7.0.4
 dask==2022.12.1
