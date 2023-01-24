@@ -1759,7 +1759,7 @@ def density(pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts
         Total atmospheric pressure
 
     temperature: `pint.Quantity`
-        Air temperature
+        Air temperature (or the virtual temperature if the mixing ratio is set to 0)
 
     mixing_ratio : `pint.Quantity`
         Mass mixing ratio (dimensionless)
@@ -1783,7 +1783,7 @@ def density(pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts
 
     Notes
     -----
-    .. math:: \rho = \frac{p}{R_dT_v}
+    .. math:: \rho = \frac{\epsilon p\,(1+w)}{R_dT\,(w+\epsilon)}
 
     .. versionchanged:: 1.0
        Renamed ``mixing`` parameter to ``mixing_ratio``
