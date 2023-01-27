@@ -962,7 +962,7 @@ class GempakGrid(GempakFile):
                     n,
                     head.GTM1[0],
                     head.GDT1 + head.GTM1[1],
-                    head.GDT2 + head.GTM2[1] if head.GDT2 and head.GDTM2 else None,
+                    head.GDT2 + head.GTM2[1] if head.GDT2 and head.GTM2 else None,
                     head.GPM1 + head.GPM2 + head.GPM3,
                     head.GLV1,
                     head.GLV2,
