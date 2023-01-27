@@ -319,3 +319,16 @@ def test_special_surface_observation():
     assert stn['chc2'] == 8004
     assert stn['chc3'] == -9999
     assert stn['vsby'] == 2
+
+
+def test_multi_time_grid():
+    """Test files with multiple times on a single grid."""
+    g = get_test_data('gem_multi_time.grd')
+
+    grid = GempakGrid(g)
+    grid_info = grid.gdinfo()[0]
+    dattim1 = grid_info.DATTIM1
+    dattim2 = grid_info.DATTIM2
+
+    assert dattim1 == datetime(1991, 8, 19, 0, 0)
+    assert dattim2 == datetime(1991, 8, 20, 0, 0)
