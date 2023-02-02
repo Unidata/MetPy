@@ -72,8 +72,7 @@ class Meteogram:
             plot_range = [0, 20, 1]
         self.ax1.set_ylabel('Wind Speed (knots)', multialignment='center')
         self.ax1.set_ylim(plot_range[0], plot_range[1], plot_range[2])
-        self.ax1.grid(b=True, which='major', axis='y', color='k', linestyle='--',
-                      linewidth=0.5)
+        self.ax1.grid(which='major', axis='y', color='k', linestyle='--', linewidth=0.5)
         ln2 = self.ax1.plot(self.dates, wsmax, '.r', label='3-sec Wind Speed Max')
 
         ax7 = self.ax1.twinx()
@@ -104,8 +103,7 @@ class Meteogram:
         self.ax2.fill_between(self.dates, t, td, color='r')
 
         self.ax2.set_ylabel('Temperature\n(F)', multialignment='center')
-        self.ax2.grid(b=True, which='major', axis='y', color='k', linestyle='--',
-                      linewidth=0.5)
+        self.ax2.grid(which='major', axis='y', color='k', linestyle='--', linewidth=0.5)
         self.ax2.set_ylim(plot_range[0], plot_range[1], plot_range[2])
 
         ln5 = self.ax2.plot(self.dates, td, 'g-', label='Dewpoint')
@@ -133,8 +131,7 @@ class Meteogram:
         self.ax3 = fig.add_subplot(4, 1, 3, sharex=self.ax1)
         self.ax3.plot(self.dates, rh, 'g-', label='Relative Humidity')
         self.ax3.legend(loc='upper center', bbox_to_anchor=(0.5, 1.22), prop={'size': 12})
-        self.ax3.grid(b=True, which='major', axis='y', color='k', linestyle='--',
-                      linewidth=0.5)
+        self.ax3.grid(which='major', axis='y', color='k', linestyle='--', linewidth=0.5)
         self.ax3.set_ylim(plot_range[0], plot_range[1], plot_range[2])
 
         self.ax3.fill_between(self.dates, rh, self.ax3.get_ylim()[0], color='g')
@@ -164,8 +161,7 @@ class Meteogram:
         axtwin.xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
 
         self.ax4.legend(loc='upper center', bbox_to_anchor=(0.5, 1.2), prop={'size': 12})
-        self.ax4.grid(b=True, which='major', axis='y', color='k', linestyle='--',
-                      linewidth=0.5)
+        self.ax4.grid(which='major', axis='y', color='k', linestyle='--', linewidth=0.5)
         # OTHER OPTIONAL AXES TO PLOT
         # plot_irradiance
         # plot_precipitation
