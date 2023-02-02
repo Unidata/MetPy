@@ -15,11 +15,15 @@ on:
     paths:
       - .github/workflows/nightly-builds.yml
   pull_request:
-    paths:
-      - .github/workflows/nightly-builds.yml
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
 
 jobs:
   Tests:
+    if: ${{ (github.event_name == 'pull_request' && github.event.label.name == 'nightly-ci') || github.event_name != 'pull_request' }}
     runs-on: ubuntu-20.04
 
     steps:
@@ -62,6 +66,7 @@ jobs:
         retention-days: 5
 
   Docs:
+    if: ${{ (github.event_name == 'pull_request' && github.event.label.name == 'nightly-ci') || github.event_name != 'pull_request' }}
     runs-on: ubuntu-20.04
 
     steps:
@@ -107,7 +112,7 @@ jobs:
   Report:
     name: Report
     needs: [Tests, Docs]
-    if: ${{ failure() || github.event_name == 'pull_request' }}
+    if: failure()
     runs-on: ubuntu-latest
     permissions:
       issues: write
