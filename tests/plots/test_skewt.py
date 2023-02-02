@@ -154,6 +154,15 @@ def test_skewt_units():
     skew.ax.axhline(np.array([50000]) * units.Pa, color='red')
     skew.ax.axvline(np.array([-20]) * units.degC, color='darkred')
     skew.ax.axvline(-10, color='orange')
+
+    # On Matplotlib <= 3.6, ax[hv]line() doesn't trigger unit labels
+    assert skew.ax.get_xlabel() == ('degree_Celsius' if MPL_VERSION > '3.6' else '')
+    assert skew.ax.get_ylabel() == ('hectopascal' if MPL_VERSION > '3.6' else '')
+
+    # Clear them for the image test
+    skew.ax.set_xlabel('')
+    skew.ax.set_ylabel('')
+
     return fig
 
 
