@@ -13,7 +13,7 @@ flake8-mutable==1.2.0
 flake8-pie==0.16.0
 flake8-print==5.0.0
 flake8-quotes==3.3.2
-flake8-requirements==1.7.6
+flake8-requirements==1.7.7
 flake8-simplify==0.19.3
 pep8-naming==0.13.3
 
