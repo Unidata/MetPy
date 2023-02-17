@@ -23,7 +23,13 @@ on:
 
 jobs:
   Tests:
-    if: ${{ (github.event_name == 'pull_request' && github.event.label.name == 'nightly-ci') || github.event_name != 'pull_request' }}
+    if: |
+      github.event_name != 'pull_request' ||
+      github.event_name == 'pull_request' &&
+      (
+       (github.event.action == 'labeled' && github.event.label.name == 'nightly-ci') ||
+       contains(github.event.pull_request.labels.*.name, 'nightly-ci')
+      )
     runs-on: ubuntu-20.04
 
     steps:
@@ -66,7 +72,13 @@ jobs:
         retention-days: 5
 
   Docs:
-    if: ${{ (github.event_name == 'pull_request' && github.event.label.name == 'nightly-ci') || github.event_name != 'pull_request' }}
+    if: |
+      github.event_name != 'pull_request' ||
+      github.event_name == 'pull_request' &&
+      (
+       (github.event.action == 'labeled' && github.event.label.name == 'nightly-ci') ||
+       contains(github.event.pull_request.labels.*.name, 'nightly-ci')
+      )
     runs-on: ubuntu-20.04
 
     steps:
