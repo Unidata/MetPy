@@ -1,0 +1,99 @@
+name: Unstable Builds
+
+on:
+  workflow_call:
+    outputs:
+      tests_result:
+        description: "Result from running tests"
+        value: ${{ jobs.Tests.outputs.result }}
+      docs_result:
+        description: "Result from running docs"
+        value: ${{ jobs.Docs.outputs.result }}
+
+jobs:
+  Tests:
+    runs-on: ubuntu-20.04
+    outputs:
+      result: ${{ steps.tests.outcome }}
+    steps:
+    # We check out only a limited depth and then pull tags to save time
+    - name: Checkout source
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 100
+
+    - name: Get tags
+      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+    - name: Assemble test requirements
+      run: |
+        echo git+https://github.com/hgrecco/pint@master#egg=pint >> ci/test_requirements.txt
+        echo git+https://github.com/pydata/xarray@main#egg=xarray >> ci/test_requirements.txt
+
+    - name: Install using PyPI
+      uses: ./.github/actions/install-pypi
+      with:
+        need-cartopy: true
+        type: test
+        version-file: Prerelease
+        python-version: 3.11
+
+    - name: Run tests
+      id: tests
+      uses: ./.github/actions/run-tests
+      with:
+        run-doctests: false
+        key: nightly
+        upload-coverage: false
+
+    - name: Upload test log
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: log-nightly-tests
+        path: tests-nightly.log
+        retention-days: 5
+
+  Docs:
+    runs-on: ubuntu-20.04
+    outputs:
+      result: ${{ steps.build.outcome }}
+    steps:
+    # We check out only a limited depth and then pull tags to save time
+    - name: Checkout source
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 100
+
+    - name: Get tags
+      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+    - name: Assemble doc requirements
+      run: |
+        echo git+https://github.com/hgrecco/pint@master#egg=pint >> ci/doc_requirements.txt
+        echo git+https://github.com/pydata/xarray@main#egg=xarray >> ci/doc_requirements.txt
+
+    - name: Install using PyPI
+      uses: ./.github/actions/install-pypi
+      with:
+        need-cartopy: true
+        type: doc
+        version-file: Prerelease
+        python-version: 3.11
+
+    - name: Build docs
+      id: build
+      uses: ./.github/actions/build-docs
+      with:
+        run-linkchecker: true
+        key: nightly
+
+    - name: Upload build log
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: log-nightly-docs
+        path: |
+          build.log
+          linkchecker.log
+        retention-days: 5
