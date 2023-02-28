@@ -188,7 +188,7 @@ variable for plotting.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  16.991 seconds)
+   **Total running time of the script:** ( 0 minutes  11.520 seconds)
 
 
 .. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:
