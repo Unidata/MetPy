@@ -5,6 +5,6 @@ pandas==1.5.3
 pooch==1.7.0
 pint==0.20.1
 pyproj==3.4.1
-scipy==1.10.0
+scipy==1.10.1
 traitlets==5.9.0
 xarray==2023.1.0
