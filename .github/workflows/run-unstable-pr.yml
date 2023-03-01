@@ -1,0 +1,16 @@
+name: PR Unstable Builds
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
+
+jobs:
+  Builds:
+    if: |
+      ((github.event.action == 'labeled' && github.event.label.name == 'nightly-ci') ||
+       contains(github.event.pull_request.labels.*.name, 'nightly-ci'))
+    uses: ./.github/workflows/unstable-builds.yml

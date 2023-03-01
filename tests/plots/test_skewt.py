@@ -154,6 +154,15 @@ def test_skewt_units():
     skew.ax.axhline(np.array([50000]) * units.Pa, color='red')
     skew.ax.axvline(np.array([-20]) * units.degC, color='darkred')
     skew.ax.axvline(-10, color='orange')
+
+    # On Matplotlib <= 3.6, ax[hv]line() doesn't trigger unit labels
+    assert skew.ax.get_xlabel() == ('degree_Celsius' if MPL_VERSION > '3.6' else '')
+    assert skew.ax.get_ylabel() == ('hectopascal' if MPL_VERSION > '3.6' else '')
+
+    # Clear them for the image test
+    skew.ax.set_xlabel('')
+    skew.ax.set_ylabel('')
+
     return fig
 
 
@@ -174,7 +183,7 @@ def test_profile():
                         -44.1, -45.6, -46.3, -45.5, -47.1, -52.1, -50.4, -47.3, -57.1,
                         -57.9, -58.1, -60.9, -61.4, -62.1, -65.1, -65.6,
                         -66.7, -70.5]) * units.degC
-    profile = np. array([18.2, 16.18287437, 15.68644745, 14.8369451,
+    profile = np.array([18.2, 16.18287437, 15.68644745, 14.8369451,
                         13.45220646, 12.57020365, 12.43280242, 11.78283506,
                         11.0698586, 10.61393901, 9.14490966, 7.66233636,
                         6.1454231, 4.56888673, 1.31644072, -0.36678427,
