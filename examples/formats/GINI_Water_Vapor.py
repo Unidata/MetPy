@@ -14,12 +14,14 @@ import matplotlib.pyplot as plt
 import xarray as xr
 
 from metpy.cbook import get_test_data
+from metpy.io import GiniFile
 from metpy.plots import add_metpy_logo, add_timestamp, colortables
 
 ###########################################
 
 # Use Xarray together with MetPy's GINI backend to directly open the file from the test data
-ds = xr.open_dataset(get_test_data('WEST-CONUS_4km_WV_20151208_2200.gini', as_file_obj=False))
+ds = xr.open_dataset(GiniFile(get_test_data('WEST-CONUS_4km_WV_20151208_2200.gini',
+                                            as_file_obj=False)))
 print(ds)
 
 ###########################################

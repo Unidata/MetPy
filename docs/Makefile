@@ -19,6 +19,10 @@ cleanall: clean
 clean:
 	rm -rf $(BUILDDIR)/*
 
+# Make the area rst file for documentation
+area:
+	python make_areas.py
+
 # Check that all functions in modules with template overrides are present in the doc file
 overridecheck:
 	python override_check.py

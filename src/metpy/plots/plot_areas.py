@@ -3,11 +3,12 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Collection of pre-defined areas for plotting with associated projections."""
 
-import cartopy.crs as ccrs
 import pandas as pd
 
+from .cartopy_utils import import_cartopy
 from ..package_tools import Exporter
 
+ccrs = import_cartopy()
 exporter = Exporter(globals())
 
 area_data = [{'area': 'tropatl', 'name': 'TROPICAL ATLANTIC',
@@ -107,7 +108,8 @@ area_data = [{'area': 'tropatl', 'name': 'TROPICAL ATLANTIC',
               'proj': ccrs.SouthPolarStereo(central_longitude=-142)},
              {'area': 'europe', 'name': 'ICAO P.S. AREA EU',
               'bounds': (-21.6, 68.4, 21.4, 58.7),
-              'proj': ccrs.Stereographic(central_latitude=90, central_longitude=11)},
+              'proj': ccrs.Stereographic(central_latitude=90,
+                                         central_longitude=11)},
              {'area': 'middle_east', 'name': 'ICAO MERC AREA ME',
               'bounds': (17.0, 70.0, 10.0, 44.0),
               'proj': ccrs.PlateCarree()},
@@ -501,7 +503,8 @@ area_data = [{'area': 'tropatl', 'name': 'TROPICAL ATLANTIC',
               'proj': ccrs.PlateCarree()},
              {'area': 'bel', 'name': 'BELGIUM',
               'bounds': (2.5, 6.5, 49.4, 51.6),
-              'proj': ccrs.LambertConformal(standard_parallels=[30, 60], central_longitude=5)},
+              'proj': ccrs.LambertConformal(standard_parallels=[30, 60],
+                                            central_longitude=5)},
              {'area': 'bf', 'name': 'BRUNEI',
               'bounds': (113.0, 116.0, 4.0, 5.5),
               'proj': ccrs.PlateCarree()},
@@ -650,7 +653,8 @@ area_data = [{'area': 'tropatl', 'name': 'TROPICAL ATLANTIC',
               'proj': ccrs.PlateCarree()},
              {'area': 'fr', 'name': 'FRANCE',
               'bounds': (-5.0, 11.0, 41.0, 51.5),
-              'proj': ccrs.LambertConformal(standard_parallels=[30, 60], central_longitude=3)},
+              'proj': ccrs.LambertConformal(standard_parallels=[30, 60],
+                                            central_longitude=3)},
              {'area': 'gb', 'name': 'GAMBIA',
               'bounds': (-17.1, -13.5, 13.0, 14.6),
               'proj': ccrs.PlateCarree()},
@@ -910,7 +914,7 @@ area_data = [{'area': 'tropatl', 'name': 'TROPICAL ATLANTIC',
              {'area': 'pf', 'name': 'FRENCH POLYNESIA',
               'bounds': (-154.0, -134.0, -28.0, -8.0),
               'proj': ccrs.PlateCarree()},
-             {'area': 'ph', 'name': 'PHILIPINES',
+             {'area': 'ph', 'name': 'PHILIPPINES',
               'bounds': (116.0, 127.0, 4.0, 21.0),
               'proj': ccrs.PlateCarree()},
              {'area': 'pi', 'name': 'PHOENIX ISLANDS',

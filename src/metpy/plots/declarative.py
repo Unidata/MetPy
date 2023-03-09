@@ -20,7 +20,6 @@ from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe
 from . import ctables, wx_symbols
 from ._mpl import TextCollection
 from .cartopy_utils import import_cartopy
-from .plot_areas import areas
 from .station_plot import StationPlot
 from ..calc import reduce_point_density, smooth_n_point, zoom_xarray
 from ..package_tools import Exporter
@@ -305,6 +304,8 @@ class MapPanel(Panel, ValidationMixin):
     @validate('area')
     def _valid_area(self, proposal):
         """Check that proposed string or tuple is valid and turn string into a tuple extent."""
+        from .plot_areas import areas
+
         area = proposal['value']
 
         # Parse string, check that string is valid, and determine extent based on string
@@ -361,15 +362,16 @@ class MapPanel(Panel, ValidationMixin):
         if isinstance(self.projection, str):
             if self.projection == 'data':
                 if isinstance(self.plots[0].griddata, tuple):
-                    return self.plots[0].griddata[0].metpy.cartopy_crs
+                    proj = self.plots[0].griddata[0].metpy.cartopy_crs
                 else:
-                    return self.plots[0].griddata.metpy.cartopy_crs
+                    proj = self.plots[0].griddata.metpy.cartopy_crs
             elif self.projection == 'area':
-                return self._area_proj
+                proj = self._area_proj
             else:
-                return lookup_projection(self.projection)
+                proj = lookup_projection(self.projection)
         else:
-            return self.projection
+            proj = self.projection
+        return proj
 
     @property
     def _layer_features(self):
