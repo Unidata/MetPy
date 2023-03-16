@@ -424,41 +424,41 @@ This can also be installed from a variety of package managers, including <code c
 Clone your fork of the MetPy repository (in terminal on Mac/Linux or git shell/GUI on Windows)
 to the location you’d like to keep it.
 We are partial to creating a <code class="docutils literal notranslate"><span class="pre">git_repos</span></code> or <code class="docutils literal notranslate"><span class="pre">projects</span></code> directory in our home folder.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/&lt;your-user-name&gt;/metpy.git
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/&lt;your-user-name&gt;/metpy.git
 </pre></div>
 </div>
 <p>Navigate to that folder in the terminal or in Anaconda Prompt if you’re on Windows.
 The remainder of the instructions will take place within this directory.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> metpy
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>metpy
 </pre></div>
 </div>
 <p>Connect your repository to the upstream (main project).</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git remote add unidata https://github.com/unidata/metpy.git
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>unidata<span class="w"> </span>https://github.com/unidata/metpy.git
 </pre></div>
 </div>
 <p>Create a new conda environment for us to configure, and give it a name.
 After <code class="docutils literal notranslate"><span class="pre">-n</span></code> you can specify any name you’d like; here we’ve chosen <code class="docutils literal notranslate"><span class="pre">devel</span></code>.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda create -n devel
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>devel
 </pre></div>
 </div>
 <p><strong>IMPORTANT</strong>: Always activate this environment when developing and testing your changes!</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda activate devel
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>devel
 </pre></div>
 </div>
 <p>You will have to do this any time you re-open your prompt.
 Currently there are no packages in this environment, let’s change that.
 Configure this environment so that we can reach
 <a class="reference external" href="https://conda-forge.org/feedstock-outputs/">conda-forge</a> for the specific packages we depend on.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda config --env --add channels conda-forge --add channels conda-forge/label/testing
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>config<span class="w"> </span>--env<span class="w"> </span>--add<span class="w"> </span>channels<span class="w"> </span>conda-forge<span class="w"> </span>--add<span class="w"> </span>channels<span class="w"> </span>conda-forge/label/testing
 </pre></div>
 </div>
 <p>Install the necessary dependency packages from conda-forge.
 Remember that these must be executed within the <code class="docutils literal notranslate"><span class="pre">metpy</span></code> directory.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda install --file ci/requirements.txt --file ci/extra_requirements.txt --file ci/test_requirements.txt
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>--file<span class="w"> </span>ci/requirements.txt<span class="w"> </span>--file<span class="w"> </span>ci/extra_requirements.txt<span class="w"> </span>--file<span class="w"> </span>ci/test_requirements.txt
 </pre></div>
 </div>
 <p>Finally, create an editable install of MetPy that will update with your development!</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install -e .
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
 <p>Note sections on <a class="reference internal" href="#documentation"><span class="std std-doc">documentation</span></a> and <a class="reference internal" href="#code-style"><span class="std std-doc">code style</span></a> below,
@@ -540,11 +540,11 @@ you made our default <code class="docutils literal notranslate"><span class="pre
 <p>Running the tests can be done by running <code class="docutils literal notranslate"><span class="pre">pytest</span></code></p>
 <p>Running the whole test suite isn’t that slow, but can be a burden if you’re working on just
 one module or a specific test. It is easy to run tests on a single directory:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest tests/calc
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>tests/calc
 </pre></div>
 </div>
 <p>A specific test can be run as:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest -k test_my_test_func_name
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>-k<span class="w"> </span>test_my_test_func_name
 </pre></div>
 </div>
 </section>
@@ -588,11 +588,11 @@ By following the <a class="reference internal" href="#setting-up-your-developmen
 you should have a <code class="docutils literal notranslate"><span class="pre">testing</span></code> install of matplotlib, which will guarantee that your image tests
 behave exactly the same as ours.
 To run these tests, use:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest --mpl
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>--mpl
 </pre></div>
 </div>
 <p>When adding new image comparison tests, start by creating the baseline images for the tests:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest --mpl-generate-path<span class="o">=</span>baseline
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>--mpl-generate-path<span class="o">=</span>baseline
 </pre></div>
 </div>
 <p>That command runs the tests and saves the images in the <code class="docutils literal notranslate"><span class="pre">baseline</span></code> directory.
@@ -607,7 +607,7 @@ to run only the test you just created for this step.</p>
 supported by the pooch library. To add files to this, please ensure they are as small as
 possible. Put the files in the <code class="docutils literal notranslate"><span class="pre">staticdata</span></code> directory. Then run this command in the root of
 the MetPy repository to recreate the data registry:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python -c <span class="s2">&quot;import pooch; pooch.make_registry(&#39;staticdata&#39;, &#39;src/metpy/static-data-manifest.txt&#39;)&quot;</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import pooch; pooch.make_registry(&#39;staticdata&#39;, &#39;src/metpy/static-data-manifest.txt&#39;)&quot;</span>
 </pre></div>
 </div>
 <p>Make sure that no system files (like <code class="docutils literal notranslate"><span class="pre">.DS_Store</span></code>) are in the manifest and add it to your
@@ -729,7 +729,7 @@ importance of writing tested and maintainable software.</p>
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2008–2022, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
+    &copy; Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
 </p>
     </div>
     

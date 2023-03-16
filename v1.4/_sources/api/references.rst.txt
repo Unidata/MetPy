@@ -135,7 +135,7 @@ References
 
 .. [Miller1972] Miller, R. C, 1972: *Notes on Analysis and Severe-Storm Forecasting Procedures
            of the Air Force Global Weather Central*. `AD0744042
-           <https://apps.dtic.mil/sti/citations/AD0744042>`_.
+           <../_static/Miller1972.pdf>`_.
 
 .. [Moritz2000] Moritz, H., 2000: Geodetic Reference System 1980.
            *Journal of Geodesy* **74**, 128-133, doi:`10.1007/s001900050278

@@ -222,30 +222,30 @@
 
 
 <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate a string version from an integer value.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a string version from an integer value.&quot;&quot;&quot;</span>
     <span class="n">ver</span> <span class="o">=</span> <span class="n">val</span> <span class="o">/</span> <span class="mf">100.</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="mf">2.</span> <span class="o">*</span> <span class="mf">100.</span> <span class="k">else</span> <span class="n">val</span> <span class="o">/</span> <span class="mf">10.</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ver</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span>
 
 
 <span class="k">def</span> <span class="nf">scaler</span><span class="p">(</span><span class="n">scale</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a function that scales by a specific value.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a function that scales by a specific value.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">val</span> <span class="o">*</span> <span class="n">scale</span>
     <span class="k">return</span> <span class="n">inner</span>
 
 
 <span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert an integer value to a floating point angle.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an integer value to a floating point angle.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">val</span> <span class="o">*</span> <span class="mf">360.</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span>
 
 
 <span class="k">def</span> <span class="nf">az_rate</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert an integer value to a floating point angular rate.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an integer value to a floating point angular rate.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">val</span> <span class="o">*</span> <span class="mf">90.</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span>
 
 
 <span class="k">def</span> <span class="nf">bzip_blocks_decompress_all</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Decompress all of the bzip2-ed blocks.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decompress all of the bzip2-ed blocks.</span>
 
 <span class="sd">    Returns the decompressed data as a `bytearray`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -270,13 +270,13 @@
 
 
 <span class="k">def</span> <span class="nf">nexrad_to_datetime</span><span class="p">(</span><span class="n">julian_date</span><span class="p">,</span> <span class="n">ms_midnight</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert NEXRAD date time format to python `datetime.datetime`.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert NEXRAD date time format to python `datetime.datetime`.&quot;&quot;&quot;</span>
     <span class="c1"># Subtracting one from julian_date is because epoch date is 1</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">((</span><span class="n">julian_date</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">day</span> <span class="o">+</span> <span class="n">ms_midnight</span> <span class="o">*</span> <span class="n">milli</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">remap_status</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert status integer value to appropriate bitmask.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert status integer value to appropriate bitmask.&quot;&quot;&quot;</span>
     <span class="n">status</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">bad</span> <span class="o">=</span> <span class="n">BAD_DATA</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&amp;</span> <span class="mh">0xF0</span> <span class="k">else</span> <span class="mi">0</span>
     <span class="n">val</span> <span class="o">&amp;=</span> <span class="mh">0x0F</span>
@@ -306,7 +306,7 @@
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">Level2File</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Handle reading the NEXRAD Level 2 data and its various messages.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Handle reading the NEXRAD Level 2 data and its various messages.</span>
 
 <span class="sd">    This class attempts to decode every byte that is in a given data file.</span>
 <span class="sd">    It supports both external compression, as well as the internal BZ2</span>
@@ -352,7 +352,7 @@
     <span class="n">RANGE_FOLD</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>  <span class="c1"># TODO: Need to separate from missing</span>
 
 <div class="viewcode-block" id="Level2File.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.Level2File.html#metpy.io.Level2File.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">has_volume_header</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create instance of `Level2File`.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create instance of `Level2File`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -643,7 +643,7 @@
     <span class="k">def</span> <span class="nf">_decode_msg13</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_hdr</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_segment</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&gt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">h&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&gt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="mi">2</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">h&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="c1"># Legacy format doesn&#39;t have date/time and has fewer azimuths</span>
             <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
                 <span class="n">num_el</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -686,7 +686,7 @@
         <span class="c1"># will be returned concatenated when this is the case</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_segment</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
-            <span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">num_el</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&gt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">h&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">num_el</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&gt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="mi">2</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">h&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">num_el</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Message 15 num_el is 0--likely legacy clutter filter notch width. &#39;</span>
                          <span class="s1">&#39;Skipping...&#39;</span><span class="p">)</span>
@@ -823,7 +823,7 @@
                     <span class="n">hdr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_block_fmt</span><span class="p">)</span>
                     <span class="c1"># TODO: The correctness of this code is not tested</span>
                     <span class="n">vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_array</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="n">hdr</span><span class="o">.</span><span class="n">num_gates</span><span class="p">,</span>
-                                                   <span class="n">dtype</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;&gt;u</span><span class="si">{</span><span class="n">hdr</span><span class="o">.</span><span class="n">data_size</span> <span class="o">//</span> <span class="mi">8</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                                                   <span class="n">dtype</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;&gt;u</span><span class="si">{</span><span class="n">hdr</span><span class="o">.</span><span class="n">data_size</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="mi">8</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
                     <span class="n">scaled_vals</span> <span class="o">=</span> <span class="p">(</span><span class="n">vals</span> <span class="o">-</span> <span class="n">hdr</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span> <span class="o">/</span> <span class="n">hdr</span><span class="o">.</span><span class="n">scale</span>
                     <span class="n">scaled_vals</span><span class="p">[</span><span class="n">vals</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MISSING</span>
                     <span class="n">scaled_vals</span><span class="p">[</span><span class="n">vals</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RANGE_FOLD</span>
@@ -881,7 +881,7 @@
 
 
 <span class="k">def</span> <span class="nf">reduce_lists</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Replace single item lists in a dictionary with the single item.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace single item lists in a dictionary with the single item.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
         <span class="n">old_data</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">old_data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -889,14 +889,14 @@
 
 
 <span class="k">def</span> <span class="nf">two_comp16</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the two&#39;s-complement signed representation of a 16-bit unsigned integer.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the two&#39;s-complement signed representation of a 16-bit unsigned integer.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;&gt;</span> <span class="mi">15</span><span class="p">:</span>
         <span class="n">val</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="o">~</span><span class="n">val</span> <span class="o">&amp;</span> <span class="mh">0x7fff</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">val</span>
 
 
 <span class="k">def</span> <span class="nf">float16</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a 16-bit floating point value to a standard Python float.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a 16-bit floating point value to a standard Python float.&quot;&quot;&quot;</span>
     <span class="c1"># Fraction is 10 LSB, Exponent middle 5, and Sign the MSB</span>
     <span class="n">frac</span> <span class="o">=</span> <span class="n">val</span> <span class="o">&amp;</span> <span class="mh">0x03ff</span>
     <span class="n">exp</span> <span class="o">=</span> <span class="p">(</span><span class="n">val</span> <span class="o">&gt;&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x1F</span>
@@ -914,27 +914,27 @@
 
 
 <span class="k">def</span> <span class="nf">float32</span><span class="p">(</span><span class="n">short1</span><span class="p">,</span> <span class="n">short2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Unpack a pair of 16-bit integers as a Python float.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Unpack a pair of 16-bit integers as a Python float.&quot;&quot;&quot;</span>
     <span class="c1"># Masking below in python will properly convert signed values to unsigned</span>
     <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s1">&#39;&gt;f&#39;</span><span class="p">,</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&gt;HH&#39;</span><span class="p">,</span> <span class="n">short1</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">,</span> <span class="n">short2</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">date_elem</span><span class="p">(</span><span class="n">ind_days</span><span class="p">,</span> <span class="n">ind_minutes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a function to parse a datetime from the product-specific blocks.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a function to parse a datetime from the product-specific blocks.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">nexrad_to_datetime</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="n">ind_days</span><span class="p">],</span> <span class="n">seq</span><span class="p">[</span><span class="n">ind_minutes</span><span class="p">]</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">inner</span>
 
 
 <span class="k">def</span> <span class="nf">scaled_elem</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a function to scale a certain product-specific block.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a function to scale a certain product-specific block.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">seq</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span>
     <span class="k">return</span> <span class="n">inner</span>
 
 
 <span class="k">def</span> <span class="nf">combine_elem</span><span class="p">(</span><span class="n">ind1</span><span class="p">,</span> <span class="n">ind2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a function to combine two specified product-specific blocks into a single int.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a function to combine two specified product-specific blocks into a single int.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
         <span class="n">shift</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span>
         <span class="k">if</span> <span class="n">seq</span><span class="p">[</span><span class="n">ind1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -946,33 +946,33 @@
 
 
 <span class="k">def</span> <span class="nf">float_elem</span><span class="p">(</span><span class="n">ind1</span><span class="p">,</span> <span class="n">ind2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a function to combine two specified product-specific blocks into a float.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a function to combine two specified product-specific blocks into a float.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="k">lambda</span> <span class="n">seq</span><span class="p">:</span> <span class="n">float32</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="n">ind1</span><span class="p">],</span> <span class="n">seq</span><span class="p">[</span><span class="n">ind2</span><span class="p">])</span>
 
 
 <span class="k">def</span> <span class="nf">high_byte</span><span class="p">(</span><span class="n">ind</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a function to return the high-byte of a product-specific block.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a function to return the high-byte of a product-specific block.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">seq</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span>
     <span class="k">return</span> <span class="n">inner</span>
 
 
 <span class="k">def</span> <span class="nf">low_byte</span><span class="p">(</span><span class="n">ind</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a function to return the low-byte of a product-specific block.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a function to return the low-byte of a product-specific block.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">seq</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x00FF</span>
     <span class="k">return</span> <span class="n">inner</span>
 
 
 <span class="k">def</span> <span class="nf">delta_time</span><span class="p">(</span><span class="n">ind</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a function to return the delta time from a product-specific block.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a function to return the delta time from a product-specific block.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">seq</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span>
     <span class="k">return</span> <span class="n">inner</span>
 
 
 <span class="k">def</span> <span class="nf">supplemental_scan</span><span class="p">(</span><span class="n">ind</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a function to return the supplement scan type from a product-specific block.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a function to return the supplement scan type from a product-specific block.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
         <span class="c1"># ICD says 1-&gt;SAILS, 2-&gt;MRLE, but testing on 2020-08-17 makes this seem inverted</span>
         <span class="c1"># given what&#39;s being reported by sites in the GSM.</span>
@@ -986,7 +986,7 @@
 <span class="c1"># into physical values. Can also have a &#39;labels&#39; attribute to give</span>
 <span class="c1"># categorical labels</span>
 <span class="k">class</span> <span class="nc">DataMapper</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Convert packed integer data into physical units.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert packed integer data into physical units.&quot;&quot;&quot;</span>
 
     <span class="c1"># Need to find way to handle range folded</span>
     <span class="c1"># RANGE_FOLD = -9999</span>
@@ -997,12 +997,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MISSING</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert the values.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the values.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lut</span><span class="p">[</span><span class="n">data</span><span class="p">]</span>
 
 
 <span class="k">class</span> <span class="nc">DigitalMapper</span><span class="p">(</span><span class="n">DataMapper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Maps packed integers to floats using a scale and offset from the product.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maps packed integers to floats using a scale and offset from the product.&quot;&quot;&quot;</span>
 
     <span class="n">_min_scale</span> <span class="o">=</span> <span class="mf">0.1</span>
     <span class="n">_inc_scale</span> <span class="o">=</span> <span class="mf">0.1</span>
@@ -1011,7 +1011,7 @@
     <span class="n">range_fold</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize the mapper and the lookup table.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the mapper and the lookup table.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="n">min_val</span> <span class="o">=</span> <span class="n">two_comp16</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_scale</span>
         <span class="n">inc</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inc_scale</span>
@@ -1026,20 +1026,20 @@
 
 
 <span class="k">class</span> <span class="nc">DigitalRefMapper</span><span class="p">(</span><span class="n">DigitalMapper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mapper for digital reflectivity products.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapper for digital reflectivity products.&quot;&quot;&quot;</span>
 
     <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;dBZ&#39;</span>
 
 
 <span class="k">class</span> <span class="nc">DigitalVelMapper</span><span class="p">(</span><span class="n">DigitalMapper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mapper for digital velocity products.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapper for digital velocity products.&quot;&quot;&quot;</span>
 
     <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;m/s&#39;</span>
     <span class="n">range_fold</span> <span class="o">=</span> <span class="kc">True</span>
 
 
 <span class="k">class</span> <span class="nc">DigitalSPWMapper</span><span class="p">(</span><span class="n">DigitalVelMapper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mapper for digital spectrum width products.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapper for digital spectrum width products.&quot;&quot;&quot;</span>
 
     <span class="n">_min_data</span> <span class="o">=</span> <span class="mi">129</span>
     <span class="c1"># ICD says up to 152, but also says max value is 19, which implies 129 + 19/0.5 -&gt; 167</span>
@@ -1047,7 +1047,7 @@
 
 
 <span class="k">class</span> <span class="nc">PrecipArrayMapper</span><span class="p">(</span><span class="n">DigitalMapper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mapper for precipitation array products.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapper for precipitation array products.&quot;&quot;&quot;</span>
 
     <span class="n">_inc_scale</span> <span class="o">=</span> <span class="mf">0.001</span>
     <span class="n">_min_data</span> <span class="o">=</span> <span class="mi">1</span>
@@ -1056,17 +1056,17 @@
 
 
 <span class="k">class</span> <span class="nc">DigitalStormPrecipMapper</span><span class="p">(</span><span class="n">DigitalMapper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mapper for digital storm precipitation products.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapper for digital storm precipitation products.&quot;&quot;&quot;</span>
 
     <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;inches&#39;</span>
     <span class="n">_inc_scale</span> <span class="o">=</span> <span class="mf">0.01</span>
 
 
 <span class="k">class</span> <span class="nc">DigitalVILMapper</span><span class="p">(</span><span class="n">DataMapper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mapper for digital VIL products.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapper for digital VIL products.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize the VIL mapper.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the VIL mapper.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="n">lin_scale</span> <span class="o">=</span> <span class="n">float16</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">lin_offset</span> <span class="o">=</span> <span class="n">float16</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -1082,10 +1082,10 @@
 
 
 <span class="k">class</span> <span class="nc">DigitalEETMapper</span><span class="p">(</span><span class="n">DataMapper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mapper for digital echo tops products.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapper for digital echo tops products.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize the mapper.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the mapper.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="n">data_mask</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -1099,18 +1099,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">topped_lut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topped_lut</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_vals</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert the data values.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the data values.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lut</span><span class="p">[</span><span class="n">data_vals</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">topped_lut</span><span class="p">[</span><span class="n">data_vals</span><span class="p">]</span>
 
 
 <span class="k">class</span> <span class="nc">GenericDigitalMapper</span><span class="p">(</span><span class="n">DataMapper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Maps packed integers to floats using a scale and offset from the product.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maps packed integers to floats using a scale and offset from the product.</span>
 
 <span class="sd">    Also handles special data flags.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize the mapper by pulling out all the information from the product.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the mapper by pulling out all the information from the product.&quot;&quot;&quot;</span>
         <span class="c1"># Need to treat this value as unsigned, so we can use the full 16-bit range. This</span>
         <span class="c1"># is necessary at least for the DPR product, otherwise it has a value of -1.</span>
         <span class="n">max_data_val</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>
@@ -1132,7 +1132,7 @@
 
 
 <span class="k">class</span> <span class="nc">DigitalHMCMapper</span><span class="p">(</span><span class="n">DataMapper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mapper for hydrometeor classification products.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapper for hydrometeor classification products.</span>
 
 <span class="sd">    Handles assigning string labels based on values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1141,7 +1141,7 @@
               <span class="s1">&#39;BD&#39;</span><span class="p">,</span> <span class="s1">&#39;GR&#39;</span><span class="p">,</span> <span class="s1">&#39;HA&#39;</span><span class="p">,</span> <span class="s1">&#39;LH&#39;</span><span class="p">,</span> <span class="s1">&#39;GH&#39;</span><span class="p">,</span> <span class="s1">&#39;UK&#39;</span><span class="p">,</span> <span class="s1">&#39;RF&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize the mapper.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the mapper.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">256</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lut</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">10</span>
@@ -1150,10 +1150,10 @@
 
 <span class="c1"># 156, 157</span>
 <span class="k">class</span> <span class="nc">EDRMapper</span><span class="p">(</span><span class="n">DataMapper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mapper for eddy dissipation rate products.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapper for eddy dissipation rate products.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize the mapper based on the product.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the mapper based on the product.&quot;&quot;&quot;</span>
         <span class="n">data_levels</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_levels</span><span class="p">)</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1000.</span>
@@ -1164,13 +1164,13 @@
 
 
 <span class="k">class</span> <span class="nc">LegacyMapper</span><span class="p">(</span><span class="n">DataMapper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mapper for legacy products.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapper for legacy products.&quot;&quot;&quot;</span>
 
     <span class="n">lut_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Blank&#39;</span><span class="p">,</span> <span class="s1">&#39;TH&#39;</span><span class="p">,</span> <span class="s1">&#39;ND&#39;</span><span class="p">,</span> <span class="s1">&#39;RF&#39;</span><span class="p">,</span> <span class="s1">&#39;BI&#39;</span><span class="p">,</span> <span class="s1">&#39;GC&#39;</span><span class="p">,</span> <span class="s1">&#39;IC&#39;</span><span class="p">,</span> <span class="s1">&#39;GR&#39;</span><span class="p">,</span> <span class="s1">&#39;WS&#39;</span><span class="p">,</span>
                  <span class="s1">&#39;DS&#39;</span><span class="p">,</span> <span class="s1">&#39;RA&#39;</span><span class="p">,</span> <span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;BD&#39;</span><span class="p">,</span> <span class="s1">&#39;HA&#39;</span><span class="p">,</span> <span class="s1">&#39;UK&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize the values and labels from the product.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the values and labels from the product.&quot;&quot;&quot;</span>
         <span class="c1"># Don&#39;t worry about super() since we&#39;re using our own lut assembled sequentially</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lut</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1215,7 +1215,7 @@
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">Level3File</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Handle reading the wide array of NEXRAD Level 3 (NIDS) product files.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Handle reading the wide array of NEXRAD Level 3 (NIDS) product files.</span>
 
 <span class="sd">    This class attempts to decode every byte that is in a given product file.</span>
 <span class="sd">    It supports all the various compression formats that exist for these</span>
@@ -1824,7 +1824,7 @@
                             <span class="p">(</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))}</span>
 
 <div class="viewcode-block" id="Level3File.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.Level3File.html#metpy.io.Level3File.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create instance of `Level3File`.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create instance of `Level3File`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2012,7 +2012,7 @@
 
 <div class="viewcode-block" id="Level3File.pos_scale"><a class="viewcode-back" href="../../../api/generated/metpy.io.Level3File.html#metpy.io.Level3File.pos_scale">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">pos_scale</span><span class="p">(</span><span class="n">is_sym_block</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Scale of the position information in km.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Scale of the position information in km.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mf">0.25</span> <span class="k">if</span> <span class="n">is_sym_block</span> <span class="k">else</span> <span class="mi">1</span></div>
 
     <span class="k">def</span> <span class="nf">_unpack_rcm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
@@ -2128,7 +2128,7 @@
             <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">offset_from</span><span class="p">(</span><span class="n">block_start</span><span class="p">)</span> <span class="o">==</span> <span class="n">header</span><span class="o">.</span><span class="n">block_len</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the string representation of the product.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the string representation of the product.&quot;&quot;&quot;</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;product_name&#39;</span><span class="p">,</span> <span class="s1">&#39;header&#39;</span><span class="p">,</span> <span class="s1">&#39;prod_desc&#39;</span><span class="p">,</span> <span class="s1">&#39;thresholds&#39;</span><span class="p">,</span> <span class="s1">&#39;depVals&#39;</span><span class="p">,</span> <span class="s1">&#39;metadata&#39;</span><span class="p">,</span>
                  <span class="s1">&#39;gsm&#39;</span><span class="p">,</span> <span class="s1">&#39;gsm_additional&#39;</span><span class="p">,</span> <span class="s1">&#39;siteID&#39;</span><span class="p">)</span>
         <span class="n">blocks</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">attrs</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
@@ -2487,10 +2487,10 @@
 
 
 <span class="k">class</span> <span class="nc">Level3XDRParser</span><span class="p">(</span><span class="n">Unpacker</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Handle XDR-formatted Level 3 NEXRAD products.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle XDR-formatted Level 3 NEXRAD products.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform the actual unpacking.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the actual unpacking.&quot;&quot;&quot;</span>
         <span class="n">xdr</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">code</span> <span class="o">==</span> <span class="mi">28</span><span class="p">:</span>
@@ -2503,7 +2503,7 @@
         <span class="k">return</span> <span class="n">xdr</span>
 
     <span class="k">def</span> <span class="nf">unpack_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Unpack the internal data as a string.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack the internal data as a string.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Unpacker</span><span class="o">.</span><span class="n">unpack_string</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_unpack_prod_desc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2614,7 +2614,7 @@
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">def</span> <span class="nf">is_precip_mode</span><span class="p">(</span><span class="n">vcp_num</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Determine if the NEXRAD radar is operating in precipitation mode.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Determine if the NEXRAD radar is operating in precipitation mode.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -2650,7 +2650,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2008–2022, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
+    &copy; Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
 </p>
     </div>
     

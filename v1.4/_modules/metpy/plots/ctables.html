@@ -261,7 +261,7 @@
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">def</span> <span class="nf">read_colortable</span><span class="p">(</span><span class="n">fobj</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Read colortable information from a file.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Read colortable information from a file.</span>
 
 <span class="sd">    Reads a colortable, which consists of one color per line of the file, where</span>
 <span class="sd">    a color can be one of: a tuple of 3 floats, a string with a HTML color name,</span>
@@ -291,7 +291,7 @@
 
 
 <div class="viewcode-block" id="convert_gempak_table"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.convert_gempak_table.html#metpy.plots.ctables.convert_gempak_table">[docs]</a><span class="k">def</span> <span class="nf">convert_gempak_table</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="n">outfile</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert a GEMPAK color table to one MetPy can read.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert a GEMPAK color table to one MetPy can read.</span>
 
 <span class="sd">    Reads lines from a GEMPAK-style color table file, and writes them to another file in</span>
 <span class="sd">    a format that MetPy can parse.</span>
@@ -307,18 +307,18 @@
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
             <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
-            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">r</span> <span class="o">/</span> <span class="mi">255</span><span class="si">:</span><span class="s1">f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">g</span> <span class="o">/</span> <span class="mi">255</span><span class="si">:</span><span class="s1">f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">b</span> <span class="o">/</span> <span class="mi">255</span><span class="si">:</span><span class="s1">f</span><span class="si">}</span><span class="s1">)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">r</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">255</span><span class="si">:</span><span class="s1">f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">g</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">255</span><span class="si">:</span><span class="s1">f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">b</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">255</span><span class="si">:</span><span class="s1">f</span><span class="si">}</span><span class="s1">)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ColortableRegistry"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry">[docs]</a><span class="k">class</span> <span class="nc">ColortableRegistry</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Manages the collection of color tables.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Manages the collection of color tables.</span>
 
 <span class="sd">    Provides access to color tables, read collections of files, and generates</span>
 <span class="sd">    matplotlib&#39;s Normalize instances to go with the colortable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ColortableRegistry.scan_resource"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry.scan_resource">[docs]</a>    <span class="k">def</span> <span class="nf">scan_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pkg</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Scan a resource directory for colortable files and add them to the registry.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Scan a resource directory for colortable files and add them to the registry.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -339,7 +339,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">add_colortable</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ColortableRegistry.scan_dir"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry.scan_dir">[docs]</a>    <span class="k">def</span> <span class="nf">scan_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Scan a directory on disk for color table files and add them to the registry.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Scan a directory on disk for color table files and add them to the registry.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -358,7 +358,7 @@
                         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Skipping unparsable file: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ColortableRegistry.add_colortable"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry.add_colortable">[docs]</a>    <span class="k">def</span> <span class="nf">add_colortable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fobj</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a color table from a file to the registry.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a color table from a file to the registry.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -372,7 +372,7 @@
         <span class="bp">self</span><span class="p">[</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_r&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="ColortableRegistry.get_with_steps"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry.get_with_steps">[docs]</a>    <span class="k">def</span> <span class="nf">get_with_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get a color table from the registry with a corresponding norm.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get a color table from the registry with a corresponding norm.</span>
 
 <span class="sd">        Builds a `matplotlib.colors.BoundaryNorm` using `start`, `step`, and</span>
 <span class="sd">        the number of colors, based on the color table obtained from `name`.</span>
@@ -401,7 +401,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_with_boundaries</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">boundaries</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ColortableRegistry.get_with_range"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry.get_with_range">[docs]</a>    <span class="k">def</span> <span class="nf">get_with_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get a color table from the registry with a corresponding norm.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get a color table from the registry with a corresponding norm.</span>
 
 <span class="sd">        Builds a `matplotlib.colors.BoundaryNorm` using `start`, `end`, and</span>
 <span class="sd">        the number of colors, based on the color table obtained from `name`.</span>
@@ -430,7 +430,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_with_boundaries</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">boundaries</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ColortableRegistry.get_with_boundaries"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry.get_with_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_with_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">boundaries</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get a color table from the registry with a corresponding norm.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get a color table from the registry with a corresponding norm.</span>
 
 <span class="sd">        Builds a `matplotlib.colors.BoundaryNorm` using `boundaries`.</span>
 
@@ -451,7 +451,7 @@
         <span class="k">return</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">boundaries</span><span class="p">,</span> <span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">),</span> <span class="n">cmap</span></div>
 
 <div class="viewcode-block" id="ColortableRegistry.get_colortable"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry.get_colortable">[docs]</a>    <span class="k">def</span> <span class="nf">get_colortable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get a color table from the registry.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get a color table from the registry.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -495,7 +495,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2008–2022, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
+    &copy; Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
 </p>
     </div>
     
