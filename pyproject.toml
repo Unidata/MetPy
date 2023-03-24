@@ -2,8 +2,74 @@
 requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=3.4"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools_scm]
-version_scheme = "post-release"
+[project]
+name = "MetPy"
+description = "Collection of tools for reading, visualizing and performing calculations with weather data."
+readme = "README.md"
+dynamic = ["version"]
+maintainers = [{name = "MetPy Developers", email = "support-python@unidata.ucar.edu"}]
+license = {text = "BSD-3-Clause"}
+keywords = ["meteorology", "weather"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Matplotlib",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: BSD License"
+]
+requires-python = ">=3.8"
+dependencies = [
+    "importlib_resources>=1.3.0; python_version < '3.9'",
+    "matplotlib>=3.3.0",
+    "numpy>=1.18.0",
+    "pandas>=1.0.0",
+    "pint>=0.15",
+    "pooch>=1.2.0",
+    "pyproj>=2.6.1",
+    "scipy>=1.4.0",
+    "traitlets>=5.0.5",
+    "xarray>=0.18.0"
+]
+
+[project.entry-points."xarray.backends"]
+gini = "metpy.io.gini:GiniXarrayBackend"
+
+[project.optional-dependencies]
+doc = [
+    "sphinx",
+    "sphinx-gallery>=0.4",
+    "myst-parser",
+    "netCDF4"
+]
+examples = [
+    "cartopy>=0.17.0",
+    "geopandas>=0.6.0",
+    "matplotlib>=3.3.0",
+    "shapely>=1.6.0"
+]
+test = [
+    "pytest>=2.4",
+    "pytest-mpl",
+    "cartopy>=0.17.0",
+    "netCDF4",
+    "shapely>=1.6.0"
+]
+
+[project.urls]
+"homepage" = "https://github.com/Unidata/MetPy"
+"Documentation" = "https://unidata.github.io/MetPy/"
+"Release Notes" = "https://github.com/Unidata/MetPy/releases"
+"Bug Tracker" = "https://github.com/Unidata/MetPy/issues"
+"Source Code" = "https://github.com/Unidata/MetPy"
+"Twitter" = "https://twitter.com/MetPy"
+"MetPy Mondays" = "https://www.youtube.com/playlist?list=PLQut5OXpV-0ir4IdllSt1iEZKTwFBa7kO"
 
 [tool.isort]
 line_length = 95
@@ -22,7 +88,6 @@ line-length = 95
 exclude = ["docs", "build", "src/metpy/io/_metar_parser/metar_parser.py"]
 select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "R", "S", "T", "U", "W"]
 ignore = ["F405", "B028", "I001", "RET504", "RET505", "RET506", "RET507", "RUF100"]
-target-version = "py38"
 
 [tool.ruff.per-file-ignores]
 "ci/filter_links.py" = ["E731", "T201"]
@@ -52,3 +117,13 @@ max-complexity = 61
 
 [tool.ruff.pydocstyle]
 convention = "numpy"
+
+[tools.setuptools]
+zip-safe = true
+platforms = ["any"]
+
+[tools.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"

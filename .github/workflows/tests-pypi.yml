@@ -49,17 +49,17 @@ jobs:
     - name: Generate minimum dependencies
       if: ${{ matrix.dep-versions == 'Minimum' }}
       run: |
+        pip install tomli
         python << EOF
-        import configparser
+        import tomli as tomllib
         from pathlib import Path
 
-        # Read our setup.cfg
-        config = configparser.ConfigParser()
-        config.read('setup.cfg')
+        # Read our pyproject.toml
+        config = tomllib.load(open('pyproject.toml', 'rb'))
 
         # Generate a Minimum dependency file
         with (Path('ci') / 'Minimum').open('wt') as out:
-          for dep in config['options']['install_requires'].split('\n'):
+          for dep in config['project']['dependencies']:
             if dep:
               dep = dep.split(';')[0]
               out.write(dep.replace('>=', '==') + '\n')

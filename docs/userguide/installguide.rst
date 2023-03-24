@@ -9,7 +9,7 @@ In general, MetPy tries to support minor versions of dependencies released withi
 years. For Python itself, that generally means supporting the last two minor releases; MetPy
 currently supports Python >= 3.8.
 
-.. literalinclude:: ../../setup.cfg
+.. literalinclude:: ../../pyproject.toml
    :start-after: importlib_resources
    :end-at: xarray
 
