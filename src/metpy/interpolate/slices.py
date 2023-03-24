@@ -48,7 +48,7 @@ def interpolate_to_slice(data, points, interp_type='linear'):
     except AttributeError:
         raise ValueError('Required coordinate information not available. Verify that '
                          'your data has been parsed by MetPy with proper x and y '
-                         'dimension coordinates.')
+                         'dimension coordinates.') from None
 
     data_sliced = data.interp({
         x.name: xr.DataArray(points[:, 0], dims='index', attrs=x.attrs),
@@ -164,7 +164,7 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
             raise ValueError('Data missing required coordinate information. Verify that '
                              'your data have been parsed by MetPy with proper x and y '
                              'dimension coordinates and added crs coordinate of the '
-                             'correct projection for each variable.')
+                             'correct projection for each variable.') from None
 
         # Get the geodesic
         points_cross = geodesic(crs_data, start, end, steps)

@@ -620,7 +620,7 @@ class GempakFile():
 
     data_management_fmt = ([('next_free_word', 'i'), ('max_free_pairs', 'i'),
                            ('actual_free_pairs', 'i'), ('last_word', 'i')]
-                           + [('free_word{:d}'.format(n), 'i') for n in range(1, 29)])
+                           + [(f'free_word{n:d}', 'i') for n in range(1, 29)])
 
     def __init__(self, file):
         """Instantiate GempakFile object from file."""
@@ -714,7 +714,7 @@ class GempakFile():
 
         # Row Keys
         self._buffer.jump_to(self._start, _word_to_position(self.prod_desc.row_keys_ptr))
-        row_key_info = [('row_key{:d}'.format(n), '4s', self._decode_strip)
+        row_key_info = [(f'row_key{n:d}', '4s', self._decode_strip)
                         for n in range(1, self.prod_desc.row_keys + 1)]
         row_key_info.extend([(None, None)])
         row_keys_fmt = NamedStruct(row_key_info, self.prefmt, 'RowKeys')
@@ -722,7 +722,7 @@ class GempakFile():
 
         # Column Keys
         self._buffer.jump_to(self._start, _word_to_position(self.prod_desc.column_keys_ptr))
-        column_key_info = [('column_key{:d}'.format(n), '4s', self._decode_strip)
+        column_key_info = [(f'column_key{n:d}', '4s', self._decode_strip)
                            for n in range(1, self.prod_desc.column_keys + 1)]
         column_key_info.extend([(None, None)])
         column_keys_fmt = NamedStruct(column_key_info, self.prefmt, 'ColumnKeys')
@@ -792,7 +792,7 @@ class GempakFile():
             if dattim < 100000000:
                 dt = datetime.strptime(f'{dattim:06d}', '%y%m%d')
             else:
-                dt = datetime.strptime('{:010d}'.format(dattim), '%m%d%y%H%M')
+                dt = datetime.strptime(f'{dattim:010d}', '%m%d%y%H%M')
         else:
             dt = None
         return dt
@@ -854,7 +854,7 @@ class GempakFile():
     @staticmethod
     def _make_time(t):
         """Make a time object from GEMPAK FTIME integer."""
-        string = '{:04d}'.format(t)
+        string = f'{t:04d}'
         return datetime.strptime(string, '%H%M').time()
 
     def _unpack_real(self, buffer, parameters, length):
@@ -1054,7 +1054,7 @@ class GempakGrid(GempakFile):
             lendat = self.data_header_length - part.header_length - 1
 
             if lendat > 1:
-                buffer_fmt = '{}{}f'.format(self.prefmt, lendat)
+                buffer_fmt = f'{self.prefmt}{lendat}f'
                 buffer = self._buffer.read_struct(struct.Struct(buffer_fmt))
                 grid = np.zeros(self.ky * self.kx, dtype=np.float32)
                 grid[...] = buffer
@@ -1088,7 +1088,7 @@ class GempakGrid(GempakFile):
 
             imiss = 2**self.grid_meta_int.bits - 1
             lendat = self.data_header_length - part.header_length - 8
-            packed_buffer_fmt = '{}{}i'.format(self.prefmt, lendat)
+            packed_buffer_fmt = f'{self.prefmt}{lendat}i'
             packed_buffer = self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
             grid = np.zeros((self.ky, self.kx), dtype=np.float32)
 
@@ -1149,7 +1149,7 @@ class GempakGrid(GempakFile):
             # grid_start = self._buffer.set_mark()
 
             lendat = self.data_header_length - part.header_length - 6
-            packed_buffer_fmt = '{}{}i'.format(self.prefmt, lendat)
+            packed_buffer_fmt = f'{self.prefmt}{lendat}i'
 
             grid = np.zeros(self.grid_meta_int.kxky, dtype=np.float32)
             packed_buffer = self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
@@ -2385,7 +2385,7 @@ class GempakSurface(GempakFile):
                                 )
                             )
         else:
-            raise TypeError('Unknown surface type {}'.format(self.surface_type))
+            raise TypeError(f'Unknown surface type {self.surface_type}')
 
     def sfinfo(self):
         """Return station information."""

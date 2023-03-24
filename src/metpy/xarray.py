@@ -544,7 +544,7 @@ class MetPyDataArrayAccessor:
                 raise AttributeError(
                     'Grid deltas cannot be calculated since horizontal dimension coordinates '
                     'cannot be found.'
-                )
+                ) from None
 
         return {'dx': dx, 'dy': dy}
 
@@ -607,7 +607,7 @@ class MetPyDataArrayAccessor:
             except ValueError:
                 # Intercept ValueError when axis type found but not dimension coordinate
                 raise AttributeError(f'Requested {axis} dimension coordinate but {axis} '
-                                     f'coordinate {name} is not a dimension')
+                                     f'coordinate {name} is not a dimension') from None
         else:
             # Otherwise, not valid
             raise ValueError(_axis_identifier_error)

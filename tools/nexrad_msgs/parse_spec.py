@@ -22,7 +22,7 @@ processors = {}
 @register_processor(3)
 def process_msg3(fname):
     """Handle information for message type 3."""
-    with open(fname, 'r') as infile:
+    with open(fname) as infile:
         info = []
         for lineno, line in enumerate(infile):
             parts = line.split('  ')
@@ -44,7 +44,7 @@ def process_msg3(fname):
                 info.append({'name': var_name, 'desc': full_desc, 'fmt': fmt})
 
                 if ignored_item(info[-1]) and var_name != 'Spare':
-                    warnings.warn('{} has type {}. Setting as Spare'.format(var_name, typ))
+                    warnings.warn(f'{var_name} has type {typ}. Setting as Spare')
 
             except (ValueError, AssertionError):
                 warnings.warn('{} > {}'.format(lineno + 1, ':'.join(parts)))
@@ -55,7 +55,7 @@ def process_msg3(fname):
 @register_processor(18)
 def process_msg18(fname):
     """Handle information for message type 18."""
-    with open(fname, 'r') as infile:
+    with open(fname) as infile:
         info = []
         for lineno, line in enumerate(infile):
             parts = line.split('  ')
@@ -71,9 +71,9 @@ def process_msg18(fname):
                                additional=[('See Note (5)', ('{size}s', 1172))])
 
                 if ' ' in var_name:
-                    warnings.warn('Space in {}'.format(var_name))
+                    warnings.warn(f'Space in {var_name}')
                 if not desc:
-                    warnings.warn('null description for {}'.format(var_name))
+                    warnings.warn(f'null description for {var_name}')
 
                 var_name = fix_var_name(var_name)
                 full_desc = fix_desc(desc, units)
@@ -82,7 +82,7 @@ def process_msg18(fname):
 
                 if (ignored_item(info[-1]) and var_name != 'SPARE'
                         and 'SPARE' not in full_desc):
-                    warnings.warn('{} has type {}. Setting as SPARE'.format(var_name, typ))
+                    warnings.warn(f'{var_name} has type {typ}. Setting as SPARE')
 
             except (ValueError, AssertionError):
                 warnings.warn('{} > {}'.format(lineno + 1, ':'.join(parts)))
@@ -107,7 +107,7 @@ def fix_type(typ, size, additional=None):
                                                                               true_size))
             return fmt_str.format(size=size)
 
-    raise ValueError('No type match! ({})'.format(typ))
+    raise ValueError(f'No type match! ({typ})')
 
 
 def fix_var_name(var_name):
@@ -182,7 +182,7 @@ if __name__ == '__main__':
     from pathlib import Path
 
     for num in [18, 3]:
-        fname = 'msg{:d}.spec'.format(num)
+        fname = f'msg{num:d}.spec'
         print(f'Processing {fname}...')  # noqa: T201
         info = processors[num](fname)
         fname = Path(fname).with_suffix('.py')
