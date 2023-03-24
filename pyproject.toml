@@ -21,8 +21,7 @@ combine_star = true
 line-length = 95
 exclude = ["docs", "build", "src/metpy/io/_metar_parser/metar_parser.py"]
 select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "R", "S", "T", "U", "W"]
-ignore = ["F405", "B028", "C901", "I001", "RET504", "RET505", "RET506", "RET507",
-    "RUF100"]
+ignore = ["F405", "B028", "I001", "RET504", "RET505", "RET506", "RET507", "RUF100"]
 target-version = "py38"
 
 [tool.ruff.per-file-ignores]
@@ -47,6 +46,9 @@ relative-imports-order = "closest-to-furthest"
 force-sort-within-sections = true
 order-by-type = false
 combine-as-imports = true
+
+[tool.ruff.mccabe]
+max-complexity = 61
 
 [tool.ruff.pydocstyle]
 convention = "numpy"
