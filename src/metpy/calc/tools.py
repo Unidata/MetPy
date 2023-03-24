@@ -6,7 +6,6 @@ import contextlib
 import functools
 from inspect import Parameter, signature
 from operator import itemgetter
-import warnings
 
 import numpy as np
 from numpy.core.numeric import normalize_axis_index
@@ -15,6 +14,7 @@ from pyproj import CRS, Geod, Proj
 from scipy.spatial import cKDTree
 import xarray as xr
 
+from .. import _warnings
 from ..cbook import broadcast_indices
 from ..interpolate import interpolate_1d, log_interpolate_1d
 from ..package_tools import Exporter
@@ -923,11 +923,11 @@ def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, geod=None
     try:  # convert range units to meters
         ranges = ranges.m_as('meters')
     except AttributeError:  # no units associated
-        warnings.warn('Range values are not a Pint-Quantity, assuming values are in meters.')
+        _warnings.warn('Range values are not a Pint-Quantity, assuming values are in meters.')
     try:  # convert azimuth units to degrees
         azimuths = azimuths.m_as('degrees')
     except AttributeError:  # no units associated
-        warnings.warn(
+        _warnings.warn(
             'Azimuth values are not a Pint-Quantity, assuming values are in degrees.'
         )
     rng2d, az2d = np.meshgrid(ranges, azimuths)
@@ -1047,8 +1047,8 @@ def parse_grid_arguments(func):
                 bound_args.arguments['y_dim'] = grid_prototype.metpy.find_axis_number('y')
             except AttributeError:
                 # If axis number not found, fall back to default but warn.
-                warnings.warn('Horizontal dimension numbers not found. Defaulting to '
-                              '(..., Y, X) order.')
+                _warnings.warn('Horizontal dimension numbers not found. Defaulting to '
+                               '(..., Y, X) order.')
 
         # Fill in vertical_dim
         if (
@@ -1061,7 +1061,7 @@ def parse_grid_arguments(func):
                 )
             except AttributeError:
                 # If axis number not found, fall back to default but warn.
-                warnings.warn(
+                _warnings.warn(
                     'Vertical dimension number not found. Defaulting to (..., Z, Y, X) order.'
                 )
 

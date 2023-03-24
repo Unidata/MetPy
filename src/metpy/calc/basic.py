@@ -11,13 +11,13 @@ These include:
 """
 import contextlib
 from itertools import product
-import warnings
 
 import numpy as np
 from scipy.ndimage import gaussian_filter, zoom as scipy_zoom
 import xarray as xr
 
 from .. import constants as mpconsts
+from .._warnings import warn
 from ..package_tools import Exporter
 from ..units import check_units, masked_array, units
 from ..xarray import preprocess_and_wrap
@@ -1294,6 +1294,5 @@ def _check_radians(value, max_radians=2 * np.pi):
     with contextlib.suppress(AttributeError):
         value = value.to('radians').m
     if np.any(np.greater(np.abs(value), max_radians)):
-        warnings.warn('Input over {} radians. '
-                      'Ensure proper units are given.'.format(np.nanmax(max_radians)))
+        warn(f'Input over {np.nanmax(max_radians)} radians. Ensure proper units are given.')
     return value

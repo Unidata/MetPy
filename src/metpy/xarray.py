@@ -21,12 +21,12 @@ from inspect import signature
 from itertools import chain
 import logging
 import re
-import warnings
 
 import numpy as np
 from pyproj import CRS, Proj
 import xarray as xr
 
+from . import _warnings
 from ._vendor.xarray import either_dict_or_kwargs, expanded_indexer, is_dict_like
 from .units import (_mutate_arguments, DimensionalityError, is_quantity, UndefinedUnitError,
                     units)
@@ -379,8 +379,7 @@ class MetPyDataArrayAccessor:
         # Ambiguous axis, raise warning and do not parse
         varname = (' "' + self._data_array.name + '"'
                    if self._data_array.name is not None else '')
-        warnings.warn('More than one ' + axis + ' coordinate present for variable'
-                      + varname + '.')
+        _warnings.warn(f'More than one {axis} coordinate present for variable {varname}.')
         coord_lists[axis] = []
 
     def _metpy_axis_search(self, metpy_axis):
@@ -457,7 +456,7 @@ class MetPyDataArrayAccessor:
                         # Attempt failed, re-raise original error
                         raise exc from None
                     # Otherwise, warn and yield result
-                    warnings.warn(
+                    _warnings.warn(
                         'Latitude and longitude computed on-demand, which may be an '
                         'expensive operation. To avoid repeating this computation, assign '
                         'these coordinates ahead of time with '
@@ -818,13 +817,13 @@ class MetPyDatasetAccessor:
 
         # Check for crs conflict
         if varname == 'metpy_crs':
-            warnings.warn(
+            _warnings.warn(
                 'Attempting to parse metpy_crs as a data variable. Unexpected merge conflicts '
                 'may occur.'
             )
         elif 'metpy_crs' in var.coords and (var.coords['metpy_crs'].size > 1 or not isinstance(
                 var.coords['metpy_crs'].item(), CFProjection)):
-            warnings.warn(
+            _warnings.warn(
                 'metpy_crs already present as a non-CFProjection coordinate. Unexpected '
                 'merge conflicts may occur.'
             )
@@ -990,8 +989,8 @@ class MetPyDatasetAccessor:
 
         # Calculate latitude and longitude from grid_prototype, if it exists, and assign
         if grid_prototype is None:
-            warnings.warn('No latitude and longitude assigned since horizontal coordinates '
-                          'were not found')
+            _warnings.warn('No latitude and longitude assigned since horizontal coordinates '
+                           'were not found')
             return self._dataset
         else:
             latitude, longitude = _build_latitude_longitude(grid_prototype)
@@ -1035,8 +1034,8 @@ class MetPyDatasetAccessor:
 
         # Calculate y and x from grid_prototype, if it exists, and assign
         if grid_prototype is None:
-            warnings.warn('No y and x coordinates assigned since horizontal coordinates '
-                          'were not found')
+            _warnings.warn('No y and x coordinates assigned since horizontal coordinates '
+                           'were not found')
             return self._dataset
         else:
             y, x = _build_y_x(grid_prototype, tolerance)
@@ -1223,8 +1222,8 @@ def _build_y_x(da, tolerance):
         y_dim = latitude.metpy.find_axis_number('y')
         x_dim = latitude.metpy.find_axis_number('x')
     except AttributeError:
-        warnings.warn('y and x dimensions unable to be identified. Assuming [..., y, x] '
-                      'dimension order.')
+        _warnings.warn('y and x dimensions unable to be identified. Assuming [..., y, x] '
+                       'dimension order.')
         y_dim, x_dim = 0, 1
     if (np.all(np.ptp(xxyy[..., 0], axis=y_dim) < tolerance)
             and np.all(np.ptp(xxyy[..., 1], axis=x_dim) < tolerance)):
@@ -1302,7 +1301,7 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
             # Cast all Variables to their data and warn
             # (need to do before match finding, since we don't want to rewrap as Variable)
             def cast_variables(arg, arg_name):
-                warnings.warn(
+                _warnings.warn(
                     f'Argument {arg_name} given as xarray Variable...casting to its data. '
                     'xarray DataArrays are recommended instead.'
                 )
@@ -1483,8 +1482,8 @@ def grid_deltas_from_dataarray(f, kind='default'):
             y_dim = latitude.metpy.find_axis_number('y')
             x_dim = latitude.metpy.find_axis_number('x')
         except AttributeError:
-            warnings.warn('y and x dimensions unable to be identified. Assuming [..., y, x] '
-                          'dimension order.')
+            _warnings.warn('y and x dimensions unable to be identified. Assuming [..., y, x] '
+                           'dimension order.')
             y_dim, x_dim = -2, -1
 
         # Get geod if it exists, otherwise fall back to PyProj default
@@ -1538,7 +1537,7 @@ def add_vertical_dim_from_xarray(func):
                     bound_args.arguments['vertical_dim'] = a.metpy.find_axis_number('vertical')
                 except AttributeError:
                     # If axis number not found, fall back to default but warn.
-                    warnings.warn(
+                    _warnings.warn(
                         'Vertical dimension number not found. Defaulting to initial dimension.'
                     )
 

@@ -31,7 +31,7 @@ def test_masked_and_no_mask():
 @check_and_silence_deprecation
 def test_deprecation_decorator():
     """Make sure the deprecation checker works."""
-    warnings.warn('Testing warning.', MetpyDeprecationWarning)
+    warnings.warn('Testing warning.', MetpyDeprecationWarning)  # noqa: B028
 
 
 def test_check_and_drop_units_with_dataarray():

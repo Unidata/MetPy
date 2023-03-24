@@ -2,8 +2,6 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of thermodynamic calculations."""
-import warnings
-
 import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
@@ -12,7 +10,7 @@ import xarray as xr
 from .exceptions import InvalidSoundingError
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
-from .. import constants as mpconsts
+from .. import _warnings, constants as mpconsts
 from ..cbook import broadcast_indices
 from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
@@ -1191,8 +1189,8 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
     unique, indices, counts = np.unique(press_upper.m, return_inverse=True, return_counts=True)
     unique = units.Quantity(unique, press_upper.units)
     if np.any(counts > 1):
-        warnings.warn(f'Duplicate pressure(s) {unique[counts > 1]:~P} provided. '
-                      'Output profile includes duplicate temperatures as a result.')
+        _warnings.warn(f'Duplicate pressure(s) {unique[counts > 1]:~P} provided. '
+                       'Output profile includes duplicate temperatures as a result.')
 
     # Find moist pseudo-adiabatic profile starting at the LCL, reversing above sorting
     temp_upper = moist_lapse(unique[::-1], temp_lower[-1]).to(temp_lower.units)
@@ -1338,7 +1336,7 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity):
 
     """
     if np.any(relative_humidity > 1.2):
-        warnings.warn('Relative humidity >120%, ensure proper units.')
+        _warnings.warn('Relative humidity >120%, ensure proper units.')
     return dewpoint(relative_humidity * saturation_vapor_pressure(temperature))
 
 
