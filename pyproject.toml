@@ -16,3 +16,37 @@ order_by_type = false
 sort_relative_in_force_sorted_sections = true
 combine_as_imports = true
 combine_star = true
+
+[tool.ruff]
+line-length = 95
+exclude = ["docs", "build", "src/metpy/io/_metar_parser/metar_parser.py"]
+select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "R", "S", "T", "U", "W"]
+ignore = ["F405", "B028", "C901", "I001", "RET504", "RET505", "RET506", "RET507",
+    "RUF100"]
+target-version = "py38"
+
+[tool.ruff.per-file-ignores]
+"ci/filter_links.py" = ["E731", "T201"]
+"docs/doc-server.py" = ["T201"]
+"examples/*.py" = ["D", "T201"]
+"src/metpy/testing.py" = ["S101"]
+"src/metpy/io/nexrad.py" = ["S101"]
+"tests/**/*.py" = ["S101"]
+"tools/flake8-metpy/test*.py" = ["S101"]
+"tools/nexrad_msgs/parse_spec.py" = ["S101"]
+"tutorials/*.py" = ["D", "T201"]
+
+[tool.ruff.flake8-quotes]
+inline-quotes = "single"
+multiline-quotes = "double"
+
+[tool.ruff.isort]
+known-first-party = ["metpy", "flake8_metpy"]
+force-single-line = false
+relative-imports-order = "closest-to-furthest"
+force-sort-within-sections = true
+order-by-type = false
+combine-as-imports = true
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
