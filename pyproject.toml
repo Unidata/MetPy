@@ -71,6 +71,16 @@ test = [
 "Twitter" = "https://twitter.com/MetPy"
 "MetPy Mondays" = "https://www.youtube.com/playlist?list=PLQut5OXpV-0ir4IdllSt1iEZKTwFBa7kO"
 
+[tool.codespell]
+skip = "*.tbl,*.ipynb,AUTHORS.txt,gempak.rst,.git,./staticdata,./docs/build,*.pdf"
+exclude-file = ".codespellignore"
+
+[tool.doc8]
+ignore-path = ["docs/build", "docs/api/generated", "docs/_templates", "docs/tutorials",
+    "docs/examples"]
+file-encoding = "utf8"
+max-line-length = 95
+
 [tool.isort]
 line_length = 95
 known_first_party = ["metpy", "flake8_metpy"]
@@ -82,6 +92,12 @@ order_by_type = false
 sort_relative_in_force_sorted_sections = true
 combine_as_imports = true
 combine_star = true
+
+[tool.pytest.ini_options]
+markers = "xfail_dask: marks tests as expected to fail with Dask arrays"
+norecursedirs = "build docs .idea"
+doctest_optionflags = "NORMALIZE_WHITESPACE"
+mpl-results-path = "test_output"
 
 [tool.ruff]
 line-length = 95
