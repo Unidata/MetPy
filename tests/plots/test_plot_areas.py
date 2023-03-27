@@ -17,8 +17,8 @@ def test_uslcc_plotting(ccrs, cfeature):
     area = 'uslcc'
 
     # Get the extent and project for the selected area
-    extent = areas.loc[area].bounds
-    proj = areas.loc[area].proj
+    extent = areas[area].bounds
+    proj = areas[area].projection
 
     # Plot a simple figure for the selected area
     fig = plt.figure()
@@ -38,8 +38,8 @@ def test_au_plotting(ccrs, cfeature):
     area = 'au'
 
     # Get the extent and project for the selected area
-    extent = areas.loc[area].bounds
-    proj = areas.loc[area].proj
+    extent = areas[area].bounds
+    proj = areas[area].projection
 
     # Plot a simple figure for the selected area
     fig = plt.figure(figsize=(10, 10))
@@ -59,8 +59,8 @@ def test_cn_plotting(ccrs, cfeature):
     area = 'cn'
 
     # Get the extent and project for the selected area
-    extent = areas.loc[area].bounds
-    proj = areas.loc[area].proj
+    extent = areas[area].bounds
+    proj = areas[area].projection
 
     # Plot a simple figure for the selected area
     fig = plt.figure(figsize=(10, 10))
@@ -80,8 +80,8 @@ def test_hi_plotting(ccrs, cfeature):
     area = 'hi'
 
     # Get the extent and project for the selected area
-    extent = areas.loc[area].bounds
-    proj = areas.loc[area].proj
+    extent = areas[area].bounds
+    proj = areas[area].projection
 
     # Plot a simple figure for the selected area
     fig = plt.figure(figsize=(10, 10))
@@ -101,8 +101,8 @@ def test_wpac_plotting(ccrs, cfeature):
     area = 'wpac'
 
     # Get the extent and project for the selected area
-    extent = areas.loc[area].bounds
-    proj = areas.loc[area].proj
+    extent = areas[area].bounds
+    proj = areas[area].projection
 
     # Plot a simple figure for the selected area
     fig = plt.figure(figsize=(10, 10))

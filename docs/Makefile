@@ -14,14 +14,11 @@ help:
 
 # Sphinx doesn't know to clean out the debris from sphinx-gallery
 cleanall: clean
+	rm -rf ${SOURCEDIR}/api/areas.rst
 	rm -rf $(SOURCEDIR)/examples $(SOURCEDIR)/tutorials $(SOURCEDIR)/api/generated
 
 clean:
 	rm -rf $(BUILDDIR)/*
-
-# Make the area rst file for documentation
-area:
-	python make_areas.py
 
 # Check that all functions in modules with template overrides are present in the doc file
 overridecheck:
@@ -34,4 +31,5 @@ overridecheck:
 # Manual autogen needed so we can specify the -i option so that imported names
 # are included in generation
 %: Makefile
+	python make_areas.py
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

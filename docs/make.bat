@@ -23,6 +23,7 @@ if "%1" == "clean" (
 
 if "%1" == "cleanall" (
 	for /d %%i in (%BUILDDIR%\*) do rmdir /q /s %%i
+	rmdir /q /s %SOURCEDIR%\api\areas.rst
 	rmdir /q /s %SOURCEDIR%\examples\ %SOURCEDIR%\tutorials\ %SOURCEDIR%\api\generated\
 	goto end
 )
@@ -47,6 +48,7 @@ if errorlevel 9009 (
 
 echo.Running sphinx-autogen
 for %%i in (%SOURCEDIR%\api\*.rst) do %SPHINXAUTOGEN% -i -t %SOURCEDIR%\_templates -o %SOURCEDIR%\api\generated %%i
+python make_areas.py
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS%
 goto end
 

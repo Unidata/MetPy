@@ -19,7 +19,6 @@ from datetime import datetime, timedelta
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
-import pandas as pd
 
 from metpy.cbook import get_test_data
 from metpy.io import metar
@@ -33,8 +32,9 @@ from metpy.plots.plot_areas import areas
 # Here is a full list of all of the areas currently in MetPy with their reference name,
 # descriptive name, and extent bounds.
 
-pd.set_option('display.max_rows', 500)
-areas[['name', 'bounds']]
+print('area      name                bounds')
+for area in areas:
+    print(f'{areas[area].area:<10s}{areas[area].name:<20s}{areas[area].bounds}')
 
 ####################################################
 # Example Using Bounds and Projection for an Area
@@ -48,8 +48,8 @@ areas[['name', 'bounds']]
 area = 'epac'
 
 # Get the extent and project for the selected area
-extent = areas.loc[area].bounds
-proj = areas.loc[area].proj
+extent = areas[area].bounds
+proj = areas[area].projection
 
 # Plot a simple figure for the selected area
 plt.figure(1, figsize=(10, 10))
@@ -58,7 +58,7 @@ ax.set_extent(extent, ccrs.PlateCarree())
 ax.add_feature(cfeature.STATES.with_scale('10m'), edgecolor='grey', linewidth=0.75)
 ax.add_feature(cfeature.COASTLINE.with_scale('10m'), linewidth=1.1)
 ax.add_feature(cfeature.BORDERS.with_scale('10m'), edgecolor='black')
-ax.set_title(f'area={area}          name={areas.loc[area]["name"]}'
+ax.set_title(f'area={area}          name={areas[area].name}'
              f'\nproj={proj.coordinate_operation.method_name}')
 plt.show()
 

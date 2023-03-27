@@ -318,9 +318,9 @@ class MapPanel(Panel, ValidationMixin):
 
             if region == 'global':
                 extent = 'global'
-            elif region in areas.index:
-                self._area_proj = areas.loc[region].proj
-                extent = areas.loc[region].bounds
+            elif region in areas:
+                self._area_proj = areas[region].projection
+                extent = areas[region].bounds
                 zoom = modifier.count('+') - modifier.count('-')
                 extent = self._zoom_extent(extent, zoom)
             else:
