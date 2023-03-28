@@ -1261,8 +1261,8 @@ def test_surface_based_cape_cin(array_class):
     temperature = array_class([22.2, 14.6, 12., 9.4, 7., -38.], units.celsius)
     dewpoint = array_class([19., -11.2, -10.8, -10.4, -10., -53.2], units.celsius)
     cape, cin = surface_based_cape_cin(p, temperature, dewpoint)
-    assert_almost_equal(cape, 75.0535446 * units('joule / kilogram'), 2)
-    assert_almost_equal(cin, -136.685967 * units('joule / kilogram'), 2)
+    assert_almost_equal(cape, 327.1348028 * units('joule / kilogram'), 2)
+    assert_almost_equal(cin, -40.0654774 * units('joule / kilogram'), 2)
 
 
 def test_surface_based_cape_cin_with_xarray():
@@ -1285,8 +1285,8 @@ def test_surface_based_cape_cin_with_xarray():
         data['temperature'],
         data['dewpoint']
     )
-    assert_almost_equal(cape, 75.0535446 * units('joule / kilogram'), 2)
-    assert_almost_equal(cin, -136.685967 * units('joule / kilogram'), 2)
+    assert_almost_equal(cape, 327.1348028 * units('joule / kilogram'), 2)
+    assert_almost_equal(cin, -40.0654774 * units('joule / kilogram'), 2)
 
 
 def test_profile_with_nans():
@@ -1326,8 +1326,8 @@ def test_most_unstable_cape_cin_surface():
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
     mucape, mucin = most_unstable_cape_cin(pressure, temperature, dewpoint)
-    assert_almost_equal(mucape, 75.0535446 * units('joule / kilogram'), 2)
-    assert_almost_equal(mucin, -136.685967 * units('joule / kilogram'), 2)
+    assert_almost_equal(mucape, 327.1348028 * units('joule / kilogram'), 2)
+    assert_almost_equal(mucin, -40.0654774 * units('joule / kilogram'), 2)
 
 
 def test_most_unstable_cape_cin():
@@ -1336,8 +1336,8 @@ def test_most_unstable_cape_cin():
     temperature = np.array([18.2, 22.2, 17.4, 10., 0., 15]) * units.celsius
     dewpoint = np.array([19., 19., 14.3, 0., -10., 0.]) * units.celsius
     mucape, mucin = most_unstable_cape_cin(pressure, temperature, dewpoint)
-    assert_almost_equal(mucape, 157.11404 * units('joule / kilogram'), 4)
-    assert_almost_equal(mucin, -31.8406578 * units('joule / kilogram'), 4)
+    assert_almost_equal(mucape, 174.66467 * units('joule / kilogram'), 4)
+    assert_almost_equal(mucin, 0 * units('joule / kilogram'), 4)
 
 
 def test_mixed_parcel():

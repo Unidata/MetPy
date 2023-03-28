@@ -935,6 +935,11 @@ def _parcel_profile_helper(pressure, temperature, dewpoint,
         Pressure increases between at least two points in your sounding.
         Using scipy.signal.medfilt may fix this."""
         raise InvalidSoundingError(msg)
+    
+    if assumptions.use_virtual_temperature:
+        specific_humidity = specific_humidity_from_dewpoint(pressure[0], dewpoint)
+        mixing_ratio = mixing_ratio_from_specific_humidity(specific_humidity)
+        temperature = virtual_temperature(temperature, mixing_ratio)
 
     # Find the LCL
     press_lcl, temp_lcl = lcl(pressure[0], temperature, dewpoint)
@@ -945,13 +950,6 @@ def _parcel_profile_helper(pressure, temperature, dewpoint,
     # the logic for removing it later.
     press_lower = concatenate((pressure[pressure >= press_lcl], press_lcl))
     temp_lower = dry_lapse(press_lower, temperature)
-
-    # Do the virtual temperature correction for the parcel below the LCL
-    if assumptions.use_virtual_temperature:
-        # Calculate the relative humidity, mixing ratio, and virtual temperature
-        rh_lowest = relative_humidity_from_dewpoint(temperature, dewpoint)
-        rv_lower = mixing_ratio_from_relative_humidity(press_lower[0], temperature, rh_lowest)
-        temp_lower = virtual_temperature(temp_lower, rv_lower).to(temp_lower.units)
 
     # If the pressure profile doesn't make it to the lcl, we can stop here
     if _greater_or_close(np.nanmin(pressure), press_lcl):
@@ -973,12 +971,6 @@ def _parcel_profile_helper(pressure, temperature, dewpoint,
     temp_upper = moist_lapse(unique[::-1], temp_lower[-1]).to(temp_lower.units)
     temp_upper = temp_upper[::-1][indices]
 
-    # Do the virtual temperature correction for the parcel above the LCL
-    if assumptions.use_virtual_temperature:
-
-        # Calculate the mixing ratio and virtual temperature
-        rv_upper = mixing_ratio(saturation_vapor_pressure(temp_lcl), press_upper)
-        temp_upper = virtual_temperature(temp_upper, rv_upper).to(temp_lower.units)
 
     # Return profile pieces
     return (press_lower[:-1], press_lcl, press_upper[1:],
