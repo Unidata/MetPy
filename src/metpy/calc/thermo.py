@@ -935,7 +935,7 @@ def _parcel_profile_helper(pressure, temperature, dewpoint,
         Pressure increases between at least two points in your sounding.
         Using scipy.signal.medfilt may fix this."""
         raise InvalidSoundingError(msg)
-    
+
     if assumptions.use_virtual_temperature:
         specific_humidity = specific_humidity_from_dewpoint(pressure[0], dewpoint)
         mixing_ratio = mixing_ratio_from_specific_humidity(specific_humidity)
@@ -970,7 +970,6 @@ def _parcel_profile_helper(pressure, temperature, dewpoint,
     # Find moist pseudo-adiabatic profile starting at the LCL, reversing above sorting
     temp_upper = moist_lapse(unique[::-1], temp_lower[-1]).to(temp_lower.units)
     temp_upper = temp_upper[::-1][indices]
-
 
     # Return profile pieces
     return (press_lower[:-1], press_lcl, press_upper[1:],
