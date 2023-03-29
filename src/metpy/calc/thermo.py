@@ -946,14 +946,6 @@ def _parcel_profile_helper(pressure, temperature, dewpoint,
     press_lower = concatenate((pressure[pressure >= press_lcl], press_lcl))
     temp_lower = dry_lapse(press_lower, temperature)
 
-    # Do the virtual temperature correction for the parcel below the LCL
-    if assumptions.use_virtual_temperature:
-        # Calculate the relative humidity, mixing ratio, and virtual temperature
-        rh_lowest = relative_humidity_from_dewpoint(temperature, dewpoint)
-        rv_lower = mixing_ratio_from_relative_humidity(press_lower[0], temperature, rh_lowest)
-        temp_lower = virtual_temperature(temp_lower, rv_lower).to(temp_lower.units)
-        temp_lcl = virtual_temperature(temp_lcl, rv_lower)
-
     # If the pressure profile doesn't make it to the lcl, we can stop here
     if _greater_or_close(np.nanmin(pressure), press_lcl):
         return (press_lower[:-1], press_lcl, units.Quantity(np.array([]), press_lower.units),
@@ -977,7 +969,13 @@ def _parcel_profile_helper(pressure, temperature, dewpoint,
     # Do the virtual temperature correction for the parcel above the LCL
     if assumptions.use_virtual_temperature:
 
-        # Calculate the mixing ratio and virtual temperature
+        # Handle below the LCL
+        rh_lowest = relative_humidity_from_dewpoint(temperature, dewpoint)
+        rv_lower = mixing_ratio_from_relative_humidity(press_lower[0], temperature, rh_lowest)
+        temp_lower = virtual_temperature(temp_lower, rv_lower).to(temp_lower.units)
+        temp_lcl = virtual_temperature(temp_lcl, rv_lower)
+
+        # Handle above the LCL
         rv_upper = mixing_ratio(saturation_vapor_pressure(temp_upper), press_upper)
         temp_upper = virtual_temperature(temp_upper, rv_upper).to(temp_lower.units)
 
