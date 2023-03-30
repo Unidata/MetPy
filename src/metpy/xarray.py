@@ -1066,7 +1066,7 @@ class MetPyDatasetAccessor:
             old_mapping = mapping
 
             def mapping(varname, **kwargs):
-                return old_mapping.get(varname, None)
+                return old_mapping.get(varname)
 
         # Define mapping function for Dataset.map
         def mapping_func(da):

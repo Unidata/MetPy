@@ -62,7 +62,7 @@ class CFProjection:
 
         # interpret the 0 inverse_flattening as a spherical datum
         # and don't pass the value on.
-        if kwargs.get('inverse_flattening', None) == 0:
+        if kwargs.get('inverse_flattening') == 0:
             kwargs['ellipse'] = 'sphere'
             kwargs.pop('inverse_flattening', None)
 
