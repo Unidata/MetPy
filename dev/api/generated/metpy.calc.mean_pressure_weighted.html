@@ -35,6 +35,7 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -1354,7 +1355,16 @@
 <dt class="sig sig-object py" id="metpy.calc.mean_pressure_weighted">
 <span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">mean_pressure_weighted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.mean_pressure_weighted" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate pressure-weighted mean of an arbitrary variable through a layer.</p>
-<p>Layer top and bottom specified in height or pressure.</p>
+<p>Layer bottom and depth specified in height or pressure.</p>
+<div class="math notranslate nohighlight">
+\[MPW = \frac{\int_{p_s}^{p_b} A p dp}{\int_{p_s}^{p_b} p dp}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(MPW\)</span> is the pressure-weighted mean of a variable.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_b\)</span> is the bottom pressure level.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_s\)</span> is the top pressure level.</p></li>
+<li><p><span class="math notranslate nohighlight">\(A\)</span> is the variable whose pressure-weighted mean is being calculated.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1366,7 +1376,7 @@ if no heights are given.</p></li>
 or in pressure. Don’t provide in meters AGL unless the provided
 height coordinate is meters AGL. Default is the first observation,
 assumed to be the surface.</p></li>
-<li><p><strong>depth</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Depth of the layer in meters or hPa.</p></li>
+<li><p><strong>depth</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Depth of the layer in meters or hPa. Defaults to 100 hPa.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

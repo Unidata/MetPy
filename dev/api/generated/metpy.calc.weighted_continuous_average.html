@@ -1341,12 +1341,13 @@
 <span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">weighted_continuous_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.weighted_continuous_average" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate weighted-continuous mean of an arbitrary variable through a layer.</p>
 <p>Layer top and bottom specified in height or pressure.</p>
-<p>Formula based on that from <a class="reference internal" href="../references.html#holton2004" id="id1"><span>[Holton2004]</span></a> pg. 76 and the NCL function _wgt_vertical_n_</p>
+<p>Formula based on that from <a class="reference internal" href="../references.html#holton2004" id="id1"><span>[Holton2004]</span></a> pg. 76 and the NCL function <code class="docutils literal notranslate"><span class="pre">wgt_vertical_n</span></code></p>
 <div class="math notranslate nohighlight">
-\[WCA = \frac{\int_{p_s}^{p} A dp}{\int_{p_s}^{p} dp},\]</div>
+\[WCA = \frac{\int_{p_s}^{p_b} A dp}{\int_{p_s}^{p_b} dp}\]</div>
+<p>where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(WCA\)</span> is the weighted continuous average of a variable.</p></li>
-<li><p><span class="math notranslate nohighlight">\(p\)</span> is the bottom pressure level.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_b\)</span> is the bottom pressure level.</p></li>
 <li><p><span class="math notranslate nohighlight">\(p_s\)</span> is the top pressure level.</p></li>
 <li><p><span class="math notranslate nohighlight">\(A\)</span> is the variable whose weighted continuous average is being calculated.</p></li>
 </ul>

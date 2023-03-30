@@ -1262,7 +1262,7 @@
             <span class="n">old_mapping</span> <span class="o">=</span> <span class="n">mapping</span>
 
             <span class="k">def</span> <span class="nf">mapping</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">old_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">old_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span>
 
         <span class="c1"># Define mapping function for Dataset.map</span>
         <span class="k">def</span> <span class="nf">mapping_func</span><span class="p">(</span><span class="n">da</span><span class="p">):</span>
