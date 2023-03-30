@@ -2,6 +2,8 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test text handling functions."""
+from datetime import datetime
+
 import geopandas as gpd
 import numpy as np
 
@@ -21,6 +23,7 @@ def test_parse_wpc_surface_bulletin():
     assert len(df[df.feature == 'HIGH']) == 16
     assert len(df[df.feature == 'LOW']) == 24
     assert len(df[df.feature == 'TROF']) == 22
+    assert all(df.valid == datetime(2021, 6, 28, 18, 0, 0))
 
     # Expected values for rows 17 and 47 in the dataframe
     expected_json = ('{"type": "FeatureCollection",'
@@ -32,12 +35,12 @@ def test_parse_wpc_surface_bulletin():
                      ' "valid": "062818Z"}, "geometry": {"type": "LineString",'
                      ' "coordinates": [[-100.5, 32.4], [-101.0, 31.9],'
                      ' [-101.9, 31.5], [-102.9, 31.2]]}}]}')
-    expected_df = gpd.read_file(expected_json)[['valid', 'feature', 'geometry']]
+    expected_df = gpd.read_file(expected_json)[['feature', 'geometry']]
 
     # Align missing values across both dataframes
     subset = df.loc[[17, 47]].reset_index(drop=True)
     subset.replace({np.nan: 'na'}, inplace=True)
     expected_df.replace({None: 'na'}, inplace=True)
 
-    assert subset[['valid', 'feature', 'geometry']].equals(expected_df)
+    assert subset[['feature', 'geometry']].equals(expected_df)
     assert subset.strength[0] == 1002.0
