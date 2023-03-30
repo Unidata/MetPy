@@ -5,6 +5,7 @@
 
 import contextlib
 import re
+import string
 
 import geopandas
 import numpy as np
@@ -29,7 +30,7 @@ def _decode_coords(coordinates):
     Notes
     -----
     In the WPC coded surface bulletin, latitude and longitude are given in degrees north and
-    degrees west, respectivley. Therefore, this function always returns latitude as a positive
+    degrees west, respectively. Therefore, this function always returns latitude as a positive
     number and longitude as a negative number.
 
     Examples
@@ -50,7 +51,20 @@ def _decode_coords(coordinates):
     return lon, lat
 
 
-def parse_wpc_sfc_bulletin(bulletin):
+def _regroup_lines(iterable):
+    starting_num = re.compile('^[0-9]')
+    lines = list(iterable)[::-1]
+    while lines:
+        line = lines.pop()
+        if not line.strip():
+            continue
+        parts = line.split()
+        while lines and starting_num.match(lines[-1]):
+            parts.extend(lines.pop().split())
+        yield parts
+
+
+def parse_wpc_surface_bulletin(bulletin):
     """Parse a coded surface bulletin from NWS WPC into a GeoPandas GeoDataFrame.
 
     Parameters
@@ -66,50 +80,39 @@ def parse_wpc_sfc_bulletin(bulletin):
         has four columns: 'valid', 'feature', 'strength', and 'geometry'
 
     """
-    parsed_text = geopandas.GeoDataFrame()
-
     # Create list with lines of text from file
     with contextlib.closing(open_as_needed(bulletin)) as file:
         text = file.read().decode('utf-8')
-    lines = [line.strip() for line in text.splitlines()]
-    lines = [line for line in lines if line]  # Remove empty strings
 
-    # Lines that begin with numbers are simply continuations of the previous line. When we find
-    # a line that begins with a number, we append it to the end of the last line.
-    for i in range(len(lines)):
-        line = lines[i]
-        if re.match('^[0-9]', line):
-            lines[i - 1] += f' {line}'
-            i -= 1
-
-    for line in lines:
+    parsed_text = []
+    valid_time = np.nan
+    for parts in _regroup_lines(text.splitlines()):
         # A single file may have multiple sets of data that are valid at different times. Set
         # the valid_time string that will correspond to all the following lines parsed, until
         # the next valid_time is found.
-        if line.startswith(('VALID', 'SURFACE PROG VALID')):
-            valid_time = line.split(' ')[-1]
+        if parts[0] in ('VALID', 'SURFACE PROG VALID'):
+            valid_time = parts[-1]
             continue
 
-        feature, *info = line.split(' ')
-
-        if feature in ['HIGHS', 'LOWS']:
-            # Create list of tuples, each one representing a pressure center
-            pres_centers = zip(info[::2], info[1::2])  # [a, b, c, d] -> [(a, b), (c, d)]
-
+        feature, *info = parts
+        if feature in {'HIGHS', 'LOWS'}:
             # For each pressure center, add its data to a new row in the geodataframe
-            for pres_center in pres_centers:
-                strength, position = pres_center
-                parsed_text = parsed_text.append({'valid': valid_time,
-                                                  'feature': feature.rstrip('S'),
-                                                  'strength': strength,
-                                                  'geometry': Point(_decode_coords(position))},
-                                                 ignore_index=True)
+            # While ideally these occur in pairs, some bulletins have had multiple locations
+            # for a single center strength value. So instead walk one at a time and keep
+            # track of the most recent strength.
+            strength = np.nan
+            for item in info:
+                if len(item) <= 4 and item[0] in {'8', '9', '1'}:
+                    strength = int(item)
+                else:
+                    parsed_text.append((valid_time, feature.rstrip('S'), strength,
+                                        Point(_decode_coords(item))))
 
-        elif feature in ['WARM', 'COLD', 'STNRY', 'OCFNT', 'TROF']:
+        elif feature in {'WARM', 'COLD', 'STNRY', 'OCFNT', 'TROF'}:
             # Some bulletins include 'WK', 'MDT', or 'STG' to indicate the front's strength.
             # If present, separate it from the rest of the info, which gives the position of
             # the front.
-            if re.match('^[A-Za-z]', info[0]):
+            if info[0][0] in string.ascii_letters:
                 strength, *boundary = info
             else:
                 strength, boundary = np.nan, info
@@ -119,10 +122,7 @@ def parse_wpc_sfc_bulletin(bulletin):
             boundary = LineString(boundary) if len(boundary) > 1 else boundary[0]
 
             # Add new row in the geodataframe for each front
-            parsed_text = parsed_text.append({'valid': valid_time,
-                                              'feature': feature.rstrip('S'),
-                                              'strength': strength,
-                                              'geometry': boundary},
-                                             ignore_index=True)
+            parsed_text.append((valid_time, feature, strength, boundary))
 
-    return parsed_text
+    return geopandas.GeoDataFrame(parsed_text,
+                                  columns=['valid', 'feature', 'strength', 'geometry'])
