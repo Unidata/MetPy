@@ -8,8 +8,8 @@ from datetime import datetime
 import re
 import string
 
-import geopandas
 import numpy as np
+import pandas as pd
 from shapely.geometry import LineString, Point
 
 from ._tools import open_as_needed
@@ -66,7 +66,7 @@ def _regroup_lines(iterable):
 
 
 def parse_wpc_surface_bulletin(bulletin, year=None):
-    """Parse a coded surface bulletin from NWS WPC into a GeoPandas GeoDataFrame.
+    """Parse a coded surface bulletin from NWS WPC into a Pandas DataFrame.
 
     Parameters
     ----------
@@ -76,9 +76,9 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
 
     Returns
     -------
-    parsed_text : geopandas.GeoDataFrame
-        A GeoDataFrame where each row represents a pressure center or front. The GeoDataFrame
-        has four columns: 'valid', 'feature', 'strength', and 'geometry'
+    dataframe : pandas.DataFrame
+        A `DataFrame` where each row represents a pressure center or front. The `DataFrame`
+        has four columns: 'valid', 'feature', 'strength', and 'geometry'.
     year : int
         Year to assume when parsing the timestamp from the bulletin. Defaults to `None`,
         which results in the parser trying to find a year in the product header; if this
@@ -114,7 +114,6 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
                     else:
                         parsed_text.append((valid_time, feature.rstrip('S'), strength,
                                             Point(_decode_coords(item))))
-
             elif feature in {'WARM', 'COLD', 'STNRY', 'OCFNT', 'TROF'}:
                 # Some bulletins include 'WK', 'MDT', or 'STG' to indicate the front's
                 # strength. If present, separate it from the rest of the info, which gives the
@@ -136,5 +135,4 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
                 with contextlib.suppress(ValueError):
                     year = int(info[-1])
 
-    return geopandas.GeoDataFrame(parsed_text,
-                                  columns=['valid', 'feature', 'strength', 'geometry'])
+    return pd.DataFrame(parsed_text, columns=['valid', 'feature', 'strength', 'geometry'])
