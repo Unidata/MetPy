@@ -99,7 +99,16 @@ def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
 def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None):
     r"""Calculate pressure-weighted mean of an arbitrary variable through a layer.
 
-    Layer top and bottom specified in height or pressure.
+    Layer bottom and depth specified in height or pressure.
+
+    .. math::  MPW = \frac{\int_{p_s}^{p_b} A p dp}{\int_{p_s}^{p_b} p dp}
+
+    where:
+
+    * :math:`MPW` is the pressure-weighted mean of a variable.
+    * :math:`p_b` is the bottom pressure level.
+    * :math:`p_s` is the top pressure level.
+    * :math:`A` is the variable whose pressure-weighted mean is being calculated.
 
     Parameters
     ----------
@@ -120,7 +129,7 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
         assumed to be the surface.
 
     depth: `pint.Quantity`, optional
-        Depth of the layer in meters or hPa.
+        Depth of the layer in meters or hPa. Defaults to 100 hPa.
 
     Returns
     -------
@@ -169,12 +178,14 @@ def weighted_continuous_average(pressure, *args, height=None, bottom=None, depth
 
     Layer top and bottom specified in height or pressure.
 
-    Formula based on that from [Holton2004]_ pg. 76 and the NCL function _wgt_vertical_n_
+    Formula based on that from [Holton2004]_ pg. 76 and the NCL function ``wgt_vertical_n``
 
-    .. math::  WCA = \frac{\int_{p_s}^{p} A dp}{\int_{p_s}^{p} dp},
+    .. math::  WCA = \frac{\int_{p_s}^{p_b} A dp}{\int_{p_s}^{p_b} dp}
+
+    where:
 
     * :math:`WCA` is the weighted continuous average of a variable.
-    * :math:`p` is the bottom pressure level.
+    * :math:`p_b` is the bottom pressure level.
     * :math:`p_s` is the top pressure level.
     * :math:`A` is the variable whose weighted continuous average is being calculated.
 

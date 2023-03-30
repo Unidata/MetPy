@@ -97,7 +97,7 @@ fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 # ----------------------
 # search_radius = 100 km
 #
-# grid resolution = 25 km
+# grid resolution = 75 km
 #
 # min_neighbors = 1
 gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='cressman', minimum_neighbors=1,
