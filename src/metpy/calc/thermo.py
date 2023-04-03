@@ -1727,7 +1727,7 @@ def virtual_temperature_from_dewpoint(
     >>> from metpy.calc import virtual_temperature_from_dewpoint
     >>> from metpy.units import units
     >>> virtual_temperature_from_dewpoint(1000 * units.hPa, 30 * units.degC, 25 * units.degC)
-    <Quantity(33.6739865, 'degC')>
+    <Quantity(33.6739865, 'degree_Celsius')>
 
     Notes
     -----
