@@ -8,7 +8,7 @@ import sys
 
 def get_failing_links(fname):
     """Yield links with problematic statuses."""
-    with open(fname, 'rt') as linkfile:
+    with open(fname) as linkfile:
         links = json.loads('[' + ','.join(linkfile) + ']')
         for link in links:
             if link['status'] not in {'working', 'ignored', 'unchecked'}:
@@ -19,7 +19,7 @@ def get_added():
     """Get all lines added in the most recent merge."""
     revs = subprocess.check_output(['git', 'rev-list', '--parents', '-n', '1', 'HEAD'])
     merge_commit, target, _ = revs.decode('utf-8').split()
-    diff = subprocess.check_output(['git', 'diff', '{}...{}'.format(target, merge_commit)])
+    diff = subprocess.check_output(['git', 'diff', f'{target}...{merge_commit}'])
     return '\n'.join(line for line in diff.decode('utf-8').split('\n')
                      if line.startswith('+') and not line.startswith('+++'))
 

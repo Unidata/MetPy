@@ -2,10 +2,9 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Interpolate data along a single axis."""
-import warnings
-
 import numpy as np
 
+from .. import _warnings
 from ..cbook import broadcast_indices
 from ..package_tools import Exporter
 from ..xarray import preprocess_and_wrap
@@ -139,7 +138,7 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
     # Warn if interpolated values are outside data bounds, will make these the values
     # at end of data range.
     if np.max(minv) == xp.shape[axis]:
-        warnings.warn('Interpolation point out of data bounds encountered')
+        _warnings.warn('Interpolation point out of data bounds encountered')
         minv2[minv == xp.shape[axis]] = xp.shape[axis] - 1
     if np.min(minv) == 0:
         minv2[minv == 0] = 1
@@ -149,7 +148,7 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
     below = broadcast_indices(minv2 - 1, final_shape, axis)
 
     if np.any(x_array < xp[below]):
-        warnings.warn('Interpolation point out of data bounds encountered')
+        _warnings.warn('Interpolation point out of data bounds encountered')
 
     # Create empty output list
     ret = []

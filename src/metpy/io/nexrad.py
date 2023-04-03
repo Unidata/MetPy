@@ -49,7 +49,7 @@ def az_rate(val):
 
 
 def bzip_blocks_decompress_all(data):
-    """Decompress all of the bzip2-ed blocks.
+    """Decompress all the bzip2-ed blocks.
 
     Returns the decompressed data as a `bytearray`.
     """
@@ -61,15 +61,15 @@ def bzip_blocks_decompress_all(data):
         try:
             frames += bz2.decompress(data[offset:offset + block_cmp_bytes])
             offset += block_cmp_bytes
-        except OSError:
+        except OSError as e:
             # If we've decompressed any frames, this is an error mid-stream, so warn, stop
             # trying to decompress and let processing proceed
             if frames:
                 logging.warning('Error decompressing bz2 block stream at offset: %d',
                                 offset - 4)
                 break
-            else:  # Otherwise, this isn't a bzip2 stream, so bail
-                raise ValueError('Not a bz2 stream.')
+            # Otherwise, this isn't a bzip2 stream, so bail
+            raise ValueError('Not a bz2 stream.') from e
     return frames
 
 
