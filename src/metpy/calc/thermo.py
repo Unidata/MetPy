@@ -2337,11 +2337,11 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     """
     pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
                                                                    dewpoint, parcel_profile)
-    
+
     # Convert the temperature/parcel profile to virtual temperature
     temperature = virtual_temperature_from_dewpoint(pressure, temperature, dewpoint)
     parcel_profile = virtual_temperature_from_dewpoint(pressure, parcel_profile, dewpoint)
-    
+
     # Calculate LFC limit of integration
     lfc_pressure, _ = lfc(pressure, temperature, dewpoint,
                           parcel_temperature_profile=parcel_profile, which=which_lfc)
