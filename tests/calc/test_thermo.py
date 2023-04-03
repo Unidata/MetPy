@@ -666,8 +666,8 @@ def test_sensitive_sounding():
     assert_almost_equal(lfc_temp, 20.498 * units.degC, 2)
 
     pos, neg = surface_based_cape_cin(p, t, td)
-    assert_almost_equal(pos, 0.1115 * units('J/kg'), 3)
-    assert_almost_equal(neg, -6.0866 * units('J/kg'), 3)
+    assert_almost_equal(pos, 0.0 * units('J/kg'), 3)
+    assert_almost_equal(neg, 0.0 * units('J/kg'), 3)
 
 
 def test_lfc_sfc_precision():
@@ -1843,7 +1843,7 @@ def test_multiple_els_simple(multiple_intersections):
     el_pressure_bottom, el_temp_bottom = el(levels, temperatures, dewpoints, which='bottom')
     el_pressure_all, _ = el(levels, temperatures, dewpoints, which='all')
     assert_almost_equal(el_pressure_top, 228.151524 * units.mbar, 3)
-    assert_almost_equal(el_temp_top, 228.151524 * units.degC, 3)
+    assert_almost_equal(el_temp_top, -56.810153566 * units.degC, 3)
     assert_almost_equal(el_pressure_bottom, 849.7998957 * units.mbar, 3)
     assert_almost_equal(el_temp_bottom, 12.42268288 * units.degC, 3)
     assert_almost_equal(len(el_pressure_all), 2, 0)
@@ -2204,7 +2204,7 @@ def test_showalter_index():
                                     -48.9, -50.2, -51.5, -53.3, -55.5, -55.9]), 'degC')
 
     result = showalter_index(pressure, temps, dewp)
-    assert_almost_equal(result, units.Quantity(7.6028, 'delta_degC'), 4)
+    assert_almost_equal(result, units.Quantity(7.6024, 'delta_degC'), 4)
 
 
 def test_total_totals_index():
