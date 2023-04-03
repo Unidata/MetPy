@@ -1689,6 +1689,67 @@ def virtual_temperature(
 
 
 @exporter.export
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure',
+                                                         'temperature',
+                                                         'dewpoint'))
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def virtual_temperature_from_dewpoint(
+    pressure, temperature, dewpoint, molecular_weight_ratio=mpconsts.nounit.epsilon
+):
+    r"""Calculate virtual temperature.
+
+    This calculation must be given an air parcel's temperature and mixing ratio.
+    The implementation uses the formula outlined in [Hobbs2006]_ pg.80.
+
+    Parameters
+    ----------
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    temperature: `pint.Quantity`
+        Air temperature
+
+    dewpoint : `pint.Quantity`
+        Dewpoint temperature
+
+    molecular_weight_ratio : `pint.Quantity` or float, optional
+        The ratio of the molecular weight of the constituent gas to that assumed
+        for air. Defaults to the ratio for water vapor to dry air.
+        (:math:`\epsilon\approx0.622`)
+
+    Returns
+    -------
+    `pint.Quantity`
+        Corresponding virtual temperature of the parcel
+
+    Examples
+    --------
+    >>> from metpy.calc import virtual_temperature_from_dewpoint
+    >>> from metpy.units import units
+    >>> virtual_temperature_from_dewpoint(1000 * units.hPa,
+                                          30 * units.degC,
+                                          25 * units.degC)
+    <Quantity(33.67398, 'degC')>
+
+    Notes
+    -----
+    .. math:: T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
+
+    .. versionchanged:: 1.0
+       Renamed ``mixing`` parameter to ``mixing_ratio``
+
+    """
+    # Convert the dewpoint to specific humidity
+    specific_humidity = specific_humidity_from_dewpoint(pressure, dewpoint)
+
+    # Convert the specific humidity to mixing ratio
+    mixing_ratio = mixing_ratio_from_specific_humidity(specific_humidity)
+
+    # Calculate virtual temperature with given parameters
+    return virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio)
+
+
+@exporter.export
 @preprocess_and_wrap(
     wrap_like='temperature',
     broadcast=('pressure', 'temperature', 'mixing_ratio')

@@ -32,7 +32,8 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         thickness_hydrostatic_from_relative_humidity, total_totals_index,
                         vapor_pressure, vertical_totals, vertical_velocity,
                         vertical_velocity_pressure, virtual_potential_temperature,
-                        virtual_temperature, wet_bulb_temperature)
+                        virtual_temperature, virtual_temperature_from_dewpoint,
+                        wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import is_quantity, masked_array, units
@@ -790,6 +791,15 @@ def test_virtual_temperature():
     qv = .0016 * units.dimensionless  # kg/kg
     tv = virtual_temperature(t, qv)
     assert_almost_equal(tv, 288.2796 * units.kelvin, 3)
+
+
+def test_virtual_temperature_from_dewpoint():
+    """Test virtual temperature calculation."""
+    p = 1000 * units.hPa
+    t = 30 * units.degC
+    td = 25 * units.degC
+    tv = virtual_temperature_from_dewpoint(p, t, td)
+    assert_almost_equal(tv, 33.6740 * units.degC, 3)
 
 
 def test_virtual_potential_temperature():
