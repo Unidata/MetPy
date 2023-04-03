@@ -245,7 +245,7 @@
 
 
 <span class="k">def</span> <span class="nf">bzip_blocks_decompress_all</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decompress all of the bzip2-ed blocks.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decompress all the bzip2-ed blocks.</span>
 
 <span class="sd">    Returns the decompressed data as a `bytearray`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -257,15 +257,15 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">frames</span> <span class="o">+=</span> <span class="n">bz2</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">offset</span> <span class="o">+</span> <span class="n">block_cmp_bytes</span><span class="p">])</span>
             <span class="n">offset</span> <span class="o">+=</span> <span class="n">block_cmp_bytes</span>
-        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="c1"># If we&#39;ve decompressed any frames, this is an error mid-stream, so warn, stop</span>
             <span class="c1"># trying to decompress and let processing proceed</span>
             <span class="k">if</span> <span class="n">frames</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Error decompressing bz2 block stream at offset: </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span>
                                 <span class="n">offset</span> <span class="o">-</span> <span class="mi">4</span><span class="p">)</span>
                 <span class="k">break</span>
-            <span class="k">else</span><span class="p">:</span>  <span class="c1"># Otherwise, this isn&#39;t a bzip2 stream, so bail</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not a bz2 stream.&#39;</span><span class="p">)</span>
+            <span class="c1"># Otherwise, this isn&#39;t a bzip2 stream, so bail</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not a bz2 stream.&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
     <span class="k">return</span> <span class="n">frames</span>
 
 
