@@ -5,20 +5,24 @@
 import numpy as np
 
 from . import coriolis_parameter
-from .tools import first_derivative, get_layer_heights, gradient
+from .tools import (first_derivative, geospatial_gradient, get_layer_heights,
+                    parse_grid_arguments, vector_derivative)
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
-from ..xarray import add_grid_arguments_from_xarray, preprocess_and_wrap
+from ..xarray import preprocess_and_wrap
 
 exporter = Exporter(globals())
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
 @check_units('[speed]', '[speed]', dx='[length]', dy='[length]')
-def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
+def vorticity(
+    u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
+    parallel_scale=None, meridional_scale=None
+):
     r"""Calculate the vertical vorticity of the horizontal wind.
 
     Parameters
@@ -27,51 +31,74 @@ def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
         x component of the wind
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
-    dx : `pint.Quantity`, optional
-        The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
-        latitude/longitude coordinates used as input. Keyword-only argument.
-    dy : `pint.Quantity`, optional
-        The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
-        latitude/longitude coordinates used as input. Keyword-only argument.
-    x_dim : int, optional
-        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`. Keyword-only argument.
-    y_dim : int, optional
-        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`. Keyword-only argument.
 
     Returns
     -------
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         vertical vorticity
 
+    Other Parameters
+    ----------------
+    dx : `pint.Quantity`, optional
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    dy : `pint.Quantity`, optional
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+
     See Also
     --------
-    divergence
+    divergence, absolute_vorticity
 
     Notes
     -----
-    This implements a numerical version of the typical vertical vorticity equation in
-    Cartesian coordinates:
+    This implements a numerical version of the typical vertical vorticity equation:
 
     .. math:: \zeta = \frac{\partial v}{\partial x} - \frac{\partial u}{\partial y}
+
+    If sufficient grid projection information is provided, these partial derivatives are
+    taken from the projection-correct derivative matrix of the vector wind. Otherwise, they
+    are evaluated as scalar derivatives on a Cartesian grid.
 
     .. versionchanged:: 1.0
        Changed signature from ``(u, v, dx, dy)``
 
     """
-    dudy = first_derivative(u, delta=dy, axis=y_dim)
-    dvdx = first_derivative(v, delta=dx, axis=x_dim)
+    dudy, dvdx = vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale, return_only=('du/dy', 'dv/dx')
+    )
     return dvdx - dudy
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
 @check_units(dx='[length]', dy='[length]')
-def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
+def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
+               parallel_scale=None, meridional_scale=None):
     r"""Calculate the horizontal divergence of a vector.
 
     Parameters
@@ -80,6 +107,14 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
         x component of the vector
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the vector
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        The horizontal divergence
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -94,11 +129,16 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`. Keyword-only argument.
-
-    Returns
-    -------
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        The horizontal divergence
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
     See Also
     --------
@@ -116,16 +156,19 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
        Changed signature from ``(u, v, dx, dy)``
 
     """
-    dudx = first_derivative(u, delta=dx, axis=x_dim)
-    dvdy = first_derivative(v, delta=dy, axis=y_dim)
+    dudx, dvdy = vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale, return_only=('du/dx', 'dv/dy')
+    )
     return dudx + dvdy
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
+def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
+                         parallel_scale=None, meridional_scale=None):
     r"""Calculate the shearing deformation of the horizontal wind.
 
     Parameters
@@ -134,6 +177,14 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
         x component of the wind
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        Shearing Deformation
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -148,11 +199,16 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        Shearing Deformation
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
 
     .. versionchanged:: 1.0
@@ -163,16 +219,19 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     stretching_deformation, total_deformation
 
     """
-    dudy = first_derivative(u, delta=dy, axis=y_dim)
-    dvdx = first_derivative(v, delta=dx, axis=x_dim)
+    dudy, dvdx = vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale, return_only=('du/dy', 'dv/dx')
+    )
     return dvdx + dudy
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
+def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
+                           parallel_scale=None, meridional_scale=None):
     r"""Calculate the stretching deformation of the horizontal wind.
 
     Parameters
@@ -181,6 +240,14 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
         x component of the wind
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        Stretching Deformation
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -195,11 +262,16 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        Stretching Deformation
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
 
     .. versionchanged:: 1.0
@@ -210,16 +282,19 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     shearing_deformation, total_deformation
 
     """
-    dudx = first_derivative(u, delta=dx, axis=x_dim)
-    dvdy = first_derivative(v, delta=dy, axis=y_dim)
+    dudx, dvdy = vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale, return_only=('du/dx', 'dv/dy')
+    )
     return dudx - dvdy
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
+def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
+                      parallel_scale=None, meridional_scale=None):
     r"""Calculate the total deformation of the horizontal wind.
 
     Parameters
@@ -228,6 +303,14 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
         x component of the wind
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        Total Deformation
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -242,11 +325,16 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        Total Deformation
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
     See Also
     --------
@@ -261,14 +349,18 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
        Changed signature from ``(u, v, dx, dy)``
 
     """
-    dudy, dudx = gradient(u, deltas=(dy, dx), axes=(y_dim, x_dim))
-    dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(y_dim, x_dim))
+    dudx, dudy, dvdx, dvdy = vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale
+    )
     return np.sqrt((dvdx + dudy)**2 + (dudx - dvdy)**2)
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='scalar', broadcast=('scalar', 'u', 'v', 'w'))
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='scalar',
+                     broadcast=('scalar', 'u', 'v', 'w', 'parallel_scale', 'meridional_scale'))
+@check_units(dx='[length]', dy='[length]')
 def advection(
     scalar,
     u=None,
@@ -280,7 +372,9 @@ def advection(
     dz=None,
     x_dim=-1,
     y_dim=-2,
-    vertical_dim=-3
+    vertical_dim=-3,
+    parallel_scale=None,
+    meridional_scale=None
 ):
     r"""Calculate the advection of a scalar field by the wind.
 
@@ -302,6 +396,14 @@ def advection(
         likewise use 3 positional arguments in order for u, v, and w winds respectively or
         specify u, v, and w as keyword arguments (either way, with `dx`, `dy`, `dz` for grid
         spacings and `x_dim`, `y_dim`, and `vertical_dim` for axes).
+
+    Returns
+    -------
+    `pint.Quantity` or `xarray.DataArray`
+        An N-dimensional array containing the advection at all grid points.
+
+    Other Parameters
+    ----------------
     dx, dy, dz: `pint.Quantity` or None, optional
         Grid spacing in applicable dimension(s). If using arrays, each array should have one
         item less than the size of `scalar` along the applicable axis. If `scalar` is an
@@ -312,36 +414,58 @@ def advection(
         Axis number in applicable dimension(s). Defaults to -1, -2, and -3 respectively for
         (..., Z, Y, X) dimension ordering. If `scalar` is an `xarray.DataArray`, these are
         automatically determined from its coordinates. These are keyword-only arguments.
-
-    Returns
-    -------
-    `pint.Quantity` or `xarray.DataArray`
-        An N-dimensional array containing the advection at all grid points.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
 
     .. versionchanged:: 1.0
        Changed signature from ``(scalar, wind, deltas)``
 
     """
+    # Set up vectors of provided components
+    wind_vector = {key: value
+                   for key, value in {'u': u, 'v': v, 'w': w}.items()
+                   if value is not None}
+    return_only_horizontal = {key: value
+                              for key, value in {'u': 'df/dx', 'v': 'df/dy'}.items()
+                              if key in wind_vector}
+    gradient_vector = ()
+
+    # Calculate horizontal components of gradient, if needed
+    if return_only_horizontal:
+        gradient_vector = geospatial_gradient(scalar, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                                              parallel_scale=parallel_scale,
+                                              meridional_scale=meridional_scale,
+                                              return_only=return_only_horizontal.values())
+
+    # Calculate vertical component of gradient, if needed
+    if 'w' in wind_vector:
+        gradient_vector = (*gradient_vector,
+                           first_derivative(scalar, axis=vertical_dim, delta=dz))
+
     return -sum(
-        wind * first_derivative(scalar, axis=axis, delta=delta)
-        for wind, delta, axis in (
-            (u, dx, x_dim),
-            (v, dy, y_dim),
-            (w, dz, vertical_dim)
-        )
-        if wind is not None
+        wind * gradient
+        for wind, gradient in zip(wind_vector.values(), gradient_vector)
     )
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like='potential_temperature',
-    broadcast=('potential_temperature', 'u', 'v')
+    broadcast=('potential_temperature', 'u', 'v', 'parallel_scale', 'meridional_scale')
 )
 @check_units('[temperature]', '[speed]', '[speed]', '[length]', '[length]')
-def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
+def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim=-2,
+                  *, parallel_scale=None, meridional_scale=None):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
 
     The implementation is a form of the Petterssen Frontogenesis and uses the formula
@@ -363,6 +487,14 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
         x component of the wind
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        2D Frontogenesis in [temperature units]/m/s
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -377,11 +509,16 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        2D Frontogenesis in [temperature units]/m/s
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
     Notes
     -----
@@ -393,19 +530,29 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
     """
     # Get gradients of potential temperature in both x and y
-    ddy_theta = first_derivative(potential_temperature, delta=dy, axis=y_dim)
-    ddx_theta = first_derivative(potential_temperature, delta=dx, axis=x_dim)
+    ddy_theta, ddx_theta = geospatial_gradient(potential_temperature, dx=dx, dy=dy,
+                                               x_dim=x_dim, y_dim=y_dim,
+                                               parallel_scale=parallel_scale,
+                                               meridional_scale=meridional_scale,
+                                               return_only=('df/dy', 'df/dx'))
 
     # Compute the magnitude of the potential temperature gradient
     mag_theta = np.sqrt(ddx_theta**2 + ddy_theta**2)
 
     # Get the shearing, stretching, and total deformation of the wind field
-    shrd = shearing_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
-    strd = stretching_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
-    tdef = total_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
+    shrd = shearing_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim,
+                                parallel_scale=parallel_scale,
+                                meridional_scale=meridional_scale)
+    strd = stretching_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim,
+                                  parallel_scale=parallel_scale,
+                                  meridional_scale=meridional_scale)
+    tdef = total_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim,
+                             parallel_scale=parallel_scale,
+                             meridional_scale=meridional_scale)
 
     # Get the divergence of the wind field
-    div = divergence(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim)
+    div = divergence(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                     parallel_scale=parallel_scale, meridional_scale=meridional_scale)
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
@@ -415,16 +562,26 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like=('height', 'height'), broadcast=('height', 'latitude'))
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like=('height', 'height'),
+                     broadcast=('height', 'latitude', 'parallel_scale', 'meridional_scale'))
 @check_units(dx='[length]', dy='[length]', latitude='[dimensionless]')
-def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
+def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
+                     *, parallel_scale=None, meridional_scale=None):
     r"""Calculate the geostrophic wind given from the height or geopotential.
 
     Parameters
     ----------
     height : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The height or geopotential field.
+
+    Returns
+    -------
+    A 2-item tuple of arrays
+        A tuple of the u-component and v-component of the geostrophic wind.
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -444,11 +601,16 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    A 2-item tuple of arrays
-        A tuple of the u-component and v-component of the geostrophic wind.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
 
     .. versionchanged:: 1.0
@@ -461,16 +623,17 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
     else:
         norm_factor = mpconsts.g / f
 
-    dhdy = first_derivative(height, delta=dy, axis=y_dim)
-    dhdx = first_derivative(height, delta=dx, axis=x_dim)
+    dhdx, dhdy = geospatial_gradient(height, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                                     parallel_scale=parallel_scale,
+                                     meridional_scale=meridional_scale)
     return -norm_factor * dhdy, norm_factor * dhdx
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like=('height', 'height'),
-    broadcast=('height', 'u', 'v', 'latitude')
+    broadcast=('height', 'u', 'v', 'latitude', 'parallel_scale', 'meridional_scale')
 )
 @check_units(
     u='[speed]',
@@ -479,17 +642,26 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
     dy='[length]',
     latitude='[dimensionless]'
 )
-def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
+def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
+                      *, parallel_scale=None, meridional_scale=None):
     r"""Calculate the ageostrophic wind given from the height or geopotential.
 
     Parameters
     ----------
-    height : (M, N) ndarray
+    height : (M, N) `xarray.DataArray` or `pint.Quantity`
         The height or geopotential field.
     u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The u wind field.
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The u wind field.
+
+    Returns
+    -------
+    A 2-item tuple of arrays
+        A tuple of the u-component and v-component of the ageostrophic wind
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -509,11 +681,16 @@ def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    A 2-item tuple of arrays
-        A tuple of the u-component and v-component of the ageostrophic wind
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
 
     .. versionchanged:: 1.0
@@ -526,7 +703,9 @@ def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y
         dy,
         latitude,
         x_dim=x_dim,
-        y_dim=y_dim
+        y_dim=y_dim,
+        parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale
     )
     return u - u_geostrophic, v - v_geostrophic
 
@@ -552,7 +731,7 @@ def montgomery_streamfunction(height, temperature):
 
     See Also
     --------
-    get_isentropic_pressure, dry_static_energy
+    dry_static_energy
 
     Notes
     -----
@@ -599,16 +778,16 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, s
     height : array-like
         Atmospheric height, will be converted to AGL
 
-    depth : number
+    depth : float or int
         Depth of the layer
 
-    bottom : number
+    bottom : float or int
         Height of layer bottom AGL (default is surface)
 
-    storm_u : number
+    storm_u : float or int
         U component of storm motion (default is 0 m/s)
 
-    storm_v : number
+    storm_v : float or int
         V component of storm motion (default is 0 m/s)
 
     Returns
@@ -621,6 +800,24 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, s
 
     `pint.Quantity`
         Total storm-relative helicity
+
+    Examples
+    --------
+    >>> from metpy.calc import storm_relative_helicity, wind_components
+    >>> from metpy.units import units
+    >>> # set needed values of pressure, height, wind direction/speed
+    >>> p = [1000, 925, 850, 700, 500, 400] * units.hPa
+    >>> h = [250, 700, 1500, 3100, 5720, 7120] * units.meters
+    >>> wdir = [165, 180, 190, 210, 220, 250] * units.degree
+    >>> sped = [5, 15, 20, 30, 50, 60] * units.knots
+    >>> # compute wind components
+    >>> u, v = wind_components(sped, wdir)
+    >>> # compute SRH with a storm vector
+    >>> storm_relative_helicity(h, u, v, depth=1 * units.km,
+    ...                         storm_u=7 * units('m/s'), storm_v=7 * units('m/s'))
+    (<Quantity(49.6086162, 'meter ** 2 / second ** 2')>,
+    <Quantity(0.0, 'meter ** 2 / second ** 2')>,
+    <Quantity(49.6086162, 'meter ** 2 / second ** 2')>)
 
     Notes
     -----
@@ -663,10 +860,12 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, s
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='u',
+                     broadcast=('u', 'v', 'latitude', 'parallel_scale', 'meridional_scale'))
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
+def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2, *,
+                       parallel_scale=None, meridional_scale=None):
     """Calculate the absolute vorticity of the horizontal wind.
 
     Parameters
@@ -675,6 +874,14 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
         x component of the wind
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        absolute vorticity
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -693,11 +900,20 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
-    Returns
-    -------
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        absolute vorticity
+    See Also
+    --------
+    vorticity, coriolis_parameter
 
 
     .. versionchanged:: 1.0
@@ -705,15 +921,18 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 
     """
     f = coriolis_parameter(latitude)
-    relative_vorticity = vorticity(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim)
+    relative_vorticity = vorticity(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                                   parallel_scale=parallel_scale,
+                                   meridional_scale=meridional_scale)
     return relative_vorticity + f
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like='potential_temperature',
-    broadcast=('potential_temperature', 'pressure', 'u', 'v', 'latitude')
+    broadcast=('potential_temperature', 'pressure', 'u', 'v', 'latitude', 'parallel_scale',
+               'meridional_scale')
 )
 @check_units('[temperature]', '[pressure]', '[speed]', '[speed]',
              '[length]', '[length]', '[dimensionless]')
@@ -727,7 +946,10 @@ def potential_vorticity_baroclinic(
     latitude=None,
     x_dim=-1,
     y_dim=-2,
-    vertical_dim=-3
+    vertical_dim=-3,
+    *,
+    parallel_scale=None,
+    meridional_scale=None
 ):
     r"""Calculate the baroclinic potential vorticity.
 
@@ -747,6 +969,14 @@ def potential_vorticity_baroclinic(
         x component of the wind
     v : (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
+
+    Returns
+    -------
+    (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
+        baroclinic potential vorticity
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -768,11 +998,16 @@ def potential_vorticity_baroclinic(
     vertical_dim : int, optional
         Axis number of vertical dimension. Defaults to -3 (implying [..., Z, Y, X] order).
         Automatically parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
-        baroclinic potential vorticity
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
     Notes
     -----
@@ -800,7 +1035,8 @@ def potential_vorticity_baroclinic(
         raise ValueError('Length of potential temperature along the vertical axis '
                          '{} must be at least 3.'.format(vertical_dim))
 
-    avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim)
+    avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim,
+                              parallel_scale=parallel_scale, meridional_scale=meridional_scale)
     dthetadp = first_derivative(potential_temperature, x=pressure, axis=vertical_dim)
 
     if (
@@ -810,8 +1046,10 @@ def potential_vorticity_baroclinic(
         dthetady = units.Quantity(0, 'K/m')  # axis=y_dim only has one dimension
         dthetadx = units.Quantity(0, 'K/m')  # axis=x_dim only has one dimension
     else:
-        dthetady = first_derivative(potential_temperature, delta=dy, axis=y_dim)
-        dthetadx = first_derivative(potential_temperature, delta=dx, axis=x_dim)
+        dthetadx, dthetady = geospatial_gradient(potential_temperature, dx=dx, dy=dy,
+                                                 x_dim=x_dim, y_dim=y_dim,
+                                                 parallel_scale=parallel_scale,
+                                                 meridional_scale=meridional_scale)
     dudp = first_derivative(u, x=pressure, axis=vertical_dim)
     dvdp = first_derivative(v, x=pressure, axis=vertical_dim)
 
@@ -820,8 +1058,10 @@ def potential_vorticity_baroclinic(
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'u', 'v', 'latitude'))
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='height',
+                     broadcast=('height', 'u', 'v', 'latitude', 'parallel_scale',
+                                'meridional_scale'))
 @check_units('[length]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
 def potential_vorticity_barotropic(
     height,
@@ -831,7 +1071,10 @@ def potential_vorticity_barotropic(
     dy=None,
     latitude=None,
     x_dim=-1,
-    y_dim=-2
+    y_dim=-2,
+    *,
+    parallel_scale=None,
+    meridional_scale=None
 ):
     r"""Calculate the barotropic (Rossby) potential vorticity.
 
@@ -847,6 +1090,14 @@ def potential_vorticity_barotropic(
         x component of the wind
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        barotropic potential vorticity
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -865,26 +1116,33 @@ def potential_vorticity_barotropic(
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        barotropic potential vorticity
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
 
     .. versionchanged:: 1.0
        Changed signature from ``(heights, u, v, dx, dy, lats, dim_order='yx')``
 
     """
-    avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim)
+    avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim,
+                              parallel_scale=parallel_scale, meridional_scale=meridional_scale)
     return (avor / height).to('meter**-1 * second**-1')
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like=('u', 'u'),
-    broadcast=('u', 'v', 'u_geostrophic', 'v_geostrophic', 'latitude')
+    broadcast=('u', 'v', 'u_geostrophic', 'v_geostrophic', 'latitude', 'parallel_scale',
+               'meridional_scale')
 )
 @check_units('[speed]', '[speed]', '[speed]', '[speed]', '[length]', '[length]',
              '[dimensionless]')
@@ -897,7 +1155,10 @@ def inertial_advective_wind(
     dy=None,
     latitude=None,
     x_dim=-1,
-    y_dim=-2
+    y_dim=-2,
+    *,
+    parallel_scale=None,
+    meridional_scale=None
 ):
     r"""Calculate the inertial advective wind.
 
@@ -924,6 +1185,16 @@ def inertial_advective_wind(
         x component of the geostrophic (advected) wind
     v_geostrophic : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the geostrophic (advected) wind
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        x component of inertial advective wind
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        y component of inertial advective wind
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -942,13 +1213,16 @@ def inertial_advective_wind(
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        x component of inertial advective wind
-    (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        y component of inertial advective wind
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
     Notes
     -----
@@ -962,8 +1236,14 @@ def inertial_advective_wind(
     """
     f = coriolis_parameter(latitude)
 
-    dugdy, dugdx = gradient(u_geostrophic, deltas=(dy, dx), axes=(y_dim, x_dim))
-    dvgdy, dvgdx = gradient(v_geostrophic, deltas=(dy, dx), axes=(y_dim, x_dim))
+    dugdx, dugdy = geospatial_gradient(u_geostrophic, dx=dx, dy=dy,
+                                       x_dim=x_dim, y_dim=y_dim,
+                                       parallel_scale=parallel_scale,
+                                       meridional_scale=meridional_scale)
+    dvgdx, dvgdy = geospatial_gradient(v_geostrophic, dx=dx, dy=dy,
+                                       x_dim=x_dim, y_dim=y_dim,
+                                       parallel_scale=parallel_scale,
+                                       meridional_scale=meridional_scale)
 
     u_component = -(u * dvgdx + v * dvgdy) / f
     v_component = (u * dugdx + v * dugdy) / f
@@ -972,10 +1252,11 @@ def inertial_advective_wind(
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(
     wrap_like=('u', 'u'),
-    broadcast=('u', 'v', 'temperature', 'pressure', 'static_stability')
+    broadcast=('u', 'v', 'temperature', 'pressure', 'static_stability', 'parallel_scale',
+               'meridional_scale')
 )
 @check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]')
 def q_vector(
@@ -987,7 +1268,10 @@ def q_vector(
     dy=None,
     static_stability=1,
     x_dim=-1,
-    y_dim=-2
+    y_dim=-2,
+    *,
+    parallel_scale=None,
+    meridional_scale=None
 ):
     r"""Calculate Q-vector at a given pressure level using the u, v winds and temperature.
 
@@ -1016,6 +1300,14 @@ def q_vector(
         Array of temperature at pressure level
     pressure : `pint.Quantity`
         Pressure at level
+
+    Returns
+    -------
+    tuple of (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        The components of the Q-vector in the u- and v-directions respectively
+
+    Other Parameters
+    ----------------
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -1033,11 +1325,16 @@ def q_vector(
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
-
-    Returns
-    -------
-    tuple of (..., M, N) `xarray.DataArray` or `pint.Quantity`
-        The components of the Q-vector in the u- and v-directions respectively
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
 
     .. versionchanged:: 1.0
@@ -1048,11 +1345,80 @@ def q_vector(
     static_stability
 
     """
-    dudy, dudx = gradient(u, deltas=(dy, dx), axes=(y_dim, x_dim))
-    dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(y_dim, x_dim))
-    dtempdy, dtempdx = gradient(temperature, deltas=(dy, dx), axes=(y_dim, x_dim))
+    dudx, dudy, dvdx, dvdy = vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+        parallel_scale=parallel_scale, meridional_scale=meridional_scale)
+
+    dtempdx, dtempdy = geospatial_gradient(
+        temperature, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+        parallel_scale=parallel_scale, meridional_scale=meridional_scale)
 
     q1 = -mpconsts.Rd / (pressure * static_stability) * (dudx * dtempdx + dvdx * dtempdy)
     q2 = -mpconsts.Rd / (pressure * static_stability) * (dudy * dtempdx + dvdy * dtempdy)
 
     return q1.to_base_units(), q2.to_base_units()
+
+
+@exporter.export
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='f', broadcast=('f', 'parallel_scale', 'meridional_scale'))
+@check_units(dx='[length]', dy='[length]')
+def geospatial_laplacian(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
+                         parallel_scale=None, meridional_scale=None):
+    r"""Calculate the projection-correct laplacian of a 2D scalar field.
+
+    Parameters
+    ----------
+    f : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        scalar field for which the horizontal gradient should be calculated
+    return_only : str or Sequence[str], optional
+        Sequence of which components of the gradient to compute and return. If none,
+        returns the gradient tuple ('df/dx', 'df/dy'). Otherwise, matches the return
+        pattern of the given strings. Only valid strings are 'df/dx', 'df/dy'.
+
+    Returns
+    -------
+    `pint.Quantity`, tuple of `pint.Quantity`, or tuple of pairs of `pint.Quantity`
+        Component(s) of vector derivative
+
+    Other Parameters
+    ----------------
+    dx : `pint.Quantity`, optional
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    dy : `pint.Quantity`, optional
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+
+    See Also
+    --------
+    vector_derivative, geospatial_gradient, laplacian
+
+    """
+    grad_u, grad_y = geospatial_gradient(f, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                                         parallel_scale=parallel_scale,
+                                         meridional_scale=meridional_scale)
+    return divergence(grad_u, grad_y, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                      parallel_scale=parallel_scale, meridional_scale=meridional_scale)

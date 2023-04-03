@@ -183,7 +183,7 @@ if __name__ == '__main__':
 
     for num in [18, 3]:
         fname = 'msg{:d}.spec'.format(num)
-        print(f'Processing {fname}...')  # noqa: T001
+        print(f'Processing {fname}...')  # noqa: T201
         info = processors[num](fname)
         fname = Path(fname).with_suffix('.py')
         write_file(fname, info)

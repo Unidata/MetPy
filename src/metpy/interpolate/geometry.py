@@ -19,16 +19,16 @@ def get_points_within_r(center_points, target_points, r):
 
     Parameters
     ----------
-    center_points: (X, Y) ndarray
+    center_points: (X, Y) numpy.ndarray
         location from which to grab surrounding points within r
-    target_points: (X, Y) ndarray
+    target_points: (X, Y) numpy.ndarray
         points from which to return if they are within r of center_points
     r: integer
         search radius around center_points to grab target_points
 
     Returns
     -------
-    matches: (X, Y) ndarray
+    matches: (X, Y) numpy.ndarray
         A list of points within r distance of, and in the same
         order as, center_points
 
@@ -45,16 +45,16 @@ def get_point_count_within_r(center_points, target_points, r):
 
     Parameters
     ----------
-    center_points: (X, Y) ndarray
+    center_points: (X, Y) numpy.ndarray
         locations from which to grab surrounding points within r
-    target_points: (X, Y) ndarray
+    target_points: (X, Y) numpy.ndarray
         points from which to return if they are within r of center_points
     r: integer
         search radius around center_points to grab target_points
 
     Returns
     -------
-    matches: (N, ) ndarray
+    matches: (N, ) numpy.ndarray
         A list of point counts within r distance of, and in the same
         order as, center_points
 
@@ -69,11 +69,11 @@ def triangle_area(pt1, pt2, pt3):
 
     Parameters
     ----------
-    pt1: (X,Y) ndarray
+    pt1: (X,Y) numpy.ndarray
         Starting vertex of a triangle
-    pt2: (X,Y) ndarray
+    pt2: (X,Y) numpy.ndarray
         Second vertex of a triangle
-    pt3: (X,Y) ndarray
+    pt3: (X,Y) numpy.ndarray
         Ending vertex of a triangle
 
     Returns
@@ -128,9 +128,9 @@ def distance(p0, p1):
 
     Parameters
     ----------
-    p0: (X,Y) ndarray
+    p0: (X,Y) numpy.ndarray
         Starting coordinate
-    p1: (X,Y) ndarray
+    p1: (X,Y) numpy.ndarray
         Ending coordinate
 
     Returns
@@ -243,15 +243,15 @@ def find_natural_neighbors(tri, grid_points):
     ----------
     tri: `scipy.spatial.Delaunay`
         A Delaunay Triangulation.
-    grid_points: (X, Y) ndarray
+    grid_points: (X, Y) numpy.ndarray
         Locations of grids.
 
     Returns
     -------
     members: dict
-        List of simplex codes for natural neighbor triangles in 'tri' for each grid cell.
-    triangle_info: dict
-        Circumcenter and radius information for each triangle in 'tri'.
+        List of simplex codes for natural neighbor triangles in ``tri`` for each grid cell.
+    circumcenters: numpy.ndarray
+        Circumcenter for each triangle in ``tri``.
 
     """
     # Used for fast identification of points with a radius of another point
@@ -260,14 +260,14 @@ def find_natural_neighbors(tri, grid_points):
     # Mask for points that are outside the triangulation
     in_triangulation = tri.find_simplex(tree.data) >= 0
 
-    triangle_info = []
+    circumcenters = []
     members = {key: [] for key in range(len(tree.data))}
     for i, indices in enumerate(tri.simplices):
         # Find the circumcircle (center and radius) for the triangle.
         triangle = tri.points[indices]
         cc = circumcenter(*triangle)
         r = circumcircle_radius(*triangle)
-        triangle_info.append(cc)
+        circumcenters.append(cc)
 
         # Find all grid points within the circumcircle.
         for point in tree.query_ball_point(cc, r):
@@ -276,7 +276,7 @@ def find_natural_neighbors(tri, grid_points):
             if in_triangulation[point]:
                 members[point].append(i)
 
-    return members, np.array(triangle_info)
+    return members, np.array(circumcenters)
 
 
 def find_nn_triangles_point(tri, cur_tri, point):
@@ -371,7 +371,7 @@ def area(poly):
 
     Parameters
     ----------
-    poly: (2, N) ndarray
+    poly: (2, N) numpy.ndarray
         2-dimensional coordinates representing an ordered
         traversal around the edge a polygon.
 
@@ -394,14 +394,14 @@ def order_edges(edges):
 
     Parameters
     ----------
-    edges: (2, N) ndarray
+    edges: (2, N) numpy.ndarray
         List of unordered line segments, where each
         line segment is represented by two unique
         vertex codes.
 
     Returns
     -------
-    ordered_edges: (2, N) ndarray
+    ordered_edges: (2, N) numpy.ndarray
 
     """
     edge = edges[0]

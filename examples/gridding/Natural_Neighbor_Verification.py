@@ -104,7 +104,7 @@ ax.annotate(f'grid 1: {val:.3f}', xy=(sim_gridx[1] + 2, sim_gridy[1]))
 
 ###########################################
 # Using the circumcenter and circumcircle radius information from
-# :func:`metpy.interpolate.geometry.find_natural_neighbors`, we can visually
+# `metpy.interpolate.find_natural_neighbors`, we can visually
 # examine the results to see if they are correct.
 def draw_circle(ax, x, y, r, m, label):
     th = np.linspace(0, 2 * np.pi, 100)
@@ -149,7 +149,7 @@ print('Triangle 8 circumradius:', r)
 ###########################################
 # Lets do a manual check of the above interpolation value for grid 0 (southernmost grid)
 # Grab the circumcenters and radii for natural neighbors
-cc = np.array(circumcenters)
+cc = np.array([circumcenters[m] for m in members[0]])
 r = np.array([geometry.circumcircle_radius(*tri.points[tri.simplices[m]]) for m in members[0]])
 
 print('circumcenters:\n', cc)

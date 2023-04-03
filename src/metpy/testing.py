@@ -40,7 +40,7 @@ def get_upper_air_data(date, station):
 
     Parameters
     ----------
-    time : datetime
+    time : `~datetime.datetime`
           The date and time of the desired observation.
     station : str
          The three letter ICAO identifier of the station for which data should be
@@ -130,7 +130,7 @@ def check_and_drop_units(actual, desired):
                 actual = units.Quantity(actual, 'dimensionless')
             actual = actual.to(desired.units)
         # Otherwise, the desired result has no units. Convert the actual result to
-        # dimensionless units if it is a united quantity.
+        # dimensionless units if it is a quantity.
         else:
             if hasattr(actual, 'units'):
                 actual = actual.to('dimensionless')

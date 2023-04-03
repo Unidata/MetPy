@@ -8,22 +8,23 @@ from collections import namedtuple
 import numpy as np
 import numpy.ma as ma
 import pandas as pd
-from pyproj import Geod
+from pyproj import CRS, Geod
 import pytest
 import xarray as xr
 
 from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersections,
-                        first_derivative, get_layer, get_layer_heights, gradient, laplacian,
-                        lat_lon_grid_deltas, nearest_intersection_idx, parse_angle,
-                        pressure_to_height_std, reduce_point_density, resample_nn_1d,
-                        second_derivative)
+                        first_derivative, geospatial_gradient, get_layer, get_layer_heights,
+                        gradient, laplacian, lat_lon_grid_deltas, nearest_intersection_idx,
+                        parse_angle, pressure_to_height_std, reduce_point_density,
+                        resample_nn_1d, second_derivative, vector_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
-                              DIR_STRS, UND)
-from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
+                              DIR_STRS, nominal_lat_lon_grid_deltas, parse_grid_arguments, UND)
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
+                           get_test_data)
 from metpy.units import units
-from metpy.xarray import grid_deltas_from_dataarray
+from metpy.xarray import grid_deltas_from_dataarray, preprocess_and_wrap
 
 FULL_CIRCLE_DEGREES = np.arange(0, 360, BASE_DEGREE_MULTIPLIER.m) * units.degree
 
@@ -1030,6 +1031,37 @@ def test_2d_gradient_4d_data_2_axes_1_deltas(deriv_4d_data):
     assert 'cannot be less than that of "axes"' in str(exc.value)
 
 
+@pytest.mark.parametrize('geog_data', ('+proj=lcc lat_1=25', '+proj=latlon', '+proj=stere'),
+                         indirect=True)
+def test_geospatial_gradient_geographic(geog_data):
+    """Test geospatial_gradient on geographic coordinates."""
+    # Generate a field of temperature on a lat/lon grid
+    crs, lons, lats, _, arr, mx, my, dx, dy = geog_data
+    grad_x, grad_y = geospatial_gradient(arr, longitude=lons, latitude=lats, crs=crs)
+
+    # Calculate the true fields using known map-correct approach
+    truth_x = mx * first_derivative(arr, delta=dx, axis=1)
+    truth_y = my * first_derivative(arr, delta=dy, axis=0)
+
+    assert_array_almost_equal(grad_x, truth_x)
+    assert_array_almost_equal(grad_y, truth_y)
+
+
+@pytest.mark.parametrize('return_only,length', [(None, 2), ('df/dx', 3), (('df/dx',), 1)])
+def test_geospatial_gradient_return_subset(return_only, length):
+    """Test geospatial_gradient's return_only as string and tuple subset."""
+    a = np.arange(4)[None, :]
+    arr = np.r_[a, a, a] * units('m/s')
+    lons = np.array([-100, -90, -80, -70]) * units('degree')
+    lats = np.array([45, 55, 65]) * units('degree')
+    crs = CRS('+proj=latlon')
+
+    ddx = geospatial_gradient(
+        arr, longitude=lons, latitude=lats, crs=crs, return_only=return_only)
+
+    assert len(ddx) == length
+
+
 def test_first_derivative_xarray_lonlat(test_da_lonlat):
     """Test first derivative with an xarray.DataArray on a lonlat grid in each axis usage."""
     deriv = first_derivative(test_da_lonlat, axis='lon')  # dimension coordinate name
@@ -1250,3 +1282,252 @@ def test_remove_nans():
     y_expected = np.array([0, 1, 3, 4])
     assert_array_almost_equal(x_expected, x_test, 0)
     assert_almost_equal(y_expected, y_test, 0)
+
+
+@pytest.mark.parametrize('subset', (False, True))
+@pytest.mark.parametrize('datafile, assign_lat_lon, no_crs, transpose',
+                         [('GFS_test.nc', False, False, False),
+                          ('GFS_test.nc', False, True, False),
+                          ('NAM_test.nc', False, False, False),
+                          ('NAM_test.nc', True, False, False),
+                          ('NAM_test.nc', True, False, True)])
+def test_parse_grid_arguments_xarray(datafile, assign_lat_lon, no_crs, transpose, subset):
+    """Test the operation of parse_grid_arguments with xarray data."""
+    @parse_grid_arguments
+    @preprocess_and_wrap(broadcast=['scalar', 'parallel_scale', 'meridional_scale'],
+                         wrap_like=('scalar', 'dx', 'dy', 'scalar', 'scalar', 'latitude',
+                                    None, None))
+    def check_params(scalar, dx=None, dy=None, parallel_scale=None, meridional_scale=None,
+                     latitude=None, x_dim=-1, y_dim=-2):
+        return scalar, dx, dy, parallel_scale, meridional_scale, latitude, x_dim, y_dim
+
+    data = xr.open_dataset(get_test_data(datafile, as_file_obj=False))
+
+    if no_crs:
+        data = data.drop_vars(('LatLon_Projection',))
+        temp = data.Temperature_isobaric
+    else:
+        temp = data.metpy.parse_cf('Temperature_isobaric')
+
+    if transpose:
+        temp = temp.transpose(..., 'x', 'y')
+
+    if assign_lat_lon:
+        temp = temp.metpy.assign_latitude_longitude()
+    if subset:
+        temp = temp.isel(time=0).metpy.sel(vertical=500 * units.hPa)
+
+    t, dx, dy, p, m, lat, x_dim, y_dim = check_params(temp)
+
+    if transpose:
+        if subset:
+            assert x_dim == 0
+            assert y_dim == 1
+        else:
+            assert x_dim == 2
+            assert y_dim == 3
+    elif subset:
+        assert x_dim == 1
+        assert y_dim == 0
+    else:
+        assert x_dim == 3
+        assert y_dim == 2
+
+    assert_array_equal(t, temp)
+
+    assert p.shape == t.shape
+    assert_array_equal(p.metpy.x, t.metpy.x)
+    assert_array_equal(p.metpy.y, t.metpy.y)
+
+    assert m.shape == t.shape
+    assert_array_equal(m.metpy.x, t.metpy.x)
+    assert_array_equal(m.metpy.y, t.metpy.y)
+
+    assert dx.check('m')
+    assert dy.check('m')
+
+    assert_array_almost_equal(lat, data.lat, 5)
+
+
+@pytest.mark.parametrize('xy_order', (False, True))
+def test_parse_grid_arguments_cartesian(test_da_xy, xy_order):
+    """Test the operation of parse_grid_arguments with no lat/lon info."""
+    @parse_grid_arguments
+    @preprocess_and_wrap(broadcast=['scalar', 'parallel_scale', 'meridional_scale'],
+                         wrap_like=('scalar', 'dx', 'dy', 'scalar', 'scalar', 'latitude',
+                                    None, None))
+    def check_params(scalar, dx=None, dy=None, x_dim=-1, y_dim=-2,
+                     parallel_scale=None, meridional_scale=None, latitude=None):
+        return scalar, dx, dy, parallel_scale, meridional_scale, latitude, x_dim, y_dim
+
+    # Remove CRS from dataarray
+    data = test_da_xy.reset_coords('metpy_crs', drop=True)
+    del data.attrs['grid_mapping']
+
+    if xy_order:
+        data = data.transpose(..., 'x', 'y')
+
+    t, dx, dy, p, m, lat, x_dim, y_dim = check_params(data)
+    if xy_order:
+        assert x_dim == 2
+        assert y_dim == 3
+    else:
+        assert x_dim == 3
+        assert y_dim == 2
+
+    assert_array_almost_equal(t, data)
+    assert_array_almost_equal(dx, 500 * units.km)
+    assert_array_almost_equal(dy, 500 * units.km)
+
+    assert p is None
+    assert m is None
+    assert lat is None
+
+
+def test_parse_grid_arguments_missing_coords():
+    """Test parse_grid_arguments with data with missing dimension coordinates."""
+    @parse_grid_arguments
+    @preprocess_and_wrap()
+    def check_params(scalar, dx=None, dy=None, x_dim=-1, y_dim=-2):
+        """Test parameter passing and filling."""
+
+    lat, lon = np.meshgrid(np.array([38., 40., 42]), np.array([263., 265., 267.]))
+    test_da = xr.DataArray(
+        np.linspace(300, 250, 3 * 3).reshape((3, 3)),
+        name='temperature',
+        dims=('dim_0', 'dim_1'),
+        coords={
+            'lat': xr.DataArray(lat, dims=('dim_0', 'dim_1'),
+                                attrs={'units': 'degrees_north'}),
+            'lon': xr.DataArray(lon, dims=('dim_0', 'dim_1'), attrs={'units': 'degrees_east'})
+        },
+        attrs={'units': 'K'}).to_dataset().metpy.parse_cf('temperature')
+
+    with pytest.raises(AttributeError,
+                       match='horizontal dimension coordinates cannot be found.'):
+        check_params(test_da)
+
+
+def test_parse_grid_arguments_unknown_dims():
+    """Test parse_grid_arguments with data with unknown dimensions."""
+    @parse_grid_arguments
+    @preprocess_and_wrap(broadcast=['scalar', 'parallel_scale', 'meridional_scale'])
+    def check_params(scalar, dx=None, dy=None, x_dim=-1, y_dim=-2, parallel_scale=None,
+                     meridional_scale=None, latitude=None):
+        return x_dim, y_dim
+
+    dim0 = np.arange(3)
+    dim1 = np.arange(5, 11, 2)
+    test_da = xr.DataArray(
+        np.linspace(300, 250, 3 * 3).reshape((3, 3)),
+        name='temperature',
+        dims=('dim_0', 'dim_1'),
+        coords={
+            'dim_0': xr.DataArray(dim0, dims=('dim_0',), attrs={'units': 'm'}),
+            'dim_1': xr.DataArray(dim1, dims=('dim_1',), attrs={'units': 'm'}),
+        },
+        attrs={'units': 'K'}).to_dataset().metpy.parse_cf('temperature')
+
+    with pytest.warns(UserWarning,
+                      match='Horizontal dimension numbers not found.'):
+        x_dim, y_dim = check_params(test_da, dx=2.0 * units.m, dy=1.0 * units.m)
+        assert y_dim == -2
+        assert x_dim == -1
+
+
+# Ported from original test for add_grid_arguments_from_xarray
+def test_parse_grid_arguments_from_dataarray():
+    """Test the parse grid arguments decorator for adding in arguments from xarray."""
+    @parse_grid_arguments
+    def return_the_kwargs(
+        da,
+        dz=None,
+        dy=None,
+        dx=None,
+        vertical_dim=None,
+        y_dim=None,
+        x_dim=None,
+        latitude=None,
+        parallel_scale=None,
+        meridional_scale=None
+    ):
+        return {
+            'dz': dz,
+            'dy': dy,
+            'dx': dx,
+            'vertical_dim': vertical_dim,
+            'y_dim': y_dim,
+            'x_dim': x_dim,
+            'latitude': latitude
+        }
+
+    data = xr.DataArray(
+        np.zeros((1, 2, 2, 2)),
+        dims=('time', 'isobaric', 'lat', 'lon'),
+        coords={
+            'time': ['2020-01-01T00:00Z'],
+            'isobaric': (('isobaric',), [850., 700.], {'units': 'hPa'}),
+            'lat': (('lat',), [30., 40.], {'units': 'degrees_north'}),
+            'lon': (('lon',), [-100., -90.], {'units': 'degrees_east'})
+        }
+    ).to_dataset(name='zeros').metpy.parse_cf('zeros')
+    result = return_the_kwargs(data)
+    assert_array_almost_equal(result['dz'], [-150.] * units.hPa)
+    assert_array_almost_equal(result['dy'], 1109415.632 * units.meter, 2)
+    assert_array_almost_equal(result['dx'], 1113194.90793274 * units.meter, 2)
+    assert result['vertical_dim'] == 1
+    assert result['y_dim'] == 2
+    assert result['x_dim'] == 3
+    assert_array_almost_equal(
+        result['latitude'].metpy.unit_array,
+        [30., 40.] * units.degrees_north
+    )
+    # Verify latitude is xarray so can be broadcast,
+    # see https://github.com/Unidata/MetPy/pull/1490#discussion_r483198245
+    assert isinstance(result['latitude'], xr.DataArray)
+
+
+def test_nominal_grid_deltas():
+    """Test nominal_lat_lon_grid_deltas with basic params and non-default Geod."""
+    lat = np.array([25., 35., 45.]) * units.degree
+    lon = np.array([-105, -100, -95, -90]) * units.degree
+
+    dx, dy = nominal_lat_lon_grid_deltas(lon, lat, Geod(a=4370997))
+    assert_array_almost_equal(dx, 381441.44622397297 * units.m)
+    assert_array_almost_equal(dy, [762882.89244795, 762882.89244795] * units.m)
+
+
+def test_nominal_grid_deltas_trivial_nd():
+    """Test that we can pass arrays with only one real dimension."""
+    lat = np.array([25., 35., 45.]).reshape(1, 1, -1, 1) * units.degree
+    lon = np.array([-105, -100, -95, -90]).reshape(1, 1, 1, -1) * units.degree
+
+    dx, dy = nominal_lat_lon_grid_deltas(lon, lat)
+    assert_array_almost_equal(dx, 556597.45396637 * units.m)
+    assert_array_almost_equal(dy, [1108538.7325489, 1110351.4762828] * units.m)
+
+
+def test_nominal_grid_deltas_raises():
+    """Test that nominal_lat_lon_grid_deltas raises with full 2D inputs."""
+    lat = np.array([[25.] * 4, [35.] * 4, [45.] * 4])
+    lon = np.array([[-105, -100, -95, -90]] * 3)
+    with pytest.raises(ValueError, match='one dimensional'):
+        nominal_lat_lon_grid_deltas(lon, lat)
+
+
+@pytest.mark.parametrize('return_only,length', [(None, 4),
+                                                ('du/dx', 3),
+                                                (('du/dx', 'dv/dy'), 2),
+                                                (('du/dx',), 1)])
+def test_vector_derivative_return_subset(return_only, length):
+    """Test vector_derivative's return_only as string and tuple subset."""
+    a = np.arange(4)[None, :]
+    u = v = np.r_[a, a, a] * units('m/s')
+    lons = np.array([-100, -90, -80, -70]) * units('degree')
+    lats = np.array([45, 55, 65]) * units('degree')
+    crs = CRS('+proj=latlon')
+
+    ddx = vector_derivative(
+        u, v, longitude=lons, latitude=lats, crs=crs, return_only=return_only)
+
+    assert len(ddx) == length

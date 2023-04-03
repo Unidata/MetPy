@@ -12,7 +12,7 @@ from metpy.cbook import get_test_data
 from metpy.io import parse_metar_file, parse_metar_to_dataframe
 from metpy.io._metar_parser.metar_parser import parse
 from metpy.io.metar import Metar, parse_metar
-from metpy.units import units
+from metpy.units import is_quantity, units
 
 
 @pytest.mark.parametrize(['metar', 'truth'], [
@@ -183,12 +183,26 @@ from metpy.units import units
      Metar('ORER', 36.22, 43.97, 409, datetime(2017, 5, 17, 20, 0), 300, 6.0, np.nan,
            400, 'FG', np.nan, np.nan, 'VV', np.nan, np.nan, np.nan, np.nan, np.nan,
            np.nan, np.nan, 8, 12, 12, units.Quantity(1013, 'hPa').m_as('inHg'), 45, 0, 0,
-           'NOSIG'))],
+           'NOSIG')),
+    # Invalid Visibility Unidata/Metpy#2652
+    ('KGYR 072147Z 12006KT 1/0SM FEW100 SCT250 41/14 A2992',
+     Metar('KGYR', 33.42, -112.37, 295, datetime(2017, 5, 7, 21, 47), 120, 6.0, np.nan,
+           np.nan, np.nan, np.nan, np.nan, 'FEW', 10000, 'SCT', 25000, np.nan, np.nan,
+           np.nan, np.nan, 4, 41, 14, 29.92, 0, 0, 0,
+           '')),
+    # Manual visibility can be [1,3,5]/16SM Unidata/Metpy#2807
+    ('KDEN 241600Z 02010KT 1/16SM R35L/1000V1200FT FZFG VV001 M01/M02 A2954 RMK AO2 SFC VIS '
+     'M1/4 T10111022',
+     Metar('KDEN', 39.85, -104.65, 1640, datetime(2017, 5, 24, 16, 00), 20, 10.0, np.nan,
+           units.Quantity(1 / 16, 'mi').m_as('m'), 'FZFG', np.nan, np.nan, 'VV', 100,
+           np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, 8, -1, -2, 29.54, 49, 0, 0,
+           'AO2 SFC VIS M1/4 T10111022'))],
     ids=['missing station', 'BKN', 'FEW', 'current weather', 'smoke', 'CAVOK', 'vis fraction',
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
          '-DZ', 'sky cover CB', '5 sky levels', '-FZUP', 'VV group', 'COR placement',
          'M1/4SM vis', 'variable vis', 'runway vis', 'odd COR', 'IC', 'NSW',
-         'variable vis no dir', 'swapped wind and vis', 'space in wx code', 'truncated VV'])
+         'variable vis no dir', 'swapped wind and vis', 'space in wx code', 'truncated VV',
+         'vis div zero', 'vis 1/16'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth
@@ -358,7 +372,7 @@ def test_parse_no_pint_objects_in_df():
 
     for df in (parse_metar_file(input_file), parse_metar_to_dataframe(metar_str)):
         for column in df:
-            assert not isinstance(df[column][0], units.Quantity)
+            assert not is_quantity(df[column][0])
 
 
 def test_repr():

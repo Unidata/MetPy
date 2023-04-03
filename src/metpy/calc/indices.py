@@ -99,15 +99,24 @@ def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
 def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None):
     r"""Calculate pressure-weighted mean of an arbitrary variable through a layer.
 
-    Layer top and bottom specified in height or pressure.
+    Layer bottom and depth specified in height or pressure.
+
+    .. math::  MPW = \frac{\int_{p_s}^{p_b} A p dp}{\int_{p_s}^{p_b} p dp}
+
+    where:
+
+    * :math:`MPW` is the pressure-weighted mean of a variable.
+    * :math:`p_b` is the bottom pressure level.
+    * :math:`p_s` is the top pressure level.
+    * :math:`A` is the variable whose pressure-weighted mean is being calculated.
 
     Parameters
     ----------
     pressure : `pint.Quantity`
-        Atmospheric pressure profile
+        Atmospheric pressure profile.
 
     args : `pint.Quantity`
-        Parameters for which the pressure-weighted mean is to be calculated
+        Parameters for which the weighted-continuous mean is to be calculated.
 
     height : `pint.Quantity`, optional
         Heights from sounding. Standard atmosphere heights assumed (if needed)
@@ -120,12 +129,25 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
         assumed to be the surface.
 
     depth: `pint.Quantity`, optional
-        Depth of the layer in meters or hPa
+        Depth of the layer in meters or hPa. Defaults to 100 hPa.
 
     Returns
     -------
     list of `pint.Quantity`
-        list of layer mean value for each profile in args
+        list of layer mean value for each profile in args.
+
+    See Also
+    --------
+    weighted_continuous_average
+
+    Examples
+    --------
+    >>> from metpy.calc import mean_pressure_weighted
+    >>> from metpy.units import units
+    >>> p = [1000, 850, 700, 500] * units.hPa
+    >>> T = [30, 15, 5, -5] * units.degC
+    >>> mean_pressure_weighted(p, T)
+    [<Quantity(298.54368, 'kelvin')>]
 
     Notes
     -----
@@ -150,36 +172,121 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[speed]', '[speed]', '[length]')
-def bunkers_storm_motion(pressure, u, v, height):
-    r"""Calculate the Bunkers right-mover and left-mover storm motions and sfc-6km mean flow.
+@check_units('[pressure]')
+def weighted_continuous_average(pressure, *args, height=None, bottom=None, depth=None):
+    r"""Calculate weighted-continuous mean of an arbitrary variable through a layer.
 
-    Uses the storm motion calculation from [Bunkers2000]_.
+    Layer top and bottom specified in height or pressure.
+
+    Formula based on that from [Holton2004]_ pg. 76 and the NCL function ``wgt_vertical_n``
+
+    .. math::  WCA = \frac{\int_{p_s}^{p_b} A dp}{\int_{p_s}^{p_b} dp}
+
+    where:
+
+    * :math:`WCA` is the weighted continuous average of a variable.
+    * :math:`p_b` is the bottom pressure level.
+    * :math:`p_s` is the top pressure level.
+    * :math:`A` is the variable whose weighted continuous average is being calculated.
 
     Parameters
     ----------
     pressure : `pint.Quantity`
-        Pressure from sounding
+        Atmospheric pressure profile.
 
-    u : `pint.Quantity`
-        U component of the wind
+    args : `pint.Quantity`
+        Parameters for which the weighted-continuous mean is to be calculated.
 
-    v : `pint.Quantity`
-        V component of the wind
+    height : `pint.Quantity`, optional
+        Heights from sounding. Standard atmosphere heights assumed (if needed)
+        if no heights are given.
 
-    height : `pint.Quantity`
-        Height from sounding
+    bottom: `pint.Quantity`, optional
+        The bottom of the layer in either the provided height coordinate
+        or in pressure. Don't provide in meters AGL unless the provided
+        height coordinate is meters AGL. Default is the first observation,
+        assumed to be the surface.
+
+    depth: `pint.Quantity`, optional
+        Depth of the layer in meters or hPa.
 
     Returns
     -------
-    right_mover: `pint.Quantity`
-        U and v component of Bunkers RM storm motion
+    list of `pint.Quantity`
+        list of layer mean value for each profile in args.
 
-    left_mover: `pint.Quantity`
-        U and v component of Bunkers LM storm motion
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
 
-    wind_mean: `pint.Quantity`
-        U and v component of sfc-6km mean flow
+    """
+    # Split pressure profile from other variables to average
+    pres_prof, *others = get_layer(
+        pressure, *args, height=height, bottom=bottom, depth=depth
+    )
+
+    return [np.trapz(var_prof, x=pres_prof) / (pres_prof[-1] - pres_prof[0])
+            for var_prof in others]
+
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[speed]', '[speed]', '[length]')
+def bunkers_storm_motion(pressure, u, v, height):
+    r"""Calculate right-mover and left-mover supercell storm motions using the Bunkers method.
+
+    This is a physically based, shear-relative, and Galilean invariant method for predicting
+    supercell motion. Full atmospheric profiles of wind components, as well as pressure and
+    heights, need to be provided so that calculation can properly calculate the required
+    surface to 6 km mean flow.
+
+    The calculation in summary is (from [Bunkers2000]_):
+
+    * surface to 6 km non-pressure-weighted mean wind
+    * a deviation from the sfc to 6 km mean wind of 7.5 m s−1
+    * a 5.5 to 6 km mean wind for the head of the vertical wind shear vector
+    * a surface to 0.5 km mean wind for the tail of the vertical wind shear vector
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure from full profile
+
+    u : `pint.Quantity`
+        Full profile of the U-component of the wind
+
+    v : `pint.Quantity`
+        Full profile of the V-component of the wind
+
+    height : `pint.Quantity`
+        Full profile of height
+
+    Returns
+    -------
+    right_mover: (`pint.Quantity`, `pint.Quantity`)
+        Scalar U- and V- components of Bunkers right-mover storm motion
+
+    left_mover: (`pint.Quantity`, `pint.Quantity`)
+        Scalar U- and V- components of Bunkers left-mover storm motion
+
+    wind_mean: (`pint.Quantity`, `pint.Quantity`)
+        Scalar U- and V- components of surface to 6 km mean flow
+
+    Examples
+    --------
+    >>> from metpy.calc import bunkers_storm_motion, wind_components
+    >>> from metpy.units import units
+    >>> p = [1000, 925, 850, 700, 500, 400] * units.hPa
+    >>> h = [250, 700, 1500, 3100, 5720, 7120] * units.meters
+    >>> wdir = [165, 180, 190, 210, 220, 250] * units.degree
+    >>> sped = [5, 15, 20, 30, 50, 60] * units.knots
+    >>> u, v = wind_components(sped, wdir)
+    >>> bunkers_storm_motion(p, u, v, h)
+    (<Quantity([22.73539654 10.27331352], 'knot')>,
+    <Quantity([ 7.27954821 34.99751866], 'knot')>,
+    <Quantity([15.00747237 22.63541609], 'knot')>)
 
     Notes
     -----
@@ -263,6 +370,17 @@ def bulk_shear(pressure, u, v, height=None, bottom=None, depth=None):
     v_shr: `pint.Quantity`
         V-component of layer bulk shear
 
+    Examples
+    --------
+    >>> from metpy.calc import bulk_shear, wind_components
+    >>> from metpy.units import units
+    >>> p = [1000, 925, 850, 700, 500] * units.hPa
+    >>> wdir = [165, 180, 190, 210, 220] * units.degree
+    >>> sped = [5, 15, 20, 30, 50] * units.knots
+    >>> u, v = wind_components(sped, wdir)
+    >>> bulk_shear(p, u, v)
+    (<Quantity(2.41943319, 'knot')>, <Quantity(11.6920573, 'knot')>)
+
     Notes
     -----
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
@@ -316,6 +434,14 @@ def supercell_composite(mucape, effective_storm_helicity, effective_shear):
     `pint.Quantity`
         Supercell composite
 
+    Examples
+    --------
+    >>> from metpy.calc import supercell_composite
+    >>> from metpy.units import units
+    >>> supercell_composite(2500 * units('J/kg'), 125 * units('m^2/s^2'),
+    ...                     50 * units.knot).to_base_units()
+    <Quantity([6.25], 'dimensionless')>
+
     """
     effective_shear = np.clip(np.atleast_1d(effective_shear), None, units.Quantity(20, 'm/s'))
     effective_shear[effective_shear < units.Quantity(10, 'm/s')] = units.Quantity(0, 'm/s')
@@ -366,6 +492,14 @@ def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, sh
     -------
     `pint.Quantity`
         Significant tornado parameter
+
+    Examples
+    --------
+    >>> from metpy.calc import significant_tornado
+    >>> from metpy.units import units
+    >>> significant_tornado(3000 * units('J/kg'), 750 * units.meters,
+    ...                     150 * units('m^2/s^2'), 25 * units.knot).to_base_units()
+    <Quantity([1.28611111], 'dimensionless')>
 
     """
     surface_based_lcl_height = np.clip(np.atleast_1d(surface_based_lcl_height),
@@ -419,6 +553,18 @@ def critical_angle(pressure, u, v, height, u_storm, v_storm):
     -------
     `pint.Quantity`
         Critical angle in degrees
+
+    Examples
+    --------
+    >>> from metpy.calc import critical_angle, wind_components
+    >>> from metpy.units import units
+    >>> p = [1000, 925, 850, 700, 500, 400] * units.hPa
+    >>> h = [250, 700, 1500, 3100, 5720, 7120] * units.meters
+    >>> wdir = [165, 180, 190, 210, 220, 250] * units.degree
+    >>> sped = [5, 15, 20, 30, 50, 60] * units.knots
+    >>> u, v = wind_components(sped, wdir)
+    >>> critical_angle(p, u, v, h, 7 * units.knots, 7 * units.knots)
+    <Quantity(67.0942521, 'degree')>
 
     Notes
     -----

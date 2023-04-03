@@ -1,1 +1,2 @@
-cartopy==0.20.2
+cartopy==0.21.1
+shapely==2.0.1

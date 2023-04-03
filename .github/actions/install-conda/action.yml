@@ -10,31 +10,19 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Setup conda caching
-      uses: actions/cache@v2
-      with:
-        path: ~/conda_pkgs_dir
-        key: conda-${{ inputs.type }}-${{ runner.os }}-${{ inputs.python-version}}-${{ hashFiles('ci/*') }}
-        restore-keys: |
-          conda-${{ inputs.type }}-${{ runner.os }}-${{ inputs.python-version}}
-          conda-${{ inputs.type }}-${{ runner.os }}
-          conda-${{ inputs.type }}-
-
     - name: Set up Python ${{ inputs.python-version }}
-      uses: conda-incubator/setup-miniconda@v2
+      uses: mamba-org/provision-with-micromamba@v15
       with:
-        miniforge-version: latest
-        miniforge-variant: mambaforge
-        python-version: ${{ inputs.python-version }}
-        channel-priority: strict
+        environment-file: false
+        environment-name: CI
+        extra-specs: python=${{ inputs.python-version }}
         channels: conda-forge/label/testing,conda-forge
-        show-channel-urls: true
-        # Needed for caching
-        use-only-tar-bz2: true
+        cache-env: true
+        cache-env-key: mamba-${{ inputs.type }}-${{ runner.os }}-${{ inputs.python-version}}-${{ hashFiles('ci/*') }}
 
     - name: Install dependencies
       shell: bash -l {0}
-      run: mamba install --quiet --yes --file ci/${{ inputs.type }}_requirements.txt --file ci/extra_requirements.txt --file ci/requirements.txt
+      run: micromamba install --quiet --yes --file ci/${{ inputs.type }}_requirements.txt --file ci/extra_requirements.txt --file ci/requirements.txt
 
     - name: Download Cartopy Maps
       shell: bash -l {0}

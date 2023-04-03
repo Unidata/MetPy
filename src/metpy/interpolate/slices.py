@@ -7,7 +7,7 @@ import numpy as np
 import xarray as xr
 
 from ..package_tools import Exporter
-from ..units import units
+from ..units import is_quantity, units
 from ..xarray import check_axis
 
 exporter = Exporter(globals())
@@ -17,9 +17,9 @@ exporter = Exporter(globals())
 def interpolate_to_slice(data, points, interp_type='linear'):
     r"""Obtain an interpolated slice through data using xarray.
 
-    Utilizing the interpolation functionality in `xarray`, this function takes a slice the
-    given data (currently only regular grids are supported), which is given as an
-    `xarray.DataArray` so that we can utilize its coordinate metadata.
+    Utilizing the interpolation functionality in xarray, this function
+    takes a slice of the given data (currently only regular grids are supported), which is
+    given as an `xarray.DataArray` so that we can utilize its coordinate metadata.
 
     Parameters
     ----------
@@ -27,7 +27,7 @@ def interpolate_to_slice(data, points, interp_type='linear'):
         Three- (or higher) dimensional field(s) to interpolate. The DataArray (or each
         DataArray in the Dataset) must have been parsed by MetPy and include both an x and
         y coordinate dimension.
-    points: (N, 2) array_like
+    points: (N, 2) array-like
         A list of x, y points in the data projection at which to interpolate the data
     interp_type: str, optional
         The interpolation method, either 'linear' or 'nearest' (see
@@ -57,10 +57,7 @@ def interpolate_to_slice(data, points, interp_type='linear'):
     data_sliced.coords['index'] = range(len(points))
 
     # Bug in xarray: interp strips units
-    if (
-        isinstance(data.data, units.Quantity)
-        and not isinstance(data_sliced.data, units.Quantity)
-    ):
+    if is_quantity(data.data) and not is_quantity(data_sliced.data):
         data_sliced.data = units.Quantity(data_sliced.data, data.data.units)
 
     return data_sliced
@@ -70,16 +67,16 @@ def interpolate_to_slice(data, points, interp_type='linear'):
 def geodesic(crs, start, end, steps):
     r"""Construct a geodesic path between two points.
 
-    This function acts as a wrapper for the geodesic construction available in `pyproj`.
+    This function acts as a wrapper for the geodesic construction available in ``pyproj``.
 
     Parameters
     ----------
-    crs: `pyproj.CRS`
+    crs: `pyproj.crs.CRS`
         PyProj Coordinate Reference System to use for the output
-    start: (2, ) array_like
+    start: (2, ) array-like
         A latitude-longitude pair designating the start point of the geodesic (units are
         degrees north and degrees east).
-    end: (2, ) array_like
+    end: (2, ) array-like
         A latitude-longitude pair designating the end point of the geodesic (units are degrees
         north and degrees east).
     steps: int, optional
@@ -115,7 +112,7 @@ def geodesic(crs, start, end, steps):
 def cross_section(data, start, end, steps=100, interp_type='linear'):
     r"""Obtain an interpolated cross-sectional slice through gridded data.
 
-    Utilizing the interpolation functionality in `xarray`, this function takes a vertical
+    Utilizing the interpolation functionality in xarray, this function takes a vertical
     cross-sectional slice along a geodesic through the given data on a regular grid, which is
     given as an `xarray.DataArray` so that we can utilize its coordinate and projection
     metadata.
@@ -126,10 +123,10 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
         Three- (or higher) dimensional field(s) to interpolate. The DataArray (or each
         DataArray in the Dataset) must have been parsed by MetPy and include both an x and
         y coordinate dimension and the added `crs` coordinate.
-    start: (2, ) array_like
+    start: (2, ) array-like
         A latitude-longitude pair designating the start point of the cross section (units are
         degrees north and degrees east).
-    end: (2, ) array_like
+    end: (2, ) array-like
         A latitude-longitude pair designating the end point of the cross section (units are
         degrees north and degrees east).
     steps: int, optional

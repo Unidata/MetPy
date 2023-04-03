@@ -10,7 +10,7 @@ wind_dir <- (([\d] [\d] [\d]) / 'VAR' / 'VRB' / "///")?
 wind_spd <- (([\d] [\d] [\d]?) / "//")?
 gust     <- ("G" [\d]+)?
 varwind  <- sep [\d] [\d] [\d] "V" [\d] [\d] [\d]
-vis      <- ((sep ( ([\d] [\d] [\d] [\d] ("NDV")?) / ([\d] ([\d] / ((" " [\d])? "/" [\d]))? "SM") / ("M" [\d] "/" [\d] "SM") / "CAVOK" / "////") varvis?))?
+vis      <- ((sep ( ([\d] [\d] [\d] [\d] ("NDV")?) / ([\d] ([\d] / ((" " [\d])? "/" [\d] [\d]?))? "SM") / ("M" [\d] "/" [\d] "SM") / "CAVOK" / "////") varvis?))?
 varvis   <- sep [\d] [\d] [\d] [\d] [NSEW]? [NSEW]?
 run      <- ((sep "R" [LRC]? [\d] [\d] [LRC]? "/" ([\d] [\d] [\d] [\d] "V")? ["M" / "P"]? [\d] [\d] [\d] [\d] "FT"? ("/"? [UDN])?))*
 curwx    <- (((sep "//") / (sep "NSW") / (sep (wx))*))?

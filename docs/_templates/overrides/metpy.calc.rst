@@ -23,6 +23,7 @@ Dry Thermodynamics
       static_stability
       temperature_from_potential_temperature
       thickness_hydrostatic
+      weighted_continuous_average
 
 
 Moist Thermodynamics
@@ -70,6 +71,7 @@ Soundings
       bulk_shear
       bunkers_storm_motion
       cape_cin
+      ccl
       critical_angle
       cross_totals
       el
@@ -90,6 +92,7 @@ Soundings
       storm_relative_helicity
       supercell_composite
       surface_based_cape_cin
+      sweat_index
       total_totals_index
       vertical_totals
 
@@ -146,6 +149,8 @@ Mathematical Functions
 
       cross_section_components
       first_derivative
+      geospatial_gradient
+      geospatial_laplacian
       gradient
       laplacian
       lat_lon_grid_deltas
@@ -153,6 +158,7 @@ Mathematical Functions
       second_derivative
       tangential_component
       unit_vectors_from_cross_section
+      vector_derivative
 
 
 Apparent Temperature

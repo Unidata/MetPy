@@ -13,10 +13,9 @@ import xarray as xr
 from metpy.plots.mapping import CFProjection
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data)
-from metpy.units import DimensionalityError, units
-from metpy.xarray import (add_grid_arguments_from_xarray, add_vertical_dim_from_xarray,
-                          check_axis, check_matching_coordinates, grid_deltas_from_dataarray,
-                          preprocess_and_wrap)
+from metpy.units import DimensionalityError, is_quantity, units
+from metpy.xarray import (add_vertical_dim_from_xarray, check_axis, check_matching_coordinates,
+                          grid_deltas_from_dataarray, preprocess_and_wrap)
 
 
 @pytest.fixture
@@ -102,7 +101,7 @@ def test_geodetic(test_var, ccrs):
 def test_unit_array(test_var):
     """Test unit handling through the accessor."""
     arr = test_var.metpy.unit_array
-    assert isinstance(arr, units.Quantity)
+    assert is_quantity(arr)
     assert arr.units == units.kelvin
 
 
@@ -173,11 +172,25 @@ def test_convert_coordinate_units(test_ds_generic):
     assert result['b'].metpy.units == units.percent
 
 
+def test_latlon_default_units(test_var_multidim_full):
+    """Test that lat/lon are given degree units by default."""
+    del test_var_multidim_full.lat.attrs['units']
+    del test_var_multidim_full.lon.attrs['units']
+
+    lat = test_var_multidim_full.metpy.latitude.metpy.unit_array
+    assert lat.units == units.degrees
+    assert lat.max() > 50 * units.degrees
+
+    lon = test_var_multidim_full.metpy.longitude.metpy.unit_array
+    assert lon.units == units.degrees
+    assert lon.min() < -100 * units.degrees
+
+
 def test_quantify(test_ds_generic):
     """Test quantify method for converting data to Quantity."""
     original = test_ds_generic['test'].values
     result = test_ds_generic['test'].metpy.quantify()
-    assert isinstance(result.data, units.Quantity)
+    assert is_quantity(result.data)
     assert result.data.units == units.kelvin
     assert 'units' not in result.attrs
     np.testing.assert_array_almost_equal(result.data, units.Quantity(original))
@@ -197,7 +210,7 @@ def test_dequantify():
 def test_dataset_quantify(test_ds_generic):
     """Test quantify method for converting data to Quantity on Datasets."""
     result = test_ds_generic.metpy.quantify()
-    assert isinstance(result['test'].data, units.Quantity)
+    assert is_quantity(result['test'].data)
     assert result['test'].data.units == units.kelvin
     assert 'units' not in result['test'].attrs
     np.testing.assert_array_almost_equal(
@@ -1365,7 +1378,7 @@ def test_preprocess_and_wrap_with_variable():
 
     assert isinstance(result_12, xr.DataArray)
     xr.testing.assert_identical(func(data1, data2), expected_12)
-    assert isinstance(result_21, units.Quantity)
+    assert is_quantity(result_21)
     assert_array_equal(func(data2, data1), expected_21)
 
 
@@ -1462,55 +1475,6 @@ def test_grid_deltas_from_dataarray_invalid_kind(test_da_xy):
     """Test grid_deltas_from_dataarray when kind is invalid."""
     with pytest.raises(ValueError):
         grid_deltas_from_dataarray(test_da_xy, kind='invalid')
-
-
-def test_add_grid_arguments_from_dataarray():
-    """Test the grid argument decorator for adding in arguments from xarray."""
-    @add_grid_arguments_from_xarray
-    def return_the_kwargs(
-        da,
-        dz=None,
-        dy=None,
-        dx=None,
-        vertical_dim=None,
-        y_dim=None,
-        x_dim=None,
-        latitude=None
-    ):
-        return {
-            'dz': dz,
-            'dy': dy,
-            'dx': dx,
-            'vertical_dim': vertical_dim,
-            'y_dim': y_dim,
-            'x_dim': x_dim,
-            'latitude': latitude
-        }
-
-    data = xr.DataArray(
-        np.zeros((1, 2, 2, 2)),
-        dims=('time', 'isobaric', 'lat', 'lon'),
-        coords={
-            'time': ['2020-01-01T00:00Z'],
-            'isobaric': (('isobaric',), [850., 700.], {'units': 'hPa'}),
-            'lat': (('lat',), [30., 40.], {'units': 'degrees_north'}),
-            'lon': (('lon',), [-100., -90.], {'units': 'degrees_east'})
-        }
-    ).to_dataset(name='zeros').metpy.parse_cf('zeros')
-    result = return_the_kwargs(data)
-    assert_array_almost_equal(result['dz'], [-150.] * units.hPa)
-    assert_array_almost_equal(result['dy'], [[[[1109415.632] * 2]]] * units.meter, 2)
-    assert_array_almost_equal(result['dx'], [[[[964555.967], [853490.014]]]] * units.meter, 2)
-    assert result['vertical_dim'] == 1
-    assert result['y_dim'] == 2
-    assert result['x_dim'] == 3
-    assert_array_almost_equal(
-        result['latitude'].metpy.unit_array,
-        [30., 40.] * units.degrees_north
-    )
-    # Verify latitude is xarray so can be broadcast,
-    # see https://github.com/Unidata/MetPy/pull/1490#discussion_r483198245
-    assert isinstance(result['latitude'], xr.DataArray)
 
 
 def test_add_vertical_dim_from_xarray():

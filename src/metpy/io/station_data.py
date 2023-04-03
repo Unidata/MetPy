@@ -180,7 +180,7 @@ def add_station_lat_lon(df, stn_var=None):
     Returns
     -------
     `pandas.DataFrame` that contains original Dataframe now with the latitude and longitude
-    values for each location found in `station_info`.
+    values for each location found in :data:`!station_info`.
     """
 
     def key_finder(df):

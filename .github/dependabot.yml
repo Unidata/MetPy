@@ -1,40 +1,122 @@
 version: 2
 
 updates:
+  # Handle PyPI updates
   - package-ecosystem: pip
     directory: "/ci"
     schedule:
       interval: daily
       time: "06:00"
       timezone: "America/Denver"
-
     allow:
       - dependency-type: all
-
     open-pull-requests-limit: 10
     pull-request-branch-name:
       separator: "-"
     labels:
       - "Type: Maintenance"
+      - "Area: Infrastructure"
     commit-message:
-      prefix: "MNT: "
+      prefix: "CI: "
       include: "scope"
 
+  # Update GitHub Actions versions in workflows
   - package-ecosystem: "github-actions"
     # Workflow files stored in the
     # default location of `.github/workflows`
     directory: "/"
     schedule:
       interval: "daily"
-
     allow:
       - dependency-type: all
-
     open-pull-requests-limit: 10
     pull-request-branch-name:
       separator: "-"
     labels:
       - "Type: Maintenance"
+      - "Area: Infrastructure"
     commit-message:
-      prefix: "MNT: "
+      prefix: "CI: "
+      include: "scope"
+
+  # Update GitHub Actions versions in composite actions--hopefully eventually handled by a
+  # wildcard
+  - package-ecosystem: "github-actions"
+    directory: "/.github/actions/build-docs"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: all
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
+    labels:
+      - "Type: Maintenance"
+      - "Area: Infrastructure"
+    commit-message:
+      prefix: "CI: "
+      include: "scope"
+
+  - package-ecosystem: "github-actions"
+    directory: "/.github/actions/install-conda"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: all
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
+    labels:
+      - "Type: Maintenance"
+      - "Area: Infrastructure"
+    commit-message:
+      prefix: "CI: "
+      include: "scope"
+
+  - package-ecosystem: "github-actions"
+    directory: "/.github/actions/install-pypi"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: all
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
+    labels:
+      - "Type: Maintenance"
+      - "Area: Infrastructure"
+    commit-message:
+      prefix: "CI: "
+      include: "scope"
+
+  - package-ecosystem: "github-actions"
+    directory: "/.github/actions/run-tests"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: all
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
+    labels:
+      - "Type: Maintenance"
+      - "Area: Infrastructure"
+    commit-message:
+      prefix: "CI: "
+      include: "scope"
+
+  - package-ecosystem: "github-actions"
+    directory: "/.github/actions/setup-proj"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: all
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
+    labels:
+      - "Type: Maintenance"
+      - "Area: Infrastructure"
+    commit-message:
+      prefix: "CI: "
       include: "scope"

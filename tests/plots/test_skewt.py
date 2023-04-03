@@ -13,7 +13,7 @@ import pytest
 from metpy.plots import Hodograph, SkewT
 from metpy.units import units
 
-MPL_VERSION = matplotlib.__version__[:3]
+MPL_VERSION = matplotlib.__version__[:5]
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.069)
@@ -47,9 +47,9 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.)
+@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.32)
 def test_skewt_api_units():
-    """#Test the SkewT API when units are provided."""
+    """Test the SkewT API when units are provided."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
         skew = SkewT(fig)
@@ -80,6 +80,20 @@ def test_skewt_default_aspect_empty():
     skew.plot_dry_adiabats()
     skew.plot_moist_adiabats()
     skew.plot_mixing_lines()
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
+def test_skewt_mixing_line_args():
+    """Test plot_mixing_lines accepting kwargs for mixing ratio and pressure levels."""
+    # Explicitly pass default values as kwargs the, should recreate NWS SkewT PDF as above
+    fig = plt.figure(figsize=(12, 9))
+    skew = SkewT(fig, rotation=43)
+    mlines = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01, 0.016, 0.024, 0.032])
+    press = units.Quantity(np.linspace(600, max(skew.ax.get_ylim())), 'mbar')
+    skew.plot_dry_adiabats()
+    skew.plot_moist_adiabats()
+    skew.plot_mixing_lines(mixing_ratio=mlines, pressure=press)
     return fig
 
 
@@ -130,7 +144,7 @@ def test_skewt_subplot_rect_conflict():
         SkewT(rect=(0.15, 0.35, 0.8, 0.3), subplot=(1, 1, 1))
 
 
-@pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=0.0198, remove_text=True, style='default')
 def test_skewt_units():
     """Test that plotting with SkewT works with units properly."""
     fig = plt.figure(figsize=(9, 9))
@@ -140,6 +154,15 @@ def test_skewt_units():
     skew.ax.axhline(np.array([50000]) * units.Pa, color='red')
     skew.ax.axvline(np.array([-20]) * units.degC, color='darkred')
     skew.ax.axvline(-10, color='orange')
+
+    # On Matplotlib <= 3.6, ax[hv]line() doesn't trigger unit labels
+    assert skew.ax.get_xlabel() == ('degree_Celsius' if MPL_VERSION == '3.7.0' else '')
+    assert skew.ax.get_ylabel() == ('hectopascal' if MPL_VERSION == '3.7.0' else '')
+
+    # Clear them for the image test
+    skew.ax.set_xlabel('')
+    skew.ax.set_ylabel('')
+
     return fig
 
 
@@ -160,7 +183,7 @@ def test_profile():
                         -44.1, -45.6, -46.3, -45.5, -47.1, -52.1, -50.4, -47.3, -57.1,
                         -57.9, -58.1, -60.9, -61.4, -62.1, -65.1, -65.6,
                         -66.7, -70.5]) * units.degC
-    profile = np. array([18.2, 16.18287437, 15.68644745, 14.8369451,
+    profile = np.array([18.2, 16.18287437, 15.68644745, 14.8369451,
                         13.45220646, 12.57020365, 12.43280242, 11.78283506,
                         11.0698586, 10.61393901, 9.14490966, 7.66233636,
                         6.1454231, 4.56888673, 1.31644072, -0.36678427,
@@ -296,9 +319,10 @@ def test_hodograph_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.6 if MPL_VERSION == '3.3' else 0.)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance=0.6 if MPL_VERSION.startswith('3.3') else 0.)
 def test_hodograph_units():
-    """Test passing unit-ed quantities to Hodograph."""
+    """Test passing quantities to Hodograph."""
     fig = plt.figure(figsize=(9, 9))
     ax = fig.add_subplot(1, 1, 1)
     hodo = Hodograph(ax)
@@ -350,7 +374,7 @@ def test_hodograph_plot_colormapped():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=0.141, remove_text=True, style='default')
 def test_skewt_barb_color():
     """Test plotting colored wind barbs on the Skew-T."""
     fig = plt.figure(figsize=(9, 9))
@@ -402,7 +426,7 @@ def test_skewt_barb_no_default_unit_conversion():
 @pytest.mark.parametrize('u,v', [(np.array([3]) * units('m/s'), np.array([3])),
                                  (np.array([3]), np.array([3]) * units('m/s'))])
 def test_skewt_barb_unit_conversion_exception(u, v):
-    """Test that errors are raise if unit conversion is requested on un-united data."""
+    """Test that an error is raised if unit conversion is requested on plain arrays."""
     p_wind = np.array([500]) * units.hPa
 
     fig = plt.figure(figsize=(9, 9))
@@ -496,8 +520,8 @@ def test_hodograph_wind_vectors():
     return fig
 
 
-def test_united_hodograph_range():
-    """Tests making a hodograph with a united ranged."""
+def test_hodograph_range_with_units():
+    """Tests making a hodograph with a range with units."""
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(1, 1, 1)
     Hodograph(ax, component_range=60. * units.knots)

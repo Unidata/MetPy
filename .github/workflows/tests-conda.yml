@@ -3,9 +3,13 @@ name: Conda Tests
 # We don't want pushes (or PRs) to gh-pages to kick anything off
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - '[0-9]+.[0-9]+.x'
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+      - '[0-9]+.[0-9]+.x'
 
 concurrency:
   group: ${{ github.workflow}}-${{ github.head_ref }}
@@ -24,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9, '3.10']
+        python-version: [3.8, 3.9, '3.10', 3.11]
         os: [macOS, Windows]
 
     steps:
@@ -36,6 +40,10 @@ jobs:
 
     - name: Get tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+    - name: Remove Dask from deps
+      if: ${{ matrix.python-version == '3.11' }}
+      run: cat ci/test_requirements.txt | grep -v dask > temp && mv temp ci/test_requirements.txt
 
     - name: Install from Conda
       uses: ./.github/actions/install-conda

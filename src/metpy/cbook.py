@@ -40,6 +40,39 @@ def get_test_data(fname, as_file_obj=True, mode='rb'):
     return path
 
 
+def example_data():
+    """Create a sample xarray Dataset with 2D variables."""
+    import xarray as xr
+
+    # make data based on Matplotlib example data for wind barbs
+    x, y = np.meshgrid(np.linspace(-3, 3, 25), np.linspace(-3, 3, 25))
+    z = (1 - x / 2 + x**5 + y**3) * np.exp(-x**2 - y**2)
+
+    # make u and v out of the z equation
+    u = -np.diff(z[:, 1:], axis=0) * 100 + 10
+    v = np.diff(z[1:, :], axis=1) * 100 + 10
+
+    # make t as colder air to the north
+    t = (np.linspace(15, 5, 24) * np.ones((24, 24))).T
+
+    # Make lat/lon data over the mid-latitudes
+    lats = np.linspace(30, 40, 24)
+    lons = np.linspace(360 - 100, 360 - 90, 24)
+
+    # place data into an xarray dataset object
+    lat = xr.DataArray(lats, attrs={'standard_name': 'latitude', 'units': 'degrees_north'})
+    lon = xr.DataArray(lons, attrs={'standard_name': 'longitude', 'units': 'degrees_east'})
+    uwind = xr.DataArray(u, coords=(lat, lon), dims=['lat', 'lon'],
+                         attrs={'standard_name': 'u-component_of_wind', 'units': 'm s-1'})
+    vwind = xr.DataArray(v, coords=(lat, lon), dims=['lat', 'lon'],
+                         attrs={'standard_name': 'u-component_of_wind', 'units': 'm s-1'})
+    temperature = xr.DataArray(t, coords=(lat, lon), dims=['lat', 'lon'],
+                               attrs={'standard_name': 'temperature', 'units': 'degC'})
+    return xr.Dataset({'uwind': uwind,
+                       'vwind': vwind,
+                       'temperature': temperature})
+
+
 class Registry:
     """Provide a generic function registry.
 
@@ -61,7 +94,7 @@ class Registry:
 
         Returns
         -------
-        dec : callable
+        dec : Callable
             A decorator that takes a function and will register it under the name.
 
         """
@@ -75,19 +108,23 @@ class Registry:
         return self._registry[name]
 
 
-def broadcast_indices(x, minv, ndim, axis):
+def broadcast_indices(indices, shape, axis):
     """Calculate index values to properly broadcast index array within data array.
 
-    See usage in interp.
+    The purpose of this function is work around the challenges trying to work with arrays of
+    indices that need to be "broadcast" against full slices for other dimensions.
+
+    See usage in `interpolate_1d` or `isentropic_interpolation`.
     """
     ret = []
+    ndim = len(shape)
     for dim in range(ndim):
         if dim == axis:
-            ret.append(minv)
+            ret.append(indices)
         else:
             broadcast_slice = [np.newaxis] * ndim
             broadcast_slice[dim] = slice(None)
-            dim_inds = np.arange(x.shape[dim])
+            dim_inds = np.arange(shape[dim])
             ret.append(dim_inds[tuple(broadcast_slice)])
     return tuple(ret)
 

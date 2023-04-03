@@ -7,7 +7,7 @@ from datetime import datetime
 import logging
 
 import numpy as np
-from numpy.testing import assert_allclose
+from numpy.testing import assert_allclose, assert_almost_equal
 import pandas as pd
 import pytest
 
@@ -162,7 +162,7 @@ def test_standard_surface():
     def dtparse(string):
         return datetime.strptime(string, '%y%m%d/%H%M')
 
-    skip = ['text']
+    skip = ['text', 'spcl']
 
     gsf = GempakSurface(get_test_data('gem_std.sfc'))
     gstns = gsf.sfjson()
@@ -187,7 +187,7 @@ def test_ship_surface():
     def dtparse(string):
         return datetime.strptime(string, '%y%m%d/%H%M')
 
-    skip = ['text']
+    skip = ['text', 'spcl']
 
     gsf = GempakSurface(get_test_data('gem_ship.sfc'))
 
@@ -195,6 +195,7 @@ def test_ship_surface():
                          index_col=['STN', 'YYMMDD/HHMM'],
                          parse_dates=['YYMMDD/HHMM'],
                          date_parser=dtparse)
+    gempak.sort_index(inplace=True)
 
     uidx = gempak.index.unique()
 
@@ -248,9 +249,14 @@ def test_coordinates_creation(proj_type):
 def test_metpy_crs_creation(proj_type, proj_attrs):
     """Test grid mapping metadata."""
     grid = GempakGrid(get_test_data(f'gem_{proj_type}.grd'))
-    metpy_crs = grid.gdxarray()[0].metpy.crs
+    arr = grid.gdxarray()[0]
+    metpy_crs = arr.metpy.crs
     for k, v in proj_attrs.items():
         assert metpy_crs[k] == v
+    x_unit = arr['x'].units
+    y_unit = arr['y'].units
+    assert x_unit == 'meters'
+    assert y_unit == 'meters'
 
 
 def test_date_parsing():
@@ -258,3 +264,71 @@ def test_date_parsing():
     sfc_data = GempakSurface(get_test_data('sfc_obs.gem'))
     dat = sfc_data.sfinfo()[0].DATTIM
     assert dat == datetime(2000, 1, 2)
+
+
+@pytest.mark.parametrize('text_type,date_time', [
+    ('text', '202109070000'), ('spcl', '202109071600')
+])
+def test_surface_text(text_type, date_time):
+    """Test text decoding of surface hourly and special observations."""
+    g = get_test_data('gem_surface_with_text.sfc')
+    d = get_test_data('gem_surface_with_text.csv')
+
+    gsf = GempakSurface(g)
+    text = gsf.nearest_time(date_time, station_id='MSN')[0]['values'][text_type]
+
+    gempak = pd.read_csv(d)
+    gem_text = gempak.loc[:, text_type.upper()][0]
+
+    assert text == gem_text
+
+
+@pytest.mark.parametrize('text_type', ['txta', 'txtb', 'txtc', 'txpb'])
+def test_sounding_text(text_type):
+    """Test for proper decoding of coded message text."""
+    g = get_test_data('gem_unmerged_with_text.snd')
+    d = get_test_data('gem_unmerged_with_text.csv')
+
+    gso = GempakSounding(g).snxarray(station_id='OUN')[0]
+    gempak = pd.read_csv(d)
+
+    text = gso.attrs['WMO_CODES'][text_type]
+    gem_text = gempak.loc[:, text_type.upper()][0]
+
+    assert text == gem_text
+
+
+def test_special_surface_observation():
+    """Test special surface observation conversion."""
+    sfc = get_test_data('gem_surface_with_text.sfc')
+
+    gsf = GempakSurface(sfc)
+    stn = gsf.nearest_time('202109071601',
+                           station_id='MSN',
+                           include_special=True)[0]['values']
+
+    assert_almost_equal(stn['pmsl'], 1003.81, 2)
+    assert stn['alti'] == 29.66
+    assert stn['tmpc'] == 22
+    assert stn['dwpc'] == 18
+    assert stn['sknt'] == 9
+    assert stn['drct'] == 230
+    assert stn['gust'] == 18
+    assert stn['wnum'] == 77
+    assert stn['chc1'] == 2703
+    assert stn['chc2'] == 8004
+    assert stn['chc3'] == -9999
+    assert stn['vsby'] == 2
+
+
+def test_multi_time_grid():
+    """Test files with multiple times on a single grid."""
+    g = get_test_data('gem_multi_time.grd')
+
+    grid = GempakGrid(g)
+    grid_info = grid.gdinfo()[0]
+    dattim1 = grid_info.DATTIM1
+    dattim2 = grid_info.DATTIM2
+
+    assert dattim1 == datetime(1991, 8, 19, 0, 0)
+    assert dattim2 == datetime(1991, 8, 20, 0, 0)

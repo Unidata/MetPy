@@ -27,14 +27,14 @@ with exporter:
 
     # Water
     Mw = water_molecular_weight = units.Quantity(18.015268, 'g / mol')
-    Rv = water_gas_constant = R / Mw
+    Rv = water_gas_constant = (R / Mw).to('J / kg / K')
     rho_l = density_water = units.Quantity(999.97495, 'kg / m^3')
     wv_specific_heat_ratio = units.Quantity(1.330, 'dimensionless')
     Cp_v = wv_specific_heat_press = (
         wv_specific_heat_ratio * Rv / (wv_specific_heat_ratio - 1)
     )
     Cv_v = wv_specific_heat_vol = Cp_v / wv_specific_heat_ratio
-    Cp_l = water_specific_heat = units.Quantity(4.2194, 'kJ / kg / K')
+    Cp_l = water_specific_heat = units.Quantity(4.2194, 'kJ / kg / K').to('J / kg / K')
     Lv = water_heat_vaporization = units.Quantity(2.50084e6, 'J / kg')
     Lf = water_heat_fusion = units.Quantity(3.337e5, 'J / kg')
     Cp_i = ice_specific_heat = units.Quantity(2090, 'J / kg / K')

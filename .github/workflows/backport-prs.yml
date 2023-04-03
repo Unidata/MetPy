@@ -1,0 +1,84 @@
+name: Backport PRs
+
+permissions:
+  pull-requests: write
+  contents: write
+
+on:
+  pull_request_target:
+    types:
+      - closed
+      - labeled
+
+jobs:
+  Backport:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged && contains( github.event.pull_request.labels.*.name, 'backport' )
+    steps:
+      - name: Checkout PR HEAD
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 100
+
+      - name: Fetch PR merge base
+        run: git fetch --no-tags --depth=100 origin ${{ github.event.pull_request.base.sha }}
+
+      - name: Set up git
+        run: |
+          git config --global user.email github-actions[bot]@users.noreply.github.com
+          git config --global user.name github-actions[bot]
+
+      - name: Get backport branch
+        id: get-branch
+        run: |
+          git fetch --no-tags --depth=100 origin 'refs/heads/*.x:refs/remotes/origin/*.x'
+          echo "backport-branch=$(git branch -r | grep '.*.x' | sort -V | tail -n 1 | cut -d / -f 2)" >> $GITHUB_OUTPUT
+
+      - name: Apply PR commits to ${{ steps.get-branch.outputs.backport-branch}} branch
+        run: |
+          git checkout -b ${{ steps.get-branch.outputs.backport-branch}} origin/${{ steps.get-branch.outputs.backport-branch}}
+          git cherry-pick -x ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
+
+      - name: Create backport PR
+        id: create-pr
+        uses: peter-evans/create-pull-request@v4
+        with:
+          title: '${{ github.event.pull_request.title }} (backport)'
+          body: >
+            Backport \#${{ github.event.number }} onto the
+            ${{ steps.get-branch.outputs.backport-branch}} stable branch.
+          base: ${{ steps.get-branch.outputs.backport-branch}}
+          branch: backport-pr-${{ github.event.number }}
+          delete-branch: true
+          labels: 'backported-pr,${{ join(github.event.pull_request.labels.*.name) }}'
+
+      - uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          number: ${{ steps.create-pr.outputs.pull-request-number }}
+          labels: backport
+
+      - name: Comment on completion
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🏁 Successfully backported as #${{ steps.create-pr.outputs.pull-request-number }}. 🏁'
+            })
+
+      - name: Comment on error
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const workflow_url = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
+            body = `🚨 Unable to [cleanly backport](${workflow_url}) this PR! 🚨`;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            })

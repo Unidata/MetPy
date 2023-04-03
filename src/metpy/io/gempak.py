@@ -21,10 +21,13 @@ import xarray as xr
 
 from ._tools import IOBuffer, NamedStruct, open_as_needed
 from .. import constants
-from ..calc import (scale_height, specific_humidity_from_dewpoint, thickness_hydrostatic,
+from ..calc import (altimeter_to_sea_level_pressure, scale_height,
+                    specific_humidity_from_dewpoint, thickness_hydrostatic,
                     virtual_temperature)
+from ..io.metar import parse_metar
 from ..package_tools import Exporter
 from ..plots.mapping import CFProjection
+from ..units import units
 
 exporter = Exporter(globals())
 log = logging.getLogger(__name__)
@@ -167,6 +170,11 @@ Surface = namedtuple('Surface', [
     'STATE',
     'COUNTRY',
 ])
+
+
+def _check_nan(value, missing=-9999):
+    """Check for nan values and replace with missing."""
+    return missing if math.isnan(value) else value
 
 
 def convert_degc_to_k(val, missing=-9999):
@@ -478,6 +486,86 @@ def _interp_parameters(vlev, adata, bdata, missing=-9999):
             outdata[param] = missing
 
     return outdata
+
+
+def _wx_to_wnum(wx1, wx2, wx3, missing=-9999):
+    """Convert METAR present weather code to GEMPAK weather number.
+
+    Notes
+    -----
+    See GEMAPK function PT_WNMT.
+    """
+    metar_codes = [
+        'BR', 'DS', 'DU', 'DZ', 'FC', 'FG', 'FU', 'GR', 'GS',
+        'HZ', 'IC', 'PL', 'PO', 'RA', 'SA', 'SG', 'SN', 'SQ',
+        'SS', 'TS', 'UP', 'VA', '+DS', '-DZ', '+DZ', '+FC',
+        '-GS', '+GS', '-PL', '+PL', '-RA', '+RA', '-SG',
+        '+SG', '-SN', '+SN', '+SS', 'BCFG', 'BLDU', 'BLPY',
+        'BLSA', 'BLSN', 'DRDU', 'DRSA', 'DRSN', 'FZDZ', 'FZFG',
+        'FZRA', 'MIFG', 'PRFG', 'SHGR', 'SHGS', 'SHPL', 'SHRA',
+        'SHSN', 'TSRA', '+BLDU', '+BLSA', '+BLSN', '-FZDZ',
+        '+FZDZ', '+FZFG', '-FZRA', '+FZRA', '-SHGS', '+SHGS',
+        '-SHPL', '+SHPL', '-SHRA', '+SHRA', '-SHSN', '+SHSN',
+        '-TSRA', '+TSRA'
+    ]
+
+    gempak_wnum = [
+        9, 33, 8, 2, -2, 9, 7, 4, 25, 6, 36, 23, 40, 1, 35, 24, 3, 10,
+        35, 5, 41, 11, 68, 17, 18, -1, 61, 62, 57, 58, 13, 14, 59, 60, 20,
+        21, 69, 9, 33, 34, 35, 32, 33, 35, 32, 19, 30, 15, 31, 9, 27, 67,
+        63, 16, 22, 66, 68, 69, 70, 53, 54, 30, 49, 50, 67, 67, 75, 76, 51,
+        52, 55, 56, 77, 78
+    ]
+
+    if wx1 in metar_codes:
+        wn1 = gempak_wnum[metar_codes.index(wx1)]
+    else:
+        wn1 = 0
+
+    if wx2 in metar_codes:
+        wn2 = gempak_wnum[metar_codes.index(wx2)]
+    else:
+        wn2 = 0
+
+    if wx3 in metar_codes:
+        wn3 = gempak_wnum[metar_codes.index(wx3)]
+    else:
+        wn3 = 0
+
+    if all(w >= 0 for w in [wn1, wn2, wn3]):
+        wnum = wn3 * 80 * 80 + wn2 * 80 + wn1
+    else:
+        wnum = min([wn1, wn2, wn3])
+        if wnum == 0:
+            wnum = missing
+
+    return wnum
+
+
+def _convert_clouds(cover, height, missing=-9999):
+    """Convert METAR cloud cover to GEMPAK code.
+
+    Notes
+    -----
+    See GEMPAK function BR_CMTN.
+    """
+    cover_text = ['CLR', 'SCT', 'BKN', 'OVC', 'VV', 'FEW', 'SKC']
+    if not isinstance(cover, str):
+        return missing
+
+    code = 0
+    if cover in cover_text:
+        code = cover_text.index(cover) + 1
+
+    if code == 7:
+        code = 1
+
+    if not math.isnan(height):
+        code += height
+        if height == 0:
+            code *= -1
+
+    return code
 
 
 class GempakFile():
@@ -874,7 +962,7 @@ class GempakGrid(GempakFile):
                     n,
                     head.GTM1[0],
                     head.GDT1 + head.GTM1[1],
-                    head.GDT2 + head.GTM2[1] if head.GDT2 and head.GDTM2 else None,
+                    head.GDT2 + head.GTM2[1] if head.GDT2 and head.GTM2 else None,
                     head.GPM1 + head.GPM2 + head.GPM3,
                     head.GLV1,
                     head.GLV2,
@@ -1118,30 +1206,30 @@ class GempakGrid(GempakFile):
 
         Parameters
         ----------
-        parameter : str or array-like of str
+        parameter : str or Sequence[str]
             Name of GEMPAK parameter.
 
-        date_time : datetime or array-like of datetime
+        date_time : `~datetime.datetime` or Sequence[datetime]
             Valid datetime of the grid. Alternatively can be
             a string with the format YYYYmmddHHMM.
 
-        coordinate : str or array-like of str
+        coordinate : str or Sequence[str]
             Vertical coordinate.
 
-        level : float or array-like of float
+        level : float or Sequence[float]
             Vertical level.
 
-        date_time2 : datetime or array-like of datetime
+        date_time2 : `~datetime.datetime` or Sequence[datetime]
             Secondary valid datetime of the grid. Alternatively can be
             a string with the format YYYYmmddHHMM.
 
-        level2: float or array_like of float
+        level2: float or Sequence[float]
             Secondary vertical level. Typically used for layers.
 
         Returns
         -------
         list
-            List of xarray.DataArray objects for each grid.
+            List of `xarray.DataArray` objects for each grid.
         """
         if parameter is not None:
             if (not isinstance(parameter, Iterable)
@@ -1274,6 +1362,9 @@ class GempakGrid(GempakFile):
                             'gempak_grid_type': ftype,
                         }
                     )
+                    xrda = xrda.metpy.assign_latitude_longitude()
+                    xrda['x'].attrs['units'] = 'meters'
+                    xrda['y'].attrs['units'] = 'meters'
                     grids.append(xrda)
 
                 else:
@@ -1393,6 +1484,10 @@ class GempakSounding(GempakFile):
                     if fmt_code is None:
                         raise NotImplementedError('No methods for data type {}'
                                                   .format(part.data_type))
+
+                    if fmt_code == 's':
+                        lendat *= BYTES_PER_WORD
+
                     packed_buffer = (
                         self._buffer.read_struct(
                             struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
@@ -1456,6 +1551,10 @@ class GempakSounding(GempakFile):
                     if fmt_code is None:
                         raise NotImplementedError('No methods for data type {}'
                                                   .format(part.data_type))
+
+                    if fmt_code == 's':
+                        lendat *= BYTES_PER_WORD
+
                     packed_buffer = (
                         self._buffer.read_struct(
                             struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
@@ -1679,7 +1778,7 @@ class GempakSounding(GempakFile):
                 hght,
                 drct,
                 sped
-            ]:
+            ] or hght <= zold:
                 skip = True
             elif abs(zold - hght) < 1:
                 skip = True
@@ -1689,8 +1788,6 @@ class GempakSounding(GempakFile):
                 ]:
                     merged['DRCT'][ilev - 1] = drct
                     merged['SPED'][ilev - 1] = sped
-            elif hght <= zold:
-                skip = True
             elif hght >= znxt:
                 while more and hght > znxt:
                     zold = znxt
@@ -2033,26 +2130,26 @@ class GempakSounding(GempakFile):
 
         Parameters
         ----------
-        station_id : str or array-like of str
+        station_id : str or Sequence[str]
             Station ID of sounding site.
 
-        station_number : int or array-like of int
+        station_number : int or Sequence[int]
             Station number of sounding site.
 
-        date_time : datetime or array-like of datetime
+        date_time : `~datetime.datetime` or Sequence[datetime]
             Valid datetime of the grid. Alternatively can be
             a string with the format YYYYmmddHHMM.
 
-        state : str or array-like of str
+        state : str or Sequence[str]
             State where sounding site is located.
 
-        country : str or array-like of str
+        country : str or Sequence[str]
             Country where sounding site is located.
 
         Returns
         -------
-        list
-            List of xarray.Dataset objects for each sounding.
+        list[xarray.Dataset]
+            List of `xarray.Dataset` objects for each sounding.
         """
         if station_id is not None:
             if (not isinstance(station_id, Iterable)
@@ -2135,7 +2232,7 @@ class GempakSounding(GempakFile):
             if snd is None or 'PRES' not in snd:
                 continue
             station_pressure = snd['PRES'][0]
-            radat_text = {}
+            wmo_text = {}
             attrs = {
                 'station_id': snd.pop('STID'),
                 'station_number': snd.pop('STNM'),
@@ -2148,15 +2245,15 @@ class GempakSounding(GempakFile):
             }
 
             if 'TXTA' in snd:
-                radat_text['txta'] = snd.pop('TXTA')
+                wmo_text['txta'] = snd.pop('TXTA')
             if 'TXTB' in snd:
-                radat_text['txtb'] = snd.pop('TXTB')
+                wmo_text['txtb'] = snd.pop('TXTB')
             if 'TXTC' in snd:
-                radat_text['txtc'] = snd.pop('TXTC')
+                wmo_text['txtc'] = snd.pop('TXTC')
             if 'TXPB' in snd:
-                radat_text['txpb'] = snd.pop('TXPB')
-            if radat_text:
-                attrs['RADAT'] = radat_text
+                wmo_text['txpb'] = snd.pop('TXPB')
+            if wmo_text:
+                attrs['WMO_CODES'] = wmo_text
 
             dt = datetime.combine(snd.pop('DATE'), snd.pop('TIME'))
             press = np.array(snd.pop('PRES'))
@@ -2212,59 +2309,36 @@ class GempakSurface(GempakFile):
         if self.surface_type == 'standard':
             for irow, row_head in enumerate(self.row_headers):
                 for icol, col_head in enumerate(self.column_headers):
-                    pointer = (self.prod_desc.data_block_ptr
-                               + (irow * self.prod_desc.columns * self.prod_desc.parts)
-                               + (icol * self.prod_desc.parts))
+                    for iprt in range(len(self.parts)):
+                        pointer = (self.prod_desc.data_block_ptr
+                                   + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                                   + (icol * self.prod_desc.parts + iprt))
 
-                    self._buffer.jump_to(self._start, _word_to_position(pointer))
-                    data_ptr = self._buffer.read_int(4, self.endian, False)
+                        self._buffer.jump_to(self._start, _word_to_position(pointer))
+                        data_ptr = self._buffer.read_int(4, self.endian, False)
 
-                    if data_ptr:
-                        self._sfinfo.append(
-                            Surface(
-                                irow,
-                                icol,
-                                datetime.combine(row_head.DATE, row_head.TIME),
-                                col_head.STID + col_head.STD2,
-                                col_head.STNM,
-                                col_head.SLAT,
-                                col_head.SLON,
-                                col_head.SELV,
-                                col_head.STAT,
-                                col_head.COUN,
+                        if data_ptr:
+                            self._sfinfo.append(
+                                Surface(
+                                    irow,
+                                    icol,
+                                    datetime.combine(row_head.DATE, row_head.TIME),
+                                    col_head.STID + col_head.STD2,
+                                    col_head.STNM,
+                                    col_head.SLAT,
+                                    col_head.SLON,
+                                    col_head.SELV,
+                                    col_head.STAT,
+                                    col_head.COUN,
+                                )
                             )
-                        )
         elif self.surface_type == 'ship':
             irow = 0
             for icol, col_head in enumerate(self.column_headers):
-                pointer = (self.prod_desc.data_block_ptr
-                           + (irow * self.prod_desc.columns * self.prod_desc.parts)
-                           + (icol * self.prod_desc.parts))
-
-                self._buffer.jump_to(self._start, _word_to_position(pointer))
-                data_ptr = self._buffer.read_int(4, self.endian, False)
-
-                if data_ptr:
-                    self._sfinfo.append(
-                        Surface(
-                            irow,
-                            icol,
-                            datetime.combine(col_head.DATE, col_head.TIME),
-                            col_head.STID + col_head.STD2,
-                            col_head.STNM,
-                            col_head.SLAT,
-                            col_head.SLON,
-                            col_head.SELV,
-                            col_head.STAT,
-                            col_head.COUN,
-                        )
-                    )
-        elif self.surface_type == 'climate':
-            for icol, col_head in enumerate(self.column_headers):
-                for irow, row_head in enumerate(self.row_headers):
+                for iprt in range(len(self.parts)):
                     pointer = (self.prod_desc.data_block_ptr
                                + (irow * self.prod_desc.columns * self.prod_desc.parts)
-                               + (icol * self.prod_desc.parts))
+                               + (icol * self.prod_desc.parts + iprt))
 
                     self._buffer.jump_to(self._start, _word_to_position(pointer))
                     data_ptr = self._buffer.read_int(4, self.endian, False)
@@ -2275,15 +2349,41 @@ class GempakSurface(GempakFile):
                                 irow,
                                 icol,
                                 datetime.combine(col_head.DATE, col_head.TIME),
-                                row_head.STID + row_head.STD2,
-                                row_head.STNM,
-                                row_head.SLAT,
-                                row_head.SLON,
-                                row_head.SELV,
-                                row_head.STAT,
-                                row_head.COUN,
+                                col_head.STID + col_head.STD2,
+                                col_head.STNM,
+                                col_head.SLAT,
+                                col_head.SLON,
+                                col_head.SELV,
+                                col_head.STAT,
+                                col_head.COUN,
                             )
                         )
+        elif self.surface_type == 'climate':
+            for icol, col_head in enumerate(self.column_headers):
+                for irow, row_head in enumerate(self.row_headers):
+                    for iprt in range(len(self.parts)):
+                        pointer = (self.prod_desc.data_block_ptr
+                                   + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                                   + (icol * self.prod_desc.parts + iprt))
+
+                        self._buffer.jump_to(self._start, _word_to_position(pointer))
+                        data_ptr = self._buffer.read_int(4, self.endian, False)
+
+                        if data_ptr:
+                            self._sfinfo.append(
+                                Surface(
+                                    irow,
+                                    icol,
+                                    datetime.combine(col_head.DATE, col_head.TIME),
+                                    row_head.STID + row_head.STD2,
+                                    row_head.STNM,
+                                    row_head.SLAT,
+                                    row_head.SLON,
+                                    row_head.SELV,
+                                    row_head.STAT,
+                                    row_head.COUN,
+                                )
+                            )
         else:
             raise TypeError('Unknown surface type {}'.format(self.surface_type))
 
@@ -2360,6 +2460,10 @@ class GempakSurface(GempakFile):
                     if fmt_code is None:
                         raise NotImplementedError('No methods for data type {}'
                                                   .format(part.data_type))
+
+                    if fmt_code == 's':
+                        lendat *= BYTES_PER_WORD
+
                     packed_buffer = (
                         self._buffer.read_struct(
                             struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
@@ -2427,6 +2531,10 @@ class GempakSurface(GempakFile):
                 if fmt_code is None:
                     raise NotImplementedError('No methods for data type {}'
                                               .format(part.data_type))
+
+                if fmt_code == 's':
+                    lendat *= BYTES_PER_WORD
+
                 packed_buffer = (
                     self._buffer.read_struct(
                         struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
@@ -2494,6 +2602,10 @@ class GempakSurface(GempakFile):
                     if fmt_code is None:
                         raise NotImplementedError('No methods for data type {}'
                                                   .format(part.data_type))
+
+                    if fmt_code == 's':
+                        lendat *= BYTES_PER_WORD
+
                     packed_buffer = (
                         self._buffer.read_struct(
                             struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
@@ -2516,20 +2628,59 @@ class GempakSurface(GempakFile):
                 stations.append(station)
         return stations
 
-    def nearest_time(self, date_time, station_id=None, station_number=None):
+    @staticmethod
+    def _decode_special_observation(station, missing=-9999):
+        """Decode raw special obsrvation text."""
+        text = station['SPCL']
+        dt = datetime.combine(station['DATE'], station['TIME'])
+        parsed = parse_metar(text, dt.year, dt.month)
+
+        station['TIME'] = parsed.date_time.time()
+        if math.nan in [parsed.altimeter, parsed.elevation, parsed.temperature]:
+            station['PMSL'] = missing
+        else:
+            station['PMSL'] = altimeter_to_sea_level_pressure(
+                units.Quantity(parsed.altimeter, 'inHg'),
+                units.Quantity(parsed.elevation, 'm'),
+                units.Quantity(parsed.temperature, 'degC')
+            ).to('hPa').m
+        station['ALTI'] = _check_nan(parsed.altimeter, missing)
+        station['TMPC'] = _check_nan(parsed.temperature, missing)
+        station['DWPC'] = _check_nan(parsed.dewpoint, missing)
+        station['SKNT'] = _check_nan(parsed.wind_speed, missing)
+        station['DRCT'] = _check_nan(float(parsed.wind_direction), missing)
+        station['GUST'] = _check_nan(parsed.wind_gust, missing)
+        station['WNUM'] = float(_wx_to_wnum(parsed.current_wx1, parsed.current_wx2,
+                                            parsed.current_wx3, missing))
+        station['CHC1'] = _convert_clouds(parsed.skyc1, parsed.skylev1, missing)
+        station['CHC2'] = _convert_clouds(parsed.skyc2, parsed.skylev2, missing)
+        station['CHC3'] = _convert_clouds(parsed.skyc3, parsed.skylev3, missing)
+        if math.isnan(parsed.visibility):
+            station['VSBY'] = missing
+        else:
+            station['VSBY'] = float(round(parsed.visibility / 1609.344))
+
+        return station
+
+    def nearest_time(self, date_time, station_id=None, station_number=None,
+                     include_special=False):
         """Get nearest observation to given time for selected stations.
 
         Parameters
         ----------
-        date_time : datetime or array-like of datetime
+        date_time : `~datetime.datetime` or Sequence[datetime]
             Valid/observed datetime of the surface station. Alternatively
             object or a string with the format YYYYmmddHHMM.
 
-        station_id : str or array-like of str
-            Station ID of the surface station.
+        station_id : str or Sequence[str]
+            Station ID of the surface station(s).
 
-        station_number : int or array-like of int
+        station_number : int or Sequence[int]
             Station number of the surface station.
+
+        include_special : bool
+            If True, parse special observations that are stored
+            as raw METAR text. Default is False.
 
         Returns
         -------
@@ -2563,7 +2714,7 @@ class GempakSurface(GempakFile):
         time_matched = []
         if station_id:
             for stn in station_id:
-                matched = self.sfjson(station_id=stn)
+                matched = self.sfjson(station_id=stn, include_special=include_special)
 
                 nearest = min(
                     matched,
@@ -2574,7 +2725,7 @@ class GempakSurface(GempakFile):
 
         if station_number:
             for stn in station_id:
-                matched = self.sfjson(station_number=stn)
+                matched = self.sfjson(station_number=stn, include_special=include_special)
 
                 nearest = min(
                     matched,
@@ -2586,7 +2737,8 @@ class GempakSurface(GempakFile):
         return time_matched
 
     def sfjson(self, station_id=None, station_number=None,
-               date_time=None, state=None, country=None):
+               date_time=None, state=None, country=None,
+               include_special=False):
         """Select surface stations and output as list of JSON objects.
 
         Subset the data by parameter values. The default is to not
@@ -2594,21 +2746,25 @@ class GempakSurface(GempakFile):
 
         Parameters
         ----------
-        station_id : str or array-like of str
+        station_id : str or Sequence[str]
             Station ID of the surface station.
 
-        station_number : int or array-like of int
+        station_number : int or Sequence[int]
             Station number of the surface station.
 
-        date_time : datetime or array-like of datetime
+        date_time : `~datetime.datetime` or Sequence[datetime]
             Valid datetime of the grid. Alternatively can be
             a string with the format YYYYmmddHHMM.
 
-        state : str or array-like of str
+        state : str or Sequence[str]
             State where surface station is located.
 
-        country : str or array-like of str
+        country : str or Sequence[str]
             Country where surface station is located.
+
+        include_special : bool
+            If True, parse special observations that are stored
+            as raw METAR text. Default is False.
 
         Returns
         -------
@@ -2696,6 +2852,8 @@ class GempakSurface(GempakFile):
 
         stnarr = []
         for stn in data:
+            if 'SPCL' in stn and include_special:
+                stn = self._decode_special_observation(stn, self.prod_desc.missing_float)
             props = {'date_time': datetime.combine(stn.pop('DATE'), stn.pop('TIME')),
                      'station_id': stn.pop('STID') + stn.pop('STD2'),
                      'station_number': stn.pop('STNM'),

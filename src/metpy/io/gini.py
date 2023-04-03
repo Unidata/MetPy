@@ -9,11 +9,15 @@ from enum import Enum
 from io import BytesIO
 from itertools import repeat  # noqa: I202
 import logging
+from pathlib import Path
 import re
 
 import numpy as np
-from xarray import Variable
+from xarray import Dataset, Variable
+from xarray.backends import BackendEntrypoint
 from xarray.backends.common import AbstractDataStore
+from xarray.coding.times import CFDatetimeCoder
+from xarray.coding.variables import CFMaskCoder
 from xarray.core.utils import FrozenDict
 
 from ._tools import Bits, IOBuffer, NamedStruct, open_as_needed, zlib_decompress_all_frames
@@ -342,29 +346,27 @@ class GiniFile(AbstractDataStore):
 
         return [('x', x_var), ('y', y_var), ('lon', lon_var), ('lat', lat_var)]
 
-    def get_variables(self):
-        """Get all variables in the file.
-
-        This is used by `xarray.open_dataset`.
-
-        """
+    def _make_data_vars(self):
         proj_var_name, proj_var = self._make_proj_var()
-        variables = [self._make_time_var(), (proj_var_name, proj_var)]
-        variables.extend(self._make_coord_vars())
-
-        # Now the data
         name = self.prod_desc.channel
         if '(' in name:
             name = name.split('(')[0].rstrip()
 
         missing_val = self.missing
         attrs = {'long_name': self.prod_desc.channel, 'missing_value': missing_val,
-                 'coordinates': 'y x time', 'grid_mapping': proj_var_name}
-        data_var = Variable(('y', 'x'),
-                            data=np.ma.array(self.data,
-                                             mask=self.data == missing_val),
-                            attrs=attrs)
-        variables.append((name, data_var))
+                 'coordinates': 'lon lat time', 'grid_mapping': proj_var_name}
+        data_var = Variable(('y', 'x'), data=self.data, attrs=attrs)
+        return [(proj_var_name, proj_var), (name, data_var)]
+
+    def get_variables(self):
+        """Get all variables in the file.
+
+        This is used by `xarray.open_dataset`.
+
+        """
+        variables = [self._make_time_var()]
+        variables.extend(self._make_coord_vars())
+        variables.extend(self._make_data_vars())
 
         return FrozenDict(variables)
 
@@ -376,3 +378,35 @@ class GiniFile(AbstractDataStore):
         """
         return FrozenDict(satellite=self.prod_desc.creating_entity,
                           sector=self.prod_desc.sector_id)
+
+
+class GiniXarrayBackend(BackendEntrypoint):
+    """Entry point for direct reading of GINI data into Xarray."""
+
+    def open_dataset(self, filename_or_obj, *, drop_variables=None):
+        """Open the GINI datafile as a Xarray dataset.
+
+        This is the main entrypoint for plugging into Xarray read support.
+
+        """
+        # TODO: This can be structured much better when we're not still supporting both the
+        # old Xarray API as well as direct use of GiniFile itself. In MetPy 2.0 the only
+        # access should be as an xarray backend entrypoint.
+        gini = GiniFile(filename_or_obj)
+        gini_attrs = gini.get_attrs()
+        coords = dict(gini._make_coord_vars() + [gini._make_time_var()])
+        coords['time'] = CFDatetimeCoder().decode(coords['time'])
+        (proj_name, proj_var), (data_name, data_var) = gini._make_data_vars()
+        data_var.attrs.pop('coordinates')
+        decoded_data_var = CFMaskCoder().decode(data_var, data_name)
+        return Dataset({proj_name: proj_var, data_name: decoded_data_var}, coords, gini_attrs)
+
+    def guess_can_open(self, filename_or_obj):
+        """Try to guess whether we can read this file.
+
+        This allows files ending in '.gini' to be automatically opened by xarray.
+
+        """
+        with contextlib.suppress(TypeError):
+            return Path(filename_or_obj).suffix == '.gini'
+        return False

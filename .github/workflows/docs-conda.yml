@@ -3,7 +3,9 @@ name: Build Docs (Conda)
 # We don't want pushes (or PRs) to gh-pages to kick anything off
 on:
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+      - '[0-9]+.[0-9]+.x'
 
 concurrency:
   group: ${{ github.workflow}}-${{ github.head_ref }}
@@ -24,6 +26,10 @@ jobs:
             os: macOS
           - python-version: 3.9
             os: Windows
+          - python-version: '3.10'
+            os: Windows
+          - python-version: 3.11
+            os: macOS
 
     steps:
     # We check out only a limited depth and then pull tags to save time

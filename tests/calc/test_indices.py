@@ -11,7 +11,7 @@ import xarray as xr
 
 from metpy.calc import (bulk_shear, bunkers_storm_motion, critical_angle,
                         mean_pressure_weighted, precipitable_water, significant_tornado,
-                        supercell_composite)
+                        supercell_composite, weighted_continuous_average)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, get_upper_air_data
 from metpy.units import concatenate, units
 
@@ -116,6 +116,43 @@ def test_mean_pressure_weighted_elevated():
                                   bottom=data['height'][0] + 3000 * units('meter'))
     assert_almost_equal(u, 8.270829843626476 * units('m/s'), 7)
     assert_almost_equal(v, 1.7392601775853547 * units('m/s'), 7)
+
+
+def test_weighted_continuous_average():
+    """Test pressure-weighted mean wind function with vertical interpolation."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    u, v = weighted_continuous_average(data['pressure'],
+                                       data['u_wind'],
+                                       data['v_wind'],
+                                       height=data['height'],
+                                       depth=6000 * units('meter'))
+    assert_almost_equal(u, 6.644137766806087 * units('m/s'), 7)
+    assert_almost_equal(v, 6.900543760612305 * units('m/s'), 7)
+
+
+@pytest.mark.xfail(reason='hgrecco/pint#1593')
+def test_weighted_continuous_average_temperature():
+    """Test pressure-weighted mean temperature function with vertical interpolation."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    t, = weighted_continuous_average(data['pressure'],
+                                     data['temperature'],
+                                     height=data['height'],
+                                     depth=6000 * units('meter'))
+    # Commenting out since it won't run until the above can run without error
+    # assert_almost_equal(t, 279.3275828240889 * units('kelvin'), 7)
+
+
+def test_weighted_continuous_average_elevated():
+    """Test pressure-weighted mean wind function with a base above the surface."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    u, v = weighted_continuous_average(data['pressure'],
+                                       data['u_wind'],
+                                       data['v_wind'],
+                                       height=data['height'],
+                                       depth=3000 * units('meter'),
+                                       bottom=data['height'][0] + 3000 * units('meter'))
+    assert_almost_equal(u, 8.279561625494285 * units('m/s'), 7)
+    assert_almost_equal(v, 1.616638856115755 * units('m/s'), 7)
 
 
 def test_precipitable_water_xarray():

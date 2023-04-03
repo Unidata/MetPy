@@ -30,10 +30,10 @@ if __name__ == '__main__':
     if sys.argv[2] in ('true', 'True'):
         print('Checking only links in the diff')
         added = get_added()
-        check_link = lambda l: l['uri'] in added
+        check_link = lambda link: link['uri'] in added
     else:
         print('Checking all links')
-        check_link = lambda l: True
+        check_link = lambda link: True
 
     ret = 0
     for link in get_failing_links(sys.argv[1]):

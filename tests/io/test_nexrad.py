@@ -125,7 +125,7 @@ def test_build19_level2_additions():
 # NIDS/Level 3 Tests
 #
 nexrad_nids_files = [get_test_data(fname, as_file_obj=False)
-                     for fname in POOCH.registry if fname.startswith('nids/K')]
+                     for fname in POOCH.registry if fname.startswith('nids/')]
 
 
 @pytest.mark.parametrize('fname', nexrad_nids_files)
@@ -138,20 +138,15 @@ def test_level3_files(fname):
     if hasattr(f, 'sym_block'):
         block = f.sym_block[0][0]
         if 'data' in block:
-            f.map_data(block['data'])
+            data = block['data']
+        # Looks for radials in the XDR generic products
+        elif 'components' in block and hasattr(block['components'], 'radials'):
+            data = np.array([rad.data for rad in block['components'].radials])
+        else:
+            data = []
+        f.map_data(data)
 
     assert f.filename == fname
-
-
-tdwr_nids_files = [get_test_data(fname, as_file_obj=False)
-                   for fname in POOCH.registry if (fname.startswith('nids/Level3_MCI_')
-                                                   or fname.startswith('nids/Level3_DEN_'))]
-
-
-@pytest.mark.parametrize('fname', tdwr_nids_files)
-def test_tdwr_nids(fname):
-    """Test opening a TDWR NIDS file."""
-    Level3File(fname)
 
 
 def test_basic():
@@ -207,11 +202,6 @@ def test_dhr():
     """Test reading a time field for DHR product."""
     f = Level3File(get_test_data('nids/KOUN_SDUS54_DHRTLX_201305202016'))
     assert f.metadata['avg_time'] == datetime(2013, 5, 20, 20, 18)
-
-
-def test_nwstg():
-    """Test reading a nids file pulled from the NWSTG."""
-    Level3File(get_test_data('nids/sn.last', as_file_obj=False))
 
 
 def test_fobj():

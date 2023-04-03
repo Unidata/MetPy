@@ -319,7 +319,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">AVG(S1, S2)</td>
         <td class="tg-implemented">Average</td>
-        <td class="tg-implemented"><a href="http://xarray.pydata.org/en/stable/generated/xarray.concat.html#xarray-concat">xr.concat</a>([S1, S2], dim='new').mean(axis=0)</td>
+        <td class="tg-implemented"><a href="https://docs.xarray.dev/en/stable/generated/xarray.concat.html#xarray-concat">xr.concat</a>([S1, S2], dim='new').mean(axis=0)</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -431,7 +431,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DOT(V1, V2)</td>
         <td class="tg-implemented">Vector dot product</td>
-        <td class="tg-implemented"><a href="http://xarray.pydata.org/en/stable/generated/xarray.dot.html#xarray-dot">xr.dot</a>(xr.concat([V1u, V1v], dim='component'), xr.concat([V2u, V2v], dim='component'), dims='component')</td>
+        <td class="tg-implemented"><a href="https://docs.xarray.dev/en/stable/generated/xarray.dot.html#xarray-dot">xr.dot</a>(xr.concat([V1u, V1v], dim='component'), xr.concat([V2u, V2v], dim='component'), dims='component')</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -3802,7 +3802,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td><b>Lifted Condenstaion Level</b></td>
+        <td><b>Lifted Condensation Level</b></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3914,9 +3914,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">CTOT</td>
-        <td class="tg-notimplemented">cross totals index</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/633">Issue #633</a></td>
+        <td class="tg-implemented">CTOT</td>
+        <td class="tg-implemented">cross totals index</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.cross_totals.html#metpy.calc.cross_totals">metpy.calc.cross_totals</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3938,9 +3938,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">KINX</td>
-        <td class="tg-notimplemented">K index</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/631">Issue #631</a></td>
+        <td class="tg-implemented">KINX</td>
+        <td class="tg-implemented">K index</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.k_index.html#metpy.calc.k_index">metpy.calc.k_index</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3986,9 +3986,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">LIFT</td>
-        <td class="tg-notimplemented">lifted index</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/632">Issue #632</a></td>
+        <td class="tg-implemented">LIFT</td>
+        <td class="tg-implemented">lifted index</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.lifted_index.html#metpy.calc.lifted_index">metpy.calc.lifted_index</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -4066,9 +4066,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">SHOW</td>
-        <td class="tg-notimplemented">Showalter index</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/630">Issue #630</a></td>
+        <td class="tg-implemented">SHOW</td>
+        <td class="tg-implemented">Showalter index</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.showalter_index.html#metpy.calc.showalter_index">metpy.calc.showalter_index</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -4106,25 +4106,25 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">SWET</td>
-        <td class="tg-notimplemented">SWEAT index</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/634">Issue #634</a></td>
+        <td class="tg-implemented">SWET</td>
+        <td class="tg-implemented">SWEAT index</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.sweat_index.html#metpy.calc.sweat_index">metpy.calc.sweat_index</a></td>
         <td></td>
         <td></td>
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">TOTL</td>
-        <td class="tg-notimplemented">Total totals index</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/633">Issue #633</a></td>
+        <td class="tg-implemented">TOTL</td>
+        <td class="tg-implemented">Total totals index</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.total_totals_index.html#metpy.calc.total_totals_index">metpy.calc.total_totals_index</a></td>
         <td></td>
         <td></td>
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">VTOT</td>
-        <td class="tg-notimplemented">vertical totals index</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/633">Issue #633</a></td>
+        <td class="tg-implemented">VTOT</td>
+        <td class="tg-implemented">vertical totals index</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.vertical_totals.html#metpy.calc.vertical_totals">metpy.calc.vertical_totals</a></td>
         <td></td>
         <td></td>
         <td></td>

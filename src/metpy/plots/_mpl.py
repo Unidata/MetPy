@@ -23,10 +23,10 @@ if not hasattr(Axes, 'scattertext'):
 
         Parameters
         ----------
-        x, y : array_like, shape (n, )
+        x, y : array-like, shape (n, )
             Input positions
 
-        texts : array_like, shape (n, )
+        texts : array-like, shape (n, )
             Collection of text that will be plotted at each (x,y) location
 
         loc : length-2 tuple
@@ -114,13 +114,13 @@ if not hasattr(Axes, 'scattertext'):
 
             Parameters
             ----------
-            x : array_like
+            x : array-like
                 The x locations, in data coordinates, for the text
 
-            y : array_like
+            y : array-like
                 The y locations, in data coordinates, for the text
 
-            text : array_like of str
+            text : array-like of str
                 The string values to draw
 
             offset : (int, int)

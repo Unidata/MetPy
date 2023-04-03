@@ -3,18 +3,19 @@
 # SPDX-License-Identifier: BSD-3-Clause
 r"""Module to provide unit support.
 
-This makes use of the :mod:`pint` library and sets up the default settings
+This makes use of the ``pint`` library and sets up the default settings
 for good temperature support.
 
 See Also: :doc:`Working with Units </tutorials/unit_tutorial>`.
 
 Attributes
 ----------
-units : :class:`pint.UnitRegistry`
+units : :class: `pint.UnitRegistry()`
     The unit registry used throughout the package. Any use of units in MetPy should
     import this registry and use it to grab units.
 
 """
+import contextlib
 import functools
 from inspect import Parameter, signature
 import logging
@@ -23,7 +24,6 @@ import warnings
 
 import numpy as np
 import pint
-import pint.unit
 
 log = logging.getLogger(__name__)
 
@@ -38,43 +38,60 @@ _base_unit_of_dimensionality = {
     '[speed]': 'm s**-1'
 }
 
-# Create registry, with preprocessors for UDUNITS-style powers (m2 s-2) and percent signs
-units = pint.UnitRegistry(
-    autoconvert_offset_to_baseunit=True,
-    preprocessors=[
-        functools.partial(
-            re.sub,
-            r'(?<=[A-Za-z\)])(?![A-Za-z\)])(?<![0-9\-][eE])(?<![0-9\-])(?=[0-9\-])',
-            '**'
-        ),
-        lambda string: string.replace('%', 'percent')
-    ]
-)
 
-# Capture v0.10 NEP 18 warning on first creation
-with warnings.catch_warnings():
-    warnings.simplefilter('ignore')
-    units.Quantity([])
+def _fix_udunits_powers(string):
+    """Replace UDUNITS-style powers (m2 s-2) with exponent symbols (m**2 s**-2)."""
+    return _UDUNIT_POWER.sub('**', string)
 
-# For pint 0.6, this is the best way to define a dimensionless unit. See pint #185
-units.define(pint.unit.UnitDefinition('percent', '%', (),
-             pint.converters.ScaleConverter(0.01)))
 
-# Define commonly encountered units not defined by pint
-units.define('degrees_north = degree = degrees_N = degreesN = degree_north = degree_N '
-             '= degreeN')
-units.define('degrees_east = degree = degrees_E = degreesE = degree_east = degree_E = degreeE')
+# Fix UDUNITS-style powers and percent signs
+_UDUNIT_POWER = re.compile(r'(?<=[A-Za-z\)])(?![A-Za-z\)])'
+                           r'(?<![0-9\-][eE])(?<![0-9\-])(?=[0-9\-])')
+_unit_preprocessors = [_fix_udunits_powers, lambda string: string.replace('%', 'percent')]
 
-# Alias geopotential meters (gpm) to just meters
-units.define('@alias meter = gpm')
+
+def setup_registry(reg):
+    """Set up a given registry with MetPy's default tweaks and settings."""
+    reg.autoconvert_offset_to_baseunit = True
+
+    # For Pint 0.18.0, need to deal with the fact that the wrapper isn't forwarding on setting
+    # the attribute.
+    with contextlib.suppress(AttributeError):
+        reg.get().autoconvert_offset_to_baseunit = True
+
+    for pre in _unit_preprocessors:
+        if pre not in reg.preprocessors:
+            reg.preprocessors.append(pre)
+
+    # Add a percent unit if it's not already present, it was added in 0.21
+    if 'percent' not in reg:
+        reg.define('percent = 0.01 = %')
+
+    # Define commonly encountered units not defined by pint
+    reg.define('degrees_north = degree = degrees_N = degreesN = degree_north = degree_N '
+               '= degreeN')
+    reg.define('degrees_east = degree = degrees_E = degreesE = degree_east = degree_E '
+               '= degreeE')
+
+    # Alias geopotential meters (gpm) to just meters
+    reg.define('@alias meter = gpm')
+
+    # Enable pint's built-in matplotlib support
+    reg.setup_matplotlib()
+
+    return reg
+
+
+# Make our modifications using pint's application registry--which allows us to better
+# interoperate with other libraries using Pint.
+units = setup_registry(pint.get_application_registry())
 
 # Silence UnitStrippedWarning
-if hasattr(pint, 'UnitStrippedWarning'):
-    warnings.simplefilter('ignore', category=pint.UnitStrippedWarning)
+warnings.simplefilter('ignore', category=pint.UnitStrippedWarning)
 
 
 def pandas_dataframe_to_unit_arrays(df, column_units=None):
-    """Attach units to data in pandas dataframes and return united arrays.
+    """Attach units to data in pandas dataframes and return quantities.
 
     Parameters
     ----------
@@ -87,7 +104,7 @@ def pandas_dataframe_to_unit_arrays(df, column_units=None):
 
     Returns
     -------
-        Dictionary containing united arrays with keys corresponding to the dataframe
+        Dictionary containing `Quantity` instances with keys corresponding to the dataframe
         column names.
 
     """
@@ -108,8 +125,13 @@ def pandas_dataframe_to_unit_arrays(df, column_units=None):
     return res
 
 
+def is_quantity(*args):
+    """Check whether an instance is a quantity."""
+    return all(isinstance(a, pint.Quantity) for a in args)
+
+
 def concatenate(arrs, axis=0):
-    r"""Concatenate multiple values into a new unitized object.
+    r"""Concatenate multiple values into a new quantity.
 
     This is essentially a scalar-/masked array-aware version of `numpy.concatenate`. All items
     must be able to be converted to the same units. If an item has no units, it will be given
@@ -118,10 +140,10 @@ def concatenate(arrs, axis=0):
 
     Parameters
     ----------
-    arrs : Sequence of arrays
+    arrs : Sequence[pint.Quantity or numpy.ndarray]
         The items to be joined together
 
-    axis : integer, optional
+    axis : int, optional
         The array axis along which to join the arrays. Defaults to 0 (the first dimension)
 
     Returns
@@ -154,14 +176,14 @@ def concatenate(arrs, axis=0):
 def masked_array(data, data_units=None, **kwargs):
     """Create a :class:`numpy.ma.MaskedArray` with units attached.
 
-    This is a thin wrapper around :func:`numpy.ma.masked_array` that ensures that
+    This is a thin wrapper around :class:`numpy.ma.MaskedArray` that ensures that
     units are properly attached to the result (otherwise units are silently lost). Units
     are taken from the ``data_units`` argument, or if this is ``None``, the units on ``data``
     are used.
 
     Parameters
     ----------
-    data : array_like
+    data : array-like
         The source data. If ``data_units`` is `None`, this should be a `pint.Quantity` with
         the desired units.
     data_units : str or `pint.Unit`, optional
@@ -373,9 +395,3 @@ def process_units(
 
         return wrapper
     return dec
-
-
-# Enable pint's built-in matplotlib support
-units.setup_matplotlib()
-
-del pint

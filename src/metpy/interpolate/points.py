@@ -26,9 +26,9 @@ def cressman_point(sq_dist, values, radius):
 
     Parameters
     ----------
-    sq_dist: (N, ) ndarray
+    sq_dist: (N, ) numpy.ndarray
         Squared distance between observations and grid point
-    values: (N, ) ndarray
+    values: (N, ) numpy.ndarray
         Observation values in same order as sq_dist
     radius: float
         Maximum distance to search for observations to use for
@@ -62,9 +62,9 @@ def barnes_point(sq_dist, values, kappa, gamma=None):
 
     Parameters
     ----------
-    sq_dist: (N, ) ndarray
+    sq_dist: (N, ) numpy.ndarray
         Squared distance between observations and grid point
-    values: (N, ) ndarray
+    values: (N, ) numpy.ndarray
         Observation values in same order as sq_dist
     kappa: float
         Response parameter for barnes interpolation.
@@ -93,11 +93,11 @@ def natural_neighbor_point(xp, yp, variable, grid_loc, tri, neighbors, circumcen
 
     Parameters
     ----------
-    xp: (N, ) ndarray
+    xp: (N, ) numpy.ndarray
         x-coordinates of observations
-    yp: (N, ) ndarray
+    yp: (N, ) numpy.ndarray
         y-coordinates of observations
-    variable: (N, ) ndarray
+    variable: (N, ) numpy.ndarray
         observation values associated with (xp, yp) pairs.
         IE, variable[i] is a unique observation at (xp[i], yp[i])
     grid_loc: (float, float)
@@ -105,7 +105,7 @@ def natural_neighbor_point(xp, yp, variable, grid_loc, tri, neighbors, circumcen
         interpolation.
     tri: `scipy.spatial.Delaunay`
         Delaunay triangulation of the observations.
-    neighbors: (N, ) ndarray
+    neighbors: (N, ) numpy.ndarray
         Simplex codes of the grid point's natural neighbors. The codes
         will correspond to codes in the triangulation.
     circumcenters: list
@@ -177,16 +177,16 @@ def natural_neighbor_to_points(points, values, xi):
 
     Parameters
     ----------
-    points: array_like, shape (n, 2)
+    points: array-like, (N, 2)
         Coordinates of the data points.
-    values: array_like, shape (n,)
+    values: array-like, (N,)
         Values of the data points.
-    xi: array_like, shape (M, 2)
+    xi: array-like, (M, 2)
         Points to interpolate the data onto.
 
     Returns
     -------
-    img: (M,) ndarray
+    img: numpy.ndarray, (M,)
         Array representing the interpolated values for each input point in `xi`
 
     See Also
@@ -224,11 +224,11 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
 
     Parameters
     ----------
-    points: array_like, shape (n, 2)
+    points: array-like, (N, 2)
         Coordinates of the data points.
-    values: array_like, shape (n,)
+    values: array-like, (N,)
         Values of the data points.
-    xi: array_like, shape (M, 2)
+    xi: array-like, (M, 2)
         Points to interpolate the data onto.
     r: float
         Radius from grid center, within which observations are considered and weighted.
@@ -245,7 +245,7 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
 
     Returns
     -------
-    img: (M,) ndarray
+    img: numpy.ndarray, (M,)
         Array representing the interpolated values for each input point in `xi`
 
     See Also
@@ -285,9 +285,9 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
                           rbf_smooth=0):
     r"""Interpolate unstructured point data to the given points.
 
-    This function interpolates the given `values` valid at `points` to the points `xi`. This is
-    modeled after `scipy.interpolate.griddata`, but acts as a generalization of it by including
-    the following types of interpolation:
+    This function interpolates the given `values` valid at ``points`` to the points `xi`.
+    This is modeled after `scipy.interpolate.griddata`, but acts as a generalization of it by
+    including the following types of interpolation:
 
     - Linear
     - Nearest Neighbor
@@ -299,11 +299,11 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
 
     Parameters
     ----------
-    points: array_like, shape (n, D)
+    points: array-like, (N, P)
         Coordinates of the data points.
-    values: array_like, shape (n,)
+    values: array-like, (N,)
         Values of the data points.
-    xi: array_like, shape (M, D)
+    xi: array-like, (M, P)
         Points to interpolate the data onto.
     interp_type: str
         What type of interpolation to use. Available options include:
@@ -317,7 +317,7 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
         Adjustable smoothing parameter for the barnes interpolation. Default 0.25.
     kappa_star: float
         Response parameter for barnes interpolation, specified non-dimensionally
-        in terms of the Nyquist. Default 5.052
+        in terms of the Nyquist. Default 5.052.
     search_radius: float
         A search radius to use for the Barnes and Cressman interpolation schemes.
         If search_radius is not specified, it will default to 5 times the average spacing of
@@ -332,7 +332,7 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
 
     Returns
     -------
-    values_interpolated: (M,) ndarray
+    values_interpolated: ndarray, (M,)
         Array representing the interpolated values for each input point in `xi`.
 
     See Also

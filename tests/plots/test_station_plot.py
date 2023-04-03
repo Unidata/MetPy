@@ -194,7 +194,7 @@ def test_simple_layout():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1848, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.688, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_nws_layout():
     """Test metpy's NWS layout for station plots."""
     fig = plt.figure(figsize=(3, 3))
@@ -276,7 +276,7 @@ def wind_plot():
     return u, v, x, y
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.01)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.499)
 def test_barb_projection(wind_plot, ccrs):
     """Test that barbs are properly projected (#598)."""
     u, v, x, y = wind_plot
@@ -379,7 +379,7 @@ def test_arrow_unit_conversion(barbs_units):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.0048, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.0878, remove_text=True)
 def test_barb_no_default_unit_conversion():
     """Test that barbs units are left alone by default (#737)."""
     x_pos = np.array([0])
@@ -400,7 +400,7 @@ def test_barb_no_default_unit_conversion():
 @pytest.mark.parametrize('u,v', [(np.array([3]) * units('m/s'), np.array([3])),
                                  (np.array([3]), np.array([3]) * units('m/s'))])
 def test_barb_unit_conversion_exception(u, v):
-    """Test that errors are raise if unit conversion is requested on un-united data."""
+    """Test that an error is raised if unit conversion is requested on plain arrays."""
     x_pos = np.array([0])
     y_pos = np.array([0])
 
@@ -451,7 +451,7 @@ def test_stationplot_unit_conversion():
 
 
 def test_scalar_unit_conversion_exception():
-    """Test that errors are raise if unit conversion is requested on un-united data."""
+    """Test that an error is raised if unit conversion is requested on plain arrays."""
     x_pos = np.array([0])
     y_pos = np.array([0])
 

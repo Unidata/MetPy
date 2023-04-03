@@ -5,7 +5,7 @@
 # Import the necessary libraries
 from collections import namedtuple
 import contextlib
-from datetime import datetime
+from datetime import datetime, timezone
 import warnings
 
 import numpy as np
@@ -238,6 +238,8 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
             # Handle fraction regardless
             if '/' in vis_str:
                 num, denom = vis_str.split('/', maxsplit=1)
+                if int(denom) == 0:
+                    raise ValueError('Visibility denominator is 0.')
                 visibility += int(num) / int(denom)
             else:  # Should be getting all cases of whole number without fraction
                 visibility += int(vis_str)
@@ -430,7 +432,7 @@ def _metars_to_dataframe(metar_iter, *, year=None, month=None):
 
     # Defaults year and/or month to present reported date if not provided
     if year is None or month is None:
-        now = datetime.now()
+        now = datetime.now(timezone.utc)
         year = now.year if year is None else year
         month = now.month if month is None else month
 

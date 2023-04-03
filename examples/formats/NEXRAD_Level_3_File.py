@@ -8,19 +8,25 @@ NEXRAD Level 3 File
 
 Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 """
+import cartopy.crs as ccrs
+import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import numpy as np
 
+from metpy.calc import azimuth_range_to_lat_lon
 from metpy.cbook import get_test_data
 from metpy.io import Level3File
-from metpy.plots import add_metpy_logo, add_timestamp, colortables
+from metpy.plots import add_metpy_logo, add_timestamp, colortables, USCOUNTIES
+from metpy.units import units
 
 ###########################################
-fig, axes = plt.subplots(1, 2, figsize=(15, 8))
+spec = gridspec.GridSpec(1, 2)
+fig = plt.figure(figsize=(15, 8))
 add_metpy_logo(fig, 190, 85, size='large')
 ctables = (('NWSStormClearReflectivity', -20, 0.5),  # dBZ
            ('NWS8bitVel', -100, 1.0))  # m/s
-for v, ctable, ax in zip(('N0Q', 'N0U'), ctables, axes):
+
+for v, ctable, ax_rect in zip(('N0Q', 'N0U'), ctables, spec):
     # Open the file
     name = get_test_data(f'nids/KOUN_SDUS54_{v}TLX_201305202016', as_file_obj=False)
     f = Level3File(name)
@@ -31,20 +37,26 @@ for v, ctable, ax in zip(('N0Q', 'N0U'), ctables, axes):
     # Turn into an array using the scale specified by the file
     data = f.map_data(datadict['data'])
 
-    # Grab azimuths and calculate a range based on number of gates
-    az = np.array(datadict['start_az'] + [datadict['end_az'][-1]])
-    rng = np.linspace(0, f.max_range, data.shape[-1] + 1)
+    # Grab azimuths and calculate a range based on number of gates,
+    # both with their respective units
+    az = units.Quantity(np.array(datadict['start_az'] + [datadict['end_az'][-1]]), 'degrees')
+    rng = units.Quantity(np.linspace(0, f.max_range, data.shape[-1] + 1), 'kilometers')
+
+    # Extract central latitude and longitude from the file
+    cent_lon = f.lon
+    cent_lat = f.lat
 
     # Convert az,range to x,y
-    xlocs = rng * np.sin(np.deg2rad(az[:, np.newaxis]))
-    ylocs = rng * np.cos(np.deg2rad(az[:, np.newaxis]))
+    xlocs, ylocs = azimuth_range_to_lat_lon(az, rng, cent_lon, cent_lat)
 
     # Plot the data
+    crs = ccrs.LambertConformal()
+    ax = fig.add_subplot(ax_rect, projection=crs)
+    ax.add_feature(USCOUNTIES, linewidth=0.5)
     norm, cmap = colortables.get_with_steps(*ctable)
-    ax.pcolormesh(xlocs, ylocs, data, norm=norm, cmap=cmap)
+    ax.pcolormesh(xlocs, ylocs, data, norm=norm, cmap=cmap, transform=ccrs.PlateCarree())
+    ax.set_extent([cent_lon - 0.5, cent_lon + 0.5, cent_lat - 0.5, cent_lat + 0.5])
     ax.set_aspect('equal', 'datalim')
-    ax.set_xlim(-40, 20)
-    ax.set_ylim(-30, 30)
     add_timestamp(ax, f.metadata['prod_time'], y=0.02, high_contrast=True)
 
 plt.show()
