@@ -1726,9 +1726,7 @@ def virtual_temperature_from_dewpoint(
     --------
     >>> from metpy.calc import virtual_temperature_from_dewpoint
     >>> from metpy.units import units
-    >>> virtual_temperature_from_dewpoint(1000 * units.hPa,
-                                          30 * units.degC,
-                                          25 * units.degC)
+    >>> virtual_temperature_from_dewpoint(1000 * units.hPa, 30 * units.degC, 25 * units.degC)
     <Quantity(33.67398, 'degC')>
 
     Notes
@@ -2339,6 +2337,11 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     """
     pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
                                                                    dewpoint, parcel_profile)
+    
+    # Convert the temperature/parcel profile to virtual temperature
+    temperature = virtual_temperature_from_dewpoint(pressure, temperature, dewpoint)
+    parcel_profile = virtual_temperature_from_dewpoint(pressure, parcel_profile, dewpoint)
+    
     # Calculate LFC limit of integration
     lfc_pressure, _ = lfc(pressure, temperature, dewpoint,
                           parcel_temperature_profile=parcel_profile, which=which_lfc)
