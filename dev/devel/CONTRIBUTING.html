@@ -622,12 +622,13 @@ is what the majority of the Python world uses. The one deviation is that line le
 that go through and correct code style, MetPy has adopted this style from the outset.
 Therefore, it makes sense to enforce this style as code is added to keep everything clean and
 uniform. To this end, part of the automated testing for MetPy checks style. To check style
-locally within the source directory you can use the
-<a class="reference external" href="https://flake8.pycqa.org/en/latest/">flake8</a> tool.
+locally within the source directory you can use the <a class="reference external" href="https://beta.ruff.rs/docs/">ruff</a> and
+<a class="reference external" href="https://flake8.pycqa.org/en/latest/">flake8</a> tools.
 After setting up your <a class="reference internal" href="#setting-up-your-development-environment"><span class="std std-doc">development environment</span></a> above,
 from within the <code class="docutils literal notranslate"><span class="pre">metpy</span></code> directory with your <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment active,
 install the code style tools we use with <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">--file</span> <span class="pre">ci/linting_requirements.txt</span></code>.
-Checking your code style is then as easy as running <code class="docutils literal notranslate"><span class="pre">flake8</span> <span class="pre">.</span></code> in the base of the repository.</p>
+Checking your code style is then as easy as running <code class="docutils literal notranslate"><span class="pre">ruff</span> <span class="pre">check</span> <span class="pre">.</span> <span class="pre">;</span> <span class="pre">flake8</span> <span class="pre">.</span></code>
+in the base of the repository.</p>
 <p>You can also just submit your PR and the kind robots will comment on all style violations as
 well. It can be a pain to make sure you have the right number of spaces around things, imports
 in order, and all of the other nits that the bots will find. It is very important though as
