@@ -322,12 +322,13 @@ While the authors are no fans of blind adherence to style and so-called project 
 that go through and correct code style, MetPy has adopted this style from the outset.
 Therefore, it makes sense to enforce this style as code is added to keep everything clean and
 uniform. To this end, part of the automated testing for MetPy checks style. To check style
-locally within the source directory you can use the
-[flake8](https://flake8.pycqa.org/en/latest/) tool.
+locally within the source directory you can use the [ruff](https://beta.ruff.rs/docs/) and
+[flake8](https://flake8.pycqa.org/en/latest/) tools.
 After setting up your [development environment](#setting-up-your-development-environment) above,
 from within the ``metpy`` directory with your ``devel`` environment active,
 install the code style tools we use with ``conda install --file ci/linting_requirements.txt``.
-Checking your code style is then as easy as running ``flake8 .`` in the base of the repository.
+Checking your code style is then as easy as running ``ruff check . ; flake8 .``
+in the base of the repository.
 
 You can also just submit your PR and the kind robots will comment on all style violations as
 well. It can be a pain to make sure you have the right number of spaces around things, imports
