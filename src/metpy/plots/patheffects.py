@@ -9,6 +9,8 @@ import matplotlib.colors as mcolors
 import matplotlib.path as mpath
 import matplotlib.patheffects as mpatheffects
 import matplotlib.transforms as mtransforms
+from matplotlib.path import Path
+from matplotlib.patheffects import AbstractPathEffect
 import numpy as np
 
 from ..package_tools import Exporter
@@ -173,7 +175,7 @@ class ScallopedStroke(AbstractPathEffect):
         self._length = length
         self._gc = kwargs
 
-    def draw_path(self, renderer, gc, tpath, affine, rgbFace):
+    def draw_path(self, renderer, gc, tpath, affine, rgbFace):  # noqa: N803
         """Draw the path with updated gc."""
         # Do not modify the input! Use copy instead.
         gc0 = renderer.new_gc()
@@ -220,7 +222,7 @@ class ScallopedStroke(AbstractPathEffect):
 
             num = int(np.ceil(s_total / spacing_px)) - 1
             # Pick parameter values for scallops.
-            s_tick = np.linspace(0, s_total - 1e-5, num)
+            s_tick = np.linspace(0, s_total, num)
 
             # Find points along the parameterized curve
             x_tick = np.interp(s_tick, s, x)
@@ -230,6 +232,14 @@ class ScallopedStroke(AbstractPathEffect):
             delta_s = self._spacing * .001
             u = (np.interp(s_tick + delta_s, s, x) - x_tick) / delta_s
             v = (np.interp(s_tick + delta_s, s, y) - y_tick) / delta_s
+
+            # Handle slope of end point
+            if (x_tick[-1], y_tick[-1]) == (x_tick[0], y_tick[0]):  # periodic
+                u[-1] = u[0]
+                v[-1] = v[0]
+            else:
+                u[-1] = u[-2]
+                v[-1] = v[-2]
 
             # Normalize slope into unit slope vector.
             n = np.hypot(u, v)
@@ -254,7 +264,7 @@ class ScallopedStroke(AbstractPathEffect):
             xyt[1::2, 1] = y_end
 
             # Build path verticies that will define control points
-            # the bezier curves
+            # of the bezier curves
             verts = []
             i = 0
             nverts = 0

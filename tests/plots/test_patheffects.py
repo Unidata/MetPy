@@ -11,8 +11,6 @@ from metpy.plots import ColdFront, OccludedFront, StationaryFront, WarmFront
 import matplotlib.patches as patches
 from matplotlib.path import Path
 from metpy.plots import patheffects
-# Fixtures to make sure we have the right backend and consistent round
-from metpy.testing import set_agg_backend  # noqa: F401, I202
 
 
 
@@ -65,7 +63,7 @@ def test_stationary_spacing():
 
 
 @pytest.mark.mpl_image_compare(savefig_kwargs={'dpi': 300}, remove_text=True)
-def test_scalloped_stroke():
+def test_scalloped_stroke_closed():
     """Test ScallopedStroke path effect."""
     fig = plt.figure(figsize=(9, 9))
     ax = plt.subplot(1, 1, 1)
@@ -90,5 +88,32 @@ def test_scalloped_stroke():
     ax.axis('equal')
     ax.set_xlim(-2, 2)
     ax.set_ylim(-2, 2)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(savefig_kwargs={'dpi': 300}, remove_text=True)
+def test_scalloped_stroke_segment():
+    """Test ScallopedStroke path effect."""
+    fig = plt.figure(figsize=(9, 9))
+    ax = plt.subplot(1, 1, 1)
+
+    # test data
+    x = np.arange(9)
+    y = np.concatenate([np.arange(5), np.arange(3, -1, -1)])
+    verts = np.array([[x, y] for x, y in zip(x, y)])
+    codes = np.repeat(Path.LINETO, len(x))
+    codes[0] = Path.MOVETO
+
+    path = Path(verts, codes)
+    patch = patches.PathPatch(path, facecolor='none', edgecolor='#000000',
+                              path_effects=[patheffects.ScallopedStroke(side='left',
+                                                                        spacing=10,
+                                                                        length=1.15)])
+
+    ax.add_patch(patch)
+    ax.axis('equal')
+    ax.set_xlim(-0.5, 9.5)
+    ax.set_ylim(-0.5, 4.5)
 
     return fig
