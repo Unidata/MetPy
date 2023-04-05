@@ -263,7 +263,7 @@ class ScallopedStroke(AbstractPathEffect):
             xyt[0::2, 1] = y_tick
             xyt[1::2, 1] = y_end
 
-            # Build path verticies that will define control points
+            # Build path vertices that will define control points
             # of the bezier curves
             verts = []
             i = 0
