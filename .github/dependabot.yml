@@ -104,19 +104,3 @@ updates:
     commit-message:
       prefix: "CI: "
       include: "scope"
-
-  - package-ecosystem: "github-actions"
-    directory: "/.github/actions/setup-proj"
-    schedule:
-      interval: "daily"
-    allow:
-      - dependency-type: all
-    open-pull-requests-limit: 10
-    pull-request-branch-name:
-      separator: "-"
-    labels:
-      - "Type: Maintenance"
-      - "Area: Infrastructure"
-    commit-message:
-      prefix: "CI: "
-      include: "scope"
