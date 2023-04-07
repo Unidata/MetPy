@@ -25,6 +25,7 @@ logging.getLogger('metpy.io.nexrad').setLevel(logging.CRITICAL)
 # KFTG tests bzip compression and newer format for a part of message 31
 # KTLX 20150530 has missing segments for message 18, which was causing exception
 # KICX has message type 29 (MDM)
+# KVWX and KLTX have some legacy "quirks"; KLTX was crashing the parser
 level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46), 17, 4, 6, 0),
                 ('KTLX19990503_235621.gz', datetime(1999, 5, 3, 23, 56, 21), 16, 1, 3, 0),
                 ('Level2_KFTG_20150430_1419.ar2v', datetime(2015, 4, 30, 14, 19, 11),
@@ -35,7 +36,8 @@ level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46)
                  3, 0),
                 ('Level2_FOP1_20191223_003655.ar2v', datetime(2019, 12, 23, 0, 36, 55, 649000),
                  16, 5, 7, 0),
-                ('KVWX_20050626_221551.gz', datetime(2005, 6, 26, 22, 15, 51), 11, 1, 3, 23)]
+                ('KVWX_20050626_221551.gz', datetime(2005, 6, 26, 22, 15, 51), 11, 1, 3, 21),
+                ('KLTX20050329_100015.gz', datetime(2005, 3, 29, 10, 0, 15), 11, 1, 3, 21)]
 
 
 # ids here fixes how things are presented in pycharm
