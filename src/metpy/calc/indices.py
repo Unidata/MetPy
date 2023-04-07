@@ -299,20 +299,24 @@ def bunkers_storm_motion(pressure, u, v, height):
 
     """
     # mean wind from sfc-6km
-    _, u_mean, v_mean = get_layer(pressure, u, v, height=height,
-                                  depth=units.Quantity(6000, 'meter'))
-    wind_mean = units.Quantity([np.mean(u_mean).m, np.mean(v_mean).m], u_mean.units)
+    wind_mean = weighted_continuous_average(pressure, u, v, height=height,
+                                            depth=units.Quantity(6000, 'meter'))
+
+    wind_mean = units.Quantity.from_list(wind_mean)
 
     # mean wind from sfc-500m
-    _, u_500m, v_500m = get_layer(pressure, u, v, height=height,
-                                  depth=units.Quantity(500, 'meter'))
-    wind_500m = units.Quantity([np.mean(u_500m).m, np.mean(v_500m).m], u_500m.units)
+    wind_500m = weighted_continuous_average(pressure, u, v, height=height,
+                                            depth=units.Quantity(500, 'meter'))
+
+    wind_500m = units.Quantity.from_list(wind_500m)
 
     # mean wind from 5.5-6km
-    _, u_5500m, v_5500m = get_layer(pressure, u, v, height=height,
-                                    depth=units.Quantity(500, 'meter'),
-                                    bottom=height[0] + units.Quantity(5500, 'meter'))
-    wind_5500m = units.Quantity([np.mean(u_5500m).m, np.mean(v_5500m).m], u_5500m.units)
+    wind_5500m = weighted_continuous_average(
+        pressure, u, v, height=height,
+        depth=units.Quantity(500, 'meter'),
+        bottom=height[0] + units.Quantity(5500, 'meter'))
+
+    wind_5500m = units.Quantity.from_list(wind_5500m)
 
     # Calculate the shear vector from sfc-500m to 5.5-6km
     shear = wind_5500m - wind_500m
@@ -320,7 +324,7 @@ def bunkers_storm_motion(pressure, u, v, height):
     # Take the cross product of the wind shear and k, and divide by the vector magnitude and
     # multiply by the deviation empirically calculated in Bunkers (2000) (7.5 m/s)
     shear_cross = concatenate([shear[1], -shear[0]])
-    shear_mag = units.Quantity(np.hypot(*(arg.magnitude for arg in shear)), shear.units)
+    shear_mag = np.hypot(*shear)
     rdev = shear_cross * (units.Quantity(7.5, 'm/s').to(u.units) / shear_mag)
 
     # Add the deviations to the layer average wind to get the RM motion
