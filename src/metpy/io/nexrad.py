@@ -396,8 +396,15 @@ class Level2File:
         from ._nexrad_msgs.msg3 import descriptions, fields
         self.maintenance_data_desc = descriptions
         msg_fmt = DictStruct(fields, '>')
+
+        # The only version we decode isn't very flexible, so just skip if we don't have the
+        # right length, which happens with older data.
+        if msg_hdr.size_hw * 2 - self.msg_hdr_fmt.size != msg_fmt.size:
+            log.info('Length of message 3 is %d instead of expected %d; this is likely the '
+                     'legacy format. Skipping...', 2 * msg_hdr.size_hw)
+            return
+
         self.maintenance_data = self._buffer.read_struct(msg_fmt)
-        self._check_size(msg_hdr, msg_fmt.size)
 
     vcp_fmt = NamedStruct([('size_hw', 'H'), ('pattern_type', 'H'),
                            ('num', 'H'), ('num_el_cuts', 'H'),
@@ -439,10 +446,13 @@ class Level2File:
 
     def _decode_msg5(self, msg_hdr):
         vcp_info = self._buffer.read_struct(self.vcp_fmt)
-        els = [self._buffer.read_struct(self.vcp_el_fmt) for _ in range(vcp_info.num_el_cuts)]
-        self.vcp_info = vcp_info._replace(els=els)
-        self._check_size(msg_hdr,
-                         self.vcp_fmt.size + vcp_info.num_el_cuts * self.vcp_el_fmt.size)
+        # Just skip the vcp info if it says size is 0:
+        if vcp_info.size_hw:
+            els = [self._buffer.read_struct(self.vcp_el_fmt)
+                   for _ in range(vcp_info.num_el_cuts)]
+            self.vcp_info = vcp_info._replace(els=els)
+            self._check_size(msg_hdr,
+                             self.vcp_fmt.size + vcp_info.num_el_cuts * self.vcp_el_fmt.size)
 
     def _decode_msg13(self, msg_hdr):
         data = self._buffer_segment(msg_hdr)
@@ -491,9 +501,10 @@ class Level2File:
         data = self._buffer_segment(msg_hdr)
         if data:
             date, time, num_el, *data = struct.Struct(f'>{len(data) // 2:d}h').unpack(data)
-            if num_el == 0:
-                log.info('Message 15 num_el is 0--likely legacy clutter filter notch width. '
-                         'Skipping...')
+
+            if not 0 < num_el <= 5:
+                log.info('Message 15 num_el is outside (0, 5]--likely legacy clutter filter '
+                         'notch width. Skipping...')
                 return
 
             # time is in "minutes since midnight", need to pass as ms since midnight
