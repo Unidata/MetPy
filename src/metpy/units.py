@@ -44,10 +44,15 @@ def _fix_udunits_powers(string):
     return _UDUNIT_POWER.sub('**', string)
 
 
-# Fix UDUNITS-style powers and percent signs
+def _fix_udunits_div(string):
+    return 's**-1' if string == '/s' else string
+
+
+# Fix UDUNITS-style powers, percent signs, and ill-defined units
 _UDUNIT_POWER = re.compile(r'(?<=[A-Za-z\)])(?![A-Za-z\)])'
                            r'(?<![0-9\-][eE])(?<![0-9\-])(?=[0-9\-])')
-_unit_preprocessors = [_fix_udunits_powers, lambda string: string.replace('%', 'percent')]
+_unit_preprocessors = [_fix_udunits_powers, lambda string: string.replace('%', 'percent'),
+                       _fix_udunits_div]
 
 
 def setup_registry(reg):

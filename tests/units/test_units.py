@@ -228,7 +228,8 @@ def test_percent_units():
             '(J kg-1)(m s-1)-1', units.m / units.s,
             marks=pytest.mark.xfail(reason='hgrecco/pint#1485')
         ),
-        ('(J kg-1)(m s-1)(-1)', units.m ** 3 / units.s ** 3)
+        ('(J kg-1)(m s-1)(-1)', units.m ** 3 / units.s ** 3),
+        ('/s', units.s ** -1)
     )
 )
 def test_udunits_power_syntax(unit_str, pint_unit):
