@@ -48,6 +48,10 @@ Plots ``(metpy.plots)``
       ArrowPlot
       PlotObs
       PlotGeometry
+      ColdFront
+      WarmFront
+      OccludedFront
+      StationaryFront
       SkewT
       Hodograph
       StationPlot
