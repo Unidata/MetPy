@@ -407,7 +407,10 @@ linkcheck_ignore = [
     # Frequently fails the linkchecker
     r'https://ams\.confex\.com/ams/[\d\w]+/meetingapp\.cgi/.*',
     # Can't seem to get around inconsistent retry errors
-    r'https://doi\.org/10\.1289/ehp\.1206273'
+    r'https://doi\.org/10\.1289/ehp\.1206273',
+    # Couldn't fix these 403's with user agents
+    r'https://doi\.org/10\.1029/2010GL045777',
+    r'https://doi\.org/10\.1098/rspa\.2004\.1430'
     ]
 
 # Dictionary of URL redirects allowed
@@ -415,7 +418,8 @@ linkcheck_allowed_redirects = {
     r'https://pint\.readthedocs\.io': r'https://pint\.readthedocs\.io/en/stable/',
     r'https://conda.io/docs/': r'https://conda.io/en/latest/',
     r'https://github.com/Unidata/MetPy/issues/new/choose': r'https://github.com/login.*choose',
-    r'https://doi.org/.*': r'https://.*'
+    r'https://doi.org/.*': r'https://.*',
+    r'https://gitter.im/Unidata/MetPy': r'https://app.gitter.im/.*MetPy.*'
 }
 
 # Domain-specific HTTP headers for requests
