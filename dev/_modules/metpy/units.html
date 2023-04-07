@@ -240,10 +240,15 @@
     <span class="k">return</span> <span class="n">_UDUNIT_POWER</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;**&#39;</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
 
 
-<span class="c1"># Fix UDUNITS-style powers and percent signs</span>
+<span class="k">def</span> <span class="nf">_fix_udunits_div</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;s**-1&#39;</span> <span class="k">if</span> <span class="n">string</span> <span class="o">==</span> <span class="s1">&#39;/s&#39;</span> <span class="k">else</span> <span class="n">string</span>
+
+
+<span class="c1"># Fix UDUNITS-style powers, percent signs, and ill-defined units</span>
 <span class="n">_UDUNIT_POWER</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?&lt;=[A-Za-z\)])(?![A-Za-z\)])&#39;</span>
                            <span class="sa">r</span><span class="s1">&#39;(?&lt;![0-9\-][eE])(?&lt;![0-9\-])(?=[0-9\-])&#39;</span><span class="p">)</span>
-<span class="n">_unit_preprocessors</span> <span class="o">=</span> <span class="p">[</span><span class="n">_fix_udunits_powers</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">string</span><span class="p">:</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="s1">&#39;percent&#39;</span><span class="p">)]</span>
+<span class="n">_unit_preprocessors</span> <span class="o">=</span> <span class="p">[</span><span class="n">_fix_udunits_powers</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">string</span><span class="p">:</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="s1">&#39;percent&#39;</span><span class="p">),</span>
+                       <span class="n">_fix_udunits_div</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="setup_registry"><a class="viewcode-back" href="../../api/generated/metpy.units.setup_registry.html#metpy.units.setup_registry">[docs]</a><span class="k">def</span> <span class="nf">setup_registry</span><span class="p">(</span><span class="n">reg</span><span class="p">):</span>
