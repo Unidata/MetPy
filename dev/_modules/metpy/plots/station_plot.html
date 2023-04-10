@@ -568,7 +568,7 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_to_string_list</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">fmt</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a sequence of values to a list of strings.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">fmt</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">fmt</span><span class="p">):</span>
             <span class="k">def</span> <span class="nf">formatter</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
 <span class="w">                </span><span class="sd">&quot;&quot;&quot;Turn a format string into a callable.&quot;&quot;&quot;</span>
                 <span class="k">return</span> <span class="nb">format</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>

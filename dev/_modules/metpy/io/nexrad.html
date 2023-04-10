@@ -1944,7 +1944,7 @@
                   <span class="bp">self</span><span class="o">.</span><span class="n">product_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_range</span><span class="p">,</span> <span class="n">mapper</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">meta</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">depVals</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depVals</span><span class="p">[</span><span class="n">block</span><span class="p">]</span>

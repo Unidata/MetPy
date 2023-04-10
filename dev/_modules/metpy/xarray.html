@@ -650,7 +650,7 @@
                         <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span> <span class="o">=</span> <span class="n">_build_latitude_longitude</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="p">)</span>
                     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                         <span class="c1"># Attempt failed, re-raise original error</span>
-                        <span class="k">raise</span> <span class="n">exc</span> <span class="kn">from</span> <span class="bp">None</span>
+                        <span class="k">raise</span> <span class="n">exc</span> <span class="kn">from</span> <span class="kc">None</span>
                     <span class="c1"># Otherwise, warn and yield result</span>
                     <span class="n">_warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                         <span class="s1">&#39;Latitude and longitude computed on-demand, which may be an &#39;</span>
@@ -739,7 +739,7 @@
                 <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
                     <span class="s1">&#39;Grid deltas cannot be calculated since horizontal dimension coordinates &#39;</span>
                     <span class="s1">&#39;cannot be found.&#39;</span>
-                <span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
 
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;dx&#39;</span><span class="p">:</span> <span class="n">dx</span><span class="p">,</span> <span class="s1">&#39;dy&#39;</span><span class="p">:</span> <span class="n">dy</span><span class="p">}</span>
 
@@ -802,7 +802,7 @@
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="c1"># Intercept ValueError when axis type found but not dimension coordinate</span>
                 <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Requested </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s1"> dimension coordinate but </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s1"> &#39;</span>
-                                     <span class="sa">f</span><span class="s1">&#39;coordinate </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> is not a dimension&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
+                                     <span class="sa">f</span><span class="s1">&#39;coordinate </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> is not a dimension&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Otherwise, not valid</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_axis_identifier_error</span><span class="p">)</span></div>
@@ -1257,7 +1257,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Make mapping uniform</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">mapping</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">mapping</span><span class="p">):</span>
             <span class="n">old_mapping</span> <span class="o">=</span> <span class="n">mapping</span>
 
             <span class="k">def</span> <span class="nf">mapping</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
