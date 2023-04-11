@@ -9,7 +9,10 @@ import numpy as np
 import pytest
 from scipy.interpolate import interp1d
 
-from metpy.plots import ColdFront, OccludedFront, ScallopedStroke, StationaryFront, WarmFront
+from metpy.plots import (ColdFront, ColdFrontogenesis, ColdFrontolysis, Dryline, OccludedFront,
+                         OccludedFrontogenesis, OccludedFrontolysis, RidgeAxis,
+                         ScallopedStroke, Squall, StationaryFront, StationaryFrontogenesis,
+                         StationaryFrontolysis, WarmFront, WarmFrontogenesis, WarmFrontolysis)
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
@@ -22,6 +25,55 @@ def test_fronts():
             path_effects=[WarmFront(spacing=1.0, color='brown')])
     ax.plot(x, 75000 * np.sqrt(x), linewidth=1, path_effects=[OccludedFront(spacing=1.0)])
     ax.plot(x, 6500 * x, linewidth=1, path_effects=[StationaryFront(spacing=1.0)])
+    return fig
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
+def test_frontogenesis():
+    """Test plotting forming front path effects."""
+    x = np.linspace(0, 80, 5)
+    fig, ax = plt.subplots(figsize=(12, 6), dpi=300)
+    ax.plot(x, np.ones_like(x), path_effects=[ColdFrontogenesis(spacing=1.0)])
+    ax.plot(x, np.ones_like(x) * 3, path_effects=[WarmFrontogenesis(flip=True, spacing=1.0)])
+    ax.plot(
+        x, np.ones_like(x) * 5,
+        path_effects=[OccludedFrontogenesis(spacing=1.0, color='black')]
+    )
+    ax.plot(x, np.ones_like(x) * 7, path_effects=[StationaryFrontogenesis(spacing=1.0)])
+    ax.set_ylim(-0.5, 8)
+    return fig
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
+def test_frontolysis():
+    """Test plotting dissipating front path effects."""
+    x = np.linspace(0, 80, 5)
+    fig, ax = plt.subplots(figsize=(12, 6), dpi=300)
+    ax.plot(x, np.ones_like(x), path_effects=[ColdFrontolysis(spacing=1.0)])
+    ax.plot(
+        x, np.ones_like(x) * 3,
+        path_effects=[WarmFrontolysis(spacing=1.0, color='orange')]
+    )
+    ax.plot(x, np.ones_like(x) * 5, path_effects=[OccludedFrontolysis(spacing=1.0)])
+    ax.plot(
+        x, np.ones_like(x) * 7,
+        path_effects=[StationaryFrontolysis(flip=True, spacing=1.0)]
+    )
+    ax.set_ylim(-0.5, 8)
+    return fig
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
+def test_speical():
+    """Test plotting special path effects."""
+    x = np.linspace(0, 20, 5)
+    y = np.linspace(0, 20, 5)
+    fig, ax = plt.subplots(figsize=(12, 6), dpi=300)
+    ax.plot(x, y, path_effects=[Dryline(flip=True)])
+    ax.plot(x + 5, y, linewidth=3, path_effects=[RidgeAxis()])
+    ax.plot(x + 10, y, path_effects=[Squall(color='red')])
+    ax.set_ylim(-1, 21)
+    ax.set_xlim(-1, 31)
     return fig
 
 
