@@ -1,4 +1,4 @@
-#  Copyright (c) 2020,2022 MetPy Developers.
+#  Copyright (c) 2020,2022,2023 MetPy Developers.
 #  Distributed under the terms of the BSD 3-Clause License.
 #  SPDX-License-Identifier: BSD-3-Clause
 """Add effects to matplotlib paths."""
@@ -9,8 +9,6 @@ import matplotlib.colors as mcolors
 import matplotlib.path as mpath
 import matplotlib.patheffects as mpatheffects
 import matplotlib.transforms as mtransforms
-from matplotlib.path import Path
-from matplotlib.patheffects import AbstractPathEffect
 import numpy as np
 
 from ..package_tools import Exporter
@@ -138,7 +136,7 @@ class Front(mpatheffects.AbstractPathEffect):
 
 
 @exporter.export
-class ScallopedStroke(AbstractPathEffect):
+class ScallopedStroke(mpatheffects.AbstractPathEffect):
     """A line-based PathEffect which draws a path with a scalloped style.
 
     The spacing, length, and side of the scallops can be controlled. This implementation is
@@ -175,19 +173,14 @@ class ScallopedStroke(AbstractPathEffect):
         self._length = length
         self._gc = kwargs
 
-    def draw_path(self, renderer, gc, tpath, affine, rgbFace):  # noqa: N803
+    def draw_path(self, renderer, gc, path, affine, rgbFace=None):  # noqa: N803
         """Draw the path with updated gc."""
         # Do not modify the input! Use copy instead.
         gc0 = renderer.new_gc()
         gc0.copy_properties(gc)
 
         gc0 = self._update_gc(gc0, self._gc)
-        try:
-            # For matplotlib >= 3.2
-            trans = affine + self._offset_transform(renderer)
-        except TypeError:
-            # For matplotlib < 3.2
-            trans = self._offset_transform(renderer, affine)
+        trans = affine + self._offset_transform(renderer)
 
         theta = -np.radians(self._angle)
         trans_matrix = np.array([[np.cos(theta), -np.sin(theta)],
@@ -198,7 +191,7 @@ class ScallopedStroke(AbstractPathEffect):
 
         # Transform before evaluation because to_polygons works at resolution
         # of one -- assuming it is working in pixel space.
-        transpath = affine.transform_path(tpath)
+        transpath = affine.transform_path(path)
 
         # Evaluate path to straight line segments that can be used to
         # construct line scallops.
@@ -277,12 +270,12 @@ class ScallopedStroke(AbstractPathEffect):
                 i += 2
 
             # Build up vector of Path codes
-            codes = np.tile([Path.LINETO, Path.CURVE4,
-                             Path.CURVE4, Path.CURVE4], nverts)
-            codes[0] = Path.MOVETO
+            codes = np.tile([mpath.Path.LINETO, mpath.Path.CURVE4,
+                             mpath.Path.CURVE4, mpath.Path.CURVE4], nverts)
+            codes[0] = mpath.Path.MOVETO
 
             # Construct and draw resulting path
-            h = Path(verts, codes)
+            h = mpath.Path(verts, codes)
 
             # Transform back to data space during render
             renderer.draw_path(gc0, h, affine.inverted() + trans, rgbFace)
