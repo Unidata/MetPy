@@ -159,11 +159,11 @@ class Frontogenesis(Front):
 
         """
         super().__init__(color, size, spacing, flip)
-        self.padding = 5
+        self._padding = 4
 
     def _step_size(self, renderer):
         """Return the length of the step between markers in pixels."""
-        return (self.symbol_width + self.spacing + self.padding) * self._size_pixels(renderer)
+        return (self.symbol_width + self.spacing + self._padding) * self._size_pixels(renderer)
 
     def _get_path_locations(self, segment_offsets, renderer):
         # Calculate increment of path length occupied by each marker drawn
@@ -252,11 +252,11 @@ class Frontolysis(Front):
 
         """
         super().__init__(color, size, spacing, flip)
-        self.padding = 5
+        self._padding = 4
 
     def _step_size(self, renderer):
         """Return the length of the step between markers in pixels."""
-        return (self.symbol_width + self.spacing + self.padding) * self._size_pixels(renderer)
+        return (self.symbol_width + self.spacing + self._padding) * self._size_pixels(renderer)
 
     def _get_path_locations(self, segment_offsets, renderer):
         # Calculate increment of path length occupied by each marker drawn
@@ -660,6 +660,243 @@ class OccludedFrontolysis(Frontolysis):
             self._symbol_cycle = itertools.cycle([WarmFrontolysis._symbol,
                                                   ColdFrontolysis._symbol])
         return next(self._symbol_cycle)
+
+@exporter.export
+class RidgeAxis(mpatheffects.AbstractPathEffect):
+    """A line-based PathEffect which draws a path with a sawtooth-wave style.
+
+    This line style is frequently used to represent a ridge axis.
+    """
+
+    def __init__(self, color='black', spacing=12.0, length=0.5):
+        """Create ridge axis path effect.
+
+        Parameters
+        ----------
+        color : str
+            Color to use for the effect.
+        spacing : float
+            The spacing between ticks in points. Default is 12.
+        length : float
+            The length of the tick relative to spacing. Default is 0.5.
+
+        """
+        self._spacing = spacing
+        self._angle = 90.0
+        self._length = length
+        self._color = color
+
+    def _override_gc(self, renderer, gc, **kwargs):
+        ret = renderer.new_gc()
+        ret.copy_properties(gc)
+        ret.set_joinstyle('miter')
+        ret.set_capstyle('butt')
+        return self._update_gc(ret, kwargs)
+
+    def draw_path(self, renderer, gc, tpath, affine, rgbFace):
+        """Draw the path with updated gc."""
+        # Do not modify the input! Use copy instead.
+        gc0 = self._override_gc(renderer, gc, foreground=self._color)
+
+        theta = -np.radians(self._angle)
+        trans_matrix = np.array([[np.cos(theta), -np.sin(theta)],
+                                 [np.sin(theta), np.cos(theta)]])
+
+        # Convert spacing parameter to pixels.
+        spacing_px = renderer.points_to_pixels(self._spacing)
+
+        # Transform before evaluation because to_polygons works at resolution
+        # of one -- assuming it is working in pixel space.
+        transpath = affine.transform_path(tpath)
+
+        # Evaluate path to straight line segments that can be used to
+        # construct line ticks.
+        polys = transpath.to_polygons(closed_only=False)
+
+        for p in polys:
+            x = p[:, 0]
+            y = p[:, 1]
+
+            # Can not interpolate points or draw line if only one point in
+            # polyline.
+            if x.size < 2:
+                continue
+
+            # Find distance between points on the line
+            ds = np.hypot(x[1:] - x[:-1], y[1:] - y[:-1])
+
+            # Build parametric coordinate along curve
+            s = np.concatenate(([0.0], np.cumsum(ds)))
+            s_total = s[-1]
+
+            num = int(np.ceil(s_total / spacing_px)) - 1
+            # Pick parameter values for ticks.
+            s_tick = np.linspace(spacing_px / 2, s_total - spacing_px / 2, num)
+
+            # Find points along the parameterized curve
+            x_tick = np.interp(s_tick, s, x)
+            y_tick = np.interp(s_tick, s, y)
+
+            # Find unit vectors in local direction of curve
+            delta_s = self._spacing * .001
+            u = (np.interp(s_tick + delta_s, s, x) - x_tick) / delta_s
+            v = (np.interp(s_tick + delta_s, s, y) - y_tick) / delta_s
+
+            # Normalize slope into unit slope vector.
+            n = np.hypot(u, v)
+            mask = n == 0
+            n[mask] = 1.0
+
+            uv = np.array([u / n, v / n]).T
+            uv[mask] = np.array([0, 0]).T
+
+            # Rotate and scale unit vector into tick vector
+            dxy1 = np.dot(uv[0::2], trans_matrix) * self._length * spacing_px
+            dxy2 = np.dot(uv[1::2], trans_matrix.T) * self._length * spacing_px
+
+            # Build tick endpoints
+            x_end = np.zeros(num)
+            y_end = np.zeros(num)
+            x_end[0::2] = x_tick[0::2] + dxy1[:, 0]
+            x_end[1::2] = x_tick[1::2] + dxy2[:, 0]
+            y_end[0::2] = y_tick[0::2] + dxy1[:, 1]
+            y_end[1::2] = y_tick[1::2] + dxy2[:, 1]
+
+            # Interleave ticks to form Path vertices
+            xyt = np.empty((num, 2), dtype=x_tick.dtype)
+            xyt[:, 0] = x_end
+            xyt[:, 1] = y_end
+
+            # Build up vector of Path codes
+            codes = np.concatenate([[mpath.Path.MOVETO], [mpath.Path.LINETO] * (len(xyt) - 1)])
+
+            # Construct and draw resulting path
+            h = mpath.Path(xyt, codes)
+
+            # Transform back to data space during render
+            renderer.draw_path(gc0, h, affine.inverted() + affine, rgbFace)
+
+        gc0.restore()
+
+@exporter.export
+class Squall(mpatheffects.AbstractPathEffect):
+    """Squall line path effect."""
+
+    symbol = mpath.Path.circle((0, 0), radius=4)
+
+    @property
+    def symbol_width(self):
+        """Get symbol width."""
+        if self._symbol_width is None:
+            self._symbol_width = self.symbol.get_extents().width
+        return self._symbol_width
+
+    @property
+    def step_size(self):
+        """Get step size."""
+        return 2 * self.symbol_width + self.marker_margin
+
+    def __init__(self, color='black', spacing=75):
+        """Initialize the squall line path effect.
+        
+        Parameters
+        ----------
+        color : str
+            Color to use for the effect.
+        spacing : float
+            Spacing between symbols along path (in points).
+
+        """
+        self.marker_margin = 10
+        self.spacing = spacing
+        self.color = mcolors.to_rgba(color)
+        self._symbol_width = None
+
+    @staticmethod
+    def _process_path(path, path_trans):
+        """Transform the main path into pixel coordinates; calculate the needed components."""
+        path_points = path.transformed(path_trans).interpolated(500).vertices
+        deltas = (path_points[1:] - path_points[:-1]).T
+        pt_offsets = np.concatenate(([0], np.hypot(*deltas).cumsum()))
+        return path_points, pt_offsets
+    
+    def _override_gc(self, renderer, gc, **kwargs):
+        ret = renderer.new_gc()
+        ret.copy_properties(gc)
+        ret.set_joinstyle('miter')
+        ret.set_capstyle('butt')
+        return self._update_gc(ret, kwargs)
+
+    def _get_object_locations(self, segment_offsets, renderer):
+        # Calculate increment of path length
+        inc = renderer.points_to_pixels(self.spacing)
+        margin = renderer.points_to_pixels(self.marker_margin)
+
+        # Find out how many markers that will accommodate, as well as remainder space
+        num, leftover = divmod(segment_offsets[-1], inc)
+
+        # Find the offset for each marker along the path length. We center along
+        # the path by adding half of the remainder. The offset is also centered within
+        # the marker by adding half of the marker increment
+        first_marker = np.arange(num) * inc - 0.5 * margin + (leftover + inc) / 2.
+        second_marker = np.arange(num) * inc + 0.5 * margin + (leftover + inc) / 2.
+        marker_offsets = np.sort(np.concatenate([first_marker, second_marker]))
+
+        # Do the same for path segments
+        first = segment_offsets[0]
+        last = segment_offsets[-1]
+        path_offset_1 = np.arange(num) * inc - 1.5 * margin + (leftover + inc) / 2
+        path_offset_2 = np.arange(num) * inc + 1.5 * margin + (leftover + inc) / 2
+        path_offsets = np.sort(np.concatenate(
+            [[first], path_offset_1, path_offset_2, [last]]
+        ))
+
+        # Find the location of these offsets within the total offset within each
+        # path segment; subtracting 1 gives us the left point of the path rather
+        # than the last. We then need to adjust for any offsets that are <= the first
+        # point of the path (just set them to index 0).
+        marker_inds = np.searchsorted(segment_offsets, marker_offsets) - 1
+        marker_inds[marker_inds < 0] = 0
+
+        # Do the same for path segments
+        path_inds = np.searchsorted(segment_offsets, path_offsets) - 1
+        path_inds[path_inds < 0] = 0
+
+        # Return the indices to the proper segment and the offset within that segment
+        return marker_inds, path_inds
+
+    def draw_path(self, renderer, gc, path, affine, rgbFace=None):
+        """Draw path."""
+        # Set up a new graphics context for rendering the front effect; override the color
+        gc0 = self._override_gc(renderer, gc, foreground=self.color)
+
+        # Get the information we need for drawing along the path
+        starts, offsets = self._process_path(path, affine)
+
+        # Figure out what segments the markers should be drawn upon and how
+        # far within that segment the markers will appear.
+        marker_indices, path_indices = self._get_object_locations(offsets, renderer)
+
+        base_trans = mtransforms.Affine2D()
+
+        # Loop over the segmented path
+        ipath = path.interpolated(500).vertices
+        for i in range(0, len(path_indices) - 1, 2):
+            start = path_indices[i]
+            stop = path_indices[i + 1]
+            n = stop - start
+            spath = mpath.Path(
+                ipath[start:stop],
+                [mpath.Path.MOVETO] + [mpath.Path.LINETO] * (n - 1)
+            )
+            renderer.draw_path(gc0, spath, affine, None)
+
+        # Loop over all the markers to draw
+        for ind in marker_indices:
+            sym_trans = base_trans.frozen().translate(*starts[ind])
+            renderer.draw_path(gc0, self.symbol, sym_trans, self.color)
+
+        gc0.restore()
 
 
 @exporter.export
