@@ -24,8 +24,8 @@ class Front(mpatheffects.AbstractPathEffect):
     """
 
     _symbol = mpath.Path([[0, 0], [0, 1], [1, 1], [1, 0], [0, 0]],
-                         [mpath.Path.MOVETO, mpath.Path.LINETO, mpath.Path.LINETO,
-                          mpath.Path.LINETO, mpath.Path.CLOSEPOLY])
+                         [mpath.Path.MOVETO, mpath.Path.LINETO,
+                          mpath.Path.LINETO, mpath.Path.LINETO, mpath.Path.CLOSEPOLY])
 
     def __init__(self, color, size=10, spacing=1, flip=False):
         """Initialize the front path effect.
@@ -217,7 +217,7 @@ class Frontogenesis(Front):
         for start_path, end_path in zip(segment_starts, segment_ends):
             renderer.draw_path(gc0, mpath.Path(starts[start_path:end_path]),
                                mtransforms.Affine2D(), None)
-            
+
         # Loop over all the markers to draw
         for ind, marker_offset in zip(segment_indices, marker_offsets):
             sym_trans = self._get_symbol_transform(renderer, marker_offset, line_shift,
@@ -310,7 +310,7 @@ class Frontolysis(Front):
         for start_path, end_path in zip(segment_starts, segment_ends):
             renderer.draw_path(gc0, mpath.Path(starts[start_path:end_path]),
                                mtransforms.Affine2D(), None)
-            
+
         # Loop over all the markers to draw
         for ind, marker_offset in zip(segment_indices[::2], marker_offsets[::2]):
             sym_trans = self._get_symbol_transform(renderer, marker_offset, line_shift,
@@ -482,11 +482,11 @@ class ColdFront(Front):
 
 @exporter.export
 class ColdFrontogenesis(Frontogenesis):
-    """Draw a path as a strengthening cold front, with (default blue) pips/triangles along the path."""
+    """Draw a path as a strengthening cold."""
 
     _symbol = mpath.Path([[0, 0], [1, 1], [2, 0], [0, 0]],
-                        [mpath.Path.MOVETO, mpath.Path.LINETO, mpath.Path.LINETO,
-                         mpath.Path.CLOSEPOLY])
+                         [mpath.Path.MOVETO, mpath.Path.LINETO, mpath.Path.LINETO,
+                          mpath.Path.CLOSEPOLY])
 
     def __init__(self, color='blue', **kwargs):
         super().__init__(color, **kwargs)
@@ -494,11 +494,11 @@ class ColdFrontogenesis(Frontogenesis):
 
 @exporter.export
 class ColdFrontolysis(Frontolysis):
-    """Draw a path as a weakening cold front, with (default blue) pips/triangles along the path."""
+    """Draw a path as a weakening cold front."""
 
     _symbol = mpath.Path([[0, 0], [1, 1], [2, 0], [0, 0]],
-                        [mpath.Path.MOVETO, mpath.Path.LINETO, mpath.Path.LINETO,
-                         mpath.Path.CLOSEPOLY])
+                         [mpath.Path.MOVETO, mpath.Path.LINETO, mpath.Path.LINETO,
+                          mpath.Path.CLOSEPOLY])
 
     def __init__(self, color='blue', **kwargs):
         super().__init__(color, **kwargs)
@@ -518,7 +518,7 @@ class Dryline(Front):
         return (
             self.symbol_width + self.spacing
         ) * self._size_pixels(renderer) + gc.get_linewidth() * 2
-    
+
     def _get_marker_locations(self, segment_offsets, renderer, gc):
         # Calculate increment of path length occupied by each marker drawn
         inc = self._step_size(renderer, gc)
@@ -567,6 +567,7 @@ class Dryline(Front):
 
         gc0.restore()
 
+
 @exporter.export
 class WarmFront(Front):
     """Draw a path as a warm front with (default red) scallops along the path."""
@@ -579,17 +580,17 @@ class WarmFront(Front):
 
 @exporter.export
 class WarmFrontogenesis(Frontogenesis):
-    """Draw a path as a strengthening warm front with (default red) scallops along the path."""
+    """Draw a path as a strengthening warm front."""
 
     _symbol = mpath.Path.wedge(0, 180).transformed(mtransforms.Affine2D().translate(1, 0))
 
     def __init__(self, color='red', **kwargs):
         super().__init__(color, **kwargs)
 
-        
+
 @exporter.export
 class WarmFrontolysis(Frontolysis):
-    """Draw a path as a weakening warm front with (default red) scallops along the path."""
+    """Draw a path as a weakening warm front."""
 
     _symbol = mpath.Path.wedge(0, 180).transformed(mtransforms.Affine2D().translate(1, 0))
 
@@ -616,16 +617,16 @@ class OccludedFront(Front):
         if self._symbol_cycle is None:
             self._symbol_cycle = itertools.cycle([WarmFront._symbol, ColdFront._symbol])
         return next(self._symbol_cycle)
-    
+
 
 @exporter.export
 class OccludedFrontogenesis(Frontogenesis):
-    """Draw a strengthening occluded front with (default purple) pips and scallops along the path."""
+    """Draw a strengthening occluded front."""
 
     def __init__(self, color='purple', **kwargs):
         self._symbol_cycle = None
         super().__init__(color, **kwargs)
- 
+
     def draw_path(self, renderer, gc, path, affine, rgbFace=None):  # noqa: N803
         """Draw the given path."""
         self._symbol_cycle = None
@@ -642,7 +643,7 @@ class OccludedFrontogenesis(Frontogenesis):
 
 @exporter.export
 class OccludedFrontolysis(Frontolysis):
-    """Draw a weakening occluded front with (default purple) pips and scallops along the path."""
+    """Draw a weakening occluded front."""
 
     def __init__(self, color='purple', **kwargs):
         self._symbol_cycle = None
@@ -660,6 +661,7 @@ class OccludedFrontolysis(Frontolysis):
             self._symbol_cycle = itertools.cycle([WarmFrontolysis._symbol,
                                                   ColdFrontolysis._symbol])
         return next(self._symbol_cycle)
+
 
 @exporter.export
 class RidgeAxis(mpatheffects.AbstractPathEffect):
@@ -778,6 +780,7 @@ class RidgeAxis(mpatheffects.AbstractPathEffect):
 
         gc0.restore()
 
+
 @exporter.export
 class Squall(mpatheffects.AbstractPathEffect):
     """Squall line path effect."""
@@ -798,7 +801,7 @@ class Squall(mpatheffects.AbstractPathEffect):
 
     def __init__(self, color='black', spacing=75):
         """Initialize the squall line path effect.
-        
+
         Parameters
         ----------
         color : str
@@ -819,7 +822,7 @@ class Squall(mpatheffects.AbstractPathEffect):
         deltas = (path_points[1:] - path_points[:-1]).T
         pt_offsets = np.concatenate(([0], np.hypot(*deltas).cumsum()))
         return path_points, pt_offsets
-    
+
     def _override_gc(self, renderer, gc, **kwargs):
         ret = renderer.new_gc()
         ret.copy_properties(gc)
@@ -982,7 +985,7 @@ class StationaryFront(Front):
 
 @exporter.export
 class StationaryFrontogenesis(Frontogenesis):
-    """Draw a strengthening stationary front as alternating cold and warm front segments."""
+    """Draw a strengthening stationary front."""
 
     _symbol = WarmFront._symbol
     _symbol2 = ColdFront._symbol.transformed(mtransforms.Affine2D().scale(1, -1))
@@ -1046,7 +1049,7 @@ class StationaryFrontogenesis(Frontogenesis):
 
 @exporter.export
 class StationaryFrontolysis(Frontolysis):
-    """Draw a weakening stationary front as alternating cold and warm front segments."""
+    """Draw a weakening stationary front.."""
 
     _symbol = WarmFront._symbol
     _symbol2 = ColdFront._symbol.transformed(mtransforms.Affine2D().scale(1, -1))
@@ -1110,7 +1113,9 @@ class StationaryFrontolysis(Frontolysis):
 
             line_shift *= -1
 
-        for start_path, mid_path, end_path in zip(segment_starts, segment_indices, segment_ends):
+        for start_path, mid_path, end_path in zip(segment_starts,
+                                                  segment_indices,
+                                                  segment_ends):
             color1, color2 = next(self._segment_cycle)
 
             gcx = self._override_gc(renderer, gc, foreground=mcolors.to_rgb(color1))
