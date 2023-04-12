@@ -2301,7 +2301,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
     >>> # calculate surface based CAPE/CIN
     >>> cape_cin(p, T, Td, prof)
-    (<Quantity(4550.1526, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(6328.78915, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -2338,9 +2338,29 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
                                                                    dewpoint, parcel_profile)
 
+    # Calculate the lcl to use for determining the moisture of the parcel profile
+    pressure_lcl, _ = lcl(pressure[0], temperature[0], dewpoint[0])
+    below_lcl = pressure < pressure_lcl
+    above_lcl = pressure >= pressure_lcl
+
+    # Calculate the dewpoint of the lower part of the parcel profile
+    sfc_specific_humidity = specific_humidity_from_dewpoint(pressure[0], dewpoint[0])
+    mixing_below_lcl = mixing_ratio_from_specific_humidity(sfc_specific_humidity)\
+        * np.ones(len(pressure[below_lcl]))
+
+    # Check for the whether the lcl is in the pressure profile, if not, end there
+    if _greater_or_close(np.nanmin(pressure), pressure_lcl):
+        parcel_mixing_ratio = mixing_below_lcl
+    else:
+        # Use the assumption that the parcel profile is saturated above the LCL and merge
+        mixing_above_lcl = mixing_ratio_from_relative_humidity(pressure[above_lcl],
+                                                               temperature[above_lcl],
+                                                               1.)
+        parcel_mixing_ratio = concatenate([mixing_below_lcl, mixing_above_lcl])
+
     # Convert the temperature/parcel profile to virtual temperature
     temperature = virtual_temperature_from_dewpoint(pressure, temperature, dewpoint)
-    parcel_profile = virtual_temperature_from_dewpoint(pressure, parcel_profile, dewpoint)
+    parcel_profile = virtual_temperature(parcel_profile, parcel_mixing_ratio)
 
     # Calculate LFC limit of integration
     lfc_pressure, _ = lfc(pressure, temperature, dewpoint,
