@@ -121,7 +121,7 @@ class Front(mpatheffects.AbstractPathEffect):
         segment_indices, marker_offsets = self._get_marker_locations(offsets, renderer)
 
         # Draw the original path
-        renderer.draw_path(gc0, path, affine, rgbFace)
+        renderer.draw_path(gc0, path, affine, rgbFace)  # noqa: N803
 
         # Need to account for the line width in order to properly draw symbols at line edge
         line_shift = renderer.points_to_pixels(gc.get_linewidth()) / 2
@@ -554,7 +554,7 @@ class Dryline(Front):
         segment_indices, marker_offsets = self._get_marker_locations(offsets, renderer, gc)
 
         # Draw the original path
-        renderer.draw_path(gc0, path, affine, rgbFace)
+        renderer.draw_path(gc0, path, affine, rgbFace)  # noqa: N803
 
         # Need to account for the line width in order to properly draw symbols at line edge
         line_shift = renderer.points_to_pixels(gc.get_linewidth()) / 2
@@ -609,7 +609,7 @@ class OccludedFront(Front):
     def draw_path(self, renderer, gc, path, affine, rgbFace=None):  # noqa: N803
         """Draw the given path."""
         self._symbol_cycle = None
-        return super().draw_path(renderer, gc, path, affine, rgbFace)
+        return super().draw_path(renderer, gc, path, affine, rgbFace)  # noqa: N803
 
     @property
     def _symbol(self):
@@ -630,7 +630,7 @@ class OccludedFrontogenesis(Frontogenesis):
     def draw_path(self, renderer, gc, path, affine, rgbFace=None):  # noqa: N803
         """Draw the given path."""
         self._symbol_cycle = None
-        return super().draw_path(renderer, gc, path, affine, rgbFace)
+        return super().draw_path(renderer, gc, path, affine, rgbFace)  # noqa: N803
 
     @property
     def _symbol(self):
@@ -652,7 +652,7 @@ class OccludedFrontolysis(Frontolysis):
     def draw_path(self, renderer, gc, path, affine, rgbFace=None):  # noqa: N803
         """Draw the given path."""
         self._symbol_cycle = None
-        return super().draw_path(renderer, gc, path, affine, rgbFace)
+        return super().draw_path(renderer, gc, path, affine, rgbFace)  # noqa: N803
 
     @property
     def _symbol(self):
@@ -695,7 +695,7 @@ class RidgeAxis(mpatheffects.AbstractPathEffect):
         ret.set_capstyle('butt')
         return self._update_gc(ret, kwargs)
 
-    def draw_path(self, renderer, gc, tpath, affine, rgbFace):
+    def draw_path(self, renderer, gc, tpath, affine, rgbFace):  # noqa: N803
         """Draw the path with updated gc."""
         # Do not modify the input! Use copy instead.
         gc0 = self._override_gc(renderer, gc, foreground=self._color)
@@ -776,7 +776,7 @@ class RidgeAxis(mpatheffects.AbstractPathEffect):
             h = mpath.Path(xyt, codes)
 
             # Transform back to data space during render
-            renderer.draw_path(gc0, h, affine.inverted() + affine, rgbFace)
+            renderer.draw_path(gc0, h, affine.inverted() + affine, rgbFace)  # noqa: N803
 
         gc0.restore()
 
@@ -868,7 +868,7 @@ class Squall(mpatheffects.AbstractPathEffect):
         # Return the indices to the proper segment and the offset within that segment
         return marker_inds, path_inds
 
-    def draw_path(self, renderer, gc, path, affine, rgbFace=None):
+    def draw_path(self, renderer, gc, path, affine, rgbFace=None):  # noqa: N803
         """Draw path."""
         # Set up a new graphics context for rendering the front effect; override the color
         gc0 = self._override_gc(renderer, gc, foreground=self.color)
