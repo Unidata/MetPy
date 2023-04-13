@@ -2344,8 +2344,8 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
 
     # Calculate the dewpoint of the lower part of the parcel profile
     sfc_specific_humidity = specific_humidity_from_dewpoint(pressure[0], dewpoint[0])
-    mixing_below_lcl = mixing_ratio_from_specific_humidity(sfc_specific_humidity)\
-        * np.ones(len(pressure[below_lcl]))
+    mixing_below_lcl = mixing_ratio_from_specific_humidity(sfc_specific_humidity) * np.ones(
+        len(pressure[below_lcl]))
 
     # Check for the whether the lcl is in the pressure profile, if not, end there
     if _greater_or_close(np.nanmin(pressure), pressure_lcl):
