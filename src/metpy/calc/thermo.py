@@ -2311,9 +2311,11 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     -----
     Formula adopted from [Hobbs1977]_.
 
-    .. math:: \text{CAPE} = -R_d \int_{LFC}^{EL} (T_{parcel} - T_{env}) d\text{ln}(p)
+    .. math:: \text{CAPE} = -R_d \int_{LFC}^{EL}
+            (T_{{v}_{parcel}} - T_{{v}_{env}}) d\text{ln}(p)
 
-    .. math:: \text{CIN} = -R_d \int_{SFC}^{LFC} (T_{parcel} - T_{env}) d\text{ln}(p)
+    .. math:: \text{CIN} = -R_d \int_{SFC}^{LFC}
+            (T_{{v}_{parcel}} - T_{{v}_{env}}) d\text{ln}(p)
 
 
     * :math:`CAPE` is convective available potential energy
@@ -2323,8 +2325,8 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     * :math:`SFC` is the level of the surface or beginning of parcel path
     * :math:`R_d` is the gas constant
     * :math:`g` is gravitational acceleration
-    * :math:`T_{parcel}` is the parcel temperature
-    * :math:`T_{env}` is environment temperature
+    * :math:`T_{{v}_{parcel}}` is the parcel virtual temperature
+    * :math:`T_{{v}_{env}}` is environment virtual temperature
     * :math:`p` is atmospheric pressure
 
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
