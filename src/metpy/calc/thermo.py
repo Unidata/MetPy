@@ -2301,7 +2301,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
     >>> # calculate surface based CAPE/CIN
     >>> cape_cin(p, T, Td, prof)
-    (<Quantity(4703.773063897, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4703.77306, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -2917,7 +2917,7 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # calculate most unstbale CAPE/CIN
     >>> most_unstable_cape_cin(p, T, Td)
-    (<Quantity(4550.1526, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4703.77306, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -2993,7 +2993,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> mixed_layer_cape_cin(p, T, Td, depth=50 * units.hPa)
-    (<Quantity(587.829004, 'joule / kilogram')>, <Quantity(-47.0907128, 'joule / kilogram')>)
+    (<Quantity(711.239032, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
