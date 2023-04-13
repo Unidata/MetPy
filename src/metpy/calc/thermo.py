@@ -2301,7 +2301,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
     >>> # calculate surface based CAPE/CIN
     >>> cape_cin(p, T, Td, prof)
-    (<Quantity(6328.78915, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4703.773063897, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -2338,10 +2338,9 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
                                                                    dewpoint, parcel_profile)
 
-    # Calculate the lcl to use for determining the moisture of the parcel profile
     pressure_lcl, _ = lcl(pressure[0], temperature[0], dewpoint[0])
-    below_lcl = pressure < pressure_lcl
-    above_lcl = pressure >= pressure_lcl
+    below_lcl = pressure > pressure_lcl
+    above_lcl = pressure <= pressure_lcl
 
     # Calculate the dewpoint of the lower part of the parcel profile
     sfc_specific_humidity = specific_humidity_from_dewpoint(pressure[0], dewpoint[0])
