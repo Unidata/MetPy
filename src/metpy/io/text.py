@@ -10,7 +10,6 @@ import string
 
 import numpy as np
 import pandas as pd
-from shapely.geometry import LineString, Point
 
 from ._tools import open_as_needed
 
@@ -85,6 +84,8 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
         search fails, the current year is assumed.
 
     """
+    from shapely.geometry import LineString, Point
+
     # Create list with lines of text from file
     with contextlib.closing(open_as_needed(bulletin)) as file:
         text = file.read().decode('utf-8')

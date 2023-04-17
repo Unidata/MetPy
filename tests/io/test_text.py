@@ -5,16 +5,19 @@
 from datetime import datetime
 
 import numpy as np
-import shapely.geometry as sgeom
 
 from metpy.cbook import get_test_data
 from metpy.io import parse_wpc_surface_bulletin
+from metpy.testing import needs_module
 
 
-def test_parse_wpc_surface_bulletin():
-    """Test parser reading a WPC coded surface bulletin into a dataframe."""
+@needs_module('shapely')
+def test_parse_wpc_surface_bulletin_highres():
+    """Test parser reading a high res WPC coded surface bulletin into a dataframe."""
     # Get rows 17 and 47 from dataframe representing parsed text file
     # Row 17 is a pressure center and row 47 is front
+    import shapely.geometry as sgeom
+
     input_file = get_test_data('WPC_sfc_fronts_20210628_1800.txt')
     df = parse_wpc_surface_bulletin(input_file)
     assert len(df) == 89
