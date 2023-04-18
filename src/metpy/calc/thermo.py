@@ -2344,20 +2344,10 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     below_lcl = pressure > pressure_lcl
     above_lcl = pressure <= pressure_lcl
 
-    # Calculate the dewpoint of the lower part of the parcel profile
-    sfc_specific_humidity = specific_humidity_from_dewpoint(pressure[0], dewpoint[0])
-    mixing_below_lcl = mixing_ratio_from_specific_humidity(sfc_specific_humidity) * np.ones(
-        len(pressure[below_lcl]))
-
-    # Check for the whether the lcl is in the pressure profile, if not, end there
-    if _greater_or_close(np.nanmin(pressure), pressure_lcl):
-        parcel_mixing_ratio = mixing_below_lcl
-    else:
-        # Use the assumption that the parcel profile is saturated above the LCL and merge
-        mixing_above_lcl = mixing_ratio_from_relative_humidity(pressure[above_lcl],
-                                                               temperature[above_lcl],
-                                                               1.)
-        parcel_mixing_ratio = concatenate([mixing_below_lcl, mixing_above_lcl])
+    # The mixing ratio of the parcel comes from the dewpoint below the LCL, is saturated
+    # based on the temperature above the LCL
+    parcel_mixing_ratio = np.where(below_lcl, saturation_mixing_ratio(press, dewp),
+                                   saturation_mixing_ratio(press, temp))
 
     # Convert the temperature/parcel profile to virtual temperature
     temperature = virtual_temperature_from_dewpoint(pressure, temperature, dewpoint)
