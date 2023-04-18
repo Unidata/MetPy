@@ -22,17 +22,22 @@ from .deprecation import MetpyDeprecationWarning
 from .units import units
 
 
-def needs_cartopy(test_func):
-    """Decorate a test function or fixture as requiring CartoPy.
+def needs_module(module):
+    """Decorate a test function or fixture as requiring a module.
 
-    Will skip the decorated test, or any test using the decorated fixture, if ``cartopy`` is
-    unable to be imported.
+    Will skip the decorated test, or any test using the decorated fixture, if ``module``
+    is unable to be imported.
     """
-    @functools.wraps(test_func)
-    def wrapped(*args, **kwargs):
-        pytest.importorskip('cartopy')
-        return test_func(*args, **kwargs)
-    return wrapped
+    def dec(test_func):
+        @functools.wraps(test_func)
+        def wrapped(*args, **kwargs):
+            pytest.importorskip(module)
+            return test_func(*args, **kwargs)
+        return wrapped
+    return dec
+
+
+needs_cartopy = needs_module('cartopy')
 
 
 def get_upper_air_data(date, station):
