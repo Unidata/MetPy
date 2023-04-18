@@ -2400,7 +2400,16 @@ def most_unstable_parcel(pressure, temperature, dewpoint, height=None, bottom=No
     Returns
     -------
     `pint.Quantity`
-        Pressure, temperature, and dewpoint of most unstable parcel in the profile
+        Pressure of the most unstable parcel in the profile
+
+    `pint.Quantity`
+        Temperature of the most unstable parcel in the profile
+
+    `pint.Quantity`
+        Dewpoint of the most unstable parcel in the profile
+
+    int
+        The index of the most unstable parcel within the original data
 
     Examples
     --------
@@ -2426,9 +2435,6 @@ def most_unstable_parcel(pressure, temperature, dewpoint, height=None, bottom=No
     >>> most_unstable_parcel(p, T, Td, depth=50*units.hPa)
     (<Quantity(1008.0, 'hectopascal')>, <Quantity(29.3, 'degree_Celsius')>,
     <Quantity(26.5176931, 'degree_Celsius')>, 0)
-
-    integer
-        Index of the most unstable parcel in the given profile
 
     See Also
     --------
