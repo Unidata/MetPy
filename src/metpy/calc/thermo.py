@@ -2342,7 +2342,6 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
 
     pressure_lcl, _ = lcl(pressure[0], temperature[0], dewpoint[0])
     below_lcl = pressure > pressure_lcl
-    above_lcl = pressure <= pressure_lcl
 
     # The mixing ratio of the parcel comes from the dewpoint below the LCL, is saturated
     # based on the temperature above the LCL
