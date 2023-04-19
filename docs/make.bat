@@ -48,7 +48,6 @@ if errorlevel 9009 (
 
 echo.Running sphinx-autogen
 for %%i in (%SOURCEDIR%\api\*.rst) do %SPHINXAUTOGEN% -i -t %SOURCEDIR%\_templates -o %SOURCEDIR%\api\generated %%i
-python make_areas.py
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS%
 goto end
 

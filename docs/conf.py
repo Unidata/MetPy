@@ -23,6 +23,10 @@ cwd = Path.cwd().resolve()
 sys.path.insert(0, str(cwd))
 sys.path.insert(0, str(cwd.parent.parent))
 
+# Autogenerate the areas documentation file
+with open('make_areas.py') as f:
+    exec(f.read())
+
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.

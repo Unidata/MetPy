@@ -31,5 +31,4 @@ overridecheck:
 # Manual autogen needed so we can specify the -i option so that imported names
 # are included in generation
 %: Makefile
-	python make_areas.py
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
