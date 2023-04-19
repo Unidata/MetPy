@@ -2984,7 +2984,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> mixed_layer_cape_cin(p, T, Td, depth=50 * units.hPa)
-    (<Quantity(711.239032, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(711.239032, 'joule / kilogram')>, <Quantity(-5.48053989, 'joule / kilogram')>)
 
     See Also
     --------
