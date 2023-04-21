@@ -106,7 +106,7 @@ select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "R", "S", "T", "U", 
 ignore = ["F405", "I001", "RET504", "RET505", "RET506", "RET507", "RUF100"]
 
 [tool.ruff.per-file-ignores]
-"ci/filter_links.py" = ["E731", "T201"]
+"ci/filter_links.py" = ["E731", "T201", "S603", "S607"]
 "docs/doc-server.py" = ["T201"]
 "examples/*.py" = ["D", "T201", "B018"]
 "src/metpy/testing.py" = ["S101"]
