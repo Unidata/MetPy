@@ -1738,7 +1738,7 @@ def virtual_temperature_from_dewpoint(
 
     """
     # Convert dewpoint to mixing ratio
-    mixing_ratio = saturation_mixing_ratio(pressure, temperature)
+    mixing_ratio = saturation_mixing_ratio(pressure, dewpoint)
 
     # Calculate virtual temperature with given parameters
     return virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio)
