@@ -1737,11 +1737,8 @@ def virtual_temperature_from_dewpoint(
        Renamed ``mixing`` parameter to ``mixing_ratio``
 
     """
-    # Convert the dewpoint to specific humidity
-    specific_humidity = specific_humidity_from_dewpoint(pressure, dewpoint)
-
-    # Convert the specific humidity to mixing ratio
-    mixing_ratio = mixing_ratio_from_specific_humidity(specific_humidity)
+    # Convert dewpoint to mixing ratio
+    mixing_ratio = saturation_mixing_ratio(pressure, temperature)
 
     # Calculate virtual temperature with given parameters
     return virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio)
