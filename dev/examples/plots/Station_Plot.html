@@ -567,7 +567,7 @@ existing point data in a format you can work with trivially, the station plot wi
 <h2>The setup<a class="headerlink" href="#the-setup" title="Permalink to this headline">#</a></h2>
 <p>First read in the data. We use the metar reader because it simplifies a lot of tasks,
 like dealing with separating text and assembling a pandas dataframe
-<a class="reference external" href="https://thredds-dev.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.html">https://thredds-dev.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.html</a></p>
+<a class="reference external" href="https://thredds.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.html">https://thredds.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.html</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.io.parse_metar_file.html#metpy.io.parse_metar_file" title="metpy.io.parse_metar_file" class="sphx-glr-backref-module-metpy-io sphx-glr-backref-type-py-function"><span class="n">metar</span><span class="o">.</span><span class="n">parse_metar_file</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;metar_20190701_1200.txt&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
 <span class="c1"># Drop rows with missing winds</span>
@@ -650,7 +650,7 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_Station_Plot_001.png" srcset="../../_images/sphx_glr_Station_Plot_001.png" alt="Station Plot" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  17.199 seconds)</p>
+<img src="../../_images/sphx_glr_Station_Plot_001.png" srcset="../../_images/sphx_glr_Station_Plot_001.png" alt="Station Plot" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  17.133 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-station-plot-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/f7fb7b4e11b9030fa7c1b08f65033c97/Station_Plot.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Station_Plot.py</span></code></a></p>

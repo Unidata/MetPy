@@ -27,7 +27,7 @@ from metpy.plots import add_metpy_logo, current_weather, sky_cover, StationPlot
 #
 # First read in the data. We use the metar reader because it simplifies a lot of tasks,
 # like dealing with separating text and assembling a pandas dataframe
-# https://thredds-dev.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.html
+# https://thredds.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.html
 
 data = metar.parse_metar_file(get_test_data('metar_20190701_1200.txt', as_file_obj=False))
 
