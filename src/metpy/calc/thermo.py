@@ -1687,6 +1687,62 @@ def virtual_temperature(
 
 
 @exporter.export
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure',
+                                                         'temperature',
+                                                         'dewpoint'))
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def virtual_temperature_from_dewpoint(
+    pressure, temperature, dewpoint, molecular_weight_ratio=mpconsts.nounit.epsilon
+):
+    r"""Calculate virtual temperature.
+
+    This calculation must be given an air parcel's temperature and mixing ratio.
+    The implementation uses the formula outlined in [Hobbs2006]_ pg.80.
+
+    Parameters
+    ----------
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    temperature: `pint.Quantity`
+        Air temperature
+
+    dewpoint : `pint.Quantity`
+        Dewpoint temperature
+
+    molecular_weight_ratio : `pint.Quantity` or float, optional
+        The ratio of the molecular weight of the constituent gas to that assumed
+        for air. Defaults to the ratio for water vapor to dry air.
+        (:math:`\epsilon\approx0.622`)
+
+    Returns
+    -------
+    `pint.Quantity`
+        Corresponding virtual temperature of the parcel
+
+    Examples
+    --------
+    >>> from metpy.calc import virtual_temperature_from_dewpoint
+    >>> from metpy.units import units
+    >>> virtual_temperature_from_dewpoint(1000 * units.hPa, 30 * units.degC, 25 * units.degC)
+    <Quantity(33.6739865, 'degree_Celsius')>
+
+    Notes
+    -----
+    .. math:: T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
+
+    .. versionchanged:: 1.0
+       Renamed ``mixing`` parameter to ``mixing_ratio``
+
+    """
+    # Convert dewpoint to mixing ratio
+    mixing_ratio = saturation_mixing_ratio(pressure, dewpoint)
+
+    # Calculate virtual temperature with given parameters
+    return virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio)
+
+
+@exporter.export
 @preprocess_and_wrap(
     wrap_like='temperature',
     broadcast=('pressure', 'temperature', 'mixing_ratio')
@@ -2240,7 +2296,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
     >>> # calculate surface based CAPE/CIN
     >>> cape_cin(p, T, Td, prof)
-    (<Quantity(4578.94162, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4703.77306, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -2250,9 +2306,11 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     -----
     Formula adopted from [Hobbs1977]_.
 
-    .. math:: \text{CAPE} = -R_d \int_{LFC}^{EL} (T_{parcel} - T_{env}) d\text{ln}(p)
+    .. math:: \text{CAPE} = -R_d \int_{LFC}^{EL}
+            (T_{{v}_{parcel}} - T_{{v}_{env}}) d\text{ln}(p)
 
-    .. math:: \text{CIN} = -R_d \int_{SFC}^{LFC} (T_{parcel} - T_{env}) d\text{ln}(p)
+    .. math:: \text{CIN} = -R_d \int_{SFC}^{LFC}
+            (T_{{v}_{parcel}} - T_{{v}_{env}}) d\text{ln}(p)
 
 
     * :math:`CAPE` is convective available potential energy
@@ -2262,8 +2320,8 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     * :math:`SFC` is the level of the surface or beginning of parcel path
     * :math:`R_d` is the gas constant
     * :math:`g` is gravitational acceleration
-    * :math:`T_{parcel}` is the parcel temperature
-    * :math:`T_{env}` is environment temperature
+    * :math:`T_{{v}_{parcel}}` is the parcel virtual temperature
+    * :math:`T_{{v}_{env}}` is environment virtual temperature
     * :math:`p` is atmospheric pressure
 
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
@@ -2276,6 +2334,19 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     """
     pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
                                                                    dewpoint, parcel_profile)
+
+    pressure_lcl, _ = lcl(pressure[0], temperature[0], dewpoint[0])
+    below_lcl = pressure > pressure_lcl
+
+    # The mixing ratio of the parcel comes from the dewpoint below the LCL, is saturated
+    # based on the temperature above the LCL
+    parcel_mixing_ratio = np.where(below_lcl, saturation_mixing_ratio(pressure, dewpoint),
+                                   saturation_mixing_ratio(pressure, temperature))
+
+    # Convert the temperature/parcel profile to virtual temperature
+    temperature = virtual_temperature_from_dewpoint(pressure, temperature, dewpoint)
+    parcel_profile = virtual_temperature(parcel_profile, parcel_mixing_ratio)
+
     # Calculate LFC limit of integration
     lfc_pressure, _ = lfc(pressure, temperature, dewpoint,
                           parcel_temperature_profile=parcel_profile, which=which_lfc)
@@ -2838,7 +2909,7 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # calculate most unstbale CAPE/CIN
     >>> most_unstable_cape_cin(p, T, Td)
-    (<Quantity(4585.43188, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4703.77306, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -2914,7 +2985,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> mixed_layer_cape_cin(p, T, Td, depth=50 * units.hPa)
-    (<Quantity(587.144138, 'joule / kilogram')>, <Quantity(-46.8016713, 'joule / kilogram')>)
+    (<Quantity(711.239032, 'joule / kilogram')>, <Quantity(-5.48053989, 'joule / kilogram')>)
 
     See Also
     --------

@@ -59,6 +59,7 @@ Moist Thermodynamics
       vertical_velocity_pressure
       virtual_potential_temperature
       virtual_temperature
+      virtual_temperature_from_dewpoint
       wet_bulb_temperature
 
 
