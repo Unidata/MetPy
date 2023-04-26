@@ -45,6 +45,8 @@ jobs:
     environment:
       name: PyPI
       url: https://pypi.org/project/MetPy/
+    permissions:
+      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
     runs-on: ubuntu-latest
     steps:
     - name: Download packages
@@ -57,5 +59,3 @@ jobs:
 
     - name: Publish Package
       uses: pypa/gh-action-pypi-publish@v1.8.5
-      with:
-        password: ${{ secrets.PYPI_TOKEN }}
