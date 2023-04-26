@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>wx_code_to_numeric &#8212; MetPy 1.4dev</title>
+    <title>virtual_temperature_from_dewpoint &#8212; MetPy 1.4dev</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -35,12 +35,13 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="add_metpy_logo" href="metpy.plots.add_metpy_logo.html" />
-    <link rel="prev" title="read_colortable" href="metpy.plots.read_colortable.html" />
+    <link rel="next" title="wet_bulb_temperature" href="metpy.calc.wet_bulb_temperature.html" />
+    <link rel="prev" title="virtual_temperature" href="metpy.calc.virtual_temperature.html" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -58,7 +59,7 @@
                         ga('send', 'pageview');
                     </script>
 
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.wx_code_to_numeric.html" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.virtual_temperature_from_dewpoint.html" />
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
@@ -307,7 +308,7 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="metpy.calc.html">
    Calculations
    <code class="docutils literal notranslate">
@@ -316,12 +317,12 @@
     </span>
    </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
+  <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.calc.add_height_to_pressure.html">
      add_height_to_pressure
@@ -527,8 +528,8 @@
      virtual_temperature
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      virtual_temperature_from_dewpoint
     </a>
    </li>
@@ -1004,7 +1005,7 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 current active has-children">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.plots.html">
    Plots
    <code class="docutils literal notranslate">
@@ -1013,19 +1014,19 @@
     </span>
    </code>
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
   <label for="toctree-checkbox-4">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul class="current">
+  <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.plots.read_colortable.html">
      read_colortable
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.wx_code_to_numeric.html">
      wx_code_to_numeric
     </a>
    </li>
@@ -1358,24 +1359,42 @@
               
               <div>
                 
-  <section id="wx-code-to-numeric">
-<h1>wx_code_to_numeric<a class="headerlink" href="#wx-code-to-numeric" title="Permalink to this headline">#</a></h1>
+  <section id="virtual-temperature-from-dewpoint">
+<h1>virtual_temperature_from_dewpoint<a class="headerlink" href="#virtual-temperature-from-dewpoint" title="Permalink to this headline">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="metpy.plots.wx_code_to_numeric">
-<span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">wx_code_to_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">codes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.wx_code_to_numeric" title="Permalink to this definition">#</a></dt>
-<dd><p>Determine the numeric weather symbol value from METAR code text.</p>
-<p>A robust method to identifies the numeric value for plotting the correct symbol from a
-decoded METAR current weather group. The METAR codes should be strings with no missing
-values or NaN strings (empty strings are okay).</p>
-<p>For example, if from a Pandas Dataframe <code class="docutils literal notranslate"><span class="pre">sfc_df.wxcodes.fillna('')</span></code>.</p>
+<dt class="sig sig-object py" id="metpy.calc.virtual_temperature_from_dewpoint">
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">virtual_temperature_from_dewpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_weight_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6219569100577033</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.virtual_temperature_from_dewpoint" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate virtual temperature.</p>
+<p>This calculation must be given an air parcel’s temperature and mixing ratio.
+The implementation uses the formula outlined in <a class="reference internal" href="../references.html#hobbs2006" id="id1"><span>[Hobbs2006]</span></a> pg.80.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>codes</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – String values of METAR weather codes</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Total atmospheric pressure</p></li>
+<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Air temperature</p></li>
+<li><p><strong>dewpoint</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Dewpoint temperature</p></li>
+<li><p><strong>molecular_weight_ratio</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> or float, optional) – The ratio of the molecular weight of the constituent gas to that assumed
+for air. Defaults to the ratio for water vapor to dry air.
+(<span class="math notranslate nohighlight">\(\epsilon\approx0.622\)</span>)</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> – numeric codes of current weather symbols from the wx_code_map for use in plotting.</p>
+<dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Corresponding virtual temperature of the parcel</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">virtual_temperature_from_dewpoint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">virtual_temperature_from_dewpoint</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span> <span class="mi">30</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+<span class="go">&lt;Quantity(33.6739865, &#39;degree_Celsius&#39;)&gt;</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<div class="math notranslate nohighlight">
+\[T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}\]</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.0: </span>Renamed <code class="docutils literal notranslate"><span class="pre">mixing</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">mixing_ratio</span></code></p>
+</div>
 </dd></dl>
 
 <div style='clear:both'></div></section>
@@ -1386,17 +1405,17 @@ values or NaN strings (empty strings are okay).</p>
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="metpy.plots.read_colortable.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="metpy.calc.virtual_temperature.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">read_colortable</p>
+            <p class="prev-next-title">virtual_temperature</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="metpy.plots.add_metpy_logo.html" title="next page">
+    <a class='right-next' id="next-link" href="metpy.calc.wet_bulb_temperature.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">add_metpy_logo</p>
+        <p class="prev-next-title">wet_bulb_temperature</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

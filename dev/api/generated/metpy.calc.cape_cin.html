@@ -529,6 +529,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html">
+     virtual_temperature_from_dewpoint
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="metpy.calc.wet_bulb_temperature.html">
      wet_bulb_temperature
     </a>
@@ -1424,7 +1429,7 @@ and ‘most_cape’. Default is ‘top’.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">prof</span> <span class="o">=</span> <span class="n">parcel_profile</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Td</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># calculate surface based CAPE/CIN</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cape_cin</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">Td</span><span class="p">,</span> <span class="n">prof</span><span class="p">)</span>
-<span class="go">(&lt;Quantity(4578.94162, &#39;joule / kilogram&#39;)&gt;, &lt;Quantity(0, &#39;joule / kilogram&#39;)&gt;)</span>
+<span class="go">(&lt;Quantity(4703.77306, &#39;joule / kilogram&#39;)&gt;, &lt;Quantity(0, &#39;joule / kilogram&#39;)&gt;)</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
@@ -1434,9 +1439,11 @@ and ‘most_cape’. Default is ‘top’.</p></li>
 <p class="rubric">Notes</p>
 <p>Formula adopted from <a class="reference internal" href="../references.html#hobbs1977" id="id1"><span>[Hobbs1977]</span></a>.</p>
 <div class="math notranslate nohighlight">
-\[\text{CAPE} = -R_d \int_{LFC}^{EL} (T_{parcel} - T_{env}) d\text{ln}(p)\]</div>
+\[\text{CAPE} = -R_d \int_{LFC}^{EL}
+(T_{{v}_{parcel}} - T_{{v}_{env}}) d\text{ln}(p)\]</div>
 <div class="math notranslate nohighlight">
-\[\text{CIN} = -R_d \int_{SFC}^{LFC} (T_{parcel} - T_{env}) d\text{ln}(p)\]</div>
+\[\text{CIN} = -R_d \int_{SFC}^{LFC}
+(T_{{v}_{parcel}} - T_{{v}_{env}}) d\text{ln}(p)\]</div>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(CAPE\)</span> is convective available potential energy</p></li>
 <li><p><span class="math notranslate nohighlight">\(CIN\)</span> is convective inhibition</p></li>
@@ -1445,8 +1452,8 @@ and ‘most_cape’. Default is ‘top’.</p></li>
 <li><p><span class="math notranslate nohighlight">\(SFC\)</span> is the level of the surface or beginning of parcel path</p></li>
 <li><p><span class="math notranslate nohighlight">\(R_d\)</span> is the gas constant</p></li>
 <li><p><span class="math notranslate nohighlight">\(g\)</span> is gravitational acceleration</p></li>
-<li><p><span class="math notranslate nohighlight">\(T_{parcel}\)</span> is the parcel temperature</p></li>
-<li><p><span class="math notranslate nohighlight">\(T_{env}\)</span> is environment temperature</p></li>
+<li><p><span class="math notranslate nohighlight">\(T_{{v}_{parcel}}\)</span> is the parcel virtual temperature</p></li>
+<li><p><span class="math notranslate nohighlight">\(T_{{v}_{env}}\)</span> is environment virtual temperature</p></li>
 <li><p><span class="math notranslate nohighlight">\(p\)</span> is atmospheric pressure</p></li>
 </ul>
 <p>Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
