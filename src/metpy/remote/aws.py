@@ -6,7 +6,6 @@
 """
 import bisect
 from datetime import datetime, timedelta
-from functools import cached_property
 import itertools
 from pathlib import Path
 import shutil
@@ -36,7 +35,7 @@ class Product:
     def name(self):
         return Path(self.path).name
 
-    @cached_property
+    @property
     def file(self):
         return self._obj.get()['Body']
 
