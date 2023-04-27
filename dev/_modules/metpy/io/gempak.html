@@ -447,16 +447,11 @@
 <span class="sd">    This function mimics the functionality of the MR_INTZ</span>
 <span class="sd">    subroutine in GEMPAK.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">&#39;HGHT&#39;</span><span class="p">])</span>
-
-    <span class="n">idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="n">maxlev</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="k">while</span> <span class="n">size</span> <span class="o">+</span> <span class="n">idx</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">&#39;HGHT&#39;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">!=</span> <span class="n">missing</span><span class="p">:</span>
-            <span class="n">maxlev</span> <span class="o">=</span> <span class="n">size</span> <span class="o">+</span> <span class="n">idx</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">maxlev</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">&#39;HGHT&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">&#39;HGHT&#39;</span><span class="p">]):</span>
+        <span class="n">maxlev</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="o">!=</span> <span class="n">missing</span><span class="p">:</span>
             <span class="k">break</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">idx</span> <span class="o">-=</span> <span class="mi">1</span>
 
     <span class="n">pbot</span> <span class="o">=</span> <span class="n">missing</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxlev</span><span class="p">):</span>
