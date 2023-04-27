@@ -251,16 +251,11 @@ def _interp_logp_height(sounding, missing=-9999):
     This function mimics the functionality of the MR_INTZ
     subroutine in GEMPAK.
     """
-    size = len(sounding['HGHT'])
-
-    idx = -1
-    maxlev = -1
-    while size + idx != 0:
-        if sounding['HGHT'][idx] != missing:
-            maxlev = size + idx
+    size = maxlev = len(sounding['HGHT'])
+    for item in reversed(sounding['HGHT']):
+        maxlev -= 1
+        if item != missing:
             break
-        else:
-            idx -= 1
 
     pbot = missing
     for i in range(maxlev):
