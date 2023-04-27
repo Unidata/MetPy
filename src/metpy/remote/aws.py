@@ -178,9 +178,9 @@ class NEXRADLevel2Archive(S3DataStore):
 
 
 @exporter.export
-class GOES16Archive(S3DataStore):
-    def __init__(self, bucket_name='noaa-goes16'):
-        super().__init__(bucket_name, delimiter='/')
+class GOESArchive(S3DataStore):
+    def __init__(self, satellite):
+        super().__init__(f'noaa-goes{satellite}', delimiter='/')
 
     def product_ids(self):
         """Return product_ids available."""
@@ -230,15 +230,3 @@ class GOES16Archive(S3DataStore):
 
     def _build_result(self, obj):
         return Product(obj, lambda s: xr.open_dataset(s.url + '#mode=bytes', engine='netcdf4'))
-
-
-@exporter.export
-class GOES17Archive(GOES16Archive):
-    def __init__(self):
-        super().__init__('noaa-goes17')
-
-
-@exporter.export
-class GOES18Archive(GOES16Archive):
-    def __init__(self):
-        super().__init__('noaa-goes18')
