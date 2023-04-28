@@ -148,18 +148,18 @@ class ScallopedStroke(mpatheffects.AbstractPathEffect):
 
         Parameters
         ----------
-        offset : (float, float), default: (0, 0)
-            The (x, y) offset to apply to the path, in points.
-        spacing : float, default: 10.0
-            The spacing between ticks in points.
-        side : str, default: left
+        offset : (float, float)
+            The (x, y) offset to apply to the path, in points. Defaults to no offset.
+        spacing : float
+            The spacing between ticks in points. Defaults to 10.0.
+        side : str
             Side of the path scallops appear on from the reference of
-            walking along the curve. Options are left and right.
-        length : float, default: 1.414
-            The length of the tick relative to spacing.
+            walking along the curve. Options are left and right. Defaults to ``'left'``.
+        length : float
+            The length of the tick relative to spacing. Defaults to 1.414.
         kwargs :
             Extra keywords are stored and passed through to
-            :meth:`AbstractPathEffect._update_gc`.
+            `~matplotlib.renderer.GraphicsContextBase`.
         """
         super().__init__(offset)
 
@@ -256,8 +256,7 @@ class ScallopedStroke(mpatheffects.AbstractPathEffect):
             xyt[0::2, 1] = y_tick
             xyt[1::2, 1] = y_end
 
-            # Build path vertices that will define control points
-            # of the bezier curves
+            # Build path vertices that will define control points of the bezier curves
             verts = []
             i = 0
             nverts = 0
