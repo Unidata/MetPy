@@ -54,6 +54,30 @@ def test_bad_projection_raises():
     assert 'Unhandled projection' in str(exc.value)
 
 
+def test_unhandled_projection():
+    """Test behavior when given a projection with no CF equivalent from PROJ."""
+    attrs = {
+        'crs_wkt': 'PROJCRS["unknown",BASEGEOGCRS["unknown",DATUM["unknown",ELLIPSOID['
+                   '"unknown",6371200,0,LENGTHUNIT["metre",1,ID["EPSG",9001]]]],'
+                   'PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433],ID["EPSG",'
+                   '8901]]],CONVERSION["unknown",METHOD["Equidistant Cylindrical ('
+                   'Spherical)",ID["EPSG",1029]],PARAMETER["Latitude of 1st standard '
+                   'parallel",0,ANGLEUNIT["degree",0.0174532925199433],ID["EPSG",8823]],'
+                   'PARAMETER["Longitude of natural origin",0,ANGLEUNIT["degree",'
+                   '0.0174532925199433],ID["EPSG",8802]],PARAMETER["False easting",0,'
+                   'LENGTHUNIT["metre",1],ID["EPSG",8806]],PARAMETER["False northing",0,'
+                   'LENGTHUNIT["metre",1],ID["EPSG",8807]]],CS[Cartesian,2],AXIS["(E)",east,'
+                   'ORDER[1],LENGTHUNIT["metre",1,ID["EPSG",9001]]],AXIS["(N)",north,'
+                   'ORDER[2],LENGTHUNIT["metre",1,ID["EPSG",9001]]]]'}
+    cfproj = CFProjection(attrs)
+
+    assert str(cfproj) == 'Projection: unknown'
+    with pytest.raises(ValueError) as exc:
+        cfproj.to_cartopy()
+
+    assert 'Unhandled projection' in str(exc.value)
+
+
 def test_globe():
     """Test handling building a cartopy globe."""
     attrs = {'grid_mapping_name': 'lambert_conformal_conic', 'earth_radius': 6367000,
