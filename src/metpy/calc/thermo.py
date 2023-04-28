@@ -364,18 +364,26 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
         press_side = pressure[points_above][::-1]
 
         # Flip on exit so t values correspond to increasing pressure
-        trace = si.solve_ivp(t_span=(reference_pressure, press_side[-1]),
-                             t_eval=press_side, **solver_args).y[..., ::-1]
-        ret = np.concatenate((trace, ret), axis=-1)
+        result = si.solve_ivp(t_span=(reference_pressure, press_side[-1]),
+                              t_eval=press_side, **solver_args)
+        if result.success:
+            ret = np.concatenate((result.y[..., ::-1], ret), axis=-1)
+        else:
+            raise ValueError('ODE Integration failed. This is likely due to trying to '
+                             'calculate at too small values of pressure.')
 
     # Do we have any points below the reference pressure
     points_below = ~points_above & ~close
     if np.any(points_below):
         # Integrate downward
         press_side = pressure[points_below]
-        trace = si.solve_ivp(t_span=(reference_pressure, press_side[-1]),
-                             t_eval=press_side, **solver_args).y
-        ret = np.concatenate((ret, trace), axis=-1)
+        result = si.solve_ivp(t_span=(reference_pressure, press_side[-1]),
+                              t_eval=press_side, **solver_args)
+        if result.success:
+            ret = np.concatenate((ret, result.y), axis=-1)
+        else:
+            raise ValueError('ODE Integration failed. This is likely due to trying to '
+                             'calculate at too small values of pressure.')
 
     if pres_decreasing:
         ret = ret[..., ::-1]
