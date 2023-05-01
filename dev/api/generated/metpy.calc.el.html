@@ -1385,10 +1385,10 @@ no equilibrium level.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric pressure profile</p></li>
-<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Temperature at the levels given by <em class="xref py py-obj">pressure</em></p></li>
-<li><p><strong>dewpoint</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Dewpoint at the levels given by <em class="xref py py-obj">pressure</em></p></li>
-<li><p><strong>parcel_temperature_profile</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – The parcel’s temperature profile from which to calculate the EL. Defaults to the
+<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric pressure profile</p></li>
+<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Temperature at the levels given by <em class="xref py py-obj">pressure</em></p></li>
+<li><p><strong>dewpoint</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Dewpoint at the levels given by <em class="xref py py-obj">pressure</em></p></li>
+<li><p><strong>parcel_temperature_profile</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – The parcel’s temperature profile from which to calculate the EL. Defaults to the
 surface parcel profile.</p></li>
 <li><p><strong>which</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – Pick which LFC to return. Options are ‘top’, ‘bottom’, ‘wide’, ‘most_cape’, and ‘all’.
 ‘top’ returns the lowest-pressure EL, default.
@@ -1399,8 +1399,8 @@ surface parcel profile.</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – EL pressure, or array of same if which=’all’</p></li>
-<li><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – EL temperature, or array of same if which=’all’</p></li>
+<li><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – EL pressure, or array of same if which=’all’</p></li>
+<li><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – EL temperature, or array of same if which=’all’</p></li>
 </ul>
 </p>
 </dd>
