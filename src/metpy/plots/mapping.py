@@ -44,6 +44,11 @@ class CFProjection:
                 if cf_name in source}
 
     @property
+    def name(self):
+        """Return the name of the projection."""
+        return self._attrs.get('grid_mapping_name', 'unknown')
+
+    @property
     def cartopy_globe(self):
         """Initialize a `cartopy.crs.Globe` from the metadata."""
         if 'earth_radius' in self._attrs:
@@ -76,11 +81,10 @@ class CFProjection:
     def to_cartopy(self):
         """Convert to a CartoPy projection."""
         globe = self.cartopy_globe
-        proj_name = self._attrs['grid_mapping_name']
         try:
-            proj_handler = self.projection_registry[proj_name]
+            proj_handler = self.projection_registry[self.name]
         except KeyError:
-            raise ValueError(f'Unhandled projection: {proj_name}') from None
+            raise ValueError(f'Unhandled projection: {self.name}') from None
 
         return proj_handler(self._attrs, globe)
 
@@ -96,7 +100,7 @@ class CFProjection:
 
     def __str__(self):
         """Get a string representation of the projection."""
-        return 'Projection: ' + self._attrs['grid_mapping_name']
+        return f'Projection: {self.name}'
 
     def __getitem__(self, item):
         """Return a given attribute."""
