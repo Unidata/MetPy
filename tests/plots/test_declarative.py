@@ -613,6 +613,32 @@ def test_colorfill(cfeature):
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.0062)
+def test_colorfill_with_image_range(cfeature):
+    """Test that we can use ContourFillPlot with image_range bounds."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = FilledContourPlot()
+    contour.data = data
+    contour.level = 700 * units.hPa
+    contour.field = 'Temperature'
+    contour.colormap = 'coolwarm'
+    contour.colorbar = None
+    contour.image_range = (273.15, 350)
+
+    panel = MapPanel()
+    panel.area = (-110, -60, 25, 55)
+    panel.layers = [cfeature.STATES]
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.panel = panel
+    pc.size = (8, 8)
+    pc.draw()
+
+    return pc.figure
+
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
 def test_colorfill_horiz_colorbar(cfeature):
     """Test that we can use ContourFillPlot with a horizontal colorbar."""
