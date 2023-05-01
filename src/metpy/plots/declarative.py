@@ -1043,9 +1043,12 @@ class Plots2D(SubsetTraits):
     def _norm_obj(self):
         """Return the normalization object.
 
-        Converts the tuple image range to a matplotlib normalization instance.
+        If `image_range` is a matplotlib normalization instance, returns it, otherwise converts 
+        the tuple image range to a matplotlib normalization instance.
 
         """
+        if isinstance(self.image_range, plt.Normalize):
+            return self.image_range
         return plt.Normalize(*self.image_range)
 
     def clear(self):
@@ -1302,7 +1305,7 @@ class ColorfillTraits(MetPyHasTraits):
     For example, the Blue-Purple colormap from Matplotlib can be accessed using 'BuPu'.
     """
 
-    image_range = Union([Tuple(Int(allow_none=True), Int(allow_none=True)),
+    image_range = Union([Tuple(Float(allow_none=True), Float(allow_none=True)),
                          Instance(plt.Normalize)], default_value=(None, None))
     image_range.__doc__ = """A tuple of min and max values that represent the range of values
     to color the rasterized image.
