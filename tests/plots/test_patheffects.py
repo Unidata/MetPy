@@ -1,13 +1,15 @@
-# Copyright (c) 2022 MetPy Developers.
+# Copyright (c) 2022,2023 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `patheffects` module."""
+import matplotlib.patches as mpatches
+import matplotlib.path as mpath
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 from scipy.interpolate import interp1d
 
-from metpy.plots import ColdFront, OccludedFront, StationaryFront, WarmFront
+from metpy.plots import ColdFront, OccludedFront, ScallopedStroke, StationaryFront, WarmFront
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
@@ -54,5 +56,60 @@ def test_stationary_spacing():
             linewidth=15)
     ax.set_ylim(0.95, 1.05)
     ax.set_xlim(-0.05, 1.05)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(savefig_kwargs={'dpi': 300}, remove_text=True)
+def test_scalloped_stroke_closed():
+    """Test ScallopedStroke path effect."""
+    fig = plt.figure(figsize=(9, 9))
+    ax = plt.subplot(1, 1, 1)
+
+    # test data
+    x = [-0.172, 1.078, 0.428, 0.538, 0.178,
+         -0.212, -0.482, -0.722, -0.462, -0.172]
+    y = [1.264, 0.784, -0.076, -0.846, -1.126,
+         -1.246, -1.006, 0.234, 0.754, 1.264]
+    verts = np.array([[x, y] for x, y in zip(x, y)])
+    codes = np.repeat(mpath.Path.LINETO, len(x))
+    codes[0] = mpath.Path.MOVETO
+    codes[-1] = mpath.Path.CLOSEPOLY
+
+    path = mpath.Path(verts, codes)
+    patch = mpatches.PathPatch(path, facecolor='#d10000', edgecolor='#000000',
+                               path_effects=[
+                                   ScallopedStroke(side='left', spacing=10, length=1.15)])
+
+    ax.add_patch(patch)
+    ax.axis('equal')
+    ax.set_xlim(-2, 2)
+    ax.set_ylim(-2, 2)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(savefig_kwargs={'dpi': 300}, remove_text=True)
+def test_scalloped_stroke_segment():
+    """Test ScallopedStroke path effect."""
+    fig = plt.figure(figsize=(9, 9))
+    ax = plt.subplot(1, 1, 1)
+
+    # test data
+    x = np.arange(9)
+    y = np.concatenate([np.arange(5), np.arange(3, -1, -1)])
+    verts = np.array([[x, y] for x, y in zip(x, y)])
+    codes = np.repeat(mpath.Path.LINETO, len(x))
+    codes[0] = mpath.Path.MOVETO
+
+    path = mpath.Path(verts, codes)
+    patch = mpatches.PathPatch(path, facecolor='none', edgecolor='#000000',
+                               path_effects=[
+                                   ScallopedStroke(side='left', spacing=10, length=1.15)])
+
+    ax.add_patch(patch)
+    ax.axis('equal')
+    ax.set_xlim(-0.5, 9.5)
+    ax.set_ylim(-0.5, 4.5)
 
     return fig

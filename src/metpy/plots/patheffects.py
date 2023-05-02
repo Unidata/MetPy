@@ -1,4 +1,4 @@
-#  Copyright (c) 2020,2022 MetPy Developers.
+#  Copyright (c) 2020,2022,2023 MetPy Developers.
 #  Distributed under the terms of the BSD 3-Clause License.
 #  SPDX-License-Identifier: BSD-3-Clause
 """Add effects to matplotlib paths."""
@@ -131,6 +131,153 @@ class Front(mpatheffects.AbstractPathEffect):
             sym_trans = self._get_symbol_transform(renderer, marker_offset, line_shift,
                                                    angles[ind], starts[ind])
             renderer.draw_path(gc0, self._symbol, sym_trans, self.color)
+
+        gc0.restore()
+
+
+@exporter.export
+class ScallopedStroke(mpatheffects.AbstractPathEffect):
+    """A line-based PathEffect which draws a path with a scalloped style.
+
+    The spacing, length, and side of the scallops can be controlled. This implementation is
+    based off of :class:`matplotlib.patheffects.TickedStroke`.
+    """
+
+    def __init__(self, offset=(0, 0), spacing=10.0, side='left', length=1.15, **kwargs):
+        """Create a scalloped path effect.
+
+        Parameters
+        ----------
+        offset : (float, float)
+            The (x, y) offset to apply to the path, in points. Defaults to no offset.
+        spacing : float
+            The spacing between ticks in points. Defaults to 10.0.
+        side : str
+            Side of the path scallops appear on from the reference of
+            walking along the curve. Options are left and right. Defaults to ``'left'``.
+        length : float
+            The length of the tick relative to spacing. Defaults to 1.414.
+        kwargs :
+            Extra keywords are stored and passed through to
+            `~matplotlib.renderer.GraphicsContextBase`.
+        """
+        super().__init__(offset)
+
+        self._spacing = spacing
+        if side == 'left':
+            self._angle = 90
+        elif side == 'right':
+            self._angle = -90
+        else:
+            raise ValueError('Side must be left or right.')
+        self._length = length
+        self._gc = kwargs
+
+    def draw_path(self, renderer, gc, path, affine, rgbFace=None):  # noqa: N803
+        """Draw the path with updated gc."""
+        # Do not modify the input! Use copy instead.
+        gc0 = renderer.new_gc()
+        gc0.copy_properties(gc)
+
+        gc0 = self._update_gc(gc0, self._gc)
+        trans = affine + self._offset_transform(renderer)
+
+        theta = -np.radians(self._angle)
+        trans_matrix = np.array([[np.cos(theta), -np.sin(theta)],
+                                 [np.sin(theta), np.cos(theta)]])
+
+        # Convert spacing parameter to pixels.
+        spacing_px = renderer.points_to_pixels(self._spacing)
+
+        # Transform before evaluation because to_polygons works at resolution
+        # of one -- assuming it is working in pixel space.
+        transpath = affine.transform_path(path)
+
+        # Evaluate path to straight line segments that can be used to
+        # construct line scallops.
+        polys = transpath.to_polygons(closed_only=False)
+
+        for p in polys:
+            x = p[:, 0]
+            y = p[:, 1]
+
+            # Can not interpolate points or draw line if only one point in
+            # polyline.
+            if x.size < 2:
+                continue
+
+            # Find distance between points on the line
+            ds = np.hypot(x[1:] - x[:-1], y[1:] - y[:-1])
+
+            # Build parametric coordinate along curve
+            s = np.concatenate(([0.0], np.cumsum(ds)))
+            s_total = s[-1]
+
+            num = int(np.ceil(s_total / spacing_px)) - 1
+            # Pick parameter values for scallops.
+            s_tick = np.linspace(0, s_total, num)
+
+            # Find points along the parameterized curve
+            x_tick = np.interp(s_tick, s, x)
+            y_tick = np.interp(s_tick, s, y)
+
+            # Find unit vectors in local direction of curve
+            delta_s = self._spacing * .001
+            u = (np.interp(s_tick + delta_s, s, x) - x_tick) / delta_s
+            v = (np.interp(s_tick + delta_s, s, y) - y_tick) / delta_s
+
+            # Handle slope of end point
+            if (x_tick[-1], y_tick[-1]) == (x_tick[0], y_tick[0]):  # periodic
+                u[-1] = u[0]
+                v[-1] = v[0]
+            else:
+                u[-1] = u[-2]
+                v[-1] = v[-2]
+
+            # Normalize slope into unit slope vector.
+            n = np.hypot(u, v)
+            mask = n == 0
+            n[mask] = 1.0
+
+            uv = np.array([u / n, v / n]).T
+            uv[mask] = np.array([0, 0]).T
+
+            # Rotate and scale unit vector
+            dxy = np.dot(uv, trans_matrix) * self._length * spacing_px
+
+            # Build endpoints
+            x_end = x_tick + dxy[:, 0]
+            y_end = y_tick + dxy[:, 1]
+
+            # Interleave ticks to form Path vertices
+            xyt = np.empty((2 * num, 2), dtype=x_tick.dtype)
+            xyt[0::2, 0] = x_tick
+            xyt[1::2, 0] = x_end
+            xyt[0::2, 1] = y_tick
+            xyt[1::2, 1] = y_end
+
+            # Build path vertices that will define control points of the bezier curves
+            verts = []
+            i = 0
+            nverts = 0
+            while i < len(xyt) - 2:
+                verts.append(xyt[i, :])
+                verts.append(xyt[i + 1, :])
+                verts.append(xyt[i + 3, :])
+                verts.append(xyt[i + 2, :])
+                nverts += 1
+                i += 2
+
+            # Build up vector of Path codes
+            codes = np.tile([mpath.Path.LINETO, mpath.Path.CURVE4,
+                             mpath.Path.CURVE4, mpath.Path.CURVE4], nverts)
+            codes[0] = mpath.Path.MOVETO
+
+            # Construct and draw resulting path
+            h = mpath.Path(verts, codes)
+
+            # Transform back to data space during render
+            renderer.draw_path(gc0, h, affine.inverted() + trans, rgbFace)
 
         gc0.restore()
 
