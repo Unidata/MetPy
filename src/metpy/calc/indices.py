@@ -284,9 +284,9 @@ def bunkers_storm_motion(pressure, u, v, height):
     >>> sped = [5, 15, 20, 30, 50, 60] * units.knots
     >>> u, v = wind_components(sped, wdir)
     >>> bunkers_storm_motion(p, u, v, h)
-    (<Quantity([22.73539654 10.27331352], 'knot')>,
-    <Quantity([ 7.27954821 34.99751866], 'knot')>,
-    <Quantity([15.00747237 22.63541609], 'knot')>)
+    (<Quantity([22.09618172 12.43406736], 'knot')>,
+    <Quantity([ 6.02861839 36.76517865], 'knot')>,
+    <Quantity([14.06240005 24.599623  ], 'knot')>)
 
     Notes
     -----
