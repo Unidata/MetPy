@@ -171,8 +171,8 @@ def test_bunkers_motion():
     motion = concatenate(bunkers_storm_motion(data['pressure'],
                          data['u_wind'], data['v_wind'],
                          data['height']))
-    truth = [2.18346161, 0.86094706, 11.6006767, 12.53639395, 6.89206916,
-             6.69867051] * units('m/s')
+    truth = [2.062733, 0.96246913, 11.22554254, 12.83861839, 6.64413777,
+             6.90054376] * units('m/s')
     assert_almost_equal(motion.flatten(), truth, 8)
 
 
