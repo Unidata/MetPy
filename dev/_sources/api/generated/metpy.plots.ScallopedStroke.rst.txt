@@ -1,0 +1,45 @@
+ScallopedStroke
+===========================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: ScallopedStroke
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~ScallopedStroke.__init__
+      ~ScallopedStroke.draw_path
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: draw_path
+
+   
+   
+
+.. include:: metpy.plots.ScallopedStroke.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

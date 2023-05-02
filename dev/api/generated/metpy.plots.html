@@ -1115,6 +1115,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.ScallopedStroke.html">
+     ScallopedStroke
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="metpy.plots.ColdFront.html">
      ColdFront
     </a>
@@ -1434,28 +1439,31 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotGeometry</span></code></a>(**kwargs)</p></td>
 <td><p>Plot collections of Shapely objects and customize their appearance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.ColdFront.html#metpy.plots.ColdFront" title="metpy.plots.ColdFront"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColdFront</span></code></a>([color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.ScallopedStroke.html#metpy.plots.ScallopedStroke" title="metpy.plots.ScallopedStroke"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ScallopedStroke</span></code></a>([offset, spacing, side, length])</p></td>
+<td><p>A line-based PathEffect which draws a path with a scalloped style.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.ColdFront.html#metpy.plots.ColdFront" title="metpy.plots.ColdFront"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColdFront</span></code></a>([color])</p></td>
 <td><p>Draw a path as a cold front, with (default blue) pips/triangles along the path.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.WarmFront.html#metpy.plots.WarmFront" title="metpy.plots.WarmFront"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WarmFront</span></code></a>([color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.WarmFront.html#metpy.plots.WarmFront" title="metpy.plots.WarmFront"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WarmFront</span></code></a>([color])</p></td>
 <td><p>Draw a path as a warm front with (default red) scallops along the path.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.OccludedFront.html#metpy.plots.OccludedFront" title="metpy.plots.OccludedFront"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OccludedFront</span></code></a>([color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.OccludedFront.html#metpy.plots.OccludedFront" title="metpy.plots.OccludedFront"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OccludedFront</span></code></a>([color])</p></td>
 <td><p>Draw an occluded front with (default purple) pips and scallops along the path.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.StationaryFront.html#metpy.plots.StationaryFront" title="metpy.plots.StationaryFront"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationaryFront</span></code></a>([colors])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.StationaryFront.html#metpy.plots.StationaryFront" title="metpy.plots.StationaryFront"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationaryFront</span></code></a>([colors])</p></td>
 <td><p>Draw a stationary front as alternating cold and warm front segments.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewT</span></code></a>([fig, rotation, subplot, rect, aspect])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewT</span></code></a>([fig, rotation, subplot, rect, aspect])</p></td>
 <td><p>Make Skew-T log-P plots of data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="metpy.plots.Hodograph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hodograph</span></code></a>([ax, component_range])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="metpy.plots.Hodograph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hodograph</span></code></a>([ax, component_range])</p></td>
 <td><p>Make a hodograph of wind data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a>(ax, x, y[, fontsize, spacing, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a>(ax, x, y[, fontsize, spacing, ...])</p></td>
 <td><p>Make a standard meteorological station plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout" title="metpy.plots.StationPlotLayout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlotLayout</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout" title="metpy.plots.StationPlotLayout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlotLayout</span></code></a></p></td>
 <td><p>Make a layout to encapsulate plotting using <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a>.</p></td>
 </tr>
 </tbody>

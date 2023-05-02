@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>parcel_profile_with_lcl &#8212; MetPy 1.4dev</title>
+    <title>ScallopedStroke &#8212; MetPy 1.4dev</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -39,8 +39,8 @@
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="parcel_profile_with_lcl_as_dataset" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html" />
-    <link rel="prev" title="parcel_profile" href="metpy.calc.parcel_profile.html" />
+    <link rel="next" title="ColdFront" href="metpy.plots.ColdFront.html" />
+    <link rel="prev" title="PlotGeometry" href="metpy.plots.PlotGeometry.html" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -58,7 +58,7 @@
                         ga('send', 'pageview');
                     </script>
 
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.parcel_profile_with_lcl.html" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.ScallopedStroke.html" />
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
@@ -307,7 +307,7 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 current active has-children">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.calc.html">
    Calculations
    <code class="docutils literal notranslate">
@@ -316,12 +316,12 @@
     </span>
    </code>
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul class="current">
+  <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.calc.add_height_to_pressure.html">
      add_height_to_pressure
@@ -622,8 +622,8 @@
      parcel_profile
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.parcel_profile_with_lcl.html">
      parcel_profile_with_lcl
     </a>
    </li>
@@ -1004,7 +1004,7 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="metpy.plots.html">
    Plots
    <code class="docutils literal notranslate">
@@ -1013,12 +1013,12 @@
     </span>
    </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
   <label for="toctree-checkbox-4">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
+  <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.plots.read_colortable.html">
      read_colortable
@@ -1114,8 +1114,8 @@
      PlotGeometry
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ScallopedStroke.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      ScallopedStroke
     </a>
    </li>
@@ -1363,82 +1363,69 @@
               
               <div>
                 
-  <section id="parcel-profile-with-lcl">
-<h1>parcel_profile_with_lcl<a class="headerlink" href="#parcel-profile-with-lcl" title="Permalink to this headline">#</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="metpy.calc.parcel_profile_with_lcl">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">parcel_profile_with_lcl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.parcel_profile_with_lcl" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the profile a parcel takes through the atmosphere.</p>
-<p>The parcel starts at <em class="xref py py-obj">temperature</em>, and <a class="reference internal" href="metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="metpy.calc.dewpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dewpoint</span></code></a>, lifted up
-dry adiabatically to the LCL, and then moist adiabatically from there.
-<em class="xref py py-obj">pressure</em> specifies the pressure levels for the profile. This function returns
-a profile that includes the LCL.</p>
+  <section id="scallopedstroke">
+<h1>ScallopedStroke<a class="headerlink" href="#scallopedstroke" title="Permalink to this headline">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="metpy.plots.ScallopedStroke">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">ScallopedStroke</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.15</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ScallopedStroke" title="Permalink to this definition">#</a></dt>
+<dd><p>A line-based PathEffect which draws a path with a scalloped style.</p>
+<p>The spacing, length, and side of the scallops can be controlled. This implementation is
+based off of <a class="reference external" href="https://matplotlib.org/stable/api/patheffects_api.html#matplotlib.patheffects.TickedStroke" title="(in Matplotlib v3.7.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.patheffects.TickedStroke</span></code></a>.</p>
+<p>Create a scalloped path effect.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric pressure level(s) of interest. This array must be from
-high to low pressure.</p></li>
-<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric temperature at the levels in <em class="xref py py-obj">pressure</em>. The first entry should be at
-the same level as the first <em class="xref py py-obj">pressure</em> data point.</p></li>
-<li><p><strong>dewpoint</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric dewpoint at the levels in <em class="xref py py-obj">pressure</em>. The first entry should be at
-the same level as the first <em class="xref py py-obj">pressure</em> data point.</p></li>
+<li><p><strong>offset</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>)</em>) – The (x, y) offset to apply to the path, in points. Defaults to no offset.</p></li>
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The spacing between ticks in points. Defaults to 10.0.</p></li>
+<li><p><strong>side</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Side of the path scallops appear on from the reference of
+walking along the curve. Options are left and right. Defaults to <code class="docutils literal notranslate"><span class="pre">'left'</span></code>.</p></li>
+<li><p><strong>length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The length of the tick relative to spacing. Defaults to 1.414.</p></li>
+<li><p><strong>kwargs</strong> – Extra keywords are stored and passed through to
+<em class="xref py py-obj">GraphicsContextBase</em>.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – The parcel profile pressures, which includes the specified levels and the LCL</p></li>
-<li><p><strong>ambient_temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric temperature values, including the value interpolated to the LCL level</p></li>
-<li><p><strong>ambient_dew_point</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric dewpoint values, including the value interpolated to the LCL level</p></li>
-<li><p><strong>profile_temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.21)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – The parcel profile temperatures at all of the levels in the returned pressures array,
-including the LCL</p></li>
-</ul>
-</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">dewpoint_from_relative_humidity</span><span class="p">,</span> <span class="n">parcel_profile_with_lcl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># pressure</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1008.</span><span class="p">,</span> <span class="mf">1000.</span><span class="p">,</span> <span class="mf">950.</span><span class="p">,</span> <span class="mf">900.</span><span class="p">,</span> <span class="mf">850.</span><span class="p">,</span> <span class="mf">800.</span><span class="p">,</span> <span class="mf">750.</span><span class="p">,</span> <span class="mf">700.</span><span class="p">,</span> <span class="mf">650.</span><span class="p">,</span> <span class="mf">600.</span><span class="p">,</span>
-<span class="gp">... </span>     <span class="mf">550.</span><span class="p">,</span> <span class="mf">500.</span><span class="p">,</span> <span class="mf">450.</span><span class="p">,</span> <span class="mf">400.</span><span class="p">,</span> <span class="mf">350.</span><span class="p">,</span> <span class="mf">300.</span><span class="p">,</span> <span class="mf">250.</span><span class="p">,</span> <span class="mf">200.</span><span class="p">,</span>
-<span class="gp">... </span>     <span class="mf">175.</span><span class="p">,</span> <span class="mf">150.</span><span class="p">,</span> <span class="mf">125.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">,</span> <span class="mf">80.</span><span class="p">,</span> <span class="mf">70.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">,</span>
-<span class="gp">... </span>     <span class="mf">40.</span><span class="p">,</span> <span class="mf">30.</span><span class="p">,</span> <span class="mf">25.</span><span class="p">,</span> <span class="mf">20.</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># temperature</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mf">29.3</span><span class="p">,</span> <span class="mf">28.1</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">,</span> <span class="mf">20.9</span><span class="p">,</span> <span class="mf">18.4</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="mf">13.1</span><span class="p">,</span> <span class="mf">10.1</span><span class="p">,</span> <span class="mf">6.7</span><span class="p">,</span> <span class="mf">3.1</span><span class="p">,</span>
-<span class="gp">... </span>     <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">14.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">21.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">29.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">40.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">52.4</span><span class="p">,</span>
-<span class="gp">... </span>     <span class="o">-</span><span class="mf">59.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">66.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">74.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">78.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">71.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">66.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">61.3</span><span class="p">,</span>
-<span class="gp">... </span>     <span class="o">-</span><span class="mf">56.3</span><span class="p">,</span> <span class="o">-</span><span class="mf">51.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">50.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">47.5</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># relative humidity</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rh</span> <span class="o">=</span> <span class="p">[</span><span class="mf">.85</span><span class="p">,</span> <span class="mf">.65</span><span class="p">,</span> <span class="mf">.36</span><span class="p">,</span> <span class="mf">.39</span><span class="p">,</span> <span class="mf">.82</span><span class="p">,</span> <span class="mf">.72</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mf">.86</span><span class="p">,</span> <span class="mf">.65</span><span class="p">,</span> <span class="mf">.22</span><span class="p">,</span> <span class="mf">.52</span><span class="p">,</span>
-<span class="gp">... </span>      <span class="mf">.66</span><span class="p">,</span> <span class="mf">.64</span><span class="p">,</span> <span class="mf">.20</span><span class="p">,</span> <span class="mf">.05</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mf">.76</span><span class="p">,</span> <span class="mf">.45</span><span class="p">,</span> <span class="mf">.25</span><span class="p">,</span> <span class="mf">.48</span><span class="p">,</span> <span class="mf">.76</span><span class="p">,</span> <span class="mf">.88</span><span class="p">,</span>
-<span class="gp">... </span>      <span class="mf">.56</span><span class="p">,</span> <span class="mf">.88</span><span class="p">,</span> <span class="mf">.39</span><span class="p">,</span> <span class="mf">.67</span><span class="p">,</span> <span class="mf">.15</span><span class="p">,</span> <span class="mf">.04</span><span class="p">,</span> <span class="mf">.94</span><span class="p">,</span> <span class="mf">.35</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">dimensionless</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># calculate dewpoint</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Td</span> <span class="o">=</span> <span class="n">dewpoint_from_relative_humidity</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">rh</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># computer parcel temperature</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Td</span> <span class="o">=</span> <span class="n">dewpoint_from_relative_humidity</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">rh</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p_wLCL</span><span class="p">,</span> <span class="n">T_wLCL</span><span class="p">,</span> <span class="n">Td_wLCL</span><span class="p">,</span> <span class="n">prof_wLCL</span> <span class="o">=</span> <span class="n">parcel_profile_with_lcl</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">Td</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Shape of original pressure array: </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="go">Shape of original pressure array: (30,)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Shape of pressure array from function: </span><span class="si">{</span><span class="n">p_wLCL</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="go">Shape of pressure array from function: (31,)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="n">p_wLCL</span><span class="p">)</span>
-<span class="go">False</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="metpy.calc.lcl.html#metpy.calc.lcl" title="metpy.calc.lcl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lcl</span></code></a>, <a class="reference internal" href="metpy.calc.moist_lapse.html#metpy.calc.moist_lapse" title="metpy.calc.moist_lapse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moist_lapse</span></code></a>, <a class="reference internal" href="metpy.calc.dry_lapse.html#metpy.calc.dry_lapse" title="metpy.calc.dry_lapse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dry_lapse</span></code></a>, <a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile</span></code></a>, <a class="reference internal" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html#metpy.calc.parcel_profile_with_lcl_as_dataset" title="metpy.calc.parcel_profile_with_lcl_as_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile_with_lcl_as_dataset</span></code></a></p>
-</div>
-<p class="rubric">Notes</p>
-<p>Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
-Duplicate pressure levels return duplicate parcel temperatures. Consider preprocessing
-low-precision, high frequency profiles with tools like <em class="xref py py-obj">scipy.medfilt</em>,
-<em class="xref py py-obj">pandas.drop_duplicates</em>, or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html#numpy.unique" title="(in NumPy v1.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.unique</span></code></a>.</p>
-<p>Will only return Pint Quantities, even when given xarray DataArray profiles. To
-obtain a xarray Dataset instead, use <a class="reference internal" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html#metpy.calc.parcel_profile_with_lcl_as_dataset" title="metpy.calc.parcel_profile_with_lcl_as_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile_with_lcl_as_dataset</span></code></a> instead.</p>
-<div class="versionchanged">
-<p><span class="versionmodified changed">Changed in version 1.0: </span>Renamed <code class="docutils literal notranslate"><span class="pre">dewpt</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">dewpoint</span></code></p>
-</div>
+<p class="rubric">Methods Summary</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ScallopedStroke.__init__" title="metpy.plots.ScallopedStroke.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([offset, spacing, side, length])</p></td>
+<td><p>Create a scalloped path effect.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ScallopedStroke.draw_path" title="metpy.plots.ScallopedStroke.draw_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_path</span></code></a>(renderer, gc, path, affine[, rgbFace])</p></td>
+<td><p>Draw the path with updated gc.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="metpy.plots.ScallopedStroke.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.15</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/patheffects.html#ScallopedStroke.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.ScallopedStroke.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a scalloped path effect.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>offset</strong> (<em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>)</em>) – The (x, y) offset to apply to the path, in points. Defaults to no offset.</p></li>
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The spacing between ticks in points. Defaults to 10.0.</p></li>
+<li><p><strong>side</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Side of the path scallops appear on from the reference of
+walking along the curve. Options are left and right. Defaults to <code class="docutils literal notranslate"><span class="pre">'left'</span></code>.</p></li>
+<li><p><strong>length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The length of the tick relative to spacing. Defaults to 1.414.</p></li>
+<li><p><strong>kwargs</strong> – Extra keywords are stored and passed through to
+<em class="xref py py-obj">GraphicsContextBase</em>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metpy.plots.ScallopedStroke.draw_path">
+<span class="sig-name descname"><span class="pre">draw_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">renderer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rgbFace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/patheffects.html#ScallopedStroke.draw_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.ScallopedStroke.draw_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Draw the path with updated gc.</p>
+</dd></dl>
+
 </dd></dl>
 
 <div style='clear:both'></div></section>
@@ -1449,17 +1436,17 @@ obtain a xarray Dataset instead, use <a class="reference internal" href="metpy.c
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="metpy.calc.parcel_profile.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="metpy.plots.PlotGeometry.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">parcel_profile</p>
+            <p class="prev-next-title">PlotGeometry</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html" title="next page">
+    <a class='right-next' id="next-link" href="metpy.plots.ColdFront.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">parcel_profile_with_lcl_as_dataset</p>
+        <p class="prev-next-title">ColdFront</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

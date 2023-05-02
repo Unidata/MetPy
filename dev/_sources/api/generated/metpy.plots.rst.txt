@@ -48,6 +48,7 @@ Plots ``(metpy.plots)``
       ArrowPlot
       PlotObs
       PlotGeometry
+      ScallopedStroke
       ColdFront
       WarmFront
       OccludedFront
