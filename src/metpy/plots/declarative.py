@@ -1043,7 +1043,7 @@ class Plots2D(SubsetTraits):
     def _norm_obj(self):
         """Return the normalization object.
 
-        If `image_range` is a matplotlib normalization instance, returns it, otherwise converts 
+        If `image_range` is a matplotlib normalization instance, returns it, otherwise converts
         the tuple image range to a matplotlib normalization instance.
 
         """

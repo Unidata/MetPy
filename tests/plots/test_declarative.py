@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from io import BytesIO
 import warnings
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pytest
@@ -625,6 +626,34 @@ def test_colorfill_with_image_range(cfeature):
     contour.colormap = 'coolwarm'
     contour.colorbar = None
     contour.image_range = (273.15, 350)
+
+    panel = MapPanel()
+    panel.area = (-110, -60, 25, 55)
+    panel.layers = [cfeature.STATES]
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.panel = panel
+    pc.size = (8, 8)
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(
+    remove_text=True, tolerance=0.0062, filename='test_colorfill_with_image_range.png'
+)
+def test_colorfill_with_normalize_instance_image_range(cfeature):
+    """Test that we can use ContourFillPlot with image_range bounds."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = FilledContourPlot()
+    contour.data = data
+    contour.level = 700 * units.hPa
+    contour.field = 'Temperature'
+    contour.colormap = 'coolwarm'
+    contour.colorbar = None
+    contour.image_range = plt.Normalize(vmin=273.15, vmax=350)
 
     panel = MapPanel()
     panel.area = (-110, -60, 25, 55)
