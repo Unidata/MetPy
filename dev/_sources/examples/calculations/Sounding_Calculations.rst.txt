@@ -447,12 +447,12 @@ Print Important Sounding Parameters
           MU CIN: -60.50 joule / kilogram
 
     Bunkers Storm Motion Vector
-      u_storm: 24.01 knot
-      v_storm: 5.29 knot
-    Critical Angle: 65.01 degree
+      u_storm: 21.85 knot
+      v_storm: 4.55 knot
+    Critical Angle: 67.33 degree
 
-    Storm Relative Helicity: 289.91 meter ** 2 / second ** 2
-    Significant Tornado Parameter: [4.77] dimensionless
+    Storm Relative Helicity: 279.49 meter ** 2 / second ** 2
+    Significant Tornado Parameter: [4.60] dimensionless
     Supercell Composite Parameter: [9.07] dimensionless
 
 
@@ -461,7 +461,7 @@ Print Important Sounding Parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.429 seconds)
+   **Total running time of the script:** ( 0 minutes  0.347 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Sounding_Calculations.py:

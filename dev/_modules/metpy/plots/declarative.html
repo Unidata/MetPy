@@ -1239,9 +1239,12 @@
     <span class="k">def</span> <span class="nf">_norm_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the normalization object.</span>
 
-<span class="sd">        Converts the tuple image range to a matplotlib normalization instance.</span>
+<span class="sd">        If `image_range` is a matplotlib normalization instance, returns it, otherwise converts</span>
+<span class="sd">        the tuple image range to a matplotlib normalization instance.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_range</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Normalize</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_range</span>
         <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">image_range</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Plots2D.clear"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Plots2D.html#metpy.plots.Plots2D.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1498,7 +1501,7 @@
 <span class="s2">    For example, the Blue-Purple colormap from Matplotlib can be accessed using &#39;BuPu&#39;.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">image_range</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Tuple</span><span class="p">(</span><span class="n">Int</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">Int</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+    <span class="n">image_range</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Tuple</span><span class="p">(</span><span class="n">Float</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">Float</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
                          <span class="n">Instance</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Normalize</span><span class="p">)],</span> <span class="n">default_value</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
     <span class="n">image_range</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A tuple of min and max values that represent the range of values</span>
 <span class="s2">    to color the rasterized image.</span>
