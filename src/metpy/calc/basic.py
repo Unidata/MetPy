@@ -527,16 +527,10 @@ def geopotential_to_height(geopotential):
     --------
     >>> import metpy.calc
     >>> from metpy.units import units
-    >>> height = np.linspace(0, 10000, num=11) * units.m
-    >>> geopot = metpy.calc.height_to_geopotential(height)
-    >>> geopot
-    <Quantity([     0.           9805.11097983 19607.1448853  29406.10316465
-    39201.98726524 48994.79863351 58784.53871501 68571.20895435
-    78354.81079527 88135.34568058 97912.81505219], 'meter ** 2 / second ** 2')>
+    >>> geopot = units.Quantity([0., 9805., 19607., 29406.], 'm^2/s^2')
     >>> height = metpy.calc.geopotential_to_height(geopot)
     >>> height
-    <Quantity([     0.   1000.   2000.   3000.   4000.   5000.   6000.   7000.   8000.
-    9000.  10000.], 'meter')>
+    <Quantity([   0.          999.98867965 1999.98521653 2999.98947022], 'meter')>
 
     See Also
     --------
