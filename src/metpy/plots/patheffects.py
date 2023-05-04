@@ -787,18 +787,6 @@ class Squall(mpatheffects.AbstractPathEffect):
 
     symbol = mpath.Path.circle((0, 0), radius=4)
 
-    @property
-    def symbol_width(self):
-        """Get symbol width."""
-        if self._symbol_width is None:
-            self._symbol_width = self.symbol.get_extents().width
-        return self._symbol_width
-
-    @property
-    def step_size(self):
-        """Get step size."""
-        return 2 * self.symbol_width + self.marker_margin
-
     def __init__(self, color='black', spacing=75):
         """Initialize the squall line path effect.
 

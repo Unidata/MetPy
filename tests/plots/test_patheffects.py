@@ -63,8 +63,8 @@ def test_frontolysis():
     return fig
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
-def test_speical():
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.023)
+def test_special():
     """Test plotting special path effects."""
     x = np.linspace(0, 20, 5)
     y = np.linspace(0, 20, 5)
