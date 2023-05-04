@@ -41,7 +41,7 @@ def generate_area_file(app):
 
         table.write(textwrap.dedent(header))
 
-        for area in named_areas:
+        for ind, area in enumerate(named_areas):
             extent = named_areas[area].bounds
             longname = named_areas[area].description
 
@@ -93,8 +93,13 @@ def generate_area_file(app):
 
                 """)
             table.write(code)
+            if not app.config.metpy_generate_all_areas and ind >= 1:
+                break
 
 
 def setup(app):
     """Set up the make_areas extension with a callback once builders are initialized."""
     app.connect('builder-inited', generate_area_file)
+
+    # Add option to only build a couple areas since all take a while--ONLY FOR DEV
+    app.add_config_value('metpy_generate_all_areas', default=True, rebuild='html', types=bool)
