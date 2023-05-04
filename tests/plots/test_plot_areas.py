@@ -6,19 +6,16 @@
 import matplotlib.pyplot as plt
 import pytest
 
-from metpy.testing import needs_cartopy
-
 
 @pytest.mark.mpl_image_compare(tolerance=0.005)
-@needs_cartopy
 def test_uslcc_plotting(ccrs, cfeature):
     """Test plotting the uslcc area with projection."""
-    from metpy.plots.plot_areas import areas
+    from metpy.plots import named_areas
     area = 'uslcc'
 
     # Get the extent and project for the selected area
-    extent = areas[area].bounds
-    proj = areas[area].projection
+    extent = named_areas[area].bounds
+    proj = named_areas[area].projection
 
     # Plot a simple figure for the selected area
     fig = plt.figure()
@@ -31,15 +28,14 @@ def test_uslcc_plotting(ccrs, cfeature):
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.005)
-@needs_cartopy
 def test_au_plotting(ccrs, cfeature):
     """Test plotting the au area with projection."""
-    from metpy.plots.plot_areas import areas
+    from metpy.plots import named_areas
     area = 'au'
 
     # Get the extent and project for the selected area
-    extent = areas[area].bounds
-    proj = areas[area].projection
+    extent = named_areas[area].bounds
+    proj = named_areas[area].projection
 
     # Plot a simple figure for the selected area
     fig = plt.figure(figsize=(10, 10))
@@ -52,15 +48,14 @@ def test_au_plotting(ccrs, cfeature):
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.008)
-@needs_cartopy
 def test_cn_plotting(ccrs, cfeature):
     """Test plotting the cn area with projection."""
-    from metpy.plots.plot_areas import areas
+    from metpy.plots import named_areas
     area = 'cn'
 
     # Get the extent and project for the selected area
-    extent = areas[area].bounds
-    proj = areas[area].projection
+    extent = named_areas[area].bounds
+    proj = named_areas[area].projection
 
     # Plot a simple figure for the selected area
     fig = plt.figure(figsize=(10, 10))
@@ -73,15 +68,14 @@ def test_cn_plotting(ccrs, cfeature):
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.005)
-@needs_cartopy
 def test_hi_plotting(ccrs, cfeature):
     """Test plotting the hi area with projection."""
-    from metpy.plots.plot_areas import areas
+    from metpy.plots import named_areas
     area = 'hi'
 
     # Get the extent and project for the selected area
-    extent = areas[area].bounds
-    proj = areas[area].projection
+    extent = named_areas[area].bounds
+    proj = named_areas[area].projection
 
     # Plot a simple figure for the selected area
     fig = plt.figure(figsize=(10, 10))
@@ -94,15 +88,14 @@ def test_hi_plotting(ccrs, cfeature):
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.005)
-@needs_cartopy
 def test_wpac_plotting(ccrs, cfeature):
     """Test plotting the wpac area with projection."""
-    from metpy.plots.plot_areas import areas
+    from metpy.plots import named_areas
     area = 'wpac'
 
     # Get the extent and project for the selected area
-    extent = areas[area].bounds
-    proj = areas[area].projection
+    extent = named_areas[area].bounds
+    proj = named_areas[area].projection
 
     # Plot a simple figure for the selected area
     fig = plt.figure(figsize=(10, 10))

@@ -304,7 +304,7 @@ class MapPanel(Panel, ValidationMixin):
     @validate('area')
     def _valid_area(self, proposal):
         """Check that proposed string or tuple is valid and turn string into a tuple extent."""
-        from .plot_areas import areas
+        from .plot_areas import named_areas
 
         area = proposal['value']
 
@@ -318,9 +318,9 @@ class MapPanel(Panel, ValidationMixin):
 
             if region == 'global':
                 extent = 'global'
-            elif region in areas:
-                self._area_proj = areas[region].projection
-                extent = areas[region].bounds
+            elif region in named_areas:
+                self._area_proj = named_areas[region].projection
+                extent = named_areas[region].bounds
                 zoom = modifier.count('+') - modifier.count('-')
                 extent = self._zoom_extent(extent, zoom)
             else:

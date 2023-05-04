@@ -7,7 +7,7 @@ import textwrap
 
 import sphinx.util
 
-from metpy.plots.plot_areas import areas
+from metpy.plots import named_areas
 
 states_provinces = ['ak', 'al', 'ar', 'ca', 'co', 'ct', 'dc', 'de', 'fl', 'ga', 'hi',
                     'ia', 'id', 'il', 'in', 'ks', 'ky', 'la', 'ma', 'md', 'me', 'mi',
@@ -41,9 +41,9 @@ def generate_area_file(app):
 
         table.write(textwrap.dedent(header))
 
-        for area in areas:
-            extent = areas[area].bounds
-            longname = areas[area].name
+        for area in named_areas:
+            extent = named_areas[area].bounds
+            longname = named_areas[area].description
 
             area_header = area + '  -  ' + longname + '\n'
             table.write(area_header)
@@ -56,9 +56,9 @@ def generate_area_file(app):
                     import matplotlib.pyplot as plt
                     import cartopy.crs as ccrs
                     import cartopy.feature as cfeature
-                    from metpy.plots.plot_areas import areas
+                    from metpy.plots import named_areas
 
-                    proj = areas['{area}'].projection
+                    proj = named_areas['{area}'].projection
 
                     plt.figure(figsize=(8, 10))
                     ax = plt.subplot(111, projection=proj)
@@ -67,7 +67,7 @@ def generate_area_file(app):
                                 linewidth=0.75)
                     ax.add_feature(cfeature.COASTLINE.with_scale('10m'), linewidth=1.1)
                     ax.add_feature(cfeature.BORDERS.with_scale('10m'), edgecolor='black')
-                    ax.set_title(f'area={area}          name={areas[area].name}')
+                    ax.set_title(f'area={area}          name={named_areas[area].description}')
 
 
                 """)
@@ -79,16 +79,16 @@ def generate_area_file(app):
                     import matplotlib.pyplot as plt
                     import cartopy.crs as ccrs
                     import cartopy.feature as cfeature
-                    from metpy.plots.plot_areas import areas
+                    from metpy.plots import named_areas
 
-                    proj = areas['{area}'].projection
+                    proj = named_areas['{area}'].projection
 
                     plt.figure(figsize=(8, 10))
                     ax = plt.subplot(111, projection=proj)
                     ax.set_extent({extent}, ccrs.PlateCarree())
                     ax.add_feature(cfeature.COASTLINE.with_scale('10m'), linewidth=1.1)
                     ax.add_feature(cfeature.BORDERS.with_scale('10m'), edgecolor='black')
-                    ax.set_title(f'area={area}          name={areas[area].name}')
+                    ax.set_title(f'area={area}          name={named_areas[area].description}')
 
 
                 """)

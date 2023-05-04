@@ -11,6 +11,7 @@ from ._util import (add_metpy_logo, add_timestamp, add_unidata_logo,  # noqa: F4
 from .ctables import *  # noqa: F403
 from .declarative import *  # noqa: F403
 from .patheffects import *  # noqa: F403
+from .plot_areas import named_areas  # noqa: F403
 from .skewt import *  # noqa: F403
 from .station_plot import *  # noqa: F403
 from .wx_symbols import *  # noqa: F403
@@ -23,7 +24,7 @@ __all__.extend(skewt.__all__)  # pylint: disable=undefined-variable
 __all__.extend(station_plot.__all__)  # pylint: disable=undefined-variable
 __all__.extend(wx_symbols.__all__)  # pylint: disable=undefined-variable
 __all__.extend(['add_metpy_logo', 'add_timestamp', 'add_unidata_logo',
-                'convert_gempak_color'])
+                'convert_gempak_color', 'named_areas'])
 
 set_module(globals())
 
