@@ -55,6 +55,7 @@ examples = [
     "shapely>=1.6.0"
 ]
 test = [
+    "packaging>=21.0",
     "pytest>=2.4",
     "pytest-mpl",
     "cartopy>=0.17.0",

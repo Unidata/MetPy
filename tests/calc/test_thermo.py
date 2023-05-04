@@ -3,10 +3,13 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `thermo` module."""
 
+import sys
 import warnings
 
 import numpy as np
+import packaging.version
 import pytest
+import scipy
 import xarray as xr
 
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
@@ -192,6 +195,18 @@ def test_moist_lapse_starting_points(start, direction):
     pressure = units.Quantity([1000, 925, 850, 700, 600], 'hPa')[::direction]
     temp = moist_lapse(pressure, truth[start], pressure[start])
     assert_almost_equal(temp, truth, 4)
+
+
+@pytest.mark.xfail(sys.platform == 'win32', reason='solve_ivp() does not error on Windows')
+@pytest.mark.xfail(packaging.version.parse(scipy.__version__) < packaging.version.parse('1.7'),
+                   reason='solve_ivp() does not error on Scipy < 1.7')
+def test_moist_lapse_failure():
+    """Test moist_lapse under conditions that cause the ODE solver to fail."""
+    p = np.logspace(3, -1, 10) * units.hPa
+    with pytest.raises(ValueError) as exc:
+        moist_lapse(p, 6 * units.degC)
+
+    assert 'too small values' in str(exc)
 
 
 def test_parcel_profile():
