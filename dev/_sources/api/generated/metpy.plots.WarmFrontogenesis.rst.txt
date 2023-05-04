@@ -1,0 +1,60 @@
+WarmFrontogenesis
+=============================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: WarmFrontogenesis
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~WarmFrontogenesis.symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~WarmFrontogenesis.__init__
+      ~WarmFrontogenesis.draw_path
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: draw_path
+
+   
+   
+
+.. include:: metpy.plots.WarmFrontogenesis.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

@@ -50,9 +50,20 @@ Plots ``(metpy.plots)``
       PlotGeometry
       ScallopedStroke
       ColdFront
+      ColdFrontogenesis
+      ColdFrontolysis
+      Dryline
       WarmFront
+      WarmFrontogenesis
+      WarmFrontolysis
       OccludedFront
+      OccludedFrontogenesis
+      OccludedFrontolysis
+      RidgeAxis
+      Squall
       StationaryFront
+      StationaryFrontogenesis
+      StationaryFrontolysis
       SkewT
       Hodograph
       StationPlot
