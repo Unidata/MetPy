@@ -10,6 +10,7 @@
 # serve to show the default.
 
 from datetime import datetime
+import os
 from pathlib import Path
 import re
 import sys
@@ -41,7 +42,8 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx_gallery.gen_gallery',
     'matplotlib.sphinxext.plot_directive',
-    'myst_parser'
+    'myst_parser',
+    'make_areas'
 ]
 
 sphinx_gallery_conf = {
@@ -57,6 +59,9 @@ sphinx_gallery_conf = {
     'abort_on_example_error': True,
     'reset_modules': [lambda conf, fname: sys.modules.pop('pint', None)]
 }
+
+# By default, only generate all the areas when running in CI
+metpy_generate_all_areas = 'GITHUB_ACTIONS' in os.environ
 
 # Turn off code and image links for embedded mpl plots
 plot_html_show_source_link = False

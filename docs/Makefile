@@ -14,6 +14,7 @@ help:
 
 # Sphinx doesn't know to clean out the debris from sphinx-gallery
 cleanall: clean
+	rm -rf ${SOURCEDIR}/api/areas.rst
 	rm -rf $(SOURCEDIR)/examples $(SOURCEDIR)/tutorials $(SOURCEDIR)/api/generated
 
 clean:

@@ -5,7 +5,7 @@ r"""Contains functionality for making meteorological plots."""
 
 # Trigger matplotlib wrappers
 from . import _mpl  # noqa: F401
-from . import cartopy_utils
+from . import cartopy_utils, plot_areas
 from ._util import (add_metpy_logo, add_timestamp, add_unidata_logo,  # noqa: F401
                     convert_gempak_color)
 from .ctables import *  # noqa: F403
@@ -29,15 +29,16 @@ set_module(globals())
 
 
 def __getattr__(name):
-    """Handle warning if Cartopy map features are not available."""
-    if name in cartopy_utils.__all__:
-        try:
-            return getattr(cartopy_utils, name)
-        except AttributeError:
-            raise AttributeError(f'Cannot use {name} without Cartopy installed.') from None
+    """Raise a proper error if something needing Cartopy is not available."""
+    for mod in [cartopy_utils, plot_areas]:
+        if name in mod.__all__:
+            try:
+                return getattr(mod, name)
+            except AttributeError:
+                raise AttributeError(f'Cannot use {name} without Cartopy installed.') from None
 
     raise AttributeError(f'module {__name__!r} has no attribute {name!r}')
 
 
 def __dir__():
-    return __all__ + cartopy_utils.__all__
+    return __all__ + cartopy_utils.__all__ + plot_areas.__all__

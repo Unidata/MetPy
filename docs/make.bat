@@ -23,6 +23,7 @@ if "%1" == "clean" (
 
 if "%1" == "cleanall" (
 	for /d %%i in (%BUILDDIR%\*) do rmdir /q /s %%i
+	rmdir /q /s %SOURCEDIR%\api\areas.rst
 	rmdir /q /s %SOURCEDIR%\examples\ %SOURCEDIR%\tutorials\ %SOURCEDIR%\api\generated\
 	goto end
 )
