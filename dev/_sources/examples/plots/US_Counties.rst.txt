@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_examples_plots_US_Counties.py>`
+        :ref:`Go to the end <sphx_glr_download_examples_plots_US_Counties.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -70,7 +70,7 @@ Demonstrate how to plot US counties at all three available resolutions.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.063 seconds)
+   **Total running time of the script:** ( 0 minutes  3.773 seconds)
 
 
 .. _sphx_glr_download_examples_plots_US_Counties.py:
@@ -78,6 +78,8 @@ Demonstrate how to plot US counties at all three available resolutions.
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
+
+
 
 
     .. container:: sphx-glr-download sphx-glr-download-python

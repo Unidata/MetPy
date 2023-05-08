@@ -23,7 +23,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_Simplified_Image_Plot_thumb.png
-    :alt: Simple Plotting
+    :alt:
 
   :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py`
 
@@ -40,7 +40,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_US_Counties_thumb.png
-    :alt: US Counties
+    :alt:
 
   :ref:`sphx_glr_examples_plots_US_Counties.py`
 
@@ -57,7 +57,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_raster_declarative_thumb.png
-    :alt: Raster Plots using Declarative Syntax
+    :alt:
 
   :ref:`sphx_glr_examples_plots_raster_declarative.py`
 
@@ -74,7 +74,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_Simple_Fronts_Plot_thumb.png
-    :alt: Simple Plotting of Fronts
+    :alt:
 
   :ref:`sphx_glr_examples_plots_Simple_Fronts_Plot.py`
 
@@ -91,7 +91,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_spc_convective_outlook_thumb.png
-    :alt: NOAA SPC Convective Outlook
+    :alt:
 
   :ref:`sphx_glr_examples_plots_spc_convective_outlook.py`
 
@@ -108,7 +108,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_Combined_plotting_thumb.png
-    :alt: Combined Plotting
+    :alt:
 
   :ref:`sphx_glr_examples_plots_Combined_plotting.py`
 
@@ -125,7 +125,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_surface_declarative_thumb.png
-    :alt: Surface Analysis using Declarative Syntax
+    :alt:
 
   :ref:`sphx_glr_examples_plots_surface_declarative.py`
 
@@ -142,7 +142,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_upperair_declarative_thumb.png
-    :alt: Upper Air Analysis using Declarative Syntax
+    :alt:
 
   :ref:`sphx_glr_examples_plots_upperair_declarative.py`
 
@@ -159,7 +159,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_nhc_wind_probabilities_thumb.png
-    :alt: NOAA NHC Wind Speed Probabilities
+    :alt:
 
   :ref:`sphx_glr_examples_plots_nhc_wind_probabilities.py`
 
@@ -176,7 +176,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_Skew-T_Layout_thumb.png
-    :alt: Skew-T with Complex Layout
+    :alt:
 
   :ref:`sphx_glr_examples_plots_Skew-T_Layout.py`
 
@@ -193,7 +193,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_Hodograph_Inset_thumb.png
-    :alt: Hodograph Inset
+    :alt:
 
   :ref:`sphx_glr_examples_plots_Hodograph_Inset.py`
 
@@ -210,7 +210,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_Sounding_LCL_Dataset_thumb.png
-    :alt: Sounding as Dataset Example
+    :alt:
 
   :ref:`sphx_glr_examples_plots_Sounding_LCL_Dataset.py`
 
@@ -227,7 +227,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_Plotting_Surface_Analysis_thumb.png
-    :alt: Plotting Fronts
+    :alt:
 
   :ref:`sphx_glr_examples_plots_Plotting_Surface_Analysis.py`
 
@@ -244,7 +244,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_Simple_Sounding_thumb.png
-    :alt: Simple Sounding
+    :alt:
 
   :ref:`sphx_glr_examples_plots_Simple_Sounding.py`
 
@@ -261,7 +261,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_Mesonet_Stationplot_thumb.png
-    :alt: Mesonet Station Plot
+    :alt:
 
   :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py`
 
@@ -278,7 +278,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_Station_Plot_thumb.png
-    :alt: Station Plot
+    :alt:
 
   :ref:`sphx_glr_examples_plots_Station_Plot.py`
 
@@ -295,7 +295,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only:: html
 
   .. image:: /examples/plots/images/thumb/sphx_glr_Station_Plot_with_Layout_thumb.png
-    :alt: Station Plot with Layout
+    :alt:
 
   :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py`
 

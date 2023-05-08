@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_examples_Four_Panel_Map.py>`
+        :ref:`Go to the end <sphx_glr_download_examples_Four_Panel_Map.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -259,7 +259,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.647 seconds)
+   **Total running time of the script:** ( 0 minutes  6.936 seconds)
 
 
 .. _sphx_glr_download_examples_Four_Panel_Map.py:
@@ -267,6 +267,8 @@ By reading model output data from a netCDF file, we can create a four panel plot
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
+
+
 
 
     .. container:: sphx-glr-download sphx-glr-download-python

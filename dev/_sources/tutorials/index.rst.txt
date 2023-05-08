@@ -22,7 +22,7 @@ common meteorological tasks.
 .. only:: html
 
   .. image:: /tutorials/images/thumb/sphx_glr_unit_tutorial_thumb.png
-    :alt: Working With Units
+    :alt:
 
   :ref:`sphx_glr_tutorials_unit_tutorial.py`
 
@@ -39,7 +39,7 @@ common meteorological tasks.
 .. only:: html
 
   .. image:: /tutorials/images/thumb/sphx_glr_area_tutorial_thumb.png
-    :alt: Using Predefined Areas with MetPy
+    :alt:
 
   :ref:`sphx_glr_tutorials_area_tutorial.py`
 
@@ -56,7 +56,7 @@ common meteorological tasks.
 .. only:: html
 
   .. image:: /tutorials/images/thumb/sphx_glr_upperair_soundings_thumb.png
-    :alt: Upper Air Sounding Tutorial
+    :alt:
 
   :ref:`sphx_glr_tutorials_upperair_soundings.py`
 
@@ -68,12 +68,12 @@ common meteorological tasks.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="`xarray &lt;https://docs.xarray.dev/en/stable/&gt;`_ is a powerful Python package that provides N-dim...">
+    <div class="sphx-glr-thumbcontainer" tooltip="xarray is a powerful Python package that provides N-dimensional labeled arrays and datasets fol...">
 
 .. only:: html
 
   .. image:: /tutorials/images/thumb/sphx_glr_xarray_tutorial_thumb.png
-    :alt: xarray with MetPy Tutorial
+    :alt:
 
   :ref:`sphx_glr_tutorials_xarray_tutorial.py`
 
@@ -90,7 +90,7 @@ common meteorological tasks.
 .. only:: html
 
   .. image:: /tutorials/images/thumb/sphx_glr_declarative_tutorial_thumb.png
-    :alt: MetPy Declarative Syntax Tutorial
+    :alt:
 
   :ref:`sphx_glr_tutorials_declarative_tutorial.py`
 

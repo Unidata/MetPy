@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_examples_plots_Simple_Fronts_Plot.py>`
+        :ref:`Go to the end <sphx_glr_download_examples_plots_Simple_Fronts_Plot.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -94,7 +94,7 @@ standard lines, but add our path effects.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.130 seconds)
+   **Total running time of the script:** ( 0 minutes  0.158 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simple_Fronts_Plot.py:
@@ -102,6 +102,8 @@ standard lines, but add our path effects.
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
+
+
 
 
     .. container:: sphx-glr-download sphx-glr-download-python

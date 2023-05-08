@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_examples_sigma_to_pressure_interpolation.py>`
+        :ref:`Go to the end <sphx_glr_download_examples_sigma_to_pressure_interpolation.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -188,7 +188,7 @@ variable for plotting.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  11.301 seconds)
+   **Total running time of the script:** ( 0 minutes  14.809 seconds)
 
 
 .. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:
@@ -196,6 +196,8 @@ variable for plotting.
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
+
+
 
 
     .. container:: sphx-glr-download sphx-glr-download-python

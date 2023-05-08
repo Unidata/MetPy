@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_examples_calculations_Shearing_Deformation.py>`
+        :ref:`Go to the end <sphx_glr_download_examples_calculations_Shearing_Deformation.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -68,7 +68,7 @@ Dataset and plotting using Matplotlib.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.253 seconds)
+   **Total running time of the script:** ( 0 minutes  0.315 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Shearing_Deformation.py:
@@ -76,6 +76,8 @@ Dataset and plotting using Matplotlib.
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
+
+
 
 
     .. container:: sphx-glr-download sphx-glr-download-python

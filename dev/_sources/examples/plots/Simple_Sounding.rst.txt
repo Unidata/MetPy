@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_examples_plots_Simple_Sounding.py>`
+        :ref:`Go to the end <sphx_glr_download_examples_plots_Simple_Sounding.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -149,7 +149,7 @@ assign units.
  .. code-block:: none
 
 
-    <matplotlib.image.FigureImage object at 0x7fb0f837c160>
+    <matplotlib.image.FigureImage object at 0x7f0c596dafe0>
 
 
 
@@ -206,7 +206,7 @@ assign units.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.436 seconds)
+   **Total running time of the script:** ( 0 minutes  0.551 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simple_Sounding.py:
@@ -214,6 +214,8 @@ assign units.
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
+
+
 
 
     .. container:: sphx-glr-download sphx-glr-download-python

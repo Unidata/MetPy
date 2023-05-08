@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_examples_gridding_Point_Interpolation.py>`
+        :ref:`Go to the end <sphx_glr_download_examples_gridding_Point_Interpolation.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -139,7 +139,7 @@ Scipy.interpolate linear
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7fb0f82b0070>
+    <matplotlib.colorbar.Colorbar object at 0x7f0c78676f20>
 
 
 
@@ -173,7 +173,7 @@ Natural neighbor interpolation (MetPy implementation)
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7fb0f91a4af0>
+    <matplotlib.colorbar.Colorbar object at 0x7f0c694989d0>
 
 
 
@@ -212,7 +212,7 @@ min_neighbors = 1
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7fb0e467eef0>
+    <matplotlib.colorbar.Colorbar object at 0x7f0c58dc7be0>
 
 
 
@@ -249,7 +249,7 @@ min_neighbors = 3
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7fb0e4422e30>
+    <matplotlib.colorbar.Colorbar object at 0x7f0c79064460>
 
 
 
@@ -286,7 +286,7 @@ linear
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.859 seconds)
+   **Total running time of the script:** ( 0 minutes  7.391 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Point_Interpolation.py:
@@ -294,6 +294,8 @@ linear
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
+
+
 
 
     .. container:: sphx-glr-download sphx-glr-download-python
