@@ -34,6 +34,23 @@ common meteorological tasks.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="When plotting your data on a map you want to be able to plot the data in a useful area and with...">
+
+.. only:: html
+
+  .. image:: /tutorials/images/thumb/sphx_glr_area_tutorial_thumb.png
+    :alt: Using Predefined Areas with MetPy
+
+  :ref:`sphx_glr_tutorials_area_tutorial.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Using Predefined Areas with MetPy</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutori...">
 
 .. only:: html
@@ -92,6 +109,7 @@ common meteorological tasks.
    :hidden:
 
    /tutorials/unit_tutorial
+   /tutorials/area_tutorial
    /tutorials/upperair_soundings
    /tutorials/xarray_tutorial
    /tutorials/declarative_tutorial

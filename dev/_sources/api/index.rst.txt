@@ -19,6 +19,11 @@ Reference Guide
    metpy.xarray
 
 .. toctree::
+   :maxdepth: 1
+
+   areas
+
+.. toctree::
 
    references
 
