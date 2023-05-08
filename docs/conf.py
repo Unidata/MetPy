@@ -215,11 +215,13 @@ html_theme_options = {
         }
     ],
     'use_edit_page_button': False,
-    'google_analytics_id': 'UA-92978945-1',
+    'analytics': {'google_analytics_id': 'UA-92978945-1'},
     'navbar_align': 'left',
     'navbar_start': ['navbar-logo'],
     'navbar_center': ['navbar-nav'],
-    'navbar_end': ['search-field', 'navbar-icon-links'],
+    'header_links_before_dropdown': 6,
+    'navbar_persistent': ['search-button'],
+    'navbar_end': ['navbar-icon-links'],
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
