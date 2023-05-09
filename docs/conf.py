@@ -220,11 +220,15 @@ html_theme_options = {
     'use_edit_page_button': False,
     'analytics': {'google_analytics_id': 'UA-92978945-1'},
     'navbar_align': 'left',
-    'navbar_start': ['navbar-logo'],
+    'navbar_start': ['navbar-logo', 'version-switcher'],
     'navbar_center': ['navbar-nav'],
     'header_links_before_dropdown': 6,
     'navbar_persistent': ['search-button'],
-    'navbar_end': ['navbar-icon-links'],
+    'navbar_end': ['navbar-icon-links', 'theme-switcher'],
+    'switcher': {
+        'json_url': 'https://unidata.github.io/MetPy/pst-versions.json',
+        'version_match': 'dev' if 'dev' in version else version,
+    },
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -288,7 +292,7 @@ html_last_updated_fmt = '%b %d, %Y at %H:%M:%S'
 
 # Custom sidebar templates, maps document names to template names.
 html_sidebars = {
-    '**': ['versions', 'sidebar-nav-bs']
+    '**': ['sidebar-nav-bs']
 }
 
 # Additional templates that should be rendered to pages, maps page names to
