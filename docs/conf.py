@@ -207,12 +207,14 @@ html_theme_options = {
         {
             'name': 'GitHub',
             'url': 'https://github.com/Unidata/MetPy',
-            'icon': 'fab fa-github-square',
+            'icon': 'fa-brands fa-github-square',
+            'type': 'fontawesome',
         },
         {
             'name': 'Twitter',
             'url': 'https://twitter.com/MetPy',
-            'icon': 'fab fa-twitter-square',
+            'icon': 'fa-brands fa-twitter-square',
+            'type': 'fontawesome',
         }
     ],
     'use_edit_page_button': False,
@@ -241,6 +243,7 @@ html_context = {
     'github_user': 'Unidata',
     'github_repo': 'MetPy',
     'github_version': 'main',  # Make changes to the main branch
+    'default_mode': 'light',
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
