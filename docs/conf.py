@@ -40,6 +40,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
+    'sphinx_design',
     'sphinx_gallery.gen_gallery',
     'matplotlib.sphinxext.plot_directive',
     'myst_parser',
