@@ -218,7 +218,7 @@ html_theme_options = {
         }
     ],
     'use_edit_page_button': False,
-    'analytics': {'google_analytics_id': 'UA-92978945-1'},
+    'analytics': {'google_analytics_id': 'G-J48T2BG3J7'},
     'navbar_align': 'left',
     'navbar_start': ['navbar-logo', 'version-switcher'],
     'navbar_center': ['navbar-nav'],
