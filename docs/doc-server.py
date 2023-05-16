@@ -22,8 +22,8 @@ class Server(http.server.SimpleHTTPRequestHandler):
         """Translate a request path to the proper path into the built docs."""
         if path == '/MetPy/banner.html':
             return str(TEST_FILES_DIR / 'banner.html')
-        elif path == '/MetPy/versions.json':
-            return str(TEST_FILES_DIR / 'versions.json')
+        elif path == '/MetPy/pst-versions.json':
+            return str(TEST_FILES_DIR / 'pst-versions.json')
         elif path.startswith('/MetPy/'):
             path = posixpath.join('/', *path.split('/')[3:])
         return super().translate_path(path)
@@ -33,7 +33,7 @@ build_server = partial(Server, directory='build/html')
 
 with socketserver.TCPServer(('', PORT), build_server) as httpd:
     try:
-        print(f'Serving docs at: http://localhost:{PORT}/MetPy/v1.0')
+        print(f'Serving docs at: http://localhost:{PORT}/MetPy/dev')
         httpd.serve_forever()
     except KeyboardInterrupt:
         sys.exit(0)

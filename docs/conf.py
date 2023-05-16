@@ -40,6 +40,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
+    'sphinx_design',
     'sphinx_gallery.gen_gallery',
     'matplotlib.sphinxext.plot_directive',
     'myst_parser',
@@ -206,20 +207,28 @@ html_theme_options = {
         {
             'name': 'GitHub',
             'url': 'https://github.com/Unidata/MetPy',
-            'icon': 'fab fa-github-square',
+            'icon': 'fa-brands fa-github-square',
+            'type': 'fontawesome',
         },
         {
             'name': 'Twitter',
             'url': 'https://twitter.com/MetPy',
-            'icon': 'fab fa-twitter-square',
+            'icon': 'fa-brands fa-twitter-square',
+            'type': 'fontawesome',
         }
     ],
     'use_edit_page_button': False,
-    'google_analytics_id': 'UA-92978945-1',
+    'analytics': {'google_analytics_id': 'G-J48T2BG3J7'},
     'navbar_align': 'left',
-    'navbar_start': ['navbar-logo'],
+    'navbar_start': ['navbar-logo', 'version-switcher'],
     'navbar_center': ['navbar-nav'],
-    'navbar_end': ['search-field', 'navbar-icon-links'],
+    'header_links_before_dropdown': 6,
+    'navbar_persistent': ['search-button'],
+    'navbar_end': ['navbar-icon-links', 'theme-switcher'],
+    'switcher': {
+        'json_url': 'https://unidata.github.io/MetPy/pst-versions.json',
+        'version_match': 'dev' if 'dev' in version else f'v{version}',
+    },
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -238,6 +247,7 @@ html_context = {
     'github_user': 'Unidata',
     'github_repo': 'MetPy',
     'github_version': 'main',  # Make changes to the main branch
+    'default_mode': 'light',
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -282,7 +292,7 @@ html_last_updated_fmt = '%b %d, %Y at %H:%M:%S'
 
 # Custom sidebar templates, maps document names to template names.
 html_sidebars = {
-    '**': ['versions', 'sidebar-nav-bs']
+    '**': ['sidebar-nav-bs']
 }
 
 # Additional templates that should be rendered to pages, maps page names to

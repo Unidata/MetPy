@@ -19,85 +19,55 @@ with weather data. MetPy supports Python >= 3.8 and is freely available under a 
 
 If you're new to MetPy, check out our :doc:`Getting Started <userguide/startingguide>` guide.
 
-.. raw:: html
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
-                <div class="card text-center intro-card shadow">
-                <span><i class="fas fa-book-open fa-10x"></i></span>
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">User Guide</h5>
-                    <p class="card-text">The user guide provides in-depth information on how
-                    to use MetPy, including how to get started. This is where to look for
-                    general conceptual descriptions on how to use parts of MetPy, like its
-                    support for XArray or units.</p>
+.. grid:: 1 2 2 2
+    :gutter: 2
 
-.. container:: card-button
+    .. grid-item-card:: :octicon:`book;10em`
+        :link: userguide/index
+        :link-type: doc
+        :text-align: center
 
-    :doc:`To the user guide<userguide/index>`
+        **User Guide**
 
-.. raw:: html
+        The user guide provides in-depth information on how
+        to use MetPy, including how to get started. This is where to look for
+        general conceptual descriptions on how to use parts of MetPy, like its
+        support for XArray or units.
 
-                </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
-                <div class="card text-center intro-card shadow">
-                <span><i class="fas fa-list-alt fa-10x"></i></span>
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">Reference Guide</h5>
-                    <p class="card-text">The reference guide contains detailed descriptions on
-                    every function and class within MetPy. This is where to turn to understand
-                    how to use a particular feature or where to search for a specific tool.</p>
+    .. grid-item-card:: :octicon:`list-unordered;10em`
+        :link: api/index
+        :link-type: doc
+        :text-align: center
 
-.. container:: card-button
+        **Reference Guide**
 
-    :doc:`To the reference guide<api/index>`
+        The reference guide contains detailed descriptions on
+        every function and class within MetPy. This is where to turn to understand
+        how to use a particular feature or where to search for a specific tool
 
-.. raw:: html
+    .. grid-item-card:: :octicon:`terminal;10em`
+        :link: devel/index
+        :link-type: doc
+        :text-align: center
 
-                </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
-                <div class="card text-center intro-card shadow">
-                <span><i class="fas fa-laptop-code fa-10x"></i></span>
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">Developer Guide</h5>
-                    <p class="card-text">Want to help make MetPy better? Found something
-                    that's not working quite right? You can find instructions on how to
-                    contribute to MetPy here. You can also find detailed descriptions on
-                    tools useful for developing MetPy.</p>
+        **Developer Guide**
 
-.. container:: card-button
+        Want to help make MetPy better? Found something
+        that's not working quite right? You can find instructions on how to
+        contribute to MetPy here. You can also find detailed descriptions on
+        tools useful for developing MetPy.
 
-    :doc:`To the development guide<devel/index>`
+    .. grid-item-card:: :octicon:`graph;10em`
+        :link: examples/index
+        :link-type: doc
+        :text-align: center
 
-.. raw:: html
+        **Example Gallery**
 
-                </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
-                <div class="card text-center intro-card shadow">
-                <span><i class="fas fa-chart-area fa-10x"></i></span>
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">Examples</h5>
-                    <p class="card-text">Check out MetPy's gallery of examples which contains
-                    sample code demonstrating various parts of MetPy's functionality.</p>
+        Check out MetPy's gallery of examples which contains
+        sample code demonstrating various parts of MetPy's functionality.
 
-.. container:: card-button
-
-    :doc:`To the example gallery<examples/index>`
-
-.. raw:: html
-
-                </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 Our up-to-date references for grants and funding can be found `here <https://github.com/Unidata/MetPy/blob/main/CITATION.cff>`_.
 
