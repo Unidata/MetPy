@@ -12,6 +12,9 @@ import numpy as np
 import pandas as pd
 
 from ._tools import open_as_needed
+from ..package_tools import Exporter
+
+exporter = Exporter(globals())
 
 
 def _decode_coords(coordinates):
@@ -64,6 +67,7 @@ def _regroup_lines(iterable):
         yield parts
 
 
+@exporter.export
 def parse_wpc_surface_bulletin(bulletin, year=None):
     """Parse a coded surface bulletin from NWS WPC into a Pandas DataFrame.
 
