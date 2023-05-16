@@ -5,7 +5,8 @@
     },
     {
         "version": "latest",
-        "url": "https://unidata.github.io/MetPy/latest/"
+        "url": "https://unidata.github.io/MetPy/latest/",
+        "is_latest": true
     },
     {
         "name": "v1.5",
@@ -15,7 +16,8 @@
     {
         "name": "v1.4",
         "version": "1.4",
-        "url": "https://unidata.github.io/MetPy/v1.4/"
+        "url": "https://unidata.github.io/MetPy/v1.4/",
+        "is_latest": true
     },
     {
         "name": "v1.3",
