@@ -213,13 +213,13 @@ Then, still from within your ``devel`` environment,
 * Open ``docs/build/html/index.html`` and see your changes!
 
 ### `doc-server.py`
+
 The MetPy documentation relies on the
 [Pydata Sphinx Theme](https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html)
 for style and functionality.
 The theme includes some live javascript elements, including the version switcher.
 To test these elements, use our `doc-server.py` to deploy the built docs html files to a local
-server.
-If testing changes to `pst-versions.json` locally, change
+server. If testing changes to `pst-versions.json` locally, change
 `html_theme_options['switcher']['json_url']` to reference `/MetPy/pst-versions.json` and the
 builds should pass and reflect any testing changes to `docs/test-server/pst-versions.json`.
 Documentation builds may fail if the links in the json fail to resolve.
