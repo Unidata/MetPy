@@ -1,24 +1,33 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" data-theme="light">
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Contributors Guide &#8212; MetPy 1.4dev</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -26,323 +35,453 @@
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
-    
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'devel/CONTRIBUTING';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        </script>
     <script src="../_static/doc_shared.js"></script>
-    <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
+    <link rel="icon" href="../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="MetPy Roadmap" href="roadmap.html" />
     <link rel="prev" title="Developer’s Guide" href="index.html" />
     
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-92978945-1', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/devel/CONTRIBUTING.html" />
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
-
-  <div id="navbar-start">
-    
-    
-
-<a class="navbar-brand" href="../index.html">
-  <img src="../_static/metpy_horizontal.png" class="logo" alt="logo">
-</a>
-
-
-    
-  </div>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
 
   
-  <div id="navbar-collapsible" class=" collapse navbar-collapse">
-    <div id="navbar-center" class="mr-auto">
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/metpy_horizontal.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/metpy_horizontal.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      dev  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
       
-      <div class="navbar-center-item">
-        <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../userguide/index.html">
-  User Guide
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../api/index.html">
-  Reference Guide
- </a>
-</li>
-
-<li class="toctree-l1 current active nav-item">
- <a class="reference internal nav-link" href="index.html">
-  Developer’s Guide
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../examples/index.html">
-  Example Gallery
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../userguide/SUPPORT.html">
-  Support
- </a>
-</li>
-
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
     
-    <li class="nav-item">
-        <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
-    </li>
-    
-</ul>
-      </div>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        Reference Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Developer’s Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples/index.html">
+                        Example Gallery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
+                        Support
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+                    Release Notes
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
       
     </div>
-
-    <div id="navbar-end">
+    
+    
+    <div class="navbar-header-items__end">
       
-      <div class="navbar-end-item">
-        <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-      </div>
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
       
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/Unidata/MetPy" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="https://twitter.com/MetPy" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter-square"></i></span>
             <label class="sr-only">Twitter</label></a>
         </li>
-      </ul>
-      </div>
+</ul></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
       
     </div>
+    
   </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
-  </nav>
 
-
+    </nav>
+  
+    
     <div class="container-fluid" id="banner"></div>
 
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
 
-    <div class="container-xl">
-      <div class="row">
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        Reference Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Developer’s Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples/index.html">
+                        Example Gallery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
+                        Support
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+                    Release Notes
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
           
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar">
-              <div class="sidebar-start-items"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  Version 1.4dev
-</a>
-<div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-  <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Contributors Guide
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="roadmap.html">
-   MetPy Roadmap
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="infrastructureguide.html">
-   Infrastructure Guide
-  </a>
- </li>
-</ul>
-
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+</ul></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
   </div>
-</nav>
-              </div>
-              <div class="sidebar-end-items">
-              </div>
-            </div>
-            
-          
-
-          
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
-              
-              <div class="toc-item">
-                
-<div class="tocsection onthispage mt-5 pt-1 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
-
-<nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#introduction">
-   Introduction
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-can-i-do">
-   What Can I Do?
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ground-rules">
-   Ground Rules
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#reporting-a-bug">
-   Reporting a bug
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#setting-up-your-development-environment">
-   Setting up your development environment
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pull-requests">
-   Pull Requests
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#source-code">
-   Source Code
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#documentation">
-   Documentation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tests">
-   Tests
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#running-tests">
-     Running Tests
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#writing-tests">
-     Writing Tests
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#image-tests">
-     Image tests
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#cached-data-files">
-   Cached Data Files
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#code-style">
-   Code Style
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-happens-after-the-pull-request">
-   What happens after the pull request
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#automated-testing">
-     Automated Testing
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#code-review">
-     Code Review
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#merging">
-     Merging
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#more-questions">
-   More Questions?
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#further-reading">
-   Further Reading
-  </a>
- </li>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">MetPy Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructureguide.html">Infrastructure Guide</a></li>
 </ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Developer’s Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Contributors Guide</li>
+  </ul>
 </nav>
-              </div>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
               
-              <div class="toc-item">
+              
+              
                 
-              </div>
-              
-            
-          </div>
-          
-
-          
-          
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
-              
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section id="contributors-guide">
-<h1>Contributors Guide<a class="headerlink" href="#contributors-guide" title="Permalink to this headline">#</a></h1>
+<h1>Contributors Guide<a class="headerlink" href="#contributors-guide" title="Permalink to this heading">#</a></h1>
 <p>Interested in helping build MetPy? Have code from your research that you believe others will
 find useful? Have a few minutes to tackle an issue? In this guide we will get you setup and
 integrated into contributing to MetPy!</p>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>First off, thank you for considering contributing to MetPy. MetPy is community-driven
 project. It’s people like you that make MetPy useful and successful. There are many ways
 to contribute, from writing tutorials or examples, improvements to the documentation,
@@ -356,7 +495,7 @@ helping you finalize your pull requests.</p>
 MetPy contributions. We’re glad you’re here!</p>
 </section>
 <section id="what-can-i-do">
-<h2>What Can I Do?<a class="headerlink" href="#what-can-i-do" title="Permalink to this headline">#</a></h2>
+<h2>What Can I Do?<a class="headerlink" href="#what-can-i-do" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Tackle any <a class="reference external" href="https://github.com/Unidata/MetPy/issues">issues</a> you wish! We have a special
 label for issues that beginners might want to try. Have a look at our
@@ -371,7 +510,7 @@ things up, test it, etc.</p></li>
 </ul>
 </section>
 <section id="ground-rules">
-<h2>Ground Rules<a class="headerlink" href="#ground-rules" title="Permalink to this headline">#</a></h2>
+<h2>Ground Rules<a class="headerlink" href="#ground-rules" title="Permalink to this heading">#</a></h2>
 <p>The goal is to maintain a diverse community that’s pleasant for everyone. Please
 be considerate and respectful of others by following our
 <a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/CODE_OF_CONDUCT.md">code of conduct</a>.</p>
@@ -396,7 +535,7 @@ fast rule–like to allow for some default arguments).</p></li>
 </ul>
 </section>
 <section id="reporting-a-bug">
-<h2>Reporting a bug<a class="headerlink" href="#reporting-a-bug" title="Permalink to this headline">#</a></h2>
+<h2>Reporting a bug<a class="headerlink" href="#reporting-a-bug" title="Permalink to this heading">#</a></h2>
 <p>The easiest way to get involved is to report issues you encounter when using MetPy or by
 requesting something you think is missing.</p>
 <ul class="simple">
@@ -409,7 +548,7 @@ are running. If possible, include complete, minimal example code that reproduces
 </ul>
 </section>
 <section id="setting-up-your-development-environment">
-<h2>Setting up your development environment<a class="headerlink" href="#setting-up-your-development-environment" title="Permalink to this headline">#</a></h2>
+<h2>Setting up your development environment<a class="headerlink" href="#setting-up-your-development-environment" title="Permalink to this heading">#</a></h2>
 <p>We recommend using the <a class="reference external" href="https://conda.io/docs/">conda</a> package manager for your Python environments.
 This requires some comfort with the command line and a little <code class="docutils literal notranslate"><span class="pre">git</span></code> knowledge.
 Our recommended setup for contributing:</p>
@@ -461,7 +600,7 @@ Remember that these must be executed within the <code class="docutils literal no
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
-<p>Note sections on <a class="reference internal" href="#documentation"><span class="std std-doc">documentation</span></a> and <a class="reference internal" href="#code-style"><span class="std std-doc">code style</span></a> below,
+<p>Note sections on <a class="reference internal" href="#documentation">documentation</a> and <a class="reference internal" href="#code-style">code style</a> below,
 where you may need to install a few more packages into your new environment.</p>
 <p>Now you’re all set!
 You have an environment called <code class="docutils literal notranslate"><span class="pre">devel</span></code> that you can work in.
@@ -470,7 +609,7 @@ next time you want to use it after closing the terminal.
 If you want to get back to the root environment, run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">deactivate</span></code>.</p>
 </section>
 <section id="pull-requests">
-<h2>Pull Requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline">#</a></h2>
+<h2>Pull Requests<a class="headerlink" href="#pull-requests" title="Permalink to this heading">#</a></h2>
 <p>The changes to the MetPy source (and documentation) should be made via GitHub pull requests
 against <code class="docutils literal notranslate"><span class="pre">main</span></code>, even for those with administration rights. While it’s tempting to
 make changes directly to <code class="docutils literal notranslate"><span class="pre">main</span></code> and push them up, it is better to make a pull request so
@@ -496,7 +635,7 @@ See <a class="reference external" href="https://github.com/Unidata/MetPy/blob/ma
 explanation and rationale behind MetPy’s CLA.</p>
 </section>
 <section id="source-code">
-<h2>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">#</a></h2>
+<h2>Source Code<a class="headerlink" href="#source-code" title="Permalink to this heading">#</a></h2>
 <p>MetPy’s source code is located in the <code class="docutils literal notranslate"><span class="pre">src/</span></code> directory in the root of the repository. Within
 <code class="docutils literal notranslate"><span class="pre">src/</span></code> is the <code class="docutils literal notranslate"><span class="pre">metpy/</span></code> directory, which is the base package. Inside here are the main
 top-level subpackages of MetPy:</p>
@@ -508,7 +647,7 @@ top-level subpackages of MetPy:</p>
 </ul>
 </section>
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">#</a></h2>
 <p>Now that you’ve made your awesome contribution, it’s time to tell the world how to use it.
 Writing documentation strings is really important to make sure others use your functionality
 properly. Didn’t write new functions? That’s fine, but be sure that the documentation for
@@ -518,7 +657,7 @@ make sure that it gets marked as included if appropriate in the GEMPAK conversio
 <p>You can write examples in the documentation if they are simple concepts to demonstrate. If
 your feature is more complex, consider adding to the examples or tutorials for MetPy.</p>
 <p>You can build the documentation locally to see how your changes will look.
-After setting up your <a class="reference internal" href="#setting-up-your-development-environment"><span class="std std-doc">development environment</span></a> above,
+After setting up your <a class="reference internal" href="#setting-up-your-development-environment">development environment</a> above,
 from within the <code class="docutils literal notranslate"><span class="pre">metpy</span></code> directory with your <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment active,
 use <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">--file</span> <span class="pre">ci/doc_requirements.txt</span></code>
 to install required packages to build our documentation.
@@ -528,15 +667,30 @@ Then, still from within your <code class="docutils literal notranslate"><span cl
 <li><p>Remove any old builds and build the current docs <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span> <span class="pre">html</span></code></p></li>
 <li><p>Open <code class="docutils literal notranslate"><span class="pre">docs/build/html/index.html</span></code> and see your changes!</p></li>
 </ul>
+<section id="doc-server-py">
+<h3><code class="docutils literal notranslate"><span class="pre">doc-server.py</span></code><a class="headerlink" href="#doc-server-py" title="Permalink to this heading">#</a></h3>
+<p>The MetPy documentation relies on the
+<a class="reference external" href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Pydata Sphinx Theme</a>
+for style and functionality.
+The theme includes some live javascript elements, including the version switcher.
+To test these elements, use our <code class="docutils literal notranslate"><span class="pre">doc-server.py</span></code> to deploy the built docs html files to a local
+server. If testing changes to <code class="docutils literal notranslate"><span class="pre">pst-versions.json</span></code> locally, change
+<code class="docutils literal notranslate"><span class="pre">html_theme_options['switcher']['json_url']</span></code> to reference <code class="docutils literal notranslate"><span class="pre">/MetPy/pst-versions.json</span></code> and the
+builds should pass and reflect any testing changes to <code class="docutils literal notranslate"><span class="pre">docs/test-server/pst-versions.json</span></code>.
+Documentation builds may fail if the links in the json fail to resolve.
+Change <code class="docutils literal notranslate"><span class="pre">html_theme_options['check_switcher']</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code> in <code class="docutils literal notranslate"><span class="pre">conf.py</span></code> to bypass this behavior.
+Note: for production, <code class="docutils literal notranslate"><span class="pre">pst-versions.json</span></code> must live and is automatically updated on the online
+MetPy documentation via the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch on GitHub.</p>
+</section>
 </section>
 <section id="tests">
-<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">#</a></h2>
+<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this heading">#</a></h2>
 <p>Unit tests are the lifeblood of the project, as it ensures that we can continue to add and
 change the code and stay confident that things have not broken. Running the tests requires
 <code class="docutils literal notranslate"><span class="pre">pytest</span></code>, which is easily available through <code class="docutils literal notranslate"><span class="pre">conda</span></code> or <code class="docutils literal notranslate"><span class="pre">pip</span></code>. It was also installed if
 you made our default <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment.</p>
 <section id="running-tests">
-<h3>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">#</a></h3>
+<h3>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this heading">#</a></h3>
 <p>Running the tests can be done by running <code class="docutils literal notranslate"><span class="pre">pytest</span></code></p>
 <p>Running the whole test suite isn’t that slow, but can be a burden if you’re working on just
 one module or a specific test. It is easy to run tests on a single directory:</p>
@@ -549,7 +703,7 @@ one module or a specific test. It is easy to run tests on a single directory:</p
 </div>
 </section>
 <section id="writing-tests">
-<h3>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">#</a></h3>
+<h3>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this heading">#</a></h3>
 <p>Tests should ideally hit all of the lines of code added or changed. We have automated
 services that can help track down lines of code that are missed by tests. Watching the
 coverage has even helped find sections of dead code that could be removed!</p>
@@ -581,10 +735,10 @@ comparisons, parameterizing tests, testing that exceptions are raised, and more.
 at the existing tests to get an idea of some of the common patterns.</p>
 </section>
 <section id="image-tests">
-<h3>Image tests<a class="headerlink" href="#image-tests" title="Permalink to this headline">#</a></h3>
+<h3>Image tests<a class="headerlink" href="#image-tests" title="Permalink to this heading">#</a></h3>
 <p>Some tests (for matplotlib plotting code) are done as an image comparison, using the
 pytest-mpl plugin.
-By following the <a class="reference internal" href="#setting-up-your-development-environment"><span class="std std-doc">guide</span></a> above,
+By following the <a class="reference internal" href="#setting-up-your-development-environment">guide</a> above,
 you should have a <code class="docutils literal notranslate"><span class="pre">testing</span></code> install of matplotlib, which will guarantee that your image tests
 behave exactly the same as ours.
 To run these tests, use:</p>
@@ -602,7 +756,7 @@ to run only the test you just created for this step.</p>
 </section>
 </section>
 <section id="cached-data-files">
-<h2>Cached Data Files<a class="headerlink" href="#cached-data-files" title="Permalink to this headline">#</a></h2>
+<h2>Cached Data Files<a class="headerlink" href="#cached-data-files" title="Permalink to this heading">#</a></h2>
 <p>MetPy keeps some test data, as well as things like shape files for US counties in a data cache
 supported by the pooch library. To add files to this, please ensure they are as small as
 possible. Put the files in the <code class="docutils literal notranslate"><span class="pre">staticdata</span></code> directory. Then run this command in the root of
@@ -614,7 +768,7 @@ the MetPy repository to recreate the data registry:</p>
 contribution.</p>
 </section>
 <section id="code-style">
-<h2>Code Style<a class="headerlink" href="#code-style" title="Permalink to this headline">#</a></h2>
+<h2>Code Style<a class="headerlink" href="#code-style" title="Permalink to this heading">#</a></h2>
 <p>MetPy uses the Python code style outlined in <a class="reference external" href="https://pep8.org">PEP8</a>. For better or worse, this
 is what the majority of the Python world uses. The one deviation is that line length limit is
 95 characters. 80 is a good target, but some times longer lines are needed.</p>
@@ -624,7 +778,7 @@ Therefore, it makes sense to enforce this style as code is added to keep everyth
 uniform. To this end, part of the automated testing for MetPy checks style. To check style
 locally within the source directory you can use the <a class="reference external" href="https://beta.ruff.rs/docs/">ruff</a> and
 <a class="reference external" href="https://flake8.pycqa.org/en/latest/">flake8</a> tools.
-After setting up your <a class="reference internal" href="#setting-up-your-development-environment"><span class="std std-doc">development environment</span></a> above,
+After setting up your <a class="reference internal" href="#setting-up-your-development-environment">development environment</a> above,
 from within the <code class="docutils literal notranslate"><span class="pre">metpy</span></code> directory with your <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment active,
 install the code style tools we use with <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">--file</span> <span class="pre">ci/linting_requirements.txt</span></code>.
 Checking your code style is then as easy as running <code class="docutils literal notranslate"><span class="pre">ruff</span> <span class="pre">check</span> <span class="pre">.</span> <span class="pre">;</span> <span class="pre">flake8</span> <span class="pre">.</span></code>
@@ -635,11 +789,11 @@ in order, and all of the other nits that the bots will find. It is very importan
 this consistent style helps us keep MetPy readable, maintainable, and uniform.</p>
 </section>
 <section id="what-happens-after-the-pull-request">
-<h2>What happens after the pull request<a class="headerlink" href="#what-happens-after-the-pull-request" title="Permalink to this headline">#</a></h2>
+<h2>What happens after the pull request<a class="headerlink" href="#what-happens-after-the-pull-request" title="Permalink to this heading">#</a></h2>
 <p>You’ve make your changes, documented them, added some tests, and submitted a pull request.
 What now?</p>
 <section id="automated-testing">
-<h3>Automated Testing<a class="headerlink" href="#automated-testing" title="Permalink to this headline">#</a></h3>
+<h3>Automated Testing<a class="headerlink" href="#automated-testing" title="Permalink to this heading">#</a></h3>
 <p>First, our army of never sleeping robots will begin a series of automated checks.
 The test suite, documentation, style, and more will be checked on various versions of Python
 with current and legacy packages. Travis CI and GitHub Actions will run testing on Linux, and
@@ -652,7 +806,7 @@ In some cases, there will be exceptions to their suggestions, but these are rare
 changes to your code and push again, the tests will automatically run again.</p>
 </section>
 <section id="code-review">
-<h3>Code Review<a class="headerlink" href="#code-review" title="Permalink to this headline">#</a></h3>
+<h3>Code Review<a class="headerlink" href="#code-review" title="Permalink to this heading">#</a></h3>
 <p>At this point you’re waiting on us. You should expect to hear at least a comment within a
 couple of days. We may suggest some changes or improvements or alternatives.</p>
 <p>Some things that will increase the chance that your pull request is accepted quickly:</p>
@@ -665,7 +819,7 @@ couple of days. We may suggest some changes or improvements or alternatives.</p>
 running both the unit tests as well as the <code class="docutils literal notranslate"><span class="pre">flake8</span></code> code linter.</p>
 </section>
 <section id="merging">
-<h3>Merging<a class="headerlink" href="#merging" title="Permalink to this headline">#</a></h3>
+<h3>Merging<a class="headerlink" href="#merging" title="Permalink to this heading">#</a></h3>
 <p>Once we’re all happy with the pull request, it’s time for it to get merged in. Only the
 maintainers can merge pull requests and you should never merge a pull request you have commits
 on as it circumvents the code review. If this is your first or second pull request, we’ll
@@ -674,7 +828,7 @@ increase, we’ll help you learn how to do this.</p>
 </section>
 </section>
 <section id="more-questions">
-<h2>More Questions?<a class="headerlink" href="#more-questions" title="Permalink to this headline">#</a></h2>
+<h2>More Questions?<a class="headerlink" href="#more-questions" title="Permalink to this heading">#</a></h2>
 <p>If you’re stuck somewhere or are interested in being a part of the community in
 other ways, feel free to contact us:</p>
 <ul class="simple">
@@ -685,7 +839,7 @@ other ways, feel free to contact us:</p>
 </ul>
 </section>
 <section id="further-reading">
-<h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">#</a></h2>
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">#</a></h2>
 <p>There are a ton of great resources out there on contributing to open source and on the
 importance of writing tested and maintainable software.</p>
 <ul class="simple">
@@ -696,51 +850,140 @@ importance of writing tested and maintainable software.</p>
 </section>
 
 
-              </div>
+                </article>
               
               
-              <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Developer’s Guide</p>
-        </div>
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Developer’s Guide</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="roadmap.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="roadmap.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">MetPy Roadmap</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
-              
-          </main>
-          
-
       </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-can-i-do">What Can I Do?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ground-rules">Ground Rules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reporting-a-bug">Reporting a bug</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-your-development-environment">Setting up your development environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pull-requests">Pull Requests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#doc-server-py"><code class="docutils literal notranslate"><span class="pre">doc-server.py</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tests">Tests</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-tests">Running Tests</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-tests">Writing Tests</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-tests">Image tests</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cached-data-files">Cached Data Files</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-style">Code Style</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-after-the-pull-request">What happens after the pull request</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automated-testing">Automated Testing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-review">Code Review</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merging">Merging</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-questions">More Questions?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further Reading</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/devel/CONTRIBUTING.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-<footer class="footer mt-5 mt-md-0">
-  <div class="container">
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
     
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
-</p>
+      © Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
     </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
-</p>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
     </div>
-    
-  </div>
-</footer>
+  
+</div>
+
+  </footer>
   </body>
 </html>

@@ -1,24 +1,33 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" data-theme="light">
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>WarmFrontolysis &#8212; MetPy 1.4dev</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
@@ -26,1414 +35,697 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
-    
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/metpy.plots.WarmFrontolysis';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        </script>
     <script src="../../_static/doc_shared.js"></script>
-    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+    <link rel="icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="OccludedFront" href="metpy.plots.OccludedFront.html" />
     <link rel="prev" title="WarmFrontogenesis" href="metpy.plots.WarmFrontogenesis.html" />
     
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-92978945-1', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.WarmFrontolysis.html" />
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
-
-  <div id="navbar-start">
-    
-    
-
-<a class="navbar-brand" href="../../index.html">
-  <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo">
-</a>
-
-
-    
-  </div>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
 
   
-  <div id="navbar-collapsible" class=" collapse navbar-collapse">
-    <div id="navbar-center" class="mr-auto">
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      dev  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
       
-      <div class="navbar-center-item">
-        <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../userguide/index.html">
-  User Guide
- </a>
-</li>
-
-<li class="toctree-l1 current active nav-item">
- <a class="reference internal nav-link" href="../index.html">
-  Reference Guide
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../devel/index.html">
-  Developer’s Guide
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../examples/index.html">
-  Example Gallery
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../userguide/SUPPORT.html">
-  Support
- </a>
-</li>
-
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
     
-    <li class="nav-item">
-        <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
-    </li>
-    
-</ul>
-      </div>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Reference Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../devel/index.html">
+                        Developer’s Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../examples/index.html">
+                        Example Gallery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../userguide/SUPPORT.html">
+                        Support
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+                    Release Notes
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
       
     </div>
-
-    <div id="navbar-end">
+    
+    
+    <div class="navbar-header-items__end">
       
-      <div class="navbar-end-item">
-        <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-      </div>
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
       
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/Unidata/MetPy" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="https://twitter.com/MetPy" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter-square"></i></span>
             <label class="sr-only">Twitter</label></a>
         </li>
-      </ul>
-      </div>
+</ul></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
       
     </div>
+    
   </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
-  </nav>
 
-
+    </nav>
+  
+    
     <div class="container-fluid" id="banner"></div>
 
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
 
-    <div class="container-xl">
-      <div class="row">
-          
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar">
-              <div class="sidebar-start-items"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  Version 1.4dev
-</a>
-<div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-  <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="metpy.constants.html">
-   Constants
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     (metpy.constants)
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="metpy.units.html">
-   Units
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     (metpy.units)
-    </span>
-   </code>
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.check_units.html">
-     check_units
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.concatenate.html">
-     concatenate
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.is_quantity.html">
-     is_quantity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.masked_array.html">
-     masked_array
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html">
-     pandas_dataframe_to_unit_arrays
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.process_units.html">
-     process_units
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.setup_registry.html">
-     setup_registry
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="metpy.io.html">
-   Reading Data
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     (metpy.io)
-    </span>
-   </code>
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html">
-     parse_metar_to_dataframe
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.parse_metar_file.html">
-     parse_metar_file
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.is_precip_mode.html">
-     is_precip_mode
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.add_station_lat_lon.html">
-     add_station_lat_lon
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.GempakGrid.html">
-     GempakGrid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.GempakSounding.html">
-     GempakSounding
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.GempakSurface.html">
-     GempakSurface
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.GiniFile.html">
-     GiniFile
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.Level2File.html">
-     Level2File
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.Level3File.html">
-     Level3File
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.StationLookup.html">
-     StationLookup
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="metpy.calc.html">
-   Calculations
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     (metpy.calc)
-    </span>
-   </code>
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.add_height_to_pressure.html">
-     add_height_to_pressure
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.add_pressure_to_height.html">
-     add_pressure_to_height
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.density.html">
-     density
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.dry_lapse.html">
-     dry_lapse
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.dry_static_energy.html">
-     dry_static_energy
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.geopotential_to_height.html">
-     geopotential_to_height
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.height_to_geopotential.html">
-     height_to_geopotential
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.mean_pressure_weighted.html">
-     mean_pressure_weighted
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.potential_temperature.html">
-     potential_temperature
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.sigma_to_pressure.html">
-     sigma_to_pressure
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.static_stability.html">
-     static_stability
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.temperature_from_potential_temperature.html">
-     temperature_from_potential_temperature
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.thickness_hydrostatic.html">
-     thickness_hydrostatic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.weighted_continuous_average.html">
-     weighted_continuous_average
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.dewpoint.html">
-     dewpoint
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.dewpoint_from_relative_humidity.html">
-     dewpoint_from_relative_humidity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.dewpoint_from_specific_humidity.html">
-     dewpoint_from_specific_humidity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.equivalent_potential_temperature.html">
-     equivalent_potential_temperature
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.mixing_ratio.html">
-     mixing_ratio
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.mixing_ratio_from_relative_humidity.html">
-     mixing_ratio_from_relative_humidity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.mixing_ratio_from_specific_humidity.html">
-     mixing_ratio_from_specific_humidity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.moist_lapse.html">
-     moist_lapse
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.moist_static_energy.html">
-     moist_static_energy
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.precipitable_water.html">
-     precipitable_water
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.psychrometric_vapor_pressure_wet.html">
-     psychrometric_vapor_pressure_wet
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.relative_humidity_from_dewpoint.html">
-     relative_humidity_from_dewpoint
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html">
-     relative_humidity_from_mixing_ratio
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.relative_humidity_from_specific_humidity.html">
-     relative_humidity_from_specific_humidity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.relative_humidity_wet_psychrometric.html">
-     relative_humidity_wet_psychrometric
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.saturation_equivalent_potential_temperature.html">
-     saturation_equivalent_potential_temperature
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.saturation_mixing_ratio.html">
-     saturation_mixing_ratio
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html">
-     saturation_vapor_pressure
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.scale_height.html">
-     scale_height
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.specific_humidity_from_dewpoint.html">
-     specific_humidity_from_dewpoint
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.specific_humidity_from_mixing_ratio.html">
-     specific_humidity_from_mixing_ratio
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.thickness_hydrostatic_from_relative_humidity.html">
-     thickness_hydrostatic_from_relative_humidity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.vapor_pressure.html">
-     vapor_pressure
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.vertical_velocity.html">
-     vertical_velocity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.vertical_velocity_pressure.html">
-     vertical_velocity_pressure
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.virtual_potential_temperature.html">
-     virtual_potential_temperature
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.virtual_temperature.html">
-     virtual_temperature
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html">
-     virtual_temperature_from_dewpoint
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.wet_bulb_temperature.html">
-     wet_bulb_temperature
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.bulk_shear.html">
-     bulk_shear
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.bunkers_storm_motion.html">
-     bunkers_storm_motion
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.cape_cin.html">
-     cape_cin
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.ccl.html">
-     ccl
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.critical_angle.html">
-     critical_angle
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.cross_totals.html">
-     cross_totals
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.el.html">
-     el
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.k_index.html">
-     k_index
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.lcl.html">
-     lcl
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.lfc.html">
-     lfc
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.lifted_index.html">
-     lifted_index
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.mixed_layer.html">
-     mixed_layer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.mixed_layer_cape_cin.html">
-     mixed_layer_cape_cin
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.mixed_parcel.html">
-     mixed_parcel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.most_unstable_cape_cin.html">
-     most_unstable_cape_cin
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.most_unstable_parcel.html">
-     most_unstable_parcel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.parcel_profile.html">
-     parcel_profile
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.parcel_profile_with_lcl.html">
-     parcel_profile_with_lcl
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html">
-     parcel_profile_with_lcl_as_dataset
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.showalter_index.html">
-     showalter_index
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.significant_tornado.html">
-     significant_tornado
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.storm_relative_helicity.html">
-     storm_relative_helicity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.supercell_composite.html">
-     supercell_composite
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.surface_based_cape_cin.html">
-     surface_based_cape_cin
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.sweat_index.html">
-     sweat_index
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.total_totals_index.html">
-     total_totals_index
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.vertical_totals.html">
-     vertical_totals
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.absolute_momentum.html">
-     absolute_momentum
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.absolute_vorticity.html">
-     absolute_vorticity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.advection.html">
-     advection
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.ageostrophic_wind.html">
-     ageostrophic_wind
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.coriolis_parameter.html">
-     coriolis_parameter
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.divergence.html">
-     divergence
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.exner_function.html">
-     exner_function
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.frontogenesis.html">
-     frontogenesis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.geostrophic_wind.html">
-     geostrophic_wind
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.inertial_advective_wind.html">
-     inertial_advective_wind
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.kinematic_flux.html">
-     kinematic_flux
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.montgomery_streamfunction.html">
-     montgomery_streamfunction
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.potential_vorticity_baroclinic.html">
-     potential_vorticity_baroclinic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.potential_vorticity_barotropic.html">
-     potential_vorticity_barotropic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.q_vector.html">
-     q_vector
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.shearing_deformation.html">
-     shearing_deformation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.stretching_deformation.html">
-     stretching_deformation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.total_deformation.html">
-     total_deformation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.vorticity.html">
-     vorticity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.wind_components.html">
-     wind_components
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.wind_direction.html">
-     wind_direction
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.wind_speed.html">
-     wind_speed
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.brunt_vaisala_frequency.html">
-     brunt_vaisala_frequency
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.brunt_vaisala_frequency_squared.html">
-     brunt_vaisala_frequency_squared
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.brunt_vaisala_period.html">
-     brunt_vaisala_period
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.friction_velocity.html">
-     friction_velocity
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.gradient_richardson_number.html">
-     gradient_richardson_number
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.tke.html">
-     tke
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.cross_section_components.html">
-     cross_section_components
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.first_derivative.html">
-     first_derivative
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.geospatial_gradient.html">
-     geospatial_gradient
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.geospatial_laplacian.html">
-     geospatial_laplacian
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.gradient.html">
-     gradient
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.laplacian.html">
-     laplacian
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.lat_lon_grid_deltas.html">
-     lat_lon_grid_deltas
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.normal_component.html">
-     normal_component
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.second_derivative.html">
-     second_derivative
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.tangential_component.html">
-     tangential_component
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.unit_vectors_from_cross_section.html">
-     unit_vectors_from_cross_section
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.vector_derivative.html">
-     vector_derivative
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.apparent_temperature.html">
-     apparent_temperature
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.heat_index.html">
-     heat_index
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.windchill.html">
-     windchill
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.altimeter_to_sea_level_pressure.html">
-     altimeter_to_sea_level_pressure
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.altimeter_to_station_pressure.html">
-     altimeter_to_station_pressure
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.height_to_pressure_std.html">
-     height_to_pressure_std
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.pressure_to_height_std.html">
-     pressure_to_height_std
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.smooth_gaussian.html">
-     smooth_gaussian
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.smooth_window.html">
-     smooth_window
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.smooth_rectangular.html">
-     smooth_rectangular
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.smooth_circular.html">
-     smooth_circular
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.smooth_n_point.html">
-     smooth_n_point
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.zoom_xarray.html">
-     zoom_xarray
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.angle_to_direction.html">
-     angle_to_direction
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.azimuth_range_to_lat_lon.html">
-     azimuth_range_to_lat_lon
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.find_bounding_indices.html">
-     find_bounding_indices
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.find_intersections.html">
-     find_intersections
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.get_layer.html">
-     get_layer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.get_layer_heights.html">
-     get_layer_heights
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.get_perturbation.html">
-     get_perturbation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.isentropic_interpolation.html">
-     isentropic_interpolation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.isentropic_interpolation_as_dataset.html">
-     isentropic_interpolation_as_dataset
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.nearest_intersection_idx.html">
-     nearest_intersection_idx
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.parse_angle.html">
-     parse_angle
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.reduce_point_density.html">
-     reduce_point_density
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.resample_nn_1d.html">
-     resample_nn_1d
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="metpy.plots.html">
-   Plots
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     (metpy.plots)
-    </span>
-   </code>
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.read_colortable.html">
-     read_colortable
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.wx_code_to_numeric.html">
-     wx_code_to_numeric
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.add_metpy_logo.html">
-     add_metpy_logo
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.add_timestamp.html">
-     add_timestamp
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.add_unidata_logo.html">
-     add_unidata_logo
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.convert_gempak_color.html">
-     convert_gempak_color
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PanelContainer.html">
-     PanelContainer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.MapPanel.html">
-     MapPanel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.Plots2D.html">
-     Plots2D
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PlotScalar.html">
-     PlotScalar
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ImagePlot.html">
-     ImagePlot
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ContourPlot.html">
-     ContourPlot
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.FilledContourPlot.html">
-     FilledContourPlot
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.RasterPlot.html">
-     RasterPlot
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PlotVector.html">
-     PlotVector
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.BarbPlot.html">
-     BarbPlot
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ArrowPlot.html">
-     ArrowPlot
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PlotObs.html">
-     PlotObs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PlotGeometry.html">
-     PlotGeometry
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ScallopedStroke.html">
-     ScallopedStroke
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ColdFront.html">
-     ColdFront
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ColdFrontogenesis.html">
-     ColdFrontogenesis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ColdFrontolysis.html">
-     ColdFrontolysis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.Dryline.html">
-     Dryline
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.WarmFront.html">
-     WarmFront
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.WarmFrontogenesis.html">
-     WarmFrontogenesis
-    </a>
-   </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     WarmFrontolysis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.OccludedFront.html">
-     OccludedFront
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.OccludedFrontogenesis.html">
-     OccludedFrontogenesis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.OccludedFrontolysis.html">
-     OccludedFrontolysis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.RidgeAxis.html">
-     RidgeAxis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.Squall.html">
-     Squall
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.StationaryFront.html">
-     StationaryFront
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.StationaryFrontogenesis.html">
-     StationaryFrontogenesis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.StationaryFrontolysis.html">
-     StationaryFrontolysis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.SkewT.html">
-     SkewT
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.Hodograph.html">
-     Hodograph
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.StationPlot.html">
-     StationPlot
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.StationPlotLayout.html">
-     StationPlotLayout
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="metpy.plots.ctables.html">
-   Colortables
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     (metpy.plots.ctables)
-    </span>
-   </code>
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ctables.convert_gempak_table.html">
-     convert_gempak_table
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ctables.read_colortable.html">
-     read_colortable
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ctables.ColortableRegistry.html">
-     ColortableRegistry
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ctables.colortables.html">
-     colortables
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="metpy.interpolate.html">
-   Interpolate
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     (metpy.interpolate)
-    </span>
-   </code>
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html">
-     natural_neighbor_to_grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.inverse_distance_to_grid.html">
-     inverse_distance_to_grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.interpolate_to_grid.html">
-     interpolate_to_grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.interpolate_to_isosurface.html">
-     interpolate_to_isosurface
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.interpolate_nans_1d.html">
-     interpolate_nans_1d
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.interpolate_1d.html">
-     interpolate_1d
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.log_interpolate_1d.html">
-     log_interpolate_1d
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html">
-     natural_neighbor_to_points
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.inverse_distance_to_points.html">
-     inverse_distance_to_points
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.interpolate_to_points.html">
-     interpolate_to_points
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.interpolate_to_slice.html">
-     interpolate_to_slice
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.geodesic.html">
-     geodesic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.cross_section.html">
-     cross_section
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.remove_observations_below_value.html">
-     remove_observations_below_value
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.remove_nan_observations.html">
-     remove_nan_observations
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.remove_repeat_coordinates.html">
-     remove_repeat_coordinates
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="metpy.xarray.html">
-   Xarray Integration
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     (metpy.xarray)
-    </span>
-   </code>
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.xarray.grid_deltas_from_dataarray.html">
-     grid_deltas_from_dataarray
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../areas.html">
-   MetPy Area List
-  </a>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../references.html">
-   References
-  </a>
- </li>
-</ul>
-
-  </div>
-</nav>
-              </div>
-              <div class="sidebar-end-items">
-              </div>
-            </div>
-            
-          
-
-          
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
-              
-              <div class="toc-item">
-                
-
-<nav id="bd-toc-nav">
+  
+  <div class="sidebar-header-items sidebar-primary__section">
     
-</nav>
-              </div>
-              
-              <div class="toc-item">
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
                 
-              </div>
-              
-            
-          </div>
-          
 
-          
-          
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
-              
-              <div>
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Reference Guide
+                      </a>
+                    </li>
                 
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../devel/index.html">
+                        Developer’s Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../examples/index.html">
+                        Example Gallery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../userguide/SUPPORT.html">
+                        Support
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+                    Release Notes
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+</ul></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="metpy.constants.html">Constants <code class="docutils literal notranslate"><span class="pre">(metpy.constants)</span></code></a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="metpy.units.html">Units <code class="docutils literal notranslate"><span class="pre">(metpy.units)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.check_units.html">check_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.concatenate.html">concatenate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.is_quantity.html">is_quantity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.masked_array.html">masked_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html">pandas_dataframe_to_unit_arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.process_units.html">process_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.setup_registry.html">setup_registry</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="metpy.io.html">Reading Data <code class="docutils literal notranslate"><span class="pre">(metpy.io)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html">parse_metar_to_dataframe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.parse_metar_file.html">parse_metar_file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.is_precip_mode.html">is_precip_mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.add_station_lat_lon.html">add_station_lat_lon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.GempakGrid.html">GempakGrid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.GempakSounding.html">GempakSounding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.GempakSurface.html">GempakSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.GiniFile.html">GiniFile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.Level2File.html">Level2File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.Level3File.html">Level3File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.StationLookup.html">StationLookup</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="metpy.calc.html">Calculations <code class="docutils literal notranslate"><span class="pre">(metpy.calc)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.add_pressure_to_height.html">add_pressure_to_height</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.density.html">density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.dry_lapse.html">dry_lapse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.dry_static_energy.html">dry_static_energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.geopotential_to_height.html">geopotential_to_height</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.height_to_geopotential.html">height_to_geopotential</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.mean_pressure_weighted.html">mean_pressure_weighted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.potential_temperature.html">potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.sigma_to_pressure.html">sigma_to_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.static_stability.html">static_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.temperature_from_potential_temperature.html">temperature_from_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.thickness_hydrostatic.html">thickness_hydrostatic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.weighted_continuous_average.html">weighted_continuous_average</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.dewpoint.html">dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.dewpoint_from_relative_humidity.html">dewpoint_from_relative_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.dewpoint_from_specific_humidity.html">dewpoint_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.equivalent_potential_temperature.html">equivalent_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio.html">mixing_ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio_from_relative_humidity.html">mixing_ratio_from_relative_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio_from_specific_humidity.html">mixing_ratio_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_lapse.html">moist_lapse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_static_energy.html">moist_static_energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.precipitable_water.html">precipitable_water</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.psychrometric_vapor_pressure_wet.html">psychrometric_vapor_pressure_wet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.relative_humidity_from_dewpoint.html">relative_humidity_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html">relative_humidity_from_mixing_ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.relative_humidity_from_specific_humidity.html">relative_humidity_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.relative_humidity_wet_psychrometric.html">relative_humidity_wet_psychrometric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.saturation_equivalent_potential_temperature.html">saturation_equivalent_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.saturation_mixing_ratio.html">saturation_mixing_ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html">saturation_vapor_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.scale_height.html">scale_height</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.specific_humidity_from_dewpoint.html">specific_humidity_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.specific_humidity_from_mixing_ratio.html">specific_humidity_from_mixing_ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.thickness_hydrostatic_from_relative_humidity.html">thickness_hydrostatic_from_relative_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.vapor_pressure.html">vapor_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.vertical_velocity.html">vertical_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.vertical_velocity_pressure.html">vertical_velocity_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_potential_temperature.html">virtual_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature.html">virtual_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html">virtual_temperature_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.bulk_shear.html">bulk_shear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.bunkers_storm_motion.html">bunkers_storm_motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.cape_cin.html">cape_cin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.ccl.html">ccl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.critical_angle.html">critical_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.cross_totals.html">cross_totals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.el.html">el</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.k_index.html">k_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.lcl.html">lcl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.lfc.html">lfc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.lifted_index.html">lifted_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixed_layer.html">mixed_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixed_layer_cape_cin.html">mixed_layer_cape_cin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixed_parcel.html">mixed_parcel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.most_unstable_cape_cin.html">most_unstable_cape_cin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.most_unstable_parcel.html">most_unstable_parcel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.parcel_profile.html">parcel_profile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.parcel_profile_with_lcl.html">parcel_profile_with_lcl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html">parcel_profile_with_lcl_as_dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.showalter_index.html">showalter_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.significant_tornado.html">significant_tornado</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.storm_relative_helicity.html">storm_relative_helicity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.supercell_composite.html">supercell_composite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.surface_based_cape_cin.html">surface_based_cape_cin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.sweat_index.html">sweat_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.total_totals_index.html">total_totals_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.vertical_totals.html">vertical_totals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.absolute_momentum.html">absolute_momentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.absolute_vorticity.html">absolute_vorticity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.advection.html">advection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.ageostrophic_wind.html">ageostrophic_wind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.coriolis_parameter.html">coriolis_parameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.divergence.html">divergence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.exner_function.html">exner_function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.frontogenesis.html">frontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.geostrophic_wind.html">geostrophic_wind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.inertial_advective_wind.html">inertial_advective_wind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.kinematic_flux.html">kinematic_flux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.montgomery_streamfunction.html">montgomery_streamfunction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.potential_vorticity_baroclinic.html">potential_vorticity_baroclinic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.potential_vorticity_barotropic.html">potential_vorticity_barotropic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.q_vector.html">q_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.shearing_deformation.html">shearing_deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.stretching_deformation.html">stretching_deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.total_deformation.html">total_deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.vorticity.html">vorticity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.wind_components.html">wind_components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.wind_direction.html">wind_direction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.wind_speed.html">wind_speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.brunt_vaisala_frequency.html">brunt_vaisala_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.brunt_vaisala_frequency_squared.html">brunt_vaisala_frequency_squared</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.brunt_vaisala_period.html">brunt_vaisala_period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.friction_velocity.html">friction_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.gradient_richardson_number.html">gradient_richardson_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.tke.html">tke</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.cross_section_components.html">cross_section_components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.first_derivative.html">first_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.geospatial_gradient.html">geospatial_gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.geospatial_laplacian.html">geospatial_laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.gradient.html">gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.laplacian.html">laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.lat_lon_grid_deltas.html">lat_lon_grid_deltas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.normal_component.html">normal_component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.second_derivative.html">second_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.tangential_component.html">tangential_component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.unit_vectors_from_cross_section.html">unit_vectors_from_cross_section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.vector_derivative.html">vector_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.apparent_temperature.html">apparent_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.heat_index.html">heat_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.windchill.html">windchill</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.altimeter_to_sea_level_pressure.html">altimeter_to_sea_level_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.altimeter_to_station_pressure.html">altimeter_to_station_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.height_to_pressure_std.html">height_to_pressure_std</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.pressure_to_height_std.html">pressure_to_height_std</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.smooth_gaussian.html">smooth_gaussian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.smooth_window.html">smooth_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.smooth_rectangular.html">smooth_rectangular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.smooth_circular.html">smooth_circular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.smooth_n_point.html">smooth_n_point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.zoom_xarray.html">zoom_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.angle_to_direction.html">angle_to_direction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.azimuth_range_to_lat_lon.html">azimuth_range_to_lat_lon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.find_bounding_indices.html">find_bounding_indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.find_intersections.html">find_intersections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.get_layer.html">get_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.get_layer_heights.html">get_layer_heights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.get_perturbation.html">get_perturbation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.isentropic_interpolation.html">isentropic_interpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.isentropic_interpolation_as_dataset.html">isentropic_interpolation_as_dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.nearest_intersection_idx.html">nearest_intersection_idx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.parse_angle.html">parse_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.reduce_point_density.html">reduce_point_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.resample_nn_1d.html">resample_nn_1d</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="metpy.plots.html">Plots <code class="docutils literal notranslate"><span class="pre">(metpy.plots)</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.wx_code_to_numeric.html">wx_code_to_numeric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.add_timestamp.html">add_timestamp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.PanelContainer.html">PanelContainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.MapPanel.html">MapPanel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.Plots2D.html">Plots2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.PlotScalar.html">PlotScalar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ImagePlot.html">ImagePlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.RasterPlot.html">RasterPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.PlotVector.html">PlotVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.BarbPlot.html">BarbPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ArrowPlot.html">ArrowPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.PlotObs.html">PlotObs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.PlotGeometry.html">PlotGeometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ScallopedStroke.html">ScallopedStroke</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ColdFront.html">ColdFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ColdFrontogenesis.html">ColdFrontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ColdFrontolysis.html">ColdFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.Dryline.html">Dryline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.WarmFront.html">WarmFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.WarmFrontogenesis.html">WarmFrontogenesis</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">WarmFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.OccludedFront.html">OccludedFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.OccludedFrontogenesis.html">OccludedFrontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.OccludedFrontolysis.html">OccludedFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.RidgeAxis.html">RidgeAxis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.Squall.html">Squall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.StationaryFront.html">StationaryFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.StationaryFrontogenesis.html">StationaryFrontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.StationaryFrontolysis.html">StationaryFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.StationPlot.html">StationPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="metpy.plots.ctables.html">Colortables <code class="docutils literal notranslate"><span class="pre">(metpy.plots.ctables)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.convert_gempak_table.html">convert_gempak_table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.ColortableRegistry.html">ColortableRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.colortables.html">colortables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="metpy.interpolate.html">Interpolate <code class="docutils literal notranslate"><span class="pre">(metpy.interpolate)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html">natural_neighbor_to_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.inverse_distance_to_grid.html">inverse_distance_to_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.interpolate_to_grid.html">interpolate_to_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.interpolate_to_isosurface.html">interpolate_to_isosurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.interpolate_nans_1d.html">interpolate_nans_1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.interpolate_1d.html">interpolate_1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.log_interpolate_1d.html">log_interpolate_1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html">natural_neighbor_to_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.inverse_distance_to_points.html">inverse_distance_to_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.interpolate_to_points.html">interpolate_to_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.interpolate_to_slice.html">interpolate_to_slice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.geodesic.html">geodesic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.cross_section.html">cross_section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.remove_observations_below_value.html">remove_observations_below_value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.remove_nan_observations.html">remove_nan_observations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.remove_repeat_coordinates.html">remove_repeat_coordinates</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="metpy.xarray.html">Xarray Integration <code class="docutils literal notranslate"><span class="pre">(metpy.xarray)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.grid_deltas_from_dataarray.html">grid_deltas_from_dataarray</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../areas.html">MetPy Area List</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Reference Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="metpy.plots.html" class="nav-link">Plots <code class="docutils literal notranslate"><span class="pre">(metpy.plots)</span></code></a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">WarmFrontolysis</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section id="warmfrontolysis">
-<h1>WarmFrontolysis<a class="headerlink" href="#warmfrontolysis" title="Permalink to this headline">#</a></h1>
+<h1>WarmFrontolysis<a class="headerlink" href="#warmfrontolysis" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="metpy.plots.WarmFrontolysis">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">WarmFrontolysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.WarmFrontolysis" title="Permalink to this definition">#</a></dt>
 <dd><p>Draw a path as a weakening warm front.</p>
 <p>Initialize the frontolysis path effect.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – Color to use for the effect.</p></li>
 <li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The size of the markers to plot in points. Defaults to 10.</p></li>
@@ -1445,10 +737,6 @@ to <em class="xref py py-obj">False</em>.</p></li>
 </dl>
 <p class="rubric">Attributes Summary</p>
 <table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.WarmFrontolysis.symbol_width" title="metpy.plots.WarmFrontolysis.symbol_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symbol_width</span></code></a></p></td>
 <td><p>Return the width of the symbol being plotted.</p></td>
@@ -1457,10 +745,6 @@ to <em class="xref py py-obj">False</em>.</p></li>
 </table>
 <p class="rubric">Methods Summary</p>
 <table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.WarmFrontolysis.__init__" title="metpy.plots.WarmFrontolysis.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([color])</p></td>
 <td><p>Initialize the frontolysis path effect.</p></td>
@@ -1483,7 +767,7 @@ to <em class="xref py py-obj">False</em>.</p></li>
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/patheffects.html#WarmFrontolysis.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.WarmFrontolysis.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Initialize the frontolysis path effect.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – Color to use for the effect.</p></li>
 <li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The size of the markers to plot in points. Defaults to 10.</p></li>
@@ -1506,51 +790,119 @@ to <em class="xref py py-obj">False</em>.</p></li>
 <div style='clear:both'></div></section>
 
 
-              </div>
+                </article>
               
               
-              <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="metpy.plots.WarmFrontogenesis.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">WarmFrontogenesis</p>
-        </div>
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="metpy.plots.WarmFrontogenesis.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">WarmFrontogenesis</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="metpy.plots.OccludedFront.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="metpy.plots.OccludedFront.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">OccludedFront</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
-              
-          </main>
-          
-
       </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.WarmFrontolysis"><code class="docutils literal notranslate"><span class="pre">WarmFrontolysis</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.WarmFrontolysis.symbol_width"><code class="docutils literal notranslate"><span class="pre">WarmFrontolysis.symbol_width</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.WarmFrontolysis.__init__"><code class="docutils literal notranslate"><span class="pre">WarmFrontolysis.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.WarmFrontolysis.draw_path"><code class="docutils literal notranslate"><span class="pre">WarmFrontolysis.draw_path()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/api/generated/metpy.plots.WarmFrontolysis.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-<footer class="footer mt-5 mt-md-0">
-  <div class="container">
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
     
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
-</p>
+      © Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
     </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
-</p>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
     </div>
-    
-  </div>
-</footer>
+  
+</div>
+
+  </footer>
   </body>
 </html>
