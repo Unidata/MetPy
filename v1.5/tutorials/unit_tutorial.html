@@ -1,0 +1,889 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Working With Units &#8212; MetPy 1.5</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/unit_tutorial';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v1.5';
+        </script>
+    <script src="../_static/doc_shared.js"></script>
+    <link rel="icon" href="../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using Predefined Areas with MetPy" href="area_tutorial.html" />
+    <link rel="prev" title="Tutorials" href="index.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/tutorials/unit_tutorial.html" />
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/metpy_horizontal.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/metpy_horizontal.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      v1.5  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        Reference Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../devel/index.html">
+                        Developer’s Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples/index.html">
+                        Example Gallery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
+                        Support
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+                    Release Notes
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+</ul></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+    
+    <div class="container-fluid" id="banner"></div>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        Reference Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../devel/index.html">
+                        Developer’s Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples/index.html">
+                        Example Gallery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
+                        Support
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+                    Release Notes
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+</ul></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../userguide/installguide.html">Install Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/startingguide.html">Getting Started with MetPy</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Working With Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="area_tutorial.html">Using Predefined Areas with MetPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upperair_soundings.html">Upper Air Sounding Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xarray_tutorial.html">xarray with MetPy Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="declarative_tutorial.html">MetPy Declarative Syntax Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../userguide/upgradeguide.html">MetPy 1.0 Upgrade Guide</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/apichange.html">MetPy 1.0 API Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/gempak.html">GEMPAK Comparison Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/SUPPORT.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/media.html">Talks and Other Media</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../userguide/index.html" class="nav-link">User Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Tutorials</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Working With Units</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-tutorials-unit-tutorial-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="working-with-units">
+<span id="sphx-glr-tutorials-unit-tutorial-py"></span><h1>Working With Units<a class="headerlink" href="#working-with-units" title="Permalink to this heading">#</a></h1>
+<p>Early in our scientific careers we all learn about the importance of paying
+attention to units in our calculations. Unit conversions can still get the best
+of us and have caused more than one major technical disaster, including the
+crash and complete loss of the $327 million Mars Climate Orbiter.</p>
+<p>In MetPy, we use the <code class="docutils literal notranslate"><span class="pre">pint</span></code> library and a custom unit registry to help prevent
+unit mistakes in calculations. That means that every quantity you pass to MetPy
+should have units attached, just like if you were doing the calculation on
+paper! This simplifies the MetPy API by eliminating the need to specify units
+various functions. Instead, only the final results need to be converted to desired units. For
+more information on unit support, see the documentation for
+<a class="reference external" href="https://pint.readthedocs.io">Pint</a>. Particular attention should be paid to the support
+for <a class="reference external" href="https://pint.readthedocs.io/en/stable/user/nonmult.html">temperature units</a>.</p>
+<p>In this tutorial we’ll show some examples of working with units and get you on your way to
+utilizing the computation functions in MetPy.</p>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">#</a></h2>
+<p>To use units, the first step is to import the default MetPy units registry from the
+<a class="reference internal" href="../api/generated/metpy.units.html#module-metpy.units" title="metpy.units"><code class="xref py py-mod docutils literal notranslate"><span class="pre">units</span></code></a> module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a>
+</pre></div>
+</div>
+<p>The unit registry encapsulates all of the available units, as well as any pertinent settings.
+The registry also understands unit prefixes and suffixes; this allows the registry to
+understand <code class="docutils literal notranslate"><span class="pre">'kilometer'</span></code> and <code class="docutils literal notranslate"><span class="pre">'meters'</span></code> in addition to the base <code class="docutils literal notranslate"><span class="pre">'meter'</span></code> unit.</p>
+<p>In general, using units is only a small step on top of using the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>
+object.</p>
+</section>
+<section id="adding-units-to-data">
+<h2>Adding Units to Data<a class="headerlink" href="#adding-units-to-data" title="Permalink to this heading">#</a></h2>
+<p>The easiest way to attach units to an array (or integer, float, etc.) is to multiply by the
+units:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">distance</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">meters</span></a>
+</pre></div>
+</div>
+<p>It is also possible to directly construct a <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, with a full units string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a> <span class="o">=</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class"><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;sec&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Compound units can be constructed by the direct mathematical operations necessary:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">9.81</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">meter</span></a> <span class="o">/</span> <span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">second</span></a> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">second</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+9.81 meter/second<sup>2</sup>
+</div>
+<br />
+<br /><p>This verbose syntax can be reduced by using the unit registry’s support for parsing units:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">9.81</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;m/s^2&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+9.81 meter/second<sup>2</sup>
+</div>
+<br />
+<br /></section>
+<section id="operations-with-units">
+<h2>Operations With Units<a class="headerlink" href="#operations-with-units" title="Permalink to this heading">#</a></h2>
+<p>With units attached, it is possible to perform mathematical operations, resulting in the
+proper units:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">distance</span></a> <span class="o">/</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.5 0.5 0.5 0.5] meter / second
+</pre></div>
+</div>
+<p>For multiplication and division, units can combine and cancel. For addition and subtraction,
+instead the operands must have compatible units. For instance, this works:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">distance</span></a> <span class="o">+</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">distance</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[2 4 6 8] meter
+</pre></div>
+</div>
+<p>But for instance, <em class="xref py py-obj">distance + time</em> would not work; instead it gives an error:</p>
+<p><em class="xref py py-obj">DimensionalityError: Cannot convert from ‘meter’ ([length]) to ‘second’ ([time])</em></p>
+<p>Even if the units are not identical, as long as they are dimensionally equivalent, the
+operation can be performed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">inch</span></a> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">cm</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>4.968503937007874 inch
+</pre></div>
+</div>
+</section>
+<section id="converting-units">
+<h2>Converting Units<a class="headerlink" href="#converting-units" title="Permalink to this heading">#</a></h2>
+<p>Converting a <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></a> between units can be accomplished by using the
+<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.to" title="(in pint v0.22)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to()</span></code></a> method call, which constructs a new <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></a> in the
+desired units:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">((</span><span class="mi">1</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">inch</span></a><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">mm</span></a><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>25.4 millimeter
+</pre></div>
+</div>
+<p>There is also the <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.ito" title="(in pint v0.22)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ito()</span></code></a> method which performs the same operation
+in-place:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">a</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mf">5.</span><span class="p">)</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">meter</span></a>
+<a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.ito" title="pint.Quantity.ito" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">a</span><span class="o">.</span><span class="n">ito</span></a><span class="p">(</span><span class="s1">&#39;feet&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">a</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.0 3.2808398950131235 6.561679790026247 9.84251968503937 13.123359580052494] foot
+</pre></div>
+</div>
+<p>To simplify units, there is also the <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.to_base_units" title="(in pint v0.22)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_base_units()</span></code></a> method,
+which converts a quantity to SI units, performing any needed cancellation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Lf</span></a> <span class="o">=</span> <span class="mf">3.34e6</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;J/kg&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Lf</span></a><span class="p">,</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.to_base_units" title="pint.Quantity.to_base_units" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">Lf</span><span class="o">.</span><span class="n">to_base_units</span></a><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>3340000.0 joule / kilogram
+3340000.0 meter ** 2 / second ** 2
+</pre></div>
+</div>
+<p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.to_base_units" title="(in pint v0.22)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_base_units()</span></code></a> can also be done in-place via the
+<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.ito_base_units" title="(in pint v0.22)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ito_base_units()</span></code></a> method.</p>
+<p>By default Pint does not do any more than simple unit simplification, so when you perform
+operations you could get some seemingly odd results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">length</span></a> <span class="o">=</span> <span class="mf">10.4</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">inch</span></a>
+<a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">width</span></a> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">cm</span></a>
+<a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">area</span></a> <span class="o">=</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">length</span></a> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">width</span></a>
+<span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">area</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>52.0 centimeter * inch
+</pre></div>
+</div>
+<p>This is another place where <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.to" title="(in pint v0.22)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to()</span></code></a> comes in handy:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.to" title="pint.Quantity.to" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">area</span><span class="o">.</span><span class="n">to</span></a><span class="p">(</span><span class="s1">&#39;m^2&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.013208 meter ** 2
+</pre></div>
+</div>
+</section>
+<section id="temperature">
+<h2>Temperature<a class="headerlink" href="#temperature" title="Permalink to this heading">#</a></h2>
+<p>Temperature units are actually relatively tricky (more like absolutely tricky as
+you’ll see). Temperature is a non-multiplicative unit - they are in a system
+with a reference point. That means that not only is there a scaling factor, but
+also an offset. This makes the math and unit book-keeping a little more complex.
+Imagine adding 10 degrees Celsius to 100 degrees Celsius. Is the answer 110
+degrees Celsius or 383.15 degrees Celsius (283.15 K + 373.15 K)? That’s why
+there are delta degrees units in the unit registry for offset units. For more
+examples and explanation you can watch MetPy Monday #13:
+<a class="reference external" href="https://www.youtube.com/watch?v=iveJCqxe3Z4">https://www.youtube.com/watch?v=iveJCqxe3Z4</a>.</p>
+<p>Let’s take a look at how this works and fails:</p>
+<p>We would expect this to fail because we cannot add two offset units (and it does
+fail as an “Ambiguous operation with offset unit”).</p>
+<p><em class="xref py py-obj">10 * units.degC + 5 * units.degC</em></p>
+<p>On the other hand, we can subtract two offset quantities and get a delta. A delta unit is
+pint’s way of representing a relative change in two offset units, indicating that this is
+not an absolute value of 5 degrees Celsius, but a relative change of 5 degrees Celsius.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">degC</span></a> <span class="o">-</span> <span class="mi">5</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">degC</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>5 delta_degree_Celsius
+</pre></div>
+</div>
+<p>We can add a delta to an offset unit as well since it is a relative change.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">25</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">degC</span></a> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>27.77777777777778 degree_Celsius
+</pre></div>
+</div>
+<p>Absolute temperature scales like Kelvin and Rankine do not have an offset
+and therefore can be used in addition/subtraction without the need for a
+delta version of the unit.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">273</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">kelvin</span></a> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">kelvin</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>283 kelvin
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">273</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">kelvin</span></a> <span class="o">-</span> <span class="mi">10</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">kelvin</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>263 kelvin
+</pre></div>
+</div>
+</section>
+<section id="metpy-calculations">
+<h2>MetPy Calculations<a class="headerlink" href="#metpy-calculations" title="Permalink to this heading">#</a></h2>
+<p>All MetPy calculations are unit-aware and rely on this information to ensure
+that the calculations operate correctly. For example, we can use units to take
+an observation in whatever units are most convenient and let MetPy handle everything
+under the hood. Below we calculate dewpoint from the temperature and relative humidity:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temperature</span></a> <span class="o">=</span> <span class="mf">73.2</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">degF</span></a>
+<a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh</span></a> <span class="o">=</span> <span class="mi">64</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">percent</span></a>
+<a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dewpoint</span></a> <span class="o">=</span> <a href="../api/generated/metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint_from_relative_humidity</span></a><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temperature</span></a><span class="p">,</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh</span></a><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dewpoint</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>15.726236381245258 degree_Celsius
+</pre></div>
+</div>
+<p>or back to Fahrenheit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.to" title="pint.Quantity.to" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">dewpoint</span><span class="o">.</span><span class="n">to</span></a><span class="p">(</span><span class="s1">&#39;degF&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>60.3072254862414 degree_Fahrenheit
+</pre></div>
+</div>
+</section>
+<section id="dropping-units">
+<h2>Dropping Units<a class="headerlink" href="#dropping-units" title="Permalink to this heading">#</a></h2>
+<p>While units are part of the MetPy ecosystem, they can be a headache after we have
+computed the desired quantities with MetPy and would like to move on. For example,
+we might have computed the dewpoint temperature for two points, say A and B, and
+would like to compute the average:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temperature_a</span></a> <span class="o">=</span> <span class="mf">73.2</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">degF</span></a>
+<a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh_a</span></a> <span class="o">=</span> <span class="mi">64</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">percent</span></a>
+<a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dewpoint_a</span></a> <span class="o">=</span> <a href="../api/generated/metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint_from_relative_humidity</span></a><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temperature_a</span></a><span class="p">,</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh_a</span></a><span class="p">)</span>
+
+<a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temperature_b</span></a> <span class="o">=</span> <span class="mf">71.1</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">degF</span></a>
+<a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh_b</span></a> <span class="o">=</span> <span class="mi">52</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="pint.Unit" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span><span class="o">.</span><span class="n">percent</span></a>
+<a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dewpoint_b</span></a> <span class="o">=</span> <a href="../api/generated/metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint_from_relative_humidity</span></a><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temperature_b</span></a><span class="p">,</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh_b</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p>Per our previous discussion on temperature units, adding two temperatures together
+won’t work. In this case, the easiest way to add two quantities and compute
+an average is by dropping the units attached to the values via <code class="docutils literal notranslate"><span class="pre">.magnitude</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.magnitude" title="pint.Quantity.magnitude" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-property"><span class="n">dewpoint_b</span><span class="o">.</span><span class="n">magnitude</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>11.445590005179099
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">dewpoint_mean</span></a> <span class="o">=</span> <span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.magnitude" title="pint.Quantity.magnitude" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-property"><span class="n">dewpoint_a</span><span class="o">.</span><span class="n">magnitude</span></a> <span class="o">+</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.magnitude" title="pint.Quantity.magnitude" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-property"><span class="n">dewpoint_b</span><span class="o">.</span><span class="n">magnitude</span></a><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">dewpoint_mean</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>13.585913193212178
+</pre></div>
+</div>
+</section>
+<section id="common-mistakes">
+<h2>Common Mistakes<a class="headerlink" href="#common-mistakes" title="Permalink to this heading">#</a></h2>
+<p>There are a few common mistakes the new users often make. Be sure to check
+these when you’re having issues.</p>
+<ul class="simple">
+<li><p>Pressure units are <em class="xref py py-obj">mbar</em> or <em class="xref py py-obj">hPa</em> for common atmospheric measurements. The
+unit <em class="xref py py-obj">mb</em> is actually millibarns–a unit used in particle physics.</p></li>
+<li><p>When using masked arrays, units must be multiplied on the left side. This
+will be addressed in the future, but is a current limitation in the
+ecosystem. The expected error will be
+<em class="xref py py-obj">AttributeError: ‘MaskedArray’ object has no attribute ‘units’</em> or calculation
+functions complaining about expecting a units and getting “dimensionless”.</p></li>
+</ul>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.016 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-unit-tutorial-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/5efd259fad2625b979995a43ebbb8b81/unit_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">unit_tutorial.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/c93092487c8713b537d47b1774b1c063/unit_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">unit_tutorial.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tutorials</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="area_tutorial.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Using Predefined Areas with MetPy</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-units-to-data">Adding Units to Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operations-with-units">Operations With Units</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#converting-units">Converting Units</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature">Temperature</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy-calculations">MetPy Calculations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dropping-units">Dropping Units</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-mistakes">Common Mistakes</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/tutorials/unit_tutorial.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

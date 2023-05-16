@@ -1,0 +1,12 @@
+static_stability
+===========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: static_stability
+
+.. include:: metpy.calc.static_stability.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

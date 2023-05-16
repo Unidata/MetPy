@@ -1,0 +1,144 @@
+PlotObs
+===================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: PlotObs
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~PlotObs.colors
+      ~PlotObs.cross_validation_lock
+      ~PlotObs.data
+      ~PlotObs.fields
+      ~PlotObs.fontsize
+      ~PlotObs.formats
+      ~PlotObs.level
+      ~PlotObs.locations
+      ~PlotObs.name
+      ~PlotObs.obsdata
+      ~PlotObs.parent
+      ~PlotObs.plot_units
+      ~PlotObs.plotdata
+      ~PlotObs.reduce_points
+      ~PlotObs.time
+      ~PlotObs.time_window
+      ~PlotObs.vector_field
+      ~PlotObs.vector_field_color
+      ~PlotObs.vector_field_length
+      ~PlotObs.vector_plot_units
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~PlotObs.__init__
+      ~PlotObs.add_traits
+      ~PlotObs.class_own_trait_events
+      ~PlotObs.class_own_traits
+      ~PlotObs.class_trait_names
+      ~PlotObs.class_traits
+      ~PlotObs.clear
+      ~PlotObs.copy
+      ~PlotObs.draw
+      ~PlotObs.has_trait
+      ~PlotObs.hold_trait_notifications
+      ~PlotObs.notify_change
+      ~PlotObs.observe
+      ~PlotObs.on_trait_change
+      ~PlotObs.set_trait
+      ~PlotObs.setup_instance
+      ~PlotObs.trait_defaults
+      ~PlotObs.trait_events
+      ~PlotObs.trait_has_value
+      ~PlotObs.trait_metadata
+      ~PlotObs.trait_names
+      ~PlotObs.trait_values
+      ~PlotObs.traits
+      ~PlotObs.unobserve
+      ~PlotObs.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: colors
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: data
+   .. autoattribute:: fields
+   .. autoattribute:: fontsize
+   .. autoattribute:: formats
+   .. autoattribute:: level
+   .. autoattribute:: locations
+   .. autoattribute:: name
+   .. autoattribute:: obsdata
+   .. autoattribute:: parent
+   .. autoattribute:: plot_units
+   .. autoattribute:: plotdata
+   .. autoattribute:: reduce_points
+   .. autoattribute:: time
+   .. autoattribute:: time_window
+   .. autoattribute:: vector_field
+   .. autoattribute:: vector_field_color
+   .. autoattribute:: vector_field_length
+   .. autoattribute:: vector_plot_units
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: clear
+   .. automethod:: copy
+   .. automethod:: draw
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: trait_defaults
+   .. automethod:: trait_events
+   .. automethod:: trait_has_value
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: trait_values
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.PlotObs.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

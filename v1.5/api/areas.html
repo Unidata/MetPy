@@ -1,0 +1,3149 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>MetPy Area List &#8212; MetPy 1.5</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/areas';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v1.5';
+        </script>
+    <script src="../_static/doc_shared.js"></script>
+    <link rel="icon" href="../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="grid_deltas_from_dataarray" href="generated/metpy.xarray.grid_deltas_from_dataarray.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/areas.html" />
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/metpy_horizontal.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/metpy_horizontal.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      v1.5  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Reference Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../devel/index.html">
+                        Developer’s Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples/index.html">
+                        Example Gallery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
+                        Support
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+                    Release Notes
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+</ul></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+    
+    <div class="container-fluid" id="banner"></div>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Reference Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../devel/index.html">
+                        Developer’s Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples/index.html">
+                        Example Gallery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
+                        Support
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+                    Release Notes
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+</ul></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/metpy.constants.html">Constants <code class="docutils literal notranslate"><span class="pre">(metpy.constants)</span></code></a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.units.html">Units <code class="docutils literal notranslate"><span class="pre">(metpy.units)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.units.check_units.html">check_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.units.concatenate.html">concatenate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.units.is_quantity.html">is_quantity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.units.masked_array.html">masked_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.units.pandas_dataframe_to_unit_arrays.html">pandas_dataframe_to_unit_arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.units.process_units.html">process_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.units.setup_registry.html">setup_registry</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.io.html">Reading Data <code class="docutils literal notranslate"><span class="pre">(metpy.io)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.parse_metar_to_dataframe.html">parse_metar_to_dataframe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.parse_metar_file.html">parse_metar_file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.is_precip_mode.html">is_precip_mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.add_station_lat_lon.html">add_station_lat_lon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.parse_wpc_surface_bulletin.html">parse_wpc_surface_bulletin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.GempakGrid.html">GempakGrid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.GempakSounding.html">GempakSounding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.GempakSurface.html">GempakSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.GiniFile.html">GiniFile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.Level2File.html">Level2File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.Level3File.html">Level3File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.StationLookup.html">StationLookup</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.calc.html">Calculations <code class="docutils literal notranslate"><span class="pre">(metpy.calc)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.add_pressure_to_height.html">add_pressure_to_height</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.density.html">density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.dry_lapse.html">dry_lapse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.dry_static_energy.html">dry_static_energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.geopotential_to_height.html">geopotential_to_height</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.height_to_geopotential.html">height_to_geopotential</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mean_pressure_weighted.html">mean_pressure_weighted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.potential_temperature.html">potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.sigma_to_pressure.html">sigma_to_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.static_stability.html">static_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.temperature_from_potential_temperature.html">temperature_from_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.thickness_hydrostatic.html">thickness_hydrostatic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.weighted_continuous_average.html">weighted_continuous_average</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.dewpoint.html">dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.dewpoint_from_relative_humidity.html">dewpoint_from_relative_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.dewpoint_from_specific_humidity.html">dewpoint_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.equivalent_potential_temperature.html">equivalent_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mixing_ratio.html">mixing_ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mixing_ratio_from_relative_humidity.html">mixing_ratio_from_relative_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mixing_ratio_from_specific_humidity.html">mixing_ratio_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.moist_lapse.html">moist_lapse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.moist_static_energy.html">moist_static_energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.precipitable_water.html">precipitable_water</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.psychrometric_vapor_pressure_wet.html">psychrometric_vapor_pressure_wet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.relative_humidity_from_dewpoint.html">relative_humidity_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.relative_humidity_from_mixing_ratio.html">relative_humidity_from_mixing_ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.relative_humidity_from_specific_humidity.html">relative_humidity_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.relative_humidity_wet_psychrometric.html">relative_humidity_wet_psychrometric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.saturation_equivalent_potential_temperature.html">saturation_equivalent_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.saturation_mixing_ratio.html">saturation_mixing_ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.saturation_vapor_pressure.html">saturation_vapor_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.scale_height.html">scale_height</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.specific_humidity_from_dewpoint.html">specific_humidity_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.specific_humidity_from_mixing_ratio.html">specific_humidity_from_mixing_ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.thickness_hydrostatic_from_relative_humidity.html">thickness_hydrostatic_from_relative_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.vapor_pressure.html">vapor_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.vertical_velocity.html">vertical_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.vertical_velocity_pressure.html">vertical_velocity_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.virtual_potential_temperature.html">virtual_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.virtual_temperature.html">virtual_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.virtual_temperature_from_dewpoint.html">virtual_temperature_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.bulk_shear.html">bulk_shear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.bunkers_storm_motion.html">bunkers_storm_motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.cape_cin.html">cape_cin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.ccl.html">ccl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.critical_angle.html">critical_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.cross_totals.html">cross_totals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.el.html">el</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.k_index.html">k_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.lcl.html">lcl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.lfc.html">lfc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.lifted_index.html">lifted_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mixed_layer.html">mixed_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mixed_layer_cape_cin.html">mixed_layer_cape_cin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mixed_parcel.html">mixed_parcel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.most_unstable_cape_cin.html">most_unstable_cape_cin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.most_unstable_parcel.html">most_unstable_parcel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.parcel_profile.html">parcel_profile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.parcel_profile_with_lcl.html">parcel_profile_with_lcl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.parcel_profile_with_lcl_as_dataset.html">parcel_profile_with_lcl_as_dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.showalter_index.html">showalter_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.significant_tornado.html">significant_tornado</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.storm_relative_helicity.html">storm_relative_helicity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.supercell_composite.html">supercell_composite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.surface_based_cape_cin.html">surface_based_cape_cin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.sweat_index.html">sweat_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.total_totals_index.html">total_totals_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.vertical_totals.html">vertical_totals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.absolute_momentum.html">absolute_momentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.absolute_vorticity.html">absolute_vorticity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.advection.html">advection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.ageostrophic_wind.html">ageostrophic_wind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.coriolis_parameter.html">coriolis_parameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.divergence.html">divergence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.exner_function.html">exner_function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.frontogenesis.html">frontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.geostrophic_wind.html">geostrophic_wind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.inertial_advective_wind.html">inertial_advective_wind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.kinematic_flux.html">kinematic_flux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.montgomery_streamfunction.html">montgomery_streamfunction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.potential_vorticity_baroclinic.html">potential_vorticity_baroclinic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.potential_vorticity_barotropic.html">potential_vorticity_barotropic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.q_vector.html">q_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.shearing_deformation.html">shearing_deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.stretching_deformation.html">stretching_deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.total_deformation.html">total_deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.vorticity.html">vorticity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.wind_components.html">wind_components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.wind_direction.html">wind_direction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.wind_speed.html">wind_speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.brunt_vaisala_frequency.html">brunt_vaisala_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.brunt_vaisala_frequency_squared.html">brunt_vaisala_frequency_squared</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.brunt_vaisala_period.html">brunt_vaisala_period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.friction_velocity.html">friction_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.gradient_richardson_number.html">gradient_richardson_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.tke.html">tke</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.cross_section_components.html">cross_section_components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.first_derivative.html">first_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.geospatial_gradient.html">geospatial_gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.geospatial_laplacian.html">geospatial_laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.gradient.html">gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.laplacian.html">laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.lat_lon_grid_deltas.html">lat_lon_grid_deltas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.normal_component.html">normal_component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.second_derivative.html">second_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.tangential_component.html">tangential_component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.unit_vectors_from_cross_section.html">unit_vectors_from_cross_section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.vector_derivative.html">vector_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.apparent_temperature.html">apparent_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.heat_index.html">heat_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.windchill.html">windchill</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.altimeter_to_sea_level_pressure.html">altimeter_to_sea_level_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.altimeter_to_station_pressure.html">altimeter_to_station_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.height_to_pressure_std.html">height_to_pressure_std</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.pressure_to_height_std.html">pressure_to_height_std</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.smooth_gaussian.html">smooth_gaussian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.smooth_window.html">smooth_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.smooth_rectangular.html">smooth_rectangular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.smooth_circular.html">smooth_circular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.smooth_n_point.html">smooth_n_point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.zoom_xarray.html">zoom_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.angle_to_direction.html">angle_to_direction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.azimuth_range_to_lat_lon.html">azimuth_range_to_lat_lon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.find_bounding_indices.html">find_bounding_indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.find_intersections.html">find_intersections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.get_layer.html">get_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.get_layer_heights.html">get_layer_heights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.get_perturbation.html">get_perturbation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.isentropic_interpolation.html">isentropic_interpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.isentropic_interpolation_as_dataset.html">isentropic_interpolation_as_dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.nearest_intersection_idx.html">nearest_intersection_idx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.parse_angle.html">parse_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.reduce_point_density.html">reduce_point_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.resample_nn_1d.html">resample_nn_1d</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.plots.html">Plots <code class="docutils literal notranslate"><span class="pre">(metpy.plots)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.wx_code_to_numeric.html">wx_code_to_numeric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.add_timestamp.html">add_timestamp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.PanelContainer.html">PanelContainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.MapPanel.html">MapPanel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.Plots2D.html">Plots2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.PlotScalar.html">PlotScalar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ImagePlot.html">ImagePlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ContourPlot.html">ContourPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.RasterPlot.html">RasterPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.PlotVector.html">PlotVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.BarbPlot.html">BarbPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ArrowPlot.html">ArrowPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.PlotObs.html">PlotObs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.PlotGeometry.html">PlotGeometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ScallopedStroke.html">ScallopedStroke</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ColdFront.html">ColdFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ColdFrontogenesis.html">ColdFrontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ColdFrontolysis.html">ColdFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.Dryline.html">Dryline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.WarmFront.html">WarmFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.WarmFrontogenesis.html">WarmFrontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.WarmFrontolysis.html">WarmFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.OccludedFront.html">OccludedFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.OccludedFrontogenesis.html">OccludedFrontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.OccludedFrontolysis.html">OccludedFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.RidgeAxis.html">RidgeAxis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.Squall.html">Squall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.StationaryFront.html">StationaryFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.StationaryFrontogenesis.html">StationaryFrontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.StationaryFrontolysis.html">StationaryFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.SkewT.html">SkewT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.Hodograph.html">Hodograph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.StationPlot.html">StationPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.StationPlotLayout.html">StationPlotLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.plots.ctables.html">Colortables <code class="docutils literal notranslate"><span class="pre">(metpy.plots.ctables)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ctables.convert_gempak_table.html">convert_gempak_table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ctables.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ctables.ColortableRegistry.html">ColortableRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ctables.colortables.html">colortables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.interpolate.html">Interpolate <code class="docutils literal notranslate"><span class="pre">(metpy.interpolate)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.natural_neighbor_to_grid.html">natural_neighbor_to_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.inverse_distance_to_grid.html">inverse_distance_to_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.interpolate_to_grid.html">interpolate_to_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.interpolate_to_isosurface.html">interpolate_to_isosurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.interpolate_nans_1d.html">interpolate_nans_1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.interpolate_1d.html">interpolate_1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.log_interpolate_1d.html">log_interpolate_1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.natural_neighbor_to_points.html">natural_neighbor_to_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.inverse_distance_to_points.html">inverse_distance_to_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.interpolate_to_points.html">interpolate_to_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.interpolate_to_slice.html">interpolate_to_slice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.geodesic.html">geodesic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.cross_section.html">cross_section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.remove_observations_below_value.html">remove_observations_below_value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.remove_nan_observations.html">remove_nan_observations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.remove_repeat_coordinates.html">remove_repeat_coordinates</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.xarray.html">Xarray Integration <code class="docutils literal notranslate"><span class="pre">(metpy.xarray)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.xarray.grid_deltas_from_dataarray.html">grid_deltas_from_dataarray</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">MetPy Area List</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Reference Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">MetPy Area List</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="metpy-area-list">
+<span id="api-areas"></span><h1>MetPy Area List<a class="headerlink" href="#metpy-area-list" title="Permalink to this heading">#</a></h1>
+<section id="us-united-states">
+<h2>us  -  UNITED STATES<a class="headerlink" href="#us-united-states" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-1.png" class="plot-directive" src="../_images/areas-1.png" />
+</figure>
+</section>
+<section id="awips-awips-us">
+<h2>awips  -  AWIPS US<a class="headerlink" href="#awips-awips-us" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-2.png" class="plot-directive" src="../_images/areas-2.png" />
+</figure>
+</section>
+<section id="uslcc-united-states-lcc">
+<h2>uslcc  -  UNITED STATES LCC<a class="headerlink" href="#uslcc-united-states-lcc" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-3.png" class="plot-directive" src="../_images/areas-3.png" />
+</figure>
+</section>
+<section id="whlf-western-half">
+<h2>whlf  -  WESTERN HALF<a class="headerlink" href="#whlf-western-half" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-4.png" class="plot-directive" src="../_images/areas-4.png" />
+</figure>
+</section>
+<section id="chlf-central-half">
+<h2>chlf  -  CENTRAL HALF<a class="headerlink" href="#chlf-central-half" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-5.png" class="plot-directive" src="../_images/areas-5.png" />
+</figure>
+</section>
+<section id="centus-central-us">
+<h2>centus  -  CENTRAL US<a class="headerlink" href="#centus-central-us" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-6.png" class="plot-directive" src="../_images/areas-6.png" />
+</figure>
+</section>
+<section id="ehlf-eastern-half">
+<h2>ehlf  -  EASTERN HALF<a class="headerlink" href="#ehlf-eastern-half" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-7.png" class="plot-directive" src="../_images/areas-7.png" />
+</figure>
+</section>
+<section id="mehlf-eastern-half">
+<h2>mehlf  -  EASTERN HALF<a class="headerlink" href="#mehlf-eastern-half" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-8.png" class="plot-directive" src="../_images/areas-8.png" />
+</figure>
+</section>
+<section id="west-western-us">
+<h2>west  -  WESTERN US<a class="headerlink" href="#west-western-us" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-9.png" class="plot-directive" src="../_images/areas-9.png" />
+</figure>
+</section>
+<section id="cent-central-us">
+<h2>cent  -  CENTRAL US<a class="headerlink" href="#cent-central-us" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-10.png" class="plot-directive" src="../_images/areas-10.png" />
+</figure>
+</section>
+<section id="east-eastern-us">
+<h2>east  -  EASTERN US<a class="headerlink" href="#east-eastern-us" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-11.png" class="plot-directive" src="../_images/areas-11.png" />
+</figure>
+</section>
+<section id="nwus-nw-sector">
+<h2>nwus  -  NW SECTOR<a class="headerlink" href="#nwus-nw-sector" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-12.png" class="plot-directive" src="../_images/areas-12.png" />
+</figure>
+</section>
+<section id="swus-sw-sector">
+<h2>swus  -  SW SECTOR<a class="headerlink" href="#swus-sw-sector" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-13.png" class="plot-directive" src="../_images/areas-13.png" />
+</figure>
+</section>
+<section id="ncus-nc-sector">
+<h2>ncus  -  NC SECTOR<a class="headerlink" href="#ncus-nc-sector" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-14.png" class="plot-directive" src="../_images/areas-14.png" />
+</figure>
+</section>
+<section id="scus-sc-sector">
+<h2>scus  -  SC SECTOR<a class="headerlink" href="#scus-sc-sector" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-15.png" class="plot-directive" src="../_images/areas-15.png" />
+</figure>
+</section>
+<section id="neus-ne-sector">
+<h2>neus  -  NE SECTOR<a class="headerlink" href="#neus-ne-sector" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-16.png" class="plot-directive" src="../_images/areas-16.png" />
+</figure>
+</section>
+<section id="seus-se-sector">
+<h2>seus  -  SE SECTOR<a class="headerlink" href="#seus-se-sector" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-17.png" class="plot-directive" src="../_images/areas-17.png" />
+</figure>
+</section>
+<section id="bosfa-boston-fa-area">
+<h2>bosfa  -  BOSTON FA AREA<a class="headerlink" href="#bosfa-boston-fa-area" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-18.png" class="plot-directive" src="../_images/areas-18.png" />
+</figure>
+</section>
+<section id="miafa-miami-fa-area">
+<h2>miafa  -  MIAMI FA AREA<a class="headerlink" href="#miafa-miami-fa-area" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-19.png" class="plot-directive" src="../_images/areas-19.png" />
+</figure>
+</section>
+<section id="chifa-chicago-fa-area">
+<h2>chifa  -  CHICAGO FA AREA<a class="headerlink" href="#chifa-chicago-fa-area" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-20.png" class="plot-directive" src="../_images/areas-20.png" />
+</figure>
+</section>
+<section id="dfwfa-dallas-fa-area">
+<h2>dfwfa  -  DALLAS FA AREA<a class="headerlink" href="#dfwfa-dallas-fa-area" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-21.png" class="plot-directive" src="../_images/areas-21.png" />
+</figure>
+</section>
+<section id="slcfa-salt-lake-fa-area">
+<h2>slcfa  -  SALT LAKE FA AREA<a class="headerlink" href="#slcfa-salt-lake-fa-area" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-22.png" class="plot-directive" src="../_images/areas-22.png" />
+</figure>
+</section>
+<section id="sfofa-san-fran-fa-area">
+<h2>sfofa  -  SAN FRAN FA AREA<a class="headerlink" href="#sfofa-san-fran-fa-area" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-23.png" class="plot-directive" src="../_images/areas-23.png" />
+</figure>
+</section>
+<section id="ak-alaska-hpc-qpf">
+<h2>ak  -  ALASKA HPC QPF<a class="headerlink" href="#ak-alaska-hpc-qpf" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-24.png" class="plot-directive" src="../_images/areas-24.png" />
+</figure>
+</section>
+<section id="al-alabama">
+<h2>al  -  ALABAMA<a class="headerlink" href="#al-alabama" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-25.png" class="plot-directive" src="../_images/areas-25.png" />
+</figure>
+</section>
+<section id="ar-arkansas">
+<h2>ar  -  ARKANSAS<a class="headerlink" href="#ar-arkansas" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-26.png" class="plot-directive" src="../_images/areas-26.png" />
+</figure>
+</section>
+<section id="ca-california">
+<h2>ca  -  CALIFORNIA<a class="headerlink" href="#ca-california" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-27.png" class="plot-directive" src="../_images/areas-27.png" />
+</figure>
+</section>
+<section id="co-colorado">
+<h2>co  -  COLORADO<a class="headerlink" href="#co-colorado" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-28.png" class="plot-directive" src="../_images/areas-28.png" />
+</figure>
+</section>
+<section id="ct-connecticut">
+<h2>ct  -  CONNECTICUT<a class="headerlink" href="#ct-connecticut" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-29.png" class="plot-directive" src="../_images/areas-29.png" />
+</figure>
+</section>
+<section id="dc-washington-dc">
+<h2>dc  -  WASHINGTON DC<a class="headerlink" href="#dc-washington-dc" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-30.png" class="plot-directive" src="../_images/areas-30.png" />
+</figure>
+</section>
+<section id="de-delaware">
+<h2>de  -  DELAWARE<a class="headerlink" href="#de-delaware" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-31.png" class="plot-directive" src="../_images/areas-31.png" />
+</figure>
+</section>
+<section id="fl-florida">
+<h2>fl  -  FLORIDA<a class="headerlink" href="#fl-florida" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-32.png" class="plot-directive" src="../_images/areas-32.png" />
+</figure>
+</section>
+<section id="ga-georgia">
+<h2>ga  -  GEORGIA<a class="headerlink" href="#ga-georgia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-33.png" class="plot-directive" src="../_images/areas-33.png" />
+</figure>
+</section>
+<section id="hi-hawaii">
+<h2>hi  -  HAWAII<a class="headerlink" href="#hi-hawaii" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-34.png" class="plot-directive" src="../_images/areas-34.png" />
+</figure>
+</section>
+<section id="ia-iowa">
+<h2>ia  -  IOWA<a class="headerlink" href="#ia-iowa" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-35.png" class="plot-directive" src="../_images/areas-35.png" />
+</figure>
+</section>
+<section id="id-idaho">
+<h2>id  -  IDAHO<a class="headerlink" href="#id-idaho" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-36.png" class="plot-directive" src="../_images/areas-36.png" />
+</figure>
+</section>
+<section id="il-illinois">
+<h2>il  -  ILLINOIS<a class="headerlink" href="#il-illinois" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-37.png" class="plot-directive" src="../_images/areas-37.png" />
+</figure>
+</section>
+<section id="in-indiana">
+<h2>in  -  INDIANA<a class="headerlink" href="#in-indiana" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-38.png" class="plot-directive" src="../_images/areas-38.png" />
+</figure>
+</section>
+<section id="ks-kansas">
+<h2>ks  -  KANSAS<a class="headerlink" href="#ks-kansas" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-39.png" class="plot-directive" src="../_images/areas-39.png" />
+</figure>
+</section>
+<section id="ky-kentucky">
+<h2>ky  -  KENTUCKY<a class="headerlink" href="#ky-kentucky" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-40.png" class="plot-directive" src="../_images/areas-40.png" />
+</figure>
+</section>
+<section id="la-louisiana">
+<h2>la  -  LOUISIANA<a class="headerlink" href="#la-louisiana" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-41.png" class="plot-directive" src="../_images/areas-41.png" />
+</figure>
+</section>
+<section id="ma-massachusetts">
+<h2>ma  -  MASSACHUSETTS<a class="headerlink" href="#ma-massachusetts" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-42.png" class="plot-directive" src="../_images/areas-42.png" />
+</figure>
+</section>
+<section id="md-maryland">
+<h2>md  -  MARYLAND<a class="headerlink" href="#md-maryland" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-43.png" class="plot-directive" src="../_images/areas-43.png" />
+</figure>
+</section>
+<section id="me-maine">
+<h2>me  -  MAINE<a class="headerlink" href="#me-maine" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-44.png" class="plot-directive" src="../_images/areas-44.png" />
+</figure>
+</section>
+<section id="mi-michigan">
+<h2>mi  -  MICHIGAN<a class="headerlink" href="#mi-michigan" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-45.png" class="plot-directive" src="../_images/areas-45.png" />
+</figure>
+</section>
+<section id="mn-minnesota">
+<h2>mn  -  MINNESOTA<a class="headerlink" href="#mn-minnesota" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-46.png" class="plot-directive" src="../_images/areas-46.png" />
+</figure>
+</section>
+<section id="mo-missouri">
+<h2>mo  -  MISSOURI<a class="headerlink" href="#mo-missouri" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-47.png" class="plot-directive" src="../_images/areas-47.png" />
+</figure>
+</section>
+<section id="ms-mississippi">
+<h2>ms  -  MISSISSIPPI<a class="headerlink" href="#ms-mississippi" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-48.png" class="plot-directive" src="../_images/areas-48.png" />
+</figure>
+</section>
+<section id="mt-montana">
+<h2>mt  -  MONTANA<a class="headerlink" href="#mt-montana" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-49.png" class="plot-directive" src="../_images/areas-49.png" />
+</figure>
+</section>
+<section id="nc-north-carolina">
+<h2>nc  -  NORTH CAROLINA<a class="headerlink" href="#nc-north-carolina" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-50.png" class="plot-directive" src="../_images/areas-50.png" />
+</figure>
+</section>
+<section id="nd-north-dakota">
+<h2>nd  -  NORTH DAKOTA<a class="headerlink" href="#nd-north-dakota" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-51.png" class="plot-directive" src="../_images/areas-51.png" />
+</figure>
+</section>
+<section id="ne-nebraska">
+<h2>ne  -  NEBRASKA<a class="headerlink" href="#ne-nebraska" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-52.png" class="plot-directive" src="../_images/areas-52.png" />
+</figure>
+</section>
+<section id="nh-new-hampshire">
+<h2>nh  -  NEW HAMPSHIRE<a class="headerlink" href="#nh-new-hampshire" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-53.png" class="plot-directive" src="../_images/areas-53.png" />
+</figure>
+</section>
+<section id="nj-new-jersey">
+<h2>nj  -  NEW JERSEY<a class="headerlink" href="#nj-new-jersey" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-54.png" class="plot-directive" src="../_images/areas-54.png" />
+</figure>
+</section>
+<section id="nm-new-mexico">
+<h2>nm  -  NEW MEXICO<a class="headerlink" href="#nm-new-mexico" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-55.png" class="plot-directive" src="../_images/areas-55.png" />
+</figure>
+</section>
+<section id="nv-nevada">
+<h2>nv  -  NEVADA<a class="headerlink" href="#nv-nevada" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-56.png" class="plot-directive" src="../_images/areas-56.png" />
+</figure>
+</section>
+<section id="ny-new-york">
+<h2>ny  -  NEW YORK<a class="headerlink" href="#ny-new-york" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-57.png" class="plot-directive" src="../_images/areas-57.png" />
+</figure>
+</section>
+<section id="oh-ohio">
+<h2>oh  -  OHIO<a class="headerlink" href="#oh-ohio" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-58.png" class="plot-directive" src="../_images/areas-58.png" />
+</figure>
+</section>
+<section id="ok-oklahoma">
+<h2>ok  -  OKLAHOMA<a class="headerlink" href="#ok-oklahoma" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-59.png" class="plot-directive" src="../_images/areas-59.png" />
+</figure>
+</section>
+<section id="or-oregon">
+<h2>or  -  OREGON<a class="headerlink" href="#or-oregon" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-60.png" class="plot-directive" src="../_images/areas-60.png" />
+</figure>
+</section>
+<section id="pa-pennsylvania">
+<h2>pa  -  PENNSYLVANIA<a class="headerlink" href="#pa-pennsylvania" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-61.png" class="plot-directive" src="../_images/areas-61.png" />
+</figure>
+</section>
+<section id="ri-rhode-island">
+<h2>ri  -  RHODE ISLAND<a class="headerlink" href="#ri-rhode-island" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-62.png" class="plot-directive" src="../_images/areas-62.png" />
+</figure>
+</section>
+<section id="sc-south-carolina">
+<h2>sc  -  SOUTH CAROLINA<a class="headerlink" href="#sc-south-carolina" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-63.png" class="plot-directive" src="../_images/areas-63.png" />
+</figure>
+</section>
+<section id="sd-south-dakota">
+<h2>sd  -  SOUTH DAKOTA<a class="headerlink" href="#sd-south-dakota" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-64.png" class="plot-directive" src="../_images/areas-64.png" />
+</figure>
+</section>
+<section id="tn-tennessee">
+<h2>tn  -  TENNESSEE<a class="headerlink" href="#tn-tennessee" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-65.png" class="plot-directive" src="../_images/areas-65.png" />
+</figure>
+</section>
+<section id="tx-texas">
+<h2>tx  -  TEXAS<a class="headerlink" href="#tx-texas" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-66.png" class="plot-directive" src="../_images/areas-66.png" />
+</figure>
+</section>
+<section id="ut-utah">
+<h2>ut  -  UTAH<a class="headerlink" href="#ut-utah" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-67.png" class="plot-directive" src="../_images/areas-67.png" />
+</figure>
+</section>
+<section id="va-virginia">
+<h2>va  -  VIRGINIA<a class="headerlink" href="#va-virginia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-68.png" class="plot-directive" src="../_images/areas-68.png" />
+</figure>
+</section>
+<section id="vt-vermont">
+<h2>vt  -  VERMONT<a class="headerlink" href="#vt-vermont" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-69.png" class="plot-directive" src="../_images/areas-69.png" />
+</figure>
+</section>
+<section id="wi-wisconsin">
+<h2>wi  -  WISCONSIN<a class="headerlink" href="#wi-wisconsin" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-70.png" class="plot-directive" src="../_images/areas-70.png" />
+</figure>
+</section>
+<section id="wv-west-virginia">
+<h2>wv  -  WEST VIRGINIA<a class="headerlink" href="#wv-west-virginia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-71.png" class="plot-directive" src="../_images/areas-71.png" />
+</figure>
+</section>
+<section id="wy-wyoming">
+<h2>wy  -  WYOMING<a class="headerlink" href="#wy-wyoming" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-72.png" class="plot-directive" src="../_images/areas-72.png" />
+</figure>
+</section>
+<section id="az-arizona">
+<h2>az  -  ARIZONA<a class="headerlink" href="#az-arizona" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-73.png" class="plot-directive" src="../_images/areas-73.png" />
+</figure>
+</section>
+<section id="wa-washington">
+<h2>wa  -  WASHINGTON<a class="headerlink" href="#wa-washington" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-74.png" class="plot-directive" src="../_images/areas-74.png" />
+</figure>
+</section>
+<section id="cn-canada">
+<h2>cn  -  CANADA<a class="headerlink" href="#cn-canada" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-75.png" class="plot-directive" src="../_images/areas-75.png" />
+</figure>
+</section>
+<section id="cnlcc-canada-lcc">
+<h2>cnlcc  -  CANADA LCC<a class="headerlink" href="#cnlcc-canada-lcc" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-76.png" class="plot-directive" src="../_images/areas-76.png" />
+</figure>
+</section>
+<section id="ab-alberta">
+<h2>ab  -  ALBERTA<a class="headerlink" href="#ab-alberta" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-77.png" class="plot-directive" src="../_images/areas-77.png" />
+</figure>
+</section>
+<section id="bc-british-columbia">
+<h2>bc  -  BRITISH COLUMBIA<a class="headerlink" href="#bc-british-columbia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-78.png" class="plot-directive" src="../_images/areas-78.png" />
+</figure>
+</section>
+<section id="mb-manitoba">
+<h2>mb  -  MANITOBA<a class="headerlink" href="#mb-manitoba" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-79.png" class="plot-directive" src="../_images/areas-79.png" />
+</figure>
+</section>
+<section id="nb-new-brunswick">
+<h2>nb  -  NEW BRUNSWICK<a class="headerlink" href="#nb-new-brunswick" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-80.png" class="plot-directive" src="../_images/areas-80.png" />
+</figure>
+</section>
+<section id="nf-newfoundland">
+<h2>nf  -  NEWFOUNDLAND<a class="headerlink" href="#nf-newfoundland" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-81.png" class="plot-directive" src="../_images/areas-81.png" />
+</figure>
+</section>
+<section id="ns-nova-scotia">
+<h2>ns  -  NOVA SCOTIA<a class="headerlink" href="#ns-nova-scotia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-82.png" class="plot-directive" src="../_images/areas-82.png" />
+</figure>
+</section>
+<section id="nt-nw-territories">
+<h2>nt  -  NW TERRITORIES<a class="headerlink" href="#nt-nw-territories" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-83.png" class="plot-directive" src="../_images/areas-83.png" />
+</figure>
+</section>
+<section id="nu-nunavut">
+<h2>nu  -  NUNAVUT<a class="headerlink" href="#nu-nunavut" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-84.png" class="plot-directive" src="../_images/areas-84.png" />
+</figure>
+</section>
+<section id="on-ontario">
+<h2>on  -  ONTARIO<a class="headerlink" href="#on-ontario" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-85.png" class="plot-directive" src="../_images/areas-85.png" />
+</figure>
+</section>
+<section id="pe-prince-edward-is">
+<h2>pe  -  PRINCE EDWARD IS<a class="headerlink" href="#pe-prince-edward-is" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-86.png" class="plot-directive" src="../_images/areas-86.png" />
+</figure>
+</section>
+<section id="qb-quebec">
+<h2>qb  -  QUEBEC<a class="headerlink" href="#qb-quebec" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-87.png" class="plot-directive" src="../_images/areas-87.png" />
+</figure>
+</section>
+<section id="sa-saskatchewan">
+<h2>sa  -  SASKATCHEWAN<a class="headerlink" href="#sa-saskatchewan" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-88.png" class="plot-directive" src="../_images/areas-88.png" />
+</figure>
+</section>
+<section id="yt-yukon-territory">
+<h2>yt  -  YUKON TERRITORY<a class="headerlink" href="#yt-yukon-territory" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-89.png" class="plot-directive" src="../_images/areas-89.png" />
+</figure>
+</section>
+<section id="tropatl-tropical-atlantic">
+<h2>tropatl  -  TROPICAL ATLANTIC<a class="headerlink" href="#tropatl-tropical-atlantic" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-90.png" class="plot-directive" src="../_images/areas-90.png" />
+</figure>
+</section>
+<section id="subtrop-subtropical-atl">
+<h2>subtrop  -  SUBTROPICAL ATL<a class="headerlink" href="#subtrop-subtropical-atl" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-91.png" class="plot-directive" src="../_images/areas-91.png" />
+</figure>
+</section>
+<section id="troppac-tropical-pacific">
+<h2>troppac  -  TROPICAL PACIFIC<a class="headerlink" href="#troppac-tropical-pacific" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-92.png" class="plot-directive" src="../_images/areas-92.png" />
+</figure>
+</section>
+<section id="gulf-gulf-of-mexico">
+<h2>gulf  -  GULF OF MEXICO<a class="headerlink" href="#gulf-gulf-of-mexico" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-93.png" class="plot-directive" src="../_images/areas-93.png" />
+</figure>
+</section>
+<section id="carib-caribbean-sea">
+<h2>carib  -  CARIBBEAN SEA<a class="headerlink" href="#carib-caribbean-sea" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-94.png" class="plot-directive" src="../_images/areas-94.png" />
+</figure>
+</section>
+<section id="sthepac-south-e-pacific">
+<h2>sthepac  -  SOUTH E PACIFIC<a class="headerlink" href="#sthepac-south-e-pacific" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-95.png" class="plot-directive" src="../_images/areas-95.png" />
+</figure>
+</section>
+<section id="natlmed-n-atl-mediter">
+<h2>natlmed  -  N ATL/MEDITER<a class="headerlink" href="#natlmed-n-atl-mediter" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-96.png" class="plot-directive" src="../_images/areas-96.png" />
+</figure>
+</section>
+<section id="atlhur-atlantic-hurr">
+<h2>atlhur  -  ATLANTIC HURR<a class="headerlink" href="#atlhur-atlantic-hurr" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-97.png" class="plot-directive" src="../_images/areas-97.png" />
+</figure>
+</section>
+<section id="nam-n-america">
+<h2>nam  -  N AMERICA<a class="headerlink" href="#nam-n-america" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-98.png" class="plot-directive" src="../_images/areas-98.png" />
+</figure>
+</section>
+<section id="sam-s-america">
+<h2>sam  -  S AMERICA<a class="headerlink" href="#sam-s-america" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-99.png" class="plot-directive" src="../_images/areas-99.png" />
+</figure>
+</section>
+<section id="samps-s-america-ps">
+<h2>samps  -  S AMERICA (PS)<a class="headerlink" href="#samps-s-america-ps" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-100.png" class="plot-directive" src="../_images/areas-100.png" />
+</figure>
+</section>
+<section id="eur-europe">
+<h2>eur  -  EUROPE<a class="headerlink" href="#eur-europe" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-101.png" class="plot-directive" src="../_images/areas-101.png" />
+</figure>
+</section>
+<section id="natl-n-atlantic">
+<h2>natl  -  N ATLANTIC<a class="headerlink" href="#natl-n-atlantic" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-102.png" class="plot-directive" src="../_images/areas-102.png" />
+</figure>
+</section>
+<section id="watl-w-atlantic">
+<h2>watl  -  W ATLANTIC<a class="headerlink" href="#watl-w-atlantic" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-103.png" class="plot-directive" src="../_images/areas-103.png" />
+</figure>
+</section>
+<section id="tatl-tropical-atlantic">
+<h2>tatl  -  TROPICAL ATLANTIC<a class="headerlink" href="#tatl-tropical-atlantic" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-104.png" class="plot-directive" src="../_images/areas-104.png" />
+</figure>
+</section>
+<section id="npac-n-pacific">
+<h2>npac  -  N PACIFIC<a class="headerlink" href="#npac-n-pacific" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-105.png" class="plot-directive" src="../_images/areas-105.png" />
+</figure>
+</section>
+<section id="spac-s-pacific">
+<h2>spac  -  S PACIFIC<a class="headerlink" href="#spac-s-pacific" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-106.png" class="plot-directive" src="../_images/areas-106.png" />
+</figure>
+</section>
+<section id="tpac-tropical-pacific">
+<h2>tpac  -  TROPICAL PACIFIC<a class="headerlink" href="#tpac-tropical-pacific" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-107.png" class="plot-directive" src="../_images/areas-107.png" />
+</figure>
+</section>
+<section id="epac-e-pacific">
+<h2>epac  -  E PACIFIC<a class="headerlink" href="#epac-e-pacific" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-108.png" class="plot-directive" src="../_images/areas-108.png" />
+</figure>
+</section>
+<section id="wpac-w-pacific">
+<h2>wpac  -  W PACIFIC<a class="headerlink" href="#wpac-w-pacific" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-109.png" class="plot-directive" src="../_images/areas-109.png" />
+</figure>
+</section>
+<section id="mpac-marine-pacific">
+<h2>mpac  -  MARINE PACIFIC<a class="headerlink" href="#mpac-marine-pacific" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-110.png" class="plot-directive" src="../_images/areas-110.png" />
+</figure>
+</section>
+<section id="americas-icao-merc-area-a">
+<h2>americas  -  ICAO MERC AREA A<a class="headerlink" href="#americas-icao-merc-area-a" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-111.png" class="plot-directive" src="../_images/areas-111.png" />
+</figure>
+</section>
+<section id="atlantic-icao-merc-area-b1">
+<h2>atlantic  -  ICAO MERC AREA B1<a class="headerlink" href="#atlantic-icao-merc-area-b1" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-112.png" class="plot-directive" src="../_images/areas-112.png" />
+</figure>
+</section>
+<section id="africa-icao-merc-area-c">
+<h2>africa  -  ICAO MERC AREA C<a class="headerlink" href="#africa-icao-merc-area-c" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-113.png" class="plot-directive" src="../_images/areas-113.png" />
+</figure>
+</section>
+<section id="indocean-icao-merc-area-d">
+<h2>indocean  -  ICAO MERC AREA D<a class="headerlink" href="#indocean-icao-merc-area-d" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-114.png" class="plot-directive" src="../_images/areas-114.png" />
+</figure>
+</section>
+<section id="oceania-icao-merc-area-e">
+<h2>oceania  -  ICAO MERC AREA E<a class="headerlink" href="#oceania-icao-merc-area-e" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-115.png" class="plot-directive" src="../_images/areas-115.png" />
+</figure>
+</section>
+<section id="trop-pac-icao-merc-area-f">
+<h2>trop_pac  -  ICAO MERC AREA F<a class="headerlink" href="#trop-pac-icao-merc-area-f" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-116.png" class="plot-directive" src="../_images/areas-116.png" />
+</figure>
+</section>
+<section id="asia-ps-icao-p-s-area-g">
+<h2>asia_ps  -  ICAO P.S. AREA G<a class="headerlink" href="#asia-ps-icao-p-s-area-g" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-117.png" class="plot-directive" src="../_images/areas-117.png" />
+</figure>
+</section>
+<section id="na-ps-icao-p-s-area-h">
+<h2>na_ps  -  ICAO P.S. AREA H<a class="headerlink" href="#na-ps-icao-p-s-area-h" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-118.png" class="plot-directive" src="../_images/areas-118.png" />
+</figure>
+</section>
+<section id="npac-ps-icao-p-s-area-i">
+<h2>npac_ps  -  ICAO P.S. AREA I<a class="headerlink" href="#npac-ps-icao-p-s-area-i" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-119.png" class="plot-directive" src="../_images/areas-119.png" />
+</figure>
+</section>
+<section id="antarctica-icao-p-s-area-j">
+<h2>antarctica  -  ICAO P.S. AREA J<a class="headerlink" href="#antarctica-icao-p-s-area-j" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-120.png" class="plot-directive" src="../_images/areas-120.png" />
+</figure>
+</section>
+<section id="europe-icao-p-s-area-eu">
+<h2>europe  -  ICAO P.S. AREA EU<a class="headerlink" href="#europe-icao-p-s-area-eu" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-121.png" class="plot-directive" src="../_images/areas-121.png" />
+</figure>
+</section>
+<section id="middle-east-icao-merc-area-me">
+<h2>middle_east  -  ICAO MERC AREA ME<a class="headerlink" href="#middle-east-icao-merc-area-me" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-122.png" class="plot-directive" src="../_images/areas-122.png" />
+</figure>
+</section>
+<section id="india-icao-merc-area-as">
+<h2>india  -  ICAO MERC AREA AS<a class="headerlink" href="#india-icao-merc-area-as" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-123.png" class="plot-directive" src="../_images/areas-123.png" />
+</figure>
+</section>
+<section id="ag-argentina">
+<h2>ag  -  ARGENTINA<a class="headerlink" href="#ag-argentina" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-124.png" class="plot-directive" src="../_images/areas-124.png" />
+</figure>
+</section>
+<section id="ah-afghanistan">
+<h2>ah  -  AFGHANISTAN<a class="headerlink" href="#ah-afghanistan" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-125.png" class="plot-directive" src="../_images/areas-125.png" />
+</figure>
+</section>
+<section id="afrca-africa">
+<h2>afrca  -  AFRICA<a class="headerlink" href="#afrca-africa" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-126.png" class="plot-directive" src="../_images/areas-126.png" />
+</figure>
+</section>
+<section id="ai-ascension-island">
+<h2>ai  -  ASCENSION ISLAND<a class="headerlink" href="#ai-ascension-island" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-127.png" class="plot-directive" src="../_images/areas-127.png" />
+</figure>
+</section>
+<section id="alba-albania">
+<h2>alba  -  ALBANIA<a class="headerlink" href="#alba-albania" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-128.png" class="plot-directive" src="../_images/areas-128.png" />
+</figure>
+</section>
+<section id="alge-algeria">
+<h2>alge  -  ALGERIA<a class="headerlink" href="#alge-algeria" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-129.png" class="plot-directive" src="../_images/areas-129.png" />
+</figure>
+</section>
+<section id="an-angola">
+<h2>an  -  ANGOLA<a class="headerlink" href="#an-angola" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-130.png" class="plot-directive" src="../_images/areas-130.png" />
+</figure>
+</section>
+<section id="antl-lesser-antilles">
+<h2>antl  -  LESSER ANTILLES<a class="headerlink" href="#antl-lesser-antilles" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-131.png" class="plot-directive" src="../_images/areas-131.png" />
+</figure>
+</section>
+<section id="antg-greater-antilles">
+<h2>antg  -  GREATER ANTILLES<a class="headerlink" href="#antg-greater-antilles" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-132.png" class="plot-directive" src="../_images/areas-132.png" />
+</figure>
+</section>
+<section id="atg-antigua-barbuda">
+<h2>atg  -  ANTIGUA &amp; BARBUDA<a class="headerlink" href="#atg-antigua-barbuda" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-133.png" class="plot-directive" src="../_images/areas-133.png" />
+</figure>
+</section>
+<section id="au-australia">
+<h2>au  -  AUSTRALIA<a class="headerlink" href="#au-australia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-134.png" class="plot-directive" src="../_images/areas-134.png" />
+</figure>
+</section>
+<section id="azor-azores">
+<h2>azor  -  AZORES<a class="headerlink" href="#azor-azores" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-135.png" class="plot-directive" src="../_images/areas-135.png" />
+</figure>
+</section>
+<section id="ba-bahamas">
+<h2>ba  -  BAHAMAS<a class="headerlink" href="#ba-bahamas" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-136.png" class="plot-directive" src="../_images/areas-136.png" />
+</figure>
+</section>
+<section id="be-bermuda">
+<h2>be  -  BERMUDA<a class="headerlink" href="#be-bermuda" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-137.png" class="plot-directive" src="../_images/areas-137.png" />
+</figure>
+</section>
+<section id="bel-belgium">
+<h2>bel  -  BELGIUM<a class="headerlink" href="#bel-belgium" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-138.png" class="plot-directive" src="../_images/areas-138.png" />
+</figure>
+</section>
+<section id="bf-brunei">
+<h2>bf  -  BRUNEI<a class="headerlink" href="#bf-brunei" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-139.png" class="plot-directive" src="../_images/areas-139.png" />
+</figure>
+</section>
+<section id="bfa-burkina-faso">
+<h2>bfa  -  BURKINA FASO<a class="headerlink" href="#bfa-burkina-faso" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-140.png" class="plot-directive" src="../_images/areas-140.png" />
+</figure>
+</section>
+<section id="bh-belize">
+<h2>bh  -  BELIZE<a class="headerlink" href="#bh-belize" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-141.png" class="plot-directive" src="../_images/areas-141.png" />
+</figure>
+</section>
+<section id="bi-burundi">
+<h2>bi  -  BURUNDI<a class="headerlink" href="#bi-burundi" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-142.png" class="plot-directive" src="../_images/areas-142.png" />
+</figure>
+</section>
+<section id="bj-benin">
+<h2>bj  -  BENIN<a class="headerlink" href="#bj-benin" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-143.png" class="plot-directive" src="../_images/areas-143.png" />
+</figure>
+</section>
+<section id="bn-bahrain">
+<h2>bn  -  BAHRAIN<a class="headerlink" href="#bn-bahrain" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-144.png" class="plot-directive" src="../_images/areas-144.png" />
+</figure>
+</section>
+<section id="bo-bolivia">
+<h2>bo  -  BOLIVIA<a class="headerlink" href="#bo-bolivia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-145.png" class="plot-directive" src="../_images/areas-145.png" />
+</figure>
+</section>
+<section id="bots-botswana">
+<h2>bots  -  BOTSWANA<a class="headerlink" href="#bots-botswana" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-146.png" class="plot-directive" src="../_images/areas-146.png" />
+</figure>
+</section>
+<section id="br-barbados">
+<h2>br  -  BARBADOS<a class="headerlink" href="#br-barbados" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-147.png" class="plot-directive" src="../_images/areas-147.png" />
+</figure>
+</section>
+<section id="bt-british-indian-oc">
+<h2>bt  -  BRITISH INDIAN OC<a class="headerlink" href="#bt-british-indian-oc" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-148.png" class="plot-directive" src="../_images/areas-148.png" />
+</figure>
+</section>
+<section id="bu-bulgaria">
+<h2>bu  -  BULGARIA<a class="headerlink" href="#bu-bulgaria" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-149.png" class="plot-directive" src="../_images/areas-149.png" />
+</figure>
+</section>
+<section id="bv-bouvet-islands">
+<h2>bv  -  BOUVET ISLANDS<a class="headerlink" href="#bv-bouvet-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-150.png" class="plot-directive" src="../_images/areas-150.png" />
+</figure>
+</section>
+<section id="bw-bangladesh">
+<h2>bw  -  BANGLADESH<a class="headerlink" href="#bw-bangladesh" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-151.png" class="plot-directive" src="../_images/areas-151.png" />
+</figure>
+</section>
+<section id="by-byelorussia">
+<h2>by  -  BYELORUSSIA<a class="headerlink" href="#by-byelorussia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-152.png" class="plot-directive" src="../_images/areas-152.png" />
+</figure>
+</section>
+<section id="bz-brazil">
+<h2>bz  -  BRAZIL<a class="headerlink" href="#bz-brazil" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-153.png" class="plot-directive" src="../_images/areas-153.png" />
+</figure>
+</section>
+<section id="cais-canton-island">
+<h2>cais  -  CANTON ISLAND<a class="headerlink" href="#cais-canton-island" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-154.png" class="plot-directive" src="../_images/areas-154.png" />
+</figure>
+</section>
+<section id="nwcar-nwx-caribbean">
+<h2>nwcar  -  NWX CARIBBEAN<a class="headerlink" href="#nwcar-nwx-caribbean" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-155.png" class="plot-directive" src="../_images/areas-155.png" />
+</figure>
+</section>
+<section id="cari-caribbean">
+<h2>cari  -  CARIBBEAN<a class="headerlink" href="#cari-caribbean" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-156.png" class="plot-directive" src="../_images/areas-156.png" />
+</figure>
+</section>
+<section id="cb-chad">
+<h2>cb  -  CHAD<a class="headerlink" href="#cb-chad" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-157.png" class="plot-directive" src="../_images/areas-157.png" />
+</figure>
+</section>
+<section id="ce-central-africa">
+<h2>ce  -  CENTRAL AFRICA<a class="headerlink" href="#ce-central-africa" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-158.png" class="plot-directive" src="../_images/areas-158.png" />
+</figure>
+</section>
+<section id="cg-congo">
+<h2>cg  -  CONGO<a class="headerlink" href="#cg-congo" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-159.png" class="plot-directive" src="../_images/areas-159.png" />
+</figure>
+</section>
+<section id="ch-chile">
+<h2>ch  -  CHILE<a class="headerlink" href="#ch-chile" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-160.png" class="plot-directive" src="../_images/areas-160.png" />
+</figure>
+</section>
+<section id="ci-china">
+<h2>ci  -  CHINA<a class="headerlink" href="#ci-china" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-161.png" class="plot-directive" src="../_images/areas-161.png" />
+</figure>
+</section>
+<section id="cm-cameroon">
+<h2>cm  -  CAMEROON<a class="headerlink" href="#cm-cameroon" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-162.png" class="plot-directive" src="../_images/areas-162.png" />
+</figure>
+</section>
+<section id="colm-columbia">
+<h2>colm  -  COLUMBIA<a class="headerlink" href="#colm-columbia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-163.png" class="plot-directive" src="../_images/areas-163.png" />
+</figure>
+</section>
+<section id="cr-canary-islands">
+<h2>cr  -  CANARY ISLANDS<a class="headerlink" href="#cr-canary-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-164.png" class="plot-directive" src="../_images/areas-164.png" />
+</figure>
+</section>
+<section id="cs-costa-rica">
+<h2>cs  -  COSTA RICA<a class="headerlink" href="#cs-costa-rica" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-165.png" class="plot-directive" src="../_images/areas-165.png" />
+</figure>
+</section>
+<section id="cu-cuba">
+<h2>cu  -  CUBA<a class="headerlink" href="#cu-cuba" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-166.png" class="plot-directive" src="../_images/areas-166.png" />
+</figure>
+</section>
+<section id="cv-cape-verde-island">
+<h2>cv  -  CAPE VERDE ISLAND<a class="headerlink" href="#cv-cape-verde-island" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-167.png" class="plot-directive" src="../_images/areas-167.png" />
+</figure>
+</section>
+<section id="cy-cyprus">
+<h2>cy  -  CYPRUS<a class="headerlink" href="#cy-cyprus" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-168.png" class="plot-directive" src="../_images/areas-168.png" />
+</figure>
+</section>
+<section id="cz-czech-republic">
+<h2>cz  -  CZECH REPUBLIC<a class="headerlink" href="#cz-czech-republic" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-169.png" class="plot-directive" src="../_images/areas-169.png" />
+</figure>
+</section>
+<section id="dj-djibouti">
+<h2>dj  -  DJIBOUTI<a class="headerlink" href="#dj-djibouti" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-170.png" class="plot-directive" src="../_images/areas-170.png" />
+</figure>
+</section>
+<section id="dl-germany">
+<h2>dl  -  GERMANY<a class="headerlink" href="#dl-germany" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-171.png" class="plot-directive" src="../_images/areas-171.png" />
+</figure>
+</section>
+<section id="dn-denmark">
+<h2>dn  -  DENMARK<a class="headerlink" href="#dn-denmark" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-172.png" class="plot-directive" src="../_images/areas-172.png" />
+</figure>
+</section>
+<section id="do-dominica">
+<h2>do  -  DOMINICA<a class="headerlink" href="#do-dominica" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-173.png" class="plot-directive" src="../_images/areas-173.png" />
+</figure>
+</section>
+<section id="dr-dominican-republic">
+<h2>dr  -  DOMINICAN REPUBLIC<a class="headerlink" href="#dr-dominican-republic" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-174.png" class="plot-directive" src="../_images/areas-174.png" />
+</figure>
+</section>
+<section id="eg-egypt">
+<h2>eg  -  EGYPT<a class="headerlink" href="#eg-egypt" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-175.png" class="plot-directive" src="../_images/areas-175.png" />
+</figure>
+</section>
+<section id="eq-ecuador">
+<h2>eq  -  ECUADOR<a class="headerlink" href="#eq-ecuador" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-176.png" class="plot-directive" src="../_images/areas-176.png" />
+</figure>
+</section>
+<section id="er-uae">
+<h2>er  -  UAE<a class="headerlink" href="#er-uae" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-177.png" class="plot-directive" src="../_images/areas-177.png" />
+</figure>
+</section>
+<section id="es-el-salvador">
+<h2>es  -  EL SALVADOR<a class="headerlink" href="#es-el-salvador" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-178.png" class="plot-directive" src="../_images/areas-178.png" />
+</figure>
+</section>
+<section id="et-ethiopia">
+<h2>et  -  ETHIOPIA<a class="headerlink" href="#et-ethiopia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-179.png" class="plot-directive" src="../_images/areas-179.png" />
+</figure>
+</section>
+<section id="fa-faeroes">
+<h2>fa  -  FAEROES<a class="headerlink" href="#fa-faeroes" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-180.png" class="plot-directive" src="../_images/areas-180.png" />
+</figure>
+</section>
+<section id="fg-french-guiana">
+<h2>fg  -  FRENCH GUIANA<a class="headerlink" href="#fg-french-guiana" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-181.png" class="plot-directive" src="../_images/areas-181.png" />
+</figure>
+</section>
+<section id="fi-finland">
+<h2>fi  -  FINLAND<a class="headerlink" href="#fi-finland" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-182.png" class="plot-directive" src="../_images/areas-182.png" />
+</figure>
+</section>
+<section id="fj-fiji-islands">
+<h2>fj  -  FIJI ISLANDS<a class="headerlink" href="#fj-fiji-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-183.png" class="plot-directive" src="../_images/areas-183.png" />
+</figure>
+</section>
+<section id="fk-falkland-islands">
+<h2>fk  -  FALKLAND ISLANDS<a class="headerlink" href="#fk-falkland-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-184.png" class="plot-directive" src="../_images/areas-184.png" />
+</figure>
+</section>
+<section id="fn-niger">
+<h2>fn  -  NIGER<a class="headerlink" href="#fn-niger" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-185.png" class="plot-directive" src="../_images/areas-185.png" />
+</figure>
+</section>
+<section id="fr-france">
+<h2>fr  -  FRANCE<a class="headerlink" href="#fr-france" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-186.png" class="plot-directive" src="../_images/areas-186.png" />
+</figure>
+</section>
+<section id="gb-gambia">
+<h2>gb  -  GAMBIA<a class="headerlink" href="#gb-gambia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-187.png" class="plot-directive" src="../_images/areas-187.png" />
+</figure>
+</section>
+<section id="gc-cayman-islands">
+<h2>gc  -  CAYMAN ISLANDS<a class="headerlink" href="#gc-cayman-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-188.png" class="plot-directive" src="../_images/areas-188.png" />
+</figure>
+</section>
+<section id="gh-ghana">
+<h2>gh  -  GHANA<a class="headerlink" href="#gh-ghana" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-189.png" class="plot-directive" src="../_images/areas-189.png" />
+</figure>
+</section>
+<section id="gi-gibraltar">
+<h2>gi  -  GIBRALTAR<a class="headerlink" href="#gi-gibraltar" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-190.png" class="plot-directive" src="../_images/areas-190.png" />
+</figure>
+</section>
+<section id="gl-greenland">
+<h2>gl  -  GREENLAND<a class="headerlink" href="#gl-greenland" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-191.png" class="plot-directive" src="../_images/areas-191.png" />
+</figure>
+</section>
+<section id="glp-guadaloupe">
+<h2>glp  -  GUADALOUPE<a class="headerlink" href="#glp-guadaloupe" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-192.png" class="plot-directive" src="../_images/areas-192.png" />
+</figure>
+</section>
+<section id="gm-guam">
+<h2>gm  -  GUAM<a class="headerlink" href="#gm-guam" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-193.png" class="plot-directive" src="../_images/areas-193.png" />
+</figure>
+</section>
+<section id="gn-guinea">
+<h2>gn  -  GUINEA<a class="headerlink" href="#gn-guinea" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-194.png" class="plot-directive" src="../_images/areas-194.png" />
+</figure>
+</section>
+<section id="go-gabon">
+<h2>go  -  GABON<a class="headerlink" href="#go-gabon" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-195.png" class="plot-directive" src="../_images/areas-195.png" />
+</figure>
+</section>
+<section id="gr-greece">
+<h2>gr  -  GREECE<a class="headerlink" href="#gr-greece" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-196.png" class="plot-directive" src="../_images/areas-196.png" />
+</figure>
+</section>
+<section id="gu-guatemala">
+<h2>gu  -  GUATEMALA<a class="headerlink" href="#gu-guatemala" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-197.png" class="plot-directive" src="../_images/areas-197.png" />
+</figure>
+</section>
+<section id="gw-guinea-bissau">
+<h2>gw  -  GUINEA-BISSAU<a class="headerlink" href="#gw-guinea-bissau" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-198.png" class="plot-directive" src="../_images/areas-198.png" />
+</figure>
+</section>
+<section id="gy-guyana">
+<h2>gy  -  GUYANA<a class="headerlink" href="#gy-guyana" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-199.png" class="plot-directive" src="../_images/areas-199.png" />
+</figure>
+</section>
+<section id="ha-haiti">
+<h2>ha  -  HAITI<a class="headerlink" href="#ha-haiti" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-200.png" class="plot-directive" src="../_images/areas-200.png" />
+</figure>
+</section>
+<section id="he-st-helena">
+<h2>he  -  ST HELENA<a class="headerlink" href="#he-st-helena" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-201.png" class="plot-directive" src="../_images/areas-201.png" />
+</figure>
+</section>
+<section id="hk-hong-kong">
+<h2>hk  -  HONG KONG<a class="headerlink" href="#hk-hong-kong" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-202.png" class="plot-directive" src="../_images/areas-202.png" />
+</figure>
+</section>
+<section id="ho-honduras">
+<h2>ho  -  HONDURAS<a class="headerlink" href="#ho-honduras" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-203.png" class="plot-directive" src="../_images/areas-203.png" />
+</figure>
+</section>
+<section id="hu-hungary">
+<h2>hu  -  HUNGARY<a class="headerlink" href="#hu-hungary" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-204.png" class="plot-directive" src="../_images/areas-204.png" />
+</figure>
+</section>
+<section id="ic-comoros">
+<h2>ic  -  COMOROS<a class="headerlink" href="#ic-comoros" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-205.png" class="plot-directive" src="../_images/areas-205.png" />
+</figure>
+</section>
+<section id="icel-iceland">
+<h2>icel  -  ICELAND<a class="headerlink" href="#icel-iceland" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-206.png" class="plot-directive" src="../_images/areas-206.png" />
+</figure>
+</section>
+<section id="ie-ireland">
+<h2>ie  -  IRELAND<a class="headerlink" href="#ie-ireland" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-207.png" class="plot-directive" src="../_images/areas-207.png" />
+</figure>
+</section>
+<section id="inda-india">
+<h2>inda  -  INDIA<a class="headerlink" href="#inda-india" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-208.png" class="plot-directive" src="../_images/areas-208.png" />
+</figure>
+</section>
+<section id="indo-indonesia">
+<h2>indo  -  INDONESIA<a class="headerlink" href="#indo-indonesia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-209.png" class="plot-directive" src="../_images/areas-209.png" />
+</figure>
+</section>
+<section id="iq-iraq">
+<h2>iq  -  IRAQ<a class="headerlink" href="#iq-iraq" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-210.png" class="plot-directive" src="../_images/areas-210.png" />
+</figure>
+</section>
+<section id="ir-iran">
+<h2>ir  -  IRAN<a class="headerlink" href="#ir-iran" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-211.png" class="plot-directive" src="../_images/areas-211.png" />
+</figure>
+</section>
+<section id="is-israel">
+<h2>is  -  ISRAEL<a class="headerlink" href="#is-israel" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-212.png" class="plot-directive" src="../_images/areas-212.png" />
+</figure>
+</section>
+<section id="iv-ivory-coast">
+<h2>iv  -  IVORY COAST<a class="headerlink" href="#iv-ivory-coast" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-213.png" class="plot-directive" src="../_images/areas-213.png" />
+</figure>
+</section>
+<section id="iw-west-bank">
+<h2>iw  -  WEST BANK<a class="headerlink" href="#iw-west-bank" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-214.png" class="plot-directive" src="../_images/areas-214.png" />
+</figure>
+</section>
+<section id="iy-italy">
+<h2>iy  -  ITALY<a class="headerlink" href="#iy-italy" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-215.png" class="plot-directive" src="../_images/areas-215.png" />
+</figure>
+</section>
+<section id="jd-jordan">
+<h2>jd  -  JORDAN<a class="headerlink" href="#jd-jordan" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-216.png" class="plot-directive" src="../_images/areas-216.png" />
+</figure>
+</section>
+<section id="jm-jamaica">
+<h2>jm  -  JAMAICA<a class="headerlink" href="#jm-jamaica" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-217.png" class="plot-directive" src="../_images/areas-217.png" />
+</figure>
+</section>
+<section id="jp-japan">
+<h2>jp  -  JAPAN<a class="headerlink" href="#jp-japan" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-218.png" class="plot-directive" src="../_images/areas-218.png" />
+</figure>
+</section>
+<section id="ka-caroline-islands">
+<h2>ka  -  CAROLINE ISLANDS<a class="headerlink" href="#ka-caroline-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-219.png" class="plot-directive" src="../_images/areas-219.png" />
+</figure>
+</section>
+<section id="kash-jammu-kashmir">
+<h2>kash  -  JAMMU &amp; KASHMIR<a class="headerlink" href="#kash-jammu-kashmir" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-220.png" class="plot-directive" src="../_images/areas-220.png" />
+</figure>
+</section>
+<section id="kb-kiribati">
+<h2>kb  -  KIRIBATI<a class="headerlink" href="#kb-kiribati" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-221.png" class="plot-directive" src="../_images/areas-221.png" />
+</figure>
+</section>
+<section id="khm-cambodia">
+<h2>khm  -  CAMBODIA<a class="headerlink" href="#khm-cambodia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-222.png" class="plot-directive" src="../_images/areas-222.png" />
+</figure>
+</section>
+<section id="ki-christmas-island">
+<h2>ki  -  CHRISTMAS ISLAND<a class="headerlink" href="#ki-christmas-island" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-223.png" class="plot-directive" src="../_images/areas-223.png" />
+</figure>
+</section>
+<section id="kn-kenya">
+<h2>kn  -  KENYA<a class="headerlink" href="#kn-kenya" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-224.png" class="plot-directive" src="../_images/areas-224.png" />
+</figure>
+</section>
+<section id="kna-st-kitts-nevis">
+<h2>kna  -  ST KITTS &amp; NEVIS<a class="headerlink" href="#kna-st-kitts-nevis" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-225.png" class="plot-directive" src="../_images/areas-225.png" />
+</figure>
+</section>
+<section id="ko-korea">
+<h2>ko  -  KOREA<a class="headerlink" href="#ko-korea" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-226.png" class="plot-directive" src="../_images/areas-226.png" />
+</figure>
+</section>
+<section id="ku-cook-islands">
+<h2>ku  -  COOK ISLANDS<a class="headerlink" href="#ku-cook-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-227.png" class="plot-directive" src="../_images/areas-227.png" />
+</figure>
+</section>
+<section id="kw-kuwait">
+<h2>kw  -  KUWAIT<a class="headerlink" href="#kw-kuwait" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-228.png" class="plot-directive" src="../_images/areas-228.png" />
+</figure>
+</section>
+<section id="laos-laos">
+<h2>laos  -  LAOS<a class="headerlink" href="#laos-laos" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-229.png" class="plot-directive" src="../_images/areas-229.png" />
+</figure>
+</section>
+<section id="lb-lebanon">
+<h2>lb  -  LEBANON<a class="headerlink" href="#lb-lebanon" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-230.png" class="plot-directive" src="../_images/areas-230.png" />
+</figure>
+</section>
+<section id="lc-st-lucia">
+<h2>lc  -  ST LUCIA<a class="headerlink" href="#lc-st-lucia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-231.png" class="plot-directive" src="../_images/areas-231.png" />
+</figure>
+</section>
+<section id="li-liberia">
+<h2>li  -  LIBERIA<a class="headerlink" href="#li-liberia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-232.png" class="plot-directive" src="../_images/areas-232.png" />
+</figure>
+</section>
+<section id="ln-line-islands">
+<h2>ln  -  LINE ISLANDS<a class="headerlink" href="#ln-line-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-233.png" class="plot-directive" src="../_images/areas-233.png" />
+</figure>
+</section>
+<section id="ls-lesotho">
+<h2>ls  -  LESOTHO<a class="headerlink" href="#ls-lesotho" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-234.png" class="plot-directive" src="../_images/areas-234.png" />
+</figure>
+</section>
+<section id="lt-liechtenstein">
+<h2>lt  -  LIECHTENSTEIN<a class="headerlink" href="#lt-liechtenstein" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-235.png" class="plot-directive" src="../_images/areas-235.png" />
+</figure>
+</section>
+<section id="lux-luxembourg">
+<h2>lux  -  LUXEMBOURG<a class="headerlink" href="#lux-luxembourg" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-236.png" class="plot-directive" src="../_images/areas-236.png" />
+</figure>
+</section>
+<section id="ly-libya">
+<h2>ly  -  LIBYA<a class="headerlink" href="#ly-libya" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-237.png" class="plot-directive" src="../_images/areas-237.png" />
+</figure>
+</section>
+<section id="maar-st-maarten">
+<h2>maar  -  ST MAARTEN<a class="headerlink" href="#maar-st-maarten" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-238.png" class="plot-directive" src="../_images/areas-238.png" />
+</figure>
+</section>
+<section id="made-madeira">
+<h2>made  -  MADEIRA<a class="headerlink" href="#made-madeira" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-239.png" class="plot-directive" src="../_images/areas-239.png" />
+</figure>
+</section>
+<section id="mala-malaysia">
+<h2>mala  -  MALAYSIA<a class="headerlink" href="#mala-malaysia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-240.png" class="plot-directive" src="../_images/areas-240.png" />
+</figure>
+</section>
+<section id="mali-mali">
+<h2>mali  -  MALI<a class="headerlink" href="#mali-mali" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-241.png" class="plot-directive" src="../_images/areas-241.png" />
+</figure>
+</section>
+<section id="maur-mauritius">
+<h2>maur  -  MAURITIUS<a class="headerlink" href="#maur-mauritius" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-242.png" class="plot-directive" src="../_images/areas-242.png" />
+</figure>
+</section>
+<section id="maut-mauritania">
+<h2>maut  -  MAURITANIA<a class="headerlink" href="#maut-mauritania" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-243.png" class="plot-directive" src="../_images/areas-243.png" />
+</figure>
+</section>
+<section id="mc-morocco">
+<h2>mc  -  MOROCCO<a class="headerlink" href="#mc-morocco" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-244.png" class="plot-directive" src="../_images/areas-244.png" />
+</figure>
+</section>
+<section id="mg-madagascar">
+<h2>mg  -  MADAGASCAR<a class="headerlink" href="#mg-madagascar" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-245.png" class="plot-directive" src="../_images/areas-245.png" />
+</figure>
+</section>
+<section id="mh-marshall-islands">
+<h2>mh  -  MARSHALL ISLANDS<a class="headerlink" href="#mh-marshall-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-246.png" class="plot-directive" src="../_images/areas-246.png" />
+</figure>
+</section>
+<section id="ml-malta">
+<h2>ml  -  MALTA<a class="headerlink" href="#ml-malta" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-247.png" class="plot-directive" src="../_images/areas-247.png" />
+</figure>
+</section>
+<section id="mmr-myanmar">
+<h2>mmr  -  MYANMAR<a class="headerlink" href="#mmr-myanmar" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-248.png" class="plot-directive" src="../_images/areas-248.png" />
+</figure>
+</section>
+<section id="mong-mongolia">
+<h2>mong  -  MONGOLIA<a class="headerlink" href="#mong-mongolia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-249.png" class="plot-directive" src="../_images/areas-249.png" />
+</figure>
+</section>
+<section id="mr-martinique">
+<h2>mr  -  MARTINIQUE<a class="headerlink" href="#mr-martinique" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-250.png" class="plot-directive" src="../_images/areas-250.png" />
+</figure>
+</section>
+<section id="mu-macao">
+<h2>mu  -  MACAO<a class="headerlink" href="#mu-macao" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-251.png" class="plot-directive" src="../_images/areas-251.png" />
+</figure>
+</section>
+<section id="mv-maldive-islands">
+<h2>mv  -  MALDIVE ISLANDS<a class="headerlink" href="#mv-maldive-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-252.png" class="plot-directive" src="../_images/areas-252.png" />
+</figure>
+</section>
+<section id="mw-malawi">
+<h2>mw  -  MALAWI<a class="headerlink" href="#mw-malawi" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-253.png" class="plot-directive" src="../_images/areas-253.png" />
+</figure>
+</section>
+<section id="mx-mexico">
+<h2>mx  -  MEXICO<a class="headerlink" href="#mx-mexico" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-254.png" class="plot-directive" src="../_images/areas-254.png" />
+</figure>
+</section>
+<section id="my-marianna-islands">
+<h2>my  -  MARIANNA ISLANDS<a class="headerlink" href="#my-marianna-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-255.png" class="plot-directive" src="../_images/areas-255.png" />
+</figure>
+</section>
+<section id="mz-mozambique">
+<h2>mz  -  MOZAMBIQUE<a class="headerlink" href="#mz-mozambique" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-256.png" class="plot-directive" src="../_images/areas-256.png" />
+</figure>
+</section>
+<section id="nama-namibia">
+<h2>nama  -  NAMIBIA<a class="headerlink" href="#nama-namibia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-257.png" class="plot-directive" src="../_images/areas-257.png" />
+</figure>
+</section>
+<section id="ncal-new-caledonia">
+<h2>ncal  -  NEW CALEDONIA<a class="headerlink" href="#ncal-new-caledonia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-258.png" class="plot-directive" src="../_images/areas-258.png" />
+</figure>
+</section>
+<section id="ng-new-guinea">
+<h2>ng  -  NEW GUINEA<a class="headerlink" href="#ng-new-guinea" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-259.png" class="plot-directive" src="../_images/areas-259.png" />
+</figure>
+</section>
+<section id="ni-nigeria">
+<h2>ni  -  NIGERIA<a class="headerlink" href="#ni-nigeria" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-260.png" class="plot-directive" src="../_images/areas-260.png" />
+</figure>
+</section>
+<section id="nk-nicaragua">
+<h2>nk  -  NICARAGUA<a class="headerlink" href="#nk-nicaragua" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-261.png" class="plot-directive" src="../_images/areas-261.png" />
+</figure>
+</section>
+<section id="nl-netherlands">
+<h2>nl  -  NETHERLANDS<a class="headerlink" href="#nl-netherlands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-262.png" class="plot-directive" src="../_images/areas-262.png" />
+</figure>
+</section>
+<section id="no-norway">
+<h2>no  -  NORWAY<a class="headerlink" href="#no-norway" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-263.png" class="plot-directive" src="../_images/areas-263.png" />
+</figure>
+</section>
+<section id="np-nepal">
+<h2>np  -  NEPAL<a class="headerlink" href="#np-nepal" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-264.png" class="plot-directive" src="../_images/areas-264.png" />
+</figure>
+</section>
+<section id="nw-nauru">
+<h2>nw  -  NAURU<a class="headerlink" href="#nw-nauru" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-265.png" class="plot-directive" src="../_images/areas-265.png" />
+</figure>
+</section>
+<section id="nz-new-zealand">
+<h2>nz  -  NEW ZEALAND<a class="headerlink" href="#nz-new-zealand" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-266.png" class="plot-directive" src="../_images/areas-266.png" />
+</figure>
+</section>
+<section id="om-oman">
+<h2>om  -  OMAN<a class="headerlink" href="#om-oman" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-267.png" class="plot-directive" src="../_images/areas-267.png" />
+</figure>
+</section>
+<section id="os-austria">
+<h2>os  -  AUSTRIA<a class="headerlink" href="#os-austria" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-268.png" class="plot-directive" src="../_images/areas-268.png" />
+</figure>
+</section>
+<section id="pf-french-polynesia">
+<h2>pf  -  FRENCH POLYNESIA<a class="headerlink" href="#pf-french-polynesia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-269.png" class="plot-directive" src="../_images/areas-269.png" />
+</figure>
+</section>
+<section id="ph-philipines">
+<h2>ph  -  PHILIPINES<a class="headerlink" href="#ph-philipines" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-270.png" class="plot-directive" src="../_images/areas-270.png" />
+</figure>
+</section>
+<section id="pi-phoenix-islands">
+<h2>pi  -  PHOENIX ISLANDS<a class="headerlink" href="#pi-phoenix-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-271.png" class="plot-directive" src="../_images/areas-271.png" />
+</figure>
+</section>
+<section id="pk-pakistan">
+<h2>pk  -  PAKISTAN<a class="headerlink" href="#pk-pakistan" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-272.png" class="plot-directive" src="../_images/areas-272.png" />
+</figure>
+</section>
+<section id="pl-poland">
+<h2>pl  -  POLAND<a class="headerlink" href="#pl-poland" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-273.png" class="plot-directive" src="../_images/areas-273.png" />
+</figure>
+</section>
+<section id="pm-panama">
+<h2>pm  -  PANAMA<a class="headerlink" href="#pm-panama" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-274.png" class="plot-directive" src="../_images/areas-274.png" />
+</figure>
+</section>
+<section id="po-portugal">
+<h2>po  -  PORTUGAL<a class="headerlink" href="#po-portugal" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-275.png" class="plot-directive" src="../_images/areas-275.png" />
+</figure>
+</section>
+<section id="pr-peru">
+<h2>pr  -  PERU<a class="headerlink" href="#pr-peru" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-276.png" class="plot-directive" src="../_images/areas-276.png" />
+</figure>
+</section>
+<section id="pt-pitcairn-islands">
+<h2>pt  -  PITCAIRN ISLANDS<a class="headerlink" href="#pt-pitcairn-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-277.png" class="plot-directive" src="../_images/areas-277.png" />
+</figure>
+</section>
+<section id="pu-puerto-rico">
+<h2>pu  -  PUERTO RICO<a class="headerlink" href="#pu-puerto-rico" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-278.png" class="plot-directive" src="../_images/areas-278.png" />
+</figure>
+</section>
+<section id="py-paraguay">
+<h2>py  -  PARAGUAY<a class="headerlink" href="#py-paraguay" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-279.png" class="plot-directive" src="../_images/areas-279.png" />
+</figure>
+</section>
+<section id="qg-equatorial-guinea">
+<h2>qg  -  EQUATORIAL GUINEA<a class="headerlink" href="#qg-equatorial-guinea" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-280.png" class="plot-directive" src="../_images/areas-280.png" />
+</figure>
+</section>
+<section id="qt-qatar">
+<h2>qt  -  QATAR<a class="headerlink" href="#qt-qatar" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-281.png" class="plot-directive" src="../_images/areas-281.png" />
+</figure>
+</section>
+<section id="ra-russia">
+<h2>ra  -  RUSSIA<a class="headerlink" href="#ra-russia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-282.png" class="plot-directive" src="../_images/areas-282.png" />
+</figure>
+</section>
+<section id="re-reunion">
+<h2>re  -  REUNION<a class="headerlink" href="#re-reunion" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-283.png" class="plot-directive" src="../_images/areas-283.png" />
+</figure>
+</section>
+<section id="riro-rio-de-oro">
+<h2>riro  -  RIO DE ORO<a class="headerlink" href="#riro-rio-de-oro" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-284.png" class="plot-directive" src="../_images/areas-284.png" />
+</figure>
+</section>
+<section id="ro-romania">
+<h2>ro  -  ROMANIA<a class="headerlink" href="#ro-romania" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-285.png" class="plot-directive" src="../_images/areas-285.png" />
+</figure>
+</section>
+<section id="rw-rwanda">
+<h2>rw  -  RWANDA<a class="headerlink" href="#rw-rwanda" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-286.png" class="plot-directive" src="../_images/areas-286.png" />
+</figure>
+</section>
+<section id="saudi-saudi-arabia">
+<h2>saudi  -  SAUDI ARABIA<a class="headerlink" href="#saudi-saudi-arabia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-287.png" class="plot-directive" src="../_images/areas-287.png" />
+</figure>
+</section>
+<section id="sb-sri-lanka">
+<h2>sb  -  SRI LANKA<a class="headerlink" href="#sb-sri-lanka" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-288.png" class="plot-directive" src="../_images/areas-288.png" />
+</figure>
+</section>
+<section id="seyc-seychelles-islands">
+<h2>seyc  -  SEYCHELLES ISLANDS<a class="headerlink" href="#seyc-seychelles-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-289.png" class="plot-directive" src="../_images/areas-289.png" />
+</figure>
+</section>
+<section id="sg-senegal">
+<h2>sg  -  SENEGAL<a class="headerlink" href="#sg-senegal" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-290.png" class="plot-directive" src="../_images/areas-290.png" />
+</figure>
+</section>
+<section id="si-somalia">
+<h2>si  -  SOMALIA<a class="headerlink" href="#si-somalia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-291.png" class="plot-directive" src="../_images/areas-291.png" />
+</figure>
+</section>
+<section id="sk-sarawak">
+<h2>sk  -  SARAWAK<a class="headerlink" href="#sk-sarawak" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-292.png" class="plot-directive" src="../_images/areas-292.png" />
+</figure>
+</section>
+<section id="sl-sierra-leone">
+<h2>sl  -  SIERRA LEONE<a class="headerlink" href="#sl-sierra-leone" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-293.png" class="plot-directive" src="../_images/areas-293.png" />
+</figure>
+</section>
+<section id="sm-suriname">
+<h2>sm  -  SURINAME<a class="headerlink" href="#sm-suriname" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-294.png" class="plot-directive" src="../_images/areas-294.png" />
+</figure>
+</section>
+<section id="sn-sweden">
+<h2>sn  -  SWEDEN<a class="headerlink" href="#sn-sweden" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-295.png" class="plot-directive" src="../_images/areas-295.png" />
+</figure>
+</section>
+<section id="so-solomon-islands">
+<h2>so  -  SOLOMON ISLANDS<a class="headerlink" href="#so-solomon-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-296.png" class="plot-directive" src="../_images/areas-296.png" />
+</figure>
+</section>
+<section id="sp-spain">
+<h2>sp  -  SPAIN<a class="headerlink" href="#sp-spain" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-297.png" class="plot-directive" src="../_images/areas-297.png" />
+</figure>
+</section>
+<section id="sr-singapore">
+<h2>sr  -  SINGAPORE<a class="headerlink" href="#sr-singapore" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-298.png" class="plot-directive" src="../_images/areas-298.png" />
+</figure>
+</section>
+<section id="su-sudan">
+<h2>su  -  SUDAN<a class="headerlink" href="#su-sudan" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-299.png" class="plot-directive" src="../_images/areas-299.png" />
+</figure>
+</section>
+<section id="sv-swaziland">
+<h2>sv  -  SWAZILAND<a class="headerlink" href="#sv-swaziland" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-300.png" class="plot-directive" src="../_images/areas-300.png" />
+</figure>
+</section>
+<section id="sw-switzerland">
+<h2>sw  -  SWITZERLAND<a class="headerlink" href="#sw-switzerland" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-301.png" class="plot-directive" src="../_images/areas-301.png" />
+</figure>
+</section>
+<section id="sy-syria">
+<h2>sy  -  SYRIA<a class="headerlink" href="#sy-syria" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-302.png" class="plot-directive" src="../_images/areas-302.png" />
+</figure>
+</section>
+<section id="tanz-tanzania">
+<h2>tanz  -  TANZANIA<a class="headerlink" href="#tanz-tanzania" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-303.png" class="plot-directive" src="../_images/areas-303.png" />
+</figure>
+</section>
+<section id="td-trinidad-tobago">
+<h2>td  -  TRINIDAD &amp; TOBAGO<a class="headerlink" href="#td-trinidad-tobago" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-304.png" class="plot-directive" src="../_images/areas-304.png" />
+</figure>
+</section>
+<section id="tg-togo">
+<h2>tg  -  TOGO<a class="headerlink" href="#tg-togo" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-305.png" class="plot-directive" src="../_images/areas-305.png" />
+</figure>
+</section>
+<section id="th-thailand">
+<h2>th  -  THAILAND<a class="headerlink" href="#th-thailand" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-306.png" class="plot-directive" src="../_images/areas-306.png" />
+</figure>
+</section>
+<section id="ti-turks-islands">
+<h2>ti  -  TURKS ISLANDS<a class="headerlink" href="#ti-turks-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-307.png" class="plot-directive" src="../_images/areas-307.png" />
+</figure>
+</section>
+<section id="tk-tokelau-islands">
+<h2>tk  -  TOKELAU ISLANDS<a class="headerlink" href="#tk-tokelau-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-308.png" class="plot-directive" src="../_images/areas-308.png" />
+</figure>
+</section>
+<section id="to-tonga">
+<h2>to  -  TONGA<a class="headerlink" href="#to-tonga" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-309.png" class="plot-directive" src="../_images/areas-309.png" />
+</figure>
+</section>
+<section id="tp-sao-tome-principe">
+<h2>tp  -  SAO TOME-PRINCIPE<a class="headerlink" href="#tp-sao-tome-principe" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-310.png" class="plot-directive" src="../_images/areas-310.png" />
+</figure>
+</section>
+<section id="ts-tunisia">
+<h2>ts  -  TUNISIA<a class="headerlink" href="#ts-tunisia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-311.png" class="plot-directive" src="../_images/areas-311.png" />
+</figure>
+</section>
+<section id="tu-turkey">
+<h2>tu  -  TURKEY<a class="headerlink" href="#tu-turkey" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-312.png" class="plot-directive" src="../_images/areas-312.png" />
+</figure>
+</section>
+<section id="tv-tuvalu">
+<h2>tv  -  TUVALU<a class="headerlink" href="#tv-tuvalu" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-313.png" class="plot-directive" src="../_images/areas-313.png" />
+</figure>
+</section>
+<section id="tw-taiwan">
+<h2>tw  -  TAIWAN<a class="headerlink" href="#tw-taiwan" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-314.png" class="plot-directive" src="../_images/areas-314.png" />
+</figure>
+</section>
+<section id="ug-uganda">
+<h2>ug  -  UGANDA<a class="headerlink" href="#ug-uganda" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-315.png" class="plot-directive" src="../_images/areas-315.png" />
+</figure>
+</section>
+<section id="uk-united-kingdom">
+<h2>uk  -  UNITED KINGDOM<a class="headerlink" href="#uk-united-kingdom" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-316.png" class="plot-directive" src="../_images/areas-316.png" />
+</figure>
+</section>
+<section id="ur-ukraine">
+<h2>ur  -  UKRAINE<a class="headerlink" href="#ur-ukraine" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-317.png" class="plot-directive" src="../_images/areas-317.png" />
+</figure>
+</section>
+<section id="uy-uruguay">
+<h2>uy  -  URUGUAY<a class="headerlink" href="#uy-uruguay" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-318.png" class="plot-directive" src="../_images/areas-318.png" />
+</figure>
+</section>
+<section id="vanu-vanuatu">
+<h2>vanu  -  VANUATU<a class="headerlink" href="#vanu-vanuatu" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-319.png" class="plot-directive" src="../_images/areas-319.png" />
+</figure>
+</section>
+<section id="vi-virgin-islands">
+<h2>vi  -  VIRGIN ISLANDS<a class="headerlink" href="#vi-virgin-islands" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-320.png" class="plot-directive" src="../_images/areas-320.png" />
+</figure>
+</section>
+<section id="vk-slovakia">
+<h2>vk  -  SLOVAKIA<a class="headerlink" href="#vk-slovakia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-321.png" class="plot-directive" src="../_images/areas-321.png" />
+</figure>
+</section>
+<section id="vn-venezuela">
+<h2>vn  -  VENEZUELA<a class="headerlink" href="#vn-venezuela" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-322.png" class="plot-directive" src="../_images/areas-322.png" />
+</figure>
+</section>
+<section id="vs-vietnam">
+<h2>vs  -  VIETNAM<a class="headerlink" href="#vs-vietnam" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-323.png" class="plot-directive" src="../_images/areas-323.png" />
+</figure>
+</section>
+<section id="wk-wake-island">
+<h2>wk  -  WAKE ISLAND<a class="headerlink" href="#wk-wake-island" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-324.png" class="plot-directive" src="../_images/areas-324.png" />
+</figure>
+</section>
+<section id="ye-yemen">
+<h2>ye  -  YEMEN<a class="headerlink" href="#ye-yemen" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-325.png" class="plot-directive" src="../_images/areas-325.png" />
+</figure>
+</section>
+<section id="yg-yugoslavia">
+<h2>yg  -  YUGOSLAVIA<a class="headerlink" href="#yg-yugoslavia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-326.png" class="plot-directive" src="../_images/areas-326.png" />
+</figure>
+</section>
+<section id="za-south-africa">
+<h2>za  -  SOUTH AFRICA<a class="headerlink" href="#za-south-africa" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-327.png" class="plot-directive" src="../_images/areas-327.png" />
+</figure>
+</section>
+<section id="zb-zambia">
+<h2>zb  -  ZAMBIA<a class="headerlink" href="#zb-zambia" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-328.png" class="plot-directive" src="../_images/areas-328.png" />
+</figure>
+</section>
+<section id="zm-western-samoa">
+<h2>zm  -  WESTERN SAMOA<a class="headerlink" href="#zm-western-samoa" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-329.png" class="plot-directive" src="../_images/areas-329.png" />
+</figure>
+</section>
+<section id="zr-zaire">
+<h2>zr  -  ZAIRE<a class="headerlink" href="#zr-zaire" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-330.png" class="plot-directive" src="../_images/areas-330.png" />
+</figure>
+</section>
+<section id="zw-zimbabwe">
+<h2>zw  -  ZIMBABWE<a class="headerlink" href="#zw-zimbabwe" title="Permalink to this heading">#</a></h2>
+<figure class="align-default">
+<img alt="../_images/areas-331.png" class="plot-directive" src="../_images/areas-331.png" />
+</figure>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="generated/metpy.xarray.grid_deltas_from_dataarray.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">grid_deltas_from_dataarray</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="references.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">References</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#us-united-states">us  -  UNITED STATES</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#awips-awips-us">awips  -  AWIPS US</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uslcc-united-states-lcc">uslcc  -  UNITED STATES LCC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whlf-western-half">whlf  -  WESTERN HALF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chlf-central-half">chlf  -  CENTRAL HALF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#centus-central-us">centus  -  CENTRAL US</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ehlf-eastern-half">ehlf  -  EASTERN HALF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mehlf-eastern-half">mehlf  -  EASTERN HALF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#west-western-us">west  -  WESTERN US</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cent-central-us">cent  -  CENTRAL US</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#east-eastern-us">east  -  EASTERN US</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nwus-nw-sector">nwus  -  NW SECTOR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#swus-sw-sector">swus  -  SW SECTOR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ncus-nc-sector">ncus  -  NC SECTOR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scus-sc-sector">scus  -  SC SECTOR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neus-ne-sector">neus  -  NE SECTOR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seus-se-sector">seus  -  SE SECTOR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bosfa-boston-fa-area">bosfa  -  BOSTON FA AREA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#miafa-miami-fa-area">miafa  -  MIAMI FA AREA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chifa-chicago-fa-area">chifa  -  CHICAGO FA AREA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dfwfa-dallas-fa-area">dfwfa  -  DALLAS FA AREA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#slcfa-salt-lake-fa-area">slcfa  -  SALT LAKE FA AREA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sfofa-san-fran-fa-area">sfofa  -  SAN FRAN FA AREA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ak-alaska-hpc-qpf">ak  -  ALASKA HPC QPF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#al-alabama">al  -  ALABAMA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ar-arkansas">ar  -  ARKANSAS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ca-california">ca  -  CALIFORNIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#co-colorado">co  -  COLORADO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ct-connecticut">ct  -  CONNECTICUT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dc-washington-dc">dc  -  WASHINGTON DC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#de-delaware">de  -  DELAWARE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fl-florida">fl  -  FLORIDA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ga-georgia">ga  -  GEORGIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hi-hawaii">hi  -  HAWAII</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ia-iowa">ia  -  IOWA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id-idaho">id  -  IDAHO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#il-illinois">il  -  ILLINOIS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#in-indiana">in  -  INDIANA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ks-kansas">ks  -  KANSAS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ky-kentucky">ky  -  KENTUCKY</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-louisiana">la  -  LOUISIANA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ma-massachusetts">ma  -  MASSACHUSETTS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#md-maryland">md  -  MARYLAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#me-maine">me  -  MAINE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mi-michigan">mi  -  MICHIGAN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mn-minnesota">mn  -  MINNESOTA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mo-missouri">mo  -  MISSOURI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ms-mississippi">ms  -  MISSISSIPPI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mt-montana">mt  -  MONTANA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nc-north-carolina">nc  -  NORTH CAROLINA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nd-north-dakota">nd  -  NORTH DAKOTA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ne-nebraska">ne  -  NEBRASKA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nh-new-hampshire">nh  -  NEW HAMPSHIRE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nj-new-jersey">nj  -  NEW JERSEY</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nm-new-mexico">nm  -  NEW MEXICO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nv-nevada">nv  -  NEVADA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ny-new-york">ny  -  NEW YORK</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#oh-ohio">oh  -  OHIO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ok-oklahoma">ok  -  OKLAHOMA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#or-oregon">or  -  OREGON</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pa-pennsylvania">pa  -  PENNSYLVANIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ri-rhode-island">ri  -  RHODE ISLAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sc-south-carolina">sc  -  SOUTH CAROLINA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sd-south-dakota">sd  -  SOUTH DAKOTA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tn-tennessee">tn  -  TENNESSEE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tx-texas">tx  -  TEXAS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ut-utah">ut  -  UTAH</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#va-virginia">va  -  VIRGINIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vt-vermont">vt  -  VERMONT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wi-wisconsin">wi  -  WISCONSIN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wv-west-virginia">wv  -  WEST VIRGINIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wy-wyoming">wy  -  WYOMING</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#az-arizona">az  -  ARIZONA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wa-washington">wa  -  WASHINGTON</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cn-canada">cn  -  CANADA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cnlcc-canada-lcc">cnlcc  -  CANADA LCC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ab-alberta">ab  -  ALBERTA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bc-british-columbia">bc  -  BRITISH COLUMBIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mb-manitoba">mb  -  MANITOBA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nb-new-brunswick">nb  -  NEW BRUNSWICK</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nf-newfoundland">nf  -  NEWFOUNDLAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ns-nova-scotia">ns  -  NOVA SCOTIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nt-nw-territories">nt  -  NW TERRITORIES</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nu-nunavut">nu  -  NUNAVUT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#on-ontario">on  -  ONTARIO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pe-prince-edward-is">pe  -  PRINCE EDWARD IS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qb-quebec">qb  -  QUEBEC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sa-saskatchewan">sa  -  SASKATCHEWAN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yt-yukon-territory">yt  -  YUKON TERRITORY</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tropatl-tropical-atlantic">tropatl  -  TROPICAL ATLANTIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subtrop-subtropical-atl">subtrop  -  SUBTROPICAL ATL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troppac-tropical-pacific">troppac  -  TROPICAL PACIFIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gulf-gulf-of-mexico">gulf  -  GULF OF MEXICO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carib-caribbean-sea">carib  -  CARIBBEAN SEA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sthepac-south-e-pacific">sthepac  -  SOUTH E PACIFIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#natlmed-n-atl-mediter">natlmed  -  N ATL/MEDITER</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atlhur-atlantic-hurr">atlhur  -  ATLANTIC HURR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nam-n-america">nam  -  N AMERICA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sam-s-america">sam  -  S AMERICA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#samps-s-america-ps">samps  -  S AMERICA (PS)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eur-europe">eur  -  EUROPE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#natl-n-atlantic">natl  -  N ATLANTIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#watl-w-atlantic">watl  -  W ATLANTIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tatl-tropical-atlantic">tatl  -  TROPICAL ATLANTIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#npac-n-pacific">npac  -  N PACIFIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spac-s-pacific">spac  -  S PACIFIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tpac-tropical-pacific">tpac  -  TROPICAL PACIFIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#epac-e-pacific">epac  -  E PACIFIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wpac-w-pacific">wpac  -  W PACIFIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mpac-marine-pacific">mpac  -  MARINE PACIFIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#americas-icao-merc-area-a">americas  -  ICAO MERC AREA A</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atlantic-icao-merc-area-b1">atlantic  -  ICAO MERC AREA B1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#africa-icao-merc-area-c">africa  -  ICAO MERC AREA C</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indocean-icao-merc-area-d">indocean  -  ICAO MERC AREA D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#oceania-icao-merc-area-e">oceania  -  ICAO MERC AREA E</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trop-pac-icao-merc-area-f">trop_pac  -  ICAO MERC AREA F</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#asia-ps-icao-p-s-area-g">asia_ps  -  ICAO P.S. AREA G</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#na-ps-icao-p-s-area-h">na_ps  -  ICAO P.S. AREA H</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#npac-ps-icao-p-s-area-i">npac_ps  -  ICAO P.S. AREA I</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#antarctica-icao-p-s-area-j">antarctica  -  ICAO P.S. AREA J</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#europe-icao-p-s-area-eu">europe  -  ICAO P.S. AREA EU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#middle-east-icao-merc-area-me">middle_east  -  ICAO MERC AREA ME</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#india-icao-merc-area-as">india  -  ICAO MERC AREA AS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ag-argentina">ag  -  ARGENTINA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ah-afghanistan">ah  -  AFGHANISTAN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#afrca-africa">afrca  -  AFRICA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-ascension-island">ai  -  ASCENSION ISLAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alba-albania">alba  -  ALBANIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alge-algeria">alge  -  ALGERIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-angola">an  -  ANGOLA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#antl-lesser-antilles">antl  -  LESSER ANTILLES</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#antg-greater-antilles">antg  -  GREATER ANTILLES</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atg-antigua-barbuda">atg  -  ANTIGUA &amp; BARBUDA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#au-australia">au  -  AUSTRALIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azor-azores">azor  -  AZORES</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ba-bahamas">ba  -  BAHAMAS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#be-bermuda">be  -  BERMUDA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bel-belgium">bel  -  BELGIUM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bf-brunei">bf  -  BRUNEI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bfa-burkina-faso">bfa  -  BURKINA FASO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bh-belize">bh  -  BELIZE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bi-burundi">bi  -  BURUNDI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bj-benin">bj  -  BENIN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bn-bahrain">bn  -  BAHRAIN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bo-bolivia">bo  -  BOLIVIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bots-botswana">bots  -  BOTSWANA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#br-barbados">br  -  BARBADOS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bt-british-indian-oc">bt  -  BRITISH INDIAN OC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bu-bulgaria">bu  -  BULGARIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bv-bouvet-islands">bv  -  BOUVET ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bw-bangladesh">bw  -  BANGLADESH</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#by-byelorussia">by  -  BYELORUSSIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bz-brazil">bz  -  BRAZIL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cais-canton-island">cais  -  CANTON ISLAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nwcar-nwx-caribbean">nwcar  -  NWX CARIBBEAN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cari-caribbean">cari  -  CARIBBEAN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cb-chad">cb  -  CHAD</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ce-central-africa">ce  -  CENTRAL AFRICA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cg-congo">cg  -  CONGO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ch-chile">ch  -  CHILE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ci-china">ci  -  CHINA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cm-cameroon">cm  -  CAMEROON</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#colm-columbia">colm  -  COLUMBIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cr-canary-islands">cr  -  CANARY ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cs-costa-rica">cs  -  COSTA RICA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cu-cuba">cu  -  CUBA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cv-cape-verde-island">cv  -  CAPE VERDE ISLAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cy-cyprus">cy  -  CYPRUS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cz-czech-republic">cz  -  CZECH REPUBLIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dj-djibouti">dj  -  DJIBOUTI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dl-germany">dl  -  GERMANY</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dn-denmark">dn  -  DENMARK</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#do-dominica">do  -  DOMINICA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dr-dominican-republic">dr  -  DOMINICAN REPUBLIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eg-egypt">eg  -  EGYPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eq-ecuador">eq  -  ECUADOR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#er-uae">er  -  UAE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#es-el-salvador">es  -  EL SALVADOR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#et-ethiopia">et  -  ETHIOPIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fa-faeroes">fa  -  FAEROES</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fg-french-guiana">fg  -  FRENCH GUIANA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fi-finland">fi  -  FINLAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fj-fiji-islands">fj  -  FIJI ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fk-falkland-islands">fk  -  FALKLAND ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fn-niger">fn  -  NIGER</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fr-france">fr  -  FRANCE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gb-gambia">gb  -  GAMBIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gc-cayman-islands">gc  -  CAYMAN ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gh-ghana">gh  -  GHANA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gi-gibraltar">gi  -  GIBRALTAR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gl-greenland">gl  -  GREENLAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#glp-guadaloupe">glp  -  GUADALOUPE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gm-guam">gm  -  GUAM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gn-guinea">gn  -  GUINEA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#go-gabon">go  -  GABON</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gr-greece">gr  -  GREECE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gu-guatemala">gu  -  GUATEMALA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gw-guinea-bissau">gw  -  GUINEA-BISSAU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gy-guyana">gy  -  GUYANA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ha-haiti">ha  -  HAITI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#he-st-helena">he  -  ST HELENA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hk-hong-kong">hk  -  HONG KONG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ho-honduras">ho  -  HONDURAS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hu-hungary">hu  -  HUNGARY</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ic-comoros">ic  -  COMOROS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#icel-iceland">icel  -  ICELAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ie-ireland">ie  -  IRELAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inda-india">inda  -  INDIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indo-indonesia">indo  -  INDONESIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iq-iraq">iq  -  IRAQ</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ir-iran">ir  -  IRAN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#is-israel">is  -  ISRAEL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iv-ivory-coast">iv  -  IVORY COAST</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iw-west-bank">iw  -  WEST BANK</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iy-italy">iy  -  ITALY</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jd-jordan">jd  -  JORDAN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jm-jamaica">jm  -  JAMAICA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jp-japan">jp  -  JAPAN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ka-caroline-islands">ka  -  CAROLINE ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kash-jammu-kashmir">kash  -  JAMMU &amp; KASHMIR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kb-kiribati">kb  -  KIRIBATI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#khm-cambodia">khm  -  CAMBODIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ki-christmas-island">ki  -  CHRISTMAS ISLAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kn-kenya">kn  -  KENYA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kna-st-kitts-nevis">kna  -  ST KITTS &amp; NEVIS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ko-korea">ko  -  KOREA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ku-cook-islands">ku  -  COOK ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kw-kuwait">kw  -  KUWAIT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laos-laos">laos  -  LAOS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lb-lebanon">lb  -  LEBANON</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lc-st-lucia">lc  -  ST LUCIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#li-liberia">li  -  LIBERIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ln-line-islands">ln  -  LINE ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ls-lesotho">ls  -  LESOTHO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lt-liechtenstein">lt  -  LIECHTENSTEIN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lux-luxembourg">lux  -  LUXEMBOURG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ly-libya">ly  -  LIBYA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maar-st-maarten">maar  -  ST MAARTEN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#made-madeira">made  -  MADEIRA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mala-malaysia">mala  -  MALAYSIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mali-mali">mali  -  MALI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maur-mauritius">maur  -  MAURITIUS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maut-mauritania">maut  -  MAURITANIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mc-morocco">mc  -  MOROCCO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mg-madagascar">mg  -  MADAGASCAR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mh-marshall-islands">mh  -  MARSHALL ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ml-malta">ml  -  MALTA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mmr-myanmar">mmr  -  MYANMAR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mong-mongolia">mong  -  MONGOLIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mr-martinique">mr  -  MARTINIQUE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mu-macao">mu  -  MACAO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mv-maldive-islands">mv  -  MALDIVE ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mw-malawi">mw  -  MALAWI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mx-mexico">mx  -  MEXICO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#my-marianna-islands">my  -  MARIANNA ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mz-mozambique">mz  -  MOZAMBIQUE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nama-namibia">nama  -  NAMIBIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ncal-new-caledonia">ncal  -  NEW CALEDONIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ng-new-guinea">ng  -  NEW GUINEA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ni-nigeria">ni  -  NIGERIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nk-nicaragua">nk  -  NICARAGUA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nl-netherlands">nl  -  NETHERLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-norway">no  -  NORWAY</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#np-nepal">np  -  NEPAL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nw-nauru">nw  -  NAURU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nz-new-zealand">nz  -  NEW ZEALAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#om-oman">om  -  OMAN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#os-austria">os  -  AUSTRIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pf-french-polynesia">pf  -  FRENCH POLYNESIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ph-philipines">ph  -  PHILIPINES</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pi-phoenix-islands">pi  -  PHOENIX ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pk-pakistan">pk  -  PAKISTAN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pl-poland">pl  -  POLAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pm-panama">pm  -  PANAMA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#po-portugal">po  -  PORTUGAL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pr-peru">pr  -  PERU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pt-pitcairn-islands">pt  -  PITCAIRN ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pu-puerto-rico">pu  -  PUERTO RICO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#py-paraguay">py  -  PARAGUAY</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qg-equatorial-guinea">qg  -  EQUATORIAL GUINEA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qt-qatar">qt  -  QATAR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ra-russia">ra  -  RUSSIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#re-reunion">re  -  REUNION</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#riro-rio-de-oro">riro  -  RIO DE ORO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ro-romania">ro  -  ROMANIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rw-rwanda">rw  -  RWANDA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saudi-saudi-arabia">saudi  -  SAUDI ARABIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sb-sri-lanka">sb  -  SRI LANKA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seyc-seychelles-islands">seyc  -  SEYCHELLES ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sg-senegal">sg  -  SENEGAL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#si-somalia">si  -  SOMALIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sk-sarawak">sk  -  SARAWAK</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sl-sierra-leone">sl  -  SIERRA LEONE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sm-suriname">sm  -  SURINAME</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sn-sweden">sn  -  SWEDEN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#so-solomon-islands">so  -  SOLOMON ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sp-spain">sp  -  SPAIN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sr-singapore">sr  -  SINGAPORE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#su-sudan">su  -  SUDAN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sv-swaziland">sv  -  SWAZILAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sw-switzerland">sw  -  SWITZERLAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sy-syria">sy  -  SYRIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tanz-tanzania">tanz  -  TANZANIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#td-trinidad-tobago">td  -  TRINIDAD &amp; TOBAGO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tg-togo">tg  -  TOGO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#th-thailand">th  -  THAILAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ti-turks-islands">ti  -  TURKS ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tk-tokelau-islands">tk  -  TOKELAU ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#to-tonga">to  -  TONGA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tp-sao-tome-principe">tp  -  SAO TOME-PRINCIPE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ts-tunisia">ts  -  TUNISIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tu-turkey">tu  -  TURKEY</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tv-tuvalu">tv  -  TUVALU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tw-taiwan">tw  -  TAIWAN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ug-uganda">ug  -  UGANDA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uk-united-kingdom">uk  -  UNITED KINGDOM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ur-ukraine">ur  -  UKRAINE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uy-uruguay">uy  -  URUGUAY</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vanu-vanuatu">vanu  -  VANUATU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vi-virgin-islands">vi  -  VIRGIN ISLANDS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vk-slovakia">vk  -  SLOVAKIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vn-venezuela">vn  -  VENEZUELA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vs-vietnam">vs  -  VIETNAM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wk-wake-island">wk  -  WAKE ISLAND</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ye-yemen">ye  -  YEMEN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yg-yugoslavia">yg  -  YUGOSLAVIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#za-south-africa">za  -  SOUTH AFRICA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zb-zambia">zb  -  ZAMBIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zm-western-samoa">zm  -  WESTERN SAMOA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zr-zaire">zr  -  ZAIRE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zw-zimbabwe">zw  -  ZIMBABWE</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/api/areas.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

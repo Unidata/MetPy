@@ -1,0 +1,60 @@
+WarmFront
+=====================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: WarmFront
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~WarmFront.symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~WarmFront.__init__
+      ~WarmFront.draw_path
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: draw_path
+
+   
+   
+
+.. include:: metpy.plots.WarmFront.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

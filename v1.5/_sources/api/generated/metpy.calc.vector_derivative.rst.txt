@@ -1,0 +1,12 @@
+vector_derivative
+============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: vector_derivative
+
+.. include:: metpy.calc.vector_derivative.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

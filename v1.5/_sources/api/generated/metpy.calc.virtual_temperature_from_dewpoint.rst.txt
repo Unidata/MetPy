@@ -1,0 +1,12 @@
+virtual_temperature_from_dewpoint
+============================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: virtual_temperature_from_dewpoint
+
+.. include:: metpy.calc.virtual_temperature_from_dewpoint.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

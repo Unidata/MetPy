@@ -1,0 +1,12 @@
+lat_lon_grid_deltas
+==============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: lat_lon_grid_deltas
+
+.. include:: metpy.calc.lat_lon_grid_deltas.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

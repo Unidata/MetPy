@@ -1,0 +1,60 @@
+OccludedFrontogenesis
+=================================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: OccludedFrontogenesis
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~OccludedFrontogenesis.symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~OccludedFrontogenesis.__init__
+      ~OccludedFrontogenesis.draw_path
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: draw_path
+
+   
+   
+
+.. include:: metpy.plots.OccludedFrontogenesis.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

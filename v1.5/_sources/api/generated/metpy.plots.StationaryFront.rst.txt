@@ -1,0 +1,60 @@
+StationaryFront
+===========================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: StationaryFront
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~StationaryFront.symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~StationaryFront.__init__
+      ~StationaryFront.draw_path
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: draw_path
+
+   
+   
+
+.. include:: metpy.plots.StationaryFront.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

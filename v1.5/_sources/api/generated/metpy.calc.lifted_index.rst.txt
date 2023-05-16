@@ -1,0 +1,12 @@
+lifted_index
+=======================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: lifted_index
+
+.. include:: metpy.calc.lifted_index.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

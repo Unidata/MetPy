@@ -1,0 +1,12 @@
+specific_humidity_from_dewpoint
+==========================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: specific_humidity_from_dewpoint
+
+.. include:: metpy.calc.specific_humidity_from_dewpoint.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+read_colortable
+===========================
+
+.. currentmodule:: metpy.plots
+
+.. autofunction:: read_colortable
+
+.. include:: metpy.plots.read_colortable.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
