@@ -227,7 +227,7 @@ html_theme_options = {
     'navbar_end': ['navbar-icon-links', 'theme-switcher'],
     'switcher': {
         'json_url': 'https://unidata.github.io/MetPy/pst-versions.json',
-        'version_match': 'dev' if 'dev' in version else version,
+        'version_match': 'dev' if 'dev' in version else f'v{version}',
     },
 }
 
