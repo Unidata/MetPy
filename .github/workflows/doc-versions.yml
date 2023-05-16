@@ -44,6 +44,23 @@ jobs:
         with open('versions.json', 'wt') as verfile:
             json.dump(versions, verfile)
 
+        # Set up newer version json for python-sphinx-theme with latest
+        base_url = 'https://unidata.github.io/MetPy/{}/'
+        pst_versions = [{'version': 'latest', 'url': base_url.format('latest'), 'is_latest': True}]
+
+        # Now handle our collection of versions
+        pst_versions.extend({'name': f'v{v.major}.{v.minor}', 'version': f'{v.major}.{v.minor}',
+                            'url': base_url.format(f'v{v.major}.{v.minor}')}
+                            for v in reversed(vers[-4:]))
+        pst_versions[1]['is_latest'] = True
+
+        # Add dev
+        pst_versions.append({'version': 'dev', 'url': base_url.format('dev')})
+
+        # Write to another JSON file
+        with open('pst-versions.json', 'wt') as verfile:
+            json.dump(pst_versions, verfile)
+
         # Update the 'latest' symlink
         latest = Path('latest')
         latest.unlink(missing_ok=True)
