@@ -23,6 +23,7 @@ Reading Data ``(metpy.io)``
       parse_metar_file
       is_precip_mode
       add_station_lat_lon
+      parse_wpc_surface_bulletin
    
    
 

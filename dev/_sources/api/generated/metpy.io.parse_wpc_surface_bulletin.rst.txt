@@ -1,0 +1,12 @@
+parse_wpc_surface_bulletin
+===================================
+
+.. currentmodule:: metpy.io
+
+.. autofunction:: parse_wpc_surface_bulletin
+
+.. include:: metpy.io.parse_wpc_surface_bulletin.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

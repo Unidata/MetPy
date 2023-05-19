@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>StationaryFrontolysis &#8212; MetPy 1.5dev</title>
+    <title>parse_wpc_surface_bulletin &#8212; MetPy 1.5dev</title>
   
   
   
@@ -53,7 +53,7 @@
                 gtag('js', new Date());
                 gtag('config', 'G-J48T2BG3J7');
             </script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/metpy.plots.StationaryFrontolysis';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/metpy.io.parse_wpc_surface_bulletin';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
@@ -62,12 +62,12 @@
     <link rel="icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="SkewT" href="metpy.plots.SkewT.html" />
-    <link rel="prev" title="StationaryFrontogenesis" href="metpy.plots.StationaryFrontogenesis.html" />
+    <link rel="next" title="GempakGrid" href="metpy.io.GempakGrid.html" />
+    <link rel="prev" title="add_station_lat_lon" href="metpy.io.add_station_lat_lon.html" />
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.StationaryFrontolysis.html" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.io.parse_wpc_surface_bulletin.html" />
 
   </head>
   
@@ -426,12 +426,12 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.setup_registry.html">setup_registry</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="metpy.io.html">Reading Data <code class="docutils literal notranslate"><span class="pre">(metpy.io)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="metpy.io.html">Reading Data <code class="docutils literal notranslate"><span class="pre">(metpy.io)</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html">parse_metar_to_dataframe</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.parse_metar_file.html">parse_metar_file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.is_precip_mode.html">is_precip_mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.add_station_lat_lon.html">add_station_lat_lon</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.parse_wpc_surface_bulletin.html">parse_wpc_surface_bulletin</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">parse_wpc_surface_bulletin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.GempakGrid.html">GempakGrid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.GempakSounding.html">GempakSounding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.GempakSurface.html">GempakSurface</a></li>
@@ -580,7 +580,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.resample_nn_1d.html">resample_nn_1d</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="metpy.plots.html">Plots <code class="docutils literal notranslate"><span class="pre">(metpy.plots)</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="metpy.plots.html">Plots <code class="docutils literal notranslate"><span class="pre">(metpy.plots)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.wx_code_to_numeric.html">wx_code_to_numeric</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -615,7 +615,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.Squall.html">Squall</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.StationaryFront.html">StationaryFront</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.StationaryFrontogenesis.html">StationaryFrontogenesis</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">StationaryFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.StationaryFrontolysis.html">StationaryFrontolysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.StationPlot.html">StationPlot</a></li>
@@ -699,9 +699,9 @@ document.write(`
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Reference Guide</a></li>
     
     
-    <li class="breadcrumb-item"><a href="metpy.plots.html" class="nav-link">Plots <code class="docutils literal notranslate"><span class="pre">(metpy.plots)</span></code></a></li>
+    <li class="breadcrumb-item"><a href="metpy.io.html" class="nav-link">Reading Data <code class="docutils literal notranslate"><span class="pre">(metpy.io)</span></code></a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">StationaryFrontolysis</li>
+    <li class="breadcrumb-item active" aria-current="page">parse_wpc_surface_bulletin</li>
   </ul>
 </nav>
 </div>
@@ -718,81 +718,37 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="stationaryfrontolysis">
-<h1>StationaryFrontolysis<a class="headerlink" href="#stationaryfrontolysis" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="metpy.plots.StationaryFrontolysis">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">StationaryFrontolysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('red',</span> <span class="pre">'blue')</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.StationaryFrontolysis" title="Permalink to this definition">#</a></dt>
-<dd><p>Draw a weakening stationary front..</p>
-<p>Initialize a weakening stationary front path effect.</p>
-<p>This effect alternates between a warm front and cold front symbol.</p>
+  <section id="parse-wpc-surface-bulletin">
+<h1>parse_wpc_surface_bulletin<a class="headerlink" href="#parse-wpc-surface-bulletin" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="metpy.io.parse_wpc_surface_bulletin">
+<span class="sig-prename descclassname"><span class="pre">metpy.io.</span></span><span class="sig-name descname"><span class="pre">parse_wpc_surface_bulletin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bulletin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.parse_wpc_surface_bulletin" title="Permalink to this definition">#</a></dt>
+<dd><p>Parse a coded surface bulletin from NWS WPC into a Pandas DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>colors</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>] or </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em><em>]</em>) – Matplotlib color identifiers to cycle between on the two different front styles.
-Defaults to alternating red and blue.</p></li>
-<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The size of the markers to plot in points. Defaults to 10.</p></li>
-<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The spacing between markers in normalized coordinates. Defaults to 1.</p></li>
-<li><p><strong>flip</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the symbols should be flipped to the other side of the path. Defaults
-to <em class="xref py py-obj">False</em>.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>bulletin</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>file-like object</em>) – If str, the name of the file to be opened. If <em class="xref py py-obj">bulletin</em> is a file-like object,
+this will be read from directly.</p>
 </dd>
-</dl>
-<p class="rubric">Attributes Summary</p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.StationaryFrontolysis.symbol_width" title="metpy.plots.StationaryFrontolysis.symbol_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symbol_width</span></code></a></p></td>
-<td><p>Return the width of the symbol being plotted.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods Summary</p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.StationaryFrontolysis.__init__" title="metpy.plots.StationaryFrontolysis.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([colors])</p></td>
-<td><p>Initialize a weakening stationary front path effect.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.StationaryFrontolysis.draw_path" title="metpy.plots.StationaryFrontolysis.draw_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_path</span></code></a>(renderer, gc, path, affine[, rgbFace])</p></td>
-<td><p>Draw the given path.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes Documentation</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.StationaryFrontolysis.symbol_width">
-<span class="sig-name descname"><span class="pre">symbol_width</span></span><a class="headerlink" href="#metpy.plots.StationaryFrontolysis.symbol_width" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the width of the symbol being plotted.</p>
-</dd></dl>
-
-<p class="rubric">Methods Documentation</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.StationaryFrontolysis.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('red',</span> <span class="pre">'blue')</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/patheffects.html#StationaryFrontolysis.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationaryFrontolysis.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initialize a weakening stationary front path effect.</p>
-<p>This effect alternates between a warm front and cold front symbol.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>colors</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>] or </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em><em>]</em>) – Matplotlib color identifiers to cycle between on the two different front styles.
-Defaults to alternating red and blue.</p></li>
-<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The size of the markers to plot in points. Defaults to 10.</p></li>
-<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The spacing between markers in normalized coordinates. Defaults to 1.</p></li>
-<li><p><strong>flip</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the symbols should be flipped to the other side of the path. Defaults
-to <em class="xref py py-obj">False</em>.</p></li>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>dataframe</strong> (<em>pandas.DataFrame</em>) – A <em class="xref py py-obj">DataFrame</em> where each row represents a pressure center or front. The <em class="xref py py-obj">DataFrame</em>
+has four columns: ‘valid’, ‘feature’, ‘strength’, and ‘geometry’.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – Year to assume when parsing the timestamp from the bulletin. Defaults to <em class="xref py py-obj">None</em>,
+which results in the parser trying to find a year in the product header; if this
+search fails, the current year is assumed.</p></li>
 </ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.StationaryFrontolysis.draw_path">
-<span class="sig-name descname"><span class="pre">draw_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">renderer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rgbFace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/patheffects.html#StationaryFrontolysis.draw_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationaryFrontolysis.draw_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Draw the given path.</p>
-</dd></dl>
-
-</dd></dl>
-
-<div style='clear:both'></div></section>
+<section id="examples-using-metpy-io-parse-wpc-surface-bulletin">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.io.parse_wpc_surface_bulletin</span></code><a class="headerlink" href="#examples-using-metpy-io-parse-wpc-surface-bulletin" title="Permalink to this heading">#</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This uses MetPy to decode text surface analysis bulletins from the Weather Prediction Center. T..."><img alt="" src="../../_images/sphx_glr_Plotting_Surface_Analysis_thumb.png" />
+<p><a class="reference internal" href="../../examples/plots/Plotting_Surface_Analysis.html#sphx-glr-examples-plots-plotting-surface-analysis-py"><span class="std std-ref">Plotting Fronts</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Plotting Fronts</div>
+</div></div><div style='clear:both'></div></section>
+</section>
 
 
                 </article>
@@ -806,20 +762,20 @@ to <em class="xref py py-obj">False</em>.</p></li>
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="metpy.plots.StationaryFrontogenesis.html"
+       href="metpy.io.add_station_lat_lon.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">StationaryFrontogenesis</p>
+        <p class="prev-next-title">add_station_lat_lon</p>
       </div>
     </a>
     <a class="right-next"
-       href="metpy.plots.SkewT.html"
+       href="metpy.io.GempakGrid.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">SkewT</p>
+        <p class="prev-next-title">GempakGrid</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -841,18 +797,14 @@ to <em class="xref py py-obj">False</em>.</p></li>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.StationaryFrontolysis"><code class="docutils literal notranslate"><span class="pre">StationaryFrontolysis</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.StationaryFrontolysis.symbol_width"><code class="docutils literal notranslate"><span class="pre">StationaryFrontolysis.symbol_width</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.StationaryFrontolysis.__init__"><code class="docutils literal notranslate"><span class="pre">StationaryFrontolysis.__init__()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.StationaryFrontolysis.draw_path"><code class="docutils literal notranslate"><span class="pre">StationaryFrontolysis.draw_path()</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.io.parse_wpc_surface_bulletin"><code class="docutils literal notranslate"><span class="pre">parse_wpc_surface_bulletin()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-using-metpy-io-parse-wpc-surface-bulletin">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.io.parse_wpc_surface_bulletin</span></code></a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
   <div class="tocsection sourcelink">
-    <a href="../../_sources/api/generated/metpy.plots.StationaryFrontolysis.rst.txt">
+    <a href="../../_sources/api/generated/metpy.io.parse_wpc_surface_bulletin.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

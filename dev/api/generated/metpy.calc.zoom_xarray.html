@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>zoom_xarray &#8212; MetPy 1.4dev</title>
+    <title>zoom_xarray &#8212; MetPy 1.5dev</title>
   
   
   
@@ -431,6 +431,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.parse_metar_file.html">parse_metar_file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.is_precip_mode.html">is_precip_mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.add_station_lat_lon.html">add_station_lat_lon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.parse_wpc_surface_bulletin.html">parse_wpc_surface_bulletin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.GempakGrid.html">GempakGrid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.GempakSounding.html">GempakSounding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.GempakSurface.html">GempakSurface</a></li>
@@ -728,7 +729,7 @@ effectively reduce the grid spacing over the data provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>input_field</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The 2D data array to be interpolated.</p></li>
+<li><p><strong>input_field</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.5.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The 2D data array to be interpolated.</p></li>
 <li><p><strong>zoom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em> or </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – The zoom factor along the axes. If a float, zoom is the same for each axis. If a
 sequence, zoom should contain one value for each axis.</p></li>
 <li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The order of the spline interpolation, default is 3. The order has to be in the
@@ -740,7 +741,7 @@ range 0-5.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>zoomed_data</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The zoomed input with its associated coordinates and coordinate reference system, if
+<dd class="field-even"><p><strong>zoomed_data</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.5.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The zoomed input with its associated coordinates and coordinate reference system, if
 available.</p>
 </dd>
 </dl>
