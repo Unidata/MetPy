@@ -11,14 +11,16 @@ runs:
   using: composite
   steps:
     - name: Set up Python ${{ inputs.python-version }}
-      uses: mamba-org/provision-with-micromamba@v15
+      uses: mamba-org/setup-micromamba@v1
       with:
-        environment-file: false
         environment-name: CI
-        extra-specs: python=${{ inputs.python-version }}
-        channels: conda-forge/label/testing,conda-forge
-        cache-env: true
-        cache-env-key: mamba-${{ inputs.type }}-${{ runner.os }}-${{ inputs.python-version}}-${{ hashFiles('ci/*') }}
+        create-args: python=${{ inputs.python-version }}
+        condarc: |
+          channels:
+            - conda-forge/label/testing
+            - conda-forge
+        cache-environment: true
+        cache-environment-key: mamba-${{ inputs.type }}-${{ runner.os }}-${{ inputs.python-version}}-${{ hashFiles('ci/*') }}
 
     - name: Install dependencies
       shell: bash -l {0}
