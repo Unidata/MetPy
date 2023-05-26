@@ -926,7 +926,7 @@ class Hodograph:
         if colors:
             cmap = mcolors.ListedColormap(colors)
             # If we are segmenting by height (a length), interpolate the contour intervals
-            if intervals.check('[length]'):
+            if isinstance(intervals, units.Quantity) and intervals.check('[length]'):
 
                 # Find any intervals not in the data and interpolate them
                 heights_min = np.nanmin(c)
@@ -952,7 +952,8 @@ class Hodograph:
                 c = c.to_base_units()  # TODO: This shouldn't be required!
                 intervals = intervals.to_base_units()
 
-            norm = mcolors.BoundaryNorm(intervals.magnitude, cmap.N)
+            intervals_m = intervals.m if isinstance(intervals, units.Quantity) else intervals
+            norm = mcolors.BoundaryNorm(intervals_m, cmap.N)
             cmap.set_over('none')
             cmap.set_under('none')
             kwargs['cmap'] = cmap
