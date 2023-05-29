@@ -663,6 +663,27 @@ def test_lfc_equals_lcl():
     assert_almost_equal(lfc_temp, 15.8714 * units.celsius, 2)
 
 
+def test_lfc_profile_nan():
+    """Test LFC when the profile includes NaN values."""
+    levels = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperatures = np.array([22.2, 14.6, np.nan, 9.4, 7., -38.]) * units.degC
+    dewpoints = np.array([19., -11.2, -10.8, -10.4, np.nan, -53.2]) * units.degC
+    lfc_pressure, lfc_temperature = lfc(levels, temperatures, dewpoints)
+    assert_almost_equal(lfc_pressure, 727.3365 * units.mbar, 3)
+    assert_almost_equal(lfc_temperature, 9.6977 * units.degC, 3)
+
+
+def test_lfc_profile_nan_with_parcel_profile():
+    """Test LFC when the profile includes NaN values, and parcel temp profile is specified."""
+    levels = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperatures = np.array([22.2, 14.6, np.nan, 9.4, 7., -38.]) * units.degC
+    dewpoints = np.array([19., -11.2, -10.8, -10.4, np.nan, -53.2]) * units.degC
+    parcel_temps = parcel_profile(levels, temperatures[0], dewpoints[0]).to('degC')
+    lfc_pressure, lfc_temperature = lfc(levels, temperatures, dewpoints, parcel_temps)
+    assert_almost_equal(lfc_pressure, 727.3365 * units.mbar, 3)
+    assert_almost_equal(lfc_temperature, 9.6977 * units.degC, 3)
+
+
 def test_sensitive_sounding():
     """Test quantities for a sensitive sounding (#902)."""
     # This sounding has a very small positive area in the low level. It's only captured
@@ -985,6 +1006,27 @@ def test_el_below_lcl():
     el_p, el_t = el(p, t, td, prof)
     assert_nan(el_p, p.units)
     assert_nan(el_t, t.units)
+
+
+def test_el_profile_nan():
+    """Test EL when the profile includes NaN values."""
+    levels = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperatures = np.array([22.2, 14.6, np.nan, 9.4, 7., -38.]) * units.degC
+    dewpoints = np.array([19., -11.2, -10.8, -10.4, np.nan, -53.2]) * units.degC
+    el_pressure, el_temperature = el(levels, temperatures, dewpoints)
+    assert_almost_equal(el_pressure, 673.0104 * units.mbar, 3)
+    assert_almost_equal(el_temperature, 5.8853 * units.degC, 3)
+
+
+def test_el_profile_nan_with_parcel_profile():
+    """Test EL when the profile includes NaN values, and a parcel temp profile is specified."""
+    levels = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperatures = np.array([22.2, 14.6, np.nan, 9.4, 7., -38.]) * units.degC
+    dewpoints = np.array([19., -11.2, -10.8, -10.4, np.nan, -53.2]) * units.degC
+    parcel_temps = parcel_profile(levels, temperatures[0], dewpoints[0]).to('degC')
+    el_pressure, el_temperature = el(levels, temperatures, dewpoints, parcel_temps)
+    assert_almost_equal(el_pressure, 673.0104 * units.mbar, 3)
+    assert_almost_equal(el_temperature, 5.8853 * units.degC, 3)
 
 
 def test_wet_psychrometric_vapor_pressure():
