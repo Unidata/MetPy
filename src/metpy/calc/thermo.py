@@ -667,12 +667,15 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
        Renamed ``dewpt``,``dewpoint_start`` parameters to ``dewpoint``, ``dewpoint_start``
 
     """
-    pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
     # Default to surface parcel if no profile or starting pressure level is given
     if parcel_temperature_profile is None:
-        new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpoint)
-        pressure, temperature, dewpoint, parcel_temperature_profile = new_stuff
+        pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
+        new_profile = parcel_profile_with_lcl(pressure, temperature, dewpoint)
+        pressure, temperature, dewpoint, parcel_temperature_profile = new_profile
         parcel_temperature_profile = parcel_temperature_profile.to(temperature.units)
+    else:
+        new_profile = _remove_nans(pressure, temperature, dewpoint, parcel_temperature_profile)
+        pressure, temperature, dewpoint, parcel_temperature_profile = new_profile
 
     if dewpoint_start is None:
         dewpoint_start = dewpoint[0]
@@ -878,12 +881,15 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
        Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
-    pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
     # Default to surface parcel if no profile or starting pressure level is given
     if parcel_temperature_profile is None:
-        new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpoint)
-        pressure, temperature, dewpoint, parcel_temperature_profile = new_stuff
+        pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
+        new_profile = parcel_profile_with_lcl(pressure, temperature, dewpoint)
+        pressure, temperature, dewpoint, parcel_temperature_profile = new_profile
         parcel_temperature_profile = parcel_temperature_profile.to(temperature.units)
+    else:
+        new_profile = _remove_nans(pressure, temperature, dewpoint, parcel_temperature_profile)
+        pressure, temperature, dewpoint, parcel_temperature_profile = new_profile
 
     # If the top of the sounding parcel is warmer than the environment, there is no EL
     if parcel_temperature_profile[-1] > temperature[-1]:
