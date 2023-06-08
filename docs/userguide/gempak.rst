@@ -7,7 +7,7 @@ and Unidata is only producing occasional maintenance releases. To help GEMPAK us
 the Python ecosystem we have compiled this list of GEMPAK programs, commands, parameters, etc.
 and their Python equivalents. These tables are continually updated as we add more functionality
 to MetPy as part of a National Science Foundation grant. Where issues have been filed, we have
-linked to them. Please feel free to tackle any of these, comment on their importance in the 
+linked to them. Please feel free to tackle any of these, comment on their importance in the
 issue tracker, or file a new issue.
 
 Green rows represent implemented functionality, red is not implemented (with issue listed),
