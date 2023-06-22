@@ -563,7 +563,7 @@ def _convert_clouds(cover, height, missing=-9999):
     return code
 
 
-class GempakFile():
+class GempakFile:
     """Base class for GEMPAK files.
 
     Reads ubiquitous GEMPAK file headers (i.e., the data management portion of
