@@ -429,6 +429,7 @@ def advection(
     meridional_scale : `pint.Quantity`, optional
         Meridional scale of map projection at data coordinate.
 
+
     .. versionchanged:: 1.0
        Changed signature from ``(scalar, wind, deltas)``
 
