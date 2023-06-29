@@ -390,7 +390,7 @@ def advection(
     `parallel_scale` and `meridional_scale` specify the parallel and meridional scale of
     map projection at data coordinate, respectively. They are optional when (a)
     `xarray.DataArray` with latitude/longitude coordinates and MetPy CRS are used as input
-    and (b) longitude, latitude, and crs are given. If otherwise omitted, calculation
+    or (b) longitude, latitude, and crs are given. If otherwise omitted, calculation
     will be carried out on a Cartesian, rather than geospatial, grid. Both are keyword-only
     arguments.
 
