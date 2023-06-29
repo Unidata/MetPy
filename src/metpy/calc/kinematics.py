@@ -378,16 +378,17 @@ def advection(
 ):
     r"""Calculate the advection of a scalar field by the wind.
 
-    If the scalar field is a `xarray.DataArray`, only `u`, `v`, and `w` are required
-    to compute advection. The horizontal and vertical spacing (`dx`, `dy`, and `dz`)
-    and axis numbers (`x_dim`, `y_dim`, and `z_dim`) are automatically inferred from the
-    `scalar` field. But if the `scalar` is a `Pint.Quantity`, the horizontal and vertical
-    spacing `dx`, `dy`, and `dz` needs to be provided, and each array should have one
-    item less than the size of `scalar` along the applicable axis. Additionally, `x_dim`,
-    `y_dim`, and `z_dim` are required if `scalar` does not have the default [..., Z, Y, X]
-    ordering. `dx`, `dy`, `dz`, `x_dim`, `y_dim`, and `z_dim` are keyword-only arguments.
+    If ``scalar`` is a `xarray.DataArray`, only ``u``, ``v``, and ``w`` are required
+    to compute advection. The horizontal and vertical spacing (``dx``, ``dy``, and ``dz``)
+    and axis numbers (``x_dim``, ``y_dim``, and ``z_dim``) are automatically inferred from
+    ``scalar``. But if ``scalar`` is a `pint.Quantity`, the horizontal and vertical
+    spacing ``dx``, ``dy``, and ``dz`` needs to be provided, and each array should have one
+    item less than the size of ``scalar`` along the applicable axis. Additionally, ``x_dim``,
+    ``y_dim``, and ``z_dim`` are required if ``scalar`` does not have the default
+    [..., Z, Y, X] ordering. ``dx``, ``dy``, ``dz``, ``x_dim``, ``y_dim``, and ``z_dim``
+    are keyword-only arguments.
 
-    `parallel_scale` and `meridional_scale` specify the parallel and meridional scale of
+    ``parallel_scale`` and ``meridional_scale`` specify the parallel and meridional scale of
     map projection at data coordinate, respectively. They are optional when (a)
     `xarray.DataArray` with latitude/longitude coordinates and MetPy CRS are used as input
     or (b) longitude, latitude, and crs are given. If otherwise omitted, calculation
@@ -429,6 +430,12 @@ def advection(
     meridional_scale : `pint.Quantity`, optional
         Meridional scale of map projection at data coordinate.
 
+    Notes
+    -----
+    This implements the advection of a scalar quantity by wind:
+
+    .. math:: \mathbf{u} \cdot \nabla = u \frac{\partial}{\partial x}
+              + v \frac{\partial}{\partial y} + w \frac{\partial}{\partial z}
 
     .. versionchanged:: 1.0
        Changed signature from ``(scalar, wind, deltas)``
