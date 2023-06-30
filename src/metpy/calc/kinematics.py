@@ -376,9 +376,9 @@ def advection(
     parallel_scale=None,
     meridional_scale=None
 ):
-    r"""Calculate the advection of a scalar field by the wind.
+    r"""Calculate the advection of a scalar field by 1D, 2D, or 3D winds.
 
-    If ``scalar`` is a `xarray.DataArray`, only ``u``, ``v``, and ``w`` are required
+    If ``scalar`` is a `xarray.DataArray`, only ``u``, ``v``, and/or ``w`` are required
     to compute advection. The horizontal and vertical spacing (``dx``, ``dy``, and ``dz``)
     and axis numbers (``x_dim``, ``y_dim``, and ``z_dim``) are automatically inferred from
     ``scalar``. But if ``scalar`` is a `pint.Quantity`, the horizontal and vertical
