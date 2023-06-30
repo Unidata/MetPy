@@ -376,26 +376,35 @@ def advection(
     parallel_scale=None,
     meridional_scale=None
 ):
-    r"""Calculate the advection of a scalar field by the wind.
+    r"""Calculate the advection of a scalar field by 1D, 2D, or 3D winds.
+
+    If ``scalar`` is a `xarray.DataArray`, only ``u``, ``v``, and/or ``w`` are required
+    to compute advection. The horizontal and vertical spacing (``dx``, ``dy``, and ``dz``)
+    and axis numbers (``x_dim``, ``y_dim``, and ``z_dim``) are automatically inferred from
+    ``scalar``. But if ``scalar`` is a `pint.Quantity`, the horizontal and vertical
+    spacing ``dx``, ``dy``, and ``dz`` needs to be provided, and each array should have one
+    item less than the size of ``scalar`` along the applicable axis. Additionally, ``x_dim``,
+    ``y_dim``, and ``z_dim`` are required if ``scalar`` does not have the default
+    [..., Z, Y, X] ordering. ``dx``, ``dy``, ``dz``, ``x_dim``, ``y_dim``, and ``z_dim``
+    are keyword-only arguments.
+
+    ``parallel_scale`` and ``meridional_scale`` specify the parallel and meridional scale of
+    map projection at data coordinate, respectively. They are optional when (a)
+    `xarray.DataArray` with latitude/longitude coordinates and MetPy CRS are used as input
+    or (b) longitude, latitude, and crs are given. If otherwise omitted, calculation
+    will be carried out on a Cartesian, rather than geospatial, grid. Both are keyword-only
+    arguments.
 
     Parameters
     ----------
     scalar : `pint.Quantity` or `xarray.DataArray`
-        Array (with N-dimensions) with the quantity to be advected. Use `xarray.DataArray` to
-        have dimension ordering automatically determined, otherwise, use default
-        [..., Z, Y, X] ordering or specify \*_dim keyword arguments.
-    u, v, w : `pint.Quantity` or `xarray.DataArray` or None
-        N-dimensional arrays with units of velocity representing the flow, with a component of
-        the wind in each dimension. For 1D advection, use 1 positional argument (with `dx` for
-        grid spacing and `x_dim` to specify axis if not the default of -1) or use 1 applicable
-        keyword argument (u, v, or w) for proper physical dimension (with corresponding `d\*`
-        for grid spacing and `\*_dim` to specify axis). For 2D/horizontal advection, use 2
-        positional arguments in order for u and v winds respectively (with `dx` and `dy` for
-        grid spacings and `x_dim` and `y_dim` keyword arguments to specify axes), or specify u
-        and v as keyword arguments (grid spacings and axes likewise). For 3D advection,
-        likewise use 3 positional arguments in order for u, v, and w winds respectively or
-        specify u, v, and w as keyword arguments (either way, with `dx`, `dy`, `dz` for grid
-        spacings and `x_dim`, `y_dim`, and `vertical_dim` for axes).
+        The quantity (an N-dimensional array) to be advected.
+    u : `pint.Quantity` or `xarray.DataArray` or None
+        The wind component in the x dimension. An N-dimensional array.
+    v : `pint.Quantity` or `xarray.DataArray` or None
+        The wind component in the y dimension. An N-dimensional array.
+    w : `pint.Quantity` or `xarray.DataArray` or None
+        The wind component in the z dimension. An N-dimensional array.
 
     Returns
     -------
@@ -404,27 +413,29 @@ def advection(
 
     Other Parameters
     ----------------
-    dx, dy, dz: `pint.Quantity` or None, optional
-        Grid spacing in applicable dimension(s). If using arrays, each array should have one
-        item less than the size of `scalar` along the applicable axis. If `scalar` is an
-        `xarray.DataArray`, these are automatically determined from its coordinates, and are
-        therefore optional. Required if `scalar` is a `pint.Quantity`. These are keyword-only
-        arguments.
-    x_dim, y_dim, vertical_dim: int or None, optional
-        Axis number in applicable dimension(s). Defaults to -1, -2, and -3 respectively for
-        (..., Z, Y, X) dimension ordering. If `scalar` is an `xarray.DataArray`, these are
-        automatically determined from its coordinates. These are keyword-only arguments.
+    dx: `pint.Quantity` or None, optional
+        Grid spacing in the x dimension.
+    dy: `pint.Quantity` or None, optional
+        Grid spacing in the y dimension.
+    dz: `pint.Quantity` or None, optional
+        Grid spacing in the z dimension.
+    x_dim: int or None, optional
+        Axis number in the x dimension. Defaults to -1 for (..., Z, Y, X) dimension ordering.
+    y_dim: int or None, optional
+        Axis number in the y dimension. Defaults to -2 for (..., Z, Y, X) dimension ordering.
+    vertical_dim: int or None, optional
+        Axis number in the z dimension. Defaults to -3 for (..., Z, Y, X) dimension ordering.
     parallel_scale : `pint.Quantity`, optional
-        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
-        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
-        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
-        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+        Parallel scale of map projection at data coordinate.
     meridional_scale : `pint.Quantity`, optional
-        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
-        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
-        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
-        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+        Meridional scale of map projection at data coordinate.
 
+    Notes
+    -----
+    This implements the advection of a scalar quantity by wind:
+
+    .. math:: \mathbf{u} \cdot \nabla = u \frac{\partial}{\partial x}
+              + v \frac{\partial}{\partial y} + w \frac{\partial}{\partial z}
 
     .. versionchanged:: 1.0
        Changed signature from ``(scalar, wind, deltas)``
