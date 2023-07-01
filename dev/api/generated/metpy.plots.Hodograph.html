@@ -835,10 +835,11 @@ number of grid rings needed.</p></li>
 variable besides the winds (e.g. heights or pressure levels) and either a colormap to
 color it with or a series of contour intervals and colors to create a colormap and
 norm to control colormapping. The intervals must always be in increasing
-order. For using custom contour intervals with height data, the function will
-automatically interpolate to the contour intervals from the height and wind data,
-as well as convert the input contour intervals from height AGL to MSL to work with the
-provided heights.</p>
+order.</p>
+<p>When c and intervals are height data (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> objects with units of length,
+such as ‘m’ or ‘km’), the function will automatically interpolate to the contour
+intervals from the height and wind data, as well as convert the input contour intervals
+from height AGL to MSL to work with the provided heights.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
