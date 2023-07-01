@@ -844,8 +844,8 @@ class Squall(mpatheffects.AbstractPathEffect):
 class StationaryFront(Front):
     """Draw a stationary front as alternating cold and warm front segments."""
 
-    _symbol = WarmFront._symbol
-    _symbol2 = ColdFront._symbol.transformed(mtransforms.Affine2D().scale(1, -1))
+    _symbol = WarmFront._symbol.transformed(mtransforms.Affine2D().scale(1, -1))
+    _symbol2 = ColdFront._symbol
 
     def __init__(self, colors=('red', 'blue'), **kwargs):
         """Initialize a stationary front path effect.
@@ -902,7 +902,7 @@ class StationaryFront(Front):
         start_path_inds = np.concatenate([[0], end_path_inds[:-1]])
 
         # Need to account for the line width in order to properly draw symbols at line edge
-        line_shift = renderer.points_to_pixels(gc.get_linewidth()) / 2
+        line_shift = -renderer.points_to_pixels(gc.get_linewidth()) / 2
 
         # Loop over all the markers to draw
         for ind, start_path, end_path, marker_offset in zip(segment_indices, start_path_inds,
