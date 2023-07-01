@@ -26,7 +26,7 @@ from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure
 from ..calc.tools import _delete_masked_points
 from ..interpolate import interpolate_1d
 from ..package_tools import Exporter
-from ..units import concatenate, units
+from ..units import concatenate, is_quantity, units
 
 exporter = Exporter(globals())
 
@@ -928,7 +928,7 @@ class Hodograph:
         if colors:
             cmap = mcolors.ListedColormap(colors)
             # If we are segmenting by height (a length), interpolate the contour intervals
-            if isinstance(intervals, units.Quantity) and intervals.check('[length]'):
+            if is_quantity(intervals) and intervals.check('[length]'):
 
                 # Find any intervals not in the data and interpolate them
                 heights_min = np.nanmin(c)
@@ -954,7 +954,7 @@ class Hodograph:
                 c = c.to_base_units()  # TODO: This shouldn't be required!
                 intervals = intervals.to_base_units()
 
-            intervals_m = intervals.m if isinstance(intervals, units.Quantity) else intervals
+            intervals_m = intervals.m if is_quantity(intervals) else intervals
             norm = mcolors.BoundaryNorm(intervals_m, cmap.N)
             cmap.set_over('none')
             cmap.set_under('none')
