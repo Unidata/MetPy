@@ -490,6 +490,54 @@ def test_hodograph_plot_layers_bound_units():
     return fig
 
 
+@pytest.mark.mpl_image_compare(tolerance=0)
+def test_hodograph_plot_colors_with_unitless_intervals():
+    """Test hodograph colored layers when intervals have no units."""
+    fig = plt.figure(figsize=(7, 7))
+    ax = fig.add_subplot(1, 1, 1)
+    hodo = Hodograph(ax, component_range=50)
+    hodo.add_grid(10)
+    u = np.array([0, 6, 26, 32, 48])
+    v = np.array([0, 23, 34, 23, 5])
+    p = np.flip(np.array([900, 750, 600, 450, 250]))
+    intervals = np.flip(np.array([1000, 850, 700, 500, 300, 200]))
+    colors = ['red', 'green', 'yellow', 'blue', 'purple']
+    hodo.plot_colormapped(u, v, p, intervals=intervals, colors=colors)
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0)
+def test_hodograph_plot_colors_with_pressure_intervals():
+    """Test hodograph colored layers when intervals are given in units of pressure."""
+    fig = plt.figure(figsize=(7, 7))
+    ax = fig.add_subplot(1, 1, 1)
+    hodo = Hodograph(ax, component_range=50)
+    hodo.add_grid(10)
+    u = np.array([0, 6, 26, 32, 48])
+    v = np.array([0, 23, 34, 23, 5])
+    p = units.Quantity(np.flip(np.array([900, 750, 600, 450, 250])), 'hPa')
+    intervals = units.Quantity(np.flip(np.array([1000, 850, 700, 500, 300, 200])), 'hPa')
+    colors = ['red', 'green', 'yellow', 'blue', 'purple']
+    hodo.plot_colormapped(u, v, p, intervals=intervals, colors=colors)
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0)
+def test_hodograph_plot_colors_with_height_intervals():
+    """Test hodograph colored layers when intervals are given in units of height."""
+    fig = plt.figure(figsize=(7, 7))
+    ax = fig.add_subplot(1, 1, 1)
+    hodo = Hodograph(ax, component_range=50)
+    hodo.add_grid(10)
+    u = np.array([0, 6, 26, 32, 48])
+    v = np.array([0, 23, 34, 23, 5])
+    h = units.Quantity(np.array([0.1, 3.5, 5.5, 10.9, 14.0]), 'km')
+    intervals = units.Quantity(np.array([0, 3, 6, 9, 12, 15]), 'km')
+    colors = ['red', 'green', 'yellow', 'blue', 'purple']
+    hodo.plot_colormapped(u, v, h, intervals=intervals, colors=colors)
+    return fig
+
+
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_plot_arbitrary_layer():
     """Test hodograph colored layers for arbitrary variables without interpolation."""

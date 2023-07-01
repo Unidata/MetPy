@@ -26,7 +26,7 @@ from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure
 from ..calc.tools import _delete_masked_points
 from ..interpolate import interpolate_1d
 from ..package_tools import Exporter
-from ..units import concatenate, units
+from ..units import concatenate, is_quantity, units
 
 exporter = Exporter(globals())
 
@@ -890,10 +890,12 @@ class Hodograph:
         variable besides the winds (e.g. heights or pressure levels) and either a colormap to
         color it with or a series of contour intervals and colors to create a colormap and
         norm to control colormapping. The intervals must always be in increasing
-        order. For using custom contour intervals with height data, the function will
-        automatically interpolate to the contour intervals from the height and wind data,
-        as well as convert the input contour intervals from height AGL to MSL to work with the
-        provided heights.
+        order.
+
+        When c and intervals are height data (`pint.Quantity` objects with units of length,
+        such as 'm' or 'km'), the function will automatically interpolate to the contour
+        intervals from the height and wind data, as well as convert the input contour intervals
+        from height AGL to MSL to work with the provided heights.
 
         Parameters
         ----------
@@ -926,7 +928,7 @@ class Hodograph:
         if colors:
             cmap = mcolors.ListedColormap(colors)
             # If we are segmenting by height (a length), interpolate the contour intervals
-            if intervals.check('[length]'):
+            if is_quantity(intervals) and intervals.check('[length]'):
 
                 # Find any intervals not in the data and interpolate them
                 heights_min = np.nanmin(c)
@@ -952,7 +954,8 @@ class Hodograph:
                 c = c.to_base_units()  # TODO: This shouldn't be required!
                 intervals = intervals.to_base_units()
 
-            norm = mcolors.BoundaryNorm(intervals.magnitude, cmap.N)
+            intervals_m = intervals.m if is_quantity(intervals) else intervals
+            norm = mcolors.BoundaryNorm(intervals_m, cmap.N)
             cmap.set_over('none')
             cmap.set_under('none')
             kwargs['cmap'] = cmap
