@@ -27,7 +27,7 @@ class Front(mpatheffects.AbstractPathEffect):
                          [mpath.Path.MOVETO, mpath.Path.LINETO,
                           mpath.Path.LINETO, mpath.Path.LINETO, mpath.Path.CLOSEPOLY])
 
-    def __init__(self, color, size=10, spacing=1, flip=False):
+    def __init__(self, color, size=10, spacing=1, flip=False, filled=True):
         """Initialize the front path effect.
 
         Parameters
@@ -41,6 +41,8 @@ class Front(mpatheffects.AbstractPathEffect):
         flip : bool
             Whether the symbol should be flipped to the other side of the path. Defaults
             to `False`.
+        filled : bool
+            Whether the symbol should be filled with the color. Defaults to `True`.
 
         """
         super().__init__()
@@ -48,6 +50,7 @@ class Front(mpatheffects.AbstractPathEffect):
         self.spacing = spacing
         self.color = mcolors.to_rgba(color)
         self.flip = flip
+        self.filled = filled
         self._symbol_width = None
 
     @cached_property
@@ -130,7 +133,8 @@ class Front(mpatheffects.AbstractPathEffect):
         for ind, marker_offset in zip(segment_indices, marker_offsets):
             sym_trans = self._get_symbol_transform(renderer, marker_offset, line_shift,
                                                    angles[ind], starts[ind])
-            renderer.draw_path(gc0, self._symbol, sym_trans, self.color)
+            renderer.draw_path(gc0, self._symbol, sym_trans,
+                               self.color if self.filled else None)
 
         gc0.restore()
 
@@ -510,62 +514,8 @@ class Dryline(Front):
 
     _symbol = mpath.Path.wedge(0, 180).transformed(mtransforms.Affine2D().translate(1, 0))
 
-    def __init__(self, color='brown', spacing=0, **kwargs):
-        super().__init__(color, spacing=spacing, **kwargs)
-
-    def _step_size(self, renderer, gc):
-        """Return the length of the step between markers in pixels."""
-        return (
-            self.symbol_width + self.spacing
-        ) * self._size_pixels(renderer) + gc.get_linewidth() * 2
-
-    def _get_marker_locations(self, segment_offsets, renderer, gc):
-        # Calculate increment of path length occupied by each marker drawn
-        inc = self._step_size(renderer, gc)
-
-        # Find out how many markers that will accommodate, as well as remainder space
-        num, leftover = divmod(segment_offsets[-1], inc)
-
-        # Find the offset for each marker along the path length. We center along
-        # the path by adding half of the remainder. The offset is also centered within
-        # the marker by adding half of the marker increment
-        marker_offsets = np.arange(num) * inc + (leftover + inc) / 2.
-
-        # Find the location of these offsets within the total offset within each
-        # path segment; subtracting 1 gives us the left point of the path rather
-        # than the last. We then need to adjust for any offsets that are <= the first
-        # point of the path (just set them to index 0).
-        inds = np.searchsorted(segment_offsets, marker_offsets) - 1
-        inds[inds < 0] = 0
-
-        # Return the indices to the proper segment and the offset within that segment
-        return inds, marker_offsets - segment_offsets[inds]
-
-    def draw_path(self, renderer, gc, path, affine, rgbFace=None):  # noqa: N803
-        """Draw the given path."""
-        # Set up a new graphics context for rendering the front effect; override the color
-        gc0 = self._override_gc(renderer, gc, foreground=self.color)
-
-        # Get the information we need for drawing along the path
-        starts, offsets, angles = self._process_path(path, affine)
-
-        # Figure out what segments the markers should be drawn upon and how
-        # far within that segment the markers will appear.
-        segment_indices, marker_offsets = self._get_marker_locations(offsets, renderer, gc)
-
-        # Draw the original path
-        renderer.draw_path(gc0, path, affine, rgbFace)  # noqa: N803
-
-        # Need to account for the line width in order to properly draw symbols at line edge
-        line_shift = renderer.points_to_pixels(gc.get_linewidth()) / 2
-
-        # Loop over all the markers to draw
-        for ind, marker_offset in zip(segment_indices, marker_offsets):
-            sym_trans = self._get_symbol_transform(renderer, marker_offset, line_shift,
-                                                   angles[ind], starts[ind])
-            renderer.draw_path(gc0, self._symbol, sym_trans, None)
-
-        gc0.restore()
+    def __init__(self, color='brown', spacing=0.144, filled=False, **kwargs):
+        super().__init__(color, spacing=spacing, filled=filled, **kwargs)
 
 
 @exporter.export
