@@ -5,6 +5,7 @@
 
 import numpy as np
 import pytest
+import xarray as xr
 
 from metpy.interpolate import interpolate_1d, interpolate_nans_1d, log_interpolate_1d
 from metpy.testing import assert_array_almost_equal
@@ -42,6 +43,16 @@ def test_interpolate_nans_1d_invalid():
 def test_log_interpolate_1d():
     """Test interpolating with log x-scale."""
     x_log = np.array([1e3, 1e4, 1e5, 1e6])
+    y_log = np.log(x_log) * 2 + 3
+    x_interp = np.array([5e3, 5e4, 5e5])
+    y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
+    y_interp = log_interpolate_1d(x_interp, x_log, y_log)
+    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+
+
+def test_log_interpolate_1d_mixed():
+    """Test log interpolation with a mix of compatible input types."""
+    x_log = xr.DataArray([1e3, 1e4, 1e5, 1e6])
     y_log = np.log(x_log) * 2 + 3
     x_interp = np.array([5e3, 5e4, 5e5])
     y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
