@@ -239,4 +239,6 @@ def _strip_matching_units(*args):
     if all(hasattr(arr, 'units') for arr in args):
         return [arr.to(args[0].units).magnitude for arr in args]
     else:
-        return args
+        # Handle the case where we get mixed 'dimensionless' and bare array. This happens e.g.
+        # when you pass in a DataArray with no units for one arg.
+        return [arr.m_as('dimensionless') if hasattr(arr, 'units') else arr for arr in args]
