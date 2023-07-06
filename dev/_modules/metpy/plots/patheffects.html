@@ -485,7 +485,7 @@ document.write(`
                          <span class="p">[</span><span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">MOVETO</span><span class="p">,</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span>
                           <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">CLOSEPOLY</span><span class="p">])</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the front path effect.</span>
 
 <span class="sd">        Parameters</span>
@@ -499,6 +499,8 @@ document.write(`
 <span class="sd">        flip : bool</span>
 <span class="sd">            Whether the symbol should be flipped to the other side of the path. Defaults</span>
 <span class="sd">            to `False`.</span>
+<span class="sd">        filled : bool</span>
+<span class="sd">            Whether the symbol should be filled with the color. Defaults to `True`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -506,6 +508,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span> <span class="o">=</span> <span class="n">spacing</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="o">=</span> <span class="n">flip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filled</span> <span class="o">=</span> <span class="n">filled</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_symbol_width</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@cached_property</span>
@@ -588,7 +591,8 @@ document.write(`
         <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">marker_offset</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">segment_indices</span><span class="p">,</span> <span class="n">marker_offsets</span><span class="p">):</span>
             <span class="n">sym_trans</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_symbol_transform</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">marker_offset</span><span class="p">,</span> <span class="n">line_shift</span><span class="p">,</span>
                                                    <span class="n">angles</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="n">starts</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
-            <span class="n">renderer</span><span class="o">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">gc0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_symbol</span><span class="p">,</span> <span class="n">sym_trans</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
+            <span class="n">renderer</span><span class="o">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">gc0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_symbol</span><span class="p">,</span> <span class="n">sym_trans</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filled</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="n">gc0</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span>
 
@@ -968,62 +972,8 @@ document.write(`
 
     <span class="n">_symbol</span> <span class="o">=</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">wedge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">mtransforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
-<div class="viewcode-block" id="Dryline.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Dryline.html#metpy.plots.Dryline.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">_step_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the length of the step between markers in pixels.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">symbol_width</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span>
-        <span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size_pixels</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span> <span class="o">+</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_linewidth</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span>
-
-    <span class="k">def</span> <span class="nf">_get_marker_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_offsets</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">):</span>
-        <span class="c1"># Calculate increment of path length occupied by each marker drawn</span>
-        <span class="n">inc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">)</span>
-
-        <span class="c1"># Find out how many markers that will accommodate, as well as remainder space</span>
-        <span class="n">num</span><span class="p">,</span> <span class="n">leftover</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">segment_offsets</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">inc</span><span class="p">)</span>
-
-        <span class="c1"># Find the offset for each marker along the path length. We center along</span>
-        <span class="c1"># the path by adding half of the remainder. The offset is also centered within</span>
-        <span class="c1"># the marker by adding half of the marker increment</span>
-        <span class="n">marker_offsets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">*</span> <span class="n">inc</span> <span class="o">+</span> <span class="p">(</span><span class="n">leftover</span> <span class="o">+</span> <span class="n">inc</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
-
-        <span class="c1"># Find the location of these offsets within the total offset within each</span>
-        <span class="c1"># path segment; subtracting 1 gives us the left point of the path rather</span>
-        <span class="c1"># than the last. We then need to adjust for any offsets that are &lt;= the first</span>
-        <span class="c1"># point of the path (just set them to index 0).</span>
-        <span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">segment_offsets</span><span class="p">,</span> <span class="n">marker_offsets</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="n">inds</span><span class="p">[</span><span class="n">inds</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="c1"># Return the indices to the proper segment and the offset within that segment</span>
-        <span class="k">return</span> <span class="n">inds</span><span class="p">,</span> <span class="n">marker_offsets</span> <span class="o">-</span> <span class="n">segment_offsets</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span>
-
-<div class="viewcode-block" id="Dryline.draw_path"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Dryline.html#metpy.plots.Dryline.draw_path">[docs]</a>    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the given path.&quot;&quot;&quot;</span>
-        <span class="c1"># Set up a new graphics context for rendering the front effect; override the color</span>
-        <span class="n">gc0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_override_gc</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
-
-        <span class="c1"># Get the information we need for drawing along the path</span>
-        <span class="n">starts</span><span class="p">,</span> <span class="n">offsets</span><span class="p">,</span> <span class="n">angles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">)</span>
-
-        <span class="c1"># Figure out what segments the markers should be drawn upon and how</span>
-        <span class="c1"># far within that segment the markers will appear.</span>
-        <span class="n">segment_indices</span><span class="p">,</span> <span class="n">marker_offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_marker_locations</span><span class="p">(</span><span class="n">offsets</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">)</span>
-
-        <span class="c1"># Draw the original path</span>
-        <span class="n">renderer</span><span class="o">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">gc0</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="p">)</span>  <span class="c1"># noqa: N803</span>
-
-        <span class="c1"># Need to account for the line width in order to properly draw symbols at line edge</span>
-        <span class="n">line_shift</span> <span class="o">=</span> <span class="n">renderer</span><span class="o">.</span><span class="n">points_to_pixels</span><span class="p">(</span><span class="n">gc</span><span class="o">.</span><span class="n">get_linewidth</span><span class="p">())</span> <span class="o">/</span> <span class="mi">2</span>
-
-        <span class="c1"># Loop over all the markers to draw</span>
-        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">marker_offset</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">segment_indices</span><span class="p">,</span> <span class="n">marker_offsets</span><span class="p">):</span>
-            <span class="n">sym_trans</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_symbol_transform</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">marker_offset</span><span class="p">,</span> <span class="n">line_shift</span><span class="p">,</span>
-                                                   <span class="n">angles</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="n">starts</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
-            <span class="n">renderer</span><span class="o">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">gc0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_symbol</span><span class="p">,</span> <span class="n">sym_trans</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-        <span class="n">gc0</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span></div>
+<div class="viewcode-block" id="Dryline.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Dryline.html#metpy.plots.Dryline.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">0.144</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="n">filled</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1352,8 +1302,8 @@ document.write(`
 <span class="k">class</span> <span class="nc">StationaryFront</span><span class="p">(</span><span class="n">Front</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a stationary front as alternating cold and warm front segments.&quot;&quot;&quot;</span>
 
-    <span class="n">_symbol</span> <span class="o">=</span> <span class="n">WarmFront</span><span class="o">.</span><span class="n">_symbol</span>
-    <span class="n">_symbol2</span> <span class="o">=</span> <span class="n">ColdFront</span><span class="o">.</span><span class="n">_symbol</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">mtransforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">_symbol</span> <span class="o">=</span> <span class="n">WarmFront</span><span class="o">.</span><span class="n">_symbol</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">mtransforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">_symbol2</span> <span class="o">=</span> <span class="n">ColdFront</span><span class="o">.</span><span class="n">_symbol</span>
 
 <div class="viewcode-block" id="StationaryFront.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFront.html#metpy.plots.StationaryFront.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a stationary front path effect.</span>
@@ -1410,7 +1360,7 @@ document.write(`
         <span class="n">start_path_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="n">end_path_inds</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 
         <span class="c1"># Need to account for the line width in order to properly draw symbols at line edge</span>
-        <span class="n">line_shift</span> <span class="o">=</span> <span class="n">renderer</span><span class="o">.</span><span class="n">points_to_pixels</span><span class="p">(</span><span class="n">gc</span><span class="o">.</span><span class="n">get_linewidth</span><span class="p">())</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">line_shift</span> <span class="o">=</span> <span class="o">-</span><span class="n">renderer</span><span class="o">.</span><span class="n">points_to_pixels</span><span class="p">(</span><span class="n">gc</span><span class="o">.</span><span class="n">get_linewidth</span><span class="p">())</span> <span class="o">/</span> <span class="mi">2</span>
 
         <span class="c1"># Loop over all the markers to draw</span>
         <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">start_path</span><span class="p">,</span> <span class="n">end_path</span><span class="p">,</span> <span class="n">marker_offset</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">segment_indices</span><span class="p">,</span> <span class="n">start_path_inds</span><span class="p">,</span>

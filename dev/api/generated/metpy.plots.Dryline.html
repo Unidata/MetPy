@@ -722,7 +722,7 @@ document.write(`
 <h1>Dryline<a class="headerlink" href="#dryline" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="metpy.plots.Dryline">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">Dryline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'brown'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Dryline" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">Dryline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'brown'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.144</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Dryline" title="Permalink to this definition">#</a></dt>
 <dd><p>Draw a path as a dryline with (default brown) scallops along the path.</p>
 <p>Initialize the front path effect.</p>
 <dl class="field-list simple">
@@ -733,6 +733,7 @@ document.write(`
 <li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The spacing between markers in normalized coordinates. Defaults to 1.</p></li>
 <li><p><strong>flip</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the symbol should be flipped to the other side of the path. Defaults
 to <em class="xref py py-obj">False</em>.</p></li>
+<li><p><strong>filled</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the symbol should be filled with the color. Defaults to <em class="xref py py-obj">True</em>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -747,7 +748,7 @@ to <em class="xref py py-obj">False</em>.</p></li>
 <p class="rubric">Methods Summary</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Dryline.__init__" title="metpy.plots.Dryline.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([color, spacing])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Dryline.__init__" title="metpy.plots.Dryline.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([color, spacing, filled])</p></td>
 <td><p>Initialize the front path effect.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Dryline.draw_path" title="metpy.plots.Dryline.draw_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_path</span></code></a>(renderer, gc, path, affine[, rgbFace])</p></td>
@@ -765,7 +766,7 @@ to <em class="xref py py-obj">False</em>.</p></li>
 <p class="rubric">Methods Documentation</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Dryline.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'brown'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/patheffects.html#Dryline.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Dryline.__init__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'brown'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.144</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/patheffects.html#Dryline.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Dryline.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Initialize the front path effect.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -775,6 +776,7 @@ to <em class="xref py py-obj">False</em>.</p></li>
 <li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The spacing between markers in normalized coordinates. Defaults to 1.</p></li>
 <li><p><strong>flip</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the symbol should be flipped to the other side of the path. Defaults
 to <em class="xref py py-obj">False</em>.</p></li>
+<li><p><strong>filled</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the symbol should be filled with the color. Defaults to <em class="xref py py-obj">True</em>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -782,7 +784,7 @@ to <em class="xref py py-obj">False</em>.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Dryline.draw_path">
-<span class="sig-name descname"><span class="pre">draw_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">renderer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rgbFace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/patheffects.html#Dryline.draw_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Dryline.draw_path" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">draw_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">renderer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rgbFace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Dryline.draw_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Draw the given path.</p>
 </dd></dl>
 
