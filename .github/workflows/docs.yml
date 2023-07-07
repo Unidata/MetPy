@@ -28,9 +28,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - python-version: 3.8
-            check-links: false
-            dep-versions: requirements.txt
           - python-version: 3.9
             check-links: false
             dep-versions: requirements.txt
