@@ -728,11 +728,11 @@ class GempakFile:
         # parts = self._buffer.set_mark()
         self.parts = []
         parts_info = [('name', '4s', self._decode_strip),
-                      (None, '{:d}x'.format((self.prod_desc.parts - 1) * BYTES_PER_WORD)),
+                      (None, f'{(self.prod_desc.parts - 1) * BYTES_PER_WORD:d}x'),
                       ('header_length', 'i'),
-                      (None, '{:d}x'.format((self.prod_desc.parts - 1) * BYTES_PER_WORD)),
+                      (None, f'{(self.prod_desc.parts - 1) * BYTES_PER_WORD:d}x'),
                       ('data_type', 'i', DataTypes),
-                      (None, '{:d}x'.format((self.prod_desc.parts - 1) * BYTES_PER_WORD)),
+                      (None, f'{(self.prod_desc.parts - 1) * BYTES_PER_WORD:d}x'),
                       ('parameter_count', 'i')]
         parts_info.extend([(None, None)])
         parts_fmt = NamedStruct(parts_info, self.prefmt, 'Parts')

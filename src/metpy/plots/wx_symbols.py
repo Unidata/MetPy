@@ -6,12 +6,7 @@
 See WMO No.306 Attachment IV for more info on the symbols.
 """
 
-try:
-    from importlib.resources import (as_file as importlib_resources_as_file,
-                                     files as importlib_resources_files)
-except ImportError:  # Can remove when we require Python > 3.8
-    from importlib_resources import (files as importlib_resources_files,
-                                     as_file as importlib_resources_as_file)
+import importlib.resources
 
 import matplotlib.font_manager as fm
 import numpy as np
@@ -21,8 +16,8 @@ from ..package_tools import Exporter
 exporter = Exporter(globals())
 
 # Create a matplotlib font object pointing to our weather symbol font
-fontfile = importlib_resources_files('metpy.plots') / 'fonts/wx_symbols.ttf'
-with importlib_resources_as_file(fontfile) as fname:
+fontfile = importlib.resources.files('metpy.plots') / 'fonts/wx_symbols.ttf'
+with importlib.resources.as_file(fontfile) as fname:
     # Need to pass str, not Path, for older matplotlib
     wx_symbol_font = fm.FontProperties(fname=str(fname))
 

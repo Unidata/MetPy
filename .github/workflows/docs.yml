@@ -28,17 +28,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - python-version: 3.8
-            check-links: false
-            dep-versions: requirements.txt
           - python-version: 3.9
             check-links: false
             dep-versions: requirements.txt
           - python-version: '3.10'
-            check-links: true
+            check-links: false
             dep-versions: requirements.txt
           - python-version: 3.11
-            check-links: false
+            check-links: true
             dep-versions: requirements.txt
     outputs:
       doc-version: ${{ steps.build-docs.outputs.doc-version }}
@@ -80,7 +77,7 @@ jobs:
     - name: Download doc build
       uses: actions/download-artifact@v3
       with:
-        name: Linux-3.10-docs
+        name: Linux-3.11-docs
         path: ./docs/build/html
 
     # This overrides the version "dev" with the proper version if we're building off a

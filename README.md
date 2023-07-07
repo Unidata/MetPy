@@ -31,7 +31,7 @@ on a future ``1.x`` version.
 For additional MetPy examples not included in this repository, please see the [Unidata Python
 Gallery](https://unidata.github.io/python-gallery/).
 
-We support Python >= 3.8.
+We support Python >= 3.9.
 
 Need Help?
 ----------
