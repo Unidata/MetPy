@@ -18,6 +18,7 @@ from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
 from matplotlib.ticker import MultipleLocator, NullFormatter, ScalarFormatter
+from matplotlib.font_manager import FontManager
 import matplotlib.transforms as transforms
 import numpy as np
 
@@ -781,23 +782,28 @@ class Hodograph:
         # == sqrt(2) * max_range, which is the distance at the corner
         self.max_range = 1.4142135 * component_range
 
-    def add_grid(self, increment=10., **kwargs):
-        r"""Add grid lines to hodograph.
+    def add_grid(self, increment=10., ring_labels=True, grid_ticks=False, **kwargs):
+        """
+        Add grid lines to the hodograph plot.
 
-        Creates lines for the x- and y-axes, as well as circles denoting wind speed values.
+        This method creates lines for the x- and y-axes, as well as circles denoting wind speed values.
 
         Parameters
         ----------
         increment : int, optional
-            The value increment between rings
-        kwargs
-            Other kwargs to control appearance of lines
+            The value increment between rings denoting wind speed values.
+        ring_labels : bool, optional
+            Whether to include labels for each ring denoting wind speed values.
+        grid_ticks : bool, optional
+            Whether to include grid ticks along the axes.
+        **kwargs
+            Additional keyword arguments to control the appearance of the lines.
 
         See Also
         --------
-        :class:`matplotlib.patches.Circle`
-        :meth:`matplotlib.axes.Axes.axhline`
-        :meth:`matplotlib.axes.Axes.axvline`
+        matplotlib.patches.Circle
+        matplotlib.axes.Axes.axhline
+        matplotlib.axes.Axes.axvline
 
         """
         # Some default arguments. Take those, and update with any
@@ -817,10 +823,27 @@ class Hodograph:
             c = Circle((0, 0), radius=r, **circle_args)
             self.ax.add_patch(c)
             self.rings.append(c)
+            
+            if ring_labels:
+                default_fontsize = FontManager().get_default_size()
+                max_fontsize = default_fontsize - 2
+                label_size = min(max_fontsize, default_fontsize - 2)
+                # Calculate label coordinates dynamically based on the circle radius
+                label_x = -r - 2
+                if self.max_range < 50:
+                    label_y = - 5  # Adjust the factor as needed
+                else:
+                    label_y = - 10
+                self.ax.annotate(f'{int(r)}', xy=(label_x, label_y), xycoords='data', va='center',
+                                zorder=Line2D.zorder + 1, fontsize=label_size)
 
         # Add lines for x=0 and y=0
         self.yaxis = self.ax.axvline(0, **grid_args)
         self.xaxis = self.ax.axhline(0, **grid_args)
+
+        if not grid_ticks:
+            self.ax.set_xticks([])
+            self.ax.set_yticks([])
 
     @staticmethod
     def _form_line_args(kwargs):
