@@ -13,10 +13,11 @@ import pytest
 import xarray as xr
 
 from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersections,
-                        first_derivative, geospatial_gradient, get_layer, get_layer_heights,
-                        gradient, laplacian, lat_lon_grid_deltas, nearest_intersection_idx,
-                        parse_angle, pressure_to_height_std, reduce_point_density,
-                        resample_nn_1d, second_derivative, vector_derivative)
+                        find_local_extrema, first_derivative, geospatial_gradient, get_layer,
+                        get_layer_heights, gradient, laplacian, lat_lon_grid_deltas,
+                        nearest_intersection_idx, parse_angle, pressure_to_height_std,
+                        reduce_point_density, resample_nn_1d, second_derivative,
+                        vector_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
@@ -473,6 +474,48 @@ def test_get_layer_heights_agl_bottom_no_interp():
     data_true = np.array([50, 60, 70, 80, 90, 100]) * units.degC
     assert_array_almost_equal(heights_true, heights, 6)
     assert_array_almost_equal(data_true, data, 6)
+
+
+@pytest.fixture
+def local_extrema_data():
+    """Test data for local extrema finding."""
+    data = xr.DataArray(
+        np.array([[101628.24, 101483.67, 101366.06, 101287.55, 101233.45],
+                  [101637.19, 101515.555, 101387.164, 101280.32, 101210.15],
+                  [101581.78, 101465.234, 101342., 101233.22, 101180.25],
+                  [101404.31, 101318.4, 101233.18, 101166.445, 101159.93],
+                  [101280.586, 101238.445, 101195.234, 101183.34, 101212.8]]),
+        name='mslp',
+        dims=('lat', 'lon'),
+        coords={'lat': xr.DataArray(np.array([45., 43., 41., 39., 37.]),
+                                    dims=('lat',), attrs={'units': 'degrees_north'}),
+                'lon': xr.DataArray(np.array([265., 267., 269., 271., 273.]),
+                                    dims=('lon',), attrs={'units': 'degrees_east'})},
+        attrs={'units': 'Pa'}
+    )
+    return data
+
+
+def test_find_local_extrema(local_extrema_data):
+    """Test find_local_extrema function for maximum."""
+    local_max = find_local_extrema(local_extrema_data, 3, 'max')
+    local_min = find_local_extrema(local_extrema_data, 3, 'min')
+
+    max_truth = np.array([[np.nan, np.nan, np.nan, np.nan, np.nan],
+                          [101637.19, np.nan, np.nan, np.nan, np.nan],
+                          [np.nan, np.nan, np.nan, np.nan, np.nan],
+                          [np.nan, np.nan, np.nan, np.nan, np.nan],
+                          [np.nan, np.nan, np.nan, np.nan, 101212.8]])
+    min_truth = np.array([[np.nan, np.nan, np.nan, np.nan, np.nan],
+                          [np.nan, np.nan, np.nan, np.nan, np.nan],
+                          [np.nan, np.nan, np.nan, np.nan, np.nan],
+                          [np.nan, np.nan, np.nan, np.nan, 101159.93],
+                          [np.nan, np.nan, np.nan, np.nan, np.nan]])
+    assert_array_almost_equal(local_max.data, max_truth)
+    assert_array_almost_equal(local_min.data, min_truth)
+
+    with pytest.raises(ValueError):
+        find_local_extrema(local_extrema_data, 3, 'large')
 
 
 def test_lat_lon_grid_deltas_1d():

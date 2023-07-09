@@ -782,6 +782,41 @@ def make_take(ndims, slice_dim):
 
 
 @exporter.export
+def find_local_extrema(var, nsize, extrema):
+    r"""Find the local extreme (max/min) values of a 2D array.
+
+    Parameters
+    ----------
+    var : `xarray.DataArray`
+        The variable to locate the local extrema using the nearest method
+        from the maximum_filter or minimum_filter from the scipy.ndimage module.
+    nsize : int
+        The minimum number of grid points between each local extrema.
+    extrema: str
+        The value 'max' for local maxima or 'min' for local minima.
+
+    Returns
+    -------
+    var_extrema: `xarray.DataArray`
+        The values of the local extrema with other values as NaNs
+
+    See Also
+    --------
+    :func:`~metpy.plots.plot_local_extrema`
+
+    """
+    from scipy.ndimage import maximum_filter, minimum_filter
+    if extrema not in ['max', 'min']:
+        raise ValueError('Invalid input for "extrema". Valid options are "max" or "min".')
+
+    if extrema == 'max':
+        extreme_val = maximum_filter(var.values, nsize, mode='nearest')
+    elif extrema == 'min':
+        extreme_val = minimum_filter(var.values, nsize, mode='nearest')
+    return var.where(extreme_val == var.values)
+
+
+@exporter.export
 @preprocess_and_wrap()
 def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
     r"""Calculate the actual delta between grid points that are in latitude/longitude format.

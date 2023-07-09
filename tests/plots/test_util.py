@@ -11,7 +11,9 @@ import numpy as np
 import pytest
 import xarray as xr
 
-from metpy.plots import add_metpy_logo, add_timestamp, add_unidata_logo, convert_gempak_color
+from metpy.calc import find_local_extrema
+from metpy.plots import (add_metpy_logo, add_timestamp, add_unidata_logo, convert_gempak_color,
+                         plot_local_extrema)
 from metpy.testing import get_test_data
 
 MPL_VERSION = matplotlib.__version__[:3]
@@ -154,3 +156,26 @@ def test_gempak_color_scalar():
     mplc = convert_gempak_color(6)
     truth = 'cyan'
     assert mplc == truth
+
+
+@pytest.mark.mpl_image_compare(remove_text=True)
+def test_plot_extrema():
+    """Test plotting of local max/min values."""
+    data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
+
+    mslp = data.Pressure_reduced_to_MSL_msl.squeeze()
+    relmax2d = find_local_extrema(mslp, 10, 'max').metpy.convert_units('hPa')
+    relmin2d = find_local_extrema(mslp, 15, 'min').metpy.convert_units('hPa')
+
+    fig = plt.figure(figsize=(8., 8.))
+    ax = fig.add_subplot(1, 1, 1)
+
+    # Plot MSLP
+    clevmslp = np.arange(800., 1120., 4)
+    ax.contour(mslp.lon, mslp.lat, mslp.metpy.convert_units('hPa'),
+               clevmslp, colors='k', linewidths=1.25, linestyles='solid')
+
+    plot_local_extrema(ax, relmax2d, 'H', plot_val=False, color='tab:red')
+    plot_local_extrema(ax, relmin2d, 'L', color='tab:blue')
+
+    return fig

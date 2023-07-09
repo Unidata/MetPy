@@ -205,6 +205,7 @@ Other
       azimuth_range_to_lat_lon
       find_bounding_indices
       find_intersections
+      find_local_extrema
       get_layer
       get_layer_heights
       get_perturbation

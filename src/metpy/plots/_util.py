@@ -283,3 +283,66 @@ def convert_gempak_color(c, style='psc'):
     except TypeError:
         res = cols[normalize(c)]
     return res
+
+
+def plot_local_extrema(ax, extreme_vals, symbol, plot_val=True, **kwargs):
+    """Plot the local extreme (max/min) values of an array.
+
+    The behavior of the plotting will have the symbol horizontal/vertical alignment
+    be center/bottom and any value plotted will be center/top. The text size of plotted
+    values is 0.65 of the symbol size.
+
+    Parameters
+    ----------
+    ax : `matplotlib.axes`
+        The axes which to plot the local extrema
+    extreme_vals : `xarray.DataArray`
+        The DataArray that contains the variable local extrema
+    symbol : str
+        The text or other string to plot at the local extrema location
+    plot_val : bool
+        Whether to plot the local extreme value (default is True)
+
+    Returns
+    -------
+    Plots local extrema on the plot axes
+
+    Other Parameters
+    ----------------
+    kwargs : `matplotlib.pyplot.text` properties.
+        Other valid `matplotlib.pyplot.text` kwargs can be specified
+        except verticalalalignment if plotting both a symbol and the value.
+
+        Default kwargs:
+            size : 20
+            color : 'black'
+            fontweight : 'bold'
+            horizontalalignment : 'center'
+            verticalalignment : 'center'
+            transform : None
+
+    See Also
+    --------
+    :func:`~metpy.calc.find_local_extrema`
+
+    """
+    defaultkwargs = {'size': 20, 'color': 'black', 'fontweight': 'bold',
+                     'horizontalalignment': 'center', 'verticalalignment': 'center'}
+    kwargs = {**defaultkwargs, **kwargs}
+    if plot_val:
+        kwargs.pop('verticalalignment')
+    size = kwargs.pop('size')
+    textsize = size * .65
+
+    stack_vals = extreme_vals.stack(x=[extreme_vals.metpy.x.name, extreme_vals.metpy.y.name])
+    for extrema in stack_vals[stack_vals.notnull()]:
+        x = extrema[extreme_vals.metpy.x.name].values
+        y = extrema[extreme_vals.metpy.y.name].values
+        if plot_val:
+            ax.text(x, y, symbol, clip_on=True, clip_box=ax.bbox, size=size,
+                    verticalalignment='bottom', **kwargs)
+            ax.text(x, y, f'{extrema.values:.0f}', clip_on=True, clip_box=ax.bbox,
+                    size=textsize, verticalalignment='top', **kwargs)
+        else:
+            ax.text(x, y, symbol, clip_on=True, clip_box=ax.bbox, size=size,
+                    **kwargs)
