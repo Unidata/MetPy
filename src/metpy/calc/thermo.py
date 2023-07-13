@@ -547,8 +547,8 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
     >>> ccl_p, t_c
     (<Quantity(758.348093, 'millibar')>, <Quantity(38.4336274, 'degree_Celsius')>)
     """
-    _check_pressure_error(pressure)
     pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
+    _check_pressure_error(pressure)
 
     # If the mixed layer is not defined, take the starting dewpoint to be the
     # first element of the dewpoint array and calculate the corresponding mixing ratio.
