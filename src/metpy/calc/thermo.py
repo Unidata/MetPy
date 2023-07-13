@@ -493,7 +493,7 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
     Parameters
     ----------
     pressure : `pint.Quantity`
-        Atmospheric pressure profile
+        Atmospheric pressure profile. This array must be from high to low pressure.
 
     temperature : `pint.Quantity`
         Temperature at the levels given by `pressure`
@@ -547,6 +547,7 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
     >>> ccl_p, t_c
     (<Quantity(758.348093, 'millibar')>, <Quantity(38.4336274, 'degree_Celsius')>)
     """
+    _check_pressure_error(pressure)
     pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
 
     # If the mixed layer is not defined, take the starting dewpoint to be the
@@ -598,7 +599,7 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
     Parameters
     ----------
     pressure : `pint.Quantity`
-        Atmospheric pressure
+        Atmospheric pressure profile. This array must be from high to low pressure.
 
     temperature : `pint.Quantity`
         Temperature at the levels given by `pressure`
@@ -814,7 +815,7 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
     Parameters
     ----------
     pressure : `pint.Quantity`
-        Atmospheric pressure profile
+        Atmospheric pressure profile. This array must be from high to low pressure.
 
     temperature : `pint.Quantity`
         Temperature at the levels given by `pressure`
@@ -827,7 +828,7 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
         surface parcel profile.
 
     which: str, optional
-        Pick which LFC to return. Options are 'top', 'bottom', 'wide', 'most_cape', and 'all'.
+        Pick which EL to return. Options are 'top', 'bottom', 'wide', 'most_cape', and 'all'.
         'top' returns the lowest-pressure EL, default.
         'bottom' returns the highest-pressure EL.
         'wide' returns the EL whose corresponding LFC is farthest away.
@@ -1166,6 +1167,15 @@ def _check_pressure(pressure):
     return np.all(pressure[:-1] >= pressure[1:])
 
 
+def _check_pressure_error(pressure):
+    """Raise an `InvalidSoundingError` if _check_pressure returns False."""
+    if not _check_pressure(pressure):
+        msg = """
+        Pressure increases between at least two points in your sounding.
+        Using scipy.signal.medfilt may fix this."""
+        raise InvalidSoundingError(msg)
+
+
 def _parcel_profile_helper(pressure, temperature, dewpoint):
     """Help calculate parcel profiles.
 
@@ -1174,11 +1184,7 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
 
     """
     # Check that pressure does not increase.
-    if not _check_pressure(pressure):
-        msg = """
-        Pressure increases between at least two points in your sounding.
-        Using scipy.signal.medfilt may fix this."""
-        raise InvalidSoundingError(msg)
+    _check_pressure_error(pressure)
 
     # Find the LCL
     press_lcl, temp_lcl = lcl(pressure[0], temperature, dewpoint)
