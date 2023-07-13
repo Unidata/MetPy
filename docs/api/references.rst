@@ -39,6 +39,12 @@ References
            doi:`10.1175/1520-0434(2000)015\<0061:PSMUAN\>2.0.CO;2
            <https://doi.org/10.1175/1520-0434(2000)015\<0061:PSMUAN\>2.0.CO;2>`_.
 
+.. [Corfidi2003] Corfidi, S. F., 2003: Cold Pools and MCS Propagation:
+            Forecasting the Motion of Downwind-Developing MCSs.
+            *Wea. Forecasting.*, **18**, 997–1017,
+            doi:`10.1175/1520-0434(2003)018\<0997:CPAMPF\>2.0.CO;2
+            <https://doi.org/10.1175/1520-0434(2003)018\<0997:CPAMPF\>2.0.CO;2>`_.
+
 .. [CODATA2018] Tiesinga, Eite, Peter J. Mohr, David B. Newell, and Barry N. Taylor, 2020:
            The 2018 CODATA Recommended Values of the Fundamental Physical Constants
            (Web Version 8.1). Database developed by J. Baker, M. Douma, and S. Kotochigova.

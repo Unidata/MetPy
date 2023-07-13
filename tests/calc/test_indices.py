@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 import xarray as xr
 
-from metpy.calc import (bulk_shear, bunkers_storm_motion, critical_angle,
+from metpy.calc import (bulk_shear, bunkers_storm_motion, corfidi_storm_motion, critical_angle,
                         mean_pressure_weighted, precipitable_water, significant_tornado,
                         supercell_composite, weighted_continuous_average)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, get_upper_air_data
@@ -175,6 +175,16 @@ def test_bunkers_motion():
              6.90054376] * units('m/s')
     assert_almost_equal(motion.flatten(), truth, 8)
 
+
+def test_corfidi_motion():
+    """Test corfidi MCS motion with observed sounding."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    motion = concatenate(corfidi_storm_motion(data['pressure'],
+                         data['u_wind'], data['v_wind'],
+                         data['height']))
+    truth = [4.935900604467806, -29.210861180440986,
+             23.21058679863669, -21.773710150231544] * units('kt')
+    assert_almost_equal(motion.flatten(), truth, 8)
 
 def test_bulk_shear():
     """Test bulk shear with observed sounding."""

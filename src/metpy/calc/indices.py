@@ -4,6 +4,7 @@
 """Contains calculation of various derived indices."""
 import numpy as np
 
+from .basic import wind_speed
 from .thermo import mixing_ratio, saturation_vapor_pressure
 from .tools import _remove_nans, get_layer
 from .. import constants as mpconsts
@@ -334,6 +335,98 @@ def bunkers_storm_motion(pressure, u, v, height):
     left_mover = wind_mean - rdev
 
     return right_mover, left_mover, wind_mean
+
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[speed]', '[speed]', '[length]')
+def corfidi_storm_motion(pressure, u, v, height):
+    r"""Calculate upwind- and downwind-developing MCS storm motions using the Corfidi method.
+
+    Method described by ([Corfidi2003]_):
+
+    * Cloud-layer winds, estimated as the mean of the wind from 850 hPa to 300 hPa
+    * Convergence along the cold pool, defined as the negative of the low-level jet
+        (estimated as maximum in winds below 1.5 km AGL)
+    * The vector sum of the above is used to describe upwind propagating MCSes
+    * Downwind propagating MCSes are taken as propagating along the sum of the cloud-layer wind
+        and negative of the low level jet, therefore the cloud-level winds are doubled
+        to re-add storm motion
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure from full profile
+
+    u : `pint.Quantity`
+        Full profile of the U-component of the wind
+
+    v : `pint.Quantity`
+        Full profile of the V-component of the wind
+
+    height : `pint.Quantity`
+        Full profile of height
+
+    Returns
+    -------
+    upwind_prop: (`pint.Quantity`, `pint.Quantity`)
+        Scalar U- and V- components of Corfidi upwind propagating MCS motion
+
+    downwind_prop: (`pint.Quantity`, `pint.Quantity`)
+        Scalar U- and V- components of Corfidi downwind propagating MCS motion
+
+    Examples
+    --------
+    >>> from metpy.calc import corfidi_storm_motion, wind_components
+    >>> from metpy.units import units
+    >>> p = [1000, 925, 850, 700, 500, 400] * units.hPa
+    >>> h = [250, 700, 1500, 3100, 5720, 7120] * units.meters
+    >>> wdir = [165, 180, 190, 210, 220, 250] * units.degree
+    >>> sped = [5, 15, 20, 30, 50, 60] * units.knots
+    >>> u, v = wind_components(sped, wdir)
+    >>> corfidi_storm_motion(p, u, v, h)
+    (<Quantity([19.91694134  8.73770883], 'knot')>,
+    <Quantity([43.30684623 37.17157273], 'knot')>)
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
+    """
+    # convert height to AGL
+    height = height - height[0]
+
+    # convert u/v wind to wind speed and direction
+    wind_magnitude = wind_speed(u, v)
+    # find inverse of low-level jet
+    lowlevel_index = np.argmin(height <= units.Quantity(1500, 'meter'))
+    llj_index = np.argmax(wind_magnitude[:lowlevel_index])
+    llj_inverse = units.Quantity.from_list((-u[llj_index], -v[llj_index]))
+
+    # cloud layer mean wind
+    # don't select outside bounds of given data
+    if pressure[0] < units.Quantity(850, 'hectopascal'):
+        bottom = pressure[0]
+    else:
+        bottom = units.Quantity(850, 'hectopascal')
+    if pressure[-1] > units.Quantity(300, 'hectopascal'):
+        depth = bottom - pressure[-1]
+    else:
+        depth = units.Quantity(550, 'hectopascal')
+    cloud_layer_winds = weighted_continuous_average(pressure, u, v, height=height,
+                                            bottom=bottom,
+                                            depth=depth)
+
+    cloud_layer_winds = units.Quantity.from_list(cloud_layer_winds)
+
+    # calculate corfidi vectors
+    upwind = cloud_layer_winds + llj_inverse
+
+    downwind = 2*cloud_layer_winds + llj_inverse
+
+    return upwind, downwind
 
 
 @exporter.export
