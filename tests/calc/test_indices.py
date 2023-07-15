@@ -179,12 +179,24 @@ def test_bunkers_motion():
 def test_corfidi_motion():
     """Test corfidi MCS motion with observed sounding."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
-    motion = concatenate(corfidi_storm_motion(data['pressure'],
+    motion_full = concatenate(corfidi_storm_motion(data['pressure'],
                          data['u_wind'], data['v_wind'],
                          data['height']))
-    truth = [4.935900604467806, -29.210861180440986,
+    truth_full = [4.935900604467806, -29.210861180440986,
              23.21058679863669, -21.773710150231544] * units('kt')
-    assert_almost_equal(motion.flatten(), truth, 8)
+    assert_almost_equal(motion_full.flatten(), truth_full, 8)
+    motion_no_bottom = concatenate(corfidi_storm_motion(data['pressure'][6:],
+                         data['u_wind'][6:], data['v_wind'][6:],
+                         data['height'][6:]))
+    truth_no_bottom = [6.0042903160, -31.9279062924,
+                       25.3473662217, -27.2078003741] * units('kt')
+    assert_almost_equal(motion_no_bottom.flatten(), truth_no_bottom, 8)
+    motion_no_top = concatenate(corfidi_storm_motion(data['pressure'][:37],
+                         data['u_wind'][:37], data['v_wind'][:37],
+                         data['height'][:37]))
+    truth_no_top = [4.6170542714, -27.7322457064,
+                       22.5728941325, -18.8164792021] * units('kt')
+    assert_almost_equal(motion_no_top.flatten(), truth_no_top, 8)
 
 def test_bulk_shear():
     """Test bulk shear with observed sounding."""
