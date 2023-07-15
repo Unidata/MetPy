@@ -82,6 +82,26 @@ print(distance + distance)
 print(3 * units.inch + 5 * units.cm)
 
 #########################################################################
+# ``pint`` by default will print full unit names for :class:`~pint.Quantity`.
+print(f'{20 * units.meter ** 2}')
+
+#########################################################################
+# This can be reduced to symbolic by specifying a compact (~) formatter:
+print(f'{20 * units.meter ** 2:~}')
+
+#########################################################################
+# A compact (~), pretty (P) formatter:
+print(f'{20 * units.meter ** 2:~P}')
+
+#########################################################################
+# Place formatters following other print specifications:
+print(f'{20 * units.meter ** 2:0.3f~P}')
+
+#########################################################################
+# Other string formatting options are available, see the `Pint string formatting specification
+# <https://pint.readthedocs.io/en/stable/user/formatting.html>`_.
+
+#########################################################################
 # Converting Units
 # ----------------
 #
