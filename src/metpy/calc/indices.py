@@ -416,15 +416,15 @@ def corfidi_storm_motion(pressure, u, v, height):
     else:
         depth = units.Quantity(550, 'hectopascal')
     cloud_layer_winds = weighted_continuous_average(pressure, u, v, height=height,
-                                            bottom=bottom,
-                                            depth=depth)
+                                                    bottom=bottom,
+                                                    depth=depth)
 
     cloud_layer_winds = units.Quantity.from_list(cloud_layer_winds)
 
     # calculate corfidi vectors
     upwind = cloud_layer_winds + llj_inverse
 
-    downwind = 2*cloud_layer_winds + llj_inverse
+    downwind = 2 * cloud_layer_winds + llj_inverse
 
     return upwind, downwind
 
