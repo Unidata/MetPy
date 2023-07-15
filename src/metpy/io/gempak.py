@@ -1189,8 +1189,9 @@ class GempakGrid(GempakFile):
             #                                                            'GridMetaReal'))
             # grid_start = self._buffer.set_mark()
         else:
-            raise NotImplementedError('No method for unknown grid packing {}'
-                                      .format(packing_type.name))
+            raise NotImplementedError(
+                f'No method for unknown grid packing {packing_type.name}'
+            )
 
     def gdxarray(self, parameter=None, date_time=None, coordinate=None,
                  level=None, date_time2=None, level2=None):
@@ -1477,8 +1478,7 @@ class GempakSounding(GempakFile):
                     }.get(part.data_type)
 
                     if fmt_code is None:
-                        raise NotImplementedError('No methods for data type {}'
-                                                  .format(part.data_type))
+                        raise NotImplementedError(f'No methods for data type {part.data_type}')
 
                     if fmt_code == 's':
                         lendat *= BYTES_PER_WORD
@@ -1544,8 +1544,7 @@ class GempakSounding(GempakFile):
                     }.get(part.data_type)
 
                     if fmt_code is None:
-                        raise NotImplementedError('No methods for data type {}'
-                                                  .format(part.data_type))
+                        raise NotImplementedError(f'No methods for data type {part.data_type}')
 
                     if fmt_code == 's':
                         lendat *= BYTES_PER_WORD
@@ -2453,8 +2452,7 @@ class GempakSurface(GempakFile):
                     }.get(part.data_type)
 
                     if fmt_code is None:
-                        raise NotImplementedError('No methods for data type {}'
-                                                  .format(part.data_type))
+                        raise NotImplementedError(f'No methods for data type {part.data_type}')
 
                     if fmt_code == 's':
                         lendat *= BYTES_PER_WORD
@@ -2524,8 +2522,7 @@ class GempakSurface(GempakFile):
                 }.get(part.data_type)
 
                 if fmt_code is None:
-                    raise NotImplementedError('No methods for data type {}'
-                                              .format(part.data_type))
+                    raise NotImplementedError(f'No methods for data type {part.data_type}')
 
                 if fmt_code == 's':
                     lendat *= BYTES_PER_WORD
@@ -2595,8 +2592,7 @@ class GempakSurface(GempakFile):
                     }.get(part.data_type)
 
                     if fmt_code is None:
-                        raise NotImplementedError('No methods for data type {}'
-                                                  .format(part.data_type))
+                        raise NotImplementedError(f'No methods for data type {part.data_type}')
 
                     if fmt_code == 's':
                         lendat *= BYTES_PER_WORD
