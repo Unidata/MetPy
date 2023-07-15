@@ -11,7 +11,6 @@ import logging
 import pathlib
 import re
 import struct
-from xdrlib import Unpacker
 
 import numpy as np
 from scipy.constants import day, milli
@@ -98,6 +97,114 @@ def remap_status(val):
         status = START_ELEVATION | LAST_ELEVATION
 
     return status | bad
+
+
+# Migrate the unpacker class from the core python repository
+class Unpacker:
+    """Unpacks various data representations from the given buffer."""
+
+    def __init__(self, data):
+        self.reset(data)
+
+    def reset(self, data):
+        """Reset the class."""
+        self.__buf = data
+        self.__pos = 0
+
+    def done(self):
+        """Check to see if done."""
+        if self.__pos < len(self.__buf):
+            raise Error('unextracted data remains')
+
+    def unpack_uint(self):
+        """Unpack uint."""
+        i = self.__pos
+        self.__pos = j = i + 4
+        data = self.__buf[i:j]
+        return struct.unpack('>L', data)[0]
+
+    def unpack_int(self):
+        """Unpack an int."""
+        i = self.__pos
+        self.__pos = j = i + 4
+        data = self.__buf[i:j]
+        if len(data) < 4:
+            raise EOFError
+        return struct.unpack('>l', data)[0]
+
+    unpack_enum = unpack_int
+
+    def unpack_hyper(self):
+        """Unpack hyper."""
+        x = self.unpack_uhyper()
+        if x >= 0x8000000000000000:
+            x = x - 0x10000000000000000
+        return x
+
+    def unpack_float(self):
+        """Unpack a float."""
+        i = self.__pos
+        self.__pos = j = i + 4
+        data = self.__buf[i:j]
+        if len(data) < 4:
+            raise EOFError
+        return struct.unpack('>f', data)[0]
+
+    def unpack_fstring(self, n):
+        """Unpack an fstring."""
+        if n < 0:
+            raise ValueError('fstring size must be nonnegative')
+        i = self.__pos
+        j = i + (n + 3) // 4 * 4
+        if j > len(self.__buf):
+            raise EOFError
+        self.__pos = j
+        return self.__buf[i: i + n]
+
+    unpack_fopaque = unpack_fstring
+
+    def unpack_string(self):
+        """Unpack a string."""
+        n = self.unpack_uint()
+        return self.unpack_fstring(n)
+
+    unpack_opaque = unpack_string
+    unpack_bytes = unpack_string
+
+    def unpack_farray(self, n, unpack_item):
+        """Unpack an farray."""
+        unpacked_list = []
+        for _i in range(n):
+            unpacked_list.append(unpack_item())
+        return unpacked_list
+
+    def unpack_array(self, unpack_item):
+        """Unpack an array."""
+        n = self.unpack_uint()
+        return self.unpack_farray(n, unpack_item)
+
+
+# Exceptions from the cpython xdrlib module
+class Error(Exception):
+    """Exception class for this module.
+
+    except xdrlib.Error as var:
+        # var has the Error instance for the exception
+
+    Public ivars:
+        msg -- contains the message
+
+    """
+
+    def __init__(self, msg):
+        self.msg = msg
+
+
+# Conversion error class from the cpython xdrlib module
+class ConversionError(Error):
+    """Class for handling conversion errors."""
+
+    pass
 
 
 START_ELEVATION = 0x1
