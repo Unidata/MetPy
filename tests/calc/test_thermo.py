@@ -15,8 +15,9 @@ import xarray as xr
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
                         brunt_vaisala_period, cape_cin, ccl, cross_totals, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
-                        dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
-                        exner_function, gradient_richardson_number, InvalidSoundingError,
+                        down_cape, dry_lapse, dry_static_energy, el,
+                        equivalent_potential_temperature, exner_function,
+                        gradient_richardson_number, InvalidSoundingError,
                         isentropic_interpolation, isentropic_interpolation_as_dataset, k_index,
                         lcl, lfc, lifted_index, mixed_layer, mixed_layer_cape_cin,
                         mixed_parcel, mixing_ratio, mixing_ratio_from_relative_humidity,
@@ -1549,6 +1550,27 @@ def test_mixed_layer_cape_cin(multiple_intersections):
     mlcape, mlcin = mixed_layer_cape_cin(pressure, temperature, dewpoint)
     assert_almost_equal(mlcape, 1132.706800436 * units('joule / kilogram'), 2)
     assert_almost_equal(mlcin, -13.4809966289 * units('joule / kilogram'), 2)
+
+
+def test_dcape():
+    """Test the calculation of DCAPE."""
+    pressure = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
+          550., 500., 450., 400., 350., 300., 250., 200.,
+          175., 150., 125., 100., 80., 70., 60., 50.,
+          40., 30., 25., 20.] * units.hPa
+    temperature = [29.3, 28.1, 25.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
+          -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
+          -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
+          -56.3, -51.7, -50.7, -47.5] * units.degC
+    dewpoint = [26.5,  23.3,  16.1,   6.4,  15.3,  10.9,   8.8,   7.9,   0.6,
+                -16.6,  -9.2,  -9.9, -14.6, -32.8, -51.2, -32.7, -42.6, -58.9,
+                -69.5, -71.7, -75.9, -79.3, -79.7, -72.5, -73.3, -64.3, -70.6,
+                -75.8, -51.2, -56.4] * units.degC
+    dcape, down_press, down_t = down_cape(pressure, temperature, dewpoint)
+    assert_almost_equal(dcape, 1222 * units('joule / kilogram'), 0)
+    assert np.all(down_press == pressure[:10])
+    assert_almost_equal(down_t, [17.5, 17.2, 15.2, 13.1, 10.9,  8.4,
+                                 5.7,  2.7, -0.6, -4.3] * units.degC, 1)
 
 
 def test_mixed_layer():
