@@ -4506,7 +4506,11 @@ def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
     """
     Calculate GDI from the pressure temperature and dewpoint.
 
-    GDI formula derived from [Galvez2015](https://www.wpc.ncep.noaa.gov/international/gdi/GDI_Manuscript_V20150910.pdf)_:
+    Calculation of the GDI relies on temperatures and mixing ratios at 950,
+    850, 700, and 500 hPa. These four levels define three layers: A) Boundary,
+    B) Trade Wind Inversion (TWI), C) Mid-Troposphere.
+
+    GDI formula derived from [Galvez2015]_:
 
     .. math:: GDI = CBI + MWI + II + TC
 
@@ -4517,20 +4521,24 @@ def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
     * :math:`II` is the Inversion Index
     * :math:`TC` is the Terrain Correction [optional]
 
-    Calculation of the GDI relies on temperatures and mixing ratios at 950,
-     850, 700, and 500 hPa. These four levels define three layers: A) Boundary,
-     B) Trade Wind Inversion (TWI), C) Mid-Troposphere.
+    .. list-table:: GDI Values & Corresponding Convective Regimes
+        :widths: 15 75
+        :header-rows: 1
 
-    ----------------------------------------------------------------------------------
-    GDI Value   | Expected Convective Regime
-    ----------------------------------------------------------------------------------
-    >=45        | Scattered to widespread thunderstorms likely.
-    35 to 45    | Scattered thunderstorms and/or scattered to widespread rain showers.
-    25 to 35    | Isolated to scattered thunderstorms and/or scattered showers.
-    15 to 25    | Isolated thunderstorms and/or isolated to scattered showers.
-    5 to 10     | Isolated to scattered showers.
-    <5          | Strong TWI likely, light rain possible.
-    ----------------------------------------------------------------------------------
+        * - GDI Value
+          - Expected Convective Regime
+        * - >=45
+          - Scattered to widespread thunderstorms likely.
+        * - 35 to 45
+          - Scattered thunderstorms and/or scattered to widespread rain showers.
+        * - 25 to 35
+          - Isolated to scattered thunderstorms and/or scattered showers.
+        * - 15 to 25
+          - Isolated thunderstorms and/or isolated to scattered showers.
+        * - 5 to 10
+          - Isolated to scattered showers.
+        * - <5
+          - Strong TWI likely, light rain possible.
 
     Parameters
     ----------
