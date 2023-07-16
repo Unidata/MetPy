@@ -1568,7 +1568,7 @@ def test_dcape():
                 -75.8, -51.2, -56.4] * units.degC
     dcape, down_press, down_t = down_cape(pressure, temperature, dewpoint)
     assert_almost_equal(dcape, 1222 * units('joule / kilogram'), 0)
-    assert np.all(down_press == pressure[:10])
+    assert_array_almost_equal(down_press, pressure[:10], 0)
     assert_almost_equal(down_t, [17.5, 17.2, 15.2, 13.1, 10.9, 8.4,
                                  5.7, 2.7, -0.6, -4.3] * units.degC, 1)
 
