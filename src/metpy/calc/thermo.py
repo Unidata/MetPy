@@ -3120,8 +3120,8 @@ def down_cape(pressure, temperature, dewpoint):
 
     # Get layer between 500 and 700 hPa
     p_layer, t_layer, td_layer = get_layer(pressure, temperature, dewpoint,
-                                           bottom=700*units.hPa,
-                                           depth=200*units.hPa, interpolate=True)
+                                           bottom=700 * units.hPa,
+                                           depth=200 * units.hPa, interpolate=True)
     theta_e = equivalent_potential_temperature(p_layer, t_layer, td_layer)
 
     # Find parcel with minimum thetae in the layer
@@ -3143,13 +3143,14 @@ def down_cape(pressure, temperature, dewpoint):
                                                       temperature[pressure >= parcel_start_p],
                                                       dewpoint[pressure >= parcel_start_p])
 
-    diff = (env_virt_temp - parcel_virt_temp).to(units.degK)
+    # calculate differences (remove units for NumPy)
+    diff = (env_virt_temp - parcel_virt_temp).to(units.degK).magnitude
+    lnp = np.log(down_pressure.magnitude)
 
     # Find DCAPE
     dcape = -(mpconsts.Rd
-            * units.Quantity(
-                        np.trapz(diff.magnitude, np.log(down_pressure.magnitude)), 'K')
-                            ).to(units('J/kg'))
+              * units.Quantity(np.trapz(diff, lnp), 'K')
+              ).to(units('J/kg'))
 
     return dcape, down_pressure, down_parcel_trace
 
