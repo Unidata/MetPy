@@ -3132,7 +3132,7 @@ def down_cape(pressure, temperature, dewpoint):
     parcel_start_wb = wet_bulb_temperature(parcel_start_p, t_layer[min_idx], parcel_start_td)
 
     # Descend parcel moist adiabatically to surface
-    down_pressure = pressure[pressure >= parcel_start_p].to(units.Pa)
+    down_pressure = pressure[pressure >= parcel_start_p].to(units.hPa)
     down_parcel_trace = moist_lapse(down_pressure, parcel_start_wb,
                                     reference_pressure=parcel_start_p)
 
