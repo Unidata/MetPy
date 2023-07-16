@@ -3034,7 +3034,7 @@ def down_cape(pressure, temperature, dewpoint):
     r"""Calculate downward CAPE (DCAPE).
 
     Calculate the downward convective available potential energy (DCAPE) of a given upper air
-    profile. Downward CAPE is the maximum negative bouyancy energy available to a descending
+    profile. Downward CAPE is the maximum negative buoyancy energy available to a descending
     parcel. Parcel descent is assumed to begin from the lowest equivalent potential temperature
     between 700 and 500 hPa. This parcel is lowered moist adiabatically from the environmental
     wet bulb temperature to the surface.  This assumes the parcel remains saturated
