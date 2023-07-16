@@ -14,6 +14,7 @@ from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_boundi
                     find_intersections, first_derivative, get_layer)
 from .. import _warnings, constants as mpconsts
 from ..cbook import broadcast_indices
+from ..constants import Cp_d
 from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
 from ..units import check_units, concatenate, process_units, units
@@ -4495,6 +4496,215 @@ def k_index(pressure, temperature, dewpoint, vertical_dim=0):
 
     # Calculate k index.
     return ((t850 - t500) + td850 - (t700 - td700)).to(units.degC)
+
+
+@exporter.export
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(broadcast=('pressure', 'temperature', 'dewpoint'))
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
+    """
+    Calculate GDI from the pressure temperature and dewpoint.
+
+    GDI formula derived from [Galvez2015](https://www.wpc.ncep.noaa.gov/international/gdi/GDI_Manuscript_V20150910.pdf)_:
+
+    .. math:: GDI = CBI + MWI + II + TC
+
+    where:
+
+    * :math:`CBI` is the Column Buoyancy Index
+    * :math:`MWI` is the Mid-tropospheric Warming Index
+    * :math:`II` is the Inversion Index
+    * :math:`TC` is the Terrain Correction [optional]
+
+    Calculation of the GDI relies on temperatures and mixing ratios at 950,
+     850, 700, and 500 hPa. These four levels define three layers: A) Boundary,
+     B) Trade Wind Inversion (TWI), C) Mid-Troposphere.
+
+    ----------------------------------------------------------------------------------
+    GDI Value   | Expected Convective Regime
+    ----------------------------------------------------------------------------------
+    >=45        | Scattered to widespread thunderstorms likely.
+    35 to 45    | Scattered thunderstorms and/or scattered to widespread rain showers.
+    25 to 35    | Isolated to scattered thunderstorms and/or scattered showers.
+    15 to 25    | Isolated thunderstorms and/or isolated to scattered showers.
+    5 to 10     | Isolated to scattered showers.
+    <5          | Strong TWI likely, light rain possible.
+    ----------------------------------------------------------------------------------
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure level(s), in order from highest to lowest pressure
+
+    temperature : `pint.Quantity`
+        Temperature corresponding to pressure
+
+    dewpoint : `pint.Quantity`
+        Dewpoint temperature corresponding to pressure
+
+    vertical_dim : int, optional
+        The axis corresponding to vertical, defaults to 0. Automatically determined from
+        xarray DataArray arguments.
+
+    Returns
+    -------
+    `pint.Quantity`
+        GDI Index
+
+    Examples
+    --------
+    >>> from metpy.calc import dewpoint_from_relative_humidity, k_index
+    >>> from metpy.units import units
+    >>> # pressure
+    >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
+    ...      550., 500., 450., 400., 350., 300., 250., 200.,
+    ...      175., 150., 125., 100., 80., 70., 60., 50.,
+    ...      40., 30., 25., 20.] * units.hPa
+    >>> # temperature
+    >>> T = [29.3, 28.1, 23.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
+    ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
+    ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
+    ...      -56.3, -51.7, -50.7, -47.5] * units.degC
+    >>> # relative humidity
+    >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
+    ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
+    ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
+    >>> # calculate dewpoint
+    >>> Td = dewpoint_from_relative_humidity(T, rh)
+    >>> galvez_davison_index(p, T, Td)
+    <Quantity(-8.06886508, 'dimensionless')>
+    """
+    # Calculate mixing ratio from dewpoint in two steps
+    relative_humidity = relative_humidity_from_dewpoint(
+        temperature, dewpoint
+    )
+    mixing_ratio = mixing_ratio_from_relative_humidity(
+        pressure, temperature, relative_humidity
+    )
+
+    # Calculate potential temperature
+    potential_temp = potential_temperature(pressure, temperature)
+
+    if np.any(np.max(pressure, axis=vertical_dim) < 950 * units.hectopascal):
+        indices_without_950 = np.where(
+            np.max(pressure, axis=vertical_dim) < 950 * units.hectopascal
+        )
+        raise ValueError(
+            f'Data not provided for 950hPa or higher pressure. '
+            f'GDI requires 950hPa temperature and dewpoint data, '
+            f'see referenced paper section 3.d. in docstring for discussion of'
+            f' extrapolating sounding data below terrain surface in high-'
+            f'elevation regions.\nIndices without a 950hPa or higher datapoint'
+            f':\n{indices_without_950}'
+            f'\nMax provided pressures:'
+            f'\n{np.max(pressure, axis=0)[indices_without_950]}'
+        )
+    # Convert temperature before interpolation
+    temperature_k = temperature.to('kelvin')
+    potential_temp_k = potential_temp.to('kelvin')
+
+    # Interpolate to find temperature and mixing ratio at 950, 850, 700, and 500 hPa
+    (
+        (t950, t850, t700, t500),
+        (r950, r850, r700, r500),
+        (th950, th850, th700, th500)
+    ) = interpolate_1d(
+        units.Quantity([950, 850, 700, 500], 'hPa'),
+        pressure, temperature_k, mixing_ratio, potential_temp_k,
+        axis=vertical_dim,
+    )
+
+    th_a = th950
+    r_a = r950
+
+    th_b = 0.5 * (th850 + th700)
+    r_b = 0.5 * (r850 + r700)
+
+    th_c = th500
+    r_c = r500
+
+    alpha = -10 * units.kelvin  # Empirical adjustment
+
+    # Latent heat of vaporization of water - different from MetPy constant
+    #  Using different value, from paper, since GDI unlikely to be used to
+    #  derive other metrics
+    Lo = 2.69E6 * (units.joule / units.kilogram)
+
+    # Temperature math from here on requires kelvin units
+    eptp_a = th_a * np.exp((Lo * r_a) / (Cp_d * t850))
+    eptp_b = th_b * np.exp((Lo * r_b) / (Cp_d * t850)) + alpha
+    eptp_c = th_c * np.exp((Lo * r_c) / (Cp_d * t850)) + alpha
+
+    if t950.size == 1:
+        is_array = False
+    else:
+        is_array = True
+
+    # Calculate C.B.I.
+    beta = 303 * units.kelvin  # Empirical adjustment
+    l_e = eptp_a - beta  # Low-troposphere EPT
+    m_e = eptp_c - beta  # Mid-troposphere EPT
+
+    # Gamma unit - likely a typo from the paper, should be units of K^(-2) to
+    #  result in dimensionless CBI
+    gamma = 6.5e-2 * (1 / units.kelvin)
+    zero_kelvin = 0 * units.kelvin
+
+    if is_array:
+        # Replace conditional in paper for array compatibility.
+        # Will set CBI for any l_e < 0 to 0
+        l_e[l_e <= zero_kelvin] = zero_kelvin
+    else:
+        l_e = max(l_e, zero_kelvin)
+    column_buoyancy_index = gamma * (l_e * m_e)
+    # Convert to magnitude and dimensionless to avoid unit issue from typo
+    column_buoyancy_index = column_buoyancy_index.magnitude
+
+    # Calculate Mid-tropospheric Warming Index
+    tau = 263.15 * units.kelvin  # Threshhold
+    mu = -7 * (1 / units.kelvin)  # Empirical adjustment
+
+    t_diff = t500 - tau
+    if is_array:
+        t_diff[t_diff <= zero_kelvin] = zero_kelvin
+    else:
+        t_diff = max(t_diff, zero_kelvin)
+    mid_tropospheric_warming_index = mu * t_diff
+    mid_tropospheric_warming_index = mid_tropospheric_warming_index.magnitude
+
+    # Calculate Inversion Index
+    sigma = 1.5 * (1 / units.kelvin)  # Empirical scaling constant
+    s = t950 - t700
+    d = eptp_b - eptp_a
+
+    inv_sum = s + d
+    if is_array:
+        inv_sum[inv_sum >= zero_kelvin] = zero_kelvin
+    else:
+        inv_sum = min(inv_sum, zero_kelvin)
+
+    inversion_index = sigma * inv_sum
+    inversion_index = inversion_index.magnitude
+
+    # Calculate Terrain Correction
+    p_3 = 18
+    p_2 = 9000 * units.hectopascal
+    p_1 = 500 * units.hectopascal
+    p_sfc = pressure[0]
+    terrain_correction = p_3 - (p_2 / (p_sfc - p_1))
+
+    # Convert all to 'dimensionless'
+    column_buoyancy_index *= units.dimensionless
+    mid_tropospheric_warming_index *= units.dimensionless
+    inversion_index *= units.dimensionless
+    terrain_correction *= units.dimensionless
+
+    # Calculate G.D.I.
+    return (column_buoyancy_index
+            + mid_tropospheric_warming_index
+            + inversion_index
+            + terrain_correction)
 
 
 @exporter.export
