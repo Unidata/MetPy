@@ -86,8 +86,8 @@ References
            Services and Supporting Research, 2003.
            `FCM-R19-2003 <../_static/FCM-R19-2003-WindchillReport.pdf>`_, 75 pp.
 
-.. [Galvez2015] Galvez, J. M. and Michel Davison, 2015. “The Gálvez-Davison Index for Tropical 
-            Convection.” `GDI_Manuscript_V20161021 
+.. [Galvez2015] Galvez, J. M. and Michel Davison, 2015. “The Gálvez-Davison Index for Tropical
+            Convection.” `GDI_Manuscript_V20161021
             <https://www.wpc.ncep.noaa.gov/international/gdi/GDI_Manuscript_V20161021.pdf>`_.
 
 .. [Galway1956] Galway, J. G., 1956: The Lifted Index as a Predictor of Latent Instability.

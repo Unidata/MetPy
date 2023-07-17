@@ -4637,12 +4637,12 @@ def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
     # Latent heat of vaporization of water - different from MetPy constant
     #  Using different value, from paper, since GDI unlikely to be used to
     #  derive other metrics
-    Lo = 2.69E6 * (units.joule / units.kilogram)
+    l_0 = 2.69E6 * (units.joule / units.kilogram)
 
     # Temperature math from here on requires kelvin units
-    eptp_a = th_a * np.exp((Lo * r_a) / (Cp_d * t850))
-    eptp_b = th_b * np.exp((Lo * r_b) / (Cp_d * t850)) + alpha
-    eptp_c = th_c * np.exp((Lo * r_c) / (Cp_d * t850)) + alpha
+    eptp_a = th_a * np.exp((l_0 * r_a) / (Cp_d * t850))
+    eptp_b = th_b * np.exp((l_0 * r_b) / (Cp_d * t850)) + alpha
+    eptp_c = th_c * np.exp((l_0 * r_c) / (Cp_d * t850)) + alpha
 
     if t950.size == 1:
         is_array = False
@@ -4670,7 +4670,7 @@ def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
     column_buoyancy_index = column_buoyancy_index.magnitude
 
     # Calculate Mid-tropospheric Warming Index
-    tau = 263.15 * units.kelvin  # Threshhold
+    tau = 263.15 * units.kelvin  # Threshold
     mu = -7 * (1 / units.kelvin)  # Empirical adjustment
 
     t_diff = t500 - tau
