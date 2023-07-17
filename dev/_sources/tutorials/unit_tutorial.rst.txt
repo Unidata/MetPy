@@ -230,7 +230,104 @@ operation can be performed:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-91
+.. GENERATED FROM PYTHON SOURCE LINES 85-86
+
+``pint`` by default will print full unit names for :class:`~pint.Quantity`.
+
+.. GENERATED FROM PYTHON SOURCE LINES 86-88
+
+.. code-block:: default
+
+    print(f'{20 * units.meter ** 2}')
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    20 meter ** 2
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 89-90
+
+This can be reduced to symbolic by specifying a compact (~) formatter:
+
+.. GENERATED FROM PYTHON SOURCE LINES 90-92
+
+.. code-block:: default
+
+    print(f'{20 * units.meter ** 2:~}')
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    20 m ** 2
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 93-94
+
+A compact (~), pretty (P) formatter:
+
+.. GENERATED FROM PYTHON SOURCE LINES 94-96
+
+.. code-block:: default
+
+    print(f'{20 * units.meter ** 2:~P}')
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    20 m²
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 97-98
+
+Place formatters following other print specifications:
+
+.. GENERATED FROM PYTHON SOURCE LINES 98-100
+
+.. code-block:: default
+
+    print(f'{20 * units.meter ** 2:0.3f~P}')
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    20.000 m²
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 101-103
+
+Other string formatting options are available, see the `Pint string formatting specification
+<https://pint.readthedocs.io/en/stable/user/formatting.html>`_.
+
+.. GENERATED FROM PYTHON SOURCE LINES 105-111
 
 Converting Units
 ----------------
@@ -239,7 +336,7 @@ Converting a :class:`~pint.Quantity` between units can be accomplished by using 
 :meth:`~pint.Quantity.to` method call, which constructs a new :class:`~pint.Quantity` in the
 desired units:
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-94
+.. GENERATED FROM PYTHON SOURCE LINES 111-114
 
 .. code-block:: default
 
@@ -259,12 +356,12 @@ desired units:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-97
+.. GENERATED FROM PYTHON SOURCE LINES 115-117
 
 There is also the :meth:`~pint.Quantity.ito` method which performs the same operation
 in-place:
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-101
+.. GENERATED FROM PYTHON SOURCE LINES 117-121
 
 .. code-block:: default
 
@@ -285,12 +382,12 @@ in-place:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-104
+.. GENERATED FROM PYTHON SOURCE LINES 122-124
 
 To simplify units, there is also the :meth:`~pint.Quantity.to_base_units` method,
 which converts a quantity to SI units, performing any needed cancellation:
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-107
+.. GENERATED FROM PYTHON SOURCE LINES 124-127
 
 .. code-block:: default
 
@@ -311,7 +408,7 @@ which converts a quantity to SI units, performing any needed cancellation:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-113
+.. GENERATED FROM PYTHON SOURCE LINES 128-133
 
 :meth:`~pint.Quantity.to_base_units` can also be done in-place via the
 :meth:`~pint.Quantity.ito_base_units` method.
@@ -319,7 +416,7 @@ which converts a quantity to SI units, performing any needed cancellation:
 By default Pint does not do any more than simple unit simplification, so when you perform
 operations you could get some seemingly odd results:
 
-.. GENERATED FROM PYTHON SOURCE LINES 113-118
+.. GENERATED FROM PYTHON SOURCE LINES 133-138
 
 .. code-block:: default
 
@@ -341,11 +438,11 @@ operations you could get some seemingly odd results:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-120
+.. GENERATED FROM PYTHON SOURCE LINES 139-140
 
 This is another place where :meth:`~pint.Quantity.to` comes in handy:
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-122
+.. GENERATED FROM PYTHON SOURCE LINES 140-142
 
 .. code-block:: default
 
@@ -364,7 +461,7 @@ This is another place where :meth:`~pint.Quantity.to` comes in handy:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-145
+.. GENERATED FROM PYTHON SOURCE LINES 143-165
 
 Temperature
 -----------
@@ -389,7 +486,7 @@ On the other hand, we can subtract two offset quantities and get a delta. A delt
 pint's way of representing a relative change in two offset units, indicating that this is
 not an absolute value of 5 degrees Celsius, but a relative change of 5 degrees Celsius.
 
-.. GENERATED FROM PYTHON SOURCE LINES 145-147
+.. GENERATED FROM PYTHON SOURCE LINES 165-167
 
 .. code-block:: default
 
@@ -408,11 +505,11 @@ not an absolute value of 5 degrees Celsius, but a relative change of 5 degrees C
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 148-149
+.. GENERATED FROM PYTHON SOURCE LINES 168-169
 
 We can add a delta to an offset unit as well since it is a relative change.
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-151
+.. GENERATED FROM PYTHON SOURCE LINES 169-171
 
 .. code-block:: default
 
@@ -431,13 +528,13 @@ We can add a delta to an offset unit as well since it is a relative change.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 152-155
+.. GENERATED FROM PYTHON SOURCE LINES 172-175
 
 Absolute temperature scales like Kelvin and Rankine do not have an offset
 and therefore can be used in addition/subtraction without the need for a
 delta version of the unit.
 
-.. GENERATED FROM PYTHON SOURCE LINES 155-157
+.. GENERATED FROM PYTHON SOURCE LINES 175-177
 
 .. code-block:: default
 
@@ -456,7 +553,7 @@ delta version of the unit.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 158-160
+.. GENERATED FROM PYTHON SOURCE LINES 178-180
 
 .. code-block:: default
 
@@ -475,7 +572,7 @@ delta version of the unit.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 161-167
+.. GENERATED FROM PYTHON SOURCE LINES 181-187
 
 MetPy Calculations
 ------------------
@@ -484,7 +581,7 @@ that the calculations operate correctly. For example, we can use units to take
 an observation in whatever units are most convenient and let MetPy handle everything
 under the hood. Below we calculate dewpoint from the temperature and relative humidity:
 
-.. GENERATED FROM PYTHON SOURCE LINES 167-173
+.. GENERATED FROM PYTHON SOURCE LINES 187-193
 
 .. code-block:: default
 
@@ -507,11 +604,11 @@ under the hood. Below we calculate dewpoint from the temperature and relative hu
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 174-175
+.. GENERATED FROM PYTHON SOURCE LINES 194-195
 
 or back to Fahrenheit:
 
-.. GENERATED FROM PYTHON SOURCE LINES 175-177
+.. GENERATED FROM PYTHON SOURCE LINES 195-197
 
 .. code-block:: default
 
@@ -530,7 +627,7 @@ or back to Fahrenheit:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-184
+.. GENERATED FROM PYTHON SOURCE LINES 198-204
 
 Dropping Units
 --------------
@@ -539,7 +636,7 @@ computed the desired quantities with MetPy and would like to move on. For exampl
 we might have computed the dewpoint temperature for two points, say A and B, and
 would like to compute the average:
 
-.. GENERATED FROM PYTHON SOURCE LINES 184-192
+.. GENERATED FROM PYTHON SOURCE LINES 204-212
 
 .. code-block:: default
 
@@ -558,13 +655,13 @@ would like to compute the average:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 193-196
+.. GENERATED FROM PYTHON SOURCE LINES 213-216
 
 Per our previous discussion on temperature units, adding two temperatures together
 won't work. In this case, the easiest way to add two quantities and compute
 an average is by dropping the units attached to the values via ``.magnitude``:
 
-.. GENERATED FROM PYTHON SOURCE LINES 196-198
+.. GENERATED FROM PYTHON SOURCE LINES 216-218
 
 .. code-block:: default
 
@@ -583,7 +680,7 @@ an average is by dropping the units attached to the values via ``.magnitude``:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 199-202
+.. GENERATED FROM PYTHON SOURCE LINES 219-222
 
 .. code-block:: default
 
@@ -603,7 +700,7 @@ an average is by dropping the units attached to the values via ``.magnitude``:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 203-215
+.. GENERATED FROM PYTHON SOURCE LINES 223-235
 
 Common Mistakes
 ---------------
