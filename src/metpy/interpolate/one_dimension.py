@@ -107,8 +107,7 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
     sort_x = np.argsort(x)
 
     # The shape after all arrays are broadcast to each other
-    # Can't use broadcast_shapes until numpy >=1.20 is our minimum
-    final_shape = np.broadcast(xp, *args).shape
+    final_shape = np.broadcast_shapes(xp.shape, *(a.shape for a in args))
 
     # indices for sorting
     sorter = broadcast_indices(sort_args, final_shape, axis)
@@ -239,4 +238,6 @@ def _strip_matching_units(*args):
     if all(hasattr(arr, 'units') for arr in args):
         return [arr.to(args[0].units).magnitude for arr in args]
     else:
-        return args
+        # Handle the case where we get mixed 'dimensionless' and bare array. This happens e.g.
+        # when you pass in a DataArray with no units for one arg.
+        return [arr.m_as('dimensionless') if hasattr(arr, 'units') else arr for arr in args]

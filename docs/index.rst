@@ -14,7 +14,7 @@ MetPy
 =====
 
 MetPy is a collection of tools in Python for reading, visualizing, and performing calculations
-with weather data. MetPy supports Python >= 3.8 and is freely available under a permissive
+with weather data. MetPy supports Python >= 3.9 and is freely available under a permissive
 `open source license <https://github.com/Unidata/MetPy/blob/main/LICENSE>`_.
 
 If you're new to MetPy, check out our :doc:`Getting Started <userguide/startingguide>` guide.

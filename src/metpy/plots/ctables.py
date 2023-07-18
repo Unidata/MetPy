@@ -132,12 +132,9 @@ class ColortableRegistry(dict):
             The path to the directory with the color tables
 
         """
-        try:
-            from importlib.resources import files as importlib_resources_files
-        except ImportError:  # Can remove when we require Python > 3.8
-            from importlib_resources import files as importlib_resources_files
+        import importlib.resources
 
-        for entry in (importlib_resources_files(pkg) / path).iterdir():
+        for entry in (importlib.resources.files(pkg) / path).iterdir():
             if entry.suffix == TABLE_EXT:
                 with entry.open() as stream:
                     self.add_colortable(stream, entry.with_suffix('').name)

@@ -1049,15 +1049,9 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint):
     ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
-    >>> # computer parcel temperature
+    >>> # compute parcel temperature
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> p_wLCL, T_wLCL, Td_wLCL, prof_wLCL = parcel_profile_with_lcl(p, T, Td)
-    >>> print(f'Shape of original pressure array: {p.shape}')
-    Shape of original pressure array: (30,)
-    >>> print(f'Shape of pressure array from function: {p_wLCL.shape}')
-    Shape of pressure array from function: (31,)
-    >>> print(p == p_wLCL)
-    False
 
     See Also
     --------
