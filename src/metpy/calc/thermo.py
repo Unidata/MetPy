@@ -1170,10 +1170,8 @@ def _check_pressure(pressure):
 def _check_pressure_error(pressure):
     """Raise an `InvalidSoundingError` if _check_pressure returns False."""
     if not _check_pressure(pressure):
-        msg = """
-        Pressure increases between at least two points in your sounding.
-        Using scipy.signal.medfilt may fix this."""
-        raise InvalidSoundingError(msg)
+        raise InvalidSoundingError('Pressure increases between at least two points in '
+                                   'your sounding. Using scipy.signal.medfilt may fix this.')
 
 
 def _parcel_profile_helper(pressure, temperature, dewpoint):
