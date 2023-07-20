@@ -241,6 +241,22 @@ def test_polar_stereographic_std_parallel():
     assert crs.proj4_params['lat_ts'] == 60
 
 
+def test_rotated_latitude_longitude():
+    """Test handling a rotated latitude longitude projection."""
+    attrs = {
+        "grid_mapping_name": "rotated_latitude_longitude",
+        "grid_north_pole_latitude": 36,
+        "grid_north_pole_longitude": 65,
+        "north_pole_grid_longitude": 0.0,
+    }
+    crs = CFProjection(attrs).to_cartopy()
+
+    assert isinstance(crs, ccrs.RotatedPole)
+    assert crs.proj4_params["o_lon_p"] == 0.0
+    assert crs.proj4_params["o_lat_p"] == 36.0
+    assert crs.proj4_params["lon_0"] == 180 + 36.
+
+
 def test_lat_lon():
     """Test handling basic lat/lon projection."""
     attrs = {'grid_mapping_name': 'latitude_longitude'}
