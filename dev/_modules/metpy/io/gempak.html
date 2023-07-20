@@ -1647,8 +1647,9 @@ document.write(`
             <span class="c1">#                                                            &#39;GridMetaReal&#39;))</span>
             <span class="c1"># grid_start = self._buffer.set_mark()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;No method for unknown grid packing </span><span class="si">{}</span><span class="s1">&#39;</span>
-                                      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">packing_type</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;No method for unknown grid packing </span><span class="si">{</span><span class="n">packing_type</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
 
 <div class="viewcode-block" id="GempakGrid.gdxarray"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakGrid.html#metpy.io.GempakGrid.gdxarray">[docs]</a>    <span class="k">def</span> <span class="nf">gdxarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">coordinate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_time2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1935,8 +1936,7 @@ document.write(`
                     <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">fmt_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;No methods for data type </span><span class="si">{}</span><span class="s1">&#39;</span>
-                                                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">))</span>
+                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No methods for data type </span><span class="si">{</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">fmt_code</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
                         <span class="n">lendat</span> <span class="o">*=</span> <span class="n">BYTES_PER_WORD</span>
@@ -2002,8 +2002,7 @@ document.write(`
                     <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">fmt_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;No methods for data type </span><span class="si">{}</span><span class="s1">&#39;</span>
-                                                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">))</span>
+                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No methods for data type </span><span class="si">{</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">fmt_code</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
                         <span class="n">lendat</span> <span class="o">*=</span> <span class="n">BYTES_PER_WORD</span>
@@ -2911,8 +2910,7 @@ document.write(`
                     <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">fmt_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;No methods for data type </span><span class="si">{}</span><span class="s1">&#39;</span>
-                                                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">))</span>
+                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No methods for data type </span><span class="si">{</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">fmt_code</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
                         <span class="n">lendat</span> <span class="o">*=</span> <span class="n">BYTES_PER_WORD</span>
@@ -2982,8 +2980,7 @@ document.write(`
                 <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">fmt_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;No methods for data type </span><span class="si">{}</span><span class="s1">&#39;</span>
-                                              <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">))</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No methods for data type </span><span class="si">{</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">fmt_code</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
                     <span class="n">lendat</span> <span class="o">*=</span> <span class="n">BYTES_PER_WORD</span>
@@ -3053,8 +3050,7 @@ document.write(`
                     <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">fmt_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;No methods for data type </span><span class="si">{}</span><span class="s1">&#39;</span>
-                                                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">))</span>
+                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No methods for data type </span><span class="si">{</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">fmt_code</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
                         <span class="n">lendat</span> <span class="o">*=</span> <span class="n">BYTES_PER_WORD</span>
