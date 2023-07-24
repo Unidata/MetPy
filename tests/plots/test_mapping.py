@@ -252,9 +252,9 @@ def test_rotated_latitude_longitude():
     crs = CFProjection(attrs).to_cartopy()
 
     assert isinstance(crs, ccrs.RotatedPole)
-    assert crs.proj4_params['o_lon_p'] == 0.0
-    assert crs.proj4_params['o_lat_p'] == 36.0
-    assert crs.proj4_params['lon_0'] == 180 + 36.
+    assert crs.proj4_params['o_lon_p'] == 0
+    assert crs.proj4_params['o_lat_p'] == 36
+    assert crs.proj4_params['lon_0'] == 180 + 65
 
 
 def test_lat_lon():
