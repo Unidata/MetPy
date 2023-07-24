@@ -206,3 +206,14 @@ def make_polar_stereo(attrs_dict, globe):
     kwargs = CFProjection.build_projection_kwargs(attrs_dict, attr_mapping)
 
     return ccrs.Stereographic(globe=globe, **kwargs)
+
+
+@CFProjection.register('rotated_latitude_longitude')
+def make_rotated_latlon(attrs_dict, globe):
+    """Handle rotated latitude/longitude projection."""
+    attr_mapping = [('pole_longitude', 'grid_north_pole_longitude'),
+                    ('pole_latitude', 'grid_north_pole_latitude'),
+                    ('central_rotated_longitude', 'north_pole_grid_longitude')]
+    kwargs = CFProjection.build_projection_kwargs(attrs_dict, attr_mapping)
+
+    return ccrs.RotatedPole(globe=globe, **kwargs)
