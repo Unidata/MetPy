@@ -782,23 +782,25 @@ def make_take(ndims, slice_dim):
 
 
 @exporter.export
-def find_local_extrema(var, nsize, extrema):
+def find_local_extrema(var, nsize=15, extrema='max'):
     r"""Find the local extreme (max/min) values of a 2D array.
 
     Parameters
     ----------
-    var : `xarray.DataArray`
+    var : `numpy.array`
         The variable to locate the local extrema using the nearest method
         from the maximum_filter or minimum_filter from the scipy.ndimage module.
     nsize : int
         The minimum number of grid points between each local extrema.
+        Default value is 15.
     extrema: str
         The value 'max' for local maxima or 'min' for local minima.
+        Default value is 'max'.
 
     Returns
     -------
-    var_extrema: `xarray.DataArray`
-        The values of the local extrema with other values as NaNs
+    extrema_mask: `numpy.array`
+        The boolean array of the local extrema.
 
     See Also
     --------
@@ -806,14 +808,15 @@ def find_local_extrema(var, nsize, extrema):
 
     """
     from scipy.ndimage import maximum_filter, minimum_filter
-    if extrema not in ['max', 'min']:
-        raise ValueError('Invalid input for "extrema". Valid options are "max" or "min".')
 
     if extrema == 'max':
-        extreme_val = maximum_filter(var.values, nsize, mode='nearest')
+        extreme_val = maximum_filter(var, nsize, mode='nearest')
     elif extrema == 'min':
-        extreme_val = minimum_filter(var.values, nsize, mode='nearest')
-    return var.where(extreme_val == var.values)
+        extreme_val = minimum_filter(var, nsize, mode='nearest')
+    else:
+        raise ValueError(f'Invalid value for "extrema": {extrema}. '
+                         'Valid options are "max" or "min".')
+    return var == extreme_val
 
 
 @exporter.export

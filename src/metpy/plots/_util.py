@@ -285,23 +285,31 @@ def convert_gempak_color(c, style='psc'):
     return res
 
 
-def plot_local_extrema(ax, extreme_vals, symbol, plot_val=True, **kwargs):
-    """Plot the local extreme (max/min) values of an array.
+def plot_local_extrema(ax, extrema_mask, vals, x, y, symbol, plot_val=True, **kwargs):
+    """Plot the local extreme (max/min) values of a 2D array.
 
     The behavior of the plotting will have the symbol horizontal/vertical alignment
-    be center/bottom and any value plotted will be center/top. The text size of plotted
+    be center/bottom and any value plotted will be center/top. The default text size of plotted
     values is 0.65 of the symbol size.
 
     Parameters
     ----------
-    ax : `matplotlib.axes`
+    ax: `matplotlib.axes`
         The axes which to plot the local extrema
-    extreme_vals : `xarray.DataArray`
-        The DataArray that contains the variable local extrema
+    extrema_mask : `numpy.array`
+        A boolean array that contains the variable local extrema
+    vals : `numpy.array`
+        The variable associated with the extrema_mask
+    x : `numpy.array`
+        The x-dimension variable associated with the extrema_vals
+    y : `numpy.array`
+        The y-dimension variable associated with the extrema_vals
     symbol : str
         The text or other string to plot at the local extrema location
-    plot_val : bool
+    plot_val: bool
         Whether to plot the local extreme value (default is True)
+    textsize: int (optional)
+        Size of plotted extreme values, Default is 0.65 * size
 
     Returns
     -------
@@ -332,17 +340,22 @@ def plot_local_extrema(ax, extreme_vals, symbol, plot_val=True, **kwargs):
     if plot_val:
         kwargs.pop('verticalalignment')
     size = kwargs.pop('size')
-    textsize = size * .65
+    textsize = kwargs.pop('textsize', size * 0.65)
 
-    stack_vals = extreme_vals.stack(x=[extreme_vals.metpy.x.name, extreme_vals.metpy.y.name])
-    for extrema in stack_vals[stack_vals.notnull()]:
-        x = extrema[extreme_vals.metpy.x.name].values
-        y = extrema[extreme_vals.metpy.y.name].values
+    extreme_vals = vals[extrema_mask]
+    if x.ndim == 1:
+        xx, yy = np.meshgrid(x, y)
+    else:
+        xx = x
+        yy = y
+    extreme_x = xx[extrema_mask]
+    extreme_y = yy[extrema_mask]
+    for extrema, ex_x, ex_y in zip(extreme_vals, extreme_x, extreme_y):
         if plot_val:
-            ax.text(x, y, symbol, clip_on=True, clip_box=ax.bbox, size=size,
+            ax.text(ex_x, ex_y, symbol, clip_on=True, clip_box=ax.bbox, size=size,
                     verticalalignment='bottom', **kwargs)
-            ax.text(x, y, f'{extrema.values:.0f}', clip_on=True, clip_box=ax.bbox,
+            ax.text(ex_x, ex_y, f'{extrema:.0f}', clip_on=True, clip_box=ax.bbox,
                     size=textsize, verticalalignment='top', **kwargs)
         else:
-            ax.text(x, y, symbol, clip_on=True, clip_box=ax.bbox, size=size,
+            ax.text(ex_x, ex_y, symbol, clip_on=True, clip_box=ax.bbox, size=size,
                     **kwargs)

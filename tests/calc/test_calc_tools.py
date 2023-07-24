@@ -498,21 +498,21 @@ def local_extrema_data():
 
 def test_find_local_extrema(local_extrema_data):
     """Test find_local_extrema function for maximum."""
-    local_max = find_local_extrema(local_extrema_data, 3, 'max')
-    local_min = find_local_extrema(local_extrema_data, 3, 'min')
+    local_max = find_local_extrema(local_extrema_data.values, 3, 'max')
+    local_min = find_local_extrema(local_extrema_data.values, 3, 'min')
 
-    max_truth = np.array([[np.nan, np.nan, np.nan, np.nan, np.nan],
-                          [101637.19, np.nan, np.nan, np.nan, np.nan],
-                          [np.nan, np.nan, np.nan, np.nan, np.nan],
-                          [np.nan, np.nan, np.nan, np.nan, np.nan],
-                          [np.nan, np.nan, np.nan, np.nan, 101212.8]])
-    min_truth = np.array([[np.nan, np.nan, np.nan, np.nan, np.nan],
-                          [np.nan, np.nan, np.nan, np.nan, np.nan],
-                          [np.nan, np.nan, np.nan, np.nan, np.nan],
-                          [np.nan, np.nan, np.nan, np.nan, 101159.93],
-                          [np.nan, np.nan, np.nan, np.nan, np.nan]])
-    assert_array_almost_equal(local_max.data, max_truth)
-    assert_array_almost_equal(local_min.data, min_truth)
+    max_truth = np.array([[False, False, False, False, False],
+                          [True, False, False, False, False],
+                          [False, False, False, False, False],
+                          [False, False, False, False, False],
+                          [False, False, False, False, True]])
+    min_truth = np.array([[False, False, False, False, False],
+                          [False, False, False, False, False],
+                          [False, False, False, False, False],
+                          [False, False, False, False, True],
+                          [False, False, False, False, False]])
+    assert_array_almost_equal(local_max, max_truth)
+    assert_array_almost_equal(local_min, min_truth)
 
     with pytest.raises(ValueError):
         find_local_extrema(local_extrema_data, 3, 'large')

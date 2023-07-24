@@ -163,19 +163,21 @@ def test_plot_extrema():
     """Test plotting of local max/min values."""
     data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
 
-    mslp = data.Pressure_reduced_to_MSL_msl.squeeze()
-    relmax2d = find_local_extrema(mslp, 10, 'max').metpy.convert_units('hPa')
-    relmin2d = find_local_extrema(mslp, 15, 'min').metpy.convert_units('hPa')
+    mslp = data.Pressure_reduced_to_MSL_msl.squeeze().metpy.convert_units('hPa')
+    relmax2d = find_local_extrema(mslp.values, 10, 'max')
+    relmin2d = find_local_extrema(mslp.values, 15, 'min')
 
     fig = plt.figure(figsize=(8., 8.))
     ax = fig.add_subplot(1, 1, 1)
 
     # Plot MSLP
     clevmslp = np.arange(800., 1120., 4)
-    ax.contour(mslp.lon, mslp.lat, mslp.metpy.convert_units('hPa'),
+    ax.contour(mslp.lon, mslp.lat, mslp,
                clevmslp, colors='k', linewidths=1.25, linestyles='solid')
 
-    plot_local_extrema(ax, relmax2d, 'H', plot_val=False, color='tab:red')
-    plot_local_extrema(ax, relmin2d, 'L', color='tab:blue')
+    plot_local_extrema(ax, relmax2d, mslp.values, mslp.lon, mslp.lat,
+                       'H', plot_val=False, color='tab:red')
+    plot_local_extrema(ax, relmin2d, mslp.values, mslp.lon, mslp.lat,
+                       'L', color='tab:blue')
 
     return fig
