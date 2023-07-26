@@ -140,9 +140,9 @@ def test_moist_lapse_ref_pressure():
 def test_moist_lapse_multiple_temps():
     """Test moist_lapse with multiple starting temperatures."""
     temp = moist_lapse(np.array([1050., 800., 600., 500., 400.]) * units.mbar,
-                       np.array([19.85, np.nan, 19.85]) * units.degC, 1000. * units.mbar)
+                       np.array([19.85, 25.6, 19.85]) * units.degC, 1000. * units.mbar)
     true_temp = np.array([[294.76, 284.64, 272.81, 264.42, 252.91],
-                          [np.nan, np.nan, np.nan, np.nan, np.nan],
+                          [300.35, 291.27, 281.05, 274.05, 264.64],
                           [294.76, 284.64, 272.81, 264.42, 252.91]]) * units.kelvin
     assert_array_almost_equal(temp, true_temp, 2)
 
