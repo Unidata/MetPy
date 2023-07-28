@@ -719,6 +719,8 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
             el_pressure, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
                                                 temperature[1:], direction='decreasing',
                                                 log_x=True)
+            if len(el_pressure) == 0:
+                el_pressure = pressure[-1]
             if np.min(el_pressure) > this_lcl[0]:
                 x = units.Quantity(np.nan, pressure.units)
                 y = units.Quantity(np.nan, temperature.units)
