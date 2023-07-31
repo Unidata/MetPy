@@ -207,7 +207,7 @@ Plot all of the affiliated information and interpolation values.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f709e653d50>
+    <matplotlib.legend.Legend object at 0x7fd2db5216d0>
 
 
 
