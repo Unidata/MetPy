@@ -175,6 +175,18 @@ def test_bunkers_motion():
              6.90054376] * units('m/s')
     assert_almost_equal(motion.flatten(), truth, 8)
 
+def test_bunkers_motion_with_nans():
+    """Test Bunkers storm motion with observed sounding."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    data['u_wind'][24:26] = np.nan
+    data['v_wind'][24:26] = np.nan
+    motion = concatenate(bunkers_storm_motion(data['pressure'],
+                         data['u_wind'], data['v_wind'],
+                         data['height']))
+    truth = [2.09232447, 0.97612357, 11.25513401, 12.85227283, 6.67372924,
+             6.9141982] * units('m/s')
+    assert_almost_equal(motion.flatten(), truth, 8)
+
 
 def test_bulk_shear():
     """Test bulk shear with observed sounding."""
