@@ -3082,9 +3082,9 @@ def down_cape(pressure, temperature, dewpoint):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> down_cape(p, T, Td)
     (<Quantity(1222.67968, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
-    900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity(
-    [17.50959548 17.20643425 15.237249   13.12607097 10.85045704  8.38243809
-    5.68671014  2.71808363 -0.58203825 -4.29053485], 'degree_Celsius')>)
+    900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity([17.50959548
+    17.20643425 15.237249 13.12607097 10.85045704 8.38243809 5.68671014 2.71808363
+    -0.58203825 -4.29053485], 'degree_Celsius')>)
 
     See Also
     --------
