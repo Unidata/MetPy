@@ -382,11 +382,11 @@ def corfidi_storm_motion(pressure, u, v, height):
     >>> p = [1000, 925, 850, 700, 500, 400] * units.hPa
     >>> h = [250, 700, 1500, 3100, 5720, 7120] * units.meters
     >>> wdir = [165, 180, 190, 210, 220, 250] * units.degree
-    >>> sped = [5, 15, 20, 30, 50, 60] * units.knots
-    >>> u, v = wind_components(sped, wdir)
+    >>> speed = [5, 15, 20, 30, 50, 60] * units.knots
+    >>> u, v = wind_components(speed, wdir)
     >>> corfidi_storm_motion(p, u, v, h)
-    (<Quantity([19.91694134  8.73770883], 'knot')>,
-    <Quantity([43.30684623 37.17157273], 'knot')>)
+    (<Quantity([16.4274315   7.75758388], 'knot')>,
+    <Quantity([36.32782655 35.21132283], 'knot')>)
 
     Notes
     -----
