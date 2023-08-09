@@ -207,7 +207,6 @@ def test_corfidi_motion():
     truth_with_nans = [6.6604286, -26.30560547,
                        23.79507672, -16.0832665] * units('kt')
     assert_almost_equal(motion_with_nans.flatten(), truth_with_nans, 8)
-    
 
 
 def test_bulk_shear():

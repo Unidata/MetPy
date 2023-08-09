@@ -418,8 +418,8 @@ def corfidi_storm_motion(pressure, u, v, height):
     else:
         depth = units.Quantity(550, 'hectopascal')
     cloud_layer_winds = mean_pressure_weighted(pressure, u, v, height=height,
-                                                    bottom=bottom,
-                                                    depth=depth)
+                                               bottom=bottom,
+                                               depth=depth)
 
     cloud_layer_winds = units.Quantity.from_list(cloud_layer_winds)
 
