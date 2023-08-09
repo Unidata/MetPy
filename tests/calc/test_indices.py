@@ -182,21 +182,32 @@ def test_corfidi_motion():
     motion_full = concatenate(corfidi_storm_motion(data['pressure'],
                                                    data['u_wind'], data['v_wind'],
                                                    data['height']))
-    truth_full = [4.935900604467806, -29.210861180440986,
-                  23.21058679863669, -21.773710150231544] * units('kt')
+    truth_full = [4.38681947, -26.16100158,
+                  22.11242453, -15.67399095] * units('kt')
     assert_almost_equal(motion_full.flatten(), truth_full, 8)
     motion_no_bottom = concatenate(corfidi_storm_motion(data['pressure'][6:],
                                                         data['u_wind'][6:], data['v_wind'][6:],
                                                         data['height'][6:]))
-    truth_no_bottom = [6.0042903160, -31.9279062924,
-                       25.3473662217, -27.2078003741] * units('kt')
+    truth_no_bottom = [5.70216267, -29.03497766,
+                       24.74311094, -21.42194311] * units('kt')
     assert_almost_equal(motion_no_bottom.flatten(), truth_no_bottom, 8)
     motion_no_top = concatenate(corfidi_storm_motion(data['pressure'][:37],
                                                      data['u_wind'][:37], data['v_wind'][:37],
                                                      data['height'][:37]))
-    truth_no_top = [4.6170542714, -27.7322457064,
-                    22.5728941325, -18.8164792021] * units('kt')
+    truth_no_top = [4.1892675, -25.20826346,
+                    21.71732059, -13.76851471] * units('kt')
     assert_almost_equal(motion_no_top.flatten(), truth_no_top, 8)
+    u_with_nans = data['u_wind']
+    u_with_nans[6:10] = np.nan
+    v_with_nans = data['v_wind']
+    v_with_nans[6:10] = np.nan
+    motion_with_nans = concatenate(corfidi_storm_motion(data['pressure'],
+                                                        u_with_nans, v_with_nans,
+                                                        data['height']))
+    truth_with_nans = [6.6604286, -26.30560547,
+                       23.79507672, -16.0832665] * units('kt')
+    assert_almost_equal(motion_with_nans.flatten(), truth_with_nans, 8)
+    
 
 
 def test_bulk_shear():

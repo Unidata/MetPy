@@ -395,6 +395,8 @@ def corfidi_storm_motion(pressure, u, v, height):
     Quantities even when given xarray DataArray profiles.
 
     """
+    # remove nans from input
+    pressure, u, v, height = _remove_nans(pressure, u, v, height)
     # convert height to AGL
     height = height - height[0]
 
@@ -415,7 +417,7 @@ def corfidi_storm_motion(pressure, u, v, height):
         depth = bottom - pressure[-1]
     else:
         depth = units.Quantity(550, 'hectopascal')
-    cloud_layer_winds = weighted_continuous_average(pressure, u, v, height=height,
+    cloud_layer_winds = mean_pressure_weighted(pressure, u, v, height=height,
                                                     bottom=bottom,
                                                     depth=depth)
 
