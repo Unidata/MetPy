@@ -1550,7 +1550,7 @@ def test_mixed_layer_cape_cin(multiple_intersections):
     assert_almost_equal(mlcape, 1132.706800436 * units('joule / kilogram'), 2)
     assert_almost_equal(mlcin, -13.4809966289 * units('joule / kilogram'), 2)
     mlcape_middle, mlcin_middle = mixed_layer_cape_cin(pressure, temperature, dewpoint,
-                                                     parcel_start_pressure=800 * units.hPa)
+                                                       parcel_start_pressure=800 * units.hPa)
     assert_almost_equal(mlcape_middle, 0 * units('joule / kilogram'), 2)
     assert_almost_equal(mlcin_middle, 0 * units('joule / kilogram'), 2)
 
