@@ -3338,15 +3338,8 @@ def moist_static_energy(height, temperature, specific_humidity):
 )
 def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
                           molecular_weight_ratio=mpconsts.nounit.epsilon, bottom=None,
-                          depth=None):
+                          depth=None, full_profile=False):
     r"""Calculate the thickness of a layer via the hypsometric equation.
-
-    This thickness calculation uses the pressure and temperature profiles (and optionally
-    mixing ratio) via the hypsometric equation with virtual temperature adjustment.
-
-    .. math:: Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,
-
-    Which is based off of Equation 3.24 in [Hobbs2006]_.
 
     This assumes a hydrostatic atmosphere. Layer bottom and depth specified in pressure.
 
@@ -3373,6 +3366,12 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
     depth : `pint.Quantity`, optional
         The depth of the layer in hPa. Defaults to the full profile if bottom is not given,
         and 100 hPa if bottom is given.
+
+    full_profile : `bool`, optional
+        Controls whether or not to return the full thickness profile, i.e., the thickness
+        between individual layers as a `Pint.Quantity` array or the thickness of
+        the whole atmospheric profile as a `Pint.Quantity`. Defaults to False, which returns
+        the thickness of the atmosphere as a single value.
 
     Returns
     -------
@@ -3427,6 +3426,13 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
 
+    This thickness calculation uses the pressure and temperature profiles (and optionally
+    mixing ratio) via the hypsometric equation with virtual temperature adjustment.
+
+    .. math:: Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,
+
+    Which is based off of Equation 3.24 in [Hobbs2006]_.
+
     .. versionchanged:: 1.0
        Renamed ``mixing`` parameter to ``mixing_ratio``
 
@@ -3470,31 +3476,21 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
             )
 
     # Take the integral
-    return (
-        -mpconsts.nounit.Rd / mpconsts.nounit.g
-        * np.trapz(layer_virttemp, np.log(layer_p))
-    )
+    diff_logp = np.diff(np.log(layer_p))
+    thickness = (-mpconsts.nounit.Rd / mpconsts.nounit.g * diff_logp * (
+        layer_virttemp[1:] + layer_virttemp[:-1]) / 2.)
+
+    return thickness if full_profile else np.sum(thickness)
 
 
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]')
 def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative_humidity,
-                                                 bottom=None, depth=None):
+                                                 bottom=None, depth=None, full_profile=False):
     r"""Calculate the thickness of a layer given pressure, temperature and relative humidity.
 
-    Similar to ``thickness_hydrostatic``, this thickness calculation uses the pressure,
-    temperature, and relative humidity profiles via the hypsometric equation with virtual
-    temperature adjustment
-
-    .. math:: Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,
-
-    which is based off of Equation 3.24 in [Hobbs2006]_. Virtual temperature is calculated
-    from the profiles of temperature and relative humidity.
-
-    This assumes a hydrostatic atmosphere.
-
-    Layer bottom and depth specified in pressure.
+    This assumes a hydrostatic atmosphere. Layer bottom and depth specified in pressure.
 
     Parameters
     ----------
@@ -3515,6 +3511,12 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
     depth : `pint.Quantity`, optional
         The depth of the layer in hPa. Defaults to the full profile if bottom is not given,
         and 100 hPa if bottom is given.
+
+    full_profile : `bool`, optional
+        Controls whether or not to return the full thickness profile, i.e., the thickness
+        between individual layers as a `Pint.Quantity` array or the thickness of
+        the whole atmospheric profile as a `Pint.Quantity`. Defaults to False, which returns
+        the thickness of the atmosphere as a single value.
 
     Returns
     -------
@@ -3557,11 +3559,19 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
 
+    Similar to ``thickness_hydrostatic``, this thickness calculation uses the pressure,
+    temperature, and relative humidity profiles via the hypsometric equation with virtual
+    temperature adjustment
+
+    .. math:: Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,
+
+    which is based off of Equation 3.24 in [Hobbs2006]_. Virtual temperature is calculated
+    from the profiles of temperature and relative humidity.
     """
     mixing = mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity)
 
     return thickness_hydrostatic(pressure, temperature, mixing_ratio=mixing, bottom=bottom,
-                                 depth=depth)
+                                 depth=depth, full_profile=full_profile)
 
 
 @exporter.export
