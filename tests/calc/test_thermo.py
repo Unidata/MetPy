@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `thermo` module."""
 
+import platform
 import sys
 import warnings
 
@@ -197,6 +198,8 @@ def test_moist_lapse_starting_points(start, direction):
     assert_almost_equal(temp, truth, 4)
 
 
+@pytest.mark.xfail(platform.machine() == 'aarch64',
+                   reason='ValueError is not raised on aarch64')
 @pytest.mark.xfail(sys.platform == 'win32', reason='solve_ivp() does not error on Windows')
 @pytest.mark.xfail(packaging.version.parse(scipy.__version__) < packaging.version.parse('1.7'),
                    reason='solve_ivp() does not error on Scipy < 1.7')
