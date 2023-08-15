@@ -434,8 +434,8 @@ def advection(
     -----
     This implements the advection of a scalar quantity by wind:
 
-    .. math:: \mathbf{u} \cdot \nabla = u \frac{\partial}{\partial x}
-              + v \frac{\partial}{\partial y} + w \frac{\partial}{\partial z}
+    .. math:: -\mathbf{u} \cdot \nabla = -(u \frac{\partial}{\partial x}
+              + v \frac{\partial}{\partial y} + w \frac{\partial}{\partial z})
 
     .. versionchanged:: 1.0
        Changed signature from ``(scalar, wind, deltas)``
