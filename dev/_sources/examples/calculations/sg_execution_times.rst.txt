@@ -6,48 +6,48 @@
 
 Computation times
 =================
-**00:03.355** total execution time for **examples_calculations** files:
+**00:04.885** total execution time for **examples_calculations** files:
 
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Smoothing.py` (``Smoothing.py``)                                               | 00:00.782 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Smoothing.py` (``Smoothing.py``)                                               | 00:01.030 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Sounding_Calculations.py` (``Sounding_Calculations.py``)                       | 00:00.362 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Sounding_Calculations.py` (``Sounding_Calculations.py``)                       | 00:00.538 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Absolute_Vorticity.py` (``Absolute_Vorticity.py``)                             | 00:00.261 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Total_Deformation.py` (``Total_Deformation.py``)                               | 00:00.422 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Total_Deformation.py` (``Total_Deformation.py``)                               | 00:00.259 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Absolute_Vorticity.py` (``Absolute_Vorticity.py``)                             | 00:00.410 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Vorticity.py` (``Vorticity.py``)                                               | 00:00.259 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Stretching_Deformation.py` (``Stretching_Deformation.py``)                     | 00:00.410 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Shearing_Deformation.py` (``Shearing_Deformation.py``)                         | 00:00.258 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Vorticity.py` (``Vorticity.py``)                                               | 00:00.407 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Stretching_Deformation.py` (``Stretching_Deformation.py``)                     | 00:00.258 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Shearing_Deformation.py` (``Shearing_Deformation.py``)                         | 00:00.394 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_QVector.py` (``QVector.py``)                                                   | 00:00.199 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_QVector.py` (``QVector.py``)                                                   | 00:00.306 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Divergence.py` (``Divergence.py``)                                             | 00:00.184 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Advection.py` (``Advection.py``)                                               | 00:00.251 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Advection.py` (``Advection.py``)                                               | 00:00.169 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Divergence.py` (``Divergence.py``)                                             | 00:00.244 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Wind_Speed.py` (``Wind_Speed.py``)                                             | 00:00.165 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Wind_Speed.py` (``Wind_Speed.py``)                                             | 00:00.191 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Equivalent_Potential_Temperature.py` (``Equivalent_Potential_Temperature.py``) | 00:00.107 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Equivalent_Potential_Temperature.py` (``Equivalent_Potential_Temperature.py``) | 00:00.152 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Gradient.py` (``Gradient.py``)                                                 | 00:00.018 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Gradient.py` (``Gradient.py``)                                                 | 00:00.024 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Bulk_Shear.py` (``Bulk_Shear.py``)                                             | 00:00.014 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Mean_Pressure_Weighted.py` (``Mean_Pressure_Weighted.py``)                     | 00:00.022 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Thickness_Hydrostatic.py` (``Thickness_Hydrostatic.py``)                       | 00:00.014 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Bulk_Shear.py` (``Bulk_Shear.py``)                                             | 00:00.022 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Mean_Pressure_Weighted.py` (``Mean_Pressure_Weighted.py``)                     | 00:00.014 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Thickness_Hydrostatic.py` (``Thickness_Hydrostatic.py``)                       | 00:00.017 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Static_Stability.py` (``Static_Stability.py``)                                 | 00:00.011 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Static_Stability.py` (``Static_Stability.py``)                                 | 00:00.017 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Mountain_Problem.py` (``Mountain_Problem.py``)                                 | 00:00.008 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Mountain_Problem.py` (``Mountain_Problem.py``)                                 | 00:00.013 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py` (``Dewpoint_and_Mixing_Ratio.py``)               | 00:00.006 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py` (``Dewpoint_and_Mixing_Ratio.py``)               | 00:00.008 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Angle_to_Direction.py` (``Angle_to_Direction.py``)                             | 00:00.005 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Angle_to_Direction.py` (``Angle_to_Direction.py``)                             | 00:00.006 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_examples_calculations_Parse_Angles.py` (``Parse_Angles.py``)                                         | 00:00.002 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------+-----------+--------+
