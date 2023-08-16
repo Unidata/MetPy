@@ -24,7 +24,7 @@ from metpy.testing import needs_cartopy
 from metpy.units import units
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.005)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
 @needs_cartopy
 def test_declarative_image():
     """Test making an image plot."""
@@ -221,7 +221,7 @@ def test_declarative_smooth_contour_calculation():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.01)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.021)
 @needs_cartopy
 def test_declarative_smooth_contour_order():
     """Test making a contour plot using smooth_contour with tuple."""
@@ -334,7 +334,7 @@ def test_declarative_contour_cam():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.03)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.036)
 @needs_cartopy
 def test_declarative_contour_options():
     """Test making a contour plot."""
@@ -364,7 +364,7 @@ def test_declarative_contour_options():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.08)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.082)
 @needs_cartopy
 def test_declarative_layers_plot_options():
     """Test making a contour plot."""
@@ -394,7 +394,7 @@ def test_declarative_layers_plot_options():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.0152)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.025)
 @needs_cartopy
 def test_declarative_contour_convert_units():
     """Test making a contour plot."""
@@ -468,7 +468,7 @@ def test_declarative_events():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.009)
 @needs_cartopy
 def test_declarative_raster_events():
     """Test that resetting traitlets properly propagates in RasterPlot()."""
@@ -589,7 +589,7 @@ def test_projection_object(ccrs, cfeature):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.009)
 def test_colorfill(cfeature):
     """Test that we can use ContourFillPlot."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -614,7 +614,7 @@ def test_colorfill(cfeature):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.0062)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
 def test_colorfill_with_image_range(cfeature):
     """Test that we can use ContourFillPlot with image_range bounds."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -641,7 +641,7 @@ def test_colorfill_with_image_range(cfeature):
 
 
 @pytest.mark.mpl_image_compare(
-    remove_text=True, tolerance=0.0062, filename='test_colorfill_with_image_range.png'
+    remove_text=True, tolerance=0.02, filename='test_colorfill_with_image_range.png'
 )
 def test_colorfill_with_normalize_instance_image_range(cfeature):
     """Test that we can use ContourFillPlot with image_range bounds."""
@@ -668,7 +668,7 @@ def test_colorfill_with_normalize_instance_image_range(cfeature):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
 def test_colorfill_horiz_colorbar(cfeature):
     """Test that we can use ContourFillPlot with a horizontal colorbar."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -693,7 +693,7 @@ def test_colorfill_horiz_colorbar(cfeature):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.0062)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
 def test_colorfill_no_colorbar(cfeature):
     """Test that we can use ContourFillPlot with no colorbar."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -771,7 +771,7 @@ def test_latlon():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.292)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.293)
 @needs_cartopy
 def test_declarative_barb_options():
     """Test making a contour plot."""
@@ -891,7 +891,7 @@ def test_declarative_arrow_changes():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.5)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.51)
 @needs_cartopy
 def test_declarative_barb_earth_relative():
     """Test making a contour plot."""
@@ -969,7 +969,7 @@ def test_declarative_overlay_projections():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.021)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.026)
 @needs_cartopy
 def test_declarative_gridded_scale():
     """Test making a contour plot."""
@@ -1217,7 +1217,7 @@ def test_plotobs_subset_time_window_level(sample_obs):
     pd.testing.assert_frame_equal(obs.obsdata, truth)
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
 def test_plotobs_units_with_formatter(ccrs):
     """Test using PlotObs with a field that both has units and a custom formatter."""
     df = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
@@ -1285,7 +1285,7 @@ def test_declarative_sfc_obs(ccrs):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
 @needs_cartopy
 def test_declarative_sfc_text():
     """Test making a surface observation plot with text."""
@@ -1760,7 +1760,7 @@ def test_declarative_contour_label_fontsize():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
 @needs_cartopy
 def test_declarative_raster():
     """Test making a raster plot."""

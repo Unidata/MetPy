@@ -291,7 +291,7 @@ def test_barb_projection(wind_plot, ccrs):
     return fig
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.01)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.023)
 def test_arrow_projection(wind_plot, ccrs):
     """Test that arrows are properly projected."""
     u, v, x, y = wind_plot
