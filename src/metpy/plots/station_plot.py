@@ -620,7 +620,7 @@ class StationPlotLayout(dict):
     def __repr__(self):
         """Return string representation of layout."""
         return ('{'
-                + ', '.join('{0}: ({1[0].name}, {1[1]}, ...)'.format(loc, info)
+                + ', '.join(f'{loc}: ({info[0].name}, {info[1]}, ...)'
                             for loc, info in sorted(self.items()))
                 + '}')
 
