@@ -775,8 +775,8 @@ geospatial, grid. Keyword-only argument.</p></li>
 <p class="rubric">Notes</p>
 <p>This implements the advection of a scalar quantity by wind:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{u} \cdot \nabla = u \frac{\partial}{\partial x}
-+ v \frac{\partial}{\partial y} + w \frac{\partial}{\partial z}\]</div>
+\[-\mathbf{u} \cdot \nabla = -(u \frac{\partial}{\partial x}
++ v \frac{\partial}{\partial y} + w \frac{\partial}{\partial z})\]</div>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.0: </span>Changed signature from <code class="docutils literal notranslate"><span class="pre">(scalar,</span> <span class="pre">wind,</span> <span class="pre">deltas)</span></code></p>
 </div>
