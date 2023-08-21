@@ -7,8 +7,9 @@
 Sounding Plot with Complex Layout
 =================
 
-This example combines simple MetPy plotting functionality, `metpy.calc` computation functionality,
-and a few basic tricks to create an advanced sounding plotter with a clean layout & high readability. 
+This example combines simple MetPy plotting functionality, `metpy.calc`
+computation functionality, and a few basic tricks to create an 
+advanced sounding plotter with a clean layout & high readability. 
 
 """
 
@@ -22,9 +23,8 @@ from metpy.plots import add_metpy_logo, Hodograph, SkewT
 from metpy.units import units
 
 ###########################################
-# Upper air data can easily be obtained using the siphon package, but for this example we will use
-# some of MetPy's sample data.
-
+# Upper air data can easily be obtained using the siphon package, 
+# but for this example we will use some of MetPy's sample data.
 
 col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'speed']
 
@@ -35,12 +35,9 @@ df = pd.read_fwf(get_test_data('may4_sounding.txt', as_file_obj=False),
 df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'
                        ), how='all').reset_index(drop=True)
 
-
 ###########################################
-# We will pull the data out of the example dataset into individual variables and
-# assign units.
-# 
-
+# We will pull the data out of the example dataset into 
+# individual variables and assign units. 
 
 p = df['pressure'].values * units.hPa
 z = df['height'].values * units.m
@@ -50,9 +47,9 @@ wind_speed = df['speed'].values * units.knots
 wind_dir = df['direction'].values * units.degrees
 u, v = mpcalc.wind_components(wind_speed, wind_dir)
 
-
 ###########################################
-# Now lets make a Skew-T Log-P diagram using some simply MetPy functionality
+# Now lets make a Skew-T Log-P diagram using some simply 
+# MetPy functionality
 
 # Create a new figure. The dimensions here give a good aspect ratio
 fig = plt.figure(figsize=(9, 9))
@@ -76,7 +73,6 @@ skew.plot_dry_adiabats()
 skew.plot_moist_adiabats()
 skew.plot_mixing_lines()
 
-
 # Create a hodograph
 ax = plt.axes((0.7, 0.75, 0.2, 0.2))
 h = Hodograph(ax, component_range=60.)
@@ -84,13 +80,14 @@ h.add_grid(increment=20)
 h.plot(u, v)
 
 ###########################################
-# This layout isn't bad, especially for how little code it required, but we could add a few simple tricks to greatly increase the 
-# readability and complexity of our Skew-T/Hodograph layout. Lets try another Skew-T with a few more advanced features:
-# 
+# This layout isn't bad, especially for how little code it required, 
+# but we could add a few simple tricks to greatly increase the 
+# readability and complexity of our Skew-T/Hodograph layout. Lets 
+# try another Skew-T with a few more advanced features:
 
 ###########################################
-# STEP 1: CREATE THE SKEW-T OBJECT AND MODIFY IT TO CREATE A NICE, CLEAN PLOT
-
+# STEP 1: CREATE THE SKEW-T OBJECT AND MODIFY IT TO CREATE A 
+# NICE, CLEAN PLOT
 
 # Create a new figure. The dimensions here give a good aspect ratio
 fig = plt.figure(figsize=(18,12))                             
@@ -118,11 +115,10 @@ x2 = np.linspace(-90, 50, 8)
 y = [1100, 50]                                                                      
 for i in range(0, 8):              
     skew.shade_area(y=y, x1=x1[i], x2=x2[i], color='gray', alpha=0.02, zorder=1)       
-
-
     
 ###########################################
-# STEP 2: PLOT DATA ON THE SKEW-T. TAKE A COUPLE EXTRA STEPS TO INCREASE READABILITY
+# STEP 2: PLOT DATA ON THE SKEW-T. TAKE A COUPLE EXTRA STEPS TO
+# INCREASE READABILITY
 
 # Plot the data using normal plotting functions, in this case using
 # log scaling in Y, as dictated by the typical meteorological plot
@@ -162,16 +158,15 @@ skew.plot(p, prof, 'k', linewidth=2, label='SB PARCEL PATH')
 skew.shade_cin(p, T, prof, Td, alpha=0.2, label='SBCIN')
 skew.shade_cape(p, T, prof, alpha=0.2, label='SBCAPE')
 
-
-
 ###########################################
-# STEP 3: CREATE THE HODOGRAPH INSET. TAKE A FEW EXTRA STEPS TO INCREASE READABILITY
+# STEP 3: CREATE THE HODOGRAPH INSET. TAKE A FEW EXTRA STEPS TO 
+# INCREASE READABILITY
 
 # Create a hodograph object: first we need to add an axis
 # then we can create the metpy Hodograph
 hodo_ax = plt.axes((0.43, 0.40, 0.5, 0.5))
 h = Hodograph(hodo_ax, component_range=80.)
-# Add two seperate grid increments for a cooler look. This also
+# Add two separate grid increments for a cooler look. This also
 # helps to increase readability
 h.add_grid(increment=20, ls='-', lw=1.5, alpha=0.5)
 h.add_grid(increment=10, ls='--', lw=1, alpha=0.2)
@@ -185,8 +180,8 @@ h.ax.set_yticks([])
 h.ax.set_xlabel(' ')
 h.ax.set_ylabel(' ')
 
-# Here we can add a simple python for loop that adds tick marks to the inside 
-# of the hodograph plot to increase readability! 
+# Here we can add a simple python for loop that adds tick marks 
+# to the inside of the hodograph plot to increase readability! 
 plt.xticks(np.arange(0,0,1))
 plt.yticks(np.arange(0,0,1))
 for i in range(10,120,10):
@@ -205,15 +200,13 @@ h.ax.text((MW[0].m +0.5), (MW[1].m -0.5), 'MW', weight='bold', ha='left', fontsi
 h.ax.arrow(0,0,RM[0].m-0.3, RM[1].m-0.3, linewidth=2, color='black', alpha=0.2, label='Bunkers RM Vector', 
            length_includes_head=True, head_width=2)
 
-
-
 ###########################################
 # STEP 4: ADD A FEW EXTRA ELEMENTS TO REALLY MAKE A NEAT PLOT
 
     
 # First we want to actually add values of data to the plot for easy viewing
 # to do this, lets first add a simple rectangle using matplotlib's 'patches' 
-# fucntionality to add some simple layout for plotting calculated parameters 
+# functionality to add some simple layout for plotting calculated parameters 
 #                                  xloc   yloc   xsize  ysize
 fig.patches.extend([plt.Rectangle((0.513, 0.00), 0.334, 0.37,
                                   edgecolor='black', facecolor='white', linewidth=1, alpha=1,
