@@ -430,8 +430,8 @@ lies within. That information is stored in the 'PERCENTAGE' column below.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/sphinx_gallery/gen_gallery.py:213: FutureWarning: The `op` parameter is deprecated and will be removed in a future release. Please use the `predicate` parameter instead.
-      return 0., func()
+    /opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/sphinx_gallery/gen_gallery.py:239: FutureWarning: The `op` parameter is deprecated and will be removed in a future release. Please use the `predicate` parameter instead.
+      return 0.0, func()
 
 
 .. raw:: html
@@ -704,7 +704,7 @@ wind speed probabilities, along with some select cities and their specific proba
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  17.436 seconds)
+   **Total running time of the script:** (0 minutes 16.818 seconds)
 
 
 .. _sphx_glr_download_examples_plots_nhc_wind_probabilities.py:
