@@ -1,14 +1,15 @@
-#!/usr/bin/env python
-# coding: utf-8
+# Copyright (c) 2015,2016,2017 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+"""
+=================
+Skew-T With Advanced Layout
+=================
 
-# 
-# # Skew-T with Advanced Layout
-# 
-# Combine a Skew-T and a hodograph in a more advanced & clean layout with high readability
-# 
+This example combines simple MetPy plotting functionality, `metpy.calc` computation functionality,
+and a few basic tricks to create an advanced sounding plotter with a clean layout & high readability. 
 
-# In[1]:
-
+"""
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -19,13 +20,9 @@ from metpy.cbook import get_test_data
 from metpy.plots import add_metpy_logo, Hodograph, SkewT
 from metpy.units import units
 
-
+###########################################
 # Upper air data can easily be obtained using the siphon package, but for this example we will use
 # some of MetPy's sample data.
-# 
-# 
-
-# In[2]:
 
 
 col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'speed']
@@ -38,12 +35,10 @@ df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'
                        ), how='all').reset_index(drop=True)
 
 
+###########################################
 # We will pull the data out of the example dataset into individual variables and
 # assign units.
 # 
-# 
-
-# In[3]:
 
 
 p = df['pressure'].values * units.hPa
@@ -55,10 +50,8 @@ wind_dir = df['direction'].values * units.degrees
 u, v = mpcalc.wind_components(wind_speed, wind_dir)
 
 
+###########################################
 # Now lets make a Skew-T Log-P diagram using some simply MetPy functionality
-
-# In[4]:
-
 
 # Create a new figure. The dimensions here give a good aspect ratio
 fig = plt.figure(figsize=(9, 9))
@@ -89,16 +82,12 @@ h = Hodograph(ax, component_range=60.)
 h.add_grid(increment=20)
 h.plot(u, v)
 
-
-# This layout isn't bad, especially for how little code it required, but we could add a few simple tricks to greatly increase the readability and complexity of our Skew-T/Hodograph layout.
-
-# Lets try another Skew-T with a few more advanced features:
+###########################################
+# This layout isn't bad, especially for how little code it required, but we could add a few simple tricks to greatly increase the 
+# readability and complexity of our Skew-T/Hodograph layout. Lets try another Skew-T with a few more advanced features:
 # 
 
-# In[5]:
-
-
-#############################################################################
+###########################################
 # STEP 1: CREATE THE SKEW-T OBJECT AND MODIFY IT TO CREATE A NICE, CLEAN PLOT
 
 
@@ -131,9 +120,8 @@ for i in range(0, 8):
 
 
     
-#############################################################################
+###########################################
 # STEP 2: PLOT DATA ON THE SKEW-T. TAKE A COUPLE EXTRA STEPS TO INCREASE READABILITY
-
 
 # Plot the data using normal plotting functions, in this case using
 # log scaling in Y, as dictated by the typical meteorological plot
@@ -175,10 +163,8 @@ skew.shade_cape(p, T, prof, alpha=0.2, label='SBCAPE')
 
 
 
-#############################################################################
+###########################################
 # STEP 3: CREATE THE HODOGRAPH INSET. TAKE A FEW EXTRA STEPS TO INCREASE READABILITY
-
-
 
 # Create a hodograph object: first we need to add an axis
 # then we can create the metpy Hodograph
@@ -220,7 +206,7 @@ h.ax.arrow(0,0,RM[0].m-0.3, RM[1].m-0.3, linewidth=2, color='black', alpha=0.2, 
 
 
 
-############################################################################
+###########################################
 # STEP 4: ADD A FEW EXTRA ELEMENTS TO REALLY MAKE A NEAT PLOT
 
     
@@ -330,12 +316,9 @@ hodoleg = h.ax.legend(loc='upper left')
 
 # add a plot title 
 plt.figtext( 0.40, 0.92,  f'OUN | MAY 4TH 1999 - 00Z VERTICAL PROFILE', weight='bold', fontsize=20, ha='center')
+
 # Show the plot
 plt.show()
-
-
-# In[ ]:
-
 
 
 
