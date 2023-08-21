@@ -4,7 +4,7 @@
 
 """
 =================
-Skew-T With Advanced Layout
+Sounding Plot with Complex Layout
 =================
 
 This example combines simple MetPy plotting functionality, `metpy.calc` computation functionality,
