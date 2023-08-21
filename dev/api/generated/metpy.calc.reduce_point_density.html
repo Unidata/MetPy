@@ -41,11 +41,17 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -718,10 +724,10 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="reduce-point-density">
-<h1>reduce_point_density<a class="headerlink" href="#reduce-point-density" title="Permalink to this heading">#</a></h1>
+<h1>reduce_point_density<a class="headerlink" href="#reduce-point-density" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.reduce_point_density">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">reduce_point_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.reduce_point_density" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">reduce_point_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.reduce_point_density" title="Link to this definition">#</a></dt>
 <dd><p>Return a mask to reduce the density of points in irregularly-spaced data.</p>
 <p>This function is used to down-sample a collection of scattered points (e.g. surface
 data), returning a mask that can be used to select the points from one or more arrays
@@ -759,7 +765,7 @@ be used to control selection priority for points.</p></li>
 </dd></dl>
 
 <section id="examples-using-metpy-calc-reduce-point-density">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.reduce_point_density</span></code><a class="headerlink" href="#examples-using-metpy-calc-reduce-point-density" title="Permalink to this heading">#</a></h2>
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.reduce_point_density</span></code><a class="headerlink" href="#examples-using-metpy-calc-reduce-point-density" title="Link to this heading">#</a></h2>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Make a surface station plot with Oklahoma Mesonet data."><img alt="" src="../../_images/sphx_glr_Mesonet_Stationplot_thumb.png" />
 <p><a class="reference internal" href="../../examples/plots/Mesonet_Stationplot.html#sphx-glr-examples-plots-mesonet-stationplot-py"><span class="std std-ref">Mesonet Station Plot</span></a></p>
   <div class="sphx-glr-thumbnail-title">Mesonet Station Plot</div>
@@ -861,7 +867,7 @@ be used to control selection priority for points.</p></li>
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

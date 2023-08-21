@@ -41,11 +41,17 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -498,13 +504,13 @@ document.write(`
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="metpy-declarative-syntax-tutorial">
-<span id="sphx-glr-tutorials-declarative-tutorial-py"></span><h1>MetPy Declarative Syntax Tutorial<a class="headerlink" href="#metpy-declarative-syntax-tutorial" title="Permalink to this heading">#</a></h1>
+<span id="sphx-glr-tutorials-declarative-tutorial-py"></span><h1>MetPy Declarative Syntax Tutorial<a class="headerlink" href="#metpy-declarative-syntax-tutorial" title="Link to this heading">#</a></h1>
 <p>The declarative syntax that is a part of the MetPy packaged is designed to aid in simple
 data exploration and analysis needs by simplifying the plotting context from typical verbose
 Python code. The complexity of data wrangling and plotting are hidden behind the simplified
 syntax to allow a lower barrier to investigating your data.</p>
 <section id="imports">
-<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading">#</a></h2>
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
 <p>You’ll note that the number of imports is smaller due to using the declarative syntax.
 There is no need to import Matplotlib or Cartopy to your code as all of that is done
 behind the scenes.</p>
@@ -522,7 +528,7 @@ behind the scenes.</p>
 </div>
 </section>
 <section id="getting-data">
-<h2>Getting Data<a class="headerlink" href="#getting-data" title="Permalink to this heading">#</a></h2>
+<h2>Getting Data<a class="headerlink" href="#getting-data" title="Link to this heading">#</a></h2>
 <p>Depending on what kind of data you are wanting to plot you’ll use either Xarray (for gridded
 data), Pandas (for CSV data), or the MetPy METAR parser (for METAR data).</p>
 <p>We’ll start this tutorial by reading in a gridded dataset using Xarray.</p>
@@ -563,14 +569,14 @@ Data variables:
 </div>
 </section>
 <section id="set-datetime">
-<h2>Set Datetime<a class="headerlink" href="#set-datetime" title="Permalink to this heading">#</a></h2>
+<h2>Set Datetime<a class="headerlink" href="#set-datetime" title="Link to this heading">#</a></h2>
 <p>Set the date/time of that you desire to plot</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">plot_time</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">datetime</span></a><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="subsetting-data">
-<h2>Subsetting Data<a class="headerlink" href="#subsetting-data" title="Permalink to this heading">#</a></h2>
+<h2>Subsetting Data<a class="headerlink" href="#subsetting-data" title="Link to this heading">#</a></h2>
 <p>MetPy provides wrappers for the usual xarray indexing and selection routines that can handle
 quantities with units. For DataArrays, MetPy also allows using the coordinate axis types
 mentioned above as aliases for the coordinates. And so, if we wanted data to be just over
@@ -582,7 +588,7 @@ the U.S. for plotting purposes</p>
 <a class="reference external" href="https://docs.xarray.dev/en/stable/indexing.html">xarray’s documentation</a>.</p>
 </section>
 <section id="calculations">
-<h2>Calculations<a class="headerlink" href="#calculations" title="Permalink to this heading">#</a></h2>
+<h2>Calculations<a class="headerlink" href="#calculations" title="Link to this heading">#</a></h2>
 <p>In MetPy 1.0 and later, calculation functions accept Xarray DataArray’s as input and the
 output a DataArray that can be easily added to an existing Dataset.</p>
 <p>As an example, we calculate wind speed from the wind components and add it as a new variable
@@ -593,7 +599,7 @@ to our Dataset.</p>
 </div>
 </section>
 <section id="plotting">
-<h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this heading">#</a></h2>
+<h2>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">#</a></h2>
 <p>With that minimal preparation, we are now ready to use the simplified plotting syntax to be
 able to plot our data and analyze the meteorological situation.</p>
 <p>General Structure</p>
@@ -676,7 +682,7 @@ and ultimately show or save the figure.</p>
 <img src="../_images/sphx_glr_declarative_tutorial_001.png" srcset="../_images/sphx_glr_declarative_tutorial_001.png" alt="300-hPa Heights and Wind Speed at 2010-10-26 12:00:00" class = "sphx-glr-single-img"/><p>That’s it! What a nice looking map, with relatively simple set of code.</p>
 </section>
 <section id="adding-wind-barbs">
-<h2>Adding Wind Barbs<a class="headerlink" href="#adding-wind-barbs" title="Permalink to this heading">#</a></h2>
+<h2>Adding Wind Barbs<a class="headerlink" href="#adding-wind-barbs" title="Link to this heading">#</a></h2>
 <p>We can easily add wind barbs to the plot we generated above by adding another plot type
 and adding it to the panel. The plot type for wind barbs is <code class="docutils literal notranslate"><span class="pre">BarbPlot()</span></code> and has its own
 set of attributes to control plotting a vector quantity.</p>
@@ -739,7 +745,7 @@ list!</p>
 </div>
 <img src="../_images/sphx_glr_declarative_tutorial_002.png" srcset="../_images/sphx_glr_declarative_tutorial_002.png" alt="300-hPa Heights and Wind Speed at 2010-10-26 12:00:00" class = "sphx-glr-single-img"/></section>
 <section id="plot-surface-obs">
-<h2>Plot Surface Obs<a class="headerlink" href="#plot-surface-obs" title="Permalink to this heading">#</a></h2>
+<h2>Plot Surface Obs<a class="headerlink" href="#plot-surface-obs" title="Link to this heading">#</a></h2>
 <p>We can also plot surface (or upper-air) observations at point locations using the simplified
 syntax. Whether it is surface or upper-air data, the <code class="docutils literal notranslate"><span class="pre">PlotObs()</span></code> class is what you would
 want to use. Then you would add those observations to a map panel and then collect the panels
@@ -813,12 +819,12 @@ panels on the figure. In this case we’ll focus in on the state of Indiana for 
 </div>
 <img src="../_images/sphx_glr_declarative_tutorial_003.png" srcset="../_images/sphx_glr_declarative_tutorial_003.png" alt="Surface plot for 2019-07-01 12:00:00" class = "sphx-glr-single-img"/></section>
 <section id="detailed-attribute-descriptions">
-<h2>Detailed Attribute Descriptions<a class="headerlink" href="#detailed-attribute-descriptions" title="Permalink to this heading">#</a></h2>
+<h2>Detailed Attribute Descriptions<a class="headerlink" href="#detailed-attribute-descriptions" title="Link to this heading">#</a></h2>
 <p>This final section contains verbose descriptions of the attributes that can be set by the
 plot types used in this tutorial.</p>
 </section>
 <section id="contourplot">
-<h2>ContourPlot()<a class="headerlink" href="#contourplot" title="Permalink to this heading">#</a></h2>
+<h2>ContourPlot()<a class="headerlink" href="#contourplot" title="Link to this heading">#</a></h2>
 <p>This class is designed to plot contours of gridded data, most commonly model output from the
 GFS, NAM, RAP, or other gridded dataset (e.g., NARR).</p>
 <p>Attributes:</p>
@@ -868,7 +874,7 @@ scale vorticity to be whole values for contouring you could set the scale to 1e5
 the data values will be multiplied by 10^5.</p>
 </section>
 <section id="filledcontourplot">
-<h2>FilledContourPlot()<a class="headerlink" href="#filledcontourplot" title="Permalink to this heading">#</a></h2>
+<h2>FilledContourPlot()<a class="headerlink" href="#filledcontourplot" title="Link to this heading">#</a></h2>
 <p>Works very similarly to <code class="docutils literal notranslate"><span class="pre">ContourPlot()</span></code>, except that contours are filled using a colormap
 between contour values. All attributes for <code class="docutils literal notranslate"><span class="pre">ContourPlot()</span></code> work for color-filled plots,
 except for linestyle, linecolor, and linewidth. Additionally, there are the following
@@ -887,7 +893,7 @@ attribute should be set as <code class="docutils literal notranslate"><span clas
 numeric values.</p>
 </section>
 <section id="panelcontainer">
-<h2>PanelContainer()<a class="headerlink" href="#panelcontainer" title="Permalink to this heading">#</a></h2>
+<h2>PanelContainer()<a class="headerlink" href="#panelcontainer" title="Link to this heading">#</a></h2>
 <p>Attributes:</p>
 <p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
 <p>The size of the figure in inches (e.g., (10, 8))</p>
@@ -899,7 +905,7 @@ numeric values.</p>
 <p>Save the figure using the Matplotlib arguments/keyword arguments</p>
 </section>
 <section id="mappanel">
-<h2>MapPanel()<a class="headerlink" href="#mappanel" title="Permalink to this heading">#</a></h2>
+<h2>MapPanel()<a class="headerlink" href="#mappanel" title="Link to this heading">#</a></h2>
 <p>Attributes:</p>
 <p><code class="docutils literal notranslate"><span class="pre">layout</span></code></p>
 <p>The Matplotlib layout of the figure. For a single panel figure the setting should be
@@ -924,7 +930,7 @@ This tuple defines a box from the lower-left to the upper-right corner.</p>
 <p>A list collecting the observations to be plotted in the panel.</p>
 </section>
 <section id="barbplot">
-<h2>BarbPlot()<a class="headerlink" href="#barbplot" title="Permalink to this heading">#</a></h2>
+<h2>BarbPlot()<a class="headerlink" href="#barbplot" title="Link to this heading">#</a></h2>
 <p>This plot class is used to add wind barbs to the plot with the following</p>
 <p>Attributes:</p>
 <p><code class="docutils literal notranslate"><span class="pre">data</span></code></p>
@@ -949,7 +955,7 @@ or NARR output)</p>
 the grid point. Possible values include <code class="docutils literal notranslate"><span class="pre">‘tip’</span></code> or <code class="docutils literal notranslate"><span class="pre">‘middle’</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">‘middle’</span></code>.</p>
 </section>
 <section id="plotobs">
-<h2>PlotObs()<a class="headerlink" href="#plotobs" title="Permalink to this heading">#</a></h2>
+<h2>PlotObs()<a class="headerlink" href="#plotobs" title="Link to this heading">#</a></h2>
 <p>This class is used to plot point observations from the surface or upper-air.</p>
 <p>Attributes:</p>
 <p><code class="docutils literal notranslate"><span class="pre">data</span></code></p>
@@ -991,7 +997,7 @@ Acceptable colors are those available through Matplotlib:
 <p><code class="docutils literal notranslate"><span class="pre">reduce_points</span></code></p>
 <p>This attribute can be set to a real number to reduce the number of stations that are plotted.
 Default value is zero (e.g., no points are removed from the plot).</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 12.862 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 20.776 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-declarative-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/900d76c7356d09e4ca20b90f94a0732e/declarative_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">declarative_tutorial.py</span></code></a></p>
@@ -1109,7 +1115,7 @@ Default value is zero (e.g., no points are removed from the plot).</p>
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

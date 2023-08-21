@@ -41,11 +41,17 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -490,7 +496,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="getting-started-with-metpy">
-<h1>Getting Started with MetPy<a class="headerlink" href="#getting-started-with-metpy" title="Permalink to this heading">#</a></h1>
+<h1>Getting Started with MetPy<a class="headerlink" href="#getting-started-with-metpy" title="Link to this heading">#</a></h1>
 <p>Welcome to MetPy! We’re glad you’re here and we hope that you find this Python library
 to be useful for your needs. In order to help get you started with MetPy, we’ve put together
 this guide to introduce you to the basic syntax and functionality of this library. If you’re
@@ -498,7 +504,7 @@ new to Python, please visit the <a class="reference external" href="https://unid
 discussion and examples of the Scientific Python ecosystem.</p>
 <p>For installation instructions, please see our <a class="reference internal" href="installguide.html"><span class="doc">Install Guide</span></a>.</p>
 <section id="units">
-<h2>Units<a class="headerlink" href="#units" title="Permalink to this heading">#</a></h2>
+<h2>Units<a class="headerlink" href="#units" title="Link to this heading">#</a></h2>
 <p>For the in-depth explanation of units, associated syntax, and unique features, please see
 our <a class="reference internal" href="../tutorials/unit_tutorial.html"><span class="doc">Units Tutorial</span></a> page. What follows in this section is
 a short summary of how MetPy uses units, which uses extensively the <a class="reference external" href="https://pint.readthedocs.io/en/stable/">Pint</a> library.</p>
@@ -534,14 +540,14 @@ watch our MetPy Monday video on
 <a class="reference external" href="https://www.youtube.com/watch?v=iveJCqxe3Z4">temperature units</a>.</p>
 </section>
 <section id="functionality">
-<h2>Functionality<a class="headerlink" href="#functionality" title="Permalink to this heading">#</a></h2>
+<h2>Functionality<a class="headerlink" href="#functionality" title="Link to this heading">#</a></h2>
 <p>MetPy aims to have three primary purposes: read and write meteorological data (I/O), calculate
 meteorological quantities with well-documented equations, and create publication-quality plots
 of meteorological data. The three subsections that follow will demonstrate just some of this
 functionality. For full reference to all of MetPy’s API, please see our
 <a class="reference internal" href="../api/index.html"><span class="doc">Reference Guide</span></a>.</p>
 <section id="input-output">
-<h3>Input/Output<a class="headerlink" href="#input-output" title="Permalink to this heading">#</a></h3>
+<h3>Input/Output<a class="headerlink" href="#input-output" title="Link to this heading">#</a></h3>
 <p>MetPy has built in support for reading GINI satellite and NEXRAD radar files. If you have one
 of these files, opening it with MetPy is as easy as:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">metpy.io</span> <span class="kn">import</span> <span class="n">Level2File</span><span class="p">,</span> <span class="n">Level3File</span><span class="p">,</span> <span class="n">GiniFile</span>
@@ -586,7 +592,7 @@ utility of the MetPy Xarray accessor, let’s demonstrate some of the functional
 do that in the Plotting section.</p>
 </section>
 <section id="calculations">
-<h3>Calculations<a class="headerlink" href="#calculations" title="Permalink to this heading">#</a></h3>
+<h3>Calculations<a class="headerlink" href="#calculations" title="Link to this heading">#</a></h3>
 <p>Meteorology and atmospheric science are fully-dependent on complex equations and formulas.
 Rather than figuring out how to write them efficiently in Python yourself, MetPy provides
 support for many of the common equations within the field. For the full list, please see the
@@ -625,13 +631,13 @@ x = x * units.meter / units.second</pre>
 <p>If you see this error in your code, just attach the appropriate units and you’ll be good to go!</p>
 </section>
 <section id="plotting">
-<h3>Plotting<a class="headerlink" href="#plotting" title="Permalink to this heading">#</a></h3>
+<h3>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">#</a></h3>
 <p>MetPy contains two special types of meteorological plots, the Skew-T Log-P and Station plots,
 that more general Python plotting packages don’t support as readily. Additionally, with the
 goal to replace GEMPAK, MetPy’s declarative plotting interface is being actively developed,
 which will make plotting a simple task with straight-forward syntax, similar to GEMPAK.</p>
 <section id="skew-t">
-<h4>Skew-T<a class="headerlink" href="#skew-t" title="Permalink to this heading">#</a></h4>
+<h4>Skew-T<a class="headerlink" href="#skew-t" title="Link to this heading">#</a></h4>
 <p>The Skew-T Log-P diagram is the canonical thermodynamic diagram within meteorology. Using
 <a class="reference external" href="https://matplotlib.org/stable/index.html#module-matplotlib" title="(in Matplotlib v3.7.2)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code></a>, MetPy is able to readily create a Skew-T for you:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -685,7 +691,7 @@ check out the <a class="reference internal" href="../examples/plots/Simple_Sound
 <a class="reference internal" href="../examples/plots/Hodograph_Inset.html"><span class="doc">Hodograph Inset</span></a>.</p>
 </section>
 <section id="station-plots">
-<h4>Station Plots<a class="headerlink" href="#station-plots" title="Permalink to this heading">#</a></h4>
+<h4>Station Plots<a class="headerlink" href="#station-plots" title="Link to this heading">#</a></h4>
 <p>Station plots display surface or upper-air station data in a concise manner. The creation of
 these plots is made straightforward with MetPy. MetPy supplies the ability to create each
 station plot and place the points on the map. The creation of 2-D cartographic maps, commonly
@@ -697,7 +703,7 @@ the correct location.</p>
 <a class="reference internal" href="../examples/plots/Station_Plot_with_Layout.html"><span class="doc">Station Plot Layout</span></a> examples.</p>
 </section>
 <section id="gridded-data">
-<h4>Gridded Data<a class="headerlink" href="#gridded-data" title="Permalink to this heading">#</a></h4>
+<h4>Gridded Data<a class="headerlink" href="#gridded-data" title="Link to this heading">#</a></h4>
 <p>While MetPy doesn’t provide many new tools for 2-D gridded data maps, we do provide lots of
 examples illustrating how to use MetPy for data analysis and CartoPy for visualization. Those
 examples can be found in the <a class="reference internal" href="../examples/index.html"><span class="doc">MetPy Gallery</span></a> and at the
@@ -707,7 +713,7 @@ to create a cross section with your gridded data is available
 <a class="reference internal" href="../examples/cross_section.html"><span class="doc">here</span></a>.</p>
 </section>
 <section id="declarative-plotting">
-<h4>Declarative Plotting<a class="headerlink" href="#declarative-plotting" title="Permalink to this heading">#</a></h4>
+<h4>Declarative Plotting<a class="headerlink" href="#declarative-plotting" title="Link to this heading">#</a></h4>
 <p>The declarative plotting interface, which is still under active development, aims to replicate
 the simple plotting declarations in GEMPAK to make map creation straightforward, especially
 for those less familiar with Python, CartoPy, and matplotlib. To demonstrate the ease of
@@ -749,7 +755,7 @@ interface.</p>
 </section>
 </section>
 <section id="other-python-resources">
-<h2>Other Python Resources<a class="headerlink" href="#other-python-resources" title="Permalink to this heading">#</a></h2>
+<h2>Other Python Resources<a class="headerlink" href="#other-python-resources" title="Link to this heading">#</a></h2>
 <p>While MetPy does a lot of things, it doesn’t do everything. Here are some other good resources
 to use as you start using MetPy and Python for meteorology and atmospheric science:</p>
 <p><strong>Learning Resources</strong></p>
@@ -773,7 +779,7 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
 </ul>
 </section>
 <section id="support">
-<h2>Support<a class="headerlink" href="#support" title="Permalink to this heading">#</a></h2>
+<h2>Support<a class="headerlink" href="#support" title="Link to this heading">#</a></h2>
 <p>Get stuck trying to use MetPy with your data? Unidata’s Python team is here to help! See our
 <a class="reference internal" href="SUPPORT.html"><span class="doc">support page</span></a> for more information.</p>
 </section>
@@ -884,7 +890,7 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

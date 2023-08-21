@@ -40,11 +40,17 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -512,7 +518,9 @@ document.write(`
                        <span class="n">_fix_udunits_div</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="setup_registry"><a class="viewcode-back" href="../../api/generated/metpy.units.setup_registry.html#metpy.units.setup_registry">[docs]</a><span class="k">def</span> <span class="nf">setup_registry</span><span class="p">(</span><span class="n">reg</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_registry">
+<a class="viewcode-back" href="../../api/generated/metpy.units.setup_registry.html#metpy.units.setup_registry">[docs]</a>
+<span class="k">def</span> <span class="nf">setup_registry</span><span class="p">(</span><span class="n">reg</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set up a given registry with MetPy&#39;s default tweaks and settings.&quot;&quot;&quot;</span>
     <span class="n">reg</span><span class="o">.</span><span class="n">autoconvert_offset_to_baseunit</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -544,6 +552,7 @@ document.write(`
     <span class="k">return</span> <span class="n">reg</span></div>
 
 
+
 <span class="c1"># Make our modifications using pint&#39;s application registry--which allows us to better</span>
 <span class="c1"># interoperate with other libraries using Pint.</span>
 <span class="n">units</span> <span class="o">=</span> <span class="n">setup_registry</span><span class="p">(</span><span class="n">pint</span><span class="o">.</span><span class="n">get_application_registry</span><span class="p">())</span>
@@ -552,7 +561,9 @@ document.write(`
 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">pint</span><span class="o">.</span><span class="n">UnitStrippedWarning</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="pandas_dataframe_to_unit_arrays"><a class="viewcode-back" href="../../api/generated/metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays">[docs]</a><span class="k">def</span> <span class="nf">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column_units</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="pandas_dataframe_to_unit_arrays">
+<a class="viewcode-back" href="../../api/generated/metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays">[docs]</a>
+<span class="k">def</span> <span class="nf">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column_units</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Attach units to data in pandas dataframes and return quantities.</span>
 
 <span class="sd">    Parameters</span>
@@ -587,12 +598,18 @@ document.write(`
     <span class="k">return</span> <span class="n">res</span></div>
 
 
-<div class="viewcode-block" id="is_quantity"><a class="viewcode-back" href="../../api/generated/metpy.units.is_quantity.html#metpy.units.is_quantity">[docs]</a><span class="k">def</span> <span class="nf">is_quantity</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+
+<div class="viewcode-block" id="is_quantity">
+<a class="viewcode-back" href="../../api/generated/metpy.units.is_quantity.html#metpy.units.is_quantity">[docs]</a>
+<span class="k">def</span> <span class="nf">is_quantity</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check whether an instance is a quantity.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">pint</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="concatenate"><a class="viewcode-back" href="../../api/generated/metpy.units.concatenate.html#metpy.units.concatenate">[docs]</a><span class="k">def</span> <span class="nf">concatenate</span><span class="p">(</span><span class="n">arrs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="concatenate">
+<a class="viewcode-back" href="../../api/generated/metpy.units.concatenate.html#metpy.units.concatenate">[docs]</a>
+<span class="k">def</span> <span class="nf">concatenate</span><span class="p">(</span><span class="n">arrs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Concatenate multiple values into a new quantity.</span>
 
 <span class="sd">    This is essentially a scalar-/masked array-aware version of `numpy.concatenate`. All items</span>
@@ -635,7 +652,10 @@ document.write(`
     <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="masked_array"><a class="viewcode-back" href="../../api/generated/metpy.units.masked_array.html#metpy.units.masked_array">[docs]</a><span class="k">def</span> <span class="nf">masked_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="masked_array">
+<a class="viewcode-back" href="../../api/generated/metpy.units.masked_array.html#metpy.units.masked_array">[docs]</a>
+<span class="k">def</span> <span class="nf">masked_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a :class:`numpy.ma.MaskedArray` with units attached.</span>
 
 <span class="sd">    This is a thin wrapper around :class:`numpy.ma.MaskedArray` that ensures that</span>
@@ -661,6 +681,7 @@ document.write(`
     <span class="k">if</span> <span class="n">data_units</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">data_units</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">units</span>
     <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="n">data_units</span><span class="p">)</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">_mutate_arguments</span><span class="p">(</span><span class="n">bound_args</span><span class="p">,</span> <span class="n">check_type</span><span class="p">,</span> <span class="n">mutate_arg</span><span class="p">):</span>
@@ -771,7 +792,9 @@ document.write(`
     <span class="k">return</span> <span class="n">bound_args</span>
 
 
-<div class="viewcode-block" id="check_units"><a class="viewcode-back" href="../../api/generated/metpy.units.check_units.html#metpy.units.check_units">[docs]</a><span class="k">def</span> <span class="nf">check_units</span><span class="p">(</span><span class="o">*</span><span class="n">units_by_pos</span><span class="p">,</span> <span class="o">**</span><span class="n">units_by_name</span><span class="p">):</span>
+<div class="viewcode-block" id="check_units">
+<a class="viewcode-back" href="../../api/generated/metpy.units.check_units.html#metpy.units.check_units">[docs]</a>
+<span class="k">def</span> <span class="nf">check_units</span><span class="p">(</span><span class="o">*</span><span class="n">units_by_pos</span><span class="p">,</span> <span class="o">**</span><span class="n">units_by_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a decorator to check units of function arguments.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="n">sig</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="n">defaults</span> <span class="o">=</span> <span class="n">_check_units_outer_helper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">units_by_pos</span><span class="p">,</span> <span class="o">**</span><span class="n">units_by_name</span><span class="p">)</span>
@@ -785,7 +808,10 @@ document.write(`
     <span class="k">return</span> <span class="n">dec</span></div>
 
 
-<div class="viewcode-block" id="process_units"><a class="viewcode-back" href="../../api/generated/metpy.units.process_units.html#metpy.units.process_units">[docs]</a><span class="k">def</span> <span class="nf">process_units</span><span class="p">(</span>
+
+<div class="viewcode-block" id="process_units">
+<a class="viewcode-back" href="../../api/generated/metpy.units.process_units.html#metpy.units.process_units">[docs]</a>
+<span class="k">def</span> <span class="nf">process_units</span><span class="p">(</span>
     <span class="n">input_dimensionalities</span><span class="p">,</span>
     <span class="n">output_dimensionalities</span><span class="p">,</span>
     <span class="n">output_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -857,6 +883,7 @@ document.write(`
 
         <span class="k">return</span> <span class="n">wrapper</span>
     <span class="k">return</span> <span class="n">dec</span></div>
+
 </pre></div>
 
                 </article>
@@ -909,7 +936,7 @@ document.write(`
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

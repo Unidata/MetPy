@@ -41,11 +41,17 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -547,7 +553,7 @@ document.write(`
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="mesonet-station-plot">
-<span id="sphx-glr-examples-plots-mesonet-stationplot-py"></span><h1>Mesonet Station Plot<a class="headerlink" href="#mesonet-station-plot" title="Permalink to this heading">#</a></h1>
+<span id="sphx-glr-examples-plots-mesonet-stationplot-py"></span><h1>Mesonet Station Plot<a class="headerlink" href="#mesonet-station-plot" title="Link to this heading">#</a></h1>
 <p>Make a surface station plot with Oklahoma Mesonet data.</p>
 <p>The station plot itself is pretty straightforward, but there is a bit of code to perform the
 data-wrangling.</p>
@@ -563,7 +569,7 @@ data-wrangling.</p>
 </pre></div>
 </div>
 <section id="read-in-the-data-and-wrangle-it">
-<h2>Read in the data and wrangle it<a class="headerlink" href="#read-in-the-data-and-wrangle-it" title="Permalink to this heading">#</a></h2>
+<h2>Read in the data and wrangle it<a class="headerlink" href="#read-in-the-data-and-wrangle-it" title="Link to this heading">#</a></h2>
 <p>First read in the data. We use pandas because it simplifies a lot of tasks, like dealing
 with strings. We’ll also convert any blank cells to NaNs, and then drop rows with NaNs
 in variables that we want to plot</p>
@@ -606,7 +612,7 @@ The number of stations plotted will be reduced using <em class="xref py py-obj">
 </div>
 </section>
 <section id="create-the-figure">
-<h2>Create the figure<a class="headerlink" href="#create-the-figure" title="Permalink to this heading">#</a></h2>
+<h2>Create the figure<a class="headerlink" href="#create-the-figure" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the figure and an axes set to the projection.</span>
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_metpy_logo</span></a><span class="p">(</span><a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
@@ -645,7 +651,7 @@ The number of stations plotted will be reduced using <em class="xref py py-obj">
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_Mesonet_Stationplot_001.png" srcset="../../_images/sphx_glr_Mesonet_Stationplot_001.png" alt="Oklahoma Mesonet Observations, Time: 2100 UTC 09 September 2019" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 16.632 seconds)</p>
+<img src="../../_images/sphx_glr_Mesonet_Stationplot_001.png" srcset="../../_images/sphx_glr_Mesonet_Stationplot_001.png" alt="Oklahoma Mesonet Observations, Time: 2100 UTC 09 September 2019" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 28.943 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-mesonet-stationplot-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/8e3f0d6d0a780d741147b0c22a0b8a22/Mesonet_Stationplot.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Mesonet_Stationplot.py</span></code></a></p>
@@ -750,7 +756,7 @@ The number of stations plotted will be reduced using <em class="xref py py-obj">
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

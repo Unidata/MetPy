@@ -40,11 +40,17 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../../../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -1369,7 +1375,9 @@ document.write(`
 <span class="k">class</span> <span class="nc">GempakGrid</span><span class="p">(</span><span class="n">GempakFile</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of GempakFile specific to GEMPAK gridded data.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GempakGrid.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakGrid.html#metpy.io.GempakGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="GempakGrid.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.GempakGrid.html#metpy.io.GempakGrid.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
         <span class="n">datetime_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GDT1&#39;</span><span class="p">,</span> <span class="s1">&#39;GDT2&#39;</span><span class="p">]</span>
@@ -1427,9 +1435,13 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">_get_crs</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_coordinates</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="GempakGrid.gdinfo"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakGrid.html#metpy.io.GempakGrid.gdinfo">[docs]</a>    <span class="k">def</span> <span class="nf">gdinfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GempakGrid.gdinfo">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.GempakGrid.html#metpy.io.GempakGrid.gdinfo">[docs]</a>
+    <span class="k">def</span> <span class="nf">gdinfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return grid information.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gdinfo</span></div>
+
 
     <span class="k">def</span> <span class="nf">_get_crs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create CRS from GEMPAK navigation block.&quot;&quot;&quot;</span>
@@ -1650,7 +1662,9 @@ document.write(`
                 <span class="sa">f</span><span class="s1">&#39;No method for unknown grid packing </span><span class="si">{</span><span class="n">packing_type</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
             <span class="p">)</span>
 
-<div class="viewcode-block" id="GempakGrid.gdxarray"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakGrid.html#metpy.io.GempakGrid.gdxarray">[docs]</a>    <span class="k">def</span> <span class="nf">gdxarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">coordinate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="GempakGrid.gdxarray">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.GempakGrid.html#metpy.io.GempakGrid.gdxarray">[docs]</a>
+    <span class="k">def</span> <span class="nf">gdxarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">coordinate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_time2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Select grids and output as list of xarray DataArrays.</span>
 
@@ -1825,11 +1839,14 @@ document.write(`
         <span class="k">return</span> <span class="n">grids</span></div>
 
 
+
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">GempakSounding</span><span class="p">(</span><span class="n">GempakFile</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of GempakFile specific to GEMPAK sounding data.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GempakSounding.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSounding.html#metpy.io.GempakSounding.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="GempakSounding.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSounding.html#metpy.io.GempakSounding.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
         <span class="c1"># Row Headers</span>
@@ -1892,9 +1909,13 @@ document.write(`
                         <span class="p">)</span>
                     <span class="p">)</span></div>
 
-<div class="viewcode-block" id="GempakSounding.sninfo"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSounding.html#metpy.io.GempakSounding.sninfo">[docs]</a>    <span class="k">def</span> <span class="nf">sninfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GempakSounding.sninfo">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSounding.html#metpy.io.GempakSounding.sninfo">[docs]</a>
+    <span class="k">def</span> <span class="nf">sninfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return sounding information.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sninfo</span></div>
+
 
     <span class="k">def</span> <span class="nf">_unpack_merged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sndno</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack merged sounding data.&quot;&quot;&quot;</span>
@@ -2572,7 +2593,9 @@ document.write(`
 
         <span class="k">return</span> <span class="n">merged</span>
 
-<div class="viewcode-block" id="GempakSounding.snxarray"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSounding.html#metpy.io.GempakSounding.snxarray">[docs]</a>    <span class="k">def</span> <span class="nf">snxarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="GempakSounding.snxarray">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSounding.html#metpy.io.GempakSounding.snxarray">[docs]</a>
+    <span class="k">def</span> <span class="nf">snxarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">date_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Select soundings and output as list of xarray Datasets.</span>
 
@@ -2727,11 +2750,14 @@ document.write(`
         <span class="k">return</span> <span class="n">soundings</span></div>
 
 
+
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">GempakSurface</span><span class="p">(</span><span class="n">GempakFile</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of GempakFile specific to GEMPAK surface data.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GempakSurface.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="GempakSurface.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
         <span class="c1"># Row Headers</span>
@@ -2838,9 +2864,13 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown surface type </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GempakSurface.sfinfo"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.sfinfo">[docs]</a>    <span class="k">def</span> <span class="nf">sfinfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GempakSurface.sfinfo">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.sfinfo">[docs]</a>
+    <span class="k">def</span> <span class="nf">sfinfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return station information.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sfinfo</span></div>
+
 
     <span class="k">def</span> <span class="nf">_get_surface_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine type of surface file.&quot;&quot;&quot;</span>
@@ -3110,7 +3140,9 @@ document.write(`
 
         <span class="k">return</span> <span class="n">station</span>
 
-<div class="viewcode-block" id="GempakSurface.nearest_time"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.nearest_time">[docs]</a>    <span class="k">def</span> <span class="nf">nearest_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date_time</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="GempakSurface.nearest_time">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.nearest_time">[docs]</a>
+    <span class="k">def</span> <span class="nf">nearest_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date_time</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">include_special</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get nearest observation to given time for selected stations.</span>
 
@@ -3184,7 +3216,10 @@ document.write(`
 
         <span class="k">return</span> <span class="n">time_matched</span></div>
 
-<div class="viewcode-block" id="GempakSurface.sfjson"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.sfjson">[docs]</a>    <span class="k">def</span> <span class="nf">sfjson</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+<div class="viewcode-block" id="GempakSurface.sfjson">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.sfjson">[docs]</a>
+    <span class="k">def</span> <span class="nf">sfjson</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">date_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">include_special</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Select surface stations and output as list of JSON objects.</span>
@@ -3316,6 +3351,7 @@ document.write(`
                 <span class="n">stnarr</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;properties&#39;</span><span class="p">:</span> <span class="n">props</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">:</span> <span class="n">vals</span><span class="p">})</span>
 
         <span class="k">return</span> <span class="n">stnarr</span></div>
+
 </pre></div>
 
                 </article>
@@ -3368,7 +3404,7 @@ document.write(`
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

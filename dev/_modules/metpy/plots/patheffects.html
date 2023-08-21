@@ -40,11 +40,17 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../../../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -790,7 +796,9 @@ document.write(`
 <span class="sd">    based off of :class:`matplotlib.patheffects.TickedStroke`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ScallopedStroke.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ScallopedStroke.html#metpy.plots.ScallopedStroke.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mf">1.15</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="ScallopedStroke.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.ScallopedStroke.html#metpy.plots.ScallopedStroke.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mf">1.15</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a scalloped path effect.</span>
 
 <span class="sd">        Parameters</span>
@@ -820,7 +828,10 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">=</span> <span class="n">length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gc</span> <span class="o">=</span> <span class="n">kwargs</span></div>
 
-<div class="viewcode-block" id="ScallopedStroke.draw_path"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ScallopedStroke.html#metpy.plots.ScallopedStroke.draw_path">[docs]</a>    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
+
+<div class="viewcode-block" id="ScallopedStroke.draw_path">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.ScallopedStroke.html#metpy.plots.ScallopedStroke.draw_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the path with updated gc.&quot;&quot;&quot;</span>
         <span class="c1"># Do not modify the input! Use copy instead.</span>
         <span class="n">gc0</span> <span class="o">=</span> <span class="n">renderer</span><span class="o">.</span><span class="n">new_gc</span><span class="p">()</span>
@@ -929,6 +940,7 @@ document.write(`
         <span class="n">gc0</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span></div>
 
 
+
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">ColdFront</span><span class="p">(</span><span class="n">Front</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a path as a cold front, with (default blue) pips/triangles along the path.&quot;&quot;&quot;</span>
@@ -937,8 +949,11 @@ document.write(`
                          <span class="p">[</span><span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">MOVETO</span><span class="p">,</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span>
                           <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">CLOSEPOLY</span><span class="p">])</span>
 
-<div class="viewcode-block" id="ColdFront.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ColdFront.html#metpy.plots.ColdFront.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="ColdFront.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.ColdFront.html#metpy.plots.ColdFront.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -949,8 +964,11 @@ document.write(`
                          <span class="p">[</span><span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">MOVETO</span><span class="p">,</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span>
                           <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">CLOSEPOLY</span><span class="p">])</span>
 
-<div class="viewcode-block" id="ColdFrontogenesis.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ColdFrontogenesis.html#metpy.plots.ColdFrontogenesis.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="ColdFrontogenesis.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.ColdFrontogenesis.html#metpy.plots.ColdFrontogenesis.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -961,8 +979,11 @@ document.write(`
                          <span class="p">[</span><span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">MOVETO</span><span class="p">,</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">LINETO</span><span class="p">,</span>
                           <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">CLOSEPOLY</span><span class="p">])</span>
 
-<div class="viewcode-block" id="ColdFrontolysis.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ColdFrontolysis.html#metpy.plots.ColdFrontolysis.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="ColdFrontolysis.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.ColdFrontolysis.html#metpy.plots.ColdFrontolysis.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -971,8 +992,11 @@ document.write(`
 
     <span class="n">_symbol</span> <span class="o">=</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">wedge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">mtransforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
-<div class="viewcode-block" id="Dryline.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Dryline.html#metpy.plots.Dryline.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">0.144</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Dryline.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.Dryline.html#metpy.plots.Dryline.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">0.144</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="n">filled</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -981,8 +1005,11 @@ document.write(`
 
     <span class="n">_symbol</span> <span class="o">=</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">wedge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">mtransforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
-<div class="viewcode-block" id="WarmFront.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.WarmFront.html#metpy.plots.WarmFront.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="WarmFront.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.WarmFront.html#metpy.plots.WarmFront.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -991,8 +1018,11 @@ document.write(`
 
     <span class="n">_symbol</span> <span class="o">=</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">wedge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">mtransforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
-<div class="viewcode-block" id="WarmFrontogenesis.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.WarmFrontogenesis.html#metpy.plots.WarmFrontogenesis.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="WarmFrontogenesis.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.WarmFrontogenesis.html#metpy.plots.WarmFrontogenesis.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1001,22 +1031,31 @@ document.write(`
 
     <span class="n">_symbol</span> <span class="o">=</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">wedge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">mtransforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
-<div class="viewcode-block" id="WarmFrontolysis.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.WarmFrontolysis.html#metpy.plots.WarmFrontolysis.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="WarmFrontolysis.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.WarmFrontolysis.html#metpy.plots.WarmFrontolysis.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">OccludedFront</span><span class="p">(</span><span class="n">Front</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw an occluded front with (default purple) pips and scallops along the path.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="OccludedFront.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.OccludedFront.html#metpy.plots.OccludedFront.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OccludedFront.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.OccludedFront.html#metpy.plots.OccludedFront.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_symbol_cycle</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="OccludedFront.draw_path"><a class="viewcode-back" href="../../../api/generated/metpy.plots.OccludedFront.html#metpy.plots.OccludedFront.draw_path">[docs]</a>    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
+
+<div class="viewcode-block" id="OccludedFront.draw_path">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.OccludedFront.html#metpy.plots.OccludedFront.draw_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the given path.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_symbol_cycle</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="p">)</span>  <span class="c1"># noqa: N803</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1030,14 +1069,20 @@ document.write(`
 <span class="k">class</span> <span class="nc">OccludedFrontogenesis</span><span class="p">(</span><span class="n">Frontogenesis</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a strengthening occluded front.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="OccludedFrontogenesis.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.OccludedFrontogenesis.html#metpy.plots.OccludedFrontogenesis.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OccludedFrontogenesis.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.OccludedFrontogenesis.html#metpy.plots.OccludedFrontogenesis.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_symbol_cycle</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="OccludedFrontogenesis.draw_path"><a class="viewcode-back" href="../../../api/generated/metpy.plots.OccludedFrontogenesis.html#metpy.plots.OccludedFrontogenesis.draw_path">[docs]</a>    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
+
+<div class="viewcode-block" id="OccludedFrontogenesis.draw_path">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.OccludedFrontogenesis.html#metpy.plots.OccludedFrontogenesis.draw_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the given path.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_symbol_cycle</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="p">)</span>  <span class="c1"># noqa: N803</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1052,14 +1097,20 @@ document.write(`
 <span class="k">class</span> <span class="nc">OccludedFrontolysis</span><span class="p">(</span><span class="n">Frontolysis</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a weakening occluded front.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="OccludedFrontolysis.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.OccludedFrontolysis.html#metpy.plots.OccludedFrontolysis.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OccludedFrontolysis.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.OccludedFrontolysis.html#metpy.plots.OccludedFrontolysis.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_symbol_cycle</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="OccludedFrontolysis.draw_path"><a class="viewcode-back" href="../../../api/generated/metpy.plots.OccludedFrontolysis.html#metpy.plots.OccludedFrontolysis.draw_path">[docs]</a>    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
+
+<div class="viewcode-block" id="OccludedFrontolysis.draw_path">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.OccludedFrontolysis.html#metpy.plots.OccludedFrontolysis.draw_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the given path.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_symbol_cycle</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="p">)</span>  <span class="c1"># noqa: N803</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1077,7 +1128,9 @@ document.write(`
 <span class="sd">    This line style is frequently used to represent a ridge axis.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RidgeAxis.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.RidgeAxis.html#metpy.plots.RidgeAxis.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<div class="viewcode-block" id="RidgeAxis.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.RidgeAxis.html#metpy.plots.RidgeAxis.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create ridge axis path effect.</span>
 
 <span class="sd">        Parameters</span>
@@ -1095,6 +1148,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">=</span> <span class="n">length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">color</span></div>
 
+
     <span class="k">def</span> <span class="nf">_override_gc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="n">renderer</span><span class="o">.</span><span class="n">new_gc</span><span class="p">()</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">copy_properties</span><span class="p">(</span><span class="n">gc</span><span class="p">)</span>
@@ -1102,7 +1156,9 @@ document.write(`
         <span class="n">ret</span><span class="o">.</span><span class="n">set_capstyle</span><span class="p">(</span><span class="s1">&#39;butt&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_gc</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="RidgeAxis.draw_path"><a class="viewcode-back" href="../../../api/generated/metpy.plots.RidgeAxis.html#metpy.plots.RidgeAxis.draw_path">[docs]</a>    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">tpath</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
+<div class="viewcode-block" id="RidgeAxis.draw_path">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.RidgeAxis.html#metpy.plots.RidgeAxis.draw_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">tpath</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the path with updated gc.&quot;&quot;&quot;</span>
         <span class="c1"># Do not modify the input! Use copy instead.</span>
         <span class="n">gc0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_override_gc</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
@@ -1188,13 +1244,16 @@ document.write(`
         <span class="n">gc0</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span></div>
 
 
+
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">Squall</span><span class="p">(</span><span class="n">mpatheffects</span><span class="o">.</span><span class="n">AbstractPathEffect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Squall line path effect.&quot;&quot;&quot;</span>
 
     <span class="n">symbol</span> <span class="o">=</span> <span class="n">mpath</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Squall.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Squall.html#metpy.plots.Squall.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">75</span><span class="p">):</span>
+<div class="viewcode-block" id="Squall.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.Squall.html#metpy.plots.Squall.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">75</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the squall line path effect.</span>
 
 <span class="sd">        Parameters</span>
@@ -1209,6 +1268,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span> <span class="o">=</span> <span class="n">spacing</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_symbol_width</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_process_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">path_trans</span><span class="p">):</span>
@@ -1263,7 +1323,9 @@ document.write(`
         <span class="c1"># Return the indices to the proper segment and the offset within that segment</span>
         <span class="k">return</span> <span class="n">marker_inds</span><span class="p">,</span> <span class="n">path_inds</span>
 
-<div class="viewcode-block" id="Squall.draw_path"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Squall.html#metpy.plots.Squall.draw_path">[docs]</a>    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
+<div class="viewcode-block" id="Squall.draw_path">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.Squall.html#metpy.plots.Squall.draw_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw path.&quot;&quot;&quot;</span>
         <span class="c1"># Set up a new graphics context for rendering the front effect; override the color</span>
         <span class="n">gc0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_override_gc</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
@@ -1297,6 +1359,7 @@ document.write(`
         <span class="n">gc0</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span></div>
 
 
+
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">StationaryFront</span><span class="p">(</span><span class="n">Front</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a stationary front as alternating cold and warm front segments.&quot;&quot;&quot;</span>
@@ -1304,7 +1367,9 @@ document.write(`
     <span class="n">_symbol</span> <span class="o">=</span> <span class="n">WarmFront</span><span class="o">.</span><span class="n">_symbol</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">mtransforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
     <span class="n">_symbol2</span> <span class="o">=</span> <span class="n">ColdFront</span><span class="o">.</span><span class="n">_symbol</span>
 
-<div class="viewcode-block" id="StationaryFront.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFront.html#metpy.plots.StationaryFront.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="StationaryFront.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFront.html#metpy.plots.StationaryFront.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a stationary front path effect.</span>
 
 <span class="sd">        This effect alternates between a warm front and cold front symbol.</span>
@@ -1326,6 +1391,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">mcolors</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">,</span> <span class="n">colors</span><span class="p">))</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
+
     <span class="k">def</span> <span class="nf">_get_path_segment_ends</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_offsets</span><span class="p">,</span> <span class="n">renderer</span><span class="p">):</span>
         <span class="c1"># Calculate increment of path length occupied by each marker drawn</span>
         <span class="n">inc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
@@ -1342,7 +1408,9 @@ document.write(`
         <span class="c1"># than the last.</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">segment_offsets</span><span class="p">,</span> <span class="n">path_offsets</span><span class="p">)</span>
 
-<div class="viewcode-block" id="StationaryFront.draw_path"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFront.html#metpy.plots.StationaryFront.draw_path">[docs]</a>    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
+<div class="viewcode-block" id="StationaryFront.draw_path">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFront.html#metpy.plots.StationaryFront.draw_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the given path.&quot;&quot;&quot;</span>
         <span class="n">gcs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_override_gc</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="n">color</span><span class="p">)</span> <span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gc_cycle</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span><span class="n">gcs</span><span class="p">)</span>
@@ -1378,6 +1446,7 @@ document.write(`
         <span class="n">gcs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span></div>
 
 
+
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">StationaryFrontogenesis</span><span class="p">(</span><span class="n">Frontogenesis</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a strengthening stationary front.&quot;&quot;&quot;</span>
@@ -1385,7 +1454,9 @@ document.write(`
     <span class="n">_symbol</span> <span class="o">=</span> <span class="n">WarmFront</span><span class="o">.</span><span class="n">_symbol</span>
     <span class="n">_symbol2</span> <span class="o">=</span> <span class="n">ColdFront</span><span class="o">.</span><span class="n">_symbol</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">mtransforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 
-<div class="viewcode-block" id="StationaryFrontogenesis.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFrontogenesis.html#metpy.plots.StationaryFrontogenesis.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="StationaryFrontogenesis.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFrontogenesis.html#metpy.plots.StationaryFrontogenesis.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a strengthening stationary front path effect.</span>
 
 <span class="sd">        This effect alternates between a warm front and cold front symbol.</span>
@@ -1407,7 +1478,10 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">mcolors</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">,</span> <span class="n">colors</span><span class="p">))</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StationaryFrontogenesis.draw_path"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFrontogenesis.html#metpy.plots.StationaryFrontogenesis.draw_path">[docs]</a>    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
+
+<div class="viewcode-block" id="StationaryFrontogenesis.draw_path">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFrontogenesis.html#metpy.plots.StationaryFrontogenesis.draw_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the given path.&quot;&quot;&quot;</span>
         <span class="n">gcs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_override_gc</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="n">color</span><span class="p">)</span> <span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gc_cycle</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span><span class="n">gcs</span><span class="p">)</span>
@@ -1442,6 +1516,7 @@ document.write(`
         <span class="n">gcs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span></div>
 
 
+
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">StationaryFrontolysis</span><span class="p">(</span><span class="n">Frontolysis</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a weakening stationary front..&quot;&quot;&quot;</span>
@@ -1449,7 +1524,9 @@ document.write(`
     <span class="n">_symbol</span> <span class="o">=</span> <span class="n">WarmFront</span><span class="o">.</span><span class="n">_symbol</span>
     <span class="n">_symbol2</span> <span class="o">=</span> <span class="n">ColdFront</span><span class="o">.</span><span class="n">_symbol</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">mtransforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 
-<div class="viewcode-block" id="StationaryFrontolysis.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFrontolysis.html#metpy.plots.StationaryFrontolysis.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="StationaryFrontolysis.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFrontolysis.html#metpy.plots.StationaryFrontolysis.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a weakening stationary front path effect.</span>
 
 <span class="sd">        This effect alternates between a warm front and cold front symbol.</span>
@@ -1477,7 +1554,10 @@ document.write(`
         <span class="p">]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StationaryFrontolysis.draw_path"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFrontolysis.html#metpy.plots.StationaryFrontolysis.draw_path">[docs]</a>    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
+
+<div class="viewcode-block" id="StationaryFrontolysis.draw_path">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationaryFrontolysis.html#metpy.plots.StationaryFrontolysis.draw_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the given path.&quot;&quot;&quot;</span>
         <span class="n">gcs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_override_gc</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="n">color</span><span class="p">)</span> <span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gc_cycle</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span><span class="n">gcs</span><span class="p">)</span>
@@ -1522,6 +1602,7 @@ document.write(`
                                <span class="n">mtransforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="n">gcs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span></div>
+
 </pre></div>
 
                 </article>
@@ -1574,7 +1655,7 @@ document.write(`
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

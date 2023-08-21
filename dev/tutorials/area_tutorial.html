@@ -41,11 +41,17 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -498,7 +504,7 @@ document.write(`
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="using-predefined-areas-with-metpy">
-<span id="sphx-glr-tutorials-area-tutorial-py"></span><h1>Using Predefined Areas with MetPy<a class="headerlink" href="#using-predefined-areas-with-metpy" title="Permalink to this heading">#</a></h1>
+<span id="sphx-glr-tutorials-area-tutorial-py"></span><h1>Using Predefined Areas with MetPy<a class="headerlink" href="#using-predefined-areas-with-metpy" title="Link to this heading">#</a></h1>
 <p>When plotting your data on a map you want to be able to plot the data in a useful area
 and with a projection that would match the areal extent well. Within MetPy we have generated
 more than 400 pre-defined areas that also have associated projections, which you can use to
@@ -517,7 +523,7 @@ accessible for any use of plotting data on a map using Cartopy.</p>
 </pre></div>
 </div>
 <section id="table-of-predefined-areas">
-<h2>Table of Predefined Areas<a class="headerlink" href="#table-of-predefined-areas" title="Permalink to this heading">#</a></h2>
+<h2>Table of Predefined Areas<a class="headerlink" href="#table-of-predefined-areas" title="Link to this heading">#</a></h2>
 <p>Here is a full list of all of the areas currently in MetPy with their reference name,
 descriptive name, and extent bounds.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;area      name                bounds&#39;</span><span class="p">)</span>
@@ -861,7 +867,7 @@ zw        ZIMBABWE            (25.0, 34.0, -22.9, -15.5)
 </div>
 </section>
 <section id="example-using-bounds-and-projection-for-an-area">
-<h2>Example Using Bounds and Projection for an Area<a class="headerlink" href="#example-using-bounds-and-projection-for-an-area" title="Permalink to this heading">#</a></h2>
+<h2>Example Using Bounds and Projection for an Area<a class="headerlink" href="#example-using-bounds-and-projection-for-an-area" title="Link to this heading">#</a></h2>
 <p>Each area string given in the table above have a descriptive name, extent bounds, and a
 projection associated with each entry. We can pull any of this information to help us make a
 plot over the area domain.</p>
@@ -886,7 +892,7 @@ plot over the area domain.</p>
 </div>
 <img src="../_images/sphx_glr_area_tutorial_001.png" srcset="../_images/sphx_glr_area_tutorial_001.png" alt="area=epac          name=E PACIFIC proj=PROJ ob_tran o_proj=latlon" class = "sphx-glr-single-img"/></section>
 <section id="examaple-using-declarative-syntax">
-<h2>Examaple Using Declarative Syntax<a class="headerlink" href="#examaple-using-declarative-syntax" title="Permalink to this heading">#</a></h2>
+<h2>Examaple Using Declarative Syntax<a class="headerlink" href="#examaple-using-declarative-syntax" title="Link to this heading">#</a></h2>
 <p>Here is an example using a predefined area with the declarative plotting syntax for plotting
 some surface observations.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the observation time</span>
@@ -928,7 +934,7 @@ some surface observations.</p>
 <a href="../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_area_tutorial_002.png" srcset="../_images/sphx_glr_area_tutorial_002.png" alt="Surface plot for 2019-07-01 12:00:00" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 12.557 seconds)</p>
+<img src="../_images/sphx_glr_area_tutorial_002.png" srcset="../_images/sphx_glr_area_tutorial_002.png" alt="Surface plot for 2019-07-01 12:00:00" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 20.798 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-area-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cc5c2e456e6d6cafc8e4243ba9db0272/area_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">area_tutorial.py</span></code></a></p>
@@ -1034,7 +1040,7 @@ some surface observations.</p>
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

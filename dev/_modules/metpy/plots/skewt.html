@@ -40,11 +40,17 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../../../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -718,7 +724,9 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SkewT.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">subplot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mf">80.5</span><span class="p">):</span>
+<div class="viewcode-block" id="SkewT.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">subplot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mf">80.5</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create SkewT - logP plots.</span>
 
 <span class="sd">        Parameters</span>
@@ -795,7 +803,10 @@ document.write(`
         <span class="c1"># Maintain a reasonable ratio of data limits.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="n">aspect</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SkewT.plot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SkewT.plot">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot data.</span>
 
 <span class="sd">        Simple wrapper around plot so that pressure is the first (independent)</span>
@@ -826,7 +837,10 @@ document.write(`
         <span class="n">t</span><span class="p">,</span> <span class="n">pressure</span> <span class="o">=</span> <span class="n">_delete_masked_points</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">pressure</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SkewT.plot_barbs"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_barbs">[docs]</a>    <span class="k">def</span> <span class="nf">plot_barbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xloc</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">x_clip_radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+
+<div class="viewcode-block" id="SkewT.plot_barbs">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_barbs">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_barbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xloc</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">x_clip_radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                    <span class="n">y_clip_radius</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot wind barbs.</span>
 
@@ -899,7 +913,10 @@ document.write(`
         <span class="n">b</span><span class="o">.</span><span class="n">set_clip_box</span><span class="p">(</span><span class="n">transforms</span><span class="o">.</span><span class="n">TransformedBbox</span><span class="p">(</span><span class="n">ax_bbox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">b</span></div>
 
-<div class="viewcode-block" id="SkewT.plot_dry_adiabats"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_dry_adiabats">[docs]</a>    <span class="k">def</span> <span class="nf">plot_dry_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SkewT.plot_dry_adiabats">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_dry_adiabats">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_dry_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot dry adiabats.</span>
 
 <span class="sd">        Adds dry adiabats (lines of constant potential temperature) to the</span>
@@ -957,7 +974,10 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span></div>
 
-<div class="viewcode-block" id="SkewT.plot_moist_adiabats"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_moist_adiabats">[docs]</a>    <span class="k">def</span> <span class="nf">plot_moist_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SkewT.plot_moist_adiabats">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_moist_adiabats">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_moist_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot moist adiabats.</span>
 
 <span class="sd">        Adds saturated pseudo-adiabats (lines of constant equivalent potential</span>
@@ -1016,7 +1036,10 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span></div>
 
-<div class="viewcode-block" id="SkewT.plot_mixing_lines"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_mixing_lines">[docs]</a>    <span class="k">def</span> <span class="nf">plot_mixing_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SkewT.plot_mixing_lines">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_mixing_lines">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_mixing_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot lines of constant mixing ratio.</span>
 
 <span class="sd">        Adds lines of constant mixing ratio (isohumes) to the</span>
@@ -1071,7 +1094,10 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">mixing_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mixing_lines</span></div>
 
-<div class="viewcode-block" id="SkewT.shade_area"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_area">[docs]</a>    <span class="k">def</span> <span class="nf">shade_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SkewT.shade_area">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">shade_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade area between two curves.</span>
 
 <span class="sd">        Shades areas between curves. Area can be where one is greater or less than the other</span>
@@ -1126,7 +1152,10 @@ document.write(`
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">,</span> <span class="o">**</span><span class="n">fill_args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SkewT.shade_cape"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_cape">[docs]</a>    <span class="k">def</span> <span class="nf">shade_cape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SkewT.shade_cape">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_cape">[docs]</a>
+    <span class="k">def</span> <span class="nf">shade_cape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade areas of Convective Available Potential Energy (CAPE).</span>
 
 <span class="sd">        Shades areas where the parcel is warmer than the environment (areas of positive</span>
@@ -1157,7 +1186,10 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shade_area</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SkewT.shade_cin"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_cin">[docs]</a>    <span class="k">def</span> <span class="nf">shade_cin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="n">dewpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SkewT.shade_cin">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_cin">[docs]</a>
+    <span class="k">def</span> <span class="nf">shade_cin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="n">dewpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade areas of Convective INhibition (CIN).</span>
 
 <span class="sd">        Shades areas where the parcel is cooler than the environment (areas of negative</span>
@@ -1197,6 +1229,7 @@ document.write(`
                                <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
+
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">Hodograph</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make a hodograph of wind data.</span>
@@ -1214,7 +1247,9 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Hodograph.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
+<div class="viewcode-block" id="Hodograph.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a Hodograph instance.</span>
 
 <span class="sd">        Parameters</span>
@@ -1238,7 +1273,10 @@ document.write(`
         <span class="c1"># == sqrt(2) * max_range, which is the distance at the corner</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_range</span> <span class="o">=</span> <span class="mf">1.4142135</span> <span class="o">*</span> <span class="n">component_range</span></div>
 
-<div class="viewcode-block" id="Hodograph.add_grid"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.add_grid">[docs]</a>    <span class="k">def</span> <span class="nf">add_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Hodograph.add_grid">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.add_grid">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add grid lines to hodograph.</span>
 
 <span class="sd">        Creates lines for the x- and y-axes, as well as circles denoting wind speed values.</span>
@@ -1279,6 +1317,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">grid_args</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">grid_args</span><span class="p">)</span></div>
 
+
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_form_line_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Simplify taking the default line style and extending with kwargs.&quot;&quot;&quot;</span>
@@ -1286,7 +1325,9 @@ document.write(`
         <span class="n">def_args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">def_args</span>
 
-<div class="viewcode-block" id="Hodograph.plot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Hodograph.plot">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.plot">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot u, v data.</span>
 
 <span class="sd">        Plots the wind data on the hodograph.</span>
@@ -1314,7 +1355,10 @@ document.write(`
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">_delete_masked_points</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">line_args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Hodograph.wind_vectors"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.wind_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">wind_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Hodograph.wind_vectors">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.wind_vectors">[docs]</a>
+    <span class="k">def</span> <span class="nf">wind_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot u, v data as wind vectors.</span>
 
 <span class="sd">        Plot the wind data as vectors for each level, beginning at the origin.</span>
@@ -1340,7 +1384,10 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">center_position</span><span class="p">,</span> <span class="n">center_position</span><span class="p">,</span>
                               <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">quiver_args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Hodograph.plot_colormapped"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.plot_colormapped">[docs]</a>    <span class="k">def</span> <span class="nf">plot_colormapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">intervals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Hodograph.plot_colormapped">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.plot_colormapped">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_colormapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">intervals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot u, v data, with line colored based on a third set of data.</span>
 
 <span class="sd">        Plots the wind data on the hodograph, but with a colormapped line. Takes a third</span>
@@ -1427,6 +1474,7 @@ document.write(`
         <span class="n">lc</span> <span class="o">=</span> <span class="n">colored_line</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">line_args</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">lc</span></div>
+
 </pre></div>
 
                 </article>
@@ -1479,7 +1527,7 @@ document.write(`
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

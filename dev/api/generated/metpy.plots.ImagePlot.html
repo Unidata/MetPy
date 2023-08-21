@@ -41,11 +41,17 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -718,10 +724,10 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="imageplot">
-<h1>ImagePlot<a class="headerlink" href="#imageplot" title="Permalink to this heading">#</a></h1>
+<h1>ImagePlot<a class="headerlink" href="#imageplot" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">ImagePlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">ImagePlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot" title="Link to this definition">#</a></dt>
 <dd><p>Make raster image using <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="(in Matplotlib v3.7.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imshow</span></code></a> for satellite or colored image.</p>
 <p class="rubric">Attributes Summary</p>
 <table class="autosummary longtable table autosummary">
@@ -880,7 +886,7 @@ document.write(`
 <p class="rubric">Attributes Documentation</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.colorbar">
-<span class="sig-name descname"><span class="pre">colorbar</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.colorbar" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">colorbar</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.colorbar" title="Link to this definition">#</a></dt>
 <dd><p>A string (horizontal/vertical) on whether to add a colorbar to the
 plot.</p>
 <p>To add a colorbar associated with the plot, set the trait to <code class="docutils literal notranslate"><span class="pre">horizontal</span></code> or
@@ -890,7 +896,7 @@ plot.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.colorbar_fontsize">
-<span class="sig-name descname"><span class="pre">colorbar_fontsize</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.colorbar_fontsize" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">colorbar_fontsize</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.colorbar_fontsize" title="Link to this definition">#</a></dt>
 <dd><p>An integer, float, or string value to set the font size of
 labels for the colorbar.</p>
 <p>This trait sets the font size of labels for the colorbar. Accepts size in points or
@@ -900,14 +906,14 @@ relative size. Allowed relative sizes are those of Matplotlib: ‘xx-small’, �
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.colormap">
-<span class="sig-name descname"><span class="pre">colormap</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.colormap" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">colormap</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.colormap" title="Link to this definition">#</a></dt>
 <dd><p>The string name for a Matplolib or MetPy colormap.</p>
 <p>For example, the Blue-Purple colormap from Matplotlib can be accessed using ‘BuPu’.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.cross_validation_lock">
-<span class="sig-name descname"><span class="pre">cross_validation_lock</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.cross_validation_lock" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">cross_validation_lock</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.cross_validation_lock" title="Link to this definition">#</a></dt>
 <dd><p>A contextmanager for running a block with our cross validation lock set
 to True.</p>
 <p>At the end of the block, the lock’s value is restored to its value
@@ -916,13 +922,13 @@ prior to entering the block.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.data">
-<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.data" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.data" title="Link to this definition">#</a></dt>
 <dd><p>Xarray dataset that contains the field to be plotted.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.field">
-<span class="sig-name descname"><span class="pre">field</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.field" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">field</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.field" title="Link to this definition">#</a></dt>
 <dd><p>Name of the field to be plotted.</p>
 <p>This is the name of the variable from the dataset that is to be plotted. An example,
 from a model grid file that uses the THREDDS convention for naming would be
@@ -934,13 +940,13 @@ variables with the following command assuming the dataset was read using xarray 
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.griddata">
-<span class="sig-name descname"><span class="pre">griddata</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.griddata" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">griddata</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.griddata" title="Link to this definition">#</a></dt>
 <dd><p>Return the internal cached data.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.image_range">
-<span class="sig-name descname"><span class="pre">image_range</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.image_range" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">image_range</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.image_range" title="Link to this definition">#</a></dt>
 <dd><p>A tuple of min and max values that represent the range of values
 to color the rasterized image.</p>
 <p>The min and max values entered as a tuple will be converted to a
@@ -949,7 +955,7 @@ to color the rasterized image.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.latitude">
-<span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.latitude" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.latitude" title="Link to this definition">#</a></dt>
 <dd><p>The latitude coordinate of the field to be plotted.</p>
 <p>This is a value with units to choose a desired latitude coordinate. For example,
 selecting a point or transect through 40 degrees north, set this parameter to
@@ -959,7 +965,7 @@ dimension coordinate.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.level">
-<span class="sig-name descname"><span class="pre">level</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.level" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">level</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.level" title="Link to this definition">#</a></dt>
 <dd><p>The level of the field to be plotted.</p>
 <p>This is a value with units to choose a desired plot level. For example, selecting the
 850-hPa level, set this parameter to <code class="docutils literal notranslate"><span class="pre">850</span> <span class="pre">*</span> <span class="pre">units.hPa</span></code>. Note that this requires your
@@ -968,7 +974,7 @@ data to have a vertical dimension coordinate.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.longitude">
-<span class="sig-name descname"><span class="pre">longitude</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.longitude" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">longitude</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.longitude" title="Link to this definition">#</a></dt>
 <dd><p>The longitude coordinate of the field to be plotted.</p>
 <p>This is a value with units to choose a desired longitude coordinate. For example,
 selecting a point or transect through 95 degrees west, set this parameter to
@@ -978,13 +984,13 @@ dimension coordinate.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.name">
-<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.name" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.name" title="Link to this definition">#</a></dt>
 <dd><p>Generate a name for the plot.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.parent">
-<span class="sig-name descname"><span class="pre">parent</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.parent" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">parent</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.parent" title="Link to this definition">#</a></dt>
 <dd><p>A trait whose value must be an instance of a specified class.</p>
 <p>The value can also be an instance of a subclass of the specified class.</p>
 <p>Subclasses can declare default classes by overriding the klass attribute</p>
@@ -992,7 +998,7 @@ dimension coordinate.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.plot_units">
-<span class="sig-name descname"><span class="pre">plot_units</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.plot_units" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot_units</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.plot_units" title="Link to this definition">#</a></dt>
 <dd><p>The desired units to plot the field in.</p>
 <p>Setting this attribute will convert the units of the field variable to the given units for
 plotting using the MetPy Units module.</p>
@@ -1000,14 +1006,14 @@ plotting using the MetPy Units module.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.plotdata">
-<span class="sig-name descname"><span class="pre">plotdata</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.plotdata" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plotdata</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.plotdata" title="Link to this definition">#</a></dt>
 <dd><p>Return the data for plotting.</p>
 <p>The two dimension coordinates and the data array</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.scale">
-<span class="sig-name descname"><span class="pre">scale</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.scale" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">scale</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.scale" title="Link to this definition">#</a></dt>
 <dd><p>Scale the field to be plotted by the value given.</p>
 <p>This attribute will scale the field by multiplying by the scale. For example, to
 scale vorticity to be whole values for contouring you could set the scale to 1e5, such that
@@ -1016,7 +1022,7 @@ the data values will be multiplied by 10^5.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.smooth_contour">
-<span class="sig-name descname"><span class="pre">smooth_contour</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.smooth_contour" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">smooth_contour</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.smooth_contour" title="Link to this definition">#</a></dt>
 <dd><p>Spline interpolation to smooth contours.</p>
 <p>This attribute requires settings for the <a class="reference internal" href="metpy.calc.zoom_xarray.html#metpy.calc.zoom_xarray" title="metpy.calc.zoom_xarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.calc.zoom_xarray</span></code></a> function, which will
 produce a spline interpolation given an integer zoom factor. Either a single integer
@@ -1033,7 +1039,7 @@ has a large grid spacing).</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.smooth_field">
-<span class="sig-name descname"><span class="pre">smooth_field</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.smooth_field" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">smooth_field</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.smooth_field" title="Link to this definition">#</a></dt>
 <dd><p>Number of smoothing passes using 9-pt smoother.</p>
 <p>By setting this parameter with an integer value it will call the MetPy 9-pt smoother and
 provide a smoothed field for plotting. It is best to use this smoothing for data with
@@ -1046,7 +1052,7 @@ finer resolutions (e.g., smaller grid spacings with a lot of grid points).</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.time">
-<span class="sig-name descname"><span class="pre">time</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.time" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">time</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.time" title="Link to this definition">#</a></dt>
 <dd><p>Set the valid time to be plotted as a datetime object.</p>
 <p>If a forecast hour is to be plotted the time should be set to the valid future time, which
 can be done using the <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timedelta</span></code></a> objects
@@ -1056,7 +1062,7 @@ dimension coordinate.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.x">
-<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.x" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.x" title="Link to this definition">#</a></dt>
 <dd><p>The x coordinate of the field to be plotted.</p>
 <p>This is a value with units to choose a desired x coordinate. For example, selecting a
 point or transect through the projection origin, set this parameter to
@@ -1065,7 +1071,7 @@ point or transect through the projection origin, set this parameter to
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.y">
-<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.y" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.y" title="Link to this definition">#</a></dt>
 <dd><p>The y coordinate of the field to be plotted.</p>
 <p>This is a value with units to choose a desired x coordinate. For example, selecting a
 point or transect through the projection origin, set this parameter to
@@ -1075,32 +1081,32 @@ point or transect through the projection origin, set this parameter to
 <p class="rubric">Methods Documentation</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.__init__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.__init__" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.add_traits">
-<span class="sig-name descname"><span class="pre">add_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">traits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.add_traits" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">add_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">traits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.add_traits" title="Link to this definition">#</a></dt>
 <dd><p>Dynamically add trait attributes to the HasTraits instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.class_own_trait_events">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_own_trait_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_own_trait_events" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_own_trait_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_own_trait_events" title="Link to this definition">#</a></dt>
 <dd><p>Get a dict of all event handlers defined on this class, not a parent.</p>
 <p>Works like <code class="docutils literal notranslate"><span class="pre">event_handlers</span></code>, except for excluding traits from parents.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.class_own_traits">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_own_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_own_traits" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_own_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_own_traits" title="Link to this definition">#</a></dt>
 <dd><p>Get a dict of all the traitlets defined on this class, not a parent.</p>
 <p>Works like <a class="reference internal" href="#metpy.plots.ImagePlot.class_traits" title="metpy.plots.ImagePlot.class_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_traits</span></code></a>, except for excluding traits from parents.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.class_trait_names">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_trait_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_trait_names" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_trait_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_trait_names" title="Link to this definition">#</a></dt>
 <dd><p>Get a list of all the names of this class’ traits.</p>
 <p>This method is just like the <a class="reference internal" href="#metpy.plots.ImagePlot.trait_names" title="metpy.plots.ImagePlot.trait_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trait_names()</span></code></a> method,
 but is unbound.</p>
@@ -1108,7 +1114,7 @@ but is unbound.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.class_traits">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_traits" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_traits" title="Link to this definition">#</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.  The dictionary
 is keyed on the name and the values are the TraitType objects.</p>
 <p>This method is just like the <a class="reference internal" href="#metpy.plots.ImagePlot.traits" title="metpy.plots.ImagePlot.traits"><code class="xref py py-meth docutils literal notranslate"><span class="pre">traits()</span></code></a> method, but is unbound.</p>
@@ -1124,44 +1130,44 @@ to the function.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.clear" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.clear" title="Link to this definition">#</a></dt>
 <dd><p>Clear the plot.</p>
 <p>Resets all internal state and sets need for redraw.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.clear_collections">
-<span class="sig-name descname"><span class="pre">clear_collections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.clear_collections" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">clear_collections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.clear_collections" title="Link to this definition">#</a></dt>
 <dd><p>Clear the handle collections to the plot instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.clear_handle">
-<span class="sig-name descname"><span class="pre">clear_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.clear_handle" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">clear_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.clear_handle" title="Link to this definition">#</a></dt>
 <dd><p>Clear the handle to the plot instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.copy" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.copy" title="Link to this definition">#</a></dt>
 <dd><p>Return a copy of the plot.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.draw">
-<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.draw" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.draw" title="Link to this definition">#</a></dt>
 <dd><p>Draw the plot.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.has_trait">
-<span class="sig-name descname"><span class="pre">has_trait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.has_trait" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">has_trait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.has_trait" title="Link to this definition">#</a></dt>
 <dd><p>Returns True if the object has a trait with the specified name.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.hold_trait_notifications">
-<span class="sig-name descname"><span class="pre">hold_trait_notifications</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.hold_trait_notifications" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">hold_trait_notifications</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.hold_trait_notifications" title="Link to this definition">#</a></dt>
 <dd><p>Context manager for bundling trait change notifications and cross
 validation.</p>
 <p>Use this when doing multiple trait assignments (init, config), to avoid
@@ -1171,13 +1177,13 @@ All trait notifications will fire after all values have been assigned.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.notify_change">
-<span class="sig-name descname"><span class="pre">notify_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">change</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.notify_change" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">notify_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">change</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.notify_change" title="Link to this definition">#</a></dt>
 <dd><p>Notify observers of a change event</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.observe">
-<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'change'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.observe" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'change'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.observe" title="Link to this definition">#</a></dt>
 <dd><p>Setup a handler to be called when a trait changes.</p>
 <p>This is used to setup dynamic notifications of trait changes.</p>
 <dl class="field-list simple">
@@ -1205,7 +1211,7 @@ notifications are passed to the observe handler.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.on_trait_change">
-<span class="sig-name descname"><span class="pre">on_trait_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.on_trait_change" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">on_trait_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.on_trait_change" title="Link to this definition">#</a></dt>
 <dd><p>DEPRECATED: Setup a handler to be called when a trait changes.</p>
 <p>This is used to setup dynamic notifications of trait changes.</p>
 <p>Static handlers can be created by creating methods on a HasTraits
@@ -1233,19 +1239,19 @@ then unintall it.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.set_trait">
-<span class="sig-name descname"><span class="pre">set_trait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.set_trait" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">set_trait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.set_trait" title="Link to this definition">#</a></dt>
 <dd><p>Forcibly sets trait attribute, including read-only attributes.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.setup_instance">
-<span class="sig-name descname"><span class="pre">setup_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.setup_instance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">setup_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.setup_instance" title="Link to this definition">#</a></dt>
 <dd><p>This is called <strong>before</strong> self.__init__ is called.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.trait_defaults">
-<span class="sig-name descname"><span class="pre">trait_defaults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_defaults" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">trait_defaults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_defaults" title="Link to this definition">#</a></dt>
 <dd><p>Return a trait’s default value or a dictionary of them</p>
 <p class="rubric">Notes</p>
 <p>Dynamically generated default values may
@@ -1254,7 +1260,7 @@ depend on the current state of the object.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.trait_events">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trait_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_events" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trait_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_events" title="Link to this definition">#</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1269,7 +1275,7 @@ the event handlers of this class will be returned instead.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.trait_has_value">
-<span class="sig-name descname"><span class="pre">trait_has_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_has_value" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">trait_has_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_has_value" title="Link to this definition">#</a></dt>
 <dd><p>Returns True if the specified trait has a value.</p>
 <p>This will return false even if <code class="docutils literal notranslate"><span class="pre">getattr</span></code> would return a
 dynamically generated default value. These default values
@@ -1289,19 +1295,19 @@ generated.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.trait_metadata">
-<span class="sig-name descname"><span class="pre">trait_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traitname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_metadata" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">trait_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traitname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_metadata" title="Link to this definition">#</a></dt>
 <dd><p>Get metadata values for trait by key.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.trait_names">
-<span class="sig-name descname"><span class="pre">trait_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_names" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">trait_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_names" title="Link to this definition">#</a></dt>
 <dd><p>Get a list of all the names of this class’ traits.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.trait_values">
-<span class="sig-name descname"><span class="pre">trait_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_values" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">trait_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_values" title="Link to this definition">#</a></dt>
 <dd><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of trait names and their values.</p>
 <p>The metadata kwargs allow functions to be passed in which
 filter traits based on metadata values.  The functions should
@@ -1322,7 +1328,7 @@ absence of a trait value in the result <code class="docutils literal notranslate
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.traits">
-<span class="sig-name descname"><span class="pre">traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.traits" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.traits" title="Link to this definition">#</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.  The dictionary
 is keyed on the name and the values are the TraitType objects.</p>
 <p>The TraitTypes returned don’t know anything about the values
@@ -1337,7 +1343,7 @@ to the function.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.unobserve">
-<span class="sig-name descname"><span class="pre">unobserve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'change'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.unobserve" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">unobserve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'change'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.unobserve" title="Link to this definition">#</a></dt>
 <dd><p>Remove a trait change handler.</p>
 <p>This is used to unregister handlers to trait change notifications.</p>
 <dl class="field-list simple">
@@ -1356,7 +1362,7 @@ is uninstalled from the list of notifiers corresponding to all types.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.ImagePlot.unobserve_all">
-<span class="sig-name descname"><span class="pre">unobserve_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.unobserve_all" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">unobserve_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.unobserve_all" title="Link to this definition">#</a></dt>
 <dd><p>Remove trait change handlers of any type for the specified name.
 If name is not specified, removes all trait notifiers.</p>
 </dd></dl>
@@ -1364,7 +1370,7 @@ If name is not specified, removes all trait notifiers.</p>
 </dd></dl>
 
 <section id="examples-using-metpy-plots-imageplot">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.ImagePlot</span></code><a class="headerlink" href="#examples-using-metpy-plots-imageplot" title="Permalink to this heading">#</a></h2>
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.ImagePlot</span></code><a class="headerlink" href="#examples-using-metpy-plots-imageplot" title="Link to this heading">#</a></h2>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface."><img alt="" src="../../_images/sphx_glr_Simplified_Image_Plot_thumb.png" />
 <p><a class="reference internal" href="../../examples/plots/Simplified_Image_Plot.html#sphx-glr-examples-plots-simplified-image-plot-py"><span class="std std-ref">Simple Plotting</span></a></p>
   <div class="sphx-glr-thumbnail-title">Simple Plotting</div>
@@ -1516,7 +1522,7 @@ If name is not specified, removes all trait notifiers.</p>
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

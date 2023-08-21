@@ -41,11 +41,17 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -719,10 +725,10 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="moist-lapse">
-<h1>moist_lapse<a class="headerlink" href="#moist-lapse" title="Permalink to this heading">#</a></h1>
+<h1>moist_lapse<a class="headerlink" href="#moist-lapse" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.moist_lapse">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">moist_lapse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_pressure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.moist_lapse" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">moist_lapse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_pressure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.moist_lapse" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the temperature at a level assuming liquid saturation processes.</p>
 <p>This function lifts a parcel starting at <em class="xref py py-obj">temperature</em>. The starting pressure can
 be given by <em class="xref py py-obj">reference_pressure</em>. Essentially, this function is calculating moist
@@ -773,7 +779,7 @@ grids).</p>
 </dd></dl>
 
 <section id="examples-using-metpy-calc-moist-lapse">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.moist_lapse</span></code><a class="headerlink" href="#examples-using-metpy-calc-moist-lapse" title="Permalink to this heading">#</a></h2>
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.moist_lapse</span></code><a class="headerlink" href="#examples-using-metpy-calc-moist-lapse" title="Link to this heading">#</a></h2>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc to perform calculations for a rising and sinking parcel."><img alt="" src="../../_images/sphx_glr_Mountain_Problem_thumb.png" />
 <p><a class="reference internal" href="../../examples/calculations/Mountain_Problem.html#sphx-glr-examples-calculations-mountain-problem-py"><span class="std std-ref">Mountain Problem</span></a></p>
   <div class="sphx-glr-thumbnail-title">Mountain Problem</div>
@@ -872,7 +878,7 @@ grids).</p>
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

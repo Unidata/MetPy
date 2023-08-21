@@ -41,11 +41,17 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -475,9 +481,9 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="metpy-roadmap">
-<h1>MetPy Roadmap<a class="headerlink" href="#metpy-roadmap" title="Permalink to this heading">#</a></h1>
+<h1>MetPy Roadmap<a class="headerlink" href="#metpy-roadmap" title="Link to this heading">#</a></h1>
 <section id="goal">
-<h2>Goal<a class="headerlink" href="#goal" title="Permalink to this heading">#</a></h2>
+<h2>Goal<a class="headerlink" href="#goal" title="Link to this heading">#</a></h2>
 <p>MetPy’s goal is to provide the domain-specific tools for building meteorological and
 atmospheric science applications in Python. This means supporting scripted workflows, like
 those done previously using GEMPAK, NCL, etc. MetPy’s functionality is not limited to
@@ -486,7 +492,7 @@ applications as well. Our focus on providing the domain-specific tools means tha
 functionality is moved upstream (to e.g. matplotlib, xarray) whenever sensible and possible.</p>
 </section>
 <section id="plans">
-<h2>Plans<a class="headerlink" href="#plans" title="Permalink to this heading">#</a></h2>
+<h2>Plans<a class="headerlink" href="#plans" title="Link to this heading">#</a></h2>
 <p>We enumerate here general plans for how we plan to advance MetPy over the next couple of years.
 We have intentionally avoided assigning dates to any of these, acknowledging our complete
 inability to estimate time and level of effort, as well as because our priorities are flexible
@@ -501,7 +507,7 @@ of MetPy, visit the <a class="reference external" href="https://github.com/Unida
 These represent our best idea of what’s planned for a specific upcoming version, though are
 subject to rapid change as release dates approach.</p>
 <section id="declarative-plotting">
-<h3>Declarative Plotting<a class="headerlink" href="#declarative-plotting" title="Permalink to this heading">#</a></h3>
+<h3>Declarative Plotting<a class="headerlink" href="#declarative-plotting" title="Link to this heading">#</a></h3>
 <p>One of GEMPAK’s successes is the simplicity with which plots can be created. Part of this
 simplicity is enforced by the interface to GEMPAK: setting variables. MetPy 0.10 introduced the
 simplified plotting interface to begin to replicate this, with initial support for image and
@@ -521,7 +527,7 @@ instead, to aim for simplicity of the interface while replicating GEMPAK’s cap
 being able to do what is needed for most common use cases.</p>
 </section>
 <section id="xarray-integration-and-unit-handling">
-<h3>Xarray Integration and Unit Handling<a class="headerlink" href="#xarray-integration-and-unit-handling" title="Permalink to this heading">#</a></h3>
+<h3>Xarray Integration and Unit Handling<a class="headerlink" href="#xarray-integration-and-unit-handling" title="Link to this heading">#</a></h3>
 <p>This item is the most important to having stable interfaces in advance of a 1.0 release of
 MetPy. Xarray has quickly proven to be a capable data model on which to base MetPy’s handling
 of gridded data (tabular/point data will likely use pandas). MetPy’s unit-handling based on
@@ -546,7 +552,7 @@ This is a 1.0 item because many calculations involving coordinate information wi
 change to simplify their interfaces.</p>
 </section>
 <section id="calculations">
-<h3>Calculations<a class="headerlink" href="#calculations" title="Permalink to this heading">#</a></h3>
+<h3>Calculations<a class="headerlink" href="#calculations" title="Link to this heading">#</a></h3>
 <p>In addition to the work at the calculation infrastructure level, we have identified some
 specific calculations that are necessary to consider MetPy a solution to the majority of the
 problems users previously solved with GEMPAK:</p>
@@ -574,7 +580,7 @@ still exist for challenging cases. The solver will also enable the plotting of d
 quantities through the simplified plotting interface.</p>
 </section>
 <section id="file-format-support">
-<h3>File Format Support<a class="headerlink" href="#file-format-support" title="Permalink to this heading">#</a></h3>
+<h3>File Format Support<a class="headerlink" href="#file-format-support" title="Link to this heading">#</a></h3>
 <p>MetPy’s file format support is an important part of its feature set, and we want to continue to
 expand the set of formats to which MetPy facilitates access. This also fits with filling
 GEMPAK’s feature set, since its support for a variety of data formats was important to its
@@ -602,7 +608,7 @@ aircraft reconnaissance, frontal positions). Support is planned, but considered 
 those formats above.</p>
 </section>
 <section id="other-items">
-<h3>Other Items<a class="headerlink" href="#other-items" title="Permalink to this heading">#</a></h3>
+<h3>Other Items<a class="headerlink" href="#other-items" title="Link to this heading">#</a></h3>
 <p>Here are a few more items that did not fit above:</p>
 <ul class="simple">
 <li><p>Performance optimization</p>
@@ -717,7 +723,7 @@ been promising, though.</p></li>
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

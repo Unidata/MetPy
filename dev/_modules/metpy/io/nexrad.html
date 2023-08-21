@@ -40,11 +40,17 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../../../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -612,7 +618,9 @@ document.write(`
     <span class="n">MISSING</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
     <span class="n">RANGE_FOLD</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>  <span class="c1"># TODO: Need to separate from missing</span>
 
-<div class="viewcode-block" id="Level2File.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.Level2File.html#metpy.io.Level2File.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">has_volume_header</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Level2File.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.Level2File.html#metpy.io.Level2File.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">has_volume_header</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create instance of `Level2File`.</span>
 
 <span class="sd">        Parameters</span>
@@ -648,6 +656,7 @@ document.write(`
 
         <span class="c1"># Now we&#39;re all initialized, we can proceed with reading in data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_data</span><span class="p">()</span></div>
+
 
     <span class="n">vol_hdr_fmt</span> <span class="o">=</span> <span class="n">NamedStruct</span><span class="p">([(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="s1">&#39;9s&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;vol_num&#39;</span><span class="p">,</span> <span class="s1">&#39;3s&#39;</span><span class="p">),</span>
                                <span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;time_ms&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;stid&#39;</span><span class="p">,</span> <span class="s1">&#39;4s&#39;</span><span class="p">)],</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;VolHdr&#39;</span><span class="p">)</span>
@@ -2095,7 +2104,9 @@ document.write(`
                            <span class="p">((</span><span class="s1">&#39;el_angle&#39;</span><span class="p">,</span> <span class="n">scaled_elem</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)),</span>
                             <span class="p">(</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))}</span>
 
-<div class="viewcode-block" id="Level3File.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.Level3File.html#metpy.io.Level3File.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Level3File.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.Level3File.html#metpy.io.Level3File.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create instance of `Level3File`.</span>
 
 <span class="sd">        Parameters</span>
@@ -2255,6 +2266,7 @@ document.write(`
             <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: Using default metadata for product </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">code</span><span class="p">)</span></div>
 
+
     <span class="k">def</span> <span class="nf">_process_wmo_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Read off the WMO header if necessary</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">get_next</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
@@ -2282,10 +2294,13 @@ document.write(`
             <span class="n">unpacked</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">val</span><span class="p">]</span> <span class="o">*</span> <span class="n">num</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">unpacked</span>
 
-<div class="viewcode-block" id="Level3File.pos_scale"><a class="viewcode-back" href="../../../api/generated/metpy.io.Level3File.html#metpy.io.Level3File.pos_scale">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Level3File.pos_scale">
+<a class="viewcode-back" href="../../../api/generated/metpy.io.Level3File.html#metpy.io.Level3File.pos_scale">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">pos_scale</span><span class="p">(</span><span class="n">is_sym_block</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Scale of the position information in km.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mf">0.25</span> <span class="k">if</span> <span class="n">is_sym_block</span> <span class="k">else</span> <span class="mi">1</span></div>
+
 
     <span class="k">def</span> <span class="nf">_unpack_rcm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">jump_to</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
@@ -2952,7 +2967,7 @@ document.write(`
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

@@ -40,11 +40,17 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../../../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -485,7 +491,9 @@ document.write(`
                       <span class="s1">&#39;ESE&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;SSE&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;S2&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;SSW&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span>
                       <span class="s1">&#39;WSW&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;W2&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;WNW&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;NNW&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)}</span>
 
-<div class="viewcode-block" id="StationPlot.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="StationPlot.__init__">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the StationPlot with items that do not change.</span>
 
 <span class="sd">        This sets up the axes and station locations. The `fontsize` and `spacing`</span>
@@ -525,7 +533,10 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">arrows</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span></div>
 
-<div class="viewcode-block" id="StationPlot.plot_symbol"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_symbol">[docs]</a>    <span class="k">def</span> <span class="nf">plot_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">codes</span><span class="p">,</span> <span class="n">symbol_mapper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StationPlot.plot_symbol">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_symbol">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">codes</span><span class="p">,</span> <span class="n">symbol_mapper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;At the specified location in the station model plot a set of symbols.</span>
 
 <span class="sd">        This specifies that at the offset `location`, the data in `codes` should be</span>
@@ -620,7 +631,10 @@ document.write(`
         <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;fontproperties&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wx_symbol_font</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">codes</span><span class="p">,</span> <span class="n">symbol_mapper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StationPlot.plot_parameter"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_parameter">[docs]</a>    <span class="k">def</span> <span class="nf">plot_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="s1">&#39;.0f&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StationPlot.plot_parameter">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_parameter">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="s1">&#39;.0f&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;At the specified location in the station model plot a set of values.</span>
 
 <span class="sd">        This specifies that at the offset `location`, the data in `parameter` should be</span>
@@ -663,7 +677,10 @@ document.write(`
         <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_string_list</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">formatter</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_text</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StationPlot.plot_text"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_text">[docs]</a>    <span class="k">def</span> <span class="nf">plot_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StationPlot.plot_text">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_text">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;At the specified location in the station model plot a collection of text.</span>
 
 <span class="sd">        This specifies that at the offset `location`, the strings in `text` should be</span>
@@ -702,7 +719,10 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="n">text_collection</span>
         <span class="k">return</span> <span class="n">text_collection</span></div>
 
-<div class="viewcode-block" id="StationPlot.plot_barb"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_barb">[docs]</a>    <span class="k">def</span> <span class="nf">plot_barb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StationPlot.plot_barb">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_barb">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_barb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;At the center of the station model plot wind barbs.</span>
 
 <span class="sd">        Additional keyword arguments given will be passed onto matplotlib&#39;s</span>
@@ -745,7 +765,10 @@ document.write(`
 
         <span class="bp">self</span><span class="o">.</span><span class="n">barbs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">defaults</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StationPlot.plot_arrow"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_arrow">[docs]</a>    <span class="k">def</span> <span class="nf">plot_arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StationPlot.plot_arrow">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_arrow">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;At the center of the station model plot wind arrows.</span>
 
 <span class="sd">        Additional keyword arguments given will be passed onto matplotlib&#39;s</span>
@@ -783,6 +806,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">arrows</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">arrows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">defaults</span><span class="p">)</span></div>
+
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_vector_plotting_units</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">plotting_units</span><span class="p">):</span>
@@ -871,7 +895,9 @@ document.write(`
         <span class="n">text</span> <span class="o">=</span> <span class="mi">3</span>
         <span class="n">barb</span> <span class="o">=</span> <span class="mi">4</span>
 
-<div class="viewcode-block" id="StationPlotLayout.add_value"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.add_value">[docs]</a>    <span class="k">def</span> <span class="nf">add_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.0f&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="StationPlotLayout.add_value">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.add_value">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.0f&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a numeric value to the station layout.</span>
 
 <span class="sd">        This specifies that at the offset `location`, data should be pulled from the data</span>
@@ -909,7 +935,10 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="StationPlotLayout.add_symbol"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.add_symbol">[docs]</a>    <span class="k">def</span> <span class="nf">add_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">symbol_mapper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StationPlotLayout.add_symbol">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.add_symbol">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">symbol_mapper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a symbol to the station layout.</span>
 
 <span class="sd">        This specifies that at the offset `location`, data should be pulled from the data</span>
@@ -943,7 +972,10 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">symbol_mapper</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="StationPlotLayout.add_text"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.add_text">[docs]</a>    <span class="k">def</span> <span class="nf">add_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StationPlotLayout.add_text">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.add_text">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a text field to the  station layout.</span>
 
 <span class="sd">        This specifies that at the offset `location`, data should be pulled from the data</span>
@@ -972,7 +1004,10 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StationPlotLayout.add_barb"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.add_barb">[docs]</a>    <span class="k">def</span> <span class="nf">add_barb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_name</span><span class="p">,</span> <span class="n">v_name</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StationPlotLayout.add_barb">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.add_barb">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_barb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_name</span><span class="p">,</span> <span class="n">v_name</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a wind barb to the center of the station layout.</span>
 
 <span class="sd">        This specifies that u- and v-component data should be pulled from the data</span>
@@ -1007,7 +1042,10 @@ document.write(`
         <span class="c1"># but it seems simpler than making name code in plot handle tuples</span>
         <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;barb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">barb</span><span class="p">,</span> <span class="p">(</span><span class="n">u_name</span><span class="p">,</span> <span class="n">v_name</span><span class="p">),</span> <span class="p">(</span><span class="n">units</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="StationPlotLayout.names"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.names">[docs]</a>    <span class="k">def</span> <span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StationPlotLayout.names">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.names">[docs]</a>
+    <span class="k">def</span> <span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the list of names used by the layout.</span>
 
 <span class="sd">        Returns</span>
@@ -1024,7 +1062,10 @@ document.write(`
                 <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">ret</span></div>
 
-<div class="viewcode-block" id="StationPlotLayout.plot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plotter</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StationPlotLayout.plot">
+<a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.plot">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plotter</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot a collection of data using this layout for a station plot.</span>
 
 <span class="sd">        This function iterates through the entire specified layout, pulling the fields named</span>
@@ -1073,6 +1114,7 @@ document.write(`
                         <span class="n">plotter</span><span class="o">.</span><span class="n">plot_symbol</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mapper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
                         <span class="n">plotter</span><span class="o">.</span><span class="n">plot_text</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return string representation of layout.&quot;&quot;&quot;</span>
@@ -1166,7 +1208,7 @@ document.write(`
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>

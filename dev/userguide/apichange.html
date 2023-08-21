@@ -41,11 +41,17 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3be93e3"></script>
+    <script src="../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -493,7 +499,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="metpy-1-0-api-changes">
-<h1>MetPy 1.0 API Changes<a class="headerlink" href="#metpy-1-0-api-changes" title="Permalink to this heading">#</a></h1>
+<h1>MetPy 1.0 API Changes<a class="headerlink" href="#metpy-1-0-api-changes" title="Link to this heading">#</a></h1>
 <p>This is the overview of the changes to MetPy’s programming interface that are coming with the
 1.0 release of MetPy. These include changes made to unify and clarify MetPy’s API to be more
 consistent throughout. Changes are categorized to help you find breakages and see how your
@@ -501,7 +507,7 @@ code might need to change in upgrading to MetPy 1.0. You might find some functio
 categories. You can search this page for some of your commonly used functions to find any
 relevant breakages you might encounter.</p>
 <section id="xarray-support-for-function-input-output">
-<h2>Xarray support for function input/output<a class="headerlink" href="#xarray-support-for-function-input-output" title="Permalink to this heading">#</a></h2>
+<h2>Xarray support for function input/output<a class="headerlink" href="#xarray-support-for-function-input-output" title="Link to this heading">#</a></h2>
 <p>One of the most important changes you may run into is that many of the functions in
 <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> would have only returned <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> even when provided
 <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.8.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>. Now, MetPy will properly return a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.8.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataArray</span></code></a> when
@@ -509,7 +515,7 @@ provided one where able, except where otherwise explicitly stated. See the
 <a class="reference internal" href="../tutorials/xarray_tutorial.html"><span class="doc">MetPy xarray tutorial</span></a> for more information.</p>
 </section>
 <section id="positional-argument-name-changes">
-<h2>Positional argument name changes<a class="headerlink" href="#positional-argument-name-changes" title="Permalink to this heading">#</a></h2>
+<h2>Positional argument name changes<a class="headerlink" href="#positional-argument-name-changes" title="Link to this heading">#</a></h2>
 <p>Many of the functions in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> have had changes to the names of their positional
 arguments to make parameter names consistent among functions and make the documentation of
 parameters clearer for users. Functions in your code with only this change will be unaffected
@@ -779,7 +785,7 @@ expanded as <code class="docutils literal notranslate"><span class="pre">wind_di
 </div>
 </section>
 <section id="keyword-only-argument-name-changes">
-<h2>Keyword-only argument name changes<a class="headerlink" href="#keyword-only-argument-name-changes" title="Permalink to this heading">#</a></h2>
+<h2>Keyword-only argument name changes<a class="headerlink" href="#keyword-only-argument-name-changes" title="Link to this heading">#</a></h2>
 <p>Similar to the <a class="reference internal" href="#positional-argument-name-changes">positional argument name changes</a> above, some of the functions in
 <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> have had names changed for keyword-only arguments. If you have specified
 any of the affected parameters in your code, these functions will break with the upgrade to
@@ -818,7 +824,7 @@ MetPy 1.0. For example,</p>
 </div>
 </section>
 <section id="new-keyword-only-arguments">
-<h2>New keyword-only arguments<a class="headerlink" href="#new-keyword-only-arguments" title="Permalink to this heading">#</a></h2>
+<h2>New keyword-only arguments<a class="headerlink" href="#new-keyword-only-arguments" title="Link to this heading">#</a></h2>
 <p>The following functions have had some of their positional or optional arguments changed to
 keyword-only arguments. As such, any use of these positionally, e.g.</p>
 <pre class="literal-block">vorticity(u, v, <strong>my_dx_values</strong>, <strong>my_dy_values</strong>)</pre>
@@ -857,7 +863,7 @@ keyword-only arguments. As such, any use of these positionally, e.g.</p>
 </div>
 </section>
 <section id="parameter-re-ordering">
-<h2>Parameter re-ordering<a class="headerlink" href="#parameter-re-ordering" title="Permalink to this heading">#</a></h2>
+<h2>Parameter re-ordering<a class="headerlink" href="#parameter-re-ordering" title="Link to this heading">#</a></h2>
 <p>Some functions in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> have had the ordering of their arguments rearranged.
 If you are specifying values positionally, e.g.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mixing_ratio_from_relative_humidity</span><span class="p">(</span><span class="mi">75</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">,</span> <span class="mf">1013.25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
@@ -935,7 +941,7 @@ however, e.g.</p>
 </div>
 </section>
 <section id="deltas-and-grid-specification">
-<h2>Deltas and grid specification<a class="headerlink" href="#deltas-and-grid-specification" title="Permalink to this heading">#</a></h2>
+<h2>Deltas and grid specification<a class="headerlink" href="#deltas-and-grid-specification" title="Link to this heading">#</a></h2>
 <p>Many of the functions in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> relating to vorticity and advection require
 information about the space between your data points. MetPy has generally standardized the
 interface for these functions to more explicitly receive dimension information and ordering
@@ -1044,7 +1050,7 @@ information.</p>
 </div>
 </section>
 <section id="latitude-and-f">
-<h2>Latitude and f<a class="headerlink" href="#latitude-and-f" title="Permalink to this heading">#</a></h2>
+<h2>Latitude and f<a class="headerlink" href="#latitude-and-f" title="Link to this heading">#</a></h2>
 <p>In MetPy 1.0, <a class="reference internal" href="../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="metpy.calc.geostrophic_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">geostrophic_wind()</span></code></a> and <a class="reference internal" href="../api/generated/metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind" title="metpy.calc.ageostrophic_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">ageostrophic_wind()</span></code></a>
 have been changed to expect <code class="docutils literal notranslate"><span class="pre">latitude</span></code> instead of the coriolis parameter <code class="docutils literal notranslate"><span class="pre">f</span></code>, where we
 will calculate <code class="docutils literal notranslate"><span class="pre">f</span></code> using <a class="reference internal" href="../api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter" title="metpy.calc.coriolis_parameter"><code class="xref py py-func docutils literal notranslate"><span class="pre">coriolis_parameter()</span></code></a>. These have also been
@@ -1071,7 +1077,7 @@ taken from your latitude coordinate information, if possible.</p>
 </div>
 </section>
 <section id="moved-renamed-miscellaneous">
-<h2>Moved, renamed, miscellaneous<a class="headerlink" href="#moved-renamed-miscellaneous" title="Permalink to this heading">#</a></h2>
+<h2>Moved, renamed, miscellaneous<a class="headerlink" href="#moved-renamed-miscellaneous" title="Link to this heading">#</a></h2>
 <p>Functions that have been moved, replaced, or had their function signatures drastically altered.</p>
 <div class="api-table docutils container">
 <table class="table">
@@ -1216,7 +1222,7 @@ taken from your latitude coordinate information, if possible.</p>
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.2.
     <br/>
   </p>
 </div>
