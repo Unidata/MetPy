@@ -14,7 +14,9 @@ advanced sounding plotter with a clean layout & high readability.
 
 import matplotlib.pyplot as plt
 import pandas as pd
+
 import numpy as np
+
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
 from metpy.plots import add_metpy_logo, Hodograph, SkewT
@@ -346,7 +348,7 @@ skewleg = skew.ax.legend(loc='upper left')
 hodoleg = h.ax.legend(loc='upper left')
 
 # add a plot title
-plt.figtext(0.40, 0.92,  'OUN | MAY 4TH 1999 - 00Z VERTICAL PROFILE',
+plt.figtext(0.40, 0.92, 'OUN | MAY 4TH 1999 - 00Z VERTICAL PROFILE',
             weight='bold', fontsize=20, ha='center')
 
 # Show the plot
