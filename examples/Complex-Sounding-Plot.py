@@ -30,7 +30,7 @@ df = pd.read_fwf(get_test_data('may4_sounding.txt', as_file_obj=False),
                  skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
 # Drop any rows with all NaN values for T, Td, winds
-df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'), 
+df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'),
                how='all').reset_index(drop=True)
 
 ###########################################
@@ -183,10 +183,10 @@ h.ax.set_ylabel(' ')
 plt.xticks(np.arange(0, 0, 1))
 plt.yticks(np.arange(0, 0, 1))
 for i in range(10, 120, 10):
-    h.ax.annotate(str(i), (i,0), xytext=(0,2), textcoords='offset pixels', 
+    h.ax.annotate(str(i), (i, 0), xytext=(0, 2), textcoords='offset pixels',
                   clip_on=True, fontsize=10, weight='bold', alpha=0.3, zorder=0)
 for i in range(10, 120, 10):
-    h.ax.annotate(str(i), (0,i), xytext=(0, 2), textcoords='offset pixels', 
+    h.ax.annotate(str(i), (0, i), xytext=(0, 2), textcoords='offset pixels',
                   clip_on=True, fontsize=10, weight='bold', alpha=0.3, zorder=0)
 
 # plot the hodograph itself, using plot_colormapped, colored
@@ -194,13 +194,13 @@ for i in range(10, 120, 10):
 h.plot_colormapped(u, v, c=z, linewidth=6, label='0-12km WIND')
 # compute Bunkers storm motion so we can plot it on the hodograph!
 RM, LM, MW = mpcalc.bunkers_storm_motion(p, u, v, z)
-h.ax.text((RM[0].m + 0.5), (RM[1].m - 0.5), 'RM', weight='bold', ha='left', 
+h.ax.text((RM[0].m + 0.5), (RM[1].m - 0.5), 'RM', weight='bold', ha='left',
           fontsize=13, alpha=0.6)
-h.ax.text((LM[0].m + 0.5), (LM[1].m - 0.5), 'LM', weight='bold', ha='left', 
+h.ax.text((LM[0].m + 0.5), (LM[1].m - 0.5), 'LM', weight='bold', ha='left',
           fontsize=13, alpha=0.6)
-h.ax.text((MW[0].m + 0.5), (MW[1].m - 0.5), 'MW', weight='bold', ha='left', 
+h.ax.text((MW[0].m + 0.5), (MW[1].m - 0.5), 'MW', weight='bold', ha='left',
           fontsize=13, alpha=0.6)
-h.ax.arrow(0, 0, RM[0].m - 0.3, RM[1].m - 0.3, linewidth=2, color='black', 
+h.ax.arrow(0, 0, RM[0].m - 0.3, RM[1].m - 0.3, linewidth=2, color='black',
            alpha=0.2, label='Bunkers RM Vector',
            length_includes_head=True, head_width=2)
 
@@ -213,8 +213,8 @@ h.ax.arrow(0, 0, RM[0].m - 0.3, RM[1].m - 0.3, linewidth=2, color='black',
 # functionality to add some simple layout for plotting calculated parameters
 #                                  xloc   yloc   xsize  ysize
 fig.patches.extend([plt.Rectangle((0.513, 0.00), 0.334, 0.37,
-                                  edgecolor='black', facecolor='white', 
-                                  linewidth=1, alpha=1, transform=fig.transFigure, 
+                                  edgecolor='black', facecolor='white',
+                                  linewidth=1, alpha=1, transform=fig.transFigure,
                                   figure=fig)])
 
 # now lets take a moment to calculate some simple severe-weather parameters using
@@ -242,11 +242,11 @@ sbcape, sbcin = mpcalc.surface_based_cape_cin(p, T, Td)
 
 # Compute SRH
 (u_storm, v_storm), *_ = mpcalc.bunkers_storm_motion(p, u, v, z)
-*_, total_helicity1 = mpcalc.storm_relative_helicity(z, u, v, depth=1 * units.km, 
+*_, total_helicity1 = mpcalc.storm_relative_helicity(z, u, v, depth=1 * units.km,
                                                      storm_u=u_storm, storm_v=v_storm)
-*_, total_helicity3 = mpcalc.storm_relative_helicity(z, u, v, depth=3 * units.km, 
+*_, total_helicity3 = mpcalc.storm_relative_helicity(z, u, v, depth=3 * units.km,
                                                      storm_u=u_storm, storm_v=v_storm)
-*_, total_helicity6 = mpcalc.storm_relative_helicity(z, u, v, depth=6 * units.km, 
+*_, total_helicity6 = mpcalc.storm_relative_helicity(z, u, v, depth=6 * units.km,
                                                      storm_u=u_storm, storm_v=v_storm)
 
 # Copmute Bulk Shear components and then magnitude
@@ -267,86 +267,86 @@ super_comp = mpcalc.supercell_composite(mucape, total_helicity3, bshear3)
 # there is a lot we can do with this data operationally, so lets plot some of
 # these values right on the plot, in the box we made
 # first lets plot some thermodynamic parameters
-plt.figtext(0.53, 0.32, 'SBCAPE: ', weight='bold', fontsize=15, 
+plt.figtext(0.53, 0.32, 'SBCAPE: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.66, 0.32, f'{int(sbcape.m)} J/kg', weight='bold', 
+plt.figtext(0.66, 0.32, f'{int(sbcape.m)} J/kg', weight='bold',
             fontsize=15, color='orangered', ha='right')
-plt.figtext(0.53, 0.29, 'SBCIN: ', weight='bold', 
+plt.figtext(0.53, 0.29, 'SBCIN: ', weight='bold',
             fontsize=15, color='black', ha='left')
-plt.figtext(0.66, 0.29, f'{int(sbcin.m)} J/kg', weight='bold', 
+plt.figtext(0.66, 0.29, f'{int(sbcin.m)} J/kg', weight='bold',
             fontsize=15, color='lightblue', ha='right')
 
-plt.figtext(0.53, 0.24, 'MLCAPE: ', weight='bold', fontsize=15, 
+plt.figtext(0.53, 0.24, 'MLCAPE: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.66, 0.24, f'{int(mlcape.m)} J/kg', weight='bold', 
+plt.figtext(0.66, 0.24, f'{int(mlcape.m)} J/kg', weight='bold',
             fontsize=15, color='orangered', ha='right')
-plt.figtext(0.53, 0.21, 'MLCIN: ', weight='bold', fontsize=15, 
+plt.figtext(0.53, 0.21, 'MLCIN: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.66, 0.21, f'{int(mlcin.m)} J/kg', weight='bold', 
+plt.figtext(0.66, 0.21, f'{int(mlcin.m)} J/kg', weight='bold',
             fontsize=15, color='lightblue', ha='right')
 
-plt.figtext(0.53, 0.16, 'MUCAPE: ', weight='bold', fontsize=15, 
+plt.figtext(0.53, 0.16, 'MUCAPE: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.66, 0.16, f'{int(mucape.m)} J/kg', weight='bold', 
+plt.figtext(0.66, 0.16, f'{int(mucape.m)} J/kg', weight='bold',
             fontsize=15, color='orangered', ha='right')
-plt.figtext(0.53, 0.13, 'MUCIN: ', weight='bold', fontsize=15, 
+plt.figtext(0.53, 0.13, 'MUCIN: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.66, 0.13, f'{int(mucin.m)} J/kg', weight='bold', 
+plt.figtext(0.66, 0.13, f'{int(mucin.m)} J/kg', weight='bold',
             fontsize=15, color='lightblue', ha='right')
 
-plt.figtext(0.53, 0.08, 'TT-INDEX: ', weight='bold', fontsize=15, 
+plt.figtext(0.53, 0.08, 'TT-INDEX: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.66, 0.08, f'{int(total_totals.m)} Δ°C', weight='bold', 
+plt.figtext(0.66, 0.08, f'{int(total_totals.m)} Δ°C', weight='bold',
             fontsize=15, color='orangered', ha='right')
-plt.figtext(0.53, 0.05, 'K-INDEX: ', weight='bold', fontsize=15, 
+plt.figtext(0.53, 0.05, 'K-INDEX: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.66, 0.05, f'{int(kindex.m)} °C', weight='bold', 
+plt.figtext(0.66, 0.05, f'{int(kindex.m)} °C', weight='bold',
             fontsize=15, color='orangered', ha='right')
 
 # now some kinematic parameters
 met_per_sec = (units.m * units.m) / (units.sec * units.sec)
-plt.figtext( 0.68, 0.32, '0-1km SRH: ', weight='bold', fontsize=15, 
+plt.figtext(0.68, 0.32, '0-1km SRH: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext( 0.83, 0.32, f'{int(total_helicity1.m)* met_per_sec:~P}', 
+plt.figtext(0.83, 0.32, f'{int(total_helicity1.m)* met_per_sec:~P}',
             weight='bold', fontsize=15, color='navy', ha='right')
-plt.figtext( 0.68, 0.29, '0-1km SHEAR: ', weight='bold', fontsize=15, 
+plt.figtext(0.68, 0.29, '0-1km SHEAR: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext( 0.83, 0.29, f'{int(bshear1.m)} kts', weight='bold', 
+plt.figtext(0.83, 0.29, f'{int(bshear1.m)} kts', weight='bold',
             fontsize=15, color='blue', ha='right')
 
-plt.figtext( 0.68, 0.24, '0-3km SRH: ', weight='bold', fontsize=15, 
+plt.figtext(0.68, 0.24, '0-3km SRH: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext( 0.83, 0.24, f'{int(total_helicity3.m)* met_per_sec:~P}', 
+plt.figtext(0.83, 0.24, f'{int(total_helicity3.m)* met_per_sec:~P}',
             weight='bold', fontsize=15, color='navy', ha='right')
-plt.figtext( 0.68, 0.21, '0-3km SHEAR: ', weight='bold', fontsize=15, 
+plt.figtext(0.68, 0.21, '0-3km SHEAR: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext( 0.83, 0.21, f'{int(bshear3.m)} kts', weight='bold', 
+plt.figtext(0.83, 0.21, f'{int(bshear3.m)} kts', weight='bold',
             fontsize=15, color='blue', ha='right')
 
-plt.figtext( 0.68, 0.16, '0-6km SRH: ', weight='bold', fontsize=15, 
+plt.figtext(0.68, 0.16, '0-6km SRH: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext( 0.83, 0.16, f'{int(total_helicity6.m)* met_per_sec:~P}', 
+plt.figtext(0.83, 0.16, f'{int(total_helicity6.m)* met_per_sec:~P}',
             weight='bold', fontsize=15, color='navy', ha='right')
-plt.figtext( 0.68, 0.13, '0-6km SHEAR: ', weight='bold', fontsize=15, 
+plt.figtext(0.68, 0.13, '0-6km SHEAR: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext( 0.83, 0.13, f'{int(bshear6.m)} kts', weight='bold', 
+plt.figtext(0.83, 0.13, f'{int(bshear6.m)} kts', weight='bold',
             fontsize=15, color='blue', ha='right')
 
-plt.figtext( 0.68, 0.08, 'SIG TORNADO: ', weight='bold', fontsize=15, 
+plt.figtext(0.68, 0.08, 'SIG TORNADO: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext( 0.83, 0.08, f'{int(sig_tor.m)}', weight='bold', fontsize=15, 
+plt.figtext(0.83, 0.08, f'{int(sig_tor.m)}', weight='bold', fontsize=15,
             color='orangered', ha='right')
-plt.figtext( 0.68, 0.05, 'SUPERCELL COMP: ', weight='bold', fontsize=15, 
+plt.figtext(0.68, 0.05, 'SUPERCELL COMP: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext( 0.83, 0.05, f'{int(super_comp.m)}', weight='bold', fontsize=15, 
+plt.figtext(0.83, 0.05, f'{int(super_comp.m)}', weight='bold', fontsize=15,
             color='orangered', ha='right')
 
 # add legends to the skew and hodo
-skewleg = skew.ax.legend(loc = 'upper left')
-hodoleg = h.ax.legend(loc = 'upper left')
+skewleg = skew.ax.legend(loc='upper left')
+hodoleg = h.ax.legend(loc='upper left')
 
 # add a plot title
-plt.figtext( 0.40, 0.92,  f'OUN | MAY 4TH 1999 - 00Z VERTICAL PROFILE', 
+plt.figtext(0.40, 0.92,  'OUN | MAY 4TH 1999 - 00Z VERTICAL PROFILE',
             weight='bold', fontsize=20, ha='center')
 
 # Show the plot
