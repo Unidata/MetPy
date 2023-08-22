@@ -14,7 +14,6 @@ advanced sounding plotter with a clean layout & high readability.
 
 import matplotlib.pyplot as plt
 import pandas as pd
-
 import numpy as np
 
 import metpy.calc as mpcalc
