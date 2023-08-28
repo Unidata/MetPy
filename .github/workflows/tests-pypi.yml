@@ -40,7 +40,7 @@ jobs:
     - name: Checkout source
       uses: actions/checkout@v3
       with:
-        fetch-depth: 100
+        fetch-depth: 150
         fetch-tags: true
 
     - name: Generate minimum dependencies
