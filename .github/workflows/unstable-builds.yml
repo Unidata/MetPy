@@ -16,14 +16,11 @@ jobs:
     outputs:
       result: ${{ steps.tests.outcome }}
     steps:
-    # We check out only a limited depth and then pull tags to save time
     - name: Checkout source
       uses: actions/checkout@v3
       with:
         fetch-depth: 100
-
-    - name: Get tags
-      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        fetch-tags: true
 
     - name: Assemble test requirements
       run: |
@@ -59,14 +56,11 @@ jobs:
     outputs:
       result: ${{ steps.build.outcome }}
     steps:
-    # We check out only a limited depth and then pull tags to save time
     - name: Checkout source
       uses: actions/checkout@v3
       with:
         fetch-depth: 100
-
-    - name: Get tags
-      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        fetch-tags: true
 
     - name: Assemble doc requirements
       run: |
