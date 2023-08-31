@@ -368,7 +368,7 @@ def test_declarative_contour_options():
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.082)
 @needs_cartopy
 def test_declarative_layers_plot_options():
-    """Test making a contour plot."""
+    """Test declarative layer options of edgecolor and linewidth."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
 
     contour = ContourPlot()
@@ -385,6 +385,39 @@ def test_declarative_layers_plot_options():
     panel.layers = ['coastline', 'usstates', 'borders']
     panel.layers_edgecolor = ['blue', 'red', 'black']
     panel.layers_linewidth = [0.75, 0.75, 1]
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.0)
+@needs_cartopy
+def test_declarative_additional_layers_plot_options():
+    """Test additional declarative layer options of linestyle, zorder, and alpha."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Temperature'
+    contour.level = 700 * units.hPa
+    contour.contours = 5
+    contour.linewidth = 1
+    contour.linecolor = 'grey'
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'usstates', 'borders', 'lakes', 'rivers']
+    panel.layers_edgecolor = ['blue', 'red', 'black', None, 'water']
+    panel.layers_linewidth = [0.75, 0.75, 1, 1, 1]
+    panel.layers_linestyle = ['solid', 'dotted', 'dashed', 'dotted']
+    panel.layers_alpha = [1, .5, .75, 1]
+    panel.layers_zorder = [1, 1, 1, -1, -1]
     panel.plots = [contour]
 
     pc = PanelContainer()
