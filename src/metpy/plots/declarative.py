@@ -58,11 +58,10 @@ def lookup_map_feature(feature_name):
 
 def plot_kwargs(data):
     """Set the keyword arguments for MapPanel plotting."""
+    kwargs = collections.defaultdict(list)
     if hasattr(data.metpy, 'cartopy_crs'):
         # Conditionally add cartopy transform if we are on a map.
-        kwargs = {'transform': data.metpy.cartopy_crs}
-    else:
-        kwargs = {}
+        kwargs['transform'] = data.metpy.cartopy_crs    
     return kwargs
 
 
@@ -102,6 +101,8 @@ class MetPyHasTraits(HasTraits):
             lambda name: not (name in dir(HasTraits) or name.startswith('_')),
             dir(type(self))
         )
+    
+    mpl_args = Union([Dict(), Int(), Float(), Unicode()])
 
 
 class Panel(MetPyHasTraits):
