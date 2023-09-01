@@ -1116,7 +1116,7 @@ def test_first_derivative_xarray_time_subsecond_precision():
                            coords={'time': np.array(['2019-01-01T00:00:00.0',
                                                      '2019-01-01T00:00:00.1',
                                                      '2019-01-01T00:00:00.2'],
-                                                    dtype='datetime64[ms]')},
+                                                    dtype='datetime64[ns]')},
                            attrs={'units': 'kelvin'})
 
     deriv = first_derivative(test_da)
