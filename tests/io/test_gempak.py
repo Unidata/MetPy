@@ -159,18 +159,14 @@ def test_unmerged_sigw_pressure_sounding():
 
 def test_standard_surface():
     """Test to read a standard surface file."""
-    def dtparse(string):
-        return datetime.strptime(string, '%y%m%d/%H%M')
-
     skip = ['text', 'spcl']
 
     gsf = GempakSurface(get_test_data('gem_std.sfc'))
     gstns = gsf.sfjson()
 
-    gempak = pd.read_csv(get_test_data('gem_std.csv'),
-                         index_col=['STN', 'YYMMDD/HHMM'],
-                         parse_dates=['YYMMDD/HHMM'],
-                         date_parser=dtparse)
+    gempak = pd.read_csv(get_test_data('gem_std.csv'))
+    gempak['YYMMDD/HHMM'] = pd.to_datetime(gempak['YYMMDD/HHMM'], format='%y%m%d/%H%M')
+    gempak = gempak.set_index(['STN', 'YYMMDD/HHMM'])
 
     for stn in gstns:
         idx_key = (stn['properties']['station_id'],
@@ -184,17 +180,13 @@ def test_standard_surface():
 
 def test_ship_surface():
     """Test to read a ship surface file."""
-    def dtparse(string):
-        return datetime.strptime(string, '%y%m%d/%H%M')
-
     skip = ['text', 'spcl']
 
     gsf = GempakSurface(get_test_data('gem_ship.sfc'))
 
-    gempak = pd.read_csv(get_test_data('gem_ship.csv'),
-                         index_col=['STN', 'YYMMDD/HHMM'],
-                         parse_dates=['YYMMDD/HHMM'],
-                         date_parser=dtparse)
+    gempak = pd.read_csv(get_test_data('gem_ship.csv'))
+    gempak['YYMMDD/HHMM'] = pd.to_datetime(gempak['YYMMDD/HHMM'], format='%y%m%d/%H%M')
+    gempak = gempak.set_index(['STN', 'YYMMDD/HHMM'])
     gempak.sort_index(inplace=True)
 
     uidx = gempak.index.unique()

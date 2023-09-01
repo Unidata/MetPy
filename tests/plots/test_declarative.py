@@ -1194,6 +1194,14 @@ def sample_obs():
                         columns=['time', 'stid', 'pressure', 'temperature', 'dewpoint'])
 
 
+@pytest.fixture()
+def pandas_sfc():
+    """Open sample pandas data."""
+    df = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False))
+    df['valid'] = pd.to_datetime(df['valid'], format='%Y-%m-%d %H:%M:%S')
+    return df
+
+
 def test_plotobs_subset_default_nolevel(sample_obs):
     """Test PlotObs subsetting with minimal config."""
     obs = PlotObs()
@@ -1284,19 +1292,16 @@ def test_plotobs_subset_time_window_level(sample_obs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
-def test_plotobs_units_with_formatter(ccrs):
+def test_plotobs_units_with_formatter(ccrs, pandas_sfc):
     """Test using PlotObs with a field that both has units and a custom formatter."""
-    df = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                     infer_datetime_format=True, parse_dates=['valid'])
-
     # Catch warning from Pandas due to setting units
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', UserWarning)
-        df.units = {'alti': 'inHg'}
+        pandas_sfc.units = {'alti': 'inHg'}
 
     # Plot desired data
     obs = PlotObs()
-    obs.data = df
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.time_window = timedelta(minutes=15)
     obs.level = None
@@ -1324,13 +1329,10 @@ def test_plotobs_units_with_formatter(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.025)
-def test_declarative_sfc_obs(ccrs):
+def test_declarative_sfc_obs(ccrs, pandas_sfc):
     """Test making a surface observation plot."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.time_window = timedelta(minutes=15)
     obs.level = None
@@ -1356,13 +1358,10 @@ def test_declarative_sfc_obs(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.025)
-def test_declarative_sfc_obs_args(ccrs):
+def test_declarative_sfc_obs_args(ccrs, pandas_sfc):
     """Test making a surface observation plot with mpl arguments."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.time_window = timedelta(minutes=15)
     obs.level = None
@@ -1390,13 +1389,10 @@ def test_declarative_sfc_obs_args(ccrs):
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
 @needs_cartopy
-def test_declarative_sfc_text():
+def test_declarative_sfc_text(pandas_sfc):
     """Test making a surface observation plot with text."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.time_window = timedelta(minutes=15)
     obs.level = None
@@ -1423,13 +1419,10 @@ def test_declarative_sfc_text():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.025)
-def test_declarative_sfc_obs_changes(ccrs):
+def test_declarative_sfc_obs_changes(ccrs, pandas_sfc):
     """Test making a surface observation plot, changing the field."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.level = None
     obs.fields = ['tmpf']
@@ -1459,13 +1452,10 @@ def test_declarative_sfc_obs_changes(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.171)
-def test_declarative_colored_barbs(ccrs):
+def test_declarative_colored_barbs(ccrs, pandas_sfc):
     """Test making a surface plot with a colored barb (gh-1274)."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 13)
     obs.level = None
     obs.vector_field = ('uwind', 'vwind')
@@ -1491,13 +1481,10 @@ def test_declarative_colored_barbs(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.305)
-def test_declarative_sfc_obs_full(ccrs):
+def test_declarative_sfc_obs_full(ccrs, pandas_sfc):
     """Test making a full surface observation plot."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 13)
     obs.time_window = timedelta(minutes=15)
     obs.level = None
@@ -1608,14 +1595,12 @@ def test_declarative_upa_obs_convert_barb_units():
     return pc.figure
 
 
-def test_attribute_error_time(ccrs):
+def test_attribute_error_time(ccrs, pandas_sfc):
     """Make sure we get a useful error when the time variable is not found."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-    data.rename(columns={'valid': 'vtime'}, inplace=True)
+    pandas_sfc.rename(columns={'valid': 'vtime'}, inplace=True)
 
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.level = None
     obs.fields = ['tmpf']
@@ -1639,14 +1624,12 @@ def test_attribute_error_time(ccrs):
         pc.draw()
 
 
-def test_attribute_error_station(ccrs):
+def test_attribute_error_station(ccrs, pandas_sfc):
     """Make sure we get a useful error when the station variable is not found."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-    data.rename(columns={'station': 'location'}, inplace=True)
+    pandas_sfc.rename(columns={'station': 'location'}, inplace=True)
 
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.level = None
     obs.fields = ['tmpf']

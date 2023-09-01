@@ -829,6 +829,9 @@ def smooth_gaussian(scalar_grid, n):
     num_ax = len(scalar_grid.shape)
     # Assume the last two axes represent the horizontal directions
     sgma_seq = [sgma if i > num_ax - 3 else 0 for i in range(num_ax)]
+    # Drop units as necessary to avoid warnings from scipy doing so--units will be reattached
+    # if necessary by wrapper
+    scalar_grid = getattr(scalar_grid, 'magnitude', scalar_grid)
 
     filter_args = {'sigma': sgma_seq, 'truncate': 2 * np.sqrt(2)}
     if hasattr(scalar_grid, 'mask'):
