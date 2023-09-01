@@ -103,6 +103,7 @@ norecursedirs = "build docs .idea"
 doctest_optionflags = "NORMALIZE_WHITESPACE"
 mpl-results-path = "test_output"
 xfail_strict = true
+filterwarnings = ["ignore:numpy.ndarray size changed:RuntimeWarning"]
 
 [tool.ruff]
 line-length = 95
