@@ -99,114 +99,6 @@ def remap_status(val):
     return status | bad
 
 
-# Migrate the unpacker class from the core python repository
-class Unpacker:
-    """Unpacks various data representations from the given buffer."""
-
-    def __init__(self, data):
-        self.reset(data)
-
-    def reset(self, data):
-        """Reset the class."""
-        self.__buf = data
-        self.__pos = 0
-
-    def done(self):
-        """Check to see if done."""
-        if self.__pos < len(self.__buf):
-            raise Error('unextracted data remains')
-
-    def unpack_uint(self):
-        """Unpack uint."""
-        i = self.__pos
-        self.__pos = j = i + 4
-        data = self.__buf[i:j]
-        return struct.unpack('>L', data)[0]
-
-    def unpack_int(self):
-        """Unpack an int."""
-        i = self.__pos
-        self.__pos = j = i + 4
-        data = self.__buf[i:j]
-        if len(data) < 4:
-            raise EOFError
-        return struct.unpack('>l', data)[0]
-
-    unpack_enum = unpack_int
-
-    def unpack_hyper(self):
-        """Unpack hyper."""
-        x = self.unpack_uhyper()
-        if x >= 0x8000000000000000:
-            x = x - 0x10000000000000000
-        return x
-
-    def unpack_float(self):
-        """Unpack a float."""
-        i = self.__pos
-        self.__pos = j = i + 4
-        data = self.__buf[i:j]
-        if len(data) < 4:
-            raise EOFError
-        return struct.unpack('>f', data)[0]
-
-    def unpack_fstring(self, n):
-        """Unpack an fstring."""
-        if n < 0:
-            raise ValueError('fstring size must be nonnegative')
-        i = self.__pos
-        j = i + (n + 3) // 4 * 4
-        if j > len(self.__buf):
-            raise EOFError
-        self.__pos = j
-        return self.__buf[i: i + n]
-
-    unpack_fopaque = unpack_fstring
-
-    def unpack_string(self):
-        """Unpack a string."""
-        n = self.unpack_uint()
-        return self.unpack_fstring(n)
-
-    unpack_opaque = unpack_string
-    unpack_bytes = unpack_string
-
-    def unpack_farray(self, n, unpack_item):
-        """Unpack an farray."""
-        unpacked_list = []
-        for _i in range(n):
-            unpacked_list.append(unpack_item())
-        return unpacked_list
-
-    def unpack_array(self, unpack_item):
-        """Unpack an array."""
-        n = self.unpack_uint()
-        return self.unpack_farray(n, unpack_item)
-
-
-# Exceptions from the cpython xdrlib module
-class Error(Exception):
-    """Exception class for this module.
-
-    except xdrlib.Error as var:
-        # var has the Error instance for the exception
-
-    Public ivars:
-        msg -- contains the message
-
-    """
-
-    def __init__(self, msg):
-        self.msg = msg
-
-
-# Conversion error class from the cpython xdrlib module
-class ConversionError(Error):
-    """Class for handling conversion errors."""
-
-    pass
-
-
 START_ELEVATION = 0x1
 END_ELEVATION = 0x2
 START_VOLUME = 0x4
@@ -2408,11 +2300,37 @@ class Level3File:
                   0xba07: _unpack_packet_raster_data}
 
 
-class Level3XDRParser(Unpacker):
+class Level3XDRParser:
     """Handle XDR-formatted Level 3 NEXRAD products."""
 
+    def __init__(self, data):
+        """Initialize the parser with a buffer for the bytes."""
+        self._buf = IOBuffer(data)
+
+    def unpack_uint(self):
+        """Unpack a 4-byte unsigned integer."""
+        return self._buf.read_int(4, 'big', False)
+
+    def unpack_int(self):
+        """Unpack a 4-byte signed integer."""
+        return self._buf.read_int(4, 'big', True)
+
+    def unpack_float(self):
+        """Unpack a 4-byte floating-point value."""
+        return self._buf.read_binary(1, '>f')[0]
+
+    def unpack_string(self):
+        """Unpack a string."""
+        n = self.unpack_uint()
+        return self._buf.read_ascii((n + 3) // 4 * 4)[:n]
+
+    def unpack_int_array(self):
+        """Unpack an int array."""
+        n = self.unpack_uint()
+        return self._buf.read_binary(n, '>l')
+
     def __call__(self, code):
-        """Perform the actual unpacking."""
+        """Perform the actual product unpacking."""
         xdr = OrderedDict()
 
         if code == 28:
@@ -2421,12 +2339,10 @@ class Level3XDRParser(Unpacker):
             log.warning('XDR: code %d not implemented', code)
 
         # Check that we got it all
-        self.done()
-        return xdr
+        if not self._buf.at_end():
+            log.warning('Data remains in XDR buffer.')
 
-    def unpack_string(self):
-        """Unpack the internal data as a string."""
-        return Unpacker.unpack_string(self).decode('ascii')
+        return xdr
 
     def _unpack_prod_desc(self):
         xdr = OrderedDict()
@@ -2522,7 +2438,7 @@ class Level3XDRParser(Unpacker):
                                              width=self.unpack_float(),
                                              num_bins=self.unpack_int(),
                                              attributes=self.unpack_string(),
-                                             data=self.unpack_array(self.unpack_int)))
+                                             data=self.unpack_int_array()))
         return ret._replace(radials=rads)
 
     text_fmt = namedtuple('TextComponent', ['parameters', 'text'])
