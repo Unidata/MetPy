@@ -16,7 +16,7 @@ jobs:
     if: github.event.pull_request.merged && contains( github.event.pull_request.labels.*.name, 'backport' )
     steps:
       - name: Checkout PR HEAD
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 100
