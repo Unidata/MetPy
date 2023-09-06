@@ -14,8 +14,8 @@ import matplotlib.patheffects as patheffects
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe, TraitError,
-                       Tuple, Unicode, Union, validate)
+from traitlets import (Any, Bool, Dict, Float, HasTraits, Instance, Int, List, observe,
+                       TraitError, Tuple, Unicode, Union, validate)
 
 from . import ctables, wx_symbols
 from ._mpl import TextCollection
@@ -825,8 +825,12 @@ class PlotScalar(Plots2D):
             if getattr(self, 'handle', None) is None:
                 self._build()
             if getattr(self, 'colorbar', None) is not None:
-                cbar = self.parent.ax.figure.colorbar(
-                    self.handle, orientation=self.colorbar, pad=0, aspect=50)
+                if isinstance(self.colorbar, dict):
+                    cbar = self.parent.ax.figure.colorbar(
+                        self.handle, **self.colorbar)
+                else:
+                    cbar = self.parent.ax.figure.colorbar(
+                        self.handle, orientation=self.colorbar, pad=0, aspect=50)
                 cbar.ax.tick_params(labelsize=self.colorbar_fontsize)
             self._need_redraw = False
 
@@ -878,13 +882,15 @@ class ColorfillTraits(MetPyHasTraits):
     `matplotlib.colors.Normalize` instance for plotting.
     """
 
-    colorbar = Unicode(default_value=None, allow_none=True)
+    colorbar = Union([Unicode(default_value=None, allow_none=True), Dict()])
     colorbar.__doc__ = """A string (horizontal/vertical) on whether to add a colorbar to the
     plot.
 
-    To add a colorbar associated with the plot, set the trait to ``horizontal`` or
-    ``vertical``,specifying the orientation of the produced colorbar. The default value is
-    ``None``.
+    To add a colorbar associated with the plot, you can either set the trait with a string of
+    ``horizontal`` or ``vertical``, which specifies the orientation of the produced colorbar
+    and uses pre-defined defaults for aspect and pad. Alternatively, you can set a dictionary
+    of keyword argument values valid for a Matplotlib colorbar to specify how the colorbar will
+    be plotted. The default value is ``None``.
     """
 
     colorbar_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
