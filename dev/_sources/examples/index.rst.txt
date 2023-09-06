@@ -143,6 +143,23 @@ Examples of using a variety of MetPy's functionality together.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example combines simple MetPy plotting functionality, metpy.calc computation functionality...">
+
+.. only:: html
+
+  .. image:: /examples/images/thumb/sphx_glr_Complex-Sounding-Plot_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_Complex-Sounding-Plot.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sounding Plot with Complex Layout</div>
+    </div>
+
+
+.. raw:: html
+
     </div>
 
 
@@ -156,6 +173,7 @@ Examples of using a variety of MetPy's functionality together.
    /examples/Four_Panel_Map
    /examples/isentropic_example
    /examples/meteogram_metpy
+   /examples/Complex-Sounding-Plot
 
 
 Calculations
