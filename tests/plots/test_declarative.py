@@ -590,7 +590,8 @@ def test_projection_object(ccrs, cfeature):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.009)
-def test_colorfill(cfeature):
+@needs_cartopy
+def test_colorfill():
     """Test that we can use ContourFillPlot."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
 
@@ -600,6 +601,33 @@ def test_colorfill(cfeature):
     contour.field = 'Temperature'
     contour.colormap = 'coolwarm'
     contour.colorbar = 'vertical'
+
+    panel = MapPanel()
+    panel.area = (-110, -60, 25, 55)
+    panel.layers = []
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.panel = panel
+    pc.size = (12, 8)
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.009)
+@needs_cartopy
+def test_colorfill_args():
+    """Test that we can use ContourFillPlot."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = FilledContourPlot()
+    contour.data = data
+    contour.level = 700 * units.hPa
+    contour.field = 'Temperature'
+    contour.colormap = 'coolwarm'
+    contour.colorbar = 'vertical'
+    contour.mpl_args = {'alpha': 0.6}
 
     panel = MapPanel()
     panel.area = (-110, -60, 25, 55)
@@ -669,7 +697,8 @@ def test_colorfill_with_normalize_instance_image_range(cfeature):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
-def test_colorfill_horiz_colorbar(cfeature):
+@needs_cartopy
+def test_colorfill_horiz_colorbar():
     """Test that we can use ContourFillPlot with a horizontal colorbar."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
 
