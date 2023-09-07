@@ -58,10 +58,11 @@ def lookup_map_feature(feature_name):
 
 def plot_kwargs(data):
     """Set the keyword arguments for MapPanel plotting."""
-    kwargs = collections.defaultdict(list)
     if hasattr(data.metpy, 'cartopy_crs'):
         # Conditionally add cartopy transform if we are on a map.
-        kwargs['transform'] = data.metpy.cartopy_crs    
+        kwargs = {'transform': data.metpy.cartopy_crs}
+    else:
+        kwargs = {}
     return kwargs
 
 
