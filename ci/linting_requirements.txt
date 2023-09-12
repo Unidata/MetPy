@@ -1,4 +1,4 @@
-ruff==0.0.287
+ruff==0.0.288
 
 flake8==6.1.0
 pycodestyle==2.11.0
