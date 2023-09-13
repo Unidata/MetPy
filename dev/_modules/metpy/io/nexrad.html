@@ -474,7 +474,6 @@ document.write(`
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">struct</span>
-<span class="kn">from</span> <span class="nn">xdrlib</span> <span class="kn">import</span> <span class="n">Unpacker</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="kn">import</span> <span class="n">day</span><span class="p">,</span> <span class="n">milli</span>
@@ -2773,11 +2772,37 @@ document.write(`
                   <span class="mh">0xba07</span><span class="p">:</span> <span class="n">_unpack_packet_raster_data</span><span class="p">}</span>
 
 
-<span class="k">class</span> <span class="nc">Level3XDRParser</span><span class="p">(</span><span class="n">Unpacker</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Level3XDRParser</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle XDR-formatted Level 3 NEXRAD products.&quot;&quot;&quot;</span>
 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the parser with a buffer for the bytes.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buf</span> <span class="o">=</span> <span class="n">IOBuffer</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">unpack_uint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack a 4-byte unsigned integer.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buf</span><span class="o">.</span><span class="n">read_int</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">unpack_int</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack a 4-byte signed integer.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buf</span><span class="o">.</span><span class="n">read_int</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">unpack_float</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack a 4-byte floating-point value.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buf</span><span class="o">.</span><span class="n">read_binary</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;&gt;f&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">unpack_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack a string.&quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unpack_uint</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buf</span><span class="o">.</span><span class="n">read_ascii</span><span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)[:</span><span class="n">n</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">unpack_int_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack an int array.&quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unpack_uint</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buf</span><span class="o">.</span><span class="n">read_binary</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;&gt;l&#39;</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the actual unpacking.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the actual product unpacking.&quot;&quot;&quot;</span>
         <span class="n">xdr</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">code</span> <span class="o">==</span> <span class="mi">28</span><span class="p">:</span>
@@ -2786,12 +2811,10 @@ document.write(`
             <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;XDR: code </span><span class="si">%d</span><span class="s1"> not implemented&#39;</span><span class="p">,</span> <span class="n">code</span><span class="p">)</span>
 
         <span class="c1"># Check that we got it all</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">xdr</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buf</span><span class="o">.</span><span class="n">at_end</span><span class="p">():</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Data remains in XDR buffer.&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">unpack_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack the internal data as a string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Unpacker</span><span class="o">.</span><span class="n">unpack_string</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">xdr</span>
 
     <span class="k">def</span> <span class="nf">_unpack_prod_desc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">xdr</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
@@ -2887,7 +2910,7 @@ document.write(`
                                              <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unpack_float</span><span class="p">(),</span>
                                              <span class="n">num_bins</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unpack_int</span><span class="p">(),</span>
                                              <span class="n">attributes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unpack_string</span><span class="p">(),</span>
-                                             <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unpack_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unpack_int</span><span class="p">)))</span>
+                                             <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unpack_int_array</span><span class="p">()))</span>
         <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">radials</span><span class="o">=</span><span class="n">rads</span><span class="p">)</span>
 
     <span class="n">text_fmt</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;TextComponent&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">])</span>
