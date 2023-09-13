@@ -11,7 +11,6 @@ import logging
 import pathlib
 import re
 import struct
-from xdrlib import Unpacker
 
 import numpy as np
 from scipy.constants import day, milli
@@ -2301,11 +2300,37 @@ class Level3File:
                   0xba07: _unpack_packet_raster_data}
 
 
-class Level3XDRParser(Unpacker):
+class Level3XDRParser:
     """Handle XDR-formatted Level 3 NEXRAD products."""
 
+    def __init__(self, data):
+        """Initialize the parser with a buffer for the bytes."""
+        self._buf = IOBuffer(data)
+
+    def unpack_uint(self):
+        """Unpack a 4-byte unsigned integer."""
+        return self._buf.read_int(4, 'big', False)
+
+    def unpack_int(self):
+        """Unpack a 4-byte signed integer."""
+        return self._buf.read_int(4, 'big', True)
+
+    def unpack_float(self):
+        """Unpack a 4-byte floating-point value."""
+        return self._buf.read_binary(1, '>f')[0]
+
+    def unpack_string(self):
+        """Unpack a string."""
+        n = self.unpack_uint()
+        return self._buf.read_ascii((n + 3) // 4 * 4)[:n]
+
+    def unpack_int_array(self):
+        """Unpack an int array."""
+        n = self.unpack_uint()
+        return self._buf.read_binary(n, '>l')
+
     def __call__(self, code):
-        """Perform the actual unpacking."""
+        """Perform the actual product unpacking."""
         xdr = OrderedDict()
 
         if code == 28:
@@ -2314,12 +2339,10 @@ class Level3XDRParser(Unpacker):
             log.warning('XDR: code %d not implemented', code)
 
         # Check that we got it all
-        self.done()
-        return xdr
+        if not self._buf.at_end():
+            log.warning('Data remains in XDR buffer.')
 
-    def unpack_string(self):
-        """Unpack the internal data as a string."""
-        return Unpacker.unpack_string(self).decode('ascii')
+        return xdr
 
     def _unpack_prod_desc(self):
         xdr = OrderedDict()
@@ -2415,7 +2438,7 @@ class Level3XDRParser(Unpacker):
                                              width=self.unpack_float(),
                                              num_bins=self.unpack_int(),
                                              attributes=self.unpack_string(),
-                                             data=self.unpack_array(self.unpack_int)))
+                                             data=self.unpack_int_array()))
         return ret._replace(radials=rads)
 
     text_fmt = namedtuple('TextComponent', ['parameters', 'text'])
