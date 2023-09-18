@@ -694,6 +694,31 @@ def test_colorfill_horiz_colorbar(cfeature):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
+def test_colorbar_kwargs(cfeature):
+    """Test that we can use ContourFillPlot with specifying colorbar kwargs."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = FilledContourPlot()
+    contour.data = data
+    contour.level = 700 * units.hPa
+    contour.field = 'Temperature'
+    contour.colormap = 'coolwarm'
+    contour.colorbar = {'orientation': 'horizontal', 'aspect': 60, 'pad': 0.05}
+
+    panel = MapPanel()
+    panel.area = (-110, -60, 25, 55)
+    panel.layers = []
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.panel = panel
+    pc.size = (8, 8)
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
 def test_colorfill_no_colorbar(cfeature):
     """Test that we can use ContourFillPlot with no colorbar."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
