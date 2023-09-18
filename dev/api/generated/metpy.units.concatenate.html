@@ -729,14 +729,14 @@ document.write(`
 <dt class="sig sig-object py" id="metpy.units.concatenate">
 <span class="sig-prename descclassname"><span class="pre">metpy.units.</span></span><span class="sig-name descname"><span class="pre">concatenate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/units.html#concatenate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.units.concatenate" title="Link to this definition">#</a></dt>
 <dd><p>Concatenate multiple values into a new quantity.</p>
-<p>This is essentially a scalar-/masked array-aware version of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.concatenate</span></code></a>. All items
+<p>This is essentially a scalar-/masked array-aware version of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.concatenate</span></code></a>. All items
 must be able to be converted to the same units. If an item has no units, it will be given
 those of the rest of the collection, without conversion. The first units found in the
 arguments is used as the final output units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>arrs</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><em>pint.Quantity</em></a><em> or </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><em>numpy.ndarray</em></a><em>]</em>) – The items to be joined together</p></li>
+<li><p><strong>arrs</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><em>pint.Quantity</em></a><em> or </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><em>numpy.ndarray</em></a><em>]</em>) – The items to be joined together</p></li>
 <li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The array axis along which to join the arrays. Defaults to 0 (the first dimension)</p></li>
 </ul>
 </dd>
