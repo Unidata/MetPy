@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Sep 18, 2023 at 17:25:39"/>
+    <meta name="docbuild:last-update" content="Sep 18, 2023 at 21:04:29"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.ImagePlot.html" />
 
   </head>
@@ -902,9 +902,11 @@ document.write(`
 <span class="sig-name descname"><span class="pre">colorbar</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.colorbar" title="Link to this definition">#</a></dt>
 <dd><p>A string (horizontal/vertical) on whether to add a colorbar to the
 plot.</p>
-<p>To add a colorbar associated with the plot, set the trait to <code class="docutils literal notranslate"><span class="pre">horizontal</span></code> or
-<code class="docutils literal notranslate"><span class="pre">vertical</span></code>,specifying the orientation of the produced colorbar. The default value is
-<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>To add a colorbar associated with the plot, you can either set the trait with a string of
+<code class="docutils literal notranslate"><span class="pre">horizontal</span></code> or <code class="docutils literal notranslate"><span class="pre">vertical</span></code>, which specifies the orientation of the produced colorbar
+and uses pre-defined defaults for aspect and pad. Alternatively, you can set a dictionary
+of keyword argument values valid for a Matplotlib colorbar to specify how the colorbar will
+be plotted. The default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">

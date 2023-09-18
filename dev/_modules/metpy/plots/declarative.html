@@ -72,7 +72,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Sep 18, 2023 at 17:25:39"/>
+    <meta name="docbuild:last-update" content="Sep 18, 2023 at 21:04:29"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/plots/declarative.html" />
 
   </head>
@@ -490,8 +490,8 @@ document.write(`
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">traitlets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Int</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">observe</span><span class="p">,</span> <span class="n">TraitError</span><span class="p">,</span>
-                       <span class="n">Tuple</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">validate</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">traitlets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Int</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">observe</span><span class="p">,</span>
+                       <span class="n">TraitError</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">validate</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ctables</span><span class="p">,</span> <span class="n">wx_symbols</span>
 <span class="kn">from</span> <span class="nn">._mpl</span> <span class="kn">import</span> <span class="n">TextCollection</span>
@@ -1339,8 +1339,12 @@ document.write(`
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;handle&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;colorbar&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">cbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colorbar</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colorbar</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="n">cbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">colorbar</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">cbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colorbar</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
                 <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colorbar_fontsize</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
 
@@ -1393,13 +1397,15 @@ document.write(`
 <span class="s2">    `matplotlib.colors.Normalize` instance for plotting.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">colorbar</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">colorbar</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Unicode</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">Dict</span><span class="p">()])</span>
     <span class="n">colorbar</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A string (horizontal/vertical) on whether to add a colorbar to the</span>
 <span class="s2">    plot.</span>
 
-<span class="s2">    To add a colorbar associated with the plot, set the trait to ``horizontal`` or</span>
-<span class="s2">    ``vertical``,specifying the orientation of the produced colorbar. The default value is</span>
-<span class="s2">    ``None``.</span>
+<span class="s2">    To add a colorbar associated with the plot, you can either set the trait with a string of</span>
+<span class="s2">    ``horizontal`` or ``vertical``, which specifies the orientation of the produced colorbar</span>
+<span class="s2">    and uses pre-defined defaults for aspect and pad. Alternatively, you can set a dictionary</span>
+<span class="s2">    of keyword argument values valid for a Matplotlib colorbar to specify how the colorbar will</span>
+<span class="s2">    be plotted. The default value is ``None``.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">colorbar_fontsize</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">(),</span> <span class="n">Unicode</span><span class="p">()],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>

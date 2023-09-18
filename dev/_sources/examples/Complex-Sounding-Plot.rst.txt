@@ -150,7 +150,7 @@ MetPy functionality
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7fd64da35ed0>]
+    [<matplotlib.lines.Line2D object at 0x7f21a5af2a50>]
 
 
 
@@ -267,7 +267,7 @@ INCREASE READABILITY
  .. code-block:: none
 
 
-    <matplotlib.collections.PolyCollection object at 0x7fd64e1b0bd0>
+    <matplotlib.collections.PolyCollection object at 0x7f21a62f51d0>
 
 
 
@@ -339,7 +339,7 @@ INCREASE READABILITY
  .. code-block:: none
 
 
-    <matplotlib.patches.FancyArrow object at 0x7fd64dc5e650>
+    <matplotlib.patches.FancyArrow object at 0x7f21a657a150>
 
 
 
@@ -520,7 +520,7 @@ STEP 4: ADD A FEW EXTRA ELEMENTS TO REALLY MAKE A NEAT PLOT
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.818 seconds)
+   **Total running time of the script:** (0 minutes 0.807 seconds)
 
 
 .. _sphx_glr_download_examples_Complex-Sounding-Plot.py:
