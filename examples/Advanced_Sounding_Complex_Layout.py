@@ -8,15 +8,13 @@
 Advanced Sounding Plot with Complex Layout
 ==================================
 This example combines simple MetPy plotting functionality, `metpy.calc`
-computation functionality, and a few basic Matplotlib tricks to create 
+computation functionality, and a few basic Matplotlib tricks to create
 an advanced sounding plot with a complex layout & high readability.
 """
 # First lets start with some simple imports
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import pandas as pd
-
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
 from metpy.plots import add_metpy_logo, Hodograph, SkewT
@@ -293,7 +291,7 @@ skewleg = skew.ax.legend(loc='upper left')
 hodoleg = h.ax.legend(loc='upper left')
 # add a quick plot title, this could be automated by 
 # declaring a station and datetime variable when using
-# realtime observation data from siphon. 
+# realtime observation data from siphon.
 plt.figtext(0.45, 0.97, 'OUN | MAY 4TH 1999 - 00Z VERTICAL PROFILE',
             weight='bold', fontsize=20, ha='center')
 # Show the plot
