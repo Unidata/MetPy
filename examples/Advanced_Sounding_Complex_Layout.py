@@ -4,9 +4,9 @@
 
 
 """
-==================================
+==========================================
 Advanced Sounding Plot with Complex Layout
-==================================
+==========================================
 This example combines simple MetPy plotting functionality, `metpy.calc`
 computation functionality, and a few basic Matplotlib tricks to create
 an advanced sounding plot with a complex layout & high readability.
@@ -15,6 +15,7 @@ an advanced sounding plot with a complex layout & high readability.
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
 from metpy.plots import add_metpy_logo, Hodograph, SkewT
