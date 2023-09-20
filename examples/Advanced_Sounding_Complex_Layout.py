@@ -13,8 +13,8 @@ an advanced sounding plot with a complex layout & high readability.
 """
 # First lets start with some simple imports
 import matplotlib.pyplot as plt
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
