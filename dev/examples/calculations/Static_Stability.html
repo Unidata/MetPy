@@ -18,12 +18,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=927b94d3fcb96560df09" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=927b94d3fcb96560df09" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=927b94d3fcb96560df09" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=927b94d3fcb96560df09" rel="stylesheet" />
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css?v=e3e65d4f" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=927b94d3fcb96560df09" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=927b94d3fcb96560df09" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=927b94d3fcb96560df09"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
     <script src="../../_static/documentation_options.js?v=cb7e6255"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
@@ -61,7 +61,7 @@
             </script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/calculations/Static_Stability';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.14.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.14.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
         DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Sep 19, 2023 at 16:43:40"/>
+    <meta name="docbuild:last-update" content="Sep 20, 2023 at 18:45:28"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/calculations/Static_Stability.html" />
 
   </head>
@@ -161,7 +161,7 @@
 document.write(`
   <div class="version-switcher__container dropdown">
     <button id="versionswitcherbutton" type="button" role="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="listbox" aria-controls="versionswitcherlist" aria-label="Version switcher list">
-      dev  <!-- this text may get changed later by javascript -->
+      Choose version  <!-- this text may get changed later by javascript -->
       <span class="caret"></span>
     </button>
     <div id="versionswitcherlist" class="version-switcher__menu dropdown-menu list-group-flush py-0" role="listbox" aria-labelledby="versionswitcherbutton">
@@ -606,7 +606,7 @@ some of MetPy’s sample data.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[-4.412832192334464e-05 -2.449277724743241e-05 9.116458268710324e-05 8.845234936113418e-05 6.224860528096752e-05 0.00015314927360352893 0.00019881695313411532 0.0003010199773665337 0.00026111189622417404 0.001085062948164048 0.0037403218021489384 0.004248281970348124 0.0036657831964967114 0.0016752453464420483 0.0007380480366923099 0.00019231433878668947 0.0002557493550907393 0.00024017381030490135 0.0010992754328866168 0.0009156418439438833 0.00025827670773887395 0.0008820697439593748 0.0003589161178615257 0.0004817507957698896 0.0006973708206233451 0.0006126559385666097 0.00047078968526674726 0.00048701968260597434 0.0004875042540964733 0.0004723683427325029 0.00018331961002751509 0.00014636894085019007 0.00013915628085254793 -0.0015920843524442835 -0.0015653462261827026 9.863194193125203e-05 0.0001579458273746663 0.00041106154962431264 0.00039799924225680105 0.0006038463463312496 0.0032368837310525183 0.004009490876983789 0.003712519880476728 0.0023375347706966346 0.001366027873753104 0.0012474317985632058 0.0014544559226790695 0.0024234211184300538 0.003385229573605462 0.00393333469570616 0.0024998389621420955 0.0026161133002917765 0.0025584158650765487 0.0061453098584766585 0.006346575700474026 0.003115891778520376 0.0028392731739860125 0.0018886781873633822 0.0023835929582128146 0.0013562543705426307 0.0011897088702191683 0.004713351681793958 0.0032926213870685993 0.002904873402541409 0.005189222385428262 0.005480289289528999 0.0014028667954945192 0.005193086215585504 0.005625967270339566 0.005397711905806259 0.010008951771502746 0.01178936022226881 0.0027175297861041976] kelvin / pascal
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.011 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.009 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-calculations-static-stability-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/e28964cb80b04b7bf49d79a47b0e8757/Static_Stability.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Static_Stability.py</span></code></a></p>
@@ -676,8 +676,8 @@ some of MetPy’s sample data.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=927b94d3fcb96560df09"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=927b94d3fcb96560df09"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -707,7 +707,7 @@ some of MetPy’s sample data.</p>
     <div class="footer-items__end">
       
         <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.1.
 </p></div>
       
     </div>
