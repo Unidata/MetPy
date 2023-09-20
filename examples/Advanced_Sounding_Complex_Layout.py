@@ -289,7 +289,7 @@ plt.figtext(0.88, 0.10, f'{int(super_comp[0].m)}', weight='bold', fontsize=15,
 # add legends to the skew and hodo
 skewleg = skew.ax.legend(loc='upper left')
 hodoleg = h.ax.legend(loc='upper left')
-# add a quick plot title, this could be automated by 
+# add a quick plot title, this could be automated by
 # declaring a station and datetime variable when using
 # realtime observation data from siphon.
 plt.figtext(0.45, 0.97, 'OUN | MAY 4TH 1999 - 00Z VERTICAL PROFILE',
