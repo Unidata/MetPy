@@ -31,9 +31,10 @@ jobs:
         include:
           - python-version: 3.9
             dep-versions: Minimum
+          - python-version: 3.9
+            dep-versions: Minimum
             no-extras: 'No Extras'
           - python-version: 3.11
-            dep-versions: requirements.txt
             no-extras: 'No Extras'
 
     steps:
@@ -52,12 +53,12 @@ jobs:
         from pathlib import Path
 
         # Read our pyproject.toml
-        config = tomllib.load(open('pyproject.toml', 'rb'))
+        config = tomllib.load(open('pyproject.toml', 'rb'))['project']
 
         # Generate a Minimum dependency file
         with (Path('ci') / 'Minimum').open('wt') as out:
-          for dep in config['project']['dependencies']:
-            if dep:
+          for src in (config['dependencies'], config['optional-dependencies']['test']):
+            for dep in src:
               dep = dep.split(';')[0]
               out.write(dep.replace('>=', '==') + '\n')
         EOF
