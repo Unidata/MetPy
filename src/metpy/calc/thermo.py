@@ -4500,11 +4500,12 @@ def k_index(pressure, temperature, dewpoint, vertical_dim=0):
 
 @exporter.export
 @add_vertical_dim_from_xarray
-@preprocess_and_wrap(broadcast=('pressure', 'temperature', 'dewpoint'))
-@check_units('[pressure]', '[temperature]', '[temperature]')
-def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
+@preprocess_and_wrap(broadcast=('pressure', 'temperature', 'mixing_ratio'))
+@check_units('[pressure]', '[temperature]', '[dimensionless]', '[pressure]')
+def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
+                         vertical_dim=0):
     """
-    Calculate GDI from the pressure temperature and dewpoint.
+    Calculate GDI from the pressure, temperature, mixing ratio, and surface pressure.
 
     Calculation of the GDI relies on temperatures and mixing ratios at 950,
     850, 700, and 500 hPa. These four levels define three layers: A) Boundary,
@@ -4543,13 +4544,16 @@ def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
     Parameters
     ----------
     pressure : `pint.Quantity`
-        Pressure level(s), in order from highest to lowest pressure
+        Pressure level(s)
 
     temperature : `pint.Quantity`
         Temperature corresponding to pressure
 
-    dewpoint : `pint.Quantity`
-        Dewpoint temperature corresponding to pressure
+    mixing_ratio : `pint.Quantity`
+        Mixing ratio values corresponding to pressure
+
+    surface_pressure : `pint.Quantity`
+        Pressure of the surface.
 
     vertical_dim : int, optional
         The axis corresponding to vertical, defaults to 0. Automatically determined from
@@ -4578,19 +4582,11 @@ def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
     >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
     ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
     ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
-    >>> # calculate dewpoint
-    >>> Td = dewpoint_from_relative_humidity(T, rh)
-    >>> galvez_davison_index(p, T, Td)
+    >>> # calculate mixing ratio
+    >>> mixrat = mixing_ratio_from_relative_humidity(p, T, rh)
+    >>> galvez_davison_index(p, T, mixrat, p[0])
     <Quantity(-8.06886508, 'dimensionless')>
     """
-    # Calculate mixing ratio from dewpoint in two steps
-    relative_humidity = relative_humidity_from_dewpoint(
-        temperature, dewpoint
-    )
-    mixing_ratio = mixing_ratio_from_relative_humidity(
-        pressure, temperature, relative_humidity
-    )
-
     # Calculate potential temperature
     potential_temp = potential_temperature(pressure, temperature)
 
@@ -4632,12 +4628,12 @@ def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
     th_c = th500
     r_c = r500
 
-    alpha = -10 * units.kelvin  # Empirical adjustment
+    alpha = units.Quantity(-10, 'K')  # Empirical adjustment
 
     # Latent heat of vaporization of water - different from MetPy constant
     #  Using different value, from paper, since GDI unlikely to be used to
     #  derive other metrics
-    l_0 = 2.69E6 * (units.joule / units.kilogram)
+    l_0 = units.Quantity(2.69E6, 'J/kg')
 
     # Temperature math from here on requires kelvin units
     eptp_a = th_a * np.exp((l_0 * r_a) / (Cp_d * t850))
@@ -4650,14 +4646,14 @@ def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
         is_array = True
 
     # Calculate C.B.I.
-    beta = 303 * units.kelvin  # Empirical adjustment
+    beta = units.Quantity(303, 'K')  # Empirical adjustment
     l_e = eptp_a - beta  # Low-troposphere EPT
     m_e = eptp_c - beta  # Mid-troposphere EPT
 
     # Gamma unit - likely a typo from the paper, should be units of K^(-2) to
-    #  result in dimensionless CBI
-    gamma = 6.5e-2 * (1 / units.kelvin)
-    zero_kelvin = 0 * units.kelvin
+    # result in dimensionless CBI
+    gamma = units.Quantity(6.5e-2, '1/K^2')
+    zero_kelvin = units.Quantity(0, 'K')
 
     if is_array:
         # Replace conditional in paper for array compatibility.
@@ -4666,12 +4662,10 @@ def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
     else:
         l_e = max(l_e, zero_kelvin)
     column_buoyancy_index = gamma * (l_e * m_e)
-    # Convert to magnitude and dimensionless to avoid unit issue from typo
-    column_buoyancy_index = column_buoyancy_index.magnitude
 
     # Calculate Mid-tropospheric Warming Index
-    tau = 263.15 * units.kelvin  # Threshold
-    mu = -7 * (1 / units.kelvin)  # Empirical adjustment
+    tau = units.Quantity(263.15, 'K')  # Threshold
+    mu = units.Quantity(-7, '1/K')  # Empirical adjustment
 
     t_diff = t500 - tau
     if is_array:
@@ -4679,10 +4673,9 @@ def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
     else:
         t_diff = max(t_diff, zero_kelvin)
     mid_tropospheric_warming_index = mu * t_diff
-    mid_tropospheric_warming_index = mid_tropospheric_warming_index.magnitude
 
     # Calculate Inversion Index
-    sigma = 1.5 * (1 / units.kelvin)  # Empirical scaling constant
+    sigma = units.Quantity(1.5, '1/K')  # Empirical scaling constant
     s = t950 - t700
     d = eptp_b - eptp_a
 
@@ -4693,20 +4686,13 @@ def galvez_davison_index(pressure, temperature, dewpoint, vertical_dim=0):
         inv_sum = min(inv_sum, zero_kelvin)
 
     inversion_index = sigma * inv_sum
-    inversion_index = inversion_index.magnitude
 
     # Calculate Terrain Correction
     p_3 = 18
     p_2 = 9000 * units.hectopascal
     p_1 = 500 * units.hectopascal
-    p_sfc = pressure[0]
+    p_sfc = surface_pressure
     terrain_correction = p_3 - (p_2 / (p_sfc - p_1))
-
-    # Convert all to 'dimensionless'
-    column_buoyancy_index *= units.dimensionless
-    mid_tropospheric_warming_index *= units.dimensionless
-    inversion_index *= units.dimensionless
-    terrain_correction *= units.dimensionless
 
     # Calculate G.D.I.
     return (column_buoyancy_index

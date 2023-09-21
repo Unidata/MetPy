@@ -2463,7 +2463,9 @@ def test_gdi():
                          -34.1, -37.3, -32.3, -34.1, -37.3, -41.1, -37.7, -58.1,
                          -57.5]) * units.degC
 
-    gdi = galvez_davison_index(pressure, temperature, dewpoint)
+    relative_humidity = relative_humidity_from_dewpoint(temperature, dewpoint)
+    mixrat = mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity)
+    gdi = galvez_davison_index(pressure, temperature, mixrat, pressure[0])
 
     # Compare with value from hand calculation
     assert_almost_equal(gdi, 6.635, decimal=1)
@@ -2471,10 +2473,16 @@ def test_gdi():
 
 def test_gdi_xarray(index_xarray_data_expanded):
     """Test the GDI calculation with a grid of xarray data."""
+    pressure = index_xarray_data_expanded.isobaric
+    temperature = index_xarray_data_expanded.temperature
+    dewpoint = index_xarray_data_expanded.dewpoint
+    relative_humidity = relative_humidity_from_dewpoint(temperature, dewpoint)
+    mixrat = mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity)
     result = galvez_davison_index(
-        index_xarray_data_expanded.isobaric,
-        index_xarray_data_expanded.temperature,
-        index_xarray_data_expanded.dewpoint
+        pressure,
+        temperature,
+        mixrat,
+        pressure[0]
     )
 
     assert_array_almost_equal(
@@ -2494,10 +2502,16 @@ def test_gdi_no_950_raises_valueerror(index_xarray_data):
     Ensure error is raised if this data is not provided.
     """
     with pytest.raises(ValueError):
+        pressure = index_xarray_data.isobaric
+        temperature = index_xarray_data.temperature
+        dewpoint = index_xarray_data.dewpoint
+        relative_humidity = relative_humidity_from_dewpoint(temperature, dewpoint)
+        mixrat = mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity)
         galvez_davison_index(
-            index_xarray_data.isobaric,
-            index_xarray_data.temperature,
-            index_xarray_data.dewpoint
+            pressure,
+            temperature,
+            mixrat,
+            pressure[0]
         )
 
 
