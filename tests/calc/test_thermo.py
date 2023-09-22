@@ -39,7 +39,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         wet_bulb_potential_temperature, wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings, galvez_davison_index
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_nan,
-                           version_check, wet_bulb_temperature)
+                           version_check)
 from metpy.units import is_quantity, masked_array, units
 
 
@@ -2311,9 +2311,9 @@ def index_xarray_data():
 
 @pytest.fixture()
 def index_xarray_data_expanded():
-    """Create data for testing that index calculations work with xarray data.
+    """Create expanded data for testing that index calculations work with xarray data.
 
-    Expanded for Galvez Davison Index calculation, which requires 950hPa pressure
+    Specifically for Galvez Davison Index calculation, which requires 950hPa pressure
     """
     pressure = xr.DataArray(
         [950., 850., 700., 500.], dims=('isobaric',), attrs={'units': 'hPa'}
@@ -2350,7 +2350,7 @@ def index_xarray_data_expanded():
 
     return xr.Dataset({'temperature': temp, 'profile': profile, 'dewpoint': dewp,
                        'wind_direction': dirw, 'wind_speed': speed},
-                      coords={'isobaric': pressure, 'time': ['2020-01-01T00:00Z']})
+                      coords={'isobaric': pressure, 'time': ['2023-01-01T00:00Z']})
 
 
 def test_lifted_index():
