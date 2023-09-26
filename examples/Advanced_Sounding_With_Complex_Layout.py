@@ -7,10 +7,12 @@
 ==========================================
 Advanced Sounding Plot with Complex Layout
 ==========================================
+
 This example combines simple MetPy plotting functionality, `metpy.calc`
 computation functionality, and a few basic Matplotlib tricks to create
 an advanced sounding plot with a complex layout & high readability.
 """
+
 # First lets start with some simple imports
 import matplotlib.pyplot as plt
 import numpy as np
@@ -298,3 +300,4 @@ plt.figtext(0.45, 0.97, 'OUN | MAY 4TH 1999 - 00Z VERTICAL PROFILE',
             weight='bold', fontsize=20, ha='center')
 # Show the plot
 plt.show()
+
