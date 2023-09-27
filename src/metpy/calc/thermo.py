@@ -266,7 +266,7 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
     },
     '[temperature]'
 )
-def moist_lapse(pressure, temperature, reference_pressure=None):
+def moist_lapse(pressure, temperature, reference_pressure=None, lapse_type='standard', params=None):
     r"""Calculate the temperature at a level assuming liquid saturation processes.
 
     This function lifts a parcel starting at `temperature`. The starting pressure can
@@ -284,6 +284,26 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     reference_pressure : `pint.Quantity`, optional
         Reference pressure; if not given, it defaults to the first element of the
         pressure array.
+
+    lapse_type : `string`, optional
+        Definition of moist adiabat to use; if not given, it defaults to moist_lapse
+        Options:
+            'standard' for simplified pseudoadiabatic process
+            'pseudoadiabatic' for pseudoadiabatic moist process
+            'reversible' for reversible moist process
+            'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
+            'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
+        More info: https://glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
+
+    params : `dict` or None, optional
+        External parameters used for the some lapse_types
+        Required parameters:
+            For 'so13': {
+                'h0': scale height [m],
+                'p0': reference sea-level pressure [Pa],
+                'ep0': entrainment constant [unitless],
+                'rh0': ambient relative humidity [unitless],
+                }
 
     Returns
     -------
@@ -303,6 +323,9 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     --------
     dry_lapse : Calculate parcel temperature assuming dry adiabatic processes
     parcel_profile : Calculate complete parcel profile
+    moist_lapse_pseudoadiabatic : Calculate parcel temperature assuming irreversible, moist pseudoadiabatic processes
+    moist_lapse_reversible : Calculate parcel temperature assuming reversible, moist adiabatic processes
+    moist_lapse_entrain : Calculate parcel temperature assuming reversible, moist adiabatic processes
 
     Notes
     -----
@@ -321,12 +344,41 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
        Renamed ``ref_pressure`` parameter to ``reference_pressure``
 
     """
-    def dt(p, t):
+    def dt_standard(p, t, params):
         rs = saturation_mixing_ratio._nounit(p, t)
         frac = (
             (mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
             / (mpconsts.nounit.Cp_d + (
-                mpconsts.nounit.Lv * mpconsts.nounit.Lv * rs * mpconsts.nounit.epsilon
+                mpconsts.nounit.Lv**2 * rs * mpconsts.nounit.epsilon
+                / (mpconsts.nounit.Rd * t**2)
+            ))
+        )
+        return frac / p
+
+    def dt_pseudoadiabatic(p, t, params):
+        rs = saturation_mixing_ratio._nounit(p, t)
+        frac = ( (1 + rs)*(mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
+                / (mpconsts.nounit.Cp_d + rs*mpconsts.nounit.Cv_d +  (mpconsts.nounit.Lv**2 * rs * (mpconsts.nounit.epsilon + rs)
+                                    / (mpconsts.nounit.Rd * t**2))))
+        return frac / p
+
+    def dt_reversible(p, t, params):
+        rs = saturation_mixing_ratio._nounit(p, t)
+        rl = params['rt'] - rs  ## assuming no ice content
+        frac = ( (1 + params['rt'])*(mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
+                / (mpconsts.nounit.Cp_d + rs*mpconsts.nounit.Cv_d + rl*mpconsts.nounit.Cp_l + (mpconsts.nounit.Lv**2 * rs * (mpconsts.nounit.epsilon + rs)
+                                    / (mpconsts.nounit.Rd * t**2))))
+        return frac / p
+
+    def dt_so13(p, t, params):
+        zp = -params['h0']*np.log(p/params['p0']) # pseudoheight
+        ep = params['ep0']/zp # entrainment rate
+        rs = saturation_mixing_ratio._nounit(p, t)
+        qs = specific_humidity_from_mixing_ratio(rs)
+        frac = (
+            (mpconsts.nounit.Rd*t + mpconsts.nounit.Lv*qs + ep*qs*mpconsts.nounit.Lv*(1-params['rh0'])*mpconsts.nounit.Rd*t/mpconsts.nounit.g)
+            / (mpconsts.nounit.Cp_d + (
+                mpconsts.nounit.Lv**2 * qs * mpconsts.nounit.epsilon
                 / (mpconsts.nounit.Rd * t**2)
             ))
         )
@@ -336,6 +388,20 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     pressure = np.atleast_1d(pressure)
     if reference_pressure is None:
         reference_pressure = pressure[0]
+
+    if lapse_type == 'standard':
+        dt=dt_standard
+    elif lapse_type == 'pseudoadiabatic':
+        dt=dt_pseudoadiabatic
+    elif lapse_type == 'reversible':
+        dt=dt_reversible
+        params={'rt':saturation_mixing_ratio._nounit(reference_pressure,temperature)} # total water at LCL = rs
+    elif lapse_type == 'so13':
+        dt=dt_so13
+    else:
+        raise ValueError('Specified lapse_type is not supported. '
+                         'Choose from standard, pseudoadiabatic, reversible, '
+                         'so13, or r14.')
 
     if np.isnan(reference_pressure) or np.all(np.isnan(temperature)):
         return np.full((temperature.size, pressure.size), np.nan)
@@ -347,7 +413,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
     # It would be preferable to use a regular solver like RK45, but as of scipy 1.8.0
     # anything other than LSODA goes into an infinite loop when given NaNs for y0.
-    solver_args = {'fun': dt, 'y0': temperature,
+    solver_args = {'fun':lambda p,t:dt(p,t,params), 'y0': temperature,
                    'method': 'LSODA', 'atol': 1e-7, 'rtol': 1.5e-8}
 
     # Need to handle close points to avoid an error in the solver
@@ -911,11 +977,10 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
         return (units.Quantity(np.nan, pressure.units),
                 units.Quantity(np.nan, temperature.units))
 
-
 @exporter.export
 @preprocess_and_wrap(wrap_like='pressure')
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def parcel_profile(pressure, temperature, dewpoint):
+def parcel_profile(pressure, temperature, dewpoint, lapse_type=None, params=None):
     r"""Calculate the profile a parcel takes through the atmosphere.
 
     The parcel starts at `temperature`, and `dewpoint`, lifted up
@@ -933,6 +998,26 @@ def parcel_profile(pressure, temperature, dewpoint):
 
     dewpoint : `pint.Quantity`
         Starting dewpoint
+
+    lapse_type : `string`, optional
+        Definition of moist adiabat to use; if not given, it defaults to moist_lapse
+        Options:
+            'standard' for simplified pseudoadiabatic process
+            'pseudoadiabatic' for pseudoadiabatic moist process
+            'reversible' for reversible moist process
+            'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
+            'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
+        More info: https://glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
+
+    params : `dict` or None, optional
+        External parameters used for the some lapse_types
+        Required parameters:
+            For 'so13': {
+                'h0': scale height [m],
+                'p0': reference sea-level pressure [Pa],
+                'ep0': entrainment constant [unitless],
+                'rh0': ambient relative humidity [unitless],
+                }
 
     Returns
     -------
@@ -986,7 +1071,7 @@ def parcel_profile(pressure, temperature, dewpoint):
        Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
-    _, _, _, t_l, _, t_u = _parcel_profile_helper(pressure, temperature, dewpoint)
+    _, _, _, t_l, _, t_u = _parcel_profile_helper(pressure, temperature, dewpoint, lapse_type, params)
     return concatenate((t_l, t_u))
 
 
@@ -1168,7 +1253,7 @@ def _check_pressure_error(pressure):
                                    'your sounding. Using scipy.signal.medfilt may fix this.')
 
 
-def _parcel_profile_helper(pressure, temperature, dewpoint):
+def _parcel_profile_helper(pressure, temperature, dewpoint, lapse_type, params):
     """Help calculate parcel profiles.
 
     Returns the temperature and pressure, above, below, and including the LCL. The
@@ -1205,7 +1290,7 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
                        'Output profile includes duplicate temperatures as a result.')
 
     # Find moist pseudo-adiabatic profile starting at the LCL, reversing above sorting
-    temp_upper = moist_lapse(unique[::-1], temp_lower[-1]).to(temp_lower.units)
+    temp_upper = moist_lapse(unique[::-1], temp_lower[-1], lapse_type=lapse_type, params=params).to(temp_lower.units)
     temp_upper = temp_upper[::-1][indices]
 
     # Return profile pieces
