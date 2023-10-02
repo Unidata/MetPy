@@ -1,4 +1,4 @@
-packaging==23.1
+packaging==23.2
 pytest==7.4.2
 pytest-mpl==0.16.1
 netCDF4==1.6.4
