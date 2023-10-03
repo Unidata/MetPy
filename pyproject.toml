@@ -71,7 +71,7 @@ test = [
 "MetPy Mondays" = "https://www.youtube.com/playlist?list=PLQut5OXpV-0ir4IdllSt1iEZKTwFBa7kO"
 
 [tool.codespell]
-skip = "*.tbl,*.ipynb,AUTHORS.txt,gempak.rst,.git,./staticdata,./docs/build,*.pdf"
+skip = "*.tbl,*.ipynb,AUTHORS.txt,gempak.rst,.git,./staticdata,./docs/build,*.pdf,./talks"
 exclude-file = ".codespellignore"
 
 [tool.doc8]
