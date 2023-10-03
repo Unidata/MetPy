@@ -20,13 +20,13 @@ from metpy.cbook import example_data
 ds = example_data()
 
 # Calculate the vertical vorticity of the flow
-vor = mpcalc.vorticity(ds.uwind, ds.vwind)
+vort = mpcalc.vorticity(ds.uwind, ds.vwind)
 
 # start figure and set axis
 fig, ax = plt.subplots(figsize=(5, 5))
 
 # scale vorticity by 1e5 for plotting purposes
-cf = ax.contourf(ds.lon, ds.lat, vor * 1e5, range(-80, 81, 1), cmap=plt.cm.PuOr_r)
+cf = ax.contourf(ds.lon, ds.lat, vort * 1e5, range(-80, 81, 1), cmap=plt.cm.PuOr_r)
 plt.colorbar(cf, pad=0, aspect=50)
 ax.barbs(ds.lon.values, ds.lat.values, ds.uwind, ds.vwind, color='black', length=5, alpha=0.5)
 ax.set(xlim=(260, 270), ylim=(30, 40))
