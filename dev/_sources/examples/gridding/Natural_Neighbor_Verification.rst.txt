@@ -209,7 +209,7 @@ examine the results to see if they are correct.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7efcdcab8f10>
+    <matplotlib.legend.Legend object at 0x7facb1f252d0>
 
 
 
@@ -288,11 +288,11 @@ in the Voronoi plot (green dots), and the observations are in the polygons (blue
 
 .. code-block:: default
 
-    vor = Voronoi(list(zip(xp, yp)))
+    vort = Voronoi(list(zip(xp, yp)))
 
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
     ax.ishold = lambda: True  # Work-around for Matplotlib 3.0.0 incompatibility
-    voronoi_plot_2d(vor, ax=ax)
+    voronoi_plot_2d(vort, ax=ax)
 
     nn_ind = np.array([0, 5, 7, 8])
     z_0 = zp[nn_ind]
@@ -482,7 +482,7 @@ the above visual example to the 3rd decimal place.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.566 seconds)
+   **Total running time of the script:** (0 minutes 0.692 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Natural_Neighbor_Verification.py:
