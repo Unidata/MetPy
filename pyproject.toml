@@ -137,12 +137,5 @@ max-complexity = 61
 [tool.ruff.pydocstyle]
 convention = "numpy"
 
-[tools.setuptools]
-zip-safe = true
-platforms = ["any"]
-
-[tools.setuptools.packages.find]
-where = ["src"]
-
 [tool.setuptools_scm]
 version_scheme = "post-release"
