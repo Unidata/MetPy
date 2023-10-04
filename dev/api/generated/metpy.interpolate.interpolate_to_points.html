@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Oct 03, 2023 at 22:50:57"/>
+    <meta name="docbuild:last-update" content="Oct 04, 2023 at 16:59:10"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.interpolate.interpolate_to_points.html" />
 
   </head>
@@ -760,23 +760,23 @@ including the following types of interpolation:</p>
 <li><p><strong>points</strong> (<em>array-like</em><em>, </em><em>(</em><em>N</em><em>, </em><em>P</em><em>)</em>) – Coordinates of the data points.</p></li>
 <li><p><strong>values</strong> (<em>array-like</em><em>, </em><em>(</em><em>N</em><em>,</em><em>)</em>) – Values of the data points.</p></li>
 <li><p><strong>xi</strong> (<em>array-like</em><em>, </em><em>(</em><em>M</em><em>, </em><em>P</em><em>)</em>) – Points to interpolate the data onto.</p></li>
-<li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – What type of interpolation to use. Available options include:
+<li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – What type of interpolation to use. Available options include:
 1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.11.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
 2) “natural_neighbor”, “barnes”, or “cressman” from <a class="reference internal" href="metpy.interpolate.html#module-metpy.interpolate" title="metpy.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate</span></code></a>.
 Default “linear”.</p></li>
-<li><p><strong>minimum_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Minimum number of neighbors needed to perform Barnes or Cressman interpolation for a
+<li><p><strong>minimum_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Minimum number of neighbors needed to perform Barnes or Cressman interpolation for a
 point. Default is 3.</p></li>
-<li><p><strong>gamma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Adjustable smoothing parameter for the barnes interpolation. Default 0.25.</p></li>
-<li><p><strong>kappa_star</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Response parameter for barnes interpolation, specified non-dimensionally
+<li><p><strong>gamma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Adjustable smoothing parameter for the barnes interpolation. Default 0.25.</p></li>
+<li><p><strong>kappa_star</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Response parameter for barnes interpolation, specified non-dimensionally
 in terms of the Nyquist. Default 5.052.</p></li>
-<li><p><strong>search_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – A search radius to use for the Barnes and Cressman interpolation schemes.
+<li><p><strong>search_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – A search radius to use for the Barnes and Cressman interpolation schemes.
 If search_radius is not specified, it will default to 5 times the average spacing of
 observations.</p></li>
-<li><p><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Specifies which function to use for Rbf interpolation.
+<li><p><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Specifies which function to use for Rbf interpolation.
 Options include: ‘multiquadric’, ‘inverse’, ‘gaussian’, ‘linear’, ‘cubic’,
 ‘quintic’, and ‘thin_plate’. Default ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.11.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
 information.</p></li>
-<li><p><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</p></li>
+<li><p><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

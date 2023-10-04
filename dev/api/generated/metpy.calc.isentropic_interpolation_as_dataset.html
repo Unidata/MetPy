@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Oct 03, 2023 at 22:50:57"/>
+    <meta name="docbuild:last-update" content="Oct 04, 2023 at 16:59:10"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.isentropic_interpolation_as_dataset.html" />
 
   </head>
@@ -749,9 +749,9 @@ document.write(`
 <li><p><strong>temperature</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Array of temperature</p></li>
 <li><p><strong>args</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, optional) – Any other given variables will be interpolated to each isentropic level. Must have
 names in order to have a well-formed output Dataset.</p></li>
-<li><p><strong>max_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The maximum number of iterations to use in calculation, defaults to 50.</p></li>
-<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – The desired absolute error in the calculated value, defaults to 1e-6.</p></li>
-<li><p><strong>bottom_up_search</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Controls whether to search for levels bottom-up (starting at lower indices),
+<li><p><strong>max_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – The maximum number of iterations to use in calculation, defaults to 50.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – The desired absolute error in the calculated value, defaults to 1e-6.</p></li>
+<li><p><strong>bottom_up_search</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Controls whether to search for levels bottom-up (starting at lower indices),
 or top-down (starting at higher indices). Defaults to True, which is bottom-up search.</p></li>
 </ul>
 </dd>

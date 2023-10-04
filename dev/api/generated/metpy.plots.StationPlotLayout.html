@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Oct 03, 2023 at 22:50:57"/>
+    <meta name="docbuild:last-update" content="Oct 04, 2023 at 16:59:10"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.StationPlotLayout.html" />
 
   </head>
@@ -827,9 +827,9 @@ code; this is useful for specifying things like color or line width.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the parameter for the u-component for <em class="xref py py-obj">barbs</em>, which is used as
+<li><p><strong>u_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the parameter for the u-component for <em class="xref py py-obj">barbs</em>, which is used as
 a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
-<li><p><strong>v_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the parameter for the v-component for <em class="xref py py-obj">barbs</em>, which is used as
+<li><p><strong>v_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the parameter for the v-component for <em class="xref py py-obj">barbs</em>, which is used as
 a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
 <li><p><strong>units</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="(in pint v0.22)"><em>pint.Unit</em></a><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
 conversion to a string. If not specified, no conversion is done.</p></li>
@@ -856,10 +856,10 @@ code; this is useful for specifying things like color or font properties.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this value. If str, should be one of
+<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this value. If str, should be one of
 ‘C’, ‘N’, ‘NE’, ‘E’, ‘SE’, ‘S’, ‘SW’, ‘W’, or ‘NW’. Otherwise, should be a tuple
 specifying the number of increments in the x and y directions.</p></li>
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the parameter, which is used as a key to pull data out of the
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the parameter, which is used as a key to pull data out of the
 data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
 <li><p><strong>symbol_mapper</strong> (<em>Callable</em>) – Controls converting data values to unicode code points for the
 <code class="xref py py-data docutils literal notranslate"><span class="pre">metpy.plots.wx_symbols.wx_symbol_font</span></code> font. This should take a value and
@@ -887,10 +887,10 @@ code; this is useful for specifying things like color or font properties.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>)</em>) – The offset (relative to center) to plot this value. If str, should be one of
+<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>)</em>) – The offset (relative to center) to plot this value. If str, should be one of
 ‘C’, ‘N’, ‘NE’, ‘E’, ‘SE’, ‘S’, ‘SW’, ‘W’, or ‘NW’. Otherwise, should be a tuple
 specifying the number of increments in the x and y directions.</p></li>
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the parameter, which is used as a key to pull data out of the
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the parameter, which is used as a key to pull data out of the
 data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</p></li>
 </ul>
@@ -916,13 +916,13 @@ code; this is useful for specifying things like color or font properties.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this value. If str, should be one of
+<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this value. If str, should be one of
 ‘C’, ‘N’, ‘NE’, ‘E’, ‘SE’, ‘S’, ‘SW’, ‘W’, or ‘NW’. Otherwise, should be a tuple
 specifying the number of increments in the x and y directions.</p></li>
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the parameter, which is used as a key to pull data out of the
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the parameter, which is used as a key to pull data out of the
 data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
-<li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>Callable</em><em>, </em><em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
-compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
+<li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><em>Callable</em><em>, </em><em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
+compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
 value and return a string. Defaults to ‘0.f’.</p></li>
 <li><p><strong>units</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="(in pint v0.22)"><em>pint.Unit</em></a><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
 conversion to a string. If not specified, no conversion is done.</p></li>
@@ -991,7 +991,7 @@ in the layout. Fields present in the layout, but not in <em class="xref py py-ob
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>plotter</strong> (<a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><em>StationPlot</em></a>) – <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StationPlot</span></code></a> to use to plot the data. This controls the axes,
 spacing, station locations, etc.</p></li>
-<li><p><strong>data_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>array-like</em><em>]</em>) – Data container that maps a name to an array of data. Data from this object
+<li><p><strong>data_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>array-like</em><em>]</em>) – Data container that maps a name to an array of data. Data from this object
 will be used to fill out the station plot.</p></li>
 </ul>
 </dd>
