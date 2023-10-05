@@ -73,6 +73,7 @@ h.plot(u, v)
 # readability and complexity of our Skew-T/Hodograph layout. Lets
 # try another Skew-T with a few more advanced features:
 ###########################################
+
 # STEP 1: CREATE THE SKEW-T OBJECT AND MODIFY IT TO CREATE A
 # NICE, CLEAN PLOT
 # Create a new figure. The dimensions here give a good aspect ratio
@@ -300,4 +301,3 @@ plt.figtext(0.45, 0.97, 'OUN | MAY 4TH 1999 - 00Z VERTICAL PROFILE',
             weight='bold', fontsize=20, ha='center')
 # Show the plot
 plt.show()
-
