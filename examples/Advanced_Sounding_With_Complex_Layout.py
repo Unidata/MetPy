@@ -72,8 +72,8 @@ h.plot(u, v)
 # but we could add a few simple tricks to greatly increase the
 # readability and complexity of our Skew-T/Hodograph layout. Lets
 # try another Skew-T with a few more advanced features:
-###########################################
 
+###########################################
 # STEP 1: CREATE THE SKEW-T OBJECT AND MODIFY IT TO CREATE A
 # NICE, CLEAN PLOT
 # Create a new figure. The dimensions here give a good aspect ratio
