@@ -304,7 +304,6 @@ def moist_lapse(pressure, temperature, reference_pressure=None, lapse_type='stan
                 'ep0': scalar, entrainment constant [unitless],
                 'rh0': scalar, ambient relative humidity [unitless],
                 }
-
             For 'r14': {
                 'de': scalar or 1-d array, detrainment rate [m**-1],
                 'ep': scalar or 1-d array, entrainment rate [m**-1],
@@ -329,9 +328,6 @@ def moist_lapse(pressure, temperature, reference_pressure=None, lapse_type='stan
     --------
     dry_lapse : Calculate parcel temperature assuming dry adiabatic processes
     parcel_profile : Calculate complete parcel profile
-    moist_lapse_pseudoadiabatic : Calculate parcel temperature assuming irreversible, moist pseudoadiabatic processes
-    moist_lapse_reversible : Calculate parcel temperature assuming reversible, moist adiabatic processes
-    moist_lapse_entrain : Calculate parcel temperature assuming reversible, moist adiabatic processes
 
     Notes
     -----
@@ -1036,6 +1032,11 @@ def parcel_profile(pressure, temperature, dewpoint, lapse_type=None, params=None
                 'p0': reference sea-level pressure [Pa],
                 'ep0': entrainment constant [unitless],
                 'rh0': ambient relative humidity [unitless],
+                }
+            For 'r14': {
+                'de': scalar or 1-d array, detrainment rate [m**-1],
+                'ep': scalar or 1-d array, entrainment rate [m**-1],
+                'pa': 1-d array, optional, pressure levels defining detrainment and entrainment profile [Pa]
                 }
 
     Returns
