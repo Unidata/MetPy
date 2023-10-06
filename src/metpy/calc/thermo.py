@@ -299,10 +299,16 @@ def moist_lapse(pressure, temperature, reference_pressure=None, lapse_type='stan
         External parameters used for the some lapse_types
         Required parameters:
             For 'so13': {
-                'h0': scale height [m],
-                'p0': reference sea-level pressure [Pa],
-                'ep0': entrainment constant [unitless],
-                'rh0': ambient relative humidity [unitless],
+                'h0': scalar, scale height [m],
+                'p0': scalar, reference sea-level pressure [Pa],
+                'ep0': scalar, entrainment constant [unitless],
+                'rh0': scalar, ambient relative humidity [unitless],
+                }
+
+            For 'r14': {
+                'de': scalar or 1-d array, detrainment rate [m**-1],
+                'ep': scalar or 1-d array, entrainment rate [m**-1],
+                'pa': 1-d array, optional, pressure levels defining detrainment and entrainment profile [Pa]
                 }
 
     Returns
@@ -384,6 +390,17 @@ def moist_lapse(pressure, temperature, reference_pressure=None, lapse_type='stan
         )
         return frac / p
 
+    def dt_r14(p, t, params):
+        ep = np.interp(p,params['pa'],params['ep']) if hasattr(params['ep'],'__len__') else params['ep'] # entrainment rate at p
+        de = np.interp(p,params['pa'],params['de']) if hasattr(params['de'],'__len__') else params['de'] # detrainment rate at p
+        rs = saturation_mixing_ratio._nounit(p, t)
+        qs = specific_humidity_from_mixing_ratio(rs)
+        a1 = mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t**2/mpconsts.nounit.Lv + qs*mpconsts.nounit.Lv
+        a2 = mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t**2/mpconsts.nounit.Lv*(de+mpconsts.nounit.g/(mpconsts.nounit.Rd*t)) + qs*mpconsts.nounit.Lv*(de-ep) - mpconsts.nounit.g
+        a3 = (mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t/(mpconsts.nounit.Rd*mpconsts.nounit.Lv) - 1)*mpconsts.nounit.g*de
+        frac = mpconsts.nounit.Rd*t/(mpconsts.nounit.g) * mpconsts.nounit.Rv*t**2/mpconsts.nounit.Lv * ((-a2+np.sqrt(a2**2-4*a1*a3))/(2*a1) + mpconsts.nounit.g/(mpconsts.nounit.Rd*t))
+        return frac / p
+
     temperature = np.atleast_1d(temperature)
     pressure = np.atleast_1d(pressure)
     if reference_pressure is None:
@@ -398,6 +415,8 @@ def moist_lapse(pressure, temperature, reference_pressure=None, lapse_type='stan
         params={'rt':saturation_mixing_ratio._nounit(reference_pressure,temperature)} # total water at LCL = rs
     elif lapse_type == 'so13':
         dt=dt_so13
+    elif lapse_type == 'r14':
+        dt=dt_r14
     else:
         raise ValueError('Specified lapse_type is not supported. '
                          'Choose from standard, pseudoadiabatic, reversible, '
