@@ -283,3 +283,79 @@ def convert_gempak_color(c, style='psc'):
     except TypeError:
         res = cols[normalize(c)]
     return res
+
+
+def plot_local_extrema(ax, extrema_mask, vals, x, y, symbol, plot_val=True, **kwargs):
+    """Plot the local extreme (max/min) values of a 2D array.
+
+    The behavior of the plotting will have the symbol horizontal/vertical alignment
+    be center/bottom and any value plotted will be center/top. The default text size of plotted
+    values is 0.65 of the symbol size.
+
+    Parameters
+    ----------
+    ax: `matplotlib.axes`
+        The axes which to plot the local extrema
+    extrema_mask : `numpy.array`
+        A boolean array that contains the variable local extrema
+    vals : `numpy.array`
+        The variable associated with the extrema_mask
+    x : `numpy.array`
+        The x-dimension variable associated with the extrema_vals
+    y : `numpy.array`
+        The y-dimension variable associated with the extrema_vals
+    symbol : str
+        The text or other string to plot at the local extrema location
+    plot_val: bool
+        Whether to plot the local extreme value (default is True)
+    textsize: int (optional)
+        Size of plotted extreme values, Default is 0.65 * size
+
+    Returns
+    -------
+    Plots local extrema on the plot axes
+
+    Other Parameters
+    ----------------
+    kwargs : `matplotlib.pyplot.text` properties.
+        Other valid `matplotlib.pyplot.text` kwargs can be specified
+        except verticalalalignment if plotting both a symbol and the value.
+
+        Default kwargs:
+            size : 20
+            color : 'black'
+            fontweight : 'bold'
+            horizontalalignment : 'center'
+            verticalalignment : 'center'
+            transform : None
+
+    See Also
+    --------
+    :func:`~metpy.calc.find_local_extrema`
+
+    """
+    defaultkwargs = {'size': 20, 'color': 'black', 'fontweight': 'bold',
+                     'horizontalalignment': 'center', 'verticalalignment': 'center'}
+    kwargs = {**defaultkwargs, **kwargs}
+    if plot_val:
+        kwargs.pop('verticalalignment')
+    size = kwargs.pop('size')
+    textsize = kwargs.pop('textsize', size * 0.65)
+
+    extreme_vals = vals[extrema_mask]
+    if x.ndim == 1:
+        xx, yy = np.meshgrid(x, y)
+    else:
+        xx = x
+        yy = y
+    extreme_x = xx[extrema_mask]
+    extreme_y = yy[extrema_mask]
+    for extrema, ex_x, ex_y in zip(extreme_vals, extreme_x, extreme_y):
+        if plot_val:
+            ax.text(ex_x, ex_y, symbol, clip_on=True, clip_box=ax.bbox, size=size,
+                    verticalalignment='bottom', **kwargs)
+            ax.text(ex_x, ex_y, f'{extrema:.0f}', clip_on=True, clip_box=ax.bbox,
+                    size=textsize, verticalalignment='top', **kwargs)
+        else:
+            ax.text(ex_x, ex_y, symbol, clip_on=True, clip_box=ax.bbox, size=size,
+                    **kwargs)
