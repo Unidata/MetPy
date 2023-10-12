@@ -35,6 +35,9 @@ jobs:
             check-links: false
             dep-versions: requirements.txt
           - python-version: 3.11
+            check-links: false
+            dep-versions: requirements.txt
+          - python-version: 3.12
             check-links: true
             dep-versions: requirements.txt
     outputs:
@@ -73,7 +76,7 @@ jobs:
     - name: Download doc build
       uses: actions/download-artifact@v3
       with:
-        name: Linux-3.11-docs
+        name: Linux-3.12-docs
         path: ./docs/build/html
 
     # This overrides the version "dev" with the proper version if we're building off a
