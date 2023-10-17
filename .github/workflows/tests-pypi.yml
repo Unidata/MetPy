@@ -75,3 +75,20 @@ jobs:
       with:
         run-doctests: ${{ matrix.dep-versions == 'requirements.txt' && matrix.no-extras != 'No Extras' }}
         key: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-${{ matrix.no-extras }}-${{ runner.os }}
+
+  codecov:
+    needs: PyPITests
+    name: CodeCov Upload
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          name: ${{ github.workflow }}
