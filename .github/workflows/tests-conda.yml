@@ -49,3 +49,20 @@ jobs:
       with:
         run-doctests: ${{ runner.os != 'Windows' }}
         key: conda-${{ matrix.python-version }}-${{ runner.os }}
+
+  codecov:
+    name: CodeCov Upload
+    needs: CondaTests
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          name: ${{ github.workflow }}
