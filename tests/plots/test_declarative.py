@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from io import BytesIO
 import warnings
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -19,9 +20,12 @@ from metpy.cbook import get_test_data
 from metpy.io import GiniFile
 from metpy.io.metar import parse_metar_file
 from metpy.plots import (ArrowPlot, BarbPlot, ContourPlot, FilledContourPlot, ImagePlot,
-                         MapPanel, PanelContainer, PlotGeometry, PlotObs, RasterPlot)
-from metpy.testing import needs_cartopy
+                         MapPanel, PanelContainer, PlotGeometry, PlotObs, RasterPlot,
+                         SkewtPanel, SkewtPlot)
+from metpy.testing import get_upper_air_data, needs_cartopy
 from metpy.units import units
+
+MPL_VERSION = matplotlib.__version__[:5]
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
@@ -1926,6 +1930,19 @@ def test_copy():
         assert obj is not copied_obj
         assert obj.time == copied_obj.time
 
+    # Copy SkewtPlot
+    obj = SkewtPlot()
+    obj.temperature_variable = 'tempeature'
+    copied_obj = obj.copy()
+    assert obj is not copied_obj
+    assert obj.temperature_variable == copied_obj.temperature_variable
+
+    obj = SkewtPanel()
+    obj.xlabel = 'Temperature'
+    copied_obj = obj.copy()
+    assert obj is not copied_obj
+    assert obj.xlabel == copied_obj.xlabel
+
     # Copies of MapPanel and PanelContainer
     obj = MapPanel()
     obj.title = 'Sample Text'
@@ -2072,6 +2089,75 @@ def test_declarative_plot_geometry_points(ccrs):
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance=3.27 if MPL_VERSION.startswith('3.3') else 0.03)
+def test_declarative_skewt_plot():
+    """Test plotting of a simple skewT with declarative."""
+    date = datetime(2016, 5, 22, 0)
+    data = get_upper_air_data(date, 'DDC')
+
+    skew = SkewtPlot()
+    skew.data = data
+    skew.temperature_variable = ['temperature', 'dewpoint']
+    skew.vertical_variable = 'pressure'
+    skew.linecolor = ['red', 'green']
+    skew.linestyle = ['solid']
+    skew.wind_barb_variables = ['u_wind', 'v_wind']
+
+    skewpanel = SkewtPanel()
+    skewpanel.xlimits = (-40, 50)
+    skewpanel.ylimits = (1025, 100)
+    skewpanel.plots = [skew]
+    skewpanel.title = f'DDC Sounding {date} UTC'
+
+    panel = PanelContainer()
+    panel.size = (8.5, 10)
+    panel.panels = [skewpanel]
+    panel.draw()
+
+    return panel.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance=3.24 if MPL_VERSION.startswith('3.3') else 0.03)
+def test_declarative_skewt_plot_shade_cape():
+    """Test plotting of a skewT with declarative and shading."""
+    from metpy.calc import parcel_profile
+
+    date = datetime(2016, 5, 22, 0)
+    data = get_upper_air_data(date, 'DDC')
+
+    parcel_temp = parcel_profile(data['pressure'],
+                                 data['temperature'][0],
+                                 data['dewpoint'][0]).to('degC')
+    data['parcel_temperature'] = parcel_temp
+
+    skew = SkewtPlot()
+    skew.data = data
+    skew.temperature_variable = ['temperature', 'dewpoint', 'parcel_temperature']
+    skew.vertical_variable = 'pressure'
+    skew.linecolor = ['red', 'green', 'black']
+    skew.linestyle = ['solid', 'solid']
+    skew.wind_barb_variables = ['u_wind', 'v_wind']
+    skew.wind_barb_skip = 2
+    skew.wind_barb_position = 1
+    skew.shade_cape = True
+    skew.shade_cin = True
+
+    skewpanel = SkewtPanel()
+    skewpanel.xlimits = (-40, 50)
+    skewpanel.ylimits = (1025, 100)
+    skewpanel.plots = [skew]
+    skewpanel.title = f'DDC Sounding {date} UTC'
+
+    panel = PanelContainer()
+    panel.size = (8.5, 10)
+    panel.panels = [skewpanel]
+    panel.draw()
+
+    return panel.figure
+
+
 @needs_cartopy
 def test_drop_traitlets_dir():
     """Test successful drop of inherited members from HasTraits and any '_' or '__' members."""
@@ -2084,7 +2170,8 @@ def test_drop_traitlets_dir():
             MapPanel,
             PanelContainer,
             PlotGeometry,
-            PlotObs
+            PlotObs,
+            SkewtPlot
     ):
         assert dir(plot_obj)[0].startswith('_')
         assert not dir(plot_obj())[0].startswith('_')
