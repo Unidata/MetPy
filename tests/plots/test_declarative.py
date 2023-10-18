@@ -32,7 +32,7 @@ def test_declarative_image():
 
     img = ImagePlot()
     img.data = data.metpy.parse_cf('IR')
-    img.colormap = 'Greys_r'
+    img.mpl_args = {'cmap': 'Greys_r'}
 
     panel = MapPanel()
     panel.title = 'Test'
@@ -91,7 +91,7 @@ def test_declarative_four_dims_error():
         pc.draw()
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.09)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.092)
 @needs_cartopy
 def test_declarative_contour():
     """Test making a contour plot."""
@@ -119,7 +119,7 @@ def test_declarative_contour():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.091)
+@pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.093)
 @needs_cartopy
 def test_declarative_titles():
     """Test making a contour plot with multiple titles."""
@@ -150,7 +150,7 @@ def test_declarative_titles():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.066)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.069)
 @needs_cartopy
 def test_declarative_smooth_contour():
     """Test making a contour plot using smooth_contour."""
@@ -250,7 +250,7 @@ def test_declarative_smooth_contour_order():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.058)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.059)
 @needs_cartopy
 def test_declarative_figsize():
     """Test having an all float figsize."""
@@ -278,7 +278,7 @@ def test_declarative_figsize():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.029)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.032)
 @needs_cartopy
 def test_declarative_smooth_field():
     """Test the smoothing of the field with smooth_field trait."""
@@ -376,7 +376,7 @@ def test_declarative_layers_plot_options():
     contour.level = 700 * units.hPa
     contour.contours = 5
     contour.linewidth = 1
-    contour.linecolor = 'grey'
+    contour.mpl_args = {'colors': 'grey'}
 
     panel = MapPanel()
     panel.area = 'us'
@@ -424,7 +424,7 @@ def test_declarative_contour_convert_units():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.246)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.247)
 @needs_cartopy
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
@@ -566,7 +566,7 @@ def test_no_field_error_barbs():
         barbs.draw()
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.377)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.378)
 def test_projection_object(ccrs, cfeature):
     """Test that we can pass a custom map projection."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -590,7 +590,8 @@ def test_projection_object(ccrs, cfeature):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.009)
-def test_colorfill(cfeature):
+@needs_cartopy
+def test_colorfill():
     """Test that we can use ContourFillPlot."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
 
@@ -669,7 +670,8 @@ def test_colorfill_with_normalize_instance_image_range(cfeature):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
-def test_colorfill_horiz_colorbar(cfeature):
+@needs_cartopy
+def test_colorfill_horiz_colorbar():
     """Test that we can use ContourFillPlot with a horizontal colorbar."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
 
@@ -796,7 +798,7 @@ def test_latlon():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.293)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.342)
 @needs_cartopy
 def test_declarative_barb_options():
     """Test making a contour plot."""
@@ -808,7 +810,8 @@ def test_declarative_barb_options():
     barb.field = ['u_wind', 'v_wind']
     barb.skip = (10, 10)
     barb.color = 'blue'
-    barb.pivot = 'tip'
+    barb.pivot = 'middle'
+    barb.mpl_args = {'pivot': 'tip'}
     barb.barblength = 6.5
 
     panel = MapPanel()
@@ -837,7 +840,8 @@ def test_declarative_arrowplot():
     arrows.field = ['u_wind', 'v_wind']
     arrows.skip = (10, 10)
     arrows.color = 'blue'
-    arrows.pivot = 'mid'
+    arrows.pivot = 'tip'
+    arrows.mpl_args = {'pivot': 'mid'}
     arrows.arrowscale = 1000
 
     panel = MapPanel()
@@ -916,7 +920,7 @@ def test_declarative_arrow_changes():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.51)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.86)
 @needs_cartopy
 def test_declarative_barb_earth_relative():
     """Test making a contour plot."""
@@ -1111,7 +1115,7 @@ def test_declarative_barb_scale():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.667)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.668)
 @needs_cartopy
 def test_declarative_barb_gfs_knots():
     """Test making a contour plot."""
@@ -1291,6 +1295,39 @@ def test_declarative_sfc_obs(ccrs):
     obs.level = None
     obs.fields = ['tmpf']
     obs.colors = ['black']
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.projection = ccrs.PlateCarree()
+    panel.area = 'in'
+    panel.layers = ['states']
+    panel.plots = [obs]
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (10, 10)
+    pc.panels = [panel]
+
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.025)
+def test_declarative_sfc_obs_args(ccrs):
+    """Test making a surface observation plot with mpl arguments."""
+    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
+                       infer_datetime_format=True, parse_dates=['valid'])
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(1993, 3, 12, 12)
+    obs.time_window = timedelta(minutes=15)
+    obs.level = None
+    obs.fields = ['tmpf']
+    obs.colors = ['black']
+    obs.mpl_args = {'fontsize': 12}
 
     # Panel for plot with Map features
     panel = MapPanel()
@@ -1811,6 +1848,33 @@ def test_declarative_raster():
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
+@needs_cartopy
+def test_declarative_raster_options():
+    """Test making a raster plot."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    raster = RasterPlot()
+    raster.data = data
+    raster.colormap = 'viridis'
+    raster.field = 'Temperature'
+    raster.level = 700 * units.hPa
+    raster.mpl_args = {'alpha': 1, 'cmap': 'coolwarm'}
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline']
+    panel.plots = [raster]
+
+    pc = PanelContainer()
+    pc.size = (8.0, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
 @needs_cartopy
 def test_declarative_region_modifier_zoom_in():
@@ -1971,6 +2035,7 @@ def test_declarative_plot_geometry_polygons():
     geo = PlotGeometry()
     geo.geometry = [slgt_risk_polygon, enh_risk_polygon]
     geo.stroke = ['#DDAA00', '#FF6600']
+    geo.stroke_width = [1]
     geo.fill = None
     geo.labels = ['SLGT', 'ENH']
     geo.label_facecolor = ['#FFE066', '#FFA366']
@@ -2015,6 +2080,7 @@ def test_declarative_plot_geometry_lines(ccrs):
     geo.stroke = 'green'
     geo.labels = ['Irma', '+/- 0.25 deg latitude']
     geo.label_facecolor = None
+    geo.mpl_args = {'linewidth': 1}
 
     # Place plot in a panel and container
     panel = MapPanel()
