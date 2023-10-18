@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Oct 17, 2023 at 21:57:29"/>
+    <meta name="docbuild:last-update" content="Oct 18, 2023 at 21:22:25"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.PlotObs.html" />
 
   </head>
@@ -790,40 +790,43 @@ surface data using station plots.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.locations" title="metpy.plots.PlotObs.locations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">locations</span></code></a></p></td>
 <td><p>List of strings for scalar or symbol field plotting locations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.name" title="metpy.plots.PlotObs.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.mpl_args" title="metpy.plots.PlotObs.mpl_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mpl_args</span></code></a></p></td>
+<td><p>Supply a dictionary of valid Matplotlib keyword arguments to modify how the plot variable is drawn.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.name" title="metpy.plots.PlotObs.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
 <td><p>Generate a name for the plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.obsdata" title="metpy.plots.PlotObs.obsdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obsdata</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.obsdata" title="metpy.plots.PlotObs.obsdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obsdata</span></code></a></p></td>
 <td><p>Return the internal cached data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.parent" title="metpy.plots.PlotObs.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.parent" title="metpy.plots.PlotObs.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.plot_units" title="metpy.plots.PlotObs.plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_units</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.plot_units" title="metpy.plots.PlotObs.plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_units</span></code></a></p></td>
 <td><p>A list of the desired units to plot the fields in.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.plotdata" title="metpy.plots.PlotObs.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.plotdata" title="metpy.plots.PlotObs.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
 <td><p>Return the data for plotting.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.reduce_points" title="metpy.plots.PlotObs.reduce_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_points</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.reduce_points" title="metpy.plots.PlotObs.reduce_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_points</span></code></a></p></td>
 <td><p>Float to reduce number of points plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.time" title="metpy.plots.PlotObs.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.time" title="metpy.plots.PlotObs.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
 <td><p>Set the valid time to be plotted as a datetime object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.time_window" title="metpy.plots.PlotObs.time_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_window</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.time_window" title="metpy.plots.PlotObs.time_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_window</span></code></a></p></td>
 <td><p>Set a range to look for data to plot as a timedelta object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field" title="metpy.plots.PlotObs.vector_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field" title="metpy.plots.PlotObs.vector_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field</span></code></a></p></td>
 <td><p>List of the vector field to be plotted.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field_color" title="metpy.plots.PlotObs.vector_field_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field_color</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field_color" title="metpy.plots.PlotObs.vector_field_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field_color</span></code></a></p></td>
 <td><p>String color name to plot the vector.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field_length" title="metpy.plots.PlotObs.vector_field_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field_length</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field_length" title="metpy.plots.PlotObs.vector_field_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field_length</span></code></a></p></td>
 <td><p>Integer value to set the length of the plotted vector.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_plot_units" title="metpy.plots.PlotObs.vector_plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_plot_units</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_plot_units" title="metpy.plots.PlotObs.vector_plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_plot_units</span></code></a></p></td>
 <td><p>The desired units to plot the vector field in.</p></td>
 </tr>
 </tbody>
@@ -973,6 +976,20 @@ must be set to <em class="xref py py-obj">None</em>.</p>
 <dd><p>List of strings for scalar or symbol field plotting locations.</p>
 <p>List of parameters locations for plotting parameters around the station plot (e.g.,
 NW, NE, SW, SE, W, C). (optional)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.PlotObs.mpl_args">
+<span class="sig-name descname"><span class="pre">mpl_args</span></span><a class="headerlink" href="#metpy.plots.PlotObs.mpl_args" title="Link to this definition">#</a></dt>
+<dd><p>Supply a dictionary of valid Matplotlib keyword arguments to modify
+how the plot variable is drawn.</p>
+<p>Using this attribute you must choose the appropriate keyword arguments (kwargs) based on
+what you are plotting (e.g., contours, color-filled contours, image plot, etc.). This is
+available for all plot types (ContourPlot, FilledContourPlot, RasterPlot, ImagePlot,
+BarbPlot, ArrowPlot, PlotGeometry, and PlotObs). For PlotObs, the kwargs are those to
+specify the StationPlot object. NOTE: Setting the mpl_args trait will override
+any other trait that corresponds to a specific kwarg for the particular plot type
+(e.g., linecolor, linewidth).</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1412,6 +1429,7 @@ If name is not specified, removes all trait notifiers.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotObs.formats"><code class="docutils literal notranslate"><span class="pre">PlotObs.formats</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotObs.level"><code class="docutils literal notranslate"><span class="pre">PlotObs.level</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotObs.locations"><code class="docutils literal notranslate"><span class="pre">PlotObs.locations</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotObs.mpl_args"><code class="docutils literal notranslate"><span class="pre">PlotObs.mpl_args</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotObs.name"><code class="docutils literal notranslate"><span class="pre">PlotObs.name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotObs.obsdata"><code class="docutils literal notranslate"><span class="pre">PlotObs.obsdata</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotObs.parent"><code class="docutils literal notranslate"><span class="pre">PlotObs.parent</span></code></a></li>

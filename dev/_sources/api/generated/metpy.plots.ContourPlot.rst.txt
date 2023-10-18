@@ -25,6 +25,7 @@ ContourPlot
       ~ContourPlot.linestyle
       ~ContourPlot.linewidth
       ~ContourPlot.longitude
+      ~ContourPlot.mpl_args
       ~ContourPlot.name
       ~ContourPlot.parent
       ~ContourPlot.plot_units
@@ -96,6 +97,7 @@ ContourPlot
    .. autoattribute:: linestyle
    .. autoattribute:: linewidth
    .. autoattribute:: longitude
+   .. autoattribute:: mpl_args
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: plot_units

@@ -20,9 +20,11 @@ PlotGeometry
       ~PlotGeometry.label_fontsize
       ~PlotGeometry.labels
       ~PlotGeometry.marker
+      ~PlotGeometry.mpl_args
       ~PlotGeometry.name
       ~PlotGeometry.parent
       ~PlotGeometry.stroke
+      ~PlotGeometry.stroke_width
 
    
    
@@ -76,9 +78,11 @@ PlotGeometry
    .. autoattribute:: label_fontsize
    .. autoattribute:: labels
    .. autoattribute:: marker
+   .. autoattribute:: mpl_args
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: stroke
+   .. autoattribute:: stroke_width
 
    
    

@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Oct 17, 2023 at 21:57:29"/>
+    <meta name="docbuild:last-update" content="Oct 18, 2023 at 21:22:25"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.ContourPlot.html" />
 
   </head>
@@ -784,34 +784,37 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.longitude" title="metpy.plots.ContourPlot.longitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">longitude</span></code></a></p></td>
 <td><p>The longitude coordinate of the field to be plotted.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.name" title="metpy.plots.ContourPlot.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.mpl_args" title="metpy.plots.ContourPlot.mpl_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mpl_args</span></code></a></p></td>
+<td><p>Supply a dictionary of valid Matplotlib keyword arguments to modify how the plot variable is drawn.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.name" title="metpy.plots.ContourPlot.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
 <td><p>Generate a name for the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.parent" title="metpy.plots.ContourPlot.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.parent" title="metpy.plots.ContourPlot.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.plot_units" title="metpy.plots.ContourPlot.plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_units</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.plot_units" title="metpy.plots.ContourPlot.plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_units</span></code></a></p></td>
 <td><p>The desired units to plot the field in.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.plotdata" title="metpy.plots.ContourPlot.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.plotdata" title="metpy.plots.ContourPlot.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
 <td><p>Return the data for plotting.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.scale" title="metpy.plots.ContourPlot.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.scale" title="metpy.plots.ContourPlot.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale the field to be plotted by the value given.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.smooth_contour" title="metpy.plots.ContourPlot.smooth_contour"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_contour</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.smooth_contour" title="metpy.plots.ContourPlot.smooth_contour"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_contour</span></code></a></p></td>
 <td><p>Spline interpolation to smooth contours.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.smooth_field" title="metpy.plots.ContourPlot.smooth_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_field</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.smooth_field" title="metpy.plots.ContourPlot.smooth_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_field</span></code></a></p></td>
 <td><p>Number of smoothing passes using 9-pt smoother.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.time" title="metpy.plots.ContourPlot.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.time" title="metpy.plots.ContourPlot.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
 <td><p>Set the valid time to be plotted as a datetime object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.x" title="metpy.plots.ContourPlot.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.x" title="metpy.plots.ContourPlot.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
 <td><p>The x coordinate of the field to be plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.y" title="metpy.plots.ContourPlot.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.y" title="metpy.plots.ContourPlot.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
 <td><p>The y coordinate of the field to be plotted.</p></td>
 </tr>
 </tbody>
@@ -1020,6 +1023,20 @@ line.</p>
 selecting a point or transect through 95 degrees west, set this parameter to
 <code class="docutils literal notranslate"><span class="pre">-95</span> <span class="pre">*</span> <span class="pre">units.degrees_east</span></code>. Note that this requires your data to have a longitude
 dimension coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.ContourPlot.mpl_args">
+<span class="sig-name descname"><span class="pre">mpl_args</span></span><a class="headerlink" href="#metpy.plots.ContourPlot.mpl_args" title="Link to this definition">#</a></dt>
+<dd><p>Supply a dictionary of valid Matplotlib keyword arguments to modify
+how the plot variable is drawn.</p>
+<p>Using this attribute you must choose the appropriate keyword arguments (kwargs) based on
+what you are plotting (e.g., contours, color-filled contours, image plot, etc.). This is
+available for all plot types (ContourPlot, FilledContourPlot, RasterPlot, ImagePlot,
+BarbPlot, ArrowPlot, PlotGeometry, and PlotObs). For PlotObs, the kwargs are those to
+specify the StationPlot object. NOTE: Setting the mpl_args trait will override
+any other trait that corresponds to a specific kwarg for the particular plot type
+(e.g., linecolor, linewidth).</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1477,6 +1494,7 @@ If name is not specified, removes all trait notifiers.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.ContourPlot.linestyle"><code class="docutils literal notranslate"><span class="pre">ContourPlot.linestyle</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.ContourPlot.linewidth"><code class="docutils literal notranslate"><span class="pre">ContourPlot.linewidth</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.ContourPlot.longitude"><code class="docutils literal notranslate"><span class="pre">ContourPlot.longitude</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.ContourPlot.mpl_args"><code class="docutils literal notranslate"><span class="pre">ContourPlot.mpl_args</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.ContourPlot.name"><code class="docutils literal notranslate"><span class="pre">ContourPlot.name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.ContourPlot.parent"><code class="docutils literal notranslate"><span class="pre">ContourPlot.parent</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.ContourPlot.plot_units"><code class="docutils literal notranslate"><span class="pre">ContourPlot.plot_units</span></code></a></li>

@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Oct 17, 2023 at 21:57:29"/>
+    <meta name="docbuild:last-update" content="Oct 18, 2023 at 21:22:25"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.MapPanel.html" />
 
   </head>
@@ -773,22 +773,25 @@ projection, graphics area, and title.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.left_title" title="metpy.plots.MapPanel.left_title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">left_title</span></code></a></p></td>
 <td><p>A string to set a title for the figure with the location on the top left of the figure.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.parent" title="metpy.plots.MapPanel.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.mpl_args" title="metpy.plots.MapPanel.mpl_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mpl_args</span></code></a></p></td>
+<td><p>Supply a dictionary of valid Matplotlib keyword arguments to modify how the plot variable is drawn.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.parent" title="metpy.plots.MapPanel.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.plots" title="metpy.plots.MapPanel.plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.plots" title="metpy.plots.MapPanel.plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots</span></code></a></p></td>
 <td><p>A list of handles that represent the plots (e.g., <a class="reference internal" href="metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContourPlot</span></code></a>, <a class="reference internal" href="metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot" title="metpy.plots.FilledContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FilledContourPlot</span></code></a>, <a class="reference internal" href="metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImagePlot</span></code></a>) to put on a given panel.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.projection" title="metpy.plots.MapPanel.projection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projection</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.projection" title="metpy.plots.MapPanel.projection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projection</span></code></a></p></td>
 <td><p>A string for a pre-defined projection or a Cartopy projection object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.right_title" title="metpy.plots.MapPanel.right_title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">right_title</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.right_title" title="metpy.plots.MapPanel.right_title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">right_title</span></code></a></p></td>
 <td><p>A string to set a title for the figure with the location on the top right of the figure.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.title" title="metpy.plots.MapPanel.title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.title" title="metpy.plots.MapPanel.title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></a></p></td>
 <td><p>A string to set a title for the figure.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.title_fontsize" title="metpy.plots.MapPanel.title_fontsize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title_fontsize</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.title_fontsize" title="metpy.plots.MapPanel.title_fontsize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title_fontsize</span></code></a></p></td>
 <td><p>An integer or string value for the font size of the title of the figure.</p></td>
 </tr>
 </tbody>
@@ -953,6 +956,20 @@ lower-right as (2, 2, 4). For more details see the documentation for
 <dd><p>A string to set a title for the figure with the location on the
 top left of the figure.</p>
 <p>This trait sets a user-defined title that will plot at the top left of the figure.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.MapPanel.mpl_args">
+<span class="sig-name descname"><span class="pre">mpl_args</span></span><a class="headerlink" href="#metpy.plots.MapPanel.mpl_args" title="Link to this definition">#</a></dt>
+<dd><p>Supply a dictionary of valid Matplotlib keyword arguments to modify
+how the plot variable is drawn.</p>
+<p>Using this attribute you must choose the appropriate keyword arguments (kwargs) based on
+what you are plotting (e.g., contours, color-filled contours, image plot, etc.). This is
+available for all plot types (ContourPlot, FilledContourPlot, RasterPlot, ImagePlot,
+BarbPlot, ArrowPlot, PlotGeometry, and PlotObs). For PlotObs, the kwargs are those to
+specify the StationPlot object. NOTE: Setting the mpl_args trait will override
+any other trait that corresponds to a specific kwarg for the particular plot type
+(e.g., linecolor, linewidth).</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1370,6 +1387,7 @@ If name is not specified, removes all trait notifiers.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.layers_linewidth"><code class="docutils literal notranslate"><span class="pre">MapPanel.layers_linewidth</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.layout"><code class="docutils literal notranslate"><span class="pre">MapPanel.layout</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.left_title"><code class="docutils literal notranslate"><span class="pre">MapPanel.left_title</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.mpl_args"><code class="docutils literal notranslate"><span class="pre">MapPanel.mpl_args</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.parent"><code class="docutils literal notranslate"><span class="pre">MapPanel.parent</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.plots"><code class="docutils literal notranslate"><span class="pre">MapPanel.plots</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.projection"><code class="docutils literal notranslate"><span class="pre">MapPanel.projection</span></code></a></li>

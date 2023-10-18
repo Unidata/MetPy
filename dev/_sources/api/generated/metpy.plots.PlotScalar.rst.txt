@@ -19,6 +19,7 @@ PlotScalar
       ~PlotScalar.latitude
       ~PlotScalar.level
       ~PlotScalar.longitude
+      ~PlotScalar.mpl_args
       ~PlotScalar.name
       ~PlotScalar.parent
       ~PlotScalar.plot_units
@@ -84,6 +85,7 @@ PlotScalar
    .. autoattribute:: latitude
    .. autoattribute:: level
    .. autoattribute:: longitude
+   .. autoattribute:: mpl_args
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: plot_units

@@ -23,6 +23,7 @@ RasterPlot
       ~RasterPlot.latitude
       ~RasterPlot.level
       ~RasterPlot.longitude
+      ~RasterPlot.mpl_args
       ~RasterPlot.name
       ~RasterPlot.parent
       ~RasterPlot.plot_units
@@ -92,6 +93,7 @@ RasterPlot
    .. autoattribute:: latitude
    .. autoattribute:: level
    .. autoattribute:: longitude
+   .. autoattribute:: mpl_args
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: plot_units

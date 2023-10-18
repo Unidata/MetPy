@@ -22,6 +22,7 @@ BarbPlot
       ~BarbPlot.latitude
       ~BarbPlot.level
       ~BarbPlot.longitude
+      ~BarbPlot.mpl_args
       ~BarbPlot.name
       ~BarbPlot.parent
       ~BarbPlot.pivot
@@ -90,6 +91,7 @@ BarbPlot
    .. autoattribute:: latitude
    .. autoattribute:: level
    .. autoattribute:: longitude
+   .. autoattribute:: mpl_args
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: pivot

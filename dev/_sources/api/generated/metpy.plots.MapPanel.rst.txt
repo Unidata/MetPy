@@ -20,6 +20,7 @@ MapPanel
       ~MapPanel.layers_linewidth
       ~MapPanel.layout
       ~MapPanel.left_title
+      ~MapPanel.mpl_args
       ~MapPanel.parent
       ~MapPanel.plots
       ~MapPanel.projection
@@ -80,6 +81,7 @@ MapPanel
    .. autoattribute:: layers_linewidth
    .. autoattribute:: layout
    .. autoattribute:: left_title
+   .. autoattribute:: mpl_args
    .. autoattribute:: parent
    .. autoattribute:: plots
    .. autoattribute:: projection

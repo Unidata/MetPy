@@ -14,6 +14,7 @@ PanelContainer
    
       ~PanelContainer.cross_validation_lock
       ~PanelContainer.figure
+      ~PanelContainer.mpl_args
       ~PanelContainer.panel
       ~PanelContainer.panels
       ~PanelContainer.size
@@ -67,6 +68,7 @@ PanelContainer
    
    .. autoattribute:: cross_validation_lock
    .. autoattribute:: figure
+   .. autoattribute:: mpl_args
    .. autoattribute:: panel
    .. autoattribute:: panels
    .. autoattribute:: size

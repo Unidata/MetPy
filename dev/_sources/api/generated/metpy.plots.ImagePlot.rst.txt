@@ -23,6 +23,7 @@ ImagePlot
       ~ImagePlot.latitude
       ~ImagePlot.level
       ~ImagePlot.longitude
+      ~ImagePlot.mpl_args
       ~ImagePlot.name
       ~ImagePlot.parent
       ~ImagePlot.plot_units
@@ -92,6 +93,7 @@ ImagePlot
    .. autoattribute:: latitude
    .. autoattribute:: level
    .. autoattribute:: longitude
+   .. autoattribute:: mpl_args
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: plot_units

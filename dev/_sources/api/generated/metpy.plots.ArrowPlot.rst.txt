@@ -23,6 +23,7 @@ ArrowPlot
       ~ArrowPlot.latitude
       ~ArrowPlot.level
       ~ArrowPlot.longitude
+      ~ArrowPlot.mpl_args
       ~ArrowPlot.name
       ~ArrowPlot.parent
       ~ArrowPlot.pivot
@@ -92,6 +93,7 @@ ArrowPlot
    .. autoattribute:: latitude
    .. autoattribute:: level
    .. autoattribute:: longitude
+   .. autoattribute:: mpl_args
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: pivot

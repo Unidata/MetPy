@@ -20,6 +20,7 @@ PlotObs
       ~PlotObs.formats
       ~PlotObs.level
       ~PlotObs.locations
+      ~PlotObs.mpl_args
       ~PlotObs.name
       ~PlotObs.obsdata
       ~PlotObs.parent
@@ -86,6 +87,7 @@ PlotObs
    .. autoattribute:: formats
    .. autoattribute:: level
    .. autoattribute:: locations
+   .. autoattribute:: mpl_args
    .. autoattribute:: name
    .. autoattribute:: obsdata
    .. autoattribute:: parent

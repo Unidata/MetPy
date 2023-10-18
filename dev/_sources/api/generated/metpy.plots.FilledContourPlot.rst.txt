@@ -26,6 +26,7 @@ FilledContourPlot
       ~FilledContourPlot.latitude
       ~FilledContourPlot.level
       ~FilledContourPlot.longitude
+      ~FilledContourPlot.mpl_args
       ~FilledContourPlot.name
       ~FilledContourPlot.parent
       ~FilledContourPlot.plot_units
@@ -98,6 +99,7 @@ FilledContourPlot
    .. autoattribute:: latitude
    .. autoattribute:: level
    .. autoattribute:: longitude
+   .. autoattribute:: mpl_args
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: plot_units

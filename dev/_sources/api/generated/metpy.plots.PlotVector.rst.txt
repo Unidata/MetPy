@@ -21,6 +21,7 @@ PlotVector
       ~PlotVector.latitude
       ~PlotVector.level
       ~PlotVector.longitude
+      ~PlotVector.mpl_args
       ~PlotVector.name
       ~PlotVector.parent
       ~PlotVector.pivot
@@ -88,6 +89,7 @@ PlotVector
    .. autoattribute:: latitude
    .. autoattribute:: level
    .. autoattribute:: longitude
+   .. autoattribute:: mpl_args
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: pivot

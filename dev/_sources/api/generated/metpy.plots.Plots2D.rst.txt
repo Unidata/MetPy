@@ -17,6 +17,7 @@ Plots2D
       ~Plots2D.latitude
       ~Plots2D.level
       ~Plots2D.longitude
+      ~Plots2D.mpl_args
       ~Plots2D.name
       ~Plots2D.parent
       ~Plots2D.plot_units
@@ -76,6 +77,7 @@ Plots2D
    .. autoattribute:: latitude
    .. autoattribute:: level
    .. autoattribute:: longitude
+   .. autoattribute:: mpl_args
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: plot_units

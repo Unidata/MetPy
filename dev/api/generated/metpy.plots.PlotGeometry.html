@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Oct 17, 2023 at 21:57:29"/>
+    <meta name="docbuild:last-update" content="Oct 18, 2023 at 21:22:25"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.PlotGeometry.html" />
 
   </head>
@@ -769,14 +769,20 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotGeometry.marker" title="metpy.plots.PlotGeometry.marker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">marker</span></code></a></p></td>
 <td><p>Symbol used to denote points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotGeometry.name" title="metpy.plots.PlotGeometry.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotGeometry.mpl_args" title="metpy.plots.PlotGeometry.mpl_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mpl_args</span></code></a></p></td>
+<td><p>Supply a dictionary of valid Matplotlib keyword arguments to modify how the plot variable is drawn.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotGeometry.name" title="metpy.plots.PlotGeometry.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
 <td><p>Generate a name for the plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotGeometry.parent" title="metpy.plots.PlotGeometry.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotGeometry.parent" title="metpy.plots.PlotGeometry.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotGeometry.stroke" title="metpy.plots.PlotGeometry.stroke"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stroke</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotGeometry.stroke" title="metpy.plots.PlotGeometry.stroke"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stroke</span></code></a></p></td>
 <td><p>Stroke color(s) for polygons and line color(s) for lines.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotGeometry.stroke_width" title="metpy.plots.PlotGeometry.stroke_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stroke_width</span></code></a></p></td>
+<td><p>Stroke width(s) for polygons and lines.</p></td>
 </tr>
 </tbody>
 </table>
@@ -936,6 +942,20 @@ is left undefined, or set equal to <em class="xref py py-obj">None</em>.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.PlotGeometry.mpl_args">
+<span class="sig-name descname"><span class="pre">mpl_args</span></span><a class="headerlink" href="#metpy.plots.PlotGeometry.mpl_args" title="Link to this definition">#</a></dt>
+<dd><p>Supply a dictionary of valid Matplotlib keyword arguments to modify
+how the plot variable is drawn.</p>
+<p>Using this attribute you must choose the appropriate keyword arguments (kwargs) based on
+what you are plotting (e.g., contours, color-filled contours, image plot, etc.). This is
+available for all plot types (ContourPlot, FilledContourPlot, RasterPlot, ImagePlot,
+BarbPlot, ArrowPlot, PlotGeometry, and PlotObs). For PlotObs, the kwargs are those to
+specify the StationPlot object. NOTE: Setting the mpl_args trait will override
+any other trait that corresponds to a specific kwarg for the particular plot type
+(e.g., linecolor, linewidth).</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.PlotGeometry.name">
 <span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#metpy.plots.PlotGeometry.name" title="Link to this definition">#</a></dt>
 <dd><p>Generate a name for the plot.</p>
@@ -958,6 +978,17 @@ polygons and color lines. If a collection, the first color corresponds to the fi
 object in <a class="reference internal" href="#metpy.plots.PlotGeometry.geometry" title="metpy.plots.PlotGeometry.geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometry</span></code></a>, the second color corresponds to the second Shapely object, and so on.
 If <a class="reference internal" href="#metpy.plots.PlotGeometry.stroke" title="metpy.plots.PlotGeometry.stroke"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stroke</span></code></a> is shorter than <a class="reference internal" href="#metpy.plots.PlotGeometry.geometry" title="metpy.plots.PlotGeometry.geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometry</span></code></a>, <a class="reference internal" href="#metpy.plots.PlotGeometry.stroke" title="metpy.plots.PlotGeometry.stroke"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stroke</span></code></a> cycles back to the beginning, repeating
 the sequence of colors as needed. Default value is black.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.PlotGeometry.stroke_width">
+<span class="sig-name descname"><span class="pre">stroke_width</span></span><a class="headerlink" href="#metpy.plots.PlotGeometry.stroke_width" title="Link to this definition">#</a></dt>
+<dd><p>Stroke width(s) for polygons and lines.</p>
+<p>A single integer or floating point value or collection of values representing the size of
+the stroke width. If a collection, the first value corresponds to the first Shapely
+object in <a class="reference internal" href="#metpy.plots.PlotGeometry.geometry" title="metpy.plots.PlotGeometry.geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometry</span></code></a>, the second value corresponds to the second Shapely object, and so on.
+If <a class="reference internal" href="#metpy.plots.PlotGeometry.stroke_width" title="metpy.plots.PlotGeometry.stroke_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stroke_width</span></code></a> is shorter than <a class="reference internal" href="#metpy.plots.PlotGeometry.geometry" title="metpy.plots.PlotGeometry.geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometry</span></code></a>, <a class="reference internal" href="#metpy.plots.PlotGeometry.stroke_width" title="metpy.plots.PlotGeometry.stroke_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stroke_width</span></code></a> cycles back to the beginning,
+repeating the sequence of values as needed. Default value is 1.</p>
 </dd></dl>
 
 <p class="rubric">Methods Documentation</p>
@@ -1295,9 +1326,11 @@ If name is not specified, removes all trait notifiers.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotGeometry.label_fontsize"><code class="docutils literal notranslate"><span class="pre">PlotGeometry.label_fontsize</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotGeometry.labels"><code class="docutils literal notranslate"><span class="pre">PlotGeometry.labels</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotGeometry.marker"><code class="docutils literal notranslate"><span class="pre">PlotGeometry.marker</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotGeometry.mpl_args"><code class="docutils literal notranslate"><span class="pre">PlotGeometry.mpl_args</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotGeometry.name"><code class="docutils literal notranslate"><span class="pre">PlotGeometry.name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotGeometry.parent"><code class="docutils literal notranslate"><span class="pre">PlotGeometry.parent</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotGeometry.stroke"><code class="docutils literal notranslate"><span class="pre">PlotGeometry.stroke</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotGeometry.stroke_width"><code class="docutils literal notranslate"><span class="pre">PlotGeometry.stroke_width</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotGeometry.__init__"><code class="docutils literal notranslate"><span class="pre">PlotGeometry.__init__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotGeometry.add_traits"><code class="docutils literal notranslate"><span class="pre">PlotGeometry.add_traits()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.PlotGeometry.class_own_trait_events"><code class="docutils literal notranslate"><span class="pre">PlotGeometry.class_own_trait_events()</span></code></a></li>

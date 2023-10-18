@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Oct 17, 2023 at 21:57:29"/>
+    <meta name="docbuild:last-update" content="Oct 18, 2023 at 21:22:25"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.Plots2D.html" />
 
   </head>
@@ -762,25 +762,28 @@ vector. Primary settings common to all types of 2D plots include those for data 
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.longitude" title="metpy.plots.Plots2D.longitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">longitude</span></code></a></p></td>
 <td><p>The longitude coordinate of the field to be plotted.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.name" title="metpy.plots.Plots2D.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.mpl_args" title="metpy.plots.Plots2D.mpl_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mpl_args</span></code></a></p></td>
+<td><p>Supply a dictionary of valid Matplotlib keyword arguments to modify how the plot variable is drawn.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.name" title="metpy.plots.Plots2D.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
 <td><p>Generate a name for the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.parent" title="metpy.plots.Plots2D.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.parent" title="metpy.plots.Plots2D.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.plot_units" title="metpy.plots.Plots2D.plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_units</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.plot_units" title="metpy.plots.Plots2D.plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_units</span></code></a></p></td>
 <td><p>The desired units to plot the field in.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.scale" title="metpy.plots.Plots2D.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.scale" title="metpy.plots.Plots2D.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale the field to be plotted by the value given.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.time" title="metpy.plots.Plots2D.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.time" title="metpy.plots.Plots2D.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
 <td><p>Set the valid time to be plotted as a datetime object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.x" title="metpy.plots.Plots2D.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.x" title="metpy.plots.Plots2D.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
 <td><p>The x coordinate of the field to be plotted.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.y" title="metpy.plots.Plots2D.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.y" title="metpy.plots.Plots2D.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
 <td><p>The y coordinate of the field to be plotted.</p></td>
 </tr>
 </tbody>
@@ -911,6 +914,20 @@ data to have a vertical dimension coordinate.</p>
 selecting a point or transect through 95 degrees west, set this parameter to
 <code class="docutils literal notranslate"><span class="pre">-95</span> <span class="pre">*</span> <span class="pre">units.degrees_east</span></code>. Note that this requires your data to have a longitude
 dimension coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.Plots2D.mpl_args">
+<span class="sig-name descname"><span class="pre">mpl_args</span></span><a class="headerlink" href="#metpy.plots.Plots2D.mpl_args" title="Link to this definition">#</a></dt>
+<dd><p>Supply a dictionary of valid Matplotlib keyword arguments to modify
+how the plot variable is drawn.</p>
+<p>Using this attribute you must choose the appropriate keyword arguments (kwargs) based on
+what you are plotting (e.g., contours, color-filled contours, image plot, etc.). This is
+available for all plot types (ContourPlot, FilledContourPlot, RasterPlot, ImagePlot,
+BarbPlot, ArrowPlot, PlotGeometry, and PlotObs). For PlotObs, the kwargs are those to
+specify the StationPlot object. NOTE: Setting the mpl_args trait will override
+any other trait that corresponds to a specific kwarg for the particular plot type
+(e.g., linecolor, linewidth).</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1323,6 +1340,7 @@ If name is not specified, removes all trait notifiers.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.Plots2D.latitude"><code class="docutils literal notranslate"><span class="pre">Plots2D.latitude</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.Plots2D.level"><code class="docutils literal notranslate"><span class="pre">Plots2D.level</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.Plots2D.longitude"><code class="docutils literal notranslate"><span class="pre">Plots2D.longitude</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.Plots2D.mpl_args"><code class="docutils literal notranslate"><span class="pre">Plots2D.mpl_args</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.Plots2D.name"><code class="docutils literal notranslate"><span class="pre">Plots2D.name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.Plots2D.parent"><code class="docutils literal notranslate"><span class="pre">Plots2D.parent</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.Plots2D.plot_units"><code class="docutils literal notranslate"><span class="pre">Plots2D.plot_units</span></code></a></li>
