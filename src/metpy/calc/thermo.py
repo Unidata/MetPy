@@ -995,7 +995,7 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
 @exporter.export
 @preprocess_and_wrap(wrap_like='pressure')
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def parcel_profile(pressure, temperature, dewpoint, lapse_type=None, params=None):
+def parcel_profile(pressure, temperature, dewpoint, lapse_type='standard', params=None):
     r"""Calculate the profile a parcel takes through the atmosphere.
 
     The parcel starts at `temperature`, and `dewpoint`, lifted up
