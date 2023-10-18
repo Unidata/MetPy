@@ -111,7 +111,7 @@ class MetPyHasTraits(HasTraits):
     Using this attribute you must choose the appropriate keyword arguments (kwargs) based on
     what you are plotting (e.g., contours, color-filled contours, image plot, etc.). This is
     available for all plot types (ContourPlot, FilledContourPlot, RasterPlot, ImagePlot,
-    BarbPlot, ArrowPlot, PlotGeometry, and PlotObs). For PlotObs, the kwargs re those to
+    BarbPlot, ArrowPlot, PlotGeometry, and PlotObs). For PlotObs, the kwargs are those to
     specify the StationPlot object. NOTE: Setting the mpl_args trait will override
     any other trait that corresponds to a specific kwarg for the particular plot type
     (e.g., linecolor, linewidth).
