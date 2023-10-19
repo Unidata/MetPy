@@ -416,7 +416,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
                 (mpconsts.nounit.Rd * mpconsts.nounit.Lv) - 1) * mpconsts.nounit.g * de )
         frac = ( mpconsts.nounit.Rd * t / (mpconsts.nounit.g) *
                 mpconsts.nounit.Rv * t**2 / mpconsts.nounit.Lv *
-                ((-a2 + np.sqrt(a2**2 - 4 * a1 * a3)) / (2 * a1) + 
+                ((-a2 + np.sqrt(a2**2 - 4 * a1 * a3)) / (2 * a1) +
                         mpconsts.nounit.g / (mpconsts.nounit.Rd * t)) )
         return frac / p
 
