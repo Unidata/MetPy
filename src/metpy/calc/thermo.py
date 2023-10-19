@@ -372,16 +372,20 @@ def moist_lapse(pressure, temperature, reference_pressure=None, lapse_type='stan
 
     def dt_so13(p, t, params):
         zp = -params['h0']*np.log(p/params['p0']) # pseudoheight
-        ep = params['ep0']/zp # entrainment rate
-        rs = saturation_mixing_ratio._nounit(p, t)
-        qs = specific_humidity_from_mixing_ratio(rs)
-        frac = (
-            (mpconsts.nounit.Rd*t + mpconsts.nounit.Lv*qs + ep*qs*mpconsts.nounit.Lv*(1-params['rh0'])*mpconsts.nounit.Rd*t/mpconsts.nounit.g)
-            / (mpconsts.nounit.Cp_d + (
-                mpconsts.nounit.Lv**2 * qs * mpconsts.nounit.epsilon
-                / (mpconsts.nounit.Rd * t**2)
-            ))
-        )
+        if np.abs(zp)==0: # entrainment rate undefined at z=0, assume dry adiabat
+            frac = mpconsts.nounit.Rd * t / mpconsts.nounit.Cp_d
+        else:
+            ep = params['ep0']/zp # entrainment rate
+            rs = saturation_mixing_ratio._nounit(p, t)
+            qs = specific_humidity_from_mixing_ratio(rs)
+            frac = (
+                (mpconsts.nounit.Rd*t + mpconsts.nounit.Lv*qs + ep*qs*mpconsts.nounit.Lv*(1-params['rh0'])*mpconsts.nounit.Rd*t/mpconsts.nounit.g)
+                / (mpconsts.nounit.Cp_d + (
+                    mpconsts.nounit.Lv**2 * qs * mpconsts.nounit.epsilon
+                    / (mpconsts.nounit.Rd * t**2)
+                ))
+            )
+            frac = np.min([frac, mpconsts.nounit.Rd * t / mpconsts.nounit.Cp_d]) # cap lapse rate at dry adiabat
         return frac / p
 
     def dt_r14(p, t, params):
@@ -409,7 +413,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None, lapse_type='stan
         params={'rt':saturation_mixing_ratio._nounit(reference_pressure,temperature)} # total water at LCL = rs
     elif lapse_type == 'so13':
         dt=dt_so13
-        params.update{{'h0':mpconsts.nounit.Rd*temperature[0]/mpconsts.nounit.g, 'p0':pressure[0]}}
+        params.update({'h0':mpconsts.nounit.Rd * temperature[0] / mpconsts.nounit.g, 'p0':pressure[0]})
     elif lapse_type == 'r14':
         dt=dt_r14
     else:
