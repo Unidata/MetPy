@@ -289,26 +289,26 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
     lapse_type : `string`, optional
         Definition of moist adiabat to use; if not given, it defaults to moist_lapse
         Options:
-            'standard' for simplified pseudoadiabatic process
-            'pseudoadiabatic' for pseudoadiabatic moist process
-            'reversible' for reversible moist process
-            'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
-            'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
+        'standard' for simplified pseudoadiabatic process
+        'pseudoadiabatic' for pseudoadiabatic moist process
+        'reversible' for reversible moist process
+        'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
+        'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
         More info: https://glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
 
     params : `dict` or None, optional
         External parameters used for the some lapse_types
         Required parameters:
-            For 'so13': {
-                'ep0': scalar, entrainment constant [unitless],
-                'rh0': scalar, ambient relative humidity [unitless],
-                }
-            For 'r14': {
-                'de': scalar or 1-d array, detrainment rate [m**-1],
-                'ep': scalar or 1-d array, entrainment rate [m**-1],
-                'pa': 1-d array, optional, pressure levels
-                      defining detrainment and entrainment profile [Pa]
-                }
+        For 'so13': {
+        'ep0': scalar, entrainment constant [unitless],
+        'rh0': scalar, ambient relative humidity [unitless],}
+        }
+        For 'r14': {
+        'de': scalar or 1-d array, detrainment rate [m**-1],
+        'ep': scalar or 1-d array, entrainment rate [m**-1],
+        'pa': 1-d array, optional, pressure levels
+              defining detrainment and entrainment profile [Pa]
+        }
 
     Returns
     -------
@@ -1018,6 +1018,7 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
         return (units.Quantity(np.nan, pressure.units),
                 units.Quantity(np.nan, temperature.units))
 
+
 @exporter.export
 @preprocess_and_wrap(wrap_like='pressure')
 @check_units('[pressure]', '[temperature]', '[temperature]')
@@ -1043,26 +1044,26 @@ def parcel_profile(pressure, temperature, dewpoint, lapse_type='standard', param
     lapse_type : `string`, optional
         Definition of moist adiabat to use; if not given, it defaults to moist_lapse
         Options:
-            'standard' for simplified pseudoadiabatic process
-            'pseudoadiabatic' for pseudoadiabatic moist process
-            'reversible' for reversible moist process
-            'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
-            'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
+        'standard' for simplified pseudoadiabatic process
+        'pseudoadiabatic' for pseudoadiabatic moist process
+        'reversible' for reversible moist process
+        'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
+        'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
         More info: https://glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
 
     params : `dict` or None, optional
         External parameters used for the some lapse_types
         Required parameters:
-            For 'so13': {
-                'ep0': entrainment constant [unitless],
-                'rh0': ambient relative humidity [unitless],
-                }
-            For 'r14': {
-                'de': scalar or 1-d array, detrainment rate [m**-1],
-                'ep': scalar or 1-d array, entrainment rate [m**-1],
-                'pa': 1-d array, optional, pressure levels
-                      defining detrainment and entrainment profile [Pa]
-                }
+        For 'so13': {
+        'ep0': entrainment constant [unitless],
+        'rh0': ambient relative humidity [unitless],
+        }
+        For 'r14': {
+        'de': scalar or 1-d array, detrainment rate [m**-1],
+        'ep': scalar or 1-d array, entrainment rate [m**-1],
+        'pa': 1-d array, optional, pressure levels
+              defining detrainment and entrainment profile [Pa]
+        }
 
     Returns
     -------
@@ -1150,26 +1151,26 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint,
     lapse_type : `string`, optional
         Definition of moist adiabat to use; if not given, it defaults to moist_lapse
         Options:
-            'standard' for simplified pseudoadiabatic process
-            'pseudoadiabatic' for pseudoadiabatic moist process
-            'reversible' for reversible moist process
-            'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
-            'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
+        'standard' for simplified pseudoadiabatic process
+        'pseudoadiabatic' for pseudoadiabatic moist process
+        'reversible' for reversible moist process
+        'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
+        'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
         More info: https://glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
 
     params : `dict` or None, optional
         External parameters used for the some lapse_types
         Required parameters:
-            For 'so13': {
-                'ep0': entrainment constant [unitless],
-                'rh0': ambient relative humidity [unitless],
-                }
-            For 'r14': {
-                'de': scalar or 1-d array, detrainment rate [m**-1],
-                'ep': scalar or 1-d array, entrainment rate [m**-1],
-                'pa': 1-d array, optional, pressure levels
-                      defining detrainment and entrainment profile [Pa]
-                }
+        For 'so13': {
+        'ep0': entrainment constant [unitless],
+        'rh0': ambient relative humidity [unitless],
+        }
+        For 'r14': {
+        'de': scalar or 1-d array, detrainment rate [m**-1],
+        'ep': scalar or 1-d array, entrainment rate [m**-1],
+        'pa': 1-d array, optional, pressure levels
+              defining detrainment and entrainment profile [Pa]
+        }
 
     Returns
     -------
