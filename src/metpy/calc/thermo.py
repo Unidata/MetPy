@@ -1124,7 +1124,7 @@ def parcel_profile(pressure, temperature, dewpoint, lapse_type='standard', param
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def parcel_profile_with_lcl(pressure, temperature, dewpoint):
+def parcel_profile_with_lcl(pressure, temperature, dewpoint, lapse_type='standard', params=None):
     r"""Calculate the profile a parcel takes through the atmosphere.
 
     The parcel starts at `temperature`, and `dewpoint`, lifted up
@@ -1145,6 +1145,30 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint):
     dewpoint : `pint.Quantity`
         Atmospheric dewpoint at the levels in `pressure`. The first entry should be at
         the same level as the first `pressure` data point.
+
+    lapse_type : `string`, optional
+        Definition of moist adiabat to use; if not given, it defaults to moist_lapse
+        Options:
+            'standard' for simplified pseudoadiabatic process
+            'pseudoadiabatic' for pseudoadiabatic moist process
+            'reversible' for reversible moist process
+            'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
+            'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
+        More info: https://glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
+
+    params : `dict` or None, optional
+        External parameters used for the some lapse_types
+        Required parameters:
+            For 'so13': {
+                'ep0': entrainment constant [unitless],
+                'rh0': ambient relative humidity [unitless],
+                }
+            For 'r14': {
+                'de': scalar or 1-d array, detrainment rate [m**-1],
+                'ep': scalar or 1-d array, entrainment rate [m**-1],
+                'pa': 1-d array, optional, pressure levels
+                      defining detrainment and entrainment profile [Pa]
+                }
 
     Returns
     -------
@@ -1204,7 +1228,7 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint):
 
     """
     p_l, p_lcl, p_u, t_l, t_lcl, t_u = _parcel_profile_helper(pressure, temperature[0],
-                                                              dewpoint[0])
+                                                              dewpoint[0], lapse_type, params)
     new_press = concatenate((p_l, p_lcl, p_u))
     prof_temp = concatenate((t_l, t_lcl, t_u))
     new_temp = _insert_lcl_level(pressure, temperature, p_lcl)
