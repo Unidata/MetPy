@@ -299,8 +299,6 @@ def moist_lapse(pressure, temperature, reference_pressure=None, lapse_type='stan
         External parameters used for the some lapse_types
         Required parameters:
             For 'so13': {
-                'h0': scalar, scale height [m],
-                'p0': scalar, reference sea-level pressure [Pa],
                 'ep0': scalar, entrainment constant [unitless],
                 'rh0': scalar, ambient relative humidity [unitless],
                 }
@@ -411,6 +409,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None, lapse_type='stan
         params={'rt':saturation_mixing_ratio._nounit(reference_pressure,temperature)} # total water at LCL = rs
     elif lapse_type == 'so13':
         dt=dt_so13
+        params.update{{'h0':mpconsts.nounit.Rd*temperature[0]/mpconsts.nounit.g, 'p0':pressure[0]}}
     elif lapse_type == 'r14':
         dt=dt_r14
     else:
@@ -1028,8 +1027,6 @@ def parcel_profile(pressure, temperature, dewpoint, lapse_type='standard', param
         External parameters used for the some lapse_types
         Required parameters:
             For 'so13': {
-                'h0': scale height [m],
-                'p0': reference sea-level pressure [Pa],
                 'ep0': entrainment constant [unitless],
                 'rh0': ambient relative humidity [unitless],
                 }
