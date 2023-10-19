@@ -416,7 +416,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
                 (mpconsts.nounit.Rd * mpconsts.nounit.Lv) - 1) * mpconsts.nounit.g * de )
         frac = ( mpconsts.nounit.Rd * t / (mpconsts.nounit.g) *
                 mpconsts.nounit.Rv * t**2 / mpconsts.nounit.Lv *
-                ((-a2+np.sqrt(a2**2 - 4 * a1 * a3)) / (2 * a1) + 
+                ((-a2 + np.sqrt(a2**2 - 4 * a1 * a3)) / (2 * a1) + 
                         mpconsts.nounit.g / (mpconsts.nounit.Rd * t)) )
         return frac / p
 
@@ -435,7 +435,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
         params={'rt':saturation_mixing_ratio._nounit(reference_pressure,temperature)}
     elif lapse_type == 'so13':
         dt=dt_so13
-        params.update({'h0':mpconsts.nounit.Rd * temperature[0] / mpconsts.nounit.g, 
+        params.update({'h0':mpconsts.nounit.Rd * temperature[0] / mpconsts.nounit.g,
                        'p0':pressure[0]})
     elif lapse_type == 'r14':
         dt=dt_r14
@@ -1124,7 +1124,8 @@ def parcel_profile(pressure, temperature, dewpoint, lapse_type='standard', param
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def parcel_profile_with_lcl(pressure, temperature, dewpoint, lapse_type='standard', params=None):
+def parcel_profile_with_lcl(pressure, temperature, dewpoint,
+        lapse_type='standard', params=None):
     r"""Calculate the profile a parcel takes through the atmosphere.
 
     The parcel starts at `temperature`, and `dewpoint`, lifted up
@@ -1360,7 +1361,8 @@ def _parcel_profile_helper(pressure, temperature, dewpoint, lapse_type, params):
                        'Output profile includes duplicate temperatures as a result.')
 
     # Find moist pseudo-adiabatic profile starting at the LCL, reversing above sorting
-    temp_upper = moist_lapse(unique[::-1], temp_lower[-1], lapse_type=lapse_type, params=params).to(temp_lower.units)
+    temp_upper = moist_lapse(unique[::-1], temp_lower[-1],
+            lapse_type=lapse_type, params=params).to(temp_lower.units)
     temp_upper = temp_upper[::-1][indices]
 
     # Return profile pieces
