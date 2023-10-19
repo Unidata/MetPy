@@ -54,13 +54,13 @@ examples = [
 test = [
     "netCDF4",
     "packaging>=21.0",
-    "pytest>=2.4",
+    "pytest>=6.2",
     "pytest-mpl"
 ]
 extras = [
-    "cartopy>=0.17.0",
+    "cartopy>=0.21.0",
     "dask>=2020.12.0",
-    "shapely>=1.6.0"
+    "shapely>=1.6.4"
 ]
 
 [project.urls]
