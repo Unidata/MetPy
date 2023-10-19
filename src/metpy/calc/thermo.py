@@ -3030,7 +3030,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
 
 @exporter.export
 @preprocess_and_wrap()
-def down_cape(pressure, temperature, dewpoint):
+def downdraft_cape(pressure, temperature, dewpoint):
     r"""Calculate downward CAPE (DCAPE).
 
     Calculate the downward convective available potential energy (DCAPE) of a given upper air
@@ -3062,7 +3062,7 @@ def down_cape(pressure, temperature, dewpoint):
 
     Examples
     --------
-    >>> from metpy.calc import dewpoint_from_relative_humidity, down_cape
+    >>> from metpy.calc import dewpoint_from_relative_humidity, downdraft_cape
     >>> from metpy.units import units
     >>> # pressure
     >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
@@ -3080,7 +3080,7 @@ def down_cape(pressure, temperature, dewpoint):
     ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
-    >>> down_cape(p, T, Td)
+    >>> downdraft_cape(p, T, Td)
     (<Quantity(1222.67968, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
     900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity([17.50959548
     17.20643425 15.237249 13.12607097 10.85045704 8.38243809 5.68671014 2.71808363

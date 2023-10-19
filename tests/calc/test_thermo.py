@@ -15,7 +15,7 @@ import xarray as xr
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
                         brunt_vaisala_period, cape_cin, ccl, cross_totals, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
-                        down_cape, dry_lapse, dry_static_energy, el,
+                        downdraft_cape, dry_lapse, dry_static_energy, el,
                         equivalent_potential_temperature, exner_function,
                         gradient_richardson_number, InvalidSoundingError,
                         isentropic_interpolation, isentropic_interpolation_as_dataset, k_index,
@@ -1566,7 +1566,7 @@ def test_dcape():
                 -16.6, -9.2, -9.9, -14.6, -32.8, -51.2, -32.7, -42.6, -58.9,
                 -69.5, -71.7, -75.9, -79.3, -79.7, -72.5, -73.3, -64.3, -70.6,
                 -75.8, -51.2, -56.4] * units.degC
-    dcape, down_press, down_t = down_cape(pressure, temperature, dewpoint)
+    dcape, down_press, down_t = downdraft_cape(pressure, temperature, dewpoint)
     assert_almost_equal(dcape, 1222 * units('joule / kilogram'), 0)
     assert_array_almost_equal(down_press, pressure[:10], 0)
     assert_almost_equal(down_t, [17.5, 17.2, 15.2, 13.1, 10.9, 8.4,
