@@ -26,7 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [3.9, '3.10', 3.11]
-        dep-versions: [requirements.txt]
+        dep-versions: [Latest]
         no-extras: ['']
         include:
           - python-version: 3.9
@@ -54,10 +54,12 @@ jobs:
 
         # Read our pyproject.toml
         config = tomllib.load(open('pyproject.toml', 'rb'))['project']
+        opt_deps = config['optional-dependencies']
 
         # Generate a Minimum dependency file
-        with (Path('ci') / 'Minimum').open('wt') as out:
-          for src in (config['dependencies'], config['optional-dependencies']['test']):
+        for src, fname in [(config['dependencies'], 'requirements.txt'),
+                           (opt_deps['test'], 'test_requirements.txt'), (opt_deps['extras'], 'extra_requirements.txt')]:
+          with (Path('ci') / fname).open('wt') as out:
             for dep in src:
               dep = dep.split(';')[0]
               out.write(dep.replace('>=', '==') + '\n')
@@ -66,15 +68,14 @@ jobs:
     - name: Install from PyPI
       uses: ./.github/actions/install-pypi
       with:
-        need-cartopy: ${{ matrix.no-extras != 'No Extras' }}
+        need-extras: ${{ matrix.no-extras != 'No Extras' }}
         type: 'test'
-        version-file: ${{ matrix.dep-versions }}
         python-version: ${{ matrix.python-version }}
 
     - name: Run tests
       uses: ./.github/actions/run-tests
       with:
-        run-doctests: ${{ matrix.dep-versions == 'requirements.txt' && matrix.no-extras != 'No Extras' }}
+        run-doctests: ${{ matrix.dep-versions == 'Latest' && matrix.no-extras != 'No Extras' }}
         key: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-${{ matrix.no-extras }}-${{ runner.os }}
 
   codecov:
