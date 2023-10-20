@@ -45,7 +45,9 @@ doc = [
     "myst-parser",
     "netCDF4",
     "sphinx",
-    "sphinx-gallery>=0.4"
+    "sphinx-gallery>=0.4",
+    "sphinx-design",
+    "pydata-sphinx-theme"
 ]
 examples = [
     "geopandas>=0.6.0",
