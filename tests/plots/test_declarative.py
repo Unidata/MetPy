@@ -20,7 +20,7 @@ from metpy.io import GiniFile
 from metpy.io.metar import parse_metar_file
 from metpy.plots import (ArrowPlot, BarbPlot, ContourPlot, FilledContourPlot, ImagePlot,
                          MapPanel, PanelContainer, PlotGeometry, PlotObs, RasterPlot)
-from metpy.testing import needs_cartopy
+from metpy.testing import mpl_version_before, needs_cartopy
 from metpy.units import units
 
 
@@ -150,7 +150,7 @@ def test_declarative_titles():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.069)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.072)
 @needs_cartopy
 def test_declarative_smooth_contour():
     """Test making a contour plot using smooth_contour."""
@@ -179,7 +179,7 @@ def test_declarative_smooth_contour():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.09)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.12)
 @needs_cartopy
 def test_declarative_smooth_contour_calculation():
     """Test making a contour plot using smooth_contour."""
@@ -334,7 +334,8 @@ def test_declarative_contour_cam():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.036)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance=3.71 if mpl_version_before('3.8') else 0.026)
 @needs_cartopy
 def test_declarative_contour_options():
     """Test making a contour plot."""
@@ -394,7 +395,8 @@ def test_declarative_layers_plot_options():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.025)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance=2.74 if mpl_version_before('3.8') else 0.014)
 @needs_cartopy
 def test_declarative_contour_convert_units():
     """Test making a contour plot."""

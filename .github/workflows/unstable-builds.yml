@@ -30,7 +30,7 @@ jobs:
     - name: Install using PyPI
       uses: ./.github/actions/install-pypi
       with:
-        need-cartopy: true
+        need-extras: true
         type: test
         version-file: Prerelease
         python-version: 3.11
@@ -70,7 +70,6 @@ jobs:
     - name: Install using PyPI
       uses: ./.github/actions/install-pypi
       with:
-        need-cartopy: true
         type: doc
         version-file: Prerelease
         python-version: 3.11
