@@ -342,7 +342,7 @@ Now, we can make the plot.
 
  .. code-block:: none
 
-    /home/runner/work/MetPy/MetPy/examples/cross_section.py:99: UserWarning: FixedFormatter should only be used together with FixedLocator
+    /home/runner/work/MetPy/MetPy/examples/cross_section.py:99: UserWarning: set_ticklabels() should only be used with a fixed number of ticks, i.e. after set_ticks() or using a FixedLocator.
       ax.set_yticklabels(np.arange(1000, 50, -100))
 
 
@@ -357,7 +357,7 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.291 seconds)
+   **Total running time of the script:** (0 minutes 7.010 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:
