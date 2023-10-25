@@ -55,7 +55,7 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
 
     Notes
     -----
-    .. math:: rh = \frac{e(T_d)}{e_s(T)}
+    .. math:: RH = \frac{e(T_d)}{e_s(T)}
 
     .. versionchanged:: 1.0
        Renamed ``dewpt`` parameter to ``dewpoint``
@@ -2026,7 +2026,7 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
     >>> T = 28.1 * units.degC
     >>> rh = .65
     >>> mixing_ratio_from_relative_humidity(p, T, rh).to('g/kg')
-    <Quantity(15.9828362, 'gram / kilogram')>
+    <Quantity(15.7646969, 'gram / kilogram')>
 
     See Also
     --------
@@ -2034,20 +2034,25 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
 
     Notes
     -----
-    Formula adapted from [Hobbs1977]_ pg. 74.
+    Employs [WMO8]_ eq. 4.A.16 as derived from WMO relative humidity definition based on
+    vapor partial pressures (eq. 4.A.15).
 
-    .. math:: w = (rh)(w_s)
+    .. math:: RH = \frac{w}{\epsilon + w} \frac{\epsilon + w_s}{w_s}
+    .. math:: \therefore w = \frac{\epsilon * w_s * RH}{\epsilon + w_s (1 - RH)}
 
     * :math:`w` is mixing ratio
-    * :math:`rh` is relative humidity as a unitless ratio
     * :math:`w_s` is the saturation mixing ratio
+    * :math:`\epsilon` is the molecular weight ratio of vapor to dry air
+    * :math:`RH` is relative humidity as a unitless ratio
+
 
     .. versionchanged:: 1.0
        Changed signature from ``(relative_humidity, temperature, pressure)``
 
     """
-    return (relative_humidity
-            * saturation_mixing_ratio(pressure, temperature)).to('dimensionless')
+    w_s = saturation_mixing_ratio(pressure, temperature)
+    return (mpconsts.nounit.epsilon * w_s * relative_humidity
+            / (mpconsts.nounit.epsilon + w_s * (1 - relative_humidity))).to('dimensionless')
 
 
 @exporter.export
@@ -2081,7 +2086,7 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
     >>> from metpy.units import units
     >>> relative_humidity_from_mixing_ratio(1013.25 * units.hPa,
     ...                                     30 * units.degC, 18/1000).to('percent')
-    <Quantity(66.1763544, 'percent')>
+    <Quantity(67.1277085, 'percent')>
 
     See Also
     --------
@@ -2089,19 +2094,23 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
 
     Notes
     -----
-    Formula based on that from [Hobbs1977]_ pg. 74.
+    Employs [WMO8]_ eq. 4.A.16 as derived from WMO relative humidity definition based on
+    vapor partial pressures (eq. 4.A.15).
 
-    .. math:: rh = \frac{w}{w_s}
+    .. math:: RH = \frac{w}{\epsilon + w} \frac{\epsilon + w_s}{w_s}
 
-    * :math:`rh` is relative humidity as a unitless ratio
     * :math:`w` is mixing ratio
     * :math:`w_s` is the saturation mixing ratio
+    * :math:`\epsilon` is the molecular weight ratio of vapor to dry air
+    * :math:`RH` is relative humidity as a unitless ratio
 
     .. versionchanged:: 1.0
        Changed signature from ``(mixing_ratio, temperature, pressure)``
 
     """
-    return mixing_ratio / saturation_mixing_ratio(pressure, temperature)
+    w_s = saturation_mixing_ratio(pressure, temperature)
+    return (mixing_ratio / (mpconsts.nounit.epsilon + mixing_ratio)
+            * (mpconsts.nounit.epsilon + w_s) / w_s)
 
 
 @exporter.export
@@ -2217,7 +2226,7 @@ def relative_humidity_from_specific_humidity(pressure, temperature, specific_hum
     >>> from metpy.units import units
     >>> relative_humidity_from_specific_humidity(1013.25 * units.hPa,
     ...                                          30 * units.degC, 18/1000).to('percent')
-    <Quantity(67.3893629, 'percent')>
+    <Quantity(68.3229304, 'percent')>
 
     See Also
     --------
@@ -2225,20 +2234,25 @@ def relative_humidity_from_specific_humidity(pressure, temperature, specific_hum
 
     Notes
     -----
-    Formula based on that from [Hobbs1977]_ pg. 74. and [Salby1996]_ pg. 118.
+    Employs [WMO8]_ eq. 4.A.16 as derived from WMO relative humidity definition based on
+    vapor partial pressures (eq. 4.A.15).
 
-    .. math:: RH = \frac{q}{(1-q)w_s}
+    .. math:: RH = \frac{w}{\epsilon + w} \frac{\epsilon + w_s}{w_s}
 
-    * :math:`RH` is relative humidity as a unitless ratio
-    * :math:`q` is specific humidity
+    given :math: w = \frac{q}{1-q}
+
+    * :math:`w` is mixing ratio
     * :math:`w_s` is the saturation mixing ratio
+    * :math:`q` is the specific humidity
+    * :math:`\epsilon` is the molecular weight ratio of vapor to dry air
+    * :math:`RH` is relative humidity as a unitless ratio
 
     .. versionchanged:: 1.0
        Changed signature from ``(specific_humidity, temperature, pressure)``
 
     """
-    return (mixing_ratio_from_specific_humidity(specific_humidity)
-            / saturation_mixing_ratio(pressure, temperature))
+    return relative_humidity_from_mixing_ratio(
+        pressure, temperature, mixing_ratio_from_specific_humidity(specific_humidity))
 
 
 @exporter.export
