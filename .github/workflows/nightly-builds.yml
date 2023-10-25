@@ -14,9 +14,11 @@ on:
       - main
     paths:
       - .github/workflows/nightly-builds.yml
+      - .github/workflows/unstable-builds.yml
   pull_request:
     paths:
       - .github/workflows/nightly-builds.yml
+      - .github/workflows/unstable-builds.yml
 
 jobs:
   Builds:
