@@ -63,7 +63,7 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
     """
     e = saturation_vapor_pressure(dewpoint)
     e_s = saturation_vapor_pressure(temperature)
-    return (e / e_s)
+    return e / e_s
 
 
 @exporter.export
