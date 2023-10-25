@@ -100,7 +100,10 @@ nitpick_ignore = [
 nitpick_ignore_regex = [
     ('py:class', r'default:.*'),  # For some traitlets docstrings
     ('py:class', r'.*Sentinel'),
+    ('py:class', r'.*Bunch'),
     ('py:class', r'.*[cC]allable'),
+    ('py:class', r'.*EventHandler'),
+    ('py:class', r'.*TraitType'),
     ('py:class', r'.*object providing a view on.*'),  # Python dict docstring
     ('py:class', r'None.  .*'),  # Python dict docstring
     ('py:class', r'.*D\[k\].*'),  # Python dict docstring
