@@ -256,70 +256,69 @@ super_comp = mpcalc.supercell_composite(mucape, total_helicity3, bshear3)
 # First lets plot some thermodynamic parameters
 plt.figtext(0.58, 0.37, 'SBCAPE: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.71, 0.37, f'{int(sbcape.m)} J/kg', weight='bold',
+plt.figtext(0.71, 0.37, f'{sbcape:.0f~P}', weight='bold',
             fontsize=15, color='orangered', ha='right')
 plt.figtext(0.58, 0.34, 'SBCIN: ', weight='bold',
             fontsize=15, color='black', ha='left')
-plt.figtext(0.71, 0.34, f'{int(sbcin.m)} J/kg', weight='bold',
+plt.figtext(0.71, 0.34, f'{sbcin:.0f~P}', weight='bold',
             fontsize=15, color='lightblue', ha='right')
 plt.figtext(0.58, 0.29, 'MLCAPE: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.71, 0.29, f'{int(mlcape.m)} J/kg', weight='bold',
+plt.figtext(0.71, 0.29, f'{mlcape:.0f~P}', weight='bold',
             fontsize=15, color='orangered', ha='right')
 plt.figtext(0.58, 0.26, 'MLCIN: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.71, 0.26, f'{int(mlcin.m)} J/kg', weight='bold',
+plt.figtext(0.71, 0.26, f'{mlcin:.0f~P}', weight='bold',
             fontsize=15, color='lightblue', ha='right')
 plt.figtext(0.58, 0.21, 'MUCAPE: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.71, 0.21, f'{int(mucape.m)} J/kg', weight='bold',
+plt.figtext(0.71, 0.21, f'{mucape:.0f~P}', weight='bold',
             fontsize=15, color='orangered', ha='right')
 plt.figtext(0.58, 0.18, 'MUCIN: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.71, 0.18, f'{int(mucin.m)} J/kg', weight='bold',
+plt.figtext(0.71, 0.18, f'{mucin:.0f~P}', weight='bold',
             fontsize=15, color='lightblue', ha='right')
 plt.figtext(0.58, 0.13, 'TT-INDEX: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.71, 0.13, f'{int(total_totals.m)} Δ°C', weight='bold',
+plt.figtext(0.71, 0.13, f'{total_totals:.0f~P}', weight='bold',
             fontsize=15, color='orangered', ha='right')
 plt.figtext(0.58, 0.10, 'K-INDEX: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.71, 0.10, f'{int(kindex.m)} °C', weight='bold',
+plt.figtext(0.71, 0.10, f'{kindex:.0f~P}', weight='bold',
             fontsize=15, color='orangered', ha='right')
 
 # now some kinematic parameters
-met_per_sec = (units.m * units.m) / (units.sec * units.sec)
 plt.figtext(0.73, 0.37, '0-1km SRH: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.88, 0.37, f'{int(total_helicity1.m)* met_per_sec:~P}',
+plt.figtext(0.88, 0.37, f'{total_helicity1:.0f~P}',
             weight='bold', fontsize=15, color='navy', ha='right')
 plt.figtext(0.73, 0.34, '0-1km SHEAR: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.88, 0.34, f'{int(bshear1.m)} kts', weight='bold',
+plt.figtext(0.88, 0.34, f'{bshear1:.0f~P}', weight='bold',
             fontsize=15, color='blue', ha='right')
 plt.figtext(0.73, 0.29, '0-3km SRH: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.88, 0.29, f'{int(total_helicity3.m)* met_per_sec:~P}',
+plt.figtext(0.88, 0.29, f'{total_helicity3:.0f~P}',
             weight='bold', fontsize=15, color='navy', ha='right')
 plt.figtext(0.73, 0.26, '0-3km SHEAR: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.88, 0.26, f'{int(bshear3.m)} kts', weight='bold',
+plt.figtext(0.88, 0.26, f'{bshear3:.0f~P}', weight='bold',
             fontsize=15, color='blue', ha='right')
 plt.figtext(0.73, 0.21, '0-6km SRH: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.88, 0.21, f'{int(total_helicity6.m)* met_per_sec:~P}',
+plt.figtext(0.88, 0.21, f'{total_helicity6:.0f~P}',
             weight='bold', fontsize=15, color='navy', ha='right')
 plt.figtext(0.73, 0.18, '0-6km SHEAR: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.88, 0.18, f'{int(bshear6.m)} kts', weight='bold',
+plt.figtext(0.88, 0.18, f'{bshear6:.0f~P}', weight='bold',
             fontsize=15, color='blue', ha='right')
 plt.figtext(0.73, 0.13, 'SIG TORNADO: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.88, 0.13, f'{int(sig_tor[0].m)}', weight='bold', fontsize=15,
+plt.figtext(0.88, 0.13, f'{sig_tor[0]:.0f~P}', weight='bold', fontsize=15,
             color='orangered', ha='right')
 plt.figtext(0.73, 0.10, 'SUPERCELL COMP: ', weight='bold', fontsize=15,
             color='black', ha='left')
-plt.figtext(0.88, 0.10, f'{int(super_comp[0].m)}', weight='bold', fontsize=15,
+plt.figtext(0.88, 0.10, f'{super_comp[0]:.0f~P}', weight='bold', fontsize=15,
             color='orangered', ha='right')
 
 # Add legends to the skew and hodo
