@@ -440,7 +440,8 @@ linkcheck_allowed_redirects = {
     r'https://conda.io/docs/': r'https://conda.io/en/latest/',
     r'https://github.com/Unidata/MetPy/issues/new/choose': r'https://github.com/login.*choose',
     r'https://doi.org/.*': r'https://.*',
-    r'https://gitter.im/Unidata/MetPy': r'https://app.gitter.im/.*MetPy.*'
+    r'https://gitter.im/Unidata/MetPy': r'https://app.gitter.im/.*MetPy.*',
+    r'https://library.wmo.int/idurl/.*': r'https://library.wmo.int/.*'
 }
 
 # Domain-specific HTTP headers for requests
