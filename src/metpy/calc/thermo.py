@@ -3871,21 +3871,16 @@ def static_stability(pressure, temperature, vertical_dim=0):
 
 
 @exporter.export
-@preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'specific_humidity')
-)
-@check_units('[pressure]', '[temperature]', '[dimensionless]')
-def dewpoint_from_specific_humidity(pressure, temperature, specific_humidity):
-    r"""Calculate the dewpoint from specific humidity, temperature, and pressure.
+def dewpoint_from_specific_humidity(*args, **kwargs):
+    r"""Calculate the dewpoint from specific humidity and pressure.
 
     Parameters
     ----------
     pressure: `pint.Quantity`
         Total atmospheric pressure
 
-    temperature: `pint.Quantity`
-        Air temperature
+    temperature: `pint.Quantity`, optional
+        Air temperature. Unused in calculation, pending deprecation
 
     specific_humidity: `pint.Quantity`
         Specific humidity of air
@@ -3899,20 +3894,73 @@ def dewpoint_from_specific_humidity(pressure, temperature, specific_humidity):
     --------
     >>> from metpy.calc import dewpoint_from_specific_humidity
     >>> from metpy.units import units
-    >>> dewpoint_from_specific_humidity(1000 * units.hPa, 10 * units.degC, 5 * units('g/kg'))
-    <Quantity(3.73203192, 'degree_Celsius')>
+    >>> dewpoint_from_specific_humidity(1000 * units.hPa, 5 * units('g/kg'))
+    <Quantity(3.79314079, 'degree_Celsius')>
+
+    .. versionchanged:: 1.6
+       Made `temperature` arg optional, to be deprecated
 
     .. versionchanged:: 1.0
        Changed signature from ``(specific_humidity, temperature, pressure)``
 
     See Also
     --------
-    relative_humidity_from_mixing_ratio, dewpoint_from_relative_humidity
+    relative_humidity_from_mixing_ratio, dewpoint_from_relative_humidity, dewpoint
+
+    Notes
+    -----
+    Employs [WMO8]_ eq 4.A.6,
+
+    .. math:: e = \frac{w}{\epsilon + w} p
+
+    with
+
+    .. math:: w = \frac{q}{1-q}
+
+    * :math:`q` is specific humidity
+    * :math:`w` is mixing ratio
+    * :math:`\epsilon` is the molecular weight ratio of vapor to dry air
+
+    to calculate vapor partial pressure :math:`e` for dewpoint calculation input. See
+    :func:`~dewpoint` for additional information.
+    """
+    pressure = kwargs.pop('pressure', None)
+    specific_humidity = kwargs.pop('specific_humidity', None)
+
+    return _dewpoint_from_specific_humidity(
+        pressure if pressure else args[0],
+        specific_humidity if specific_humidity else args[-1])
+
+
+@preprocess_and_wrap(
+    wrap_like='specific_humidity',
+    broadcast=('pressure', 'specific_humidity')
+)
+@check_units(pressure='[pressure]', specific_humidity='[dimensionless]')
+def _dewpoint_from_specific_humidity(pressure, specific_humidity):
+    r"""Calculate the dewpoint from specific humidity and pressure.
+
+    See :func:`~dewpoint_from_specific_humidity` for more information. This implementation
+    is provided internally to preserve backwards compatibility with MetPy<1.6.
+
+    Parameters
+    ----------
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    specific_humidity: `pint.Quantity`
+        Specific humidity of air
+
+    Returns
+    -------
+    `pint.Quantity`
+        Dew point temperature
 
     """
-    return dewpoint_from_relative_humidity(temperature,
-                                           relative_humidity_from_specific_humidity(
-                                               pressure, temperature, specific_humidity))
+    w = mixing_ratio_from_specific_humidity(specific_humidity)
+    e = pressure * w / (mpconsts.nounit.epsilon + w)
+
+    return dewpoint(e)
 
 
 @exporter.export

@@ -1817,6 +1817,33 @@ def test_dewpoint_specific_humidity_old_signature():
         dewpoint_from_specific_humidity(q, temperature, p)
 
 
+def test_dewpoint_specific_humidity_kwargs():
+    """Test kw-specified signature for backwards compatibility MetPy>=1.6."""
+    p = 1013.25 * units.mbar
+    temperature = 20. * units.degC
+    q = 0.012 * units.dimensionless
+    td = dewpoint_from_specific_humidity(
+        pressure=p, temperature=temperature, specific_humidity=q)
+    assert_almost_equal(td, 17.036 * units.degC, 3)
+
+
+def test_dewpoint_specific_humidity_mixed_args_kwargs():
+    """Test mixed arg, kwarg handling for backwards compatibility MetPy>=1.6."""
+    p = 1013.25 * units.mbar
+    temperature = 20. * units.degC
+    q = 0.012 * units.dimensionless
+    td = dewpoint_from_specific_humidity(p, temperature=temperature, specific_humidity=q)
+    assert_almost_equal(td, 17.036 * units.degC, 3)
+
+
+def test_dewpoint_specific_humidity_two_args():
+    """Test new signature, Temperature unneeded, MetPy>=1.6."""
+    p = 1013.25 * units.mbar
+    q = 0.012 * units.dimensionless
+    td = dewpoint_from_specific_humidity(p, q)
+    assert_almost_equal(td, 17.036 * units.degC, 3)
+
+
 def test_lfc_not_below_lcl():
     """Test sounding where LFC appears to be (but isn't) below LCL."""
     levels = np.array([1002.5, 1001.7, 1001., 1000.3, 999.7, 999., 998.2, 977.9,
