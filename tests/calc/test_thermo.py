@@ -1804,8 +1804,9 @@ def test_dewpoint_specific_humidity():
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
-    td = dewpoint_from_specific_humidity(p, temperature, q)
-    assert_almost_equal(td, 16.973 * units.degC, 3)
+    with pytest.deprecated_call(match='Temperature argument'):
+        td = dewpoint_from_specific_humidity(p, temperature, q)
+        assert_almost_equal(td, 17.0363429 * units.degC, 3)
 
 
 def test_dewpoint_specific_humidity_old_signature():
@@ -1822,9 +1823,10 @@ def test_dewpoint_specific_humidity_kwargs():
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
-    td = dewpoint_from_specific_humidity(
-        pressure=p, temperature=temperature, specific_humidity=q)
-    assert_almost_equal(td, 17.036 * units.degC, 3)
+    with pytest.deprecated_call(match='Temperature argument'):
+        td = dewpoint_from_specific_humidity(
+            pressure=p, temperature=temperature, specific_humidity=q)
+        assert_almost_equal(td, 17.036 * units.degC, 3)
 
 
 def test_dewpoint_specific_humidity_mixed_args_kwargs():
@@ -1832,8 +1834,10 @@ def test_dewpoint_specific_humidity_mixed_args_kwargs():
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
-    td = dewpoint_from_specific_humidity(p, temperature=temperature, specific_humidity=q)
-    assert_almost_equal(td, 17.036 * units.degC, 3)
+    with pytest.deprecated_call(match='Temperature argument'):
+        td = dewpoint_from_specific_humidity(
+            p, temperature=temperature, specific_humidity=q)
+        assert_almost_equal(td, 17.036 * units.degC, 3)
 
 
 def test_dewpoint_specific_humidity_two_args():

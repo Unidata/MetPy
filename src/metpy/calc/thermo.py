@@ -3924,6 +3924,11 @@ def dewpoint_from_specific_humidity(*args, **kwargs):
     to calculate vapor partial pressure :math:`e` for dewpoint calculation input. See
     :func:`~dewpoint` for additional information.
     """
+    if (len(args) + len(kwargs)) > 2:
+        _warnings.warn(
+            'Temperature argument is unused and will be deprecated in a future version.',
+            PendingDeprecationWarning)
+
     pressure = kwargs.pop('pressure', None)
     specific_humidity = kwargs.pop('specific_humidity', None)
 
