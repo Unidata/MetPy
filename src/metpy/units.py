@@ -249,10 +249,10 @@ def _check_argument_units(args, defaults, dimensionality):
                 yield arg, val, 'none', need
 
 
-def _get_changed_version(docstring):
+def _get_changed_versions(docstring):
     """Find the most recent version in which the docs say a function changed."""
     matches = re.findall(r'.. versionchanged:: ([\d.]+)', docstring)
-    return max(matches) if matches else None
+    return matches
 
 
 def _check_units_outer_helper(func, *args, **kwargs):
@@ -302,10 +302,10 @@ def _check_units_inner_helper(func, sig, defaults, dims, *args, **kwargs):
 
         # If function has changed, mention that fact
         if func.__doc__:
-            changed_version = _get_changed_version(func.__doc__)
-            if changed_version:
+            changed_versions = _get_changed_versions(func.__doc__)
+            if changed_versions:
                 msg = (
-                    f'This function changed in {changed_version}--double check '
+                    f'This function changed in version(s) {changed_versions}--double check '
                     'that the function is being called properly.\n'
                 ) + msg
         raise ValueError(msg)

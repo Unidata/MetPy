@@ -1814,7 +1814,7 @@ def test_dewpoint_specific_humidity_old_signature():
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
-    with pytest.raises(ValueError, match='changed in 1.0'):
+    with pytest.raises(ValueError, match='changed in version'):
         dewpoint_from_specific_humidity(q, temperature, p)
 
 
@@ -2070,6 +2070,14 @@ def test_specific_humidity_from_dewpoint():
     p = 1013.25 * units.mbar
     q = specific_humidity_from_dewpoint(p, 16.973 * units.degC)
     assert_almost_equal(q, 0.012 * units.dimensionless, 3)
+
+
+def test_specific_humidity_from_dewpoint_versionchanged():
+    """Test returning singular version changed suggestion in ValueError."""
+    pressure = 1013.25 * units.mbar
+    dewpoint = 16.973 * units.degC
+    with pytest.raises(ValueError, match='changed in version'):
+        specific_humidity_from_dewpoint(dewpoint, pressure)
 
 
 def test_lcl_convergence_issue():

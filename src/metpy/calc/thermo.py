@@ -3961,6 +3961,11 @@ def _dewpoint_from_specific_humidity(pressure, specific_humidity):
     `pint.Quantity`
         Dew point temperature
 
+    .. versionchanged:: 1.6
+       Made `temperature` arg optional, to be deprecated
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(specific_humidity, temperature, pressure)``
     """
     w = mixing_ratio_from_specific_humidity(specific_humidity)
     e = pressure * w / (mpconsts.nounit.epsilon + w)
