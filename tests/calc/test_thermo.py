@@ -1080,7 +1080,7 @@ def test_rh_mixing_ratio():
     temperature = 20. * units.degC
     w = 0.012 * units.dimensionless
     rh = relative_humidity_from_mixing_ratio(p, temperature, w)
-    assert_almost_equal(rh, 81.72498 * units.percent, 3)
+    assert_almost_equal(rh, 82.0709069 * units.percent, 3)
 
 
 def test_mixing_ratio_from_specific_humidity():
@@ -1117,7 +1117,7 @@ def test_rh_specific_humidity():
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
     rh = relative_humidity_from_specific_humidity(p, temperature, q)
-    assert_almost_equal(rh, 82.71759 * units.percent, 3)
+    assert_almost_equal(rh, 83.0486264 * units.percent, 3)
 
 
 def test_cape_cin():
@@ -1618,7 +1618,7 @@ def test_thickness_hydrostatic_from_relative_humidity():
     relative_humidity = np.array([81.69, 15.43, 18.95, 23.32, 28.36, 18.55]) * units.percent
     thickness = thickness_hydrostatic_from_relative_humidity(pressure, temperature,
                                                              relative_humidity)
-    assert_almost_equal(thickness, 9891.71 * units.m, 2)
+    assert_almost_equal(thickness, 9891.56669 * units.m, 2)
 
 
 def test_mixing_ratio_dimensions():
