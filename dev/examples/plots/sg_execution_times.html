@@ -18,12 +18,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,11 +38,11 @@
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css?v=e3e65d4f" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
 
-    <script src="../../_static/documentation_options.js?v=cb7e6255"></script>
+    <script src="../../_static/documentation_options.js?v=44dfd65d"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -61,7 +61,7 @@
             </script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/plots/sg_execution_times';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_version = '0.14.2';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
         DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
@@ -73,7 +73,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Oct 25, 2023 at 21:26:57"/>
+    <meta name="docbuild:last-update" content="Oct 26, 2023 at 16:30:48"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/plots/sg_execution_times.html" />
 
   </head>
@@ -145,11 +145,12 @@
   
   
   
+  
     
     
     
-    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.5dev - Home"/>
+    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.5dev - Home"/>`);</script>
   
   
 </a></div>
@@ -158,12 +159,21 @@
 <script>
 document.write(`
   <div class="version-switcher__container dropdown">
-    <button id="versionswitcherbutton" type="button" role="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="listbox" aria-controls="versionswitcherlist" aria-label="Version switcher list">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
       Choose version  <!-- this text may get changed later by javascript -->
       <span class="caret"></span>
     </button>
-    <div id="versionswitcherlist" class="version-switcher__menu dropdown-menu list-group-flush py-0" role="listbox" aria-labelledby="versionswitcherbutton">
-    <!-- dropdown will be populated by javascript on page load -->
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
     </div>
   </div>
 `);
@@ -477,75 +487,75 @@ document.write(`
                   
   <section id="computation-times">
 <span id="sphx-glr-examples-plots-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Link to this heading">#</a></h1>
-<p><strong>01:28.679</strong> total execution time for <strong>examples_plots</strong> files:</p>
+<p><strong>01:32.861</strong> total execution time for <strong>examples_plots</strong> files:</p>
 <table class="table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="Mesonet_Stationplot.html#sphx-glr-examples-plots-mesonet-stationplot-py"><span class="std std-ref">Mesonet Station Plot</span></a> (<code class="docutils literal notranslate"><span class="pre">Mesonet_Stationplot.py</span></code>)</p></td>
-<td><p>00:17.173</p></td>
+<td><p>00:18.221</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="Station_Plot.html#sphx-glr-examples-plots-station-plot-py"><span class="std std-ref">Station Plot</span></a> (<code class="docutils literal notranslate"><span class="pre">Station_Plot.py</span></code>)</p></td>
-<td><p>00:15.864</p></td>
+<td><p>00:17.436</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="nhc_wind_probabilities.html#sphx-glr-examples-plots-nhc-wind-probabilities-py"><span class="std std-ref">NOAA NHC Wind Speed Probabilities</span></a> (<code class="docutils literal notranslate"><span class="pre">nhc_wind_probabilities.py</span></code>)</p></td>
-<td><p>00:15.805</p></td>
+<td><p>00:16.765</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="spc_convective_outlook.html#sphx-glr-examples-plots-spc-convective-outlook-py"><span class="std std-ref">NOAA SPC Convective Outlook</span></a> (<code class="docutils literal notranslate"><span class="pre">spc_convective_outlook.py</span></code>)</p></td>
-<td><p>00:11.100</p></td>
+<td><p>00:11.663</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="Combined_plotting.html#sphx-glr-examples-plots-combined-plotting-py"><span class="std std-ref">Combined Plotting</span></a> (<code class="docutils literal notranslate"><span class="pre">Combined_plotting.py</span></code>)</p></td>
-<td><p>00:09.646</p></td>
+<td><p>00:09.264</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="Plotting_Surface_Analysis.html#sphx-glr-examples-plots-plotting-surface-analysis-py"><span class="std std-ref">Plotting Fronts</span></a> (<code class="docutils literal notranslate"><span class="pre">Plotting_Surface_Analysis.py</span></code>)</p></td>
-<td><p>00:07.470</p></td>
+<td><p>00:07.802</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="US_Counties.html#sphx-glr-examples-plots-us-counties-py"><span class="std std-ref">US Counties</span></a> (<code class="docutils literal notranslate"><span class="pre">US_Counties.py</span></code>)</p></td>
-<td><p>00:02.907</p></td>
+<td><p>00:03.074</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="surface_declarative.html#sphx-glr-examples-plots-surface-declarative-py"><span class="std std-ref">Surface Analysis using Declarative Syntax</span></a> (<code class="docutils literal notranslate"><span class="pre">surface_declarative.py</span></code>)</p></td>
-<td><p>00:02.451</p></td>
+<td><p>00:02.301</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="Station_Plot_with_Layout.html#sphx-glr-examples-plots-station-plot-with-layout-py"><span class="std std-ref">Station Plot with Layout</span></a> (<code class="docutils literal notranslate"><span class="pre">Station_Plot_with_Layout.py</span></code>)</p></td>
-<td><p>00:01.855</p></td>
+<td><p>00:01.921</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="Simplified_Image_Plot.html#sphx-glr-examples-plots-simplified-image-plot-py"><span class="std std-ref">Simple Plotting</span></a> (<code class="docutils literal notranslate"><span class="pre">Simplified_Image_Plot.py</span></code>)</p></td>
-<td><p>00:01.252</p></td>
+<td><p>00:01.119</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="raster_declarative.html#sphx-glr-examples-plots-raster-declarative-py"><span class="std std-ref">Raster Plots using Declarative Syntax</span></a> (<code class="docutils literal notranslate"><span class="pre">raster_declarative.py</span></code>)</p></td>
-<td><p>00:01.045</p></td>
+<td><p>00:01.071</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="upperair_declarative.html#sphx-glr-examples-plots-upperair-declarative-py"><span class="std std-ref">Upper Air Analysis using Declarative Syntax</span></a> (<code class="docutils literal notranslate"><span class="pre">upperair_declarative.py</span></code>)</p></td>
-<td><p>00:00.896</p></td>
+<td><p>00:00.942</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="Simple_Sounding.html#sphx-glr-examples-plots-simple-sounding-py"><span class="std std-ref">Simple Sounding</span></a> (<code class="docutils literal notranslate"><span class="pre">Simple_Sounding.py</span></code>)</p></td>
-<td><p>00:00.378</p></td>
+<td><p>00:00.402</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="Hodograph_Inset.html#sphx-glr-examples-plots-hodograph-inset-py"><span class="std std-ref">Hodograph Inset</span></a> (<code class="docutils literal notranslate"><span class="pre">Hodograph_Inset.py</span></code>)</p></td>
-<td><p>00:00.253</p></td>
+<td><p>00:00.266</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="Skew-T_Layout.html#sphx-glr-examples-plots-skew-t-layout-py"><span class="std std-ref">Skew-T with Complex Layout</span></a> (<code class="docutils literal notranslate"><span class="pre">Skew-T_Layout.py</span></code>)</p></td>
-<td><p>00:00.239</p></td>
+<td><p>00:00.256</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="Sounding_LCL_Dataset.html#sphx-glr-examples-plots-sounding-lcl-dataset-py"><span class="std std-ref">Sounding as Dataset Example</span></a> (<code class="docutils literal notranslate"><span class="pre">Sounding_LCL_Dataset.py</span></code>)</p></td>
-<td><p>00:00.227</p></td>
+<td><p>00:00.237</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="Simple_Fronts_Plot.html#sphx-glr-examples-plots-simple-fronts-plot-py"><span class="std std-ref">Simple Plotting of Fronts</span></a> (<code class="docutils literal notranslate"><span class="pre">Simple_Fronts_Plot.py</span></code>)</p></td>
-<td><p>00:00.118</p></td>
+<td><p>00:00.121</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 </tbody>
@@ -592,8 +602,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -623,7 +633,7 @@ document.write(`
     <div class="footer-items__end">
       
         <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.2.
 </p></div>
       
     </div>
