@@ -3,6 +3,6 @@ pydata-sphinx-theme==0.14.1
 sphinx-design==0.5.0
 sphinx-gallery==0.14.0
 myst-parser==2.0.0
-netCDF4==1.6.4
+netCDF4==1.6.5
 geopandas==0.14.0
 rtree==1.1.0
