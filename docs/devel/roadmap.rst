@@ -11,7 +11,7 @@ atmospheric science applications in Python. This means supporting scripted workf
 those done previously using GEMPAK, NCL, etc. MetPy’s functionality is not limited to
 supporting only static views, we also envision being used as the calculation core for graphical
 applications as well. Our focus on providing the domain-specific tools means that general
-functionality is moved upstream (to e.g. matplotlib, xarray) whenever sensible and possible.
+functionality is moved upstream (e.g. matplotlib, xarray) whenever sensible and possible.
 
 -----
 Plans
