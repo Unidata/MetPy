@@ -3558,7 +3558,7 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
     >>> thickness_hydrostatic_from_relative_humidity(p[ip1000_500],
     ...                                              T[ip1000_500],
     ...                                              rh[ip1000_500])
-    <Quantity(5781.35394, 'meter')>
+    <Quantity(5781.16001, 'meter')>
 
     See Also
     --------
