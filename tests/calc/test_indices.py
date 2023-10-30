@@ -180,33 +180,45 @@ def test_corfidi_motion():
     """Test corfidi MCS motion with observed sounding."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
     motion_full = concatenate(corfidi_storm_motion(data['pressure'],
-                                                   data['u_wind'], data['v_wind'],
-                                                   data['height']))
-    truth_full = [4.38681947, -26.16100158,
-                  22.11242453, -15.67399095] * units('kt')
+                                                   data['u_wind'], data['v_wind']))
+    truth_full = [20.60174457, -22.38741441,
+                  38.32734963, -11.90040377] * units('kt')
     assert_almost_equal(motion_full.flatten(), truth_full, 8)
-    motion_no_bottom = concatenate(corfidi_storm_motion(data['pressure'][6:],
-                                                        data['u_wind'][6:], data['v_wind'][6:],
-                                                        data['height'][6:]))
-    truth_no_bottom = [5.70216267, -29.03497766,
-                       24.74311094, -21.42194311] * units('kt')
-    assert_almost_equal(motion_no_bottom.flatten(), truth_no_bottom, 8)
+
+    motion_override = concatenate(corfidi_storm_motion(data['pressure'],
+                                                         data['u_wind'], data['v_wind'],
+                                                         u_llj=0*units('kt'),
+                                                         v_llj=0*units('kt')))
+    truth_override = [17.72560506, 10.48701063,
+                      35.45121012, 20.97402126] * units('kt')
+    assert_almost_equal(motion_override.flatten(), truth_override, 8)
+    
+    with pytest.raises(ValueError):
+        corfidi_storm_motion(data['pressure'][6:], data['u_wind'][6:], data['v_wind'][6:])
+    
     motion_no_top = concatenate(corfidi_storm_motion(data['pressure'][:37],
-                                                     data['u_wind'][:37], data['v_wind'][:37],
-                                                     data['height'][:37]))
-    truth_no_top = [4.1892675, -25.20826346,
-                    21.71732059, -13.76851471] * units('kt')
+                                                     data['u_wind'][:37], data['v_wind'][:37]))
+    truth_no_top = [20.40419260, -21.43467629,
+                    37.93224569, -9.99492754] * units('kt')
     assert_almost_equal(motion_no_top.flatten(), truth_no_top, 8)
+    
     u_with_nans = data['u_wind']
     u_with_nans[6:10] = np.nan
     v_with_nans = data['v_wind']
     v_with_nans[6:10] = np.nan
     motion_with_nans = concatenate(corfidi_storm_motion(data['pressure'],
-                                                        u_with_nans, v_with_nans,
-                                                        data['height']))
-    truth_with_nans = [6.6604286, -26.30560547,
-                       23.79507672, -16.0832665] * units('kt')
+                                                        u_with_nans, v_with_nans))
+    truth_with_nans = [20.01078763, -22.65208606,
+                       37.14543575, -12.42974709] * units('kt')
     assert_almost_equal(motion_with_nans.flatten(), truth_with_nans, 8)
+    
+    with pytest.raises(ValueError):
+        corfidi_storm_motion(data['pressure'], data['u_wind'],
+                             data['v_wind'], u_llj=10 * units('kt'))
+    
+    with pytest.raises(ValueError):
+        corfidi_storm_motion(data['pressure'], data['u_wind'],
+                             data['v_wind'], v_llj=10 * units('kt'))
 
 
 def test_bulk_shear():
