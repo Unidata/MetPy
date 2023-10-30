@@ -15,6 +15,10 @@ inputs:
   python-version:
     description: 'What version of Python to use'
     required: true
+  old-build:
+    description: 'Whether to enable old builds for shapely and cartopy'
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -30,13 +34,13 @@ runs:
           ci/extra_requirements.txt
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
-    - name: Install CartoPy build dependencies
-      if: ${{ inputs.need-extras == 'true' }}
+    - name: Install CartoPy/Shapely build dependencies
+      if: ${{ inputs.old-build == 'true' }}
       shell: bash
       run: sudo apt-get install libgeos-dev
 
     - name: Disable Shapely Wheels
-      if: ${{ inputs.need-extras == 'true' }}
+      if: ${{ inputs.old-build == 'true' }}
       shell: bash
       run: echo "PIP_NO_BINARY=shapely" >> $GITHUB_ENV
 

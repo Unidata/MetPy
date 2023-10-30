@@ -72,6 +72,7 @@ jobs:
         need-extras: ${{ matrix.no-extras != 'No Extras' }}
         type: 'test'
         python-version: ${{ matrix.python-version }}
+        old-build: ${{ matrix.no-extras != 'No Extras' && matrix.dep-versions == 'Minimum' }}
 
     - name: Run tests
       uses: ./.github/actions/run-tests
