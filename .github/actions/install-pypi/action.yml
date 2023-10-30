@@ -61,6 +61,7 @@ runs:
         -c ci/${{ inputs.version-file }} -c ci/${{ inputs.type }}_requirements.txt -c ci/extra_requirements.txt
 
     - name: Install additional test tools
+      if: ${{ inputs.type == 'test' }}
       shell: bash
       run: >
         python -m pip install coverage
