@@ -417,7 +417,7 @@ def corfidi_storm_motion(pressure, u, v, *, u_llj=None, v_llj=None):
     # If LLJ specified, use that
     if u_llj is not None and v_llj is not None:
         # find inverse of low-level jet
-        llj_inverse = units.Quantity.from_list((-1*u_llj, -1*v_llj))
+        llj_inverse = units.Quantity.from_list((-1 * u_llj, -1 * v_llj))
     # If pressure values contain values below 850 hPa, find low-level jet
     elif np.max(pressure) >= units.Quantity(850, 'hectopascal'):
         # convert u/v wind to wind speed and direction
