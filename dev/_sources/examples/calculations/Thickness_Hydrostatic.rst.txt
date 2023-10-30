@@ -142,7 +142,7 @@ for the layer from the surface pressure to 500-hPa
 
  .. code-block:: none
 
-    5332.474521891784 meter
+    5332.474521891769 meter
 
 
 
@@ -150,7 +150,7 @@ for the layer from the surface pressure to 500-hPa
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.017 seconds)
+   **Total running time of the script:** (0 minutes 0.015 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Thickness_Hydrostatic.py:
