@@ -162,11 +162,11 @@ print('radii\n', r)
 # spatial data structure that we use here simply to show areal ratios.
 # Notice that the two natural neighbor triangle circumcenters are also vertices
 # in the Voronoi plot (green dots), and the observations are in the polygons (blue dots).
-vor = Voronoi(list(zip(xp, yp)))
+vort = Voronoi(list(zip(xp, yp)))
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 ax.ishold = lambda: True  # Work-around for Matplotlib 3.0.0 incompatibility
-voronoi_plot_2d(vor, ax=ax)
+voronoi_plot_2d(vort, ax=ax)
 
 nn_ind = np.array([0, 5, 7, 8])
 z_0 = zp[nn_ind]

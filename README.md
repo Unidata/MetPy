@@ -107,7 +107,7 @@ take the average GEMPAK script for a weather map, you need to:
 
 One of the benefits hoped to achieve over GEMPAK is to make it easier to use these routines for
 any meteorological Python application; this means making it easy to pull out the LCL
-calculation and just use that, or re-use the Skew-T with your own data code. MetPy also prides
+calculation and just use that, or reuse the Skew-T with your own data code. MetPy also prides
 itself on being well-documented and well-tested, so that on-going maintenance is easily
 manageable.
 

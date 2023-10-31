@@ -10,8 +10,10 @@ This includes:
 import contextlib
 import functools
 
+import matplotlib
 import numpy as np
 import numpy.testing
+from packaging.version import Version
 from pint import DimensionalityError
 import pytest
 import xarray as xr
@@ -20,6 +22,38 @@ from .calc import wind_components
 from .cbook import get_test_data
 from .deprecation import MetpyDeprecationWarning
 from .units import units
+
+MPL_VERSION = Version(matplotlib.__version__)
+
+
+def mpl_version_before(ver):
+    """Return whether the active matplotlib is before a certain version.
+
+    Parameters
+    ----------
+    ver : str
+        The version string for a certain release
+
+    Returns
+    -------
+        bool : whether the current version was released before the passed in one
+    """
+    return MPL_VERSION < Version(ver)
+
+
+def mpl_version_equal(ver):
+    """Return whether the active matplotlib is equal to a certain version.
+
+    Parameters
+    ----------
+    ver : str
+        The version string for a certain release
+
+    Returns
+    -------
+        bool : whether the current version is equal to the passed in one
+    """
+    return MPL_VERSION == Version(ver)
 
 
 def needs_module(module):

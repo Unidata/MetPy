@@ -1,6 +1,5 @@
-packaging==23.1
-pytest==7.4.0
+packaging==23.2
+pytest==7.4.3
 pytest-mpl==0.16.1
-netCDF4==1.6.4
-coverage==7.2.7
-dask==2023.7.0
+netCDF4==1.6.5
+coverage==7.3.2

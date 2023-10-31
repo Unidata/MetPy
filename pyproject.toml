@@ -25,7 +25,7 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "matplotlib>=3.3.0",
+    "matplotlib>=3.5.0",
     "numpy>=1.20.0",
     "pandas>=1.2.0",
     "pint>=0.15",
@@ -41,24 +41,28 @@ gini = "metpy.io.gini:GiniXarrayBackend"
 
 [project.optional-dependencies]
 doc = [
+    "metpy[examples]",
+    "myst-parser",
+    "netCDF4",
     "sphinx",
     "sphinx-gallery>=0.4",
-    "myst-parser",
-    "netCDF4"
+    "sphinx-design",
+    "pydata-sphinx-theme"
 ]
 examples = [
-    "cartopy>=0.17.0",
     "geopandas>=0.6.0",
-    "matplotlib>=3.3.0",
-    "shapely>=1.6.0"
+    "metpy[extras]"
 ]
 test = [
-    "packaging>=21.0",
-    "pytest>=2.4",
-    "pytest-mpl",
-    "cartopy>=0.17.0",
     "netCDF4",
-    "shapely>=1.6.0"
+    "packaging>=21.0",
+    "pytest>=6.2",
+    "pytest-mpl"
+]
+extras = [
+    "cartopy>=0.21.0",
+    "dask>=2020.12.0",
+    "shapely>=1.6.4"
 ]
 
 [project.urls]
@@ -71,7 +75,7 @@ test = [
 "MetPy Mondays" = "https://www.youtube.com/playlist?list=PLQut5OXpV-0ir4IdllSt1iEZKTwFBa7kO"
 
 [tool.codespell]
-skip = "*.tbl,*.ipynb,AUTHORS.txt,gempak.rst,.git,./staticdata,./docs/build,*.pdf"
+skip = "*.tbl,*.ipynb,AUTHORS.txt,gempak.rst,.git,./staticdata,./docs/build,*.pdf,./talks"
 exclude-file = ".codespellignore"
 
 [tool.doc8]
@@ -101,13 +105,15 @@ mpl-results-path = "test_output"
 [tool.ruff]
 line-length = 95
 exclude = ["docs", "build", "src/metpy/io/_metar_parser/metar_parser.py"]
-select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "R", "S", "T", "U", "W"]
+select = ["A", "B", "C", "D", "E", "E226", "F", "G", "I", "N", "Q", "R", "S", "T", "U", "W"]
 ignore = ["F405", "I001", "RET504", "RET505", "RET506", "RET507", "RUF100"]
 
 [tool.ruff.per-file-ignores]
 "ci/filter_links.py" = ["E731", "T201", "S603", "S607"]
 "docs/doc-server.py" = ["T201"]
 "examples/*.py" = ["D", "T201", "B018"]
+"src/metpy/_vendor/xarray.py" = ["UP032"]
+"src/metpy/deprecation.py" = ["UP032"]
 "src/metpy/testing.py" = ["S101"]
 "src/metpy/io/nexrad.py" = ["S101"]
 "tests/*/*.py" = ["S101"]
@@ -134,13 +140,6 @@ max-complexity = 61
 
 [tool.ruff.pydocstyle]
 convention = "numpy"
-
-[tools.setuptools]
-zip-safe = true
-platforms = ["any"]
-
-[tools.setuptools.packages.find]
-where = ["src"]
 
 [tool.setuptools_scm]
 version_scheme = "post-release"

@@ -434,8 +434,8 @@ def advection(
     -----
     This implements the advection of a scalar quantity by wind:
 
-    .. math:: \mathbf{u} \cdot \nabla = u \frac{\partial}{\partial x}
-              + v \frac{\partial}{\partial y} + w \frac{\partial}{\partial z}
+    .. math:: -\mathbf{u} \cdot \nabla = -(u \frac{\partial}{\partial x}
+              + v \frac{\partial}{\partial y} + w \frac{\partial}{\partial z})
 
     .. versionchanged:: 1.0
        Changed signature from ``(scalar, wind, deltas)``
@@ -1044,7 +1044,7 @@ def potential_vorticity_baroclinic(
         or np.shape(potential_temperature)[vertical_dim] != np.shape(pressure)[vertical_dim]
     ):
         raise ValueError('Length of potential temperature along the vertical axis '
-                         '{} must be at least 3.'.format(vertical_dim))
+                         f'{vertical_dim} must be at least 3.')
 
     avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim,
                               parallel_scale=parallel_scale, meridional_scale=meridional_scale)

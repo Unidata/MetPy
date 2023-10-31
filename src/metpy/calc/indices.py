@@ -298,6 +298,9 @@ def bunkers_storm_motion(pressure, u, v, height):
        Renamed ``heights`` parameter to ``height``
 
     """
+    # remove nans from input data
+    pressure, u, v, height = _remove_nans(pressure, u, v, height)
+
     # mean wind from sfc-6km
     wind_mean = weighted_continuous_average(pressure, u, v, height=height,
                                             depth=units.Quantity(6000, 'meter'))
