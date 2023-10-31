@@ -19,6 +19,12 @@ updates:
     commit-message:
       prefix: "CI: "
       include: "scope"
+    groups:
+      flake8:
+        patterns:
+          - "flake8*"
+          - "pycodestyle"
+          - "pyflakes"
 
   # Update GitHub Actions versions in workflows
   - package-ecosystem: "github-actions"

@@ -10,12 +10,10 @@ jobs:
     name: Build Release Packages
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 10
-
-    - name: Get tags
-      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        fetch-tags: true
 
     - name: Set up Python
       id: setup
@@ -58,4 +56,4 @@ jobs:
         cp packages-*/* dist/
 
     - name: Publish Package
-      uses: pypa/gh-action-pypi-publish@v1.8.7
+      uses: pypa/gh-action-pypi-publish@v1.8.10

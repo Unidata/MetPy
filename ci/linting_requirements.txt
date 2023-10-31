@@ -1,12 +1,12 @@
-ruff==0.0.277
+ruff==0.1.3
 
-flake8==6.0.0
-pycodestyle==2.10.0
-pyflakes==3.0.1
+flake8==6.1.0
+pycodestyle==2.11.1
+pyflakes==3.1.0
 
 flake8-continuation==1.0.5
 flake8-copyright==0.2.4
-flake8-isort==6.0.0
+flake8-isort==6.1.0
 isort==5.12.0
 flake8-requirements==1.7.8
 
@@ -15,4 +15,4 @@ flake8-rst-docstrings==0.3.0
 doc8==1.1.1
 restructuredtext_lint==1.4.0
 
-codespell==2.2.5
+codespell==2.2.6

@@ -91,7 +91,7 @@ nitpick_ignore = [
     ('py:class', 'M'), ('py:class', 'N'), ('py:class', 'P'), ('py:class', '2'),
     ('py:class', 'optional'), ('py:class', 'array-like'), ('py:class', 'file-like object'),
     # For traitlets docstrings
-    ('py:class', 'All'), ('py:class', 'callable'),
+    ('py:class', 'All'), ('py:class', 't.Any'), ('py:class', 't.Iterable'),
     # Next two are from Python dict docstring that we inherit
     ('py:class', 'a shallow copy of D'),
     ('py:class', 'v, remove specified key and return the corresponding value.')
@@ -99,6 +99,11 @@ nitpick_ignore = [
 
 nitpick_ignore_regex = [
     ('py:class', r'default:.*'),  # For some traitlets docstrings
+    ('py:class', r'.*Sentinel'),
+    ('py:class', r'.*Bunch'),
+    ('py:class', r'.*[cC]allable'),
+    ('py:class', r'.*EventHandler'),
+    ('py:class', r'.*TraitType'),
     ('py:class', r'.*object providing a view on.*'),  # Python dict docstring
     ('py:class', r'None.  .*'),  # Python dict docstring
     ('py:class', r'.*D\[k\].*'),  # Python dict docstring
@@ -229,6 +234,7 @@ html_theme_options = {
         'json_url': 'https://unidata.github.io/MetPy/pst-versions.json',
         'version_match': 'dev' if 'dev' in version else f'v{version}',
     },
+    'navigation_with_keys': False
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
