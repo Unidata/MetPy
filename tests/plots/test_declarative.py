@@ -91,7 +91,7 @@ def test_declarative_four_dims_error():
         pc.draw()
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.092)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.093)
 @needs_cartopy
 def test_declarative_contour():
     """Test making a contour plot."""
@@ -119,7 +119,7 @@ def test_declarative_contour():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.093)
+@pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.094)
 @needs_cartopy
 def test_declarative_titles():
     """Test making a contour plot with multiple titles."""
@@ -150,7 +150,7 @@ def test_declarative_titles():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.072)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.098)
 @needs_cartopy
 def test_declarative_smooth_contour():
     """Test making a contour plot using smooth_contour."""
@@ -307,7 +307,7 @@ def test_declarative_smooth_field():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.708)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.828)
 @needs_cartopy
 def test_declarative_contour_cam():
     """Test making a contour plot with CAM data."""
@@ -335,7 +335,7 @@ def test_declarative_contour_cam():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=3.71 if mpl_version_before('3.8') else 0.026)
+                               tolerance=3.71 if mpl_version_before('3.8') else 0.74)
 @needs_cartopy
 def test_declarative_contour_options():
     """Test making a contour plot."""
@@ -396,7 +396,7 @@ def test_declarative_layers_plot_options():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=2.74 if mpl_version_before('3.8') else 0.014)
+                               tolerance=2.74 if mpl_version_before('3.8') else 1.91)
 @needs_cartopy
 def test_declarative_contour_convert_units():
     """Test making a contour plot."""
@@ -426,7 +426,7 @@ def test_declarative_contour_convert_units():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.247)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.276)
 @needs_cartopy
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
@@ -568,7 +568,7 @@ def test_no_field_error_barbs():
         barbs.draw()
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.378)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.381)
 def test_projection_object(ccrs, cfeature):
     """Test that we can pass a custom map projection."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))

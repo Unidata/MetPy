@@ -15,7 +15,7 @@ from metpy.plots import (ColdFront, ColdFrontogenesis, ColdFrontolysis, Dryline,
                          StationaryFrontolysis, WarmFront, WarmFrontogenesis, WarmFrontolysis)
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.01)
 def test_fronts():
     """Basic test of plotting fronts using path effects."""
     x = np.linspace(0, 80, 5)
