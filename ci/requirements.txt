@@ -1,4 +1,4 @@
-matplotlib==3.8.0
+matplotlib==3.8.1
 numpy==1.26.0
 pandas==2.1.2
 pooch==1.8.0
