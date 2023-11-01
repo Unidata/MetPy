@@ -1829,7 +1829,7 @@ def test_dewpoint_specific_humidity_kwargs():
         assert_almost_equal(td, 17.036 * units.degC, 3)
 
 
-def test_dewpoint_specific_humidity_mixed_args_kwargs():
+def test_dewpoint_specific_humidity_three_mixed_args_kwargs():
     """Test mixed arg, kwarg handling for backwards compatibility MetPy>=1.6."""
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
@@ -1838,6 +1838,15 @@ def test_dewpoint_specific_humidity_mixed_args_kwargs():
         td = dewpoint_from_specific_humidity(
             p, temperature=temperature, specific_humidity=q)
         assert_almost_equal(td, 17.036 * units.degC, 3)
+
+
+def test_dewpoint_specific_humidity_two_mixed_args_kwargs():
+    """Test function's internal arg, kwarg processing handles mixed case."""
+    p = 1013.25 * units.mbar
+    q = 0.012 * units.dimensionless
+    td = dewpoint_from_specific_humidity(
+        p, specific_humidity=q)
+    assert_almost_equal(td, 17.036 * units.degC, 3)
 
 
 def test_dewpoint_specific_humidity_two_args():
