@@ -432,7 +432,9 @@ linkcheck_ignore = [
     r'https://doi\.org/10\.1289/ehp\.1206273',
     # Couldn't fix these 403's with user agents
     r'https://doi\.org/10\.1029/2010GL045777',
-    r'https://doi\.org/10\.1098/rspa\.2004\.1430'
+    r'https://doi\.org/10\.1098/rspa\.2004\.1430',
+    # Currently giving certificate errors on GitHub
+    r'https://library.wmo.int/.*'
     ]
 
 # Dictionary of URL redirects allowed
