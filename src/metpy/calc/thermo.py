@@ -2,6 +2,8 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of thermodynamic calculations."""
+from inspect import Parameter, Signature, signature
+
 import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
@@ -3924,17 +3926,21 @@ def dewpoint_from_specific_humidity(*args, **kwargs):
     to calculate vapor partial pressure :math:`e` for dewpoint calculation input. See
     :func:`~dewpoint` for additional information.
     """
-    if (len(args) + len(kwargs)) > 2:
+    sig = Signature([Parameter('pressure', Parameter.POSITIONAL_OR_KEYWORD),
+                     Parameter('temperature', Parameter.POSITIONAL_OR_KEYWORD),
+                     Parameter('specific_humidity', Parameter.POSITIONAL_OR_KEYWORD)])
+
+    try:
+        bound_args = sig.bind(*args, **kwargs)
         _warnings.warn(
             'Temperature argument is unused and will be deprecated in a future version.',
             PendingDeprecationWarning)
+    except TypeError:
+        sig = signature(_dewpoint_from_specific_humidity)
+        bound_args = sig.bind(*args, **kwargs)
 
-    pressure = kwargs.pop('pressure', None)
-    specific_humidity = kwargs.pop('specific_humidity', None)
-
-    return _dewpoint_from_specific_humidity(
-        pressure if pressure else args[0],
-        specific_humidity if specific_humidity else args[-1])
+    return _dewpoint_from_specific_humidity(bound_args.arguments['pressure'],
+                                            bound_args.arguments['specific_humidity'])
 
 
 @preprocess_and_wrap(

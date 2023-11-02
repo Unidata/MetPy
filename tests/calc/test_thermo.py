@@ -1814,8 +1814,9 @@ def test_dewpoint_specific_humidity_old_signature():
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
-    with pytest.raises(ValueError, match='changed in version'):
-        dewpoint_from_specific_humidity(q, temperature, p)
+    with pytest.deprecated_call(match='Temperature argument'):
+        with pytest.raises(ValueError, match='changed in version'):
+            dewpoint_from_specific_humidity(q, temperature, p)
 
 
 def test_dewpoint_specific_humidity_kwargs():
@@ -1836,7 +1837,7 @@ def test_dewpoint_specific_humidity_three_mixed_args_kwargs():
     q = 0.012 * units.dimensionless
     with pytest.deprecated_call(match='Temperature argument'):
         td = dewpoint_from_specific_humidity(
-            p, temperature=temperature, specific_humidity=q)
+            p, temperature, specific_humidity=q)
         assert_almost_equal(td, 17.036 * units.degC, 3)
 
 
@@ -1855,6 +1856,14 @@ def test_dewpoint_specific_humidity_two_args():
     q = 0.012 * units.dimensionless
     td = dewpoint_from_specific_humidity(p, q)
     assert_almost_equal(td, 17.036 * units.degC, 3)
+
+
+def test_dewpoint_specific_humidity_arrays():
+    """Test function arg handling can process arrays."""
+    p = 1013.25 * units.mbar
+    q = np.tile(0.012 * units.dimensionless, (3, 2))
+    td = dewpoint_from_specific_humidity(p, specific_humidity=q)
+    assert_almost_equal(td, np.tile(17.036 * units.degC, (3, 2)), 3)
 
 
 def test_lfc_not_below_lcl():
