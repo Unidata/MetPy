@@ -530,13 +530,9 @@ class MapPanel(Panel, ValidationMixin):
                 style = self.layers_linestyle[i]
                 zorder = self.layers_zorder[i]
                 alpha = self.layers_alpha[i]
-                if zorder is not None:
-                    self.ax.add_feature(feat, edgecolor=color,
-                                        linewidth=width, linestyle=style, zorder=zorder,
-                                        alpha=alpha)
-                else:
-                    self.ax.add_feature(feat, edgecolor=color,
-                                        linewidth=width, linestyle=style, alpha=alpha)
+                kwargs = {'zorder': zorder} if zorder is not None else {}
+                self.ax.add_feature(feat, edgecolor=color, linewidth=width,
+                                    linestyle=style, alpha=alpha, **kwargs)
 
             # Use the set title or generate one.
             if (self.right_title is None) and (self.left_title is None):
