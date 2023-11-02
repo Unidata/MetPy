@@ -1417,8 +1417,9 @@ def test_parse_grid_arguments_missing_coords():
         },
         attrs={'units': 'K'}).to_dataset().metpy.parse_cf('temperature')
 
-    with pytest.raises(AttributeError,
-                       match='horizontal dimension coordinates cannot be found.'):
+    with (pytest.raises(AttributeError,
+                        match='horizontal dimension coordinates cannot be found.'),
+          pytest.warns(UserWarning, match='Horizontal dimension numbers not found.')):
         check_params(test_da)
 
 
