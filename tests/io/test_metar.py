@@ -212,10 +212,10 @@ def test_date_time_given():
     """Test for when date_time is given."""
     df = parse_metar_to_dataframe('K6B0 261200Z AUTO 00000KT 10SM CLR 20/M17 A3002 RMK AO2 '
                                   'T01990165=', year=2019, month=6)
-    assert df.date_time[0] == datetime(2019, 6, 26, 12)
-    assert df.eastward_wind[0] == 0
-    assert df.northward_wind[0] == 0
-    assert_almost_equal(df.air_pressure_at_sea_level[0], 1016.56)
+    assert df.iloc[0].date_time == datetime(2019, 6, 26, 12)
+    assert df.iloc[0].eastward_wind == 0
+    assert df.iloc[0].northward_wind == 0
+    assert_almost_equal(df.iloc[0].air_pressure_at_sea_level, 1016.56)
     assert_almost_equal(df.visibility.values, 16093.44)
 
 
@@ -372,7 +372,7 @@ def test_parse_no_pint_objects_in_df():
 
     for df in (parse_metar_file(input_file), parse_metar_to_dataframe(metar_str)):
         for column in df:
-            assert not is_quantity(df[column][0])
+            assert not is_quantity(df.iloc[0][column])
 
 
 def test_repr():
