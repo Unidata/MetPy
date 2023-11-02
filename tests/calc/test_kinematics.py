@@ -376,6 +376,7 @@ def test_advection_4d_vertical(data_4d):
     assert a.data.units == units.Unit('K/sec')
 
 
+@pytest.mark.filterwarnings('ignore:Horizontal dimension numbers not found.')
 def test_advection_1d_vertical():
     """Test 1-d vertical advection with parsed dims."""
     pressure = xr.DataArray(
@@ -403,6 +404,7 @@ def test_advection_2d_asym():
     assert_array_equal(a, truth)
 
 
+@pytest.mark.filterwarnings('ignore:Vertical dimension number not found.')
 def test_advection_xarray(basic_dataset):
     """Test advection calculation using xarray support."""
     a = advection(basic_dataset.temperature, basic_dataset.u, basic_dataset.v)
