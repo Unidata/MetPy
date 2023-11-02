@@ -72,7 +72,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 01, 2023 at 22:20:30"/>
+    <meta name="docbuild:last-update" content="Nov 02, 2023 at 19:33:45"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/plots/declarative.html" />
 
   </head>
@@ -553,6 +553,12 @@ document.write(`
     <span class="k">return</span> <span class="n">kwargs</span>
 
 
+<span class="k">def</span> <span class="nf">get_cartopy_color</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provide the special map feature colors from Cartopy.&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">cartopy.feature</span> <span class="kn">import</span> <span class="n">COLORS</span>
+    <span class="k">return</span> <span class="n">COLORS</span><span class="p">[</span><span class="n">val</span><span class="p">]</span>
+
+
 <span class="k">class</span> <span class="nc">ValidationMixin</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides validation of attribute names when set by user.&quot;&quot;&quot;</span>
 
@@ -782,9 +788,38 @@ document.write(`
     <span class="n">layers_linewidth</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">()],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">layers_linewidth</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A list of values defining the linewidth for a layer.</span>
 
-<span class="s2">    An option to set a different color for the map layer edge colors. Length of list should</span>
-<span class="s2">    match that of layers if not using default value. Behavior is to repeat colors if not enough</span>
-<span class="s2">    provided by user. Use `None` value for &#39;ocean&#39;, &#39;lakes&#39;, &#39;rivers&#39;, and &#39;land&#39;.</span>
+<span class="s2">    An option to set a different linewidth for the layer feature. Length of list should</span>
+<span class="s2">    match that of layers if not using default value. Behavior is to repeat linewidth if</span>
+<span class="s2">    not enough provided by user. Use `None` value for &#39;ocean&#39;, &#39;lakes&#39;, &#39;rivers&#39;, and &#39;land&#39;.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">layers_linestyle</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">Unicode</span><span class="p">(),</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;solid&#39;</span><span class="p">])</span>
+    <span class="n">layers_linestyle</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A list of string values defining the linestyle for a layer or</span>
+<span class="s2">    None.</span>
+
+<span class="s2">    Default is `solid`, which, will use a solid lines for drawing the layer. Behavior is to</span>
+<span class="s2">    repeat linestyle if not enough provided by user.</span>
+
+<span class="s2">    The valid string values are those of Matplotlib which are &#39;solid&#39;, &#39;dashed&#39;, &#39;dotted&#39;, and</span>
+<span class="s2">    &#39;dashdot&#39;, as well as their short codes (&#39;-&#39;, &#39;--&#39;, &#39;.&#39;, &#39;-.&#39;). The object `None`, as</span>
+<span class="s2">    described above, can also be used. Use `None` value for &#39;ocean&#39;, &#39;lakes&#39;, &#39;rivers&#39;, and</span>
+<span class="s2">    &#39;land&#39;.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">layers_zorder</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">()],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+    <span class="n">layers_zorder</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A list of values defining the zorder for a layer.</span>
+
+<span class="s2">    An option to set a different zorder for the map layer edge colors. Length of list should</span>
+<span class="s2">    match that of layers if not using default value. Behavior is to repeat zorder if not enough</span>
+<span class="s2">    provided by user.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">layers_alpha</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">()],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">layers_alpha</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A list of values defining the alpha for a layer.</span>
+
+<span class="s2">    An option to set a different alpha for the map layer edge colors. Length of list should</span>
+<span class="s2">    match that of layers if not using default value. Behavior is to repeat alpha if not enough</span>
+<span class="s2">    provided by user.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">title</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">()</span>
@@ -985,13 +1020,25 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">layers_edgecolor</span> <span class="o">*=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers_linewidth</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">layers_linewidth</span> <span class="o">*=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers_linestyle</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">layers_linestyle</span> <span class="o">*=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers_zorder</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">layers_zorder</span> <span class="o">*=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers_alpha</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">layers_alpha</span> <span class="o">*=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">feat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layer_features</span><span class="p">):</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;land&#39;</span><span class="p">,</span> <span class="s1">&#39;lake&#39;</span><span class="p">,</span> <span class="s1">&#39;river&#39;</span><span class="p">]:</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_edgecolor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;land&#39;</span><span class="p">,</span> <span class="s1">&#39;ocean&#39;</span><span class="p">]:</span>
                     <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;face&#39;</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_edgecolor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_edgecolor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;water&#39;</span><span class="p">,</span> <span class="s1">&#39;land&#39;</span><span class="p">,</span> <span class="s1">&#39;land_alt1&#39;</span><span class="p">]:</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="n">get_cartopy_color</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers_edgecolor</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
                 <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_linewidth</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feat</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">width</span><span class="p">)</span>
+                <span class="n">style</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_linestyle</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">zorder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_zorder</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_alpha</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;zorder&#39;</span><span class="p">:</span> <span class="n">zorder</span><span class="p">}</span> <span class="k">if</span> <span class="n">zorder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feat</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+                                    <span class="n">linestyle</span><span class="o">=</span><span class="n">style</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="c1"># Use the set title or generate one.</span>
             <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right_title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>

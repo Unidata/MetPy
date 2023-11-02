@@ -16,8 +16,11 @@ MapPanel
       ~MapPanel.ax
       ~MapPanel.cross_validation_lock
       ~MapPanel.layers
+      ~MapPanel.layers_alpha
       ~MapPanel.layers_edgecolor
+      ~MapPanel.layers_linestyle
       ~MapPanel.layers_linewidth
+      ~MapPanel.layers_zorder
       ~MapPanel.layout
       ~MapPanel.left_title
       ~MapPanel.mpl_args
@@ -77,8 +80,11 @@ MapPanel
    .. autoattribute:: ax
    .. autoattribute:: cross_validation_lock
    .. autoattribute:: layers
+   .. autoattribute:: layers_alpha
    .. autoattribute:: layers_edgecolor
+   .. autoattribute:: layers_linestyle
    .. autoattribute:: layers_linewidth
+   .. autoattribute:: layers_zorder
    .. autoattribute:: layout
    .. autoattribute:: left_title
    .. autoattribute:: mpl_args

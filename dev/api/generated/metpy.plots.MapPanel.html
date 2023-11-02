@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 01, 2023 at 22:20:30"/>
+    <meta name="docbuild:last-update" content="Nov 02, 2023 at 19:33:45"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.MapPanel.html" />
 
   </head>
@@ -771,37 +771,46 @@ projection, graphics area, and title.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layers" title="metpy.plots.MapPanel.layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layers</span></code></a></p></td>
 <td><p>A list of strings for a pre-defined feature layer or a Cartopy Feature object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layers_edgecolor" title="metpy.plots.MapPanel.layers_edgecolor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layers_edgecolor</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layers_alpha" title="metpy.plots.MapPanel.layers_alpha"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layers_alpha</span></code></a></p></td>
+<td><p>A list of values defining the alpha for a layer.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layers_edgecolor" title="metpy.plots.MapPanel.layers_edgecolor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layers_edgecolor</span></code></a></p></td>
 <td><p>A list of strings for a pre-defined edgecolor for a layer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layers_linestyle" title="metpy.plots.MapPanel.layers_linestyle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layers_linestyle</span></code></a></p></td>
+<td><p>A list of string values defining the linestyle for a layer or None.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layers_linewidth" title="metpy.plots.MapPanel.layers_linewidth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layers_linewidth</span></code></a></p></td>
 <td><p>A list of values defining the linewidth for a layer.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layout" title="metpy.plots.MapPanel.layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layout</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layers_zorder" title="metpy.plots.MapPanel.layers_zorder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layers_zorder</span></code></a></p></td>
+<td><p>A list of values defining the zorder for a layer.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layout" title="metpy.plots.MapPanel.layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layout</span></code></a></p></td>
 <td><p>A tuple that contains the description (nrows, ncols, index) of the panel position; default value is (1, 1, 1).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.left_title" title="metpy.plots.MapPanel.left_title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">left_title</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.left_title" title="metpy.plots.MapPanel.left_title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">left_title</span></code></a></p></td>
 <td><p>A string to set a title for the figure with the location on the top left of the figure.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.mpl_args" title="metpy.plots.MapPanel.mpl_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mpl_args</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.mpl_args" title="metpy.plots.MapPanel.mpl_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mpl_args</span></code></a></p></td>
 <td><p>Supply a dictionary of valid Matplotlib keyword arguments to modify how the plot variable is drawn.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.parent" title="metpy.plots.MapPanel.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.parent" title="metpy.plots.MapPanel.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.plots" title="metpy.plots.MapPanel.plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.plots" title="metpy.plots.MapPanel.plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots</span></code></a></p></td>
 <td><p>A list of handles that represent the plots (e.g., <a class="reference internal" href="metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContourPlot</span></code></a>, <a class="reference internal" href="metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot" title="metpy.plots.FilledContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FilledContourPlot</span></code></a>, <a class="reference internal" href="metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImagePlot</span></code></a>) to put on a given panel.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.projection" title="metpy.plots.MapPanel.projection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projection</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.projection" title="metpy.plots.MapPanel.projection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projection</span></code></a></p></td>
 <td><p>A string for a pre-defined projection or a Cartopy projection object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.right_title" title="metpy.plots.MapPanel.right_title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">right_title</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.right_title" title="metpy.plots.MapPanel.right_title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">right_title</span></code></a></p></td>
 <td><p>A string to set a title for the figure with the location on the top right of the figure.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.title" title="metpy.plots.MapPanel.title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.title" title="metpy.plots.MapPanel.title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></a></p></td>
 <td><p>A string to set a title for the figure.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.title_fontsize" title="metpy.plots.MapPanel.title_fontsize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title_fontsize</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.title_fontsize" title="metpy.plots.MapPanel.title_fontsize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title_fontsize</span></code></a></p></td>
 <td><p>An integer or string value for the font size of the title of the figure.</p></td>
 </tr>
 </tbody>
@@ -931,6 +940,15 @@ Cartopy Feature objects.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.MapPanel.layers_alpha">
+<span class="sig-name descname"><span class="pre">layers_alpha</span></span><a class="headerlink" href="#metpy.plots.MapPanel.layers_alpha" title="Link to this definition">#</a></dt>
+<dd><p>A list of values defining the alpha for a layer.</p>
+<p>An option to set a different alpha for the map layer edge colors. Length of list should
+match that of layers if not using default value. Behavior is to repeat alpha if not enough
+provided by user.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.MapPanel.layers_edgecolor">
 <span class="sig-name descname"><span class="pre">layers_edgecolor</span></span><a class="headerlink" href="#metpy.plots.MapPanel.layers_edgecolor" title="Link to this definition">#</a></dt>
 <dd><p>A list of strings for a pre-defined edgecolor for a layer.</p>
@@ -940,12 +958,34 @@ provided by user. Use <em class="xref py py-obj">None</em> value for ‘ocean’
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.MapPanel.layers_linestyle">
+<span class="sig-name descname"><span class="pre">layers_linestyle</span></span><a class="headerlink" href="#metpy.plots.MapPanel.layers_linestyle" title="Link to this definition">#</a></dt>
+<dd><p>A list of string values defining the linestyle for a layer or
+None.</p>
+<p>Default is <em class="xref py py-obj">solid</em>, which, will use a solid lines for drawing the layer. Behavior is to
+repeat linestyle if not enough provided by user.</p>
+<p>The valid string values are those of Matplotlib which are ‘solid’, ‘dashed’, ‘dotted’, and
+‘dashdot’, as well as their short codes (‘-’, ‘–’, ‘.’, ‘-.’). The object <em class="xref py py-obj">None</em>, as
+described above, can also be used. Use <em class="xref py py-obj">None</em> value for ‘ocean’, ‘lakes’, ‘rivers’, and
+‘land’.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.MapPanel.layers_linewidth">
 <span class="sig-name descname"><span class="pre">layers_linewidth</span></span><a class="headerlink" href="#metpy.plots.MapPanel.layers_linewidth" title="Link to this definition">#</a></dt>
 <dd><p>A list of values defining the linewidth for a layer.</p>
-<p>An option to set a different color for the map layer edge colors. Length of list should
-match that of layers if not using default value. Behavior is to repeat colors if not enough
-provided by user. Use <em class="xref py py-obj">None</em> value for ‘ocean’, ‘lakes’, ‘rivers’, and ‘land’.</p>
+<p>An option to set a different linewidth for the layer feature. Length of list should
+match that of layers if not using default value. Behavior is to repeat linewidth if
+not enough provided by user. Use <em class="xref py py-obj">None</em> value for ‘ocean’, ‘lakes’, ‘rivers’, and ‘land’.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.MapPanel.layers_zorder">
+<span class="sig-name descname"><span class="pre">layers_zorder</span></span><a class="headerlink" href="#metpy.plots.MapPanel.layers_zorder" title="Link to this definition">#</a></dt>
+<dd><p>A list of values defining the zorder for a layer.</p>
+<p>An option to set a different zorder for the map layer edge colors. Length of list should
+match that of layers if not using default value. Behavior is to repeat zorder if not enough
+provided by user.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1394,8 +1434,11 @@ If name is not specified, removes all trait notifiers.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.ax"><code class="docutils literal notranslate"><span class="pre">MapPanel.ax</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.cross_validation_lock"><code class="docutils literal notranslate"><span class="pre">MapPanel.cross_validation_lock</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.layers"><code class="docutils literal notranslate"><span class="pre">MapPanel.layers</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.layers_alpha"><code class="docutils literal notranslate"><span class="pre">MapPanel.layers_alpha</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.layers_edgecolor"><code class="docutils literal notranslate"><span class="pre">MapPanel.layers_edgecolor</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.layers_linestyle"><code class="docutils literal notranslate"><span class="pre">MapPanel.layers_linestyle</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.layers_linewidth"><code class="docutils literal notranslate"><span class="pre">MapPanel.layers_linewidth</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.layers_zorder"><code class="docutils literal notranslate"><span class="pre">MapPanel.layers_zorder</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.layout"><code class="docutils literal notranslate"><span class="pre">MapPanel.layout</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.left_title"><code class="docutils literal notranslate"><span class="pre">MapPanel.left_title</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.plots.MapPanel.mpl_args"><code class="docutils literal notranslate"><span class="pre">MapPanel.mpl_args</span></code></a></li>
