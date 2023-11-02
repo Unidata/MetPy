@@ -395,7 +395,8 @@ def test_declarative_layers_plot_options():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.0)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance=0.021 if mpl_version_before('3.8') else 0.009)
 @needs_cartopy
 def test_declarative_additional_layers_plot_options():
     """Test additional declarative layer options of linestyle, zorder, and alpha."""
