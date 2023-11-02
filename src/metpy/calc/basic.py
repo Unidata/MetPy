@@ -1107,6 +1107,8 @@ def zoom_xarray(input_field, zoom, output=None, order=3, mode='constant', cval=0
         available.
 
     """
+    # Dequantify input to avoid warnings and make sure units propagate
+    input_field = input_field.metpy.dequantify()
     # Zoom data
     zoomed_data = scipy_zoom(
         input_field.data, zoom, output=output, order=order, mode=mode, cval=cval,
