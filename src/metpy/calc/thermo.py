@@ -3945,7 +3945,7 @@ def dewpoint_from_specific_humidity(*args, **kwargs):
 
 @preprocess_and_wrap(
     wrap_like='specific_humidity',
-    broadcast=('pressure', 'specific_humidity')
+    broadcast=('specific_humidity', 'pressure')
 )
 @check_units(pressure='[pressure]', specific_humidity='[dimensionless]')
 def _dewpoint_from_specific_humidity(pressure, specific_humidity):

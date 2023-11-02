@@ -1866,6 +1866,14 @@ def test_dewpoint_specific_humidity_arrays():
     assert_almost_equal(td, np.tile(17.036 * units.degC, (3, 2)), 3)
 
 
+def test_dewpoint_specific_humidity_xarray(index_xarray_data):
+    """Test function arg handling processes xarray inputs."""
+    p = index_xarray_data.isobaric
+    q = specific_humidity_from_dewpoint(p, index_xarray_data.dewpoint)
+    td = dewpoint_from_specific_humidity(p, specific_humidity=q)
+    assert_array_almost_equal(td, index_xarray_data.dewpoint)
+
+
 def test_lfc_not_below_lcl():
     """Test sounding where LFC appears to be (but isn't) below LCL."""
     levels = np.array([1002.5, 1001.7, 1001., 1000.3, 999.7, 999., 998.2, 977.9,
