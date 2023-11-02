@@ -144,7 +144,7 @@ def test_vorticity_grid_pole():
     u = xr.DataArray(us, name='u', coords=(y, x), dims=('y', 'x'), attrs={'units': 'm/s'})
     v = xr.DataArray(vs, name='v', coords=(y, x), dims=('y', 'x'), attrs={'units': 'm/s'})
 
-    ds = xr.merge((u, v)).metpy.assign_crs(grid)
+    ds = xr.merge((u, v)).metpy.assign_crs(grid).metpy.assign_latitude_longitude()
 
     vort = vorticity(ds.u, ds.v)
 

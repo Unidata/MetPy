@@ -184,7 +184,7 @@ def test_declarative_smooth_contour():
 def test_declarative_smooth_contour_calculation():
     """Test making a contour plot using smooth_contour."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
-    data = data.metpy.parse_cf()
+    data = data.metpy.parse_cf().metpy.assign_latitude_longitude()
 
     data['wind_speed'] = wind_speed(data['u_wind'], data['v_wind'])
 

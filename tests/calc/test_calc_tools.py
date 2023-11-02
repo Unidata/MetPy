@@ -1327,7 +1327,11 @@ def test_parse_grid_arguments_xarray(datafile, assign_lat_lon, no_crs, transpose
     if subset:
         temp = temp.isel(time=0).metpy.sel(vertical=500 * units.hPa)
 
-    t, dx, dy, p, m, lat, x_dim, y_dim = check_params(temp)
+    if datafile != 'GFS_test.nc' and (not assign_lat_lon or no_crs):
+        with pytest.warns(UserWarning, match='Latitude and longitude computed on-demand'):
+            t, dx, dy, p, m, lat, x_dim, y_dim = check_params(temp)
+    else:
+        t, dx, dy, p, m, lat, x_dim, y_dim = check_params(temp)
 
     if transpose:
         if subset:
