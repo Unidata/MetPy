@@ -747,6 +747,7 @@ def test_parse_angle_invalid_arr():
     test_dir_strs = ['nan', None, np.nan, 35, 35.5, 'north', 'andrewiscool']
     expected_angles_degrees = [np.nan, np.nan, np.nan, np.nan, np.nan, 0, np.nan]
     output_angles_degrees = parse_angle(test_dir_strs)
+    assert isinstance(output_angles_degrees, units.Quantity)
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
 
 
