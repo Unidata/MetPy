@@ -76,7 +76,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 02, 2023 at 19:33:45"/>
+    <meta name="docbuild:last-update" content="Nov 03, 2023 at 16:12:05"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.mixing_ratio_from_relative_humidity.html" />
 
   </head>
@@ -773,7 +773,7 @@ a percentage if proper units are attached.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="mf">28.1</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rh</span> <span class="o">=</span> <span class="mf">.65</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mixing_ratio_from_relative_humidity</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">rh</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;g/kg&#39;</span><span class="p">)</span>
-<span class="go">&lt;Quantity(15.9828362, &#39;gram / kilogram&#39;)&gt;</span>
+<span class="go">&lt;Quantity(15.7646969, &#39;gram / kilogram&#39;)&gt;</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
@@ -781,13 +781,17 @@ a percentage if proper units are attached.</p></li>
 <p><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio" title="metpy.calc.relative_humidity_from_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_from_mixing_ratio</span></code></a>, <a class="reference internal" href="metpy.calc.saturation_mixing_ratio.html#metpy.calc.saturation_mixing_ratio" title="metpy.calc.saturation_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">saturation_mixing_ratio</span></code></a></p>
 </div>
 <p class="rubric">Notes</p>
-<p>Formula adapted from <a class="reference internal" href="../references.html#hobbs1977" id="id1"><span>[Hobbs1977]</span></a> pg. 74.</p>
+<p>Employs <a class="reference internal" href="../references.html#wmo8" id="id1"><span>[WMO8]</span></a> eq. 4.A.16 as derived from WMO relative humidity definition based on
+vapor partial pressures (eq. 4.A.15).</p>
 <div class="math notranslate nohighlight">
-\[w = (rh)(w_s)\]</div>
+\[RH = \frac{w}{\epsilon + w} \frac{\epsilon + w_s}{w_s}\]</div>
+<div class="math notranslate nohighlight">
+\[\therefore w = \frac{\epsilon * w_s * RH}{\epsilon + w_s (1 - RH)}\]</div>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(w\)</span> is mixing ratio</p></li>
-<li><p><span class="math notranslate nohighlight">\(rh\)</span> is relative humidity as a unitless ratio</p></li>
 <li><p><span class="math notranslate nohighlight">\(w_s\)</span> is the saturation mixing ratio</p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon\)</span> is the molecular weight ratio of vapor to dry air</p></li>
+<li><p><span class="math notranslate nohighlight">\(RH\)</span> is relative humidity as a unitless ratio</p></li>
 </ul>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.0: </span>Changed signature from <code class="docutils literal notranslate"><span class="pre">(relative_humidity,</span> <span class="pre">temperature,</span> <span class="pre">pressure)</span></code></p>

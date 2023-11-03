@@ -76,7 +76,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 02, 2023 at 19:33:45"/>
+    <meta name="docbuild:last-update" content="Nov 03, 2023 at 16:12:05"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.relative_humidity_from_specific_humidity.html" />
 
   </head>
@@ -770,7 +770,7 @@ document.write(`
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">relative_humidity_from_specific_humidity</span><span class="p">(</span><span class="mf">1013.25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
 <span class="gp">... </span>                                         <span class="mi">30</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">18</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;percent&#39;</span><span class="p">)</span>
-<span class="go">&lt;Quantity(67.3893629, &#39;percent&#39;)&gt;</span>
+<span class="go">&lt;Quantity(68.3229304, &#39;percent&#39;)&gt;</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
@@ -778,13 +778,17 @@ document.write(`
 <p><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio" title="metpy.calc.relative_humidity_from_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_from_mixing_ratio</span></code></a></p>
 </div>
 <p class="rubric">Notes</p>
-<p>Formula based on that from <a class="reference internal" href="../references.html#hobbs1977" id="id1"><span>[Hobbs1977]</span></a> pg. 74. and <a class="reference internal" href="../references.html#salby1996" id="id2"><span>[Salby1996]</span></a> pg. 118.</p>
+<p>Employs <a class="reference internal" href="../references.html#wmo8" id="id1"><span>[WMO8]</span></a> eq. 4.A.16 as derived from WMO relative humidity definition based on
+vapor partial pressures (eq. 4.A.15).</p>
 <div class="math notranslate nohighlight">
-\[RH = \frac{q}{(1-q)w_s}\]</div>
+\[RH = \frac{w}{\epsilon + w} \frac{\epsilon + w_s}{w_s}\]</div>
+<p>given :math: w = frac{q}{1-q}</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(RH\)</span> is relative humidity as a unitless ratio</p></li>
-<li><p><span class="math notranslate nohighlight">\(q\)</span> is specific humidity</p></li>
+<li><p><span class="math notranslate nohighlight">\(w\)</span> is mixing ratio</p></li>
 <li><p><span class="math notranslate nohighlight">\(w_s\)</span> is the saturation mixing ratio</p></li>
+<li><p><span class="math notranslate nohighlight">\(q\)</span> is the specific humidity</p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon\)</span> is the molecular weight ratio of vapor to dry air</p></li>
+<li><p><span class="math notranslate nohighlight">\(RH\)</span> is relative humidity as a unitless ratio</p></li>
 </ul>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.0: </span>Changed signature from <code class="docutils literal notranslate"><span class="pre">(specific_humidity,</span> <span class="pre">temperature,</span> <span class="pre">pressure)</span></code></p>

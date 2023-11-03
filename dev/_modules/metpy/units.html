@@ -72,7 +72,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 02, 2023 at 19:33:45"/>
+    <meta name="docbuild:last-update" content="Nov 03, 2023 at 16:12:05"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/units.html" />
 
   </head>
@@ -750,10 +750,10 @@ document.write(`
                 <span class="k">yield</span> <span class="n">arg</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">need</span>
 
 
-<span class="k">def</span> <span class="nf">_get_changed_version</span><span class="p">(</span><span class="n">docstring</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_changed_versions</span><span class="p">(</span><span class="n">docstring</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the most recent version in which the docs say a function changed.&quot;&quot;&quot;</span>
     <span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.. versionchanged:: ([\d.]+)&#39;</span><span class="p">,</span> <span class="n">docstring</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="k">if</span> <span class="n">matches</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">matches</span>
 
 
 <span class="k">def</span> <span class="nf">_check_units_outer_helper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -803,10 +803,10 @@ document.write(`
 
         <span class="c1"># If function has changed, mention that fact</span>
         <span class="k">if</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
-            <span class="n">changed_version</span> <span class="o">=</span> <span class="n">_get_changed_version</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">changed_version</span><span class="p">:</span>
+            <span class="n">changed_versions</span> <span class="o">=</span> <span class="n">_get_changed_versions</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">changed_versions</span><span class="p">:</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;This function changed in </span><span class="si">{</span><span class="n">changed_version</span><span class="si">}</span><span class="s1">--double check &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;This function changed in version(s) </span><span class="si">{</span><span class="n">changed_versions</span><span class="si">}</span><span class="s1">--double check &#39;</span>
                     <span class="s1">&#39;that the function is being called properly.</span><span class="se">\n</span><span class="s1">&#39;</span>
                 <span class="p">)</span> <span class="o">+</span> <span class="n">msg</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>

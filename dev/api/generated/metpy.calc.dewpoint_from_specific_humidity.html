@@ -59,6 +59,7 @@
                 gtag('js', new Date());
                 gtag('config', 'G-J48T2BG3J7');
             </script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/metpy.calc.dewpoint_from_specific_humidity';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.14.3';
@@ -75,7 +76,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 02, 2023 at 19:33:45"/>
+    <meta name="docbuild:last-update" content="Nov 03, 2023 at 16:12:05"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.dewpoint_from_specific_humidity.html" />
 
   </head>
@@ -750,13 +751,13 @@ document.write(`
 <h1>dewpoint_from_specific_humidity<a class="headerlink" href="#dewpoint-from-specific-humidity" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.dewpoint_from_specific_humidity">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">dewpoint_from_specific_humidity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specific_humidity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.dewpoint_from_specific_humidity" title="Link to this definition">#</a></dt>
-<dd><p>Calculate the dewpoint from specific humidity, temperature, and pressure.</p>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">dewpoint_from_specific_humidity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.dewpoint_from_specific_humidity" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the dewpoint from specific humidity and pressure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Total atmospheric pressure</p></li>
-<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Air temperature</p></li>
+<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Air temperature. Unused in calculation, pending deprecation</p></li>
 <li><p><strong>specific_humidity</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Specific humidity of air</p></li>
 </ul>
 </dd>
@@ -767,17 +768,34 @@ document.write(`
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">dewpoint_from_specific_humidity</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dewpoint_from_specific_humidity</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;g/kg&#39;</span><span class="p">))</span>
-<span class="go">&lt;Quantity(3.73203192, &#39;degree_Celsius&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dewpoint_from_specific_humidity</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;g/kg&#39;</span><span class="p">))</span>
+<span class="go">&lt;Quantity(3.79314079, &#39;degree_Celsius&#39;)&gt;</span>
 </pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.6: </span>Made <em class="xref py py-obj">temperature</em> arg optional, to be deprecated</p>
 </div>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.0: </span>Changed signature from <code class="docutils literal notranslate"><span class="pre">(specific_humidity,</span> <span class="pre">temperature,</span> <span class="pre">pressure)</span></code></p>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio" title="metpy.calc.relative_humidity_from_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_from_mixing_ratio</span></code></a>, <a class="reference internal" href="metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dewpoint_from_relative_humidity</span></code></a></p>
+<p><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio" title="metpy.calc.relative_humidity_from_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_from_mixing_ratio</span></code></a>, <a class="reference internal" href="metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dewpoint_from_relative_humidity</span></code></a>, <a class="reference internal" href="metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="metpy.calc.dewpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dewpoint</span></code></a></p>
 </div>
+<p class="rubric">Notes</p>
+<p>Employs <a class="reference internal" href="../references.html#wmo8" id="id1"><span>[WMO8]</span></a> eq 4.A.6,</p>
+<div class="math notranslate nohighlight">
+\[e = \frac{w}{\epsilon + w} p\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[w = \frac{q}{1-q}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(q\)</span> is specific humidity</p></li>
+<li><p><span class="math notranslate nohighlight">\(w\)</span> is mixing ratio</p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon\)</span> is the molecular weight ratio of vapor to dry air</p></li>
+</ul>
+<p>to calculate vapor partial pressure <span class="math notranslate nohighlight">\(e\)</span> for dewpoint calculation input. See
+<a class="reference internal" href="metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="metpy.calc.dewpoint"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint()</span></code></a> for additional information.</p>
 </dd></dl>
 
 <div style='clear:both'></div></section>
