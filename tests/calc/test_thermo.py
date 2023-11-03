@@ -2526,7 +2526,8 @@ def test_parcel_profile_with_lcl_as_dataset_duplicates():
         }
     )
 
-    profile = parcel_profile_with_lcl_as_dataset(pressure, temperature, dewpoint)
+    with pytest.warns(UserWarning, match='Duplicate pressure'):
+        profile = parcel_profile_with_lcl_as_dataset(pressure, temperature, dewpoint)
 
     xr.testing.assert_allclose(profile, truth, atol=1e-5)
 
