@@ -2,6 +2,8 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of thermodynamic calculations."""
+from inspect import Parameter, Signature, signature
+
 import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
@@ -55,7 +57,7 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
 
     Notes
     -----
-    .. math:: rh = \frac{e(T_d)}{e_s(T)}
+    .. math:: RH = \frac{e(T_d)}{e_s(T)}
 
     .. versionchanged:: 1.0
        Renamed ``dewpt`` parameter to ``dewpoint``
@@ -63,7 +65,7 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
     """
     e = saturation_vapor_pressure(dewpoint)
     e_s = saturation_vapor_pressure(temperature)
-    return (e / e_s)
+    return e / e_s
 
 
 @exporter.export
@@ -2026,7 +2028,7 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
     >>> T = 28.1 * units.degC
     >>> rh = .65
     >>> mixing_ratio_from_relative_humidity(p, T, rh).to('g/kg')
-    <Quantity(15.9828362, 'gram / kilogram')>
+    <Quantity(15.7646969, 'gram / kilogram')>
 
     See Also
     --------
@@ -2034,20 +2036,25 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
 
     Notes
     -----
-    Formula adapted from [Hobbs1977]_ pg. 74.
+    Employs [WMO8]_ eq. 4.A.16 as derived from WMO relative humidity definition based on
+    vapor partial pressures (eq. 4.A.15).
 
-    .. math:: w = (rh)(w_s)
+    .. math:: RH = \frac{w}{\epsilon + w} \frac{\epsilon + w_s}{w_s}
+    .. math:: \therefore w = \frac{\epsilon * w_s * RH}{\epsilon + w_s (1 - RH)}
 
     * :math:`w` is mixing ratio
-    * :math:`rh` is relative humidity as a unitless ratio
     * :math:`w_s` is the saturation mixing ratio
+    * :math:`\epsilon` is the molecular weight ratio of vapor to dry air
+    * :math:`RH` is relative humidity as a unitless ratio
+
 
     .. versionchanged:: 1.0
        Changed signature from ``(relative_humidity, temperature, pressure)``
 
     """
-    return (relative_humidity
-            * saturation_mixing_ratio(pressure, temperature)).to('dimensionless')
+    w_s = saturation_mixing_ratio(pressure, temperature)
+    return (mpconsts.nounit.epsilon * w_s * relative_humidity
+            / (mpconsts.nounit.epsilon + w_s * (1 - relative_humidity))).to('dimensionless')
 
 
 @exporter.export
@@ -2081,7 +2088,7 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
     >>> from metpy.units import units
     >>> relative_humidity_from_mixing_ratio(1013.25 * units.hPa,
     ...                                     30 * units.degC, 18/1000).to('percent')
-    <Quantity(66.1763544, 'percent')>
+    <Quantity(67.1277085, 'percent')>
 
     See Also
     --------
@@ -2089,19 +2096,23 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
 
     Notes
     -----
-    Formula based on that from [Hobbs1977]_ pg. 74.
+    Employs [WMO8]_ eq. 4.A.16 as derived from WMO relative humidity definition based on
+    vapor partial pressures (eq. 4.A.15).
 
-    .. math:: rh = \frac{w}{w_s}
+    .. math:: RH = \frac{w}{\epsilon + w} \frac{\epsilon + w_s}{w_s}
 
-    * :math:`rh` is relative humidity as a unitless ratio
     * :math:`w` is mixing ratio
     * :math:`w_s` is the saturation mixing ratio
+    * :math:`\epsilon` is the molecular weight ratio of vapor to dry air
+    * :math:`RH` is relative humidity as a unitless ratio
 
     .. versionchanged:: 1.0
        Changed signature from ``(mixing_ratio, temperature, pressure)``
 
     """
-    return mixing_ratio / saturation_mixing_ratio(pressure, temperature)
+    w_s = saturation_mixing_ratio(pressure, temperature)
+    return (mixing_ratio / (mpconsts.nounit.epsilon + mixing_ratio)
+            * (mpconsts.nounit.epsilon + w_s) / w_s)
 
 
 @exporter.export
@@ -2217,7 +2228,7 @@ def relative_humidity_from_specific_humidity(pressure, temperature, specific_hum
     >>> from metpy.units import units
     >>> relative_humidity_from_specific_humidity(1013.25 * units.hPa,
     ...                                          30 * units.degC, 18/1000).to('percent')
-    <Quantity(67.3893629, 'percent')>
+    <Quantity(68.3229304, 'percent')>
 
     See Also
     --------
@@ -2225,20 +2236,25 @@ def relative_humidity_from_specific_humidity(pressure, temperature, specific_hum
 
     Notes
     -----
-    Formula based on that from [Hobbs1977]_ pg. 74. and [Salby1996]_ pg. 118.
+    Employs [WMO8]_ eq. 4.A.16 as derived from WMO relative humidity definition based on
+    vapor partial pressures (eq. 4.A.15).
 
-    .. math:: RH = \frac{q}{(1-q)w_s}
+    .. math:: RH = \frac{w}{\epsilon + w} \frac{\epsilon + w_s}{w_s}
 
-    * :math:`RH` is relative humidity as a unitless ratio
-    * :math:`q` is specific humidity
+    given :math: w = \frac{q}{1-q}
+
+    * :math:`w` is mixing ratio
     * :math:`w_s` is the saturation mixing ratio
+    * :math:`q` is the specific humidity
+    * :math:`\epsilon` is the molecular weight ratio of vapor to dry air
+    * :math:`RH` is relative humidity as a unitless ratio
 
     .. versionchanged:: 1.0
        Changed signature from ``(specific_humidity, temperature, pressure)``
 
     """
-    return (mixing_ratio_from_specific_humidity(specific_humidity)
-            / saturation_mixing_ratio(pressure, temperature))
+    return relative_humidity_from_mixing_ratio(
+        pressure, temperature, mixing_ratio_from_specific_humidity(specific_humidity))
 
 
 @exporter.export
@@ -3544,7 +3560,7 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
     >>> thickness_hydrostatic_from_relative_humidity(p[ip1000_500],
     ...                                              T[ip1000_500],
     ...                                              rh[ip1000_500])
-    <Quantity(5781.35394, 'meter')>
+    <Quantity(5781.16001, 'meter')>
 
     See Also
     --------
@@ -3857,21 +3873,16 @@ def static_stability(pressure, temperature, vertical_dim=0):
 
 
 @exporter.export
-@preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'specific_humidity')
-)
-@check_units('[pressure]', '[temperature]', '[dimensionless]')
-def dewpoint_from_specific_humidity(pressure, temperature, specific_humidity):
-    r"""Calculate the dewpoint from specific humidity, temperature, and pressure.
+def dewpoint_from_specific_humidity(*args, **kwargs):
+    r"""Calculate the dewpoint from specific humidity and pressure.
 
     Parameters
     ----------
     pressure: `pint.Quantity`
         Total atmospheric pressure
 
-    temperature: `pint.Quantity`
-        Air temperature
+    temperature: `pint.Quantity`, optional
+        Air temperature. Unused in calculation, pending deprecation
 
     specific_humidity: `pint.Quantity`
         Specific humidity of air
@@ -3885,20 +3896,87 @@ def dewpoint_from_specific_humidity(pressure, temperature, specific_humidity):
     --------
     >>> from metpy.calc import dewpoint_from_specific_humidity
     >>> from metpy.units import units
-    >>> dewpoint_from_specific_humidity(1000 * units.hPa, 10 * units.degC, 5 * units('g/kg'))
-    <Quantity(3.73203192, 'degree_Celsius')>
+    >>> dewpoint_from_specific_humidity(1000 * units.hPa, 5 * units('g/kg'))
+    <Quantity(3.79314079, 'degree_Celsius')>
+
+    .. versionchanged:: 1.6
+       Made `temperature` arg optional, to be deprecated
 
     .. versionchanged:: 1.0
        Changed signature from ``(specific_humidity, temperature, pressure)``
 
     See Also
     --------
-    relative_humidity_from_mixing_ratio, dewpoint_from_relative_humidity
+    relative_humidity_from_mixing_ratio, dewpoint_from_relative_humidity, dewpoint
 
+    Notes
+    -----
+    Employs [WMO8]_ eq 4.A.6,
+
+    .. math:: e = \frac{w}{\epsilon + w} p
+
+    with
+
+    .. math:: w = \frac{q}{1-q}
+
+    * :math:`q` is specific humidity
+    * :math:`w` is mixing ratio
+    * :math:`\epsilon` is the molecular weight ratio of vapor to dry air
+
+    to calculate vapor partial pressure :math:`e` for dewpoint calculation input. See
+    :func:`~dewpoint` for additional information.
     """
-    return dewpoint_from_relative_humidity(temperature,
-                                           relative_humidity_from_specific_humidity(
-                                               pressure, temperature, specific_humidity))
+    sig = Signature([Parameter('pressure', Parameter.POSITIONAL_OR_KEYWORD),
+                     Parameter('temperature', Parameter.POSITIONAL_OR_KEYWORD),
+                     Parameter('specific_humidity', Parameter.POSITIONAL_OR_KEYWORD)])
+
+    try:
+        bound_args = sig.bind(*args, **kwargs)
+        _warnings.warn(
+            'Temperature argument is unused and will be deprecated in a future version.',
+            PendingDeprecationWarning)
+    except TypeError:
+        sig = signature(_dewpoint_from_specific_humidity)
+        bound_args = sig.bind(*args, **kwargs)
+
+    return _dewpoint_from_specific_humidity(bound_args.arguments['pressure'],
+                                            bound_args.arguments['specific_humidity'])
+
+
+@preprocess_and_wrap(
+    wrap_like='specific_humidity',
+    broadcast=('specific_humidity', 'pressure')
+)
+@check_units(pressure='[pressure]', specific_humidity='[dimensionless]')
+def _dewpoint_from_specific_humidity(pressure, specific_humidity):
+    r"""Calculate the dewpoint from specific humidity and pressure.
+
+    See :func:`~dewpoint_from_specific_humidity` for more information. This implementation
+    is provided internally to preserve backwards compatibility with MetPy<1.6.
+
+    Parameters
+    ----------
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    specific_humidity: `pint.Quantity`
+        Specific humidity of air
+
+    Returns
+    -------
+    `pint.Quantity`
+        Dew point temperature
+
+    .. versionchanged:: 1.6
+       Made `temperature` arg optional, to be deprecated
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(specific_humidity, temperature, pressure)``
+    """
+    w = mixing_ratio_from_specific_humidity(specific_humidity)
+    e = pressure * w / (mpconsts.nounit.epsilon + w)
+
+    return dewpoint(e)
 
 
 @exporter.export
