@@ -152,17 +152,6 @@ def test_da_xy():
     return ds.metpy.parse_cf('temperature')
 
 
-@pytest.fixture()
-def set_agg_backend():
-    """Fixture to ensure the Agg backend is active."""
-    prev_backend = matplotlib.pyplot.get_backend()
-    try:
-        matplotlib.pyplot.switch_backend('agg')
-        yield
-    finally:
-        matplotlib.pyplot.switch_backend(prev_backend)
-
-
 @pytest.fixture(params=['dask', 'xarray', 'masked', 'numpy'])
 def array_type(request):
     """Return an array type for testing calc functions."""

@@ -5,6 +5,7 @@
 
 from datetime import datetime, timedelta
 from io import BytesIO
+from unittest.mock import patch, PropertyMock
 import warnings
 
 import matplotlib.pyplot as plt
@@ -569,6 +570,8 @@ def test_ndim_error_scalar(cfeature):
     with pytest.raises(ValueError):
         pc.draw()
 
+    plt.close(pc.figure)
+
 
 def test_ndim_error_vector(cfeature):
     """Make sure we get a useful error when the field is not set."""
@@ -589,6 +592,8 @@ def test_ndim_error_vector(cfeature):
 
     with pytest.raises(ValueError):
         pc.draw()
+
+    plt.close(pc.figure)
 
 
 def test_no_field_error_barbs():
@@ -1623,6 +1628,8 @@ def test_attribute_error_time(ccrs, pandas_sfc):
     with pytest.raises(AttributeError):
         pc.draw()
 
+    plt.close(pc.figure)
+
 
 def test_attribute_error_station(ccrs, pandas_sfc):
     """Make sure we get a useful error when the station variable is not found."""
@@ -1651,6 +1658,8 @@ def test_attribute_error_station(ccrs, pandas_sfc):
 
     with pytest.raises(AttributeError):
         pc.draw()
+
+    plt.close(pc.figure)
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.024)
@@ -1970,6 +1979,7 @@ def test_save():
     pc = PanelContainer()
     fobj = BytesIO()
     pc.save(fobj, format='png')
+    plt.close(pc.figure)
 
     fobj.seek(0)
 
@@ -1977,14 +1987,14 @@ def test_save():
     assert fobj.read()
 
 
-def test_show(set_agg_backend):
+def test_show():
     """Test that show works properly."""
     pc = PanelContainer()
-
-    # Matplotlib warns when using show with Agg
-    with warnings.catch_warnings():
-        warnings.simplefilter('ignore', UserWarning)
+    with patch.object(plt, 'show', new_callable=PropertyMock) as show:
         pc.show()
+        show.assert_called()
+
+    plt.close(pc.figure)
 
 
 @needs_cartopy
@@ -2026,6 +2036,7 @@ def test_copy():
     copied_obj = obj.copy()
     assert obj is not copied_obj
     assert obj.size == copied_obj.size
+    plt.close(obj.figure)
 
     # Copies of plots in MapPanels should not point to same location in memory
     obj = MapPanel()
