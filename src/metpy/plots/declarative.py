@@ -10,6 +10,7 @@ from difflib import get_close_matches
 from itertools import cycle
 import re
 
+from matplotlib.contour import ContourSet
 import matplotlib.patheffects as patheffects
 import matplotlib.pyplot as plt
 import numpy as np
@@ -683,7 +684,10 @@ class Plots2D(SubsetTraits):
 
         """
         if getattr(self, 'handle', None) is not None:
-            if getattr(self.handle, 'collections', None) is not None:
+            # In matplotlib 3.8, the collections attribute on ContourSet was deprecated.
+            # Check for that here so we can avoid the deprecation warning.
+            if (not isinstance(ContourSet.__dict__.get('collections'), property)
+                    and getattr(self.handle, 'collections', None) is not None):
                 self.clear_collections()
             else:
                 self.clear_handle()
