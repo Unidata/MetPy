@@ -14,6 +14,7 @@ us  -  UNITED STATES
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -37,6 +38,7 @@ awips  -  AWIPS US
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -60,6 +62,7 @@ uslcc  -  UNITED STATES LCC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -83,6 +86,7 @@ whlf  -  WESTERN HALF
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -106,6 +110,7 @@ chlf  -  CENTRAL HALF
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -129,6 +134,7 @@ centus  -  CENTRAL US
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -152,6 +158,7 @@ ehlf  -  EASTERN HALF
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -175,6 +182,7 @@ mehlf  -  EASTERN HALF
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -198,6 +206,7 @@ west  -  WESTERN US
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -221,6 +230,7 @@ cent  -  CENTRAL US
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -244,6 +254,7 @@ east  -  EASTERN US
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -267,6 +278,7 @@ nwus  -  NW SECTOR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -290,6 +302,7 @@ swus  -  SW SECTOR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -313,6 +326,7 @@ ncus  -  NC SECTOR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -336,6 +350,7 @@ scus  -  SC SECTOR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -359,6 +374,7 @@ neus  -  NE SECTOR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -382,6 +398,7 @@ seus  -  SE SECTOR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -405,6 +422,7 @@ bosfa  -  BOSTON FA AREA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -428,6 +446,7 @@ miafa  -  MIAMI FA AREA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -451,6 +470,7 @@ chifa  -  CHICAGO FA AREA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -474,6 +494,7 @@ dfwfa  -  DALLAS FA AREA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -497,6 +518,7 @@ slcfa  -  SALT LAKE FA AREA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -520,6 +542,7 @@ sfofa  -  SAN FRAN FA AREA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -543,6 +566,7 @@ ak  -  ALASKA HPC QPF
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -566,6 +590,7 @@ al  -  ALABAMA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -589,6 +614,7 @@ ar  -  ARKANSAS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -612,6 +638,7 @@ ca  -  CALIFORNIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -635,6 +662,7 @@ co  -  COLORADO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -658,6 +686,7 @@ ct  -  CONNECTICUT
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -681,6 +710,7 @@ dc  -  WASHINGTON DC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -704,6 +734,7 @@ de  -  DELAWARE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -727,6 +758,7 @@ fl  -  FLORIDA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -750,6 +782,7 @@ ga  -  GEORGIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -773,6 +806,7 @@ hi  -  HAWAII
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -796,6 +830,7 @@ ia  -  IOWA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -819,6 +854,7 @@ id  -  IDAHO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -842,6 +878,7 @@ il  -  ILLINOIS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -865,6 +902,7 @@ in  -  INDIANA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -888,6 +926,7 @@ ks  -  KANSAS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -911,6 +950,7 @@ ky  -  KENTUCKY
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -934,6 +974,7 @@ la  -  LOUISIANA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -957,6 +998,7 @@ ma  -  MASSACHUSETTS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -980,6 +1022,7 @@ md  -  MARYLAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1003,6 +1046,7 @@ me  -  MAINE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1026,6 +1070,7 @@ mi  -  MICHIGAN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1049,6 +1094,7 @@ mn  -  MINNESOTA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1072,6 +1118,7 @@ mo  -  MISSOURI
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1095,6 +1142,7 @@ ms  -  MISSISSIPPI
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1118,6 +1166,7 @@ mt  -  MONTANA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1141,6 +1190,7 @@ nc  -  NORTH CAROLINA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1164,6 +1214,7 @@ nd  -  NORTH DAKOTA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1187,6 +1238,7 @@ ne  -  NEBRASKA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1210,6 +1262,7 @@ nh  -  NEW HAMPSHIRE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1233,6 +1286,7 @@ nj  -  NEW JERSEY
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1256,6 +1310,7 @@ nm  -  NEW MEXICO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1279,6 +1334,7 @@ nv  -  NEVADA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1302,6 +1358,7 @@ ny  -  NEW YORK
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1325,6 +1382,7 @@ oh  -  OHIO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1348,6 +1406,7 @@ ok  -  OKLAHOMA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1371,6 +1430,7 @@ or  -  OREGON
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1394,6 +1454,7 @@ pa  -  PENNSYLVANIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1417,6 +1478,7 @@ ri  -  RHODE ISLAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1440,6 +1502,7 @@ sc  -  SOUTH CAROLINA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1463,6 +1526,7 @@ sd  -  SOUTH DAKOTA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1486,6 +1550,7 @@ tn  -  TENNESSEE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1509,6 +1574,7 @@ tx  -  TEXAS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1532,6 +1598,7 @@ ut  -  UTAH
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1555,6 +1622,7 @@ va  -  VIRGINIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1578,6 +1646,7 @@ vt  -  VERMONT
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1601,6 +1670,7 @@ wi  -  WISCONSIN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1624,6 +1694,7 @@ wv  -  WEST VIRGINIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1647,6 +1718,7 @@ wy  -  WYOMING
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1670,6 +1742,7 @@ az  -  ARIZONA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1693,6 +1766,7 @@ wa  -  WASHINGTON
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1716,6 +1790,7 @@ cn  -  CANADA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1739,6 +1814,7 @@ cnlcc  -  CANADA LCC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1762,6 +1838,7 @@ ab  -  ALBERTA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1785,6 +1862,7 @@ bc  -  BRITISH COLUMBIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1808,6 +1886,7 @@ mb  -  MANITOBA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1831,6 +1910,7 @@ nb  -  NEW BRUNSWICK
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1854,6 +1934,7 @@ nf  -  NEWFOUNDLAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1877,6 +1958,7 @@ ns  -  NOVA SCOTIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1900,6 +1982,7 @@ nt  -  NW TERRITORIES
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1923,6 +2006,7 @@ nu  -  NUNAVUT
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1946,6 +2030,7 @@ on  -  ONTARIO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1969,6 +2054,7 @@ pe  -  PRINCE EDWARD IS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -1992,6 +2078,7 @@ qb  -  QUEBEC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2015,6 +2102,7 @@ sa  -  SASKATCHEWAN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2038,6 +2126,7 @@ yt  -  YUKON TERRITORY
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2061,6 +2150,7 @@ tropatl  -  TROPICAL ATLANTIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2082,6 +2172,7 @@ subtrop  -  SUBTROPICAL ATL
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2103,6 +2194,7 @@ troppac  -  TROPICAL PACIFIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2124,6 +2216,7 @@ gulf  -  GULF OF MEXICO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2145,6 +2238,7 @@ carib  -  CARIBBEAN SEA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2166,6 +2260,7 @@ sthepac  -  SOUTH E PACIFIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2187,6 +2282,7 @@ natlmed  -  N ATL/MEDITER
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2208,6 +2304,7 @@ atlhur  -  ATLANTIC HURR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2229,6 +2326,7 @@ nam  -  N AMERICA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2250,6 +2348,7 @@ sam  -  S AMERICA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2271,6 +2370,7 @@ samps  -  S AMERICA (PS)
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2292,6 +2392,7 @@ eur  -  EUROPE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2313,6 +2414,7 @@ natl  -  N ATLANTIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2334,6 +2436,7 @@ watl  -  W ATLANTIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2355,6 +2458,7 @@ tatl  -  TROPICAL ATLANTIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2376,6 +2480,7 @@ npac  -  N PACIFIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2397,6 +2502,7 @@ spac  -  S PACIFIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2418,6 +2524,7 @@ tpac  -  TROPICAL PACIFIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2439,6 +2546,7 @@ epac  -  E PACIFIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2460,6 +2568,7 @@ wpac  -  W PACIFIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2481,6 +2590,7 @@ mpac  -  MARINE PACIFIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2502,6 +2612,7 @@ americas  -  ICAO MERC AREA A
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2523,6 +2634,7 @@ atlantic  -  ICAO MERC AREA B1
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2544,6 +2656,7 @@ africa  -  ICAO MERC AREA C
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2565,6 +2678,7 @@ indocean  -  ICAO MERC AREA D
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2586,6 +2700,7 @@ oceania  -  ICAO MERC AREA E
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2607,6 +2722,7 @@ trop_pac  -  ICAO MERC AREA F
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2628,6 +2744,7 @@ asia_ps  -  ICAO P.S. AREA G
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2649,6 +2766,7 @@ na_ps  -  ICAO P.S. AREA H
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2670,6 +2788,7 @@ npac_ps  -  ICAO P.S. AREA I
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2691,6 +2810,7 @@ antarctica  -  ICAO P.S. AREA J
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2712,6 +2832,7 @@ europe  -  ICAO P.S. AREA EU
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2733,6 +2854,7 @@ middle_east  -  ICAO MERC AREA ME
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2754,6 +2876,7 @@ india  -  ICAO MERC AREA AS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2775,6 +2898,7 @@ ag  -  ARGENTINA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2796,6 +2920,7 @@ ah  -  AFGHANISTAN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2817,6 +2942,7 @@ afrca  -  AFRICA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2838,6 +2964,7 @@ ai  -  ASCENSION ISLAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2859,6 +2986,7 @@ alba  -  ALBANIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2880,6 +3008,7 @@ alge  -  ALGERIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2901,6 +3030,7 @@ an  -  ANGOLA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2922,6 +3052,7 @@ antl  -  LESSER ANTILLES
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2943,6 +3074,7 @@ antg  -  GREATER ANTILLES
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2964,6 +3096,7 @@ atg  -  ANTIGUA & BARBUDA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -2985,6 +3118,7 @@ au  -  AUSTRALIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3006,6 +3140,7 @@ azor  -  AZORES
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3027,6 +3162,7 @@ ba  -  BAHAMAS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3048,6 +3184,7 @@ be  -  BERMUDA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3069,6 +3206,7 @@ bel  -  BELGIUM
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3090,6 +3228,7 @@ bf  -  BRUNEI
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3111,6 +3250,7 @@ bfa  -  BURKINA FASO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3132,6 +3272,7 @@ bh  -  BELIZE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3153,6 +3294,7 @@ bi  -  BURUNDI
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3174,6 +3316,7 @@ bj  -  BENIN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3195,6 +3338,7 @@ bn  -  BAHRAIN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3216,6 +3360,7 @@ bo  -  BOLIVIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3237,6 +3382,7 @@ bots  -  BOTSWANA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3258,6 +3404,7 @@ br  -  BARBADOS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3279,6 +3426,7 @@ bt  -  BRITISH INDIAN OC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3300,6 +3448,7 @@ bu  -  BULGARIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3321,6 +3470,7 @@ bv  -  BOUVET ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3342,6 +3492,7 @@ bw  -  BANGLADESH
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3363,6 +3514,7 @@ by  -  BYELORUSSIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3384,6 +3536,7 @@ bz  -  BRAZIL
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3405,6 +3558,7 @@ cais  -  CANTON ISLAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3426,6 +3580,7 @@ nwcar  -  NWX CARIBBEAN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3447,6 +3602,7 @@ cari  -  CARIBBEAN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3468,6 +3624,7 @@ cb  -  CHAD
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3489,6 +3646,7 @@ ce  -  CENTRAL AFRICA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3510,6 +3668,7 @@ cg  -  CONGO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3531,6 +3690,7 @@ ch  -  CHILE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3552,6 +3712,7 @@ ci  -  CHINA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3573,6 +3734,7 @@ cm  -  CAMEROON
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3594,6 +3756,7 @@ colm  -  COLUMBIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3615,6 +3778,7 @@ cr  -  CANARY ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3636,6 +3800,7 @@ cs  -  COSTA RICA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3657,6 +3822,7 @@ cu  -  CUBA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3678,6 +3844,7 @@ cv  -  CAPE VERDE ISLAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3699,6 +3866,7 @@ cy  -  CYPRUS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3720,6 +3888,7 @@ cz  -  CZECH REPUBLIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3741,6 +3910,7 @@ dj  -  DJIBOUTI
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3762,6 +3932,7 @@ dl  -  GERMANY
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3783,6 +3954,7 @@ dn  -  DENMARK
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3804,6 +3976,7 @@ do  -  DOMINICA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3825,6 +3998,7 @@ dr  -  DOMINICAN REPUBLIC
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3846,6 +4020,7 @@ eg  -  EGYPT
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3867,6 +4042,7 @@ eq  -  ECUADOR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3888,6 +4064,7 @@ er  -  UAE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3909,6 +4086,7 @@ es  -  EL SALVADOR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3930,6 +4108,7 @@ et  -  ETHIOPIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3951,6 +4130,7 @@ fa  -  FAEROES
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3972,6 +4152,7 @@ fg  -  FRENCH GUIANA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -3993,6 +4174,7 @@ fi  -  FINLAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4014,6 +4196,7 @@ fj  -  FIJI ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4035,6 +4218,7 @@ fk  -  FALKLAND ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4056,6 +4240,7 @@ fn  -  NIGER
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4077,6 +4262,7 @@ fr  -  FRANCE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4098,6 +4284,7 @@ gb  -  GAMBIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4119,6 +4306,7 @@ gc  -  CAYMAN ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4140,6 +4328,7 @@ gh  -  GHANA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4161,6 +4350,7 @@ gi  -  GIBRALTAR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4182,6 +4372,7 @@ gl  -  GREENLAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4203,6 +4394,7 @@ glp  -  GUADALOUPE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4224,6 +4416,7 @@ gm  -  GUAM
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4245,6 +4438,7 @@ gn  -  GUINEA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4266,6 +4460,7 @@ go  -  GABON
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4287,6 +4482,7 @@ gr  -  GREECE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4308,6 +4504,7 @@ gu  -  GUATEMALA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4329,6 +4526,7 @@ gw  -  GUINEA-BISSAU
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4350,6 +4548,7 @@ gy  -  GUYANA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4371,6 +4570,7 @@ ha  -  HAITI
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4392,6 +4592,7 @@ he  -  ST HELENA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4413,6 +4614,7 @@ hk  -  HONG KONG
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4434,6 +4636,7 @@ ho  -  HONDURAS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4455,6 +4658,7 @@ hu  -  HUNGARY
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4476,6 +4680,7 @@ ic  -  COMOROS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4497,6 +4702,7 @@ icel  -  ICELAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4518,6 +4724,7 @@ ie  -  IRELAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4539,6 +4746,7 @@ inda  -  INDIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4560,6 +4768,7 @@ indo  -  INDONESIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4581,6 +4790,7 @@ iq  -  IRAQ
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4602,6 +4812,7 @@ ir  -  IRAN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4623,6 +4834,7 @@ is  -  ISRAEL
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4644,6 +4856,7 @@ iv  -  IVORY COAST
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4665,6 +4878,7 @@ iw  -  WEST BANK
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4686,6 +4900,7 @@ iy  -  ITALY
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4707,6 +4922,7 @@ jd  -  JORDAN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4728,6 +4944,7 @@ jm  -  JAMAICA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4749,6 +4966,7 @@ jp  -  JAPAN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4770,6 +4988,7 @@ ka  -  CAROLINE ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4791,6 +5010,7 @@ kash  -  JAMMU & KASHMIR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4812,6 +5032,7 @@ kb  -  KIRIBATI
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4833,6 +5054,7 @@ khm  -  CAMBODIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4854,6 +5076,7 @@ ki  -  CHRISTMAS ISLAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4875,6 +5098,7 @@ kn  -  KENYA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4896,6 +5120,7 @@ kna  -  ST KITTS & NEVIS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4917,6 +5142,7 @@ ko  -  KOREA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4938,6 +5164,7 @@ ku  -  COOK ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4959,6 +5186,7 @@ kw  -  KUWAIT
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -4980,6 +5208,7 @@ laos  -  LAOS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5001,6 +5230,7 @@ lb  -  LEBANON
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5022,6 +5252,7 @@ lc  -  ST LUCIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5043,6 +5274,7 @@ li  -  LIBERIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5064,6 +5296,7 @@ ln  -  LINE ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5085,6 +5318,7 @@ ls  -  LESOTHO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5106,6 +5340,7 @@ lt  -  LIECHTENSTEIN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5127,6 +5362,7 @@ lux  -  LUXEMBOURG
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5148,6 +5384,7 @@ ly  -  LIBYA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5169,6 +5406,7 @@ maar  -  ST MAARTEN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5190,6 +5428,7 @@ made  -  MADEIRA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5211,6 +5450,7 @@ mala  -  MALAYSIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5232,6 +5472,7 @@ mali  -  MALI
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5253,6 +5494,7 @@ maur  -  MAURITIUS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5274,6 +5516,7 @@ maut  -  MAURITANIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5295,6 +5538,7 @@ mc  -  MOROCCO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5316,6 +5560,7 @@ mg  -  MADAGASCAR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5337,6 +5582,7 @@ mh  -  MARSHALL ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5358,6 +5604,7 @@ ml  -  MALTA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5379,6 +5626,7 @@ mmr  -  MYANMAR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5400,6 +5648,7 @@ mong  -  MONGOLIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5421,6 +5670,7 @@ mr  -  MARTINIQUE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5442,6 +5692,7 @@ mu  -  MACAO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5463,6 +5714,7 @@ mv  -  MALDIVE ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5484,6 +5736,7 @@ mw  -  MALAWI
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5505,6 +5758,7 @@ mx  -  MEXICO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5526,6 +5780,7 @@ my  -  MARIANNA ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5547,6 +5802,7 @@ mz  -  MOZAMBIQUE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5568,6 +5824,7 @@ nama  -  NAMIBIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5589,6 +5846,7 @@ ncal  -  NEW CALEDONIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5610,6 +5868,7 @@ ng  -  NEW GUINEA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5631,6 +5890,7 @@ ni  -  NIGERIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5652,6 +5912,7 @@ nk  -  NICARAGUA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5673,6 +5934,7 @@ nl  -  NETHERLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5694,6 +5956,7 @@ no  -  NORWAY
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5715,6 +5978,7 @@ np  -  NEPAL
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5736,6 +6000,7 @@ nw  -  NAURU
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5757,6 +6022,7 @@ nz  -  NEW ZEALAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5778,6 +6044,7 @@ om  -  OMAN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5799,6 +6066,7 @@ os  -  AUSTRIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5820,6 +6088,7 @@ pf  -  FRENCH POLYNESIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5841,6 +6110,7 @@ ph  -  PHILIPINES
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5862,6 +6132,7 @@ pi  -  PHOENIX ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5883,6 +6154,7 @@ pk  -  PAKISTAN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5904,6 +6176,7 @@ pl  -  POLAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5925,6 +6198,7 @@ pm  -  PANAMA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5946,6 +6220,7 @@ po  -  PORTUGAL
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5967,6 +6242,7 @@ pr  -  PERU
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -5988,6 +6264,7 @@ pt  -  PITCAIRN ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6009,6 +6286,7 @@ pu  -  PUERTO RICO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6030,6 +6308,7 @@ py  -  PARAGUAY
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6051,6 +6330,7 @@ qg  -  EQUATORIAL GUINEA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6072,6 +6352,7 @@ qt  -  QATAR
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6093,6 +6374,7 @@ ra  -  RUSSIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6114,6 +6396,7 @@ re  -  REUNION
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6135,6 +6418,7 @@ riro  -  RIO DE ORO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6156,6 +6440,7 @@ ro  -  ROMANIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6177,6 +6462,7 @@ rw  -  RWANDA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6198,6 +6484,7 @@ saudi  -  SAUDI ARABIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6219,6 +6506,7 @@ sb  -  SRI LANKA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6240,6 +6528,7 @@ seyc  -  SEYCHELLES ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6261,6 +6550,7 @@ sg  -  SENEGAL
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6282,6 +6572,7 @@ si  -  SOMALIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6303,6 +6594,7 @@ sk  -  SARAWAK
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6324,6 +6616,7 @@ sl  -  SIERRA LEONE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6345,6 +6638,7 @@ sm  -  SURINAME
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6366,6 +6660,7 @@ sn  -  SWEDEN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6387,6 +6682,7 @@ so  -  SOLOMON ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6408,6 +6704,7 @@ sp  -  SPAIN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6429,6 +6726,7 @@ sr  -  SINGAPORE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6450,6 +6748,7 @@ su  -  SUDAN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6471,6 +6770,7 @@ sv  -  SWAZILAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6492,6 +6792,7 @@ sw  -  SWITZERLAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6513,6 +6814,7 @@ sy  -  SYRIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6534,6 +6836,7 @@ tanz  -  TANZANIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6555,6 +6858,7 @@ td  -  TRINIDAD & TOBAGO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6576,6 +6880,7 @@ tg  -  TOGO
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6597,6 +6902,7 @@ th  -  THAILAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6618,6 +6924,7 @@ ti  -  TURKS ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6639,6 +6946,7 @@ tk  -  TOKELAU ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6660,6 +6968,7 @@ to  -  TONGA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6681,6 +6990,7 @@ tp  -  SAO TOME-PRINCIPE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6702,6 +7012,7 @@ ts  -  TUNISIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6723,6 +7034,7 @@ tu  -  TURKEY
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6744,6 +7056,7 @@ tv  -  TUVALU
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6765,6 +7078,7 @@ tw  -  TAIWAN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6786,6 +7100,7 @@ ug  -  UGANDA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6807,6 +7122,7 @@ uk  -  UNITED KINGDOM
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6828,6 +7144,7 @@ ur  -  UKRAINE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6849,6 +7166,7 @@ uy  -  URUGUAY
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6870,6 +7188,7 @@ vanu  -  VANUATU
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6891,6 +7210,7 @@ vi  -  VIRGIN ISLANDS
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6912,6 +7232,7 @@ vk  -  SLOVAKIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6933,6 +7254,7 @@ vn  -  VENEZUELA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6954,6 +7276,7 @@ vs  -  VIETNAM
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6975,6 +7298,7 @@ wk  -  WAKE ISLAND
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -6996,6 +7320,7 @@ ye  -  YEMEN
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -7017,6 +7342,7 @@ yg  -  YUGOSLAVIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -7038,6 +7364,7 @@ za  -  SOUTH AFRICA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -7059,6 +7386,7 @@ zb  -  ZAMBIA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -7080,6 +7408,7 @@ zm  -  WESTERN SAMOA
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -7101,6 +7430,7 @@ zr  -  ZAIRE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
@@ -7122,6 +7452,7 @@ zw  -  ZIMBABWE
 
 
 .. plot::
+   :context: reset
 
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
