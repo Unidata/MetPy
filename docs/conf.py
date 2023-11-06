@@ -61,8 +61,9 @@ sphinx_gallery_conf = {
     'reset_modules': [lambda conf, fname: sys.modules.pop('pint', None)]
 }
 
-# By default, only generate all the areas when running in CI
-metpy_generate_all_areas = 'GITHUB_ACTIONS' in os.environ
+# By default, only generate all the areas when running on a release CI job
+metpy_generate_all_areas = (not os.environ.get('GITHUB_REF', '').startswith('refs/pull')
+                            and sys.version_info < (3, 12))
 
 # Turn off code and image links for embedded mpl plots
 plot_html_show_source_link = False
@@ -431,7 +432,9 @@ linkcheck_ignore = [
     r'https://doi\.org/10\.1289/ehp\.1206273',
     # Couldn't fix these 403's with user agents
     r'https://doi\.org/10\.1029/2010GL045777',
-    r'https://doi\.org/10\.1098/rspa\.2004\.1430'
+    r'https://doi\.org/10\.1098/rspa\.2004\.1430',
+    # Currently giving certificate errors on GitHub
+    r'https://library.wmo.int/.*'
     ]
 
 # Dictionary of URL redirects allowed
@@ -440,7 +443,8 @@ linkcheck_allowed_redirects = {
     r'https://conda.io/docs/': r'https://conda.io/en/latest/',
     r'https://github.com/Unidata/MetPy/issues/new/choose': r'https://github.com/login.*choose',
     r'https://doi.org/.*': r'https://.*',
-    r'https://gitter.im/Unidata/MetPy': r'https://app.gitter.im/.*MetPy.*'
+    r'https://gitter.im/Unidata/MetPy': r'https://app.gitter.im/.*MetPy.*',
+    r'https://library.wmo.int/idurl/.*': r'https://library.wmo.int/.*'
 }
 
 # Domain-specific HTTP headers for requests
