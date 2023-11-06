@@ -337,7 +337,7 @@ While the authors are no fans of blind adherence to style and so-called project 
 that go through and correct code style, MetPy has adopted this style from the outset.
 Therefore, it makes sense to enforce this style as code is added to keep everything clean and
 uniform. To this end, part of the automated testing for MetPy checks style. To check style
-locally within the source directory you can use the [ruff](https://beta.ruff.rs/docs/) and
+locally within the source directory you can use the [ruff](https://docs.astral.sh/ruff/) and
 [flake8](https://flake8.pycqa.org/en/latest/) tools.
 After setting up your [development environment](#setting-up-your-development-environment) above,
 from within the ``metpy`` directory with your ``devel`` environment active,
