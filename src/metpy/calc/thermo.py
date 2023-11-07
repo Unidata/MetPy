@@ -292,9 +292,9 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
         'standard' for simplified pseudoadiabatic process
         'pseudoadiabatic' for pseudoadiabatic moist process
         'reversible' for reversible moist process
-        'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
-        'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
-        More info: https://glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
+        'so13' for Singh and O'Gorman (2013);  doi.org/10.1002/grl.50796
+        'r14' for Romps (2014); doi.org/10.1175/JCLI-D-14-00255.1
+        More info: glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
 
     params : `dict` or None, optional
         External parameters used for the some lapse_types
@@ -1045,9 +1045,9 @@ def parcel_profile(pressure, temperature, dewpoint, lapse_type='standard', param
         'standard' for simplified pseudoadiabatic process
         'pseudoadiabatic' for pseudoadiabatic moist process
         'reversible' for reversible moist process
-        'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
-        'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
-        More info: https://glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
+        'so13' for Singh and O'Gorman (2013);  doi.org/10.1002/grl.50796
+        'r14' for Romps (2014); doi.org/10.1175/JCLI-D-14-00255.1
+        More info: glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
 
     params : `dict` or None, optional
         External parameters used for the some lapse_types
@@ -1150,9 +1150,9 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint,
         'standard' for simplified pseudoadiabatic process
         'pseudoadiabatic' for pseudoadiabatic moist process
         'reversible' for reversible moist process
-        'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
-        'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
-        More info: https://glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
+        'so13' for Singh and O'Gorman (2013);  doi.org/10.1002/grl.50796
+        'r14' for Romps (2014); doi.org/10.1175/JCLI-D-14-00255.1
+        More info: glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
 
     params : `dict` or None, optional
         External parameters used for the some lapse_types
