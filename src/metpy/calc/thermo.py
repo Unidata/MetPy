@@ -254,6 +254,23 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
 
 
 def dt_standard(p, t, params):
+    r"""
+    Computes the AMS moist adiabatic lapse rate in pressure coordinates.
+
+    Parameters
+    ----------
+    p : `float`
+        pressure [Pa]
+
+    t : `float`
+        temperature [K]
+
+    Returns
+    -------
+    dT/dp : `float`
+        lapse rate in pressure coordinates
+
+    """
     rs = saturation_mixing_ratio._nounit(p, t)
     frac = (
         (mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
@@ -327,6 +344,24 @@ def dt_r14(p, t, params):
             * ((-a2 + np.sqrt(a2**2 - 4 * a1 * a3)) / (2 * a1)
                + mpconsts.nounit.g / (mpconsts.nounit.Rd * t)))
     return frac / p
+
+
+def select_dt(lapse_type):
+    if lapse_type == 'standard':
+        dt = dt_standard
+    elif lapse_type == 'pseudoadiabatic':
+        dt = dt_pseudoadiabatic
+    elif lapse_type == 'reversible':
+        dt = dt_reversible
+    elif lapse_type == 'so13':
+        dt = dt_so13
+    elif lapse_type == 'r14':
+        dt = dt_r14
+    else:
+        raise ValueError('Specified lapse_type is not supported. '
+                         'Choose from standard, pseudoadiabatic, reversible, '
+                         'so13, or r14.')
+    return dt
 
 
 @exporter.export
@@ -425,24 +460,15 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
     if reference_pressure is None:
         reference_pressure = pressure[0]
 
-    if lapse_type == 'standard':
-        dt = dt_standard
-    elif lapse_type == 'pseudoadiabatic':
-        dt = dt_pseudoadiabatic
-    elif lapse_type == 'reversible':
-        dt = dt_reversible
+    dt = select_dt(lapse_type)  # Define dt based on lapse_type
+
+    # Define or update params where needed
+    if lapse_type == 'reversible':
         # total water at LCL = rs
         params = {'rt': saturation_mixing_ratio._nounit(reference_pressure, temperature)}
     elif lapse_type == 'so13':
-        dt = dt_so13
         params.update({'h0': mpconsts.nounit.Rd * temperature[0] / mpconsts.nounit.g,
                        'p0': pressure[0]})
-    elif lapse_type == 'r14':
-        dt = dt_r14
-    else:
-        raise ValueError('Specified lapse_type is not supported. '
-                         'Choose from standard, pseudoadiabatic, reversible, '
-                         'so13, or r14.')
 
     if np.isnan(reference_pressure) or np.all(np.isnan(temperature)):
         return np.full((temperature.size, pressure.size), np.nan)
