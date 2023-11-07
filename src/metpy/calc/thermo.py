@@ -267,7 +267,7 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
     '[temperature]'
 )
 def moist_lapse(pressure, temperature, reference_pressure=None,
-        lapse_type='standard', params=None):
+                lapse_type='standard', params=None):
     r"""Calculate the temperature at a level assuming liquid saturation processes.
 
     This function lifts a parcel starting at `temperature`. The starting pressure can
