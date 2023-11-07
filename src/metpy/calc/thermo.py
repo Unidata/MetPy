@@ -358,19 +358,19 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
     def dt_pseudoadiabatic(p, t, params):
         rs = saturation_mixing_ratio._nounit(p, t)
         frac = ((1 + rs) * (mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
-               / (mpconsts.nounit.Cp_d + rs * mpconsts.nounit.Cv_d
+                / (mpconsts.nounit.Cp_d + rs * mpconsts.nounit.Cv_d
                    + (mpconsts.nounit.Lv**2 * rs * (mpconsts.nounit.epsilon + rs)
-                   / (mpconsts.nounit.Rd * t**2))))
+                      / (mpconsts.nounit.Rd * t**2))))
         return frac / p
 
     def dt_reversible(p, t, params):
         rs = saturation_mixing_ratio._nounit(p, t)
         rl = params['rt'] - rs  # assuming no ice content
         frac = ((1 + params['rt']) * (mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
-               / (mpconsts.nounit.Cp_d + rs * mpconsts.nounit.Cv_d
-                  + rl * mpconsts.nounit.Cp_l + (mpconsts.nounit.Lv**2 * rs
-                  * (mpconsts.nounit.epsilon + rs)
-                    / (mpconsts.nounit.Rd * t**2))))
+                / (mpconsts.nounit.Cp_d + rs * mpconsts.nounit.Cv_d
+                   + rl * mpconsts.nounit.Cp_l + (mpconsts.nounit.Lv**2 * rs
+                                                  * (mpconsts.nounit.epsilon + rs)
+                                                  / (mpconsts.nounit.Rd * t**2))))
         return frac / p
 
     def dt_so13(p, t, params):
@@ -382,11 +382,11 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
             rs = saturation_mixing_ratio._nounit(p, t)
             qs = specific_humidity_from_mixing_ratio(rs)
             frac = ((mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * qs
-                    + ep * qs * mpconsts.nounit.Lv * (1 - params['rh0'])
-                    * mpconsts.nounit.Rd * t / mpconsts.nounit.g)
+                     + ep * qs * mpconsts.nounit.Lv * (1 - params['rh0'])
+                     * mpconsts.nounit.Rd * t / mpconsts.nounit.g)
                     / (mpconsts.nounit.Cp_d
-                    + (mpconsts.nounit.Lv**2 * qs * mpconsts.nounit.epsilon
-                    / (mpconsts.nounit.Rd * t**2))))
+                       + (mpconsts.nounit.Lv**2 * qs * mpconsts.nounit.epsilon
+                          / (mpconsts.nounit.Rd * t**2))))
             # cap lapse rate at dry adiabat (can be steeper with large entrainment rate)
             frac = np.min([frac, mpconsts.nounit.Rd * t / mpconsts.nounit.Cp_d])
         return frac / p
@@ -412,7 +412,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
         frac = (mpconsts.nounit.Rd * t / (mpconsts.nounit.g)
                 * mpconsts.nounit.Rv * t**2 / mpconsts.nounit.Lv
                 * ((-a2 + np.sqrt(a2**2 - 4 * a1 * a3)) / (2 * a1)
-                + mpconsts.nounit.g / (mpconsts.nounit.Rd * t)))
+                   + mpconsts.nounit.g / (mpconsts.nounit.Rd * t)))
         return frac / p
 
     temperature = np.atleast_1d(temperature)
