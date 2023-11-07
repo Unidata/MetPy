@@ -358,61 +358,61 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
     def dt_pseudoadiabatic(p, t, params):
         rs = saturation_mixing_ratio._nounit(p, t)
         frac = ((1 + rs) * (mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
-                    / (mpconsts.nounit.Cp_d + rs * mpconsts.nounit.Cv_d
-                    + (mpconsts.nounit.Lv**2 * rs * (mpconsts.nounit.epsilon + rs)
-                    / (mpconsts.nounit.Rd * t**2))))
+                  / (mpconsts.nounit.Cp_d + rs * mpconsts.nounit.Cv_d
+                  + (mpconsts.nounit.Lv**2 * rs * (mpconsts.nounit.epsilon + rs)
+                  / (mpconsts.nounit.Rd * t**2))))
         return frac / p
 
     def dt_reversible(p, t, params):
         rs = saturation_mixing_ratio._nounit(p, t)
         rl = params['rt'] - rs  # assuming no ice content
         frac = ((1 + params['rt']) * (mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
-                    / (mpconsts.nounit.Cp_d + rs * mpconsts.nounit.Cv_d
-                    + rl * mpconsts.nounit.Cp_l + (mpconsts.nounit.Lv**2 * rs
-                    * (mpconsts.nounit.epsilon + rs)
-                    / (mpconsts.nounit.Rd * t**2))))
+                  / (mpconsts.nounit.Cp_d + rs * mpconsts.nounit.Cv_d
+                  + rl * mpconsts.nounit.Cp_l + (mpconsts.nounit.Lv**2 * rs
+                  * (mpconsts.nounit.epsilon + rs)
+                  / (mpconsts.nounit.Rd * t**2))))
         return frac / p
 
     def dt_so13(p, t, params):
         zp = -params['h0'] * np.log(p / params['p0'])  # pseudoheight
-        if np.abs(zp)==0:  # entrainment rate undefined at z=0, assume dry adiabat
+        if np.abs(zp) == 0:  # entrainment rate undefined at z=0, assume dry adiabat
             frac = mpconsts.nounit.Rd * t / mpconsts.nounit.Cp_d
         else:
             ep = params['ep0'] / zp  # entrainment rate
             rs = saturation_mixing_ratio._nounit(p, t)
             qs = specific_humidity_from_mixing_ratio(rs)
             frac = ((mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * qs
-                    + ep * qs * mpconsts.nounit.Lv * (1 - params['rh0'])
-                    * mpconsts.nounit.Rd * t / mpconsts.nounit.g)
-                    / (mpconsts.nounit.Cp_d
-                    + (mpconsts.nounit.Lv**2 * qs * mpconsts.nounit.epsilon
-                    / (mpconsts.nounit.Rd * t**2))))
+                  + ep * qs * mpconsts.nounit.Lv * (1 - params['rh0'])
+                  * mpconsts.nounit.Rd * t / mpconsts.nounit.g)
+                  / (mpconsts.nounit.Cp_d
+                  + (mpconsts.nounit.Lv**2 * qs * mpconsts.nounit.epsilon
+                  / (mpconsts.nounit.Rd * t**2))))
             # cap lapse rate at dry adiabat (can be steeper with large entrainment rate)
             frac = np.min([frac, mpconsts.nounit.Rd * t / mpconsts.nounit.Cp_d])
         return frac / p
 
     def dt_r14(p, t, params):
-        if hasattr(params['ep'],'__len__'):  # evaluate entrainment rate at p if not constant
-            ep = np.interp(p,params['pa'],params['ep'])
+        if hasattr(params['ep'], '__len__'):  # evaluate entrainment rate at p if not constant
+            ep = np.interp(p, params['pa'], params['ep'])
         else:
             ep = params['ep']
-        if hasattr(params['de'],'__len__'):  # same as above for detrainment
-            de = np.interp(p,params['pa'],params['de'])
+        if hasattr(params['de'], '__len__'):  # same as above for detrainment
+            de = np.interp(p, params['pa'], params['de'])
         else:
             de = params['de']
         rs = saturation_mixing_ratio._nounit(p, t)
         qs = specific_humidity_from_mixing_ratio(rs)
         a1 = (mpconsts.nounit.Rv * mpconsts.nounit.Cp_d * t**2 / mpconsts.nounit.Lv
-                    + qs * mpconsts.nounit.Lv )
+                + qs * mpconsts.nounit.Lv )
         a2 = (mpconsts.nounit.Rv * mpconsts.nounit.Cp_d * t**2 / mpconsts.nounit.Lv
-                    * (de + mpconsts.nounit.g / (mpconsts.nounit.Rd * t))
-                    + qs * mpconsts.nounit.Lv * (de - ep) - mpconsts.nounit.g )
+                * (de + mpconsts.nounit.g / (mpconsts.nounit.Rd * t))
+                + qs * mpconsts.nounit.Lv * (de - ep) - mpconsts.nounit.g)
         a3 = ((mpconsts.nounit.Rv * mpconsts.nounit.Cp_d * t
-                    / (mpconsts.nounit.Rd * mpconsts.nounit.Lv) - 1) * mpconsts.nounit.g * de )
+                / (mpconsts.nounit.Rd * mpconsts.nounit.Lv) - 1) * mpconsts.nounit.g * de)
         frac = (mpconsts.nounit.Rd * t / (mpconsts.nounit.g)
-                    * mpconsts.nounit.Rv * t**2 / mpconsts.nounit.Lv
-                    * ((-a2 + np.sqrt(a2**2 - 4 * a1 * a3)) / (2 * a1)
-                    + mpconsts.nounit.g / (mpconsts.nounit.Rd * t)) )
+                * mpconsts.nounit.Rv * t**2 / mpconsts.nounit.Lv
+                * ((-a2 + np.sqrt(a2**2 - 4 * a1 * a3)) / (2 * a1)
+                + mpconsts.nounit.g / (mpconsts.nounit.Rd * t)))
         return frac / p
 
     temperature = np.atleast_1d(temperature)
@@ -421,19 +421,19 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
         reference_pressure = pressure[0]
 
     if lapse_type == 'standard':
-        dt=dt_standard
+        dt = dt_standard
     elif lapse_type == 'pseudoadiabatic':
-        dt=dt_pseudoadiabatic
+        dt = dt_pseudoadiabatic
     elif lapse_type == 'reversible':
-        dt=dt_reversible
+        dt = dt_reversible
         # total water at LCL = rs
-        params={'rt':saturation_mixing_ratio._nounit(reference_pressure,temperature)}
+        params = {'rt':saturation_mixing_ratio._nounit(reference_pressure, temperature)}
     elif lapse_type == 'so13':
-        dt=dt_so13
+        dt = dt_so13
         params.update({'h0':mpconsts.nounit.Rd * temperature[0] / mpconsts.nounit.g,
                        'p0':pressure[0]})
     elif lapse_type == 'r14':
-        dt=dt_r14
+        dt = dt_r14
     else:
         raise ValueError('Specified lapse_type is not supported. '
                          'Choose from standard, pseudoadiabatic, reversible, '
@@ -1111,7 +1111,7 @@ def parcel_profile(pressure, temperature, dewpoint, lapse_type='standard', param
 
     """
     _, _, _, t_l, _, t_u = _parcel_profile_helper(pressure, temperature, dewpoint,
-            lapse_type, params)
+                                                  lapse_type, params)
     return concatenate((t_l, t_u))
 
 
@@ -1119,7 +1119,7 @@ def parcel_profile(pressure, temperature, dewpoint, lapse_type='standard', param
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def parcel_profile_with_lcl(pressure, temperature, dewpoint,
-        lapse_type='standard', params=None):
+                            lapse_type='standard', params=None):
     r"""Calculate the profile a parcel takes through the atmosphere.
 
     The parcel starts at `temperature`, and `dewpoint`, lifted up
@@ -1354,7 +1354,7 @@ def _parcel_profile_helper(pressure, temperature, dewpoint, lapse_type, params):
 
     # Find moist pseudo-adiabatic profile starting at the LCL, reversing above sorting
     temp_upper = moist_lapse(unique[::-1], temp_lower[-1],
-            lapse_type=lapse_type, params=params).to(temp_lower.units)
+                             lapse_type=lapse_type, params=params).to(temp_lower.units)
     temp_upper = temp_upper[::-1][indices]
 
     # Return profile pieces
