@@ -435,7 +435,7 @@ def dt_r14(p, t, params):
 
 def select_dt(lapse_type):
     r"""
-    Pass dt according to the chosen lapse_type
+    Pass dt according to the chosen lapse_type.
 
     Parameters
     ----------
@@ -467,7 +467,7 @@ def select_dt(lapse_type):
 
 def update_params(params, lapse_type, p0, t0):
     r"""
-    Pass dt according to the chosen lapse_type
+    Pass dt according to the chosen lapse_type.
 
     Parameters
     ----------
