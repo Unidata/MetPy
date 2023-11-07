@@ -9,7 +9,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-from datetime import datetime
+from datetime import datetime, timezone
 import inspect
 import os
 from pathlib import Path
@@ -129,7 +129,7 @@ autosummary_ignore_module_all = False
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
-cur_date = datetime.utcnow()
+cur_date = datetime.now(timezone.utc)
 
 # The main toctree document.
 master_doc = 'index'

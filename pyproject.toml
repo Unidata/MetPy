@@ -103,7 +103,12 @@ norecursedirs = "build docs .idea"
 doctest_optionflags = "NORMALIZE_WHITESPACE"
 mpl-results-path = "test_output"
 xfail_strict = true
-filterwarnings = ["ignore:numpy.ndarray size changed:RuntimeWarning"]
+filterwarnings = [
+    "ignore:numpy.ndarray size changed:RuntimeWarning",
+    # To be removed in the next python-dateutil release.
+    # See: https://github.com/dateutil/dateutil/issues/1314
+    'ignore:datetime.datetime.utcfromtimestamp\(\) is deprecated:DeprecationWarning:dateutil.tz.tz:37'
+]
 
 [tool.ruff]
 line-length = 95
