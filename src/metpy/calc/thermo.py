@@ -255,7 +255,7 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
 
 def dt_standard(p, t, params):
     r"""
-    Computes the AMS moist adiabatic lapse rate in pressure coordinates.
+    Compute the AMS moist adiabatic lapse rate in pressure coordinates.
 
     Parameters
     ----------
@@ -364,6 +364,16 @@ def select_dt(lapse_type):
     return dt
 
 
+def update_params(params, lapse_type, reference_pressure, pressure, temperature):
+    if lapse_type == 'reversible':
+        # total water at LCL = rs
+        params = {'rt': saturation_mixing_ratio._nounit(reference_pressure, temperature)}
+    elif lapse_type == 'so13':
+        params.update({'h0': mpconsts.nounit.Rd * temperature[0] / mpconsts.nounit.g,
+                       'p0': pressure[0]})
+    return params
+
+
 @exporter.export
 @preprocess_and_wrap(
     wrap_like='temperature',
@@ -463,12 +473,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
     dt = select_dt(lapse_type)  # Define dt based on lapse_type
 
     # Define or update params where needed
-    if lapse_type == 'reversible':
-        # total water at LCL = rs
-        params = {'rt': saturation_mixing_ratio._nounit(reference_pressure, temperature)}
-    elif lapse_type == 'so13':
-        params.update({'h0': mpconsts.nounit.Rd * temperature[0] / mpconsts.nounit.g,
-                       'p0': pressure[0]})
+    params = update_params(params, lapse_type, reference_pressure, pressure, temperature)
 
     if np.isnan(reference_pressure) or np.all(np.isnan(temperature)):
         return np.full((temperature.size, pressure.size), np.nan)
