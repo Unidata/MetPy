@@ -265,6 +265,9 @@ def dt_standard(p, t, params):
     t : `float`
         temperature [K]
 
+    params : None
+        Placeholder for params used by other lapse_types
+
     Returns
     -------
     dT/dp : `float`
@@ -283,6 +286,26 @@ def dt_standard(p, t, params):
 
 
 def dt_pseudoadiabatic(p, t, params):
+    r"""
+    Compute the AMS pseudoadiabatic lapse rate in pressure coordinates.
+
+    Parameters
+    ----------
+    p : `float`
+        pressure [Pa]
+
+    t : `float`
+        temperature [K]
+
+    params : None
+        Placeholder for params used by other lapse_types
+
+    Returns
+    -------
+    dT/dp : `float`
+        lapse rate in pressure coordinates
+
+    """
     rs = saturation_mixing_ratio._nounit(p, t)
     frac = ((1 + rs) * (mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
             / (mpconsts.nounit.Cp_d + rs * mpconsts.nounit.Cv_d
@@ -292,6 +315,26 @@ def dt_pseudoadiabatic(p, t, params):
 
 
 def dt_reversible(p, t, params):
+    r"""
+    Compute the AMS reversible lapse rate in pressure coordinates.
+
+    Parameters
+    ----------
+    p : `float`
+        pressure [Pa]
+
+    t : `float`
+        temperature [K]
+
+    params : `dict`
+        'rt': Total water mixing ratio [dimensionless]
+
+    Returns
+    -------
+    dT/dp : `float`
+        lapse rate in pressure coordinates
+
+    """
     rs = saturation_mixing_ratio._nounit(p, t)
     rl = params['rt'] - rs  # assuming no ice content
     frac = ((1 + params['rt']) * (mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
@@ -303,6 +346,27 @@ def dt_reversible(p, t, params):
 
 
 def dt_so13(p, t, params):
+    r"""
+    Compute the Singh & O'Gorman (2013) entraining lapse rate in pressure coordinates.
+
+    Parameters
+    ----------
+    p : `float`
+        pressure [Pa]
+
+    t : `float`
+        temperature [K]
+
+    params : `dict`
+        'ep0': scalar, entrainment constant [unitless]
+        'rh0': scalar, ambient relative humidity [unitless]
+
+    Returns
+    -------
+    dT/dp : `float`
+        lapse rate in pressure coordinates
+
+    """
     zp = -params['h0'] * np.log(p / params['p0'])  # pseudoheight
     if np.abs(zp) == 0:  # entrainment rate undefined at z=0, assume dry adiabat
         frac = mpconsts.nounit.Rd * t / mpconsts.nounit.Cp_d
@@ -322,6 +386,29 @@ def dt_so13(p, t, params):
 
 
 def dt_r14(p, t, params):
+    r"""
+    Compute the Romps (2014) entraining lapse rate in pressure coordinates.
+
+    Parameters
+    ----------
+    p : `float`
+        pressure [Pa]
+
+    t : `float`
+        temperature [K]
+
+    params : `dict`
+        'de': scalar or 1-d array, detrainment rate [m**-1],
+        'ep': scalar or 1-d array, entrainment rate [m**-1],
+        'pa': 1-d array, optional, pressure levels
+        defining detrainment and entrainment profile [Pa]
+
+    Returns
+    -------
+    dT/dp : `float`
+        lapse rate in pressure coordinates
+
+    """
     if hasattr(params['ep'], '__len__'):  # evaluate entrainment rate at p if not constant
         ep = np.interp(p, params['pa'], params['ep'])
     else:
@@ -347,6 +434,20 @@ def dt_r14(p, t, params):
 
 
 def select_dt(lapse_type):
+    r"""
+    Pass dt according to the chosen lapse_type
+
+    Parameters
+    ----------
+    lapse_type : `string`
+        Definition of moist adiabat to use
+
+    Returns
+    -------
+    dt : `function`
+        function that calculates lapse rate for the chosen lapse_type
+
+    """
     if lapse_type == 'standard':
         dt = dt_standard
     elif lapse_type == 'pseudoadiabatic':
@@ -364,13 +465,36 @@ def select_dt(lapse_type):
     return dt
 
 
-def update_params(params, lapse_type, reference_pressure, pressure, temperature):
+def update_params(params, lapse_type, p0, t0):
+    r"""
+    Pass dt according to the chosen lapse_type
+
+    Parameters
+    ----------
+    params : `dict` or None
+        External parameters used for the some lapse_types
+
+    lapse_type : `string`
+        Definition of moist adiabat to use
+
+    p0 : `float`
+        Pressure at lifting condensation level [Pa]
+
+    t0 : `float`
+        Temperature at lifting condensation level [K]
+
+    Returns
+    -------
+    params : `dict` or None
+        External parameters used for the some lapse_types
+
+    """
     if lapse_type == 'reversible':
         # total water at LCL = rs
-        params = {'rt': saturation_mixing_ratio._nounit(reference_pressure, temperature)}
+        params = {'rt': saturation_mixing_ratio._nounit(p0, t0)}
     elif lapse_type == 'so13':
-        params.update({'h0': mpconsts.nounit.Rd * temperature[0] / mpconsts.nounit.g,
-                       'p0': pressure[0]})
+        params.update({'h0': mpconsts.nounit.Rd * t0 / mpconsts.nounit.g,
+                       'p0': p0})
     return params
 
 
@@ -408,7 +532,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
         pressure array.
 
     lapse_type : `string`, optional
-        Definition of moist adiabat to use; if not given, it defaults to moist_lapse
+        Definition of moist adiabat to use; if not given, it defaults to standard
         Options:
         'standard' for simplified pseudoadiabatic process
         'pseudoadiabatic' for pseudoadiabatic moist process
@@ -473,7 +597,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
     dt = select_dt(lapse_type)  # Define dt based on lapse_type
 
     # Define or update params where needed
-    params = update_params(params, lapse_type, reference_pressure, pressure, temperature)
+    params = update_params(params, lapse_type, pressure[0], temperature[0])
 
     if np.isnan(reference_pressure) or np.all(np.isnan(temperature)):
         return np.full((temperature.size, pressure.size), np.nan)
