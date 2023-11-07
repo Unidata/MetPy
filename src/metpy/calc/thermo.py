@@ -299,16 +299,14 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
     params : `dict` or None, optional
         External parameters used for the some lapse_types
         Required parameters:
-        For 'so13': {
+        For 'so13':
         'ep0': scalar, entrainment constant [unitless],
         'rh0': scalar, ambient relative humidity [unitless],}
-        }
-        For 'r14': {
+        For 'r14':
         'de': scalar or 1-d array, detrainment rate [m**-1],
         'ep': scalar or 1-d array, entrainment rate [m**-1],
         'pa': 1-d array, optional, pressure levels
-              defining detrainment and entrainment profile [Pa]
-        }
+        defining detrainment and entrainment profile [Pa]
 
     Returns
     -------
@@ -1054,16 +1052,14 @@ def parcel_profile(pressure, temperature, dewpoint, lapse_type='standard', param
     params : `dict` or None, optional
         External parameters used for the some lapse_types
         Required parameters:
-        For 'so13': {
+        For 'so13':
         'ep0': entrainment constant [unitless],
         'rh0': ambient relative humidity [unitless],
-        }
-        For 'r14': {
+        For 'r14':
         'de': scalar or 1-d array, detrainment rate [m**-1],
         'ep': scalar or 1-d array, entrainment rate [m**-1],
         'pa': 1-d array, optional, pressure levels
-              defining detrainment and entrainment profile [Pa]
-        }
+        defining detrainment and entrainment profile [Pa]
 
     Returns
     -------
@@ -1161,16 +1157,14 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint,
     params : `dict` or None, optional
         External parameters used for the some lapse_types
         Required parameters:
-        For 'so13': {
+        For 'so13':
         'ep0': entrainment constant [unitless],
         'rh0': ambient relative humidity [unitless],
-        }
-        For 'r14': {
+        For 'r14':
         'de': scalar or 1-d array, detrainment rate [m**-1],
         'ep': scalar or 1-d array, entrainment rate [m**-1],
         'pa': 1-d array, optional, pressure levels
-              defining detrainment and entrainment profile [Pa]
-        }
+        defining detrainment and entrainment profile [Pa]
 
     Returns
     -------
