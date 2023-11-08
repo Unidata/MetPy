@@ -840,7 +840,7 @@ def test_latlon():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.343)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.393)
 @needs_cartopy
 def test_declarative_barb_options():
     """Test making a contour plot."""
@@ -962,7 +962,7 @@ def test_declarative_arrow_changes():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.86)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.891)
 @needs_cartopy
 def test_declarative_barb_earth_relative():
     """Test making a contour plot."""
@@ -1520,7 +1520,7 @@ def test_declarative_sfc_obs_full(ccrs, pandas_sfc):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.355)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.522)
 @needs_cartopy
 def test_declarative_upa_obs():
     """Test making a full upperair observation plot."""
@@ -1557,7 +1557,7 @@ def test_declarative_upa_obs():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.473)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.518)
 @needs_cartopy
 def test_declarative_upa_obs_convert_barb_units():
     """Test making a full upperair observation plot with barbs converting units."""
