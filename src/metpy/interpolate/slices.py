@@ -7,7 +7,6 @@ import numpy as np
 import xarray as xr
 
 from ..package_tools import Exporter
-from ..units import is_quantity, units
 from ..xarray import check_axis
 
 exporter = Exporter(globals())
@@ -50,17 +49,14 @@ def interpolate_to_slice(data, points, interp_type='linear'):
                          'your data has been parsed by MetPy with proper x and y '
                          'dimension coordinates.') from None
 
+    data = data.metpy.dequantify()
     data_sliced = data.interp({
         x.name: xr.DataArray(points[:, 0], dims='index', attrs=x.attrs),
         y.name: xr.DataArray(points[:, 1], dims='index', attrs=y.attrs)
     }, method=interp_type)
     data_sliced.coords['index'] = range(len(points))
 
-    # Bug in xarray: interp strips units
-    if is_quantity(data.data) and not is_quantity(data_sliced.data):
-        data_sliced.data = units.Quantity(data_sliced.data, data.data.units)
-
-    return data_sliced
+    return data_sliced.metpy.quantify()
 
 
 @exporter.export

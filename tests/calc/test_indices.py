@@ -158,7 +158,7 @@ def test_weighted_continuous_average_elevated():
 def test_precipitable_water_xarray():
     """Test precipitable water with xarray input."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
-    press = xr.DataArray(data['pressure'], attrs={'units': str(data['pressure'].units)})
+    press = xr.DataArray(data['pressure'].m, attrs={'units': str(data['pressure'].units)})
     dewp = xr.DataArray(data['dewpoint'], dims=('press',), coords=(press,))
     pw = precipitable_water(press, dewp, top=400 * units.hPa)
     truth = 22.60430651 * units.millimeters
