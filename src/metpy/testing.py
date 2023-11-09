@@ -8,9 +8,9 @@ This includes:
 * code for testing matplotlib figures
 """
 import contextlib
+import importlib
 import functools
 
-import matplotlib
 import numpy as np
 import numpy.testing
 from packaging.version import Version
@@ -23,14 +23,13 @@ from .cbook import get_test_data
 from .deprecation import MetpyDeprecationWarning
 from .units import units
 
-MPL_VERSION = Version(matplotlib.__version__)
-
-
-def mpl_version_before(ver):
-    """Return whether the active matplotlib is before a certain version.
+def module_version_before(modname, ver):
+    """Return whether the active module is before a certain version.
 
     Parameters
     ----------
+    modname : str
+        The module name to import
     ver : str
         The version string for a certain release
 
@@ -38,14 +37,17 @@ def mpl_version_before(ver):
     -------
         bool : whether the current version was released before the passed in one
     """
-    return MPL_VERSION < Version(ver)
+    module = importlib.import_module(modname)
+    return Version(module.__version__) < Version(ver)
 
 
-def mpl_version_equal(ver):
-    """Return whether the active matplotlib is equal to a certain version.
+def module_version_equal(modname, ver):
+    """Return whether the active module is equal to a certain version.
 
     Parameters
     ----------
+    modname : str
+        The module name to import
     ver : str
         The version string for a certain release
 
@@ -53,7 +55,8 @@ def mpl_version_equal(ver):
     -------
         bool : whether the current version is equal to the passed in one
     """
-    return MPL_VERSION == Version(ver)
+    module = importlib.import_module(modname)
+    return Version(module.__version__) == Version(ver)
 
 
 def needs_module(module):
