@@ -8,7 +8,7 @@ flake8-continuation==1.0.5
 flake8-copyright==0.2.4
 flake8-isort==6.1.1
 isort==5.12.0
-flake8-requirements==1.7.8
+flake8-requirements==2.0.1
 
 flake8-rst-docstrings==0.3.0
 
