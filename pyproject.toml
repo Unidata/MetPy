@@ -102,6 +102,7 @@ markers = "xfail_dask: marks tests as expected to fail with Dask arrays"
 norecursedirs = "build docs .idea"
 doctest_optionflags = "NORMALIZE_WHITESPACE"
 mpl-results-path = "test_output"
+xfail_strict = true
 
 [tool.ruff]
 line-length = 95
