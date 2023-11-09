@@ -334,8 +334,9 @@ def test_declarative_contour_cam():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=3.71 if module_version_before('matplotlib', '3.8') else 0.74)
+@pytest.mark.mpl_image_compare(
+    remove_text=True,
+    tolerance=3.71 if module_version_before('matplotlib', '3.8') else 0.74)
 @needs_cartopy
 def test_declarative_contour_options():
     """Test making a contour plot."""
@@ -428,8 +429,9 @@ def test_declarative_additional_layers_plot_options():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=2.74 if module_version_before('matplotlib', '3.8') else 1.91)
+@pytest.mark.mpl_image_compare(
+    remove_text=True,
+    tolerance=2.74 if module_version_before('matplotlib', '3.8') else 1.91)
 @needs_cartopy
 def test_declarative_contour_convert_units():
     """Test making a contour plot."""

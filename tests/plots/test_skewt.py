@@ -11,7 +11,7 @@ import numpy as np
 import pytest
 
 from metpy.plots import Hodograph, SkewT
-from metpy.testing import module_version_before, module_version_equal
+from metpy.testing import module_version_equal
 from metpy.units import units
 
 
@@ -155,8 +155,10 @@ def test_skewt_units():
     skew.ax.axvline(-10, color='orange')
 
     # On Matplotlib <= 3.6, ax[hv]line() doesn't trigger unit labels
-    assert skew.ax.get_xlabel() == ('degree_Celsius' if module_version_equal('matplotlib', '3.7.0') else '')
-    assert skew.ax.get_ylabel() == ('hectopascal' if module_version_equal('matplotlib', '3.7.0') else '')
+    assert skew.ax.get_xlabel() == (
+        'degree_Celsius' if module_version_equal('matplotlib', '3.7.0') else '')
+    assert skew.ax.get_ylabel() == (
+        'hectopascal' if module_version_equal('matplotlib', '3.7.0') else '')
 
     # Clear them for the image test
     skew.ax.set_xlabel('')
@@ -318,8 +320,8 @@ def test_hodograph_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=0.6 if module_version_equal('matplotlib', '3.5') else 0.)
+@pytest.mark.mpl_image_compare(
+    remove_text=True, tolerance=0.6 if module_version_equal('matplotlib', '3.5') else 0.)
 def test_hodograph_units():
     """Test passing quantities to Hodograph."""
     fig = plt.figure(figsize=(9, 9))

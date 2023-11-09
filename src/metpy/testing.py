@@ -8,8 +8,8 @@ This includes:
 * code for testing matplotlib figures
 """
 import contextlib
-import importlib
 import functools
+import importlib
 
 import numpy as np
 import numpy.testing
@@ -22,6 +22,7 @@ from .calc import wind_components
 from .cbook import get_test_data
 from .deprecation import MetpyDeprecationWarning
 from .units import units
+
 
 def module_version_before(modname, ver):
     """Return whether the active module is before a certain version.
