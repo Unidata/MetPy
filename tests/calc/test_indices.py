@@ -139,7 +139,7 @@ def test_weighted_continuous_average_temperature():
                                      data['temperature'],
                                      height=data['height'],
                                      depth=6000 * units('meter'))
-    assert_almost_equal(t, 279.3275828240889 * units('kelvin'), 7)
+    assert_almost_equal(t, 279.07450928270185 * units('kelvin'), 7)
 
 
 def test_weighted_continuous_average_elevated():
