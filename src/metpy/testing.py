@@ -10,6 +10,7 @@ This includes:
 import contextlib
 import functools
 import importlib
+import re
 
 import numpy as np
 import numpy.testing
@@ -24,40 +25,49 @@ from .deprecation import MetpyDeprecationWarning
 from .units import units
 
 
-def module_version_before(modname, ver):
-    """Return whether the active module is before a certain version.
+def module_version_check(version_spec):
+    """Return comparison between the active module and a requested version number.
 
     Parameters
     ----------
-    modname : str
-        The module name to import
-    ver : str
-        The version string for a certain release
+    version_spec : str
+        Module version specification to validate against installed package. Must take the form
+        of `f'{module_name}{comparison_operator}{version_number}'` where `comparison_operator`
+        must be one of `['==', '=', '!=', '<', '<=', '>', '>=']`.
 
     Returns
     -------
-        bool : whether the current version was released before the passed in one
+        bool : Whether the installed package validates against the provided specification
     """
-    module = importlib.import_module(modname)
-    return Version(module.__version__) < Version(ver)
+    comparison_operators = {
+        '==': lambda x, y: x == y, '=': lambda x, y: x == y, '!=': lambda x, y: x != y,
+        '<': lambda x, y: x < y, '<=': lambda x, y: x <= y,
+        '>': lambda x, y: x > y, '>=': lambda x, y: x >= y,
+    }
 
+    # Match version_spec for groups of module name,
+    # comparison operator, and requested module version
+    pattern = re.compile(r'(\w+)\s*([<>!=]+)\s*([\d.]+)')
+    match = pattern.match(version_spec)
 
-def module_version_equal(modname, ver):
-    """Return whether the active module is equal to a certain version.
+    if match:
+        module_name = match.group(1)
+        comparison = match.group(2)
+        version_number = match.group(3)
+    else:
+        raise ValueError('No valid version specification string matched.')
 
-    Parameters
-    ----------
-    modname : str
-        The module name to import
-    ver : str
-        The version string for a certain release
+    module = importlib.import_module(module_name)
 
-    Returns
-    -------
-        bool : whether the current version is equal to the passed in one
-    """
-    module = importlib.import_module(modname)
-    return Version(module.__version__) == Version(ver)
+    installed_version = Version(module.__version__)
+    specified_version = Version(version_number)
+
+    try:
+        return comparison_operators[comparison](installed_version, specified_version)
+    except KeyError:
+        raise ValueError(
+            "Comparison operator not one of ['==', '=', '!=', '<', '<=', '>', '>=']."
+        ) from None
 
 
 def needs_module(module):
