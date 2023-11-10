@@ -884,6 +884,7 @@ def test_angle_to_direction_full():
     assert_array_equal(output_dirs, expected_dirs)
 
 
+@pytest.mark.filterwarnings('ignore:invalid value encountered in remainder:RuntimeWarning')
 def test_angle_to_direction_invalid_scalar():
     """Test invalid angle."""
     expected_dirs = UND
@@ -891,6 +892,7 @@ def test_angle_to_direction_invalid_scalar():
     assert_array_equal(output_dirs, expected_dirs)
 
 
+@pytest.mark.filterwarnings('ignore:invalid value encountered in remainder:RuntimeWarning')
 def test_angle_to_direction_invalid_arr():
     """Test array of invalid angles."""
     expected_dirs = ['NE', UND, UND, UND, 'N']
