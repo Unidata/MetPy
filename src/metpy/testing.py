@@ -9,7 +9,7 @@ This includes:
 """
 import contextlib
 import functools
-import importlib
+from importlib.metadata import requires, version
 import re
 
 import numpy as np
@@ -27,6 +27,8 @@ from .units import units
 
 def module_version_check(version_spec):
     """Return comparison between the active module and a requested version number.
+
+    Will also validate specification against package metadata to alert if spec is irrelevant.
 
     Parameters
     ----------
@@ -47,27 +49,61 @@ def module_version_check(version_spec):
 
     # Match version_spec for groups of module name,
     # comparison operator, and requested module version
-    pattern = re.compile(r'(\w+)\s*([<>!=]+)\s*([\d.]+)')
-    match = pattern.match(version_spec)
+    module_name, comparison, version_number = _parse_version_spec(version_spec)
 
-    if match:
-        module_name = match.group(1)
-        comparison = match.group(2)
-        version_number = match.group(3)
-    else:
-        raise ValueError('No valid version specification string matched.')
+    # Check MetPy metadata for minimum required version of same package
+    _, _, minimum_version_number = _parse_version_spec(_get_metadata_spec(module_name))
 
-    module = importlib.import_module(module_name)
-
-    installed_version = Version(module.__version__)
+    installed_version = Version(version(module_name))
     specified_version = Version(version_number)
+    minimum_version = Version(minimum_version_number)
+
+    if specified_version < minimum_version:
+        raise ValueError('Specified package version older than MetPy minimum requirement.')
 
     try:
-        return comparison_operators[comparison](installed_version, specified_version)
+        return comparison_operators[comparison](specified_version, installed_version)
     except KeyError:
         raise ValueError(
             "Comparison operator not one of ['==', '=', '!=', '<', '<=', '>', '>=']."
         ) from None
+
+
+def _parse_version_spec(version_spec):
+    """Parse module name, comparison, and version from pip-style package spec string.
+
+    Parameters
+    ----------
+    version_spec : str
+        Package spec to parse
+
+    Returns
+    -------
+        tuple of str : Parsed specification groups of package name, comparison, and version
+
+    """
+    pattern = re.compile(r'(\w+)\s*([<>!=]+)\s*([\d.]+)')
+    match = pattern.match(version_spec)
+
+    if not match:
+        raise ValueError('No valid version specification string matched.')
+    else:
+        return match.groups()
+
+
+def _get_metadata_spec(module_name):
+    """Get package spec string for requested module from package metadata.
+
+    Parameters
+    ----------
+    module_name : str
+        Name of MetPy required package to look up
+
+    Returns
+    -------
+    str : Package spec string for request module
+    """
+    return [entry for entry in requires('metpy') if module_name.lower() in entry.lower()][0]
 
 
 def needs_module(module):

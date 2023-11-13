@@ -46,9 +46,14 @@ def test_check_and_drop_units_with_dataarray():
 
 def test_module_version_check():
     """Test parsing and version comparison of installed package."""
-    assert module_version_check('numpy>0.0.0')
-    assert module_version_check('numpy >= 0.0')
-    assert module_version_check('numpy!=0')
+    numpy_version = np.__version__
+    assert module_version_check(f'numpy >={numpy_version}')
+
+
+def test_module_version_check_outdated_spec():
+    """Test checking test version specs against package metadata."""
+    with pytest.raises(ValueError, match='Specified package version '):
+        module_version_check('numpy>0.0.0')
 
 
 def test_module_version_check_nonsense():
@@ -60,4 +65,4 @@ def test_module_version_check_nonsense():
 def test_module_version_check_invalid_comparison():
     """Test invalid operator in version comparison."""
     with pytest.raises(ValueError, match='Comparison operator not '):
-        module_version_check('numpy<<36')
+        module_version_check('numpy << 36')
