@@ -187,7 +187,7 @@ def test_corfidi_motion():
 
 
 def test_corfidi_motion_override_llj():
-    """Test corfidi MCS motion with overridden LLJ"""
+    """Test corfidi MCS motion with overridden LLJ."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
     motion_override = concatenate(corfidi_storm_motion(data['pressure'],
                                                        data['u_wind'], data['v_wind'],
