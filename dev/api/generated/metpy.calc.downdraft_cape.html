@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>angle_to_direction &#8212; MetPy 1.5dev</title>
+    <title>downdraft_cape &#8212; MetPy 1.5dev</title>
   
   
   
@@ -59,7 +59,8 @@
                 gtag('js', new Date());
                 gtag('config', 'G-J48T2BG3J7');
             </script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/metpy.calc.angle_to_direction';</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/metpy.calc.downdraft_cape';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.14.3';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
@@ -70,13 +71,13 @@
     <link rel="icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="azimuth_range_to_lat_lon" href="metpy.calc.azimuth_range_to_lat_lon.html" />
-    <link rel="prev" title="zoom_xarray" href="metpy.calc.zoom_xarray.html" />
+    <link rel="next" title="el" href="metpy.calc.el.html" />
+    <link rel="prev" title="cross_totals" href="metpy.calc.cross_totals.html" />
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="Nov 14, 2023 at 23:43:43"/>
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.angle_to_direction.html" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.downdraft_cape.html" />
 
   </head>
   
@@ -519,7 +520,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.ccl.html">ccl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.critical_angle.html">critical_angle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.cross_totals.html">cross_totals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.calc.downdraft_cape.html">downdraft_cape</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">downdraft_cape</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.el.html">el</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.k_index.html">k_index</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.lcl.html">lcl</a></li>
@@ -594,7 +595,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.smooth_circular.html">smooth_circular</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.smooth_n_point.html">smooth_n_point</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.zoom_xarray.html">zoom_xarray</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">angle_to_direction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.angle_to_direction.html">angle_to_direction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.azimuth_range_to_lat_lon.html">azimuth_range_to_lat_lon</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.find_bounding_indices.html">find_bounding_indices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.find_intersections.html">find_intersections</a></li>
@@ -730,7 +731,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="metpy.calc.html" class="nav-link">Calculations <code class="docutils literal notranslate"><span class="pre">(metpy.calc)</span></code></a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">angle_to_direction</li>
+    <li class="breadcrumb-item active" aria-current="page">downdraft_cape</li>
   </ul>
 </nav>
 </div>
@@ -747,35 +748,85 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="angle-to-direction">
-<h1>angle_to_direction<a class="headerlink" href="#angle-to-direction" title="Link to this heading">#</a></h1>
+  <section id="downdraft-cape">
+<h1>downdraft_cape<a class="headerlink" href="#downdraft-cape" title="Link to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="metpy.calc.angle_to_direction">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">angle_to_direction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.angle_to_direction" title="Link to this definition">#</a></dt>
-<dd><p>Convert the meteorological angle to directional text.</p>
-<p>Works for angles greater than or equal to 360 (360 -&gt; N | 405 -&gt; NE)
-and rounds to the nearest angle (355 -&gt; N | 404 -&gt; NNE)</p>
+<dt class="sig sig-object py" id="metpy.calc.downdraft_cape">
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">downdraft_cape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.downdraft_cape" title="Link to this definition">#</a></dt>
+<dd><p>Calculate downward CAPE (DCAPE).</p>
+<p>Calculate the downward convective available potential energy (DCAPE) of a given upper air
+profile. Downward CAPE is the maximum negative buoyancy energy available to a descending
+parcel. Parcel descent is assumed to begin from the lowest equivalent potential temperature
+between 700 and 500 hPa. This parcel is lowered moist adiabatically from the environmental
+wet bulb temperature to the surface.  This assumes the parcel remains saturated
+throughout the descent.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>input_angle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> or </em><em>array-like</em>) – Angles such as 0, 25, 45, 360, 410, etc.</p></li>
-<li><p><strong>full</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – True returns full text (South), False returns abbreviated text (S)</p></li>
-<li><p><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Level of detail (3 = N/NNE/NE/ENE/E… 2 = N/NE/E/SE… 1 = N/E/S/W)</p></li>
+<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Pressure profile</p></li>
+<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Temperature profile</p></li>
+<li><p><strong>dewpoint</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Dewpoint profile</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>direction</em> – The directional text</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>dcape</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Downward Convective Available Potential Energy (DCAPE)</p></li>
+<li><p><strong>down_pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Pressure levels of the descending parcel</p></li>
+<li><p><strong>down_parcel_trace</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Temperatures of the descending parcel</p></li>
+</ul>
+</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">dewpoint_from_relative_humidity</span><span class="p">,</span> <span class="n">downdraft_cape</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># pressure</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1008.</span><span class="p">,</span> <span class="mf">1000.</span><span class="p">,</span> <span class="mf">950.</span><span class="p">,</span> <span class="mf">900.</span><span class="p">,</span> <span class="mf">850.</span><span class="p">,</span> <span class="mf">800.</span><span class="p">,</span> <span class="mf">750.</span><span class="p">,</span> <span class="mf">700.</span><span class="p">,</span> <span class="mf">650.</span><span class="p">,</span> <span class="mf">600.</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="mf">550.</span><span class="p">,</span> <span class="mf">500.</span><span class="p">,</span> <span class="mf">450.</span><span class="p">,</span> <span class="mf">400.</span><span class="p">,</span> <span class="mf">350.</span><span class="p">,</span> <span class="mf">300.</span><span class="p">,</span> <span class="mf">250.</span><span class="p">,</span> <span class="mf">200.</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="mf">175.</span><span class="p">,</span> <span class="mf">150.</span><span class="p">,</span> <span class="mf">125.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">,</span> <span class="mf">80.</span><span class="p">,</span> <span class="mf">70.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="mf">40.</span><span class="p">,</span> <span class="mf">30.</span><span class="p">,</span> <span class="mf">25.</span><span class="p">,</span> <span class="mf">20.</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># temperature</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mf">29.3</span><span class="p">,</span> <span class="mf">28.1</span><span class="p">,</span> <span class="mf">25.5</span><span class="p">,</span> <span class="mf">20.9</span><span class="p">,</span> <span class="mf">18.4</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="mf">13.1</span><span class="p">,</span> <span class="mf">10.1</span><span class="p">,</span> <span class="mf">6.7</span><span class="p">,</span> <span class="mf">3.1</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">14.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">21.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">29.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">40.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">52.4</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="o">-</span><span class="mf">59.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">66.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">74.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">78.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">71.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">66.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">61.3</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="o">-</span><span class="mf">56.3</span><span class="p">,</span> <span class="o">-</span><span class="mf">51.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">50.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">47.5</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># relative humidity</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rh</span> <span class="o">=</span> <span class="p">[</span><span class="mf">.85</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mf">.56</span><span class="p">,</span> <span class="mf">.39</span><span class="p">,</span> <span class="mf">.82</span><span class="p">,</span> <span class="mf">.72</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mf">.86</span><span class="p">,</span> <span class="mf">.65</span><span class="p">,</span> <span class="mf">.22</span><span class="p">,</span> <span class="mf">.52</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="mf">.66</span><span class="p">,</span> <span class="mf">.64</span><span class="p">,</span> <span class="mf">.20</span><span class="p">,</span> <span class="mf">.05</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mf">.76</span><span class="p">,</span> <span class="mf">.45</span><span class="p">,</span> <span class="mf">.25</span><span class="p">,</span> <span class="mf">.48</span><span class="p">,</span> <span class="mf">.76</span><span class="p">,</span> <span class="mf">.88</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="mf">.56</span><span class="p">,</span> <span class="mf">.88</span><span class="p">,</span> <span class="mf">.39</span><span class="p">,</span> <span class="mf">.67</span><span class="p">,</span> <span class="mf">.15</span><span class="p">,</span> <span class="mf">.04</span><span class="p">,</span> <span class="mf">.94</span><span class="p">,</span> <span class="mf">.35</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">dimensionless</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># calculate dewpoint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Td</span> <span class="o">=</span> <span class="n">dewpoint_from_relative_humidity</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">rh</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">downdraft_cape</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">Td</span><span class="p">)</span>
+<span class="go">(&lt;Quantity(1222.67968, &#39;joule / kilogram&#39;)&gt;, &lt;Quantity([1008. 1000.  950.</span>
+<span class="go">900.  850.  800.  750.  700.  650.  600.], &#39;hectopascal&#39;)&gt;, &lt;Quantity([17.50959548</span>
+<span class="go">17.20643425 15.237249 13.12607097 10.85045704 8.38243809 5.68671014 2.71808363</span>
+<span class="go">-0.58203825 -4.29053485], &#39;degree_Celsius&#39;)&gt;)</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.cape_cin.html#metpy.calc.cape_cin" title="metpy.calc.cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cape_cin</span></code></a>, <a class="reference internal" href="metpy.calc.surface_based_cape_cin.html#metpy.calc.surface_based_cape_cin" title="metpy.calc.surface_based_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface_based_cape_cin</span></code></a>, <a class="reference internal" href="metpy.calc.most_unstable_cape_cin.html#metpy.calc.most_unstable_cape_cin" title="metpy.calc.most_unstable_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">most_unstable_cape_cin</span></code></a>, <a class="reference internal" href="metpy.calc.mixed_layer_cape_cin.html#metpy.calc.mixed_layer_cape_cin" title="metpy.calc.mixed_layer_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_layer_cape_cin</span></code></a></p>
+</div>
+<p class="rubric">Notes</p>
+<p>Formula adopted from <a class="reference internal" href="../references.html#emanuel1994" id="id1"><span>[Emanuel1994]</span></a>.</p>
+<div class="math notranslate nohighlight">
+\[\text{DCAPE} = -R_d \int_{SFC}^{p_\text{top}}
+(T_{{v}_{env}} - T_{{v}_{parcel}}) d\text{ln}(p)\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(DCAPE\)</span> is downward convective available potential energy</p></li>
+<li><p><span class="math notranslate nohighlight">\(SFC\)</span> is the level of the surface or beginning of parcel path</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_\text{top}\)</span> is pressure of the start of descent path</p></li>
+<li><p><span class="math notranslate nohighlight">\(R_d\)</span> is the gas constant</p></li>
+<li><p><span class="math notranslate nohighlight">\(T_{{v}_{env}}\)</span> is environment virtual temperature</p></li>
+<li><p><span class="math notranslate nohighlight">\(T_{{v}_{parcel}}\)</span> is the parcel virtual temperature</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> is atmospheric pressure</p></li>
+</ul>
+<p>Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+Since this function returns scalar values when given a profile, this will return Pint
+Quantities even when given xarray DataArray profiles.</p>
 </dd></dl>
 
-<section id="examples-using-metpy-calc-angle-to-direction">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.angle_to_direction</span></code><a class="headerlink" href="#examples-using-metpy-calc-angle-to-direction" title="Link to this heading">#</a></h2>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to convert angles to direction strings."><img alt="" src="../../_images/sphx_glr_Angle_to_Direction_thumb.png" />
-<p><a class="reference internal" href="../../examples/calculations/Angle_to_Direction.html#sphx-glr-examples-calculations-angle-to-direction-py"><span class="std std-ref">Angle to Direction</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Angle to Direction</div>
-</div></div><div style='clear:both'></div></section>
-</section>
+<div style='clear:both'></div></section>
 
 
                 </article>
@@ -788,20 +839,20 @@ and rounds to the nearest angle (355 -&gt; N | 404 -&gt; NNE)</p>
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="metpy.calc.zoom_xarray.html"
+       href="metpy.calc.cross_totals.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">zoom_xarray</p>
+        <p class="prev-next-title">cross_totals</p>
       </div>
     </a>
     <a class="right-next"
-       href="metpy.calc.azimuth_range_to_lat_lon.html"
+       href="metpy.calc.el.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">azimuth_range_to_lat_lon</p>
+        <p class="prev-next-title">el</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -820,14 +871,13 @@ and rounds to the nearest angle (355 -&gt; N | 404 -&gt; NNE)</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.calc.angle_to_direction"><code class="docutils literal notranslate"><span class="pre">angle_to_direction()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-using-metpy-calc-angle-to-direction">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.angle_to_direction</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.calc.downdraft_cape"><code class="docutils literal notranslate"><span class="pre">downdraft_cape()</span></code></a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
   <div class="tocsection sourcelink">
-    <a href="../../_sources/api/generated/metpy.calc.angle_to_direction.rst.txt">
+    <a href="../../_sources/api/generated/metpy.calc.downdraft_cape.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

@@ -1,0 +1,12 @@
+downdraft_cape
+=========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: downdraft_cape
+
+.. include:: metpy.calc.downdraft_cape.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
