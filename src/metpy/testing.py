@@ -10,6 +10,7 @@ This includes:
 import contextlib
 import functools
 from importlib.metadata import requires, version
+import operator as op
 import re
 
 import numpy as np
@@ -42,9 +43,9 @@ def module_version_check(version_spec):
         bool : Whether the installed package validates against the provided specification
     """
     comparison_operators = {
-        '==': lambda x, y: x == y, '=': lambda x, y: x == y, '!=': lambda x, y: x != y,
-        '<': lambda x, y: x < y, '<=': lambda x, y: x <= y,
-        '>': lambda x, y: x > y, '>=': lambda x, y: x >= y,
+        '==': op.eq, '=': op.eq, '!=': op.ne,
+        '<': op.lt, '<=': op.le,
+        '>': op.gt, '>=': op.ge,
     }
 
     # Match version_spec for groups of module name,
