@@ -8,9 +8,7 @@ import sys
 import warnings
 
 import numpy as np
-import packaging.version
 import pytest
-import scipy
 import xarray as xr
 
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
@@ -39,7 +37,8 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         virtual_temperature, virtual_temperature_from_dewpoint,
                         wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
-from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_nan,
+                           version_check)
 from metpy.units import is_quantity, masked_array, units
 
 
@@ -201,8 +200,9 @@ def test_moist_lapse_starting_points(start, direction):
 @pytest.mark.xfail(platform.machine() == 'aarch64',
                    reason='ValueError is not raised on aarch64')
 @pytest.mark.xfail(platform.machine() == 'arm64', reason='ValueError is not raised on Mac M2')
-@pytest.mark.xfail(sys.platform == 'win32', reason='solve_ivp() does not error on Windows')
-@pytest.mark.xfail(packaging.version.parse(scipy.__version__) < packaging.version.parse('1.7'),
+@pytest.mark.xfail((sys.platform == 'win32') and version_check('scipy<1.11.3'),
+                   reason='solve_ivp() does not error on Windows + SciPy < 1.11.3')
+@pytest.mark.xfail(version_check('scipy<1.7'),
                    reason='solve_ivp() does not error on Scipy < 1.7')
 def test_moist_lapse_failure():
     """Test moist_lapse under conditions that cause the ODE solver to fail."""
