@@ -13,7 +13,7 @@ from metpy.calc import (bulk_shear, bunkers_storm_motion, critical_angle,
                         mean_pressure_weighted, precipitable_water, significant_tornado,
                         supercell_composite, weighted_continuous_average)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, get_upper_air_data,
-                           module_version_check)
+                           version_check)
 from metpy.units import concatenate, units
 
 
@@ -131,7 +131,7 @@ def test_weighted_continuous_average():
     assert_almost_equal(v, 6.900543760612305 * units('m/s'), 7)
 
 
-@pytest.mark.xfail(condition=module_version_check('pint<0.21'), reason='hgrecco/pint#1593')
+@pytest.mark.xfail(condition=version_check('pint<0.21'), reason='hgrecco/pint#1593')
 def test_weighted_continuous_average_temperature():
     """Test pressure-weighted mean temperature function with vertical interpolation."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')

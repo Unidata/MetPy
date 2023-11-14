@@ -10,7 +10,7 @@ import xarray as xr
 
 from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import (assert_array_almost_equal, check_and_drop_units,
-                           check_and_silence_deprecation, module_version_check)
+                           check_and_silence_deprecation, version_check)
 
 
 # Test #1183: numpy.testing.assert_array* ignores any masked value, so work-around
@@ -47,22 +47,22 @@ def test_check_and_drop_units_with_dataarray():
 def test_module_version_check():
     """Test parsing and version comparison of installed package."""
     numpy_version = np.__version__
-    assert module_version_check(f'numpy >={numpy_version}')
+    assert version_check(f'numpy >={numpy_version}')
 
 
 def test_module_version_check_outdated_spec():
     """Test checking test version specs against package metadata."""
     with pytest.raises(ValueError, match='Specified package version '):
-        module_version_check('numpy>0.0.0')
+        version_check('numpy>0.0.0')
 
 
 def test_module_version_check_nonsense():
     """Test failed pattern match of package specification."""
     with pytest.raises(ValueError, match='No valid version '):
-        module_version_check('thousands of birds picking packages')
+        version_check('thousands of birds picking packages')
 
 
 def test_module_version_check_invalid_comparison():
     """Test invalid operator in version comparison."""
     with pytest.raises(ValueError, match='Comparison operator not '):
-        module_version_check('numpy << 36')
+        version_check('numpy << 36')

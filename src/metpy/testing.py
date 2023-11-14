@@ -26,7 +26,7 @@ from .deprecation import MetpyDeprecationWarning
 from .units import units
 
 
-def module_version_check(version_spec):
+def version_check(version_spec):
     """Return comparison between the active module and a requested version number.
 
     Will also validate specification against package metadata to alert if spec is irrelevant.
