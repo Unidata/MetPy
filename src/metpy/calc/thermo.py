@@ -253,7 +253,8 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
     return temperature * (pressure / reference_pressure)**mpconsts.kappa
 
 
-def lapse_standard(p, t, params):
+@exporter.export
+def lapse_standard(p, t, params=None):
     r"""
     Compute the AMS moist adiabatic lapse rate in pressure coordinates.
 
@@ -285,7 +286,8 @@ def lapse_standard(p, t, params):
     return frac / p
 
 
-def lapse_pseudoadiabatic(p, t, params):
+@exporter.export
+def lapse_pseudoadiabatic(p, t, params=None):
     r"""
     Compute the AMS pseudoadiabatic lapse rate in pressure coordinates.
 
@@ -314,7 +316,8 @@ def lapse_pseudoadiabatic(p, t, params):
     return frac / p
 
 
-def lapse_reversible(p, t, params):
+@exporter.export
+def lapse_reversible(p, t, params=None):
     r"""
     Compute the AMS reversible lapse rate in pressure coordinates.
 
@@ -345,7 +348,8 @@ def lapse_reversible(p, t, params):
     return frac / p
 
 
-def lapse_r24(p, t, params):
+@exporter.export
+def lapse_r24(p, t, params=None):
     r"""
     Compute the Risi et al. (2024) entraining lapse rate in pressure coordinates.
 
@@ -378,7 +382,8 @@ def lapse_r24(p, t, params):
     return frac / p
 
 
-def lapse_so13(p, t, params):
+@exporter.export
+def lapse_so13(p, t, params=None):
     r"""
     Compute the Singh & O'Gorman (2013) entraining lapse rate in pressure coordinates.
 
@@ -418,7 +423,8 @@ def lapse_so13(p, t, params):
     return frac / p
 
 
-def lapse_r14(p, t, params):
+@exporter.export
+def lapse_r14(p, t, params=None):
     r"""
     Compute the Romps (2014) entraining lapse rate in pressure coordinates.
 
