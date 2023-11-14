@@ -20,7 +20,7 @@ from metpy.io import GiniFile
 from metpy.io.metar import parse_metar_file
 from metpy.plots import (ArrowPlot, BarbPlot, ContourPlot, FilledContourPlot, ImagePlot,
                          MapPanel, PanelContainer, PlotGeometry, PlotObs, RasterPlot)
-from metpy.testing import mpl_version_before, needs_cartopy
+from metpy.testing import needs_cartopy, version_check
 from metpy.units import units
 
 
@@ -91,7 +91,7 @@ def test_declarative_four_dims_error():
         pc.draw()
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.092)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.093)
 @needs_cartopy
 def test_declarative_contour():
     """Test making a contour plot."""
@@ -119,7 +119,7 @@ def test_declarative_contour():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.093)
+@pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.094)
 @needs_cartopy
 def test_declarative_titles():
     """Test making a contour plot with multiple titles."""
@@ -150,7 +150,7 @@ def test_declarative_titles():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.072)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.098)
 @needs_cartopy
 def test_declarative_smooth_contour():
     """Test making a contour plot using smooth_contour."""
@@ -307,7 +307,7 @@ def test_declarative_smooth_field():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.708)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.828)
 @needs_cartopy
 def test_declarative_contour_cam():
     """Test making a contour plot with CAM data."""
@@ -334,8 +334,9 @@ def test_declarative_contour_cam():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=3.71 if mpl_version_before('3.8') else 0.026)
+@pytest.mark.mpl_image_compare(
+    remove_text=True,
+    tolerance=3.71 if version_check('matplotlib<3.8') else 0.74)
 @needs_cartopy
 def test_declarative_contour_options():
     """Test making a contour plot."""
@@ -368,7 +369,7 @@ def test_declarative_contour_options():
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.082)
 @needs_cartopy
 def test_declarative_layers_plot_options():
-    """Test making a contour plot."""
+    """Test declarative layer options of edgecolor and linewidth."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
 
     contour = ContourPlot()
@@ -395,8 +396,42 @@ def test_declarative_layers_plot_options():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=2.74 if mpl_version_before('3.8') else 0.014)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.021)
+@needs_cartopy
+def test_declarative_additional_layers_plot_options():
+    """Test additional declarative layer options of linestyle, zorder, and alpha."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Temperature'
+    contour.level = 700 * units.hPa
+    contour.contours = 5
+    contour.linewidth = 1
+    contour.linecolor = 'grey'
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'usstates', 'borders', 'lakes', 'rivers']
+    panel.layers_edgecolor = ['blue', 'red', 'black', None, 'water']
+    panel.layers_linewidth = [0.75, 0.75, 1, 1, 1]
+    panel.layers_linestyle = ['solid', 'dotted', 'dashed', 'dotted']
+    panel.layers_alpha = [1, .5, .75, 1]
+    panel.layers_zorder = [1, 1, 1, -1, -1]
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(
+    remove_text=True,
+    tolerance=2.74 if version_check('matplotlib<3.8') else 1.91)
 @needs_cartopy
 def test_declarative_contour_convert_units():
     """Test making a contour plot."""
@@ -426,7 +461,7 @@ def test_declarative_contour_convert_units():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.247)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.276)
 @needs_cartopy
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
@@ -568,7 +603,7 @@ def test_no_field_error_barbs():
         barbs.draw()
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.378)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.381)
 def test_projection_object(ccrs, cfeature):
     """Test that we can pass a custom map projection."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))

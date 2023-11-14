@@ -67,6 +67,12 @@ def plot_kwargs(data, args):
     return kwargs
 
 
+def get_cartopy_color(val):
+    """Provide the special map feature colors from Cartopy."""
+    from cartopy.feature import COLORS
+    return COLORS[val]
+
+
 class ValidationMixin:
     """Provides validation of attribute names when set by user."""
 
@@ -281,9 +287,38 @@ class MapPanel(Panel, ValidationMixin):
     layers_linewidth = List(Union([Int(), Float()], allow_none=True), default_value=[1])
     layers_linewidth.__doc__ = """A list of values defining the linewidth for a layer.
 
-    An option to set a different color for the map layer edge colors. Length of list should
-    match that of layers if not using default value. Behavior is to repeat colors if not enough
-    provided by user. Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
+    An option to set a different linewidth for the layer feature. Length of list should
+    match that of layers if not using default value. Behavior is to repeat linewidth if
+    not enough provided by user. Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
+    """
+
+    layers_linestyle = List(Unicode(), default_value=['solid'])
+    layers_linestyle.__doc__ = """A list of string values defining the linestyle for a layer or
+    None.
+
+    Default is `solid`, which, will use a solid lines for drawing the layer. Behavior is to
+    repeat linestyle if not enough provided by user.
+
+    The valid string values are those of Matplotlib which are 'solid', 'dashed', 'dotted', and
+    'dashdot', as well as their short codes ('-', '--', '.', '-.'). The object `None`, as
+    described above, can also be used. Use `None` value for 'ocean', 'lakes', 'rivers', and
+    'land'.
+    """
+
+    layers_zorder = List(Union([Int(), Float()], allow_none=True), default_value=[None])
+    layers_zorder.__doc__ = """A list of values defining the zorder for a layer.
+
+    An option to set a different zorder for the map layer edge colors. Length of list should
+    match that of layers if not using default value. Behavior is to repeat zorder if not enough
+    provided by user.
+    """
+
+    layers_alpha = List(Union([Int(), Float()], allow_none=True), default_value=[1])
+    layers_alpha.__doc__ = """A list of values defining the alpha for a layer.
+
+    An option to set a different alpha for the map layer edge colors. Length of list should
+    match that of layers if not using default value. Behavior is to repeat alpha if not enough
+    provided by user.
     """
 
     title = Unicode()
@@ -479,13 +514,25 @@ class MapPanel(Panel, ValidationMixin):
                 self.layers_edgecolor *= len(self.layers)
             if len(self.layers) > len(self.layers_linewidth):
                 self.layers_linewidth *= len(self.layers)
+            if len(self.layers) > len(self.layers_linestyle):
+                self.layers_linestyle *= len(self.layers)
+            if len(self.layers) > len(self.layers_zorder):
+                self.layers_zorder *= len(self.layers)
+            if len(self.layers) > len(self.layers_alpha):
+                self.layers_alpha *= len(self.layers)
             for i, feat in enumerate(self._layer_features):
-                if self.layers[i] in ['', 'land', 'lake', 'river']:
+                color = self.layers_edgecolor[i]
+                if self.layers[i] in ['', 'land', 'ocean']:
                     color = 'face'
-                else:
-                    color = self.layers_edgecolor[i]
+                if self.layers_edgecolor[i] in ['water', 'land', 'land_alt1']:
+                    color = get_cartopy_color(self.layers_edgecolor[i])
                 width = self.layers_linewidth[i]
-                self.ax.add_feature(feat, edgecolor=color, linewidth=width)
+                style = self.layers_linestyle[i]
+                zorder = self.layers_zorder[i]
+                alpha = self.layers_alpha[i]
+                kwargs = {'zorder': zorder} if zorder is not None else {}
+                self.ax.add_feature(feat, edgecolor=color, linewidth=width,
+                                    linestyle=style, alpha=alpha, **kwargs)
 
             # Use the set title or generate one.
             if (self.right_title is None) and (self.left_title is None):

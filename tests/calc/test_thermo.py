@@ -8,16 +8,15 @@ import sys
 import warnings
 
 import numpy as np
-import packaging.version
 import pytest
-import scipy
 import xarray as xr
 
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
                         brunt_vaisala_period, cape_cin, ccl, cross_totals, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
-                        dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
-                        exner_function, gradient_richardson_number, InvalidSoundingError,
+                        downdraft_cape, dry_lapse, dry_static_energy, el,
+                        equivalent_potential_temperature, exner_function,
+                        gradient_richardson_number, InvalidSoundingError,
                         isentropic_interpolation, isentropic_interpolation_as_dataset, k_index,
                         lcl, lfc, lifted_index, mixed_layer, mixed_layer_cape_cin,
                         mixed_parcel, mixing_ratio, mixing_ratio_from_relative_humidity,
@@ -39,7 +38,8 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         virtual_temperature, virtual_temperature_from_dewpoint,
                         wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
-from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_nan,
+                           version_check)
 from metpy.units import is_quantity, masked_array, units
 
 
@@ -200,8 +200,10 @@ def test_moist_lapse_starting_points(start, direction):
 
 @pytest.mark.xfail(platform.machine() == 'aarch64',
                    reason='ValueError is not raised on aarch64')
-@pytest.mark.xfail(sys.platform == 'win32', reason='solve_ivp() does not error on Windows')
-@pytest.mark.xfail(packaging.version.parse(scipy.__version__) < packaging.version.parse('1.7'),
+@pytest.mark.xfail(platform.machine() == 'arm64', reason='ValueError is not raised on Mac M2')
+@pytest.mark.xfail((sys.platform == 'win32') and version_check('scipy<1.11.3'),
+                   reason='solve_ivp() does not error on Windows + SciPy < 1.11.3')
+@pytest.mark.xfail(version_check('scipy<1.7'),
                    reason='solve_ivp() does not error on Scipy < 1.7')
 def test_moist_lapse_failure():
     """Test moist_lapse under conditions that cause the ODE solver to fail."""
@@ -1079,7 +1081,7 @@ def test_rh_mixing_ratio():
     temperature = 20. * units.degC
     w = 0.012 * units.dimensionless
     rh = relative_humidity_from_mixing_ratio(p, temperature, w)
-    assert_almost_equal(rh, 81.72498 * units.percent, 3)
+    assert_almost_equal(rh, 82.0709069 * units.percent, 3)
 
 
 def test_mixing_ratio_from_specific_humidity():
@@ -1116,7 +1118,7 @@ def test_rh_specific_humidity():
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
     rh = relative_humidity_from_specific_humidity(p, temperature, q)
-    assert_almost_equal(rh, 82.71759 * units.percent, 3)
+    assert_almost_equal(rh, 83.0486264 * units.percent, 3)
 
 
 def test_cape_cin():
@@ -1554,6 +1556,27 @@ def test_mixed_layer_cape_cin(multiple_intersections):
     assert_almost_equal(mlcin, -13.4809966289 * units('joule / kilogram'), 2)
 
 
+def test_dcape():
+    """Test the calculation of DCAPE."""
+    pressure = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
+                550., 500., 450., 400., 350., 300., 250., 200.,
+                175., 150., 125., 100., 80., 70., 60., 50.,
+                40., 30., 25., 20.] * units.hPa
+    temperature = [29.3, 28.1, 25.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
+                   -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
+                   -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
+                   -56.3, -51.7, -50.7, -47.5] * units.degC
+    dewpoint = [26.5, 23.3, 16.1, 6.4, 15.3, 10.9, 8.8, 7.9, 0.6,
+                -16.6, -9.2, -9.9, -14.6, -32.8, -51.2, -32.7, -42.6, -58.9,
+                -69.5, -71.7, -75.9, -79.3, -79.7, -72.5, -73.3, -64.3, -70.6,
+                -75.8, -51.2, -56.4] * units.degC
+    dcape, down_press, down_t = downdraft_cape(pressure, temperature, dewpoint)
+    assert_almost_equal(dcape, 1222 * units('joule / kilogram'), 0)
+    assert_array_almost_equal(down_press, pressure[:10], 0)
+    assert_almost_equal(down_t, [17.5, 17.2, 15.2, 13.1, 10.9, 8.4,
+                                 5.7, 2.7, -0.6, -4.3] * units.degC, 1)
+
+
 def test_mixed_layer():
     """Test the mixed layer calculation."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
@@ -1617,7 +1640,7 @@ def test_thickness_hydrostatic_from_relative_humidity():
     relative_humidity = np.array([81.69, 15.43, 18.95, 23.32, 28.36, 18.55]) * units.percent
     thickness = thickness_hydrostatic_from_relative_humidity(pressure, temperature,
                                                              relative_humidity)
-    assert_almost_equal(thickness, 9891.71 * units.m, 2)
+    assert_almost_equal(thickness, 9891.56669 * units.m, 2)
 
 
 def test_mixing_ratio_dimensions():
@@ -1803,8 +1826,9 @@ def test_dewpoint_specific_humidity():
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
-    td = dewpoint_from_specific_humidity(p, temperature, q)
-    assert_almost_equal(td, 16.973 * units.degC, 3)
+    with pytest.deprecated_call(match='Temperature argument'):
+        td = dewpoint_from_specific_humidity(p, temperature, q)
+        assert_almost_equal(td, 17.0363429 * units.degC, 3)
 
 
 def test_dewpoint_specific_humidity_old_signature():
@@ -1812,8 +1836,64 @@ def test_dewpoint_specific_humidity_old_signature():
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
-    with pytest.raises(ValueError, match='changed in 1.0'):
-        dewpoint_from_specific_humidity(q, temperature, p)
+    with pytest.deprecated_call(match='Temperature argument'):
+        with pytest.raises(ValueError, match='changed in version'):
+            dewpoint_from_specific_humidity(q, temperature, p)
+
+
+def test_dewpoint_specific_humidity_kwargs():
+    """Test kw-specified signature for backwards compatibility MetPy>=1.6."""
+    p = 1013.25 * units.mbar
+    temperature = 20. * units.degC
+    q = 0.012 * units.dimensionless
+    with pytest.deprecated_call(match='Temperature argument'):
+        td = dewpoint_from_specific_humidity(
+            pressure=p, temperature=temperature, specific_humidity=q)
+        assert_almost_equal(td, 17.036 * units.degC, 3)
+
+
+def test_dewpoint_specific_humidity_three_mixed_args_kwargs():
+    """Test mixed arg, kwarg handling for backwards compatibility MetPy>=1.6."""
+    p = 1013.25 * units.mbar
+    temperature = 20. * units.degC
+    q = 0.012 * units.dimensionless
+    with pytest.deprecated_call(match='Temperature argument'):
+        td = dewpoint_from_specific_humidity(
+            p, temperature, specific_humidity=q)
+        assert_almost_equal(td, 17.036 * units.degC, 3)
+
+
+def test_dewpoint_specific_humidity_two_mixed_args_kwargs():
+    """Test function's internal arg, kwarg processing handles mixed case."""
+    p = 1013.25 * units.mbar
+    q = 0.012 * units.dimensionless
+    td = dewpoint_from_specific_humidity(
+        p, specific_humidity=q)
+    assert_almost_equal(td, 17.036 * units.degC, 3)
+
+
+def test_dewpoint_specific_humidity_two_args():
+    """Test new signature, Temperature unneeded, MetPy>=1.6."""
+    p = 1013.25 * units.mbar
+    q = 0.012 * units.dimensionless
+    td = dewpoint_from_specific_humidity(p, q)
+    assert_almost_equal(td, 17.036 * units.degC, 3)
+
+
+def test_dewpoint_specific_humidity_arrays():
+    """Test function arg handling can process arrays."""
+    p = 1013.25 * units.mbar
+    q = np.tile(0.012 * units.dimensionless, (3, 2))
+    td = dewpoint_from_specific_humidity(p, specific_humidity=q)
+    assert_almost_equal(td, np.tile(17.036 * units.degC, (3, 2)), 3)
+
+
+def test_dewpoint_specific_humidity_xarray(index_xarray_data):
+    """Test function arg handling processes xarray inputs."""
+    p = index_xarray_data.isobaric
+    q = specific_humidity_from_dewpoint(p, index_xarray_data.dewpoint)
+    td = dewpoint_from_specific_humidity(p, specific_humidity=q)
+    assert_array_almost_equal(td, index_xarray_data.dewpoint)
 
 
 def test_lfc_not_below_lcl():
@@ -2038,6 +2118,14 @@ def test_specific_humidity_from_dewpoint():
     p = 1013.25 * units.mbar
     q = specific_humidity_from_dewpoint(p, 16.973 * units.degC)
     assert_almost_equal(q, 0.012 * units.dimensionless, 3)
+
+
+def test_specific_humidity_from_dewpoint_versionchanged():
+    """Test returning singular version changed suggestion in ValueError."""
+    pressure = 1013.25 * units.mbar
+    dewpoint = 16.973 * units.degC
+    with pytest.raises(ValueError, match='changed in version'):
+        specific_humidity_from_dewpoint(dewpoint, pressure)
 
 
 def test_lcl_convergence_issue():

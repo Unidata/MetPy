@@ -4,5 +4,5 @@ sphinx-design==0.5.0
 sphinx-gallery==0.14.0
 myst-parser==2.0.0
 netCDF4==1.6.5
-geopandas==0.14.0
+geopandas==0.14.1
 rtree==1.1.0

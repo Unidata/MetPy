@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.9, '3.10', 3.11]
+        python-version: [3.9, '3.10', 3.11, 3.12]
         dep-versions: [Latest]
         no-extras: ['']
         include:
@@ -34,7 +34,8 @@ jobs:
           - python-version: 3.9
             dep-versions: Minimum
             no-extras: 'No Extras'
-          - python-version: 3.11
+          - python-version: 3.12
+            dep-versions: Latest
             no-extras: 'No Extras'
 
     steps:
@@ -71,6 +72,7 @@ jobs:
         need-extras: ${{ matrix.no-extras != 'No Extras' }}
         type: 'test'
         python-version: ${{ matrix.python-version }}
+        old-build: ${{ matrix.no-extras != 'No Extras' && matrix.dep-versions == 'Minimum' }}
 
     - name: Run tests
       uses: ./.github/actions/run-tests
@@ -94,3 +96,4 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           name: ${{ github.workflow }}
+          fail_ci_if_error: true
