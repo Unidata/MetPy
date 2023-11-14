@@ -105,7 +105,7 @@ def _get_metadata_spec(module_name):
 
     Returns
     -------
-    str : Package spec string for request module
+        str : Package spec string for request module
     """
     return [entry for entry in requires('metpy') if module_name.lower() in entry.lower()][0]
 
