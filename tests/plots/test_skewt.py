@@ -11,9 +11,8 @@ import numpy as np
 import pytest
 
 from metpy.plots import Hodograph, SkewT
+from metpy.testing import version_check
 from metpy.units import units
-
-MPL_VERSION = matplotlib.__version__[:5]
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.069)
@@ -86,7 +85,7 @@ def test_skewt_default_aspect_empty():
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
 def test_skewt_mixing_line_args():
     """Test plot_mixing_lines accepting kwargs for mixing ratio and pressure levels."""
-    # Explicitly pass default values as kwargs the, should recreate NWS SkewT PDF as above
+    # Explicitly pass default values as kwargs, should recreate NWS SkewT PDF as above
     fig = plt.figure(figsize=(12, 9))
     skew = SkewT(fig, rotation=43)
     mlines = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01, 0.016, 0.024, 0.032])
@@ -156,8 +155,10 @@ def test_skewt_units():
     skew.ax.axvline(-10, color='orange')
 
     # On Matplotlib <= 3.6, ax[hv]line() doesn't trigger unit labels
-    assert skew.ax.get_xlabel() == ('degree_Celsius' if MPL_VERSION == '3.7.0' else '')
-    assert skew.ax.get_ylabel() == ('hectopascal' if MPL_VERSION == '3.7.0' else '')
+    assert skew.ax.get_xlabel() == (
+        'degree_Celsius' if version_check('matplotlib==3.7.0') else '')
+    assert skew.ax.get_ylabel() == (
+        'hectopascal' if version_check('matplotlib==3.7.0') else '')
 
     # Clear them for the image test
     skew.ax.set_xlabel('')
@@ -319,8 +320,8 @@ def test_hodograph_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=0.6 if MPL_VERSION.startswith('3.3') else 0.)
+@pytest.mark.mpl_image_compare(
+    remove_text=True, tolerance=0.6 if version_check('matplotlib==3.5') else 0.)
 def test_hodograph_units():
     """Test passing quantities to Hodograph."""
     fig = plt.figure(figsize=(9, 9))

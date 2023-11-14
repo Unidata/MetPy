@@ -45,8 +45,10 @@ runs:
         name: ${{ inputs.key }}-images
         path: test_output/
 
-    - name: Upload coverage
-      if: ${{ always() && inputs.upload-coverage == 'true' }}
-      uses: codecov/codecov-action@v3
+    - name: Upload coverage artifact
+      if: ${{ inputs.upload-coverage == 'true' }}
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ inputs.key }}
+        path: coverage.xml
+        retention-days: 7

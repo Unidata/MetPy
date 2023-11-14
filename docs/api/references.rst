@@ -58,6 +58,8 @@ References
            Parameters in Forecasting Severe Storms <https://ejssm.org/archives/2006/vol-1-3-2006/>`_.
            *Electronic J. Severe Storms Meteor.*, **1** (3), 1-22.
 
+.. [Emanuel1994] Emanuel, K. A., 1994: Atmospheric Convection. Oxford University Press, 592 pp.
+
 .. [Esterheld2008] Esterheld, J. M. and D. J. Giuliano, 2008: `Discriminating between Tornadic and
            Non-Tornadic Supercells: A New Hodograph Technique <https://ejssm.org/archives/2008/vol-3-2-2008/>`_.
            *Electronic J. Severe Storms Meteor.*, **3** (2), 1-50.
@@ -198,11 +200,10 @@ References
 
 .. [WMO8] WMO, 2020: Guide to Meteorological Instruments and Methods of Observation,
            Volume 1: Measurement of Meteorological Variables.
-           `WMO No.8 <https://library.wmo.int/index.php?lvl=notice_display&id=12407>`_.
+           `WMO No.8 <https://library.wmo.int/idurl/4/41650>`_.
 
 .. [WMO306] WMO, 2011: Manual on Codes - International Codes, Volume I.1, Annex II to the WMO
-           Technical Regulations: Part A - Alphanumeric Codes. `WMO No.306
-           <https://library.wmo.int/index.php?lvl=notice_display&id=13617>`_.
+           Technical Regulations: Part A - Alphanumeric Codes. `WMO No.306 <https://library.wmo.int/idurl/4/35713>`_.
 
-.. [WMO1966] WMO, 1966: International Meteorological Tables, `WMO-No. 188.TP.94
-           <https://library.wmo.int/doc_num.php?explnum_id=7997>`_.
+.. [WMO1966] WMO, 1966: International Meteorological Tables,
+           `WMO-No. 188.TP.94 <https://library.wmo.int/idurl/4/59923>`_.

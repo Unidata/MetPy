@@ -1,20 +1,24 @@
 name: 'Install Using PyPI'
 description: 'Setup environment and install using the PyPI-based toolchain'
 inputs:
-  need-cartopy:
-    description: 'Whether Cartopy is needed'
-    required: true
-    default: 'true'
+  need-extras:
+    description: 'Whether to install the extras'
+    required: false
+    default: 'false'
   type:
     description: 'Whether test or doc build'
     required: true
   version-file:
     description: 'Name of the version file to use for installation'
-    required: true
+    required: false
     default: 'requirements.txt'
   python-version:
     description: 'What version of Python to use'
     required: true
+  old-build:
+    description: 'Whether to enable old builds for shapely and cartopy'
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -27,31 +31,44 @@ runs:
         cache-dependency-path: |
           ci/${{ inputs.type }}_requirements.txt
           ci/${{ inputs.version-file }}
+          ci/extra_requirements.txt
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
-    - name: Install CartoPy build dependencies
-      if: ${{ inputs.need-cartopy == 'true' }}
+    - name: Install CartoPy/Shapely build dependencies
+      if: ${{ inputs.old-build == 'true' }}
       shell: bash
       run: sudo apt-get install libgeos-dev
 
     - name: Disable Shapely Wheels
+      if: ${{ inputs.old-build == 'true' }}
       shell: bash
       run: echo "PIP_NO_BINARY=shapely" >> $GITHUB_ENV
 
-    - name: Install dependencies
+    - name: Set dependency groups for install
       shell: bash
-      run: python -m pip install -r ci/${{ inputs.type }}_requirements.txt -c ci/${{ inputs.version-file }}
-
-    - name: Install extra dependencies
-      if: ${{ inputs.need-cartopy == 'true' }}
-      shell: bash
-      run: python -m pip install -r ci/extra_requirements.txt -c ci/${{ inputs.version-file }}
-
-    - name: Download Cartopy Maps
-      if: ${{ inputs.need-cartopy == 'true' }}
-      shell: bash
-      run: ci/download_cartopy_maps.py
+      run: |
+        if [[ ${{ inputs.need-extras }} == 'true' ]]
+        then
+          echo "DEP_GROUPS=${{ inputs.type }},extras" >> $GITHUB_ENV
+        else
+          echo "DEP_GROUPS=${{ inputs.type }}" >> $GITHUB_ENV
+        fi
 
     - name: Install
       shell: bash
-      run: python -m pip install -c ci/${{ inputs.version-file }} .
+      run: >
+        python -m pip install .[${{ env.DEP_GROUPS }}]
+        -c ci/${{ inputs.version-file }} -c ci/${{ inputs.type }}_requirements.txt -c ci/extra_requirements.txt
+
+    - name: Install additional test tools
+      if: ${{ inputs.type == 'test' }}
+      shell: bash
+      run: >
+        python -m pip install coverage
+        -c ci/${{ inputs.version-file }} -c ci/${{ inputs.type }}_requirements.txt -c ci/extra_requirements.txt
+
+    - name: Download Cartopy Maps
+      if: ${{ inputs.need-extras == 'true' }}
+      shell: bash
+      run: ci/download_cartopy_maps.py
+

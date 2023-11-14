@@ -14,8 +14,8 @@ import matplotlib.patheffects as patheffects
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe, TraitError,
-                       Tuple, Unicode, Union, validate)
+from traitlets import (Any, Bool, Dict, Float, HasTraits, Instance, Int, List, observe,
+                       TraitError, Tuple, Unicode, Union, validate)
 
 from . import ctables, wx_symbols
 from ._mpl import TextCollection
@@ -56,14 +56,21 @@ def lookup_map_feature(feature_name):
     return feat.with_scale(scaler)
 
 
-def plot_kwargs(data):
+def plot_kwargs(data, args):
     """Set the keyword arguments for MapPanel plotting."""
     if hasattr(data.metpy, 'cartopy_crs'):
         # Conditionally add cartopy transform if we are on a map.
         kwargs = {'transform': data.metpy.cartopy_crs}
     else:
         kwargs = {}
+    kwargs.update(args)
     return kwargs
+
+
+def get_cartopy_color(val):
+    """Provide the special map feature colors from Cartopy."""
+    from cartopy.feature import COLORS
+    return COLORS[val]
 
 
 class ValidationMixin:
@@ -102,6 +109,19 @@ class MetPyHasTraits(HasTraits):
             lambda name: not (name in dir(HasTraits) or name.startswith('_')),
             dir(type(self))
         )
+
+    mpl_args = Dict(allow_none=True)
+    mpl_args.__doc__ = """Supply a dictionary of valid Matplotlib keyword arguments to modify
+    how the plot variable is drawn.
+
+    Using this attribute you must choose the appropriate keyword arguments (kwargs) based on
+    what you are plotting (e.g., contours, color-filled contours, image plot, etc.). This is
+    available for all plot types (ContourPlot, FilledContourPlot, RasterPlot, ImagePlot,
+    BarbPlot, ArrowPlot, PlotGeometry, and PlotObs). For PlotObs, the kwargs are those to
+    specify the StationPlot object. NOTE: Setting the mpl_args trait will override
+    any other trait that corresponds to a specific kwarg for the particular plot type
+    (e.g., linecolor, linewidth).
+    """
 
 
 class Panel(MetPyHasTraits):
@@ -267,9 +287,38 @@ class MapPanel(Panel, ValidationMixin):
     layers_linewidth = List(Union([Int(), Float()], allow_none=True), default_value=[1])
     layers_linewidth.__doc__ = """A list of values defining the linewidth for a layer.
 
-    An option to set a different color for the map layer edge colors. Length of list should
-    match that of layers if not using default value. Behavior is to repeat colors if not enough
-    provided by user. Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
+    An option to set a different linewidth for the layer feature. Length of list should
+    match that of layers if not using default value. Behavior is to repeat linewidth if
+    not enough provided by user. Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
+    """
+
+    layers_linestyle = List(Unicode(), default_value=['solid'])
+    layers_linestyle.__doc__ = """A list of string values defining the linestyle for a layer or
+    None.
+
+    Default is `solid`, which, will use a solid lines for drawing the layer. Behavior is to
+    repeat linestyle if not enough provided by user.
+
+    The valid string values are those of Matplotlib which are 'solid', 'dashed', 'dotted', and
+    'dashdot', as well as their short codes ('-', '--', '.', '-.'). The object `None`, as
+    described above, can also be used. Use `None` value for 'ocean', 'lakes', 'rivers', and
+    'land'.
+    """
+
+    layers_zorder = List(Union([Int(), Float()], allow_none=True), default_value=[None])
+    layers_zorder.__doc__ = """A list of values defining the zorder for a layer.
+
+    An option to set a different zorder for the map layer edge colors. Length of list should
+    match that of layers if not using default value. Behavior is to repeat zorder if not enough
+    provided by user.
+    """
+
+    layers_alpha = List(Union([Int(), Float()], allow_none=True), default_value=[1])
+    layers_alpha.__doc__ = """A list of values defining the alpha for a layer.
+
+    An option to set a different alpha for the map layer edge colors. Length of list should
+    match that of layers if not using default value. Behavior is to repeat alpha if not enough
+    provided by user.
     """
 
     title = Unicode()
@@ -465,13 +514,25 @@ class MapPanel(Panel, ValidationMixin):
                 self.layers_edgecolor *= len(self.layers)
             if len(self.layers) > len(self.layers_linewidth):
                 self.layers_linewidth *= len(self.layers)
+            if len(self.layers) > len(self.layers_linestyle):
+                self.layers_linestyle *= len(self.layers)
+            if len(self.layers) > len(self.layers_zorder):
+                self.layers_zorder *= len(self.layers)
+            if len(self.layers) > len(self.layers_alpha):
+                self.layers_alpha *= len(self.layers)
             for i, feat in enumerate(self._layer_features):
-                if self.layers[i] in ['', 'land', 'lake', 'river']:
+                color = self.layers_edgecolor[i]
+                if self.layers[i] in ['', 'land', 'ocean']:
                     color = 'face'
-                else:
-                    color = self.layers_edgecolor[i]
+                if self.layers_edgecolor[i] in ['water', 'land', 'land_alt1']:
+                    color = get_cartopy_color(self.layers_edgecolor[i])
                 width = self.layers_linewidth[i]
-                self.ax.add_feature(feat, edgecolor=color, linewidth=width)
+                style = self.layers_linestyle[i]
+                zorder = self.layers_zorder[i]
+                alpha = self.layers_alpha[i]
+                kwargs = {'zorder': zorder} if zorder is not None else {}
+                self.ax.add_feature(feat, edgecolor=color, linewidth=width,
+                                    linestyle=style, alpha=alpha, **kwargs)
 
             # Use the set title or generate one.
             if (self.right_title is None) and (self.left_title is None):
@@ -825,8 +886,12 @@ class PlotScalar(Plots2D):
             if getattr(self, 'handle', None) is None:
                 self._build()
             if getattr(self, 'colorbar', None) is not None:
-                cbar = self.parent.ax.figure.colorbar(
-                    self.handle, orientation=self.colorbar, pad=0, aspect=50)
+                if isinstance(self.colorbar, dict):
+                    cbar = self.parent.ax.figure.colorbar(
+                        self.handle, **self.colorbar)
+                else:
+                    cbar = self.parent.ax.figure.colorbar(
+                        self.handle, orientation=self.colorbar, pad=0, aspect=50)
                 cbar.ax.tick_params(labelsize=self.colorbar_fontsize)
             self._need_redraw = False
 
@@ -878,13 +943,15 @@ class ColorfillTraits(MetPyHasTraits):
     `matplotlib.colors.Normalize` instance for plotting.
     """
 
-    colorbar = Unicode(default_value=None, allow_none=True)
+    colorbar = Union([Unicode(default_value=None, allow_none=True), Dict()])
     colorbar.__doc__ = """A string (horizontal/vertical) on whether to add a colorbar to the
     plot.
 
-    To add a colorbar associated with the plot, set the trait to ``horizontal`` or
-    ``vertical``,specifying the orientation of the produced colorbar. The default value is
-    ``None``.
+    To add a colorbar associated with the plot, you can either set the trait with a string of
+    ``horizontal`` or ``vertical``, which specifies the orientation of the produced colorbar
+    and uses pre-defined defaults for aspect and pad. Alternatively, you can set a dictionary
+    of keyword argument values valid for a Matplotlib colorbar to specify how the colorbar will
+    be plotted. The default value is ``None``.
     """
 
     colorbar_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
@@ -936,20 +1003,17 @@ class ImagePlot(PlotScalar, ColorfillTraits, ValidationMixin):
         """Build the plot by calling any plotting methods as necessary."""
         x_like, y_like, imdata = self.plotdata
 
-        kwargs = plot_kwargs(imdata)
+        kwargs = plot_kwargs(imdata, self.mpl_args)
 
         # If we're on a map, we use min/max for y and manually figure out origin to try to
         # avoid upside down images created by images where y[0] > y[-1], as well as
         # specifying the transform
         kwargs['extent'] = (x_like[0], x_like[-1], y_like.min(), y_like.max())
         kwargs['origin'] = 'upper' if y_like[0] > y_like[-1] else 'lower'
+        kwargs.setdefault('cmap', self._cmap_obj)
+        kwargs.setdefault('norm', self._norm_obj)
 
-        self.handle = self.parent.ax.imshow(
-            imdata,
-            cmap=self._cmap_obj,
-            norm=self._norm_obj,
-            **kwargs
-        )
+        self.handle = self.parent.ax.imshow(imdata, **kwargs)
 
 
 @exporter.export
@@ -993,11 +1057,12 @@ class ContourPlot(PlotScalar, ContourTraits, ValidationMixin):
         """Build the plot by calling any plotting methods as necessary."""
         x_like, y_like, imdata = self.plotdata
 
-        kwargs = plot_kwargs(imdata)
+        kwargs = plot_kwargs(imdata, self.mpl_args)
+        kwargs.setdefault('linewidths', self.linewidth)
+        kwargs.setdefault('colors', self.linecolor)
+        kwargs.setdefault('linestyles', self.linestyle)
 
-        self.handle = self.parent.ax.contour(x_like, y_like, imdata, self.contours,
-                                             colors=self.linecolor, linewidths=self.linewidth,
-                                             linestyles=self.linestyle, **kwargs)
+        self.handle = self.parent.ax.contour(x_like, y_like, imdata, self.contours, **kwargs)
         if self.clabels:
             self.handle.clabel(inline=1, fmt='%.0f', inline_spacing=8,
                                use_clabeltext=True, fontsize=self.label_fontsize)
@@ -1018,11 +1083,11 @@ class FilledContourPlot(PlotScalar, ColorfillTraits, ContourTraits, ValidationMi
         """Build the plot by calling any plotting methods as necessary."""
         x_like, y_like, imdata = self.plotdata
 
-        kwargs = plot_kwargs(imdata)
+        kwargs = plot_kwargs(imdata, self.mpl_args)
+        kwargs.setdefault('cmap', self._cmap_obj)
+        kwargs.setdefault('norm', self._norm_obj)
 
-        self.handle = self.parent.ax.contourf(x_like, y_like, imdata, self.contours,
-                                              cmap=self._cmap_obj, norm=self._norm_obj,
-                                              **kwargs)
+        self.handle = self.parent.ax.contourf(x_like, y_like, imdata, self.contours, **kwargs)
 
 
 @exporter.export
@@ -1040,11 +1105,11 @@ class RasterPlot(PlotScalar, ColorfillTraits):
         """Build the raster plot by calling any plotting methods as necessary."""
         x_like, y_like, imdata = self.plotdata
 
-        kwargs = plot_kwargs(imdata)
+        kwargs = plot_kwargs(imdata, self.mpl_args)
+        kwargs.setdefault('cmap', self._cmap_obj)
+        kwargs.setdefault('norm', self._norm_obj)
 
-        self.handle = self.parent.ax.pcolormesh(x_like, y_like, imdata,
-                                                cmap=self._cmap_obj, norm=self._norm_obj,
-                                                **kwargs)
+        self.handle = self.parent.ax.pcolormesh(x_like, y_like, imdata, **kwargs)
 
 
 @exporter.export
@@ -1219,7 +1284,11 @@ class BarbPlot(PlotVector, ValidationMixin):
         """Build the plot by calling needed plotting methods as necessary."""
         x_like, y_like, u, v = self.plotdata
 
-        kwargs = plot_kwargs(u)
+        kwargs = plot_kwargs(u, self.mpl_args)
+        kwargs.setdefault('color', self.color)
+        kwargs.setdefault('pivot', self.pivot)
+        kwargs.setdefault('length', self.barblength)
+        kwargs.setdefault('zorder', 2)
 
         # Conditionally apply the proper transform
         if 'transform' in kwargs and self.earth_relative:
@@ -1230,7 +1299,7 @@ class BarbPlot(PlotVector, ValidationMixin):
         self.handle = self.parent.ax.barbs(
             x_like[wind_slice], y_like[wind_slice],
             u.values[wind_slice], v.values[wind_slice],
-            color=self.color, pivot=self.pivot, length=self.barblength, zorder=2, **kwargs)
+            **kwargs)
 
 
 @exporter.export
@@ -1281,7 +1350,10 @@ class ArrowPlot(PlotVector, ValidationMixin):
         """Build the plot by calling needed plotting methods as necessary."""
         x_like, y_like, u, v = self.plotdata
 
-        kwargs = plot_kwargs(u)
+        kwargs = plot_kwargs(u, self.mpl_args)
+        kwargs.setdefault('color', self.color)
+        kwargs.setdefault('pivot', self.pivot)
+        kwargs.setdefault('scale', self.arrowscale)
 
         # Conditionally apply the proper transform
         if 'transform' in kwargs and self.earth_relative:
@@ -1292,7 +1364,7 @@ class ArrowPlot(PlotVector, ValidationMixin):
         self.handle = self.parent.ax.quiver(
             x_like[wind_slice], y_like[wind_slice],
             u.values[wind_slice], v.values[wind_slice],
-            color=self.color, pivot=self.pivot, scale=self.arrowscale, **kwargs)
+            **kwargs)
 
         # The order here needs to match the order of the tuple
         if self.arrowkey is not None:
@@ -1567,9 +1639,12 @@ class PlotObs(MetPyHasTraits, ValidationMixin):
         scale = 1. if self.parent._proj_obj == ccrs.PlateCarree() else 100000.
         point_locs = self.parent._proj_obj.transform_points(ccrs.PlateCarree(), lon, lat)
         subset = reduce_point_density(point_locs, self.reduce_points * scale)
+        kwargs = self.mpl_args
+        kwargs.setdefault('clip_on', True)
+        kwargs.setdefault('transform', ccrs.PlateCarree())
+        kwargs.setdefault('fontsize', self.fontsize)
 
-        self.handle = StationPlot(self.parent.ax, lon[subset], lat[subset], clip_on=True,
-                                  transform=ccrs.PlateCarree(), fontsize=self.fontsize)
+        self.handle = StationPlot(self.parent.ax, lon[subset], lat[subset], **kwargs)
 
         for i, ob_type in enumerate(self.fields):
             field_kwargs = {}
@@ -1665,6 +1740,17 @@ class PlotGeometry(MetPyHasTraits):
     object in `geometry`, the second color corresponds to the second Shapely object, and so on.
     If `stroke` is shorter than `geometry`, `stroke` cycles back to the beginning, repeating
     the sequence of colors as needed. Default value is black.
+    """
+
+    stroke_width = Union([Instance(collections.abc.Iterable), Float()], default_value=[1],
+                         allow_none=True)
+    stroke_width.__doc__ = """Stroke width(s) for polygons and lines.
+
+    A single integer or floating point value or collection of values representing the size of
+    the stroke width. If a collection, the first value corresponds to the first Shapely
+    object in `geometry`, the second value corresponds to the second Shapely object, and so on.
+    If `stroke_width` is shorter than `geometry`, `stroke_width` cycles back to the beginning,
+    repeating the sequence of values as needed. Default value is 1.
     """
 
     marker = Unicode(default_value='.', allow_none=False)
@@ -1845,27 +1931,38 @@ class PlotGeometry(MetPyHasTraits):
                                 else self.label_edgecolor)
         self.label_facecolor = (['none'] if self.label_facecolor is None
                                 else self.label_facecolor)
+        kwargs = self.mpl_args
 
         # Each Shapely object is plotted separately with its corresponding colors and label
-        for geo_obj, stroke, fill, label, fontcolor, fontoutline in zip(
-                self.geometry, cycle(self.stroke), cycle(self.fill), cycle(self.labels),
-                cycle(self.label_facecolor), cycle(self.label_edgecolor)):
+        for geo_obj, stroke, strokewidth, fill, label, fontcolor, fontoutline in zip(
+                self.geometry, cycle(self.stroke), cycle(self.stroke_width), cycle(self.fill),
+                cycle(self.labels), cycle(self.label_facecolor), cycle(self.label_edgecolor)):
             # Plot the Shapely object with the appropriate method and colors
             if isinstance(geo_obj, (MultiPolygon, Polygon)):
-                self.parent.ax.add_geometries([geo_obj], edgecolor=stroke,
-                                              facecolor=fill, crs=ccrs.PlateCarree())
+                kwargs.setdefault('edgecolor', stroke)
+                kwargs.setdefault('linewidths', strokewidth)
+                kwargs.setdefault('facecolor', fill)
+                kwargs.setdefault('crs', ccrs.PlateCarree())
+                self.parent.ax.add_geometries([geo_obj], **kwargs)
             elif isinstance(geo_obj, (MultiLineString, LineString)):
-                self.parent.ax.add_geometries([geo_obj], edgecolor=stroke,
-                                              facecolor='none', crs=ccrs.PlateCarree())
+                kwargs.setdefault('edgecolor', stroke)
+                kwargs.setdefault('linewidths', strokewidth)
+                kwargs.setdefault('facecolor', 'none')
+                kwargs.setdefault('crs', ccrs.PlateCarree())
+                self.parent.ax.add_geometries([geo_obj], **kwargs)
             elif isinstance(geo_obj, MultiPoint):
+                kwargs.setdefault('color', fill)
+                kwargs.setdefault('marker', self.marker)
+                kwargs.setdefault('transform', ccrs.PlateCarree())
                 for point in geo_obj.geoms:
                     lon, lat = point.coords[0]
-                    self.parent.ax.plot(lon, lat, color=fill, marker=self.marker,
-                                        transform=ccrs.PlateCarree())
+                    self.parent.ax.plot(lon, lat, **kwargs)
             elif isinstance(geo_obj, Point):
+                kwargs.setdefault('color', fill)
+                kwargs.setdefault('marker', self.marker)
+                kwargs.setdefault('transform', ccrs.PlateCarree())
                 lon, lat = geo_obj.coords[0]
-                self.parent.ax.plot(lon, lat, color=fill, marker=self.marker,
-                                    transform=ccrs.PlateCarree())
+                self.parent.ax.plot(lon, lat, **kwargs)
 
             # Plot labels if provided
             if label:

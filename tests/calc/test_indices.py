@@ -12,7 +12,8 @@ import xarray as xr
 from metpy.calc import (bulk_shear, bunkers_storm_motion, critical_angle,
                         mean_pressure_weighted, precipitable_water, significant_tornado,
                         supercell_composite, weighted_continuous_average)
-from metpy.testing import assert_almost_equal, assert_array_almost_equal, get_upper_air_data
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, get_upper_air_data,
+                           version_check)
 from metpy.units import concatenate, units
 
 
@@ -130,7 +131,7 @@ def test_weighted_continuous_average():
     assert_almost_equal(v, 6.900543760612305 * units('m/s'), 7)
 
 
-@pytest.mark.xfail(reason='hgrecco/pint#1593')
+@pytest.mark.xfail(condition=version_check('pint<0.21'), reason='hgrecco/pint#1593')
 def test_weighted_continuous_average_temperature():
     """Test pressure-weighted mean temperature function with vertical interpolation."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -138,8 +139,7 @@ def test_weighted_continuous_average_temperature():
                                      data['temperature'],
                                      height=data['height'],
                                      depth=6000 * units('meter'))
-    # Commenting out since it won't run until the above can run without error
-    # assert_almost_equal(t, 279.3275828240889 * units('kelvin'), 7)
+    assert_almost_equal(t, 279.07450928270185 * units('kelvin'), 7)
 
 
 def test_weighted_continuous_average_elevated():
@@ -173,6 +173,21 @@ def test_bunkers_motion():
                          data['height']))
     truth = [2.062733, 0.96246913, 11.22554254, 12.83861839, 6.64413777,
              6.90054376] * units('m/s')
+    assert_almost_equal(motion.flatten(), truth, 8)
+
+
+def test_bunkers_motion_with_nans():
+    """Test Bunkers storm motion with observed sounding."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    u_with_nan = data['u_wind']
+    u_with_nan[24:26] = np.nan
+    v_with_nan = data['v_wind']
+    v_with_nan[24:26] = np.nan
+    motion = concatenate(bunkers_storm_motion(data['pressure'],
+                         u_with_nan, v_with_nan,
+                         data['height']))
+    truth = [2.09232447, 0.97612357, 11.25513401, 12.85227283, 6.67372924,
+             6.9141982] * units('m/s')
     assert_almost_equal(motion.flatten(), truth, 8)
 
 

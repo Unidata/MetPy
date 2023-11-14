@@ -63,7 +63,8 @@ def process_msg18(fname):
                 if len(parts) == 8:
                     parts = parts[:6] + [parts[6] + parts[7]]
 
-                var_name, desc, typ, units, rng, prec, byte_range = parts
+                # var_name, desc, typ, units, rng, prec, byte_range
+                var_name, desc, typ, units, _, _, byte_range = parts
                 start, end = map(int, byte_range.split('-'))
                 size = end - start + 1
                 assert size >= 4

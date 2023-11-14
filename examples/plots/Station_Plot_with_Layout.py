@@ -15,7 +15,7 @@ existing point data in a format you can work with trivially, the station plot wi
 
 The `StationPlotLayout` class is used to standardize the plotting various parameters
 (i.e. temperature), keeping track of the location, formatting, and even the units for use in
-the station plot. This makes it easy (if using standardized names) to re-use a given layout
+the station plot. This makes it easy (if using standardized names) to reuse a given layout
 of a station plot.
 """
 import cartopy.crs as ccrs

@@ -25,26 +25,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.9, '3.10', 3.11]
-        dep-versions: [requirements.txt]
+        python-version: [3.9, '3.10', 3.11, 3.12]
+        dep-versions: [Latest]
         no-extras: ['']
         include:
           - python-version: 3.9
             dep-versions: Minimum
+          - python-version: 3.9
+            dep-versions: Minimum
             no-extras: 'No Extras'
-          - python-version: 3.11
-            dep-versions: requirements.txt
+          - python-version: 3.12
+            dep-versions: Latest
             no-extras: 'No Extras'
 
     steps:
-    # We check out only a limited depth and then pull tags to save time
     - name: Checkout source
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
-        fetch-depth: 100
-
-    - name: Get tags
-      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        fetch-depth: 150
+        fetch-tags: true
 
     - name: Generate minimum dependencies
       if: ${{ matrix.dep-versions == 'Minimum' }}
@@ -55,12 +54,14 @@ jobs:
         from pathlib import Path
 
         # Read our pyproject.toml
-        config = tomllib.load(open('pyproject.toml', 'rb'))
+        config = tomllib.load(open('pyproject.toml', 'rb'))['project']
+        opt_deps = config['optional-dependencies']
 
         # Generate a Minimum dependency file
-        with (Path('ci') / 'Minimum').open('wt') as out:
-          for dep in config['project']['dependencies']:
-            if dep:
+        for src, fname in [(config['dependencies'], 'requirements.txt'),
+                           (opt_deps['test'], 'test_requirements.txt'), (opt_deps['extras'], 'extra_requirements.txt')]:
+          with (Path('ci') / fname).open('wt') as out:
+            for dep in src:
               dep = dep.split(';')[0]
               out.write(dep.replace('>=', '==') + '\n')
         EOF
@@ -68,13 +69,31 @@ jobs:
     - name: Install from PyPI
       uses: ./.github/actions/install-pypi
       with:
-        need-cartopy: ${{ matrix.no-extras != 'No Extras' }}
+        need-extras: ${{ matrix.no-extras != 'No Extras' }}
         type: 'test'
-        version-file: ${{ matrix.dep-versions }}
         python-version: ${{ matrix.python-version }}
+        old-build: ${{ matrix.no-extras != 'No Extras' && matrix.dep-versions == 'Minimum' }}
 
     - name: Run tests
       uses: ./.github/actions/run-tests
       with:
-        run-doctests: ${{ matrix.dep-versions == 'requirements.txt' && matrix.no-extras != 'No Extras' }}
+        run-doctests: ${{ matrix.dep-versions == 'Latest' && matrix.no-extras != 'No Extras' }}
         key: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-${{ matrix.no-extras }}-${{ runner.os }}
+
+  codecov:
+    needs: PyPITests
+    name: CodeCov Upload
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          name: ${{ github.workflow }}
+          fail_ci_if_error: true

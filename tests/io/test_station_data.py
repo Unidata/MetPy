@@ -23,6 +23,7 @@ def test_add_lat_lon_station_data():
     assert_almost_equal(df.loc[df.station == 'KDEN'].longitude.values[0], -104.65)
     assert_almost_equal(df.loc[df.station == 'PAAA'].latitude.values[0], np.nan)
     assert_almost_equal(df.loc[df.station == 'PAAA'].longitude.values[0], np.nan)
+    assert df['longitude'].dtype == np.float64
 
 
 def test_add_lat_lon_station_data_optional():

@@ -52,6 +52,7 @@ def generate_area_file(app):
             if area in states_provinces:
                 code = textwrap.dedent(f"""
                 .. plot::
+                   :context: reset
 
                     import matplotlib.pyplot as plt
                     import cartopy.crs as ccrs
@@ -75,6 +76,7 @@ def generate_area_file(app):
             else:
                 code = textwrap.dedent(f"""
                 .. plot::
+                   :context: reset
 
                     import matplotlib.pyplot as plt
                     import cartopy.crs as ccrs

@@ -186,7 +186,7 @@ if not hasattr(Axes, 'scattertext'):
             posy = self.convert_yunits(self.y)
             pts = np.vstack((posx, posy)).T
             pts = trans.transform(pts)
-            canvasw, canvash = renderer.get_canvas_width_height()
+            _, canvash = renderer.get_canvas_width_height()
 
             gc = renderer.new_gc()
             gc.set_foreground(self.get_color())
@@ -203,7 +203,7 @@ if not hasattr(Axes, 'scattertext'):
                     continue
 
                 self._text = t  # hack to allow self._get_layout to work
-                bbox, info, descent = self._get_layout(renderer)
+                _, info, _ = self._get_layout(renderer)
                 self._text = ''
 
                 for line, _, x, y in info:

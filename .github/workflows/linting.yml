@@ -14,7 +14,7 @@ jobs:
     name: Flake8
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python 3
         uses: actions/setup-python@v4
@@ -39,7 +39,7 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -o pipefail
-          ruff check . | reviewdog -f=pep8 -name=flake8 -reporter=github-check -filter-mode=nofilter
+          ruff check . | reviewdog -f=pep8 -name=ruff -reporter=github-check -filter-mode=nofilter
 
       - name: Run flake8
         env:

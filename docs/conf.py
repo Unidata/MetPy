@@ -61,8 +61,9 @@ sphinx_gallery_conf = {
     'reset_modules': [lambda conf, fname: sys.modules.pop('pint', None)]
 }
 
-# By default, only generate all the areas when running in CI
-metpy_generate_all_areas = 'GITHUB_ACTIONS' in os.environ
+# By default, only generate all the areas when running on a release CI job
+metpy_generate_all_areas = (not os.environ.get('GITHUB_REF', '').startswith('refs/pull')
+                            and sys.version_info < (3, 12))
 
 # Turn off code and image links for embedded mpl plots
 plot_html_show_source_link = False
@@ -91,7 +92,7 @@ nitpick_ignore = [
     ('py:class', 'M'), ('py:class', 'N'), ('py:class', 'P'), ('py:class', '2'),
     ('py:class', 'optional'), ('py:class', 'array-like'), ('py:class', 'file-like object'),
     # For traitlets docstrings
-    ('py:class', 'All'), ('py:class', 'callable'),
+    ('py:class', 'All'), ('py:class', 't.Any'), ('py:class', 't.Iterable'),
     # Next two are from Python dict docstring that we inherit
     ('py:class', 'a shallow copy of D'),
     ('py:class', 'v, remove specified key and return the corresponding value.')
@@ -99,6 +100,11 @@ nitpick_ignore = [
 
 nitpick_ignore_regex = [
     ('py:class', r'default:.*'),  # For some traitlets docstrings
+    ('py:class', r'.*Sentinel'),
+    ('py:class', r'.*Bunch'),
+    ('py:class', r'.*[cC]allable'),
+    ('py:class', r'.*EventHandler'),
+    ('py:class', r'.*TraitType'),
     ('py:class', r'.*object providing a view on.*'),  # Python dict docstring
     ('py:class', r'None.  .*'),  # Python dict docstring
     ('py:class', r'.*D\[k\].*'),  # Python dict docstring
@@ -229,6 +235,7 @@ html_theme_options = {
         'json_url': 'https://unidata.github.io/MetPy/pst-versions.json',
         'version_match': 'dev' if 'dev' in version else f'v{version}',
     },
+    'navigation_with_keys': False
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -425,7 +432,9 @@ linkcheck_ignore = [
     r'https://doi\.org/10\.1289/ehp\.1206273',
     # Couldn't fix these 403's with user agents
     r'https://doi\.org/10\.1029/2010GL045777',
-    r'https://doi\.org/10\.1098/rspa\.2004\.1430'
+    r'https://doi\.org/10\.1098/rspa\.2004\.1430',
+    # Currently giving certificate errors on GitHub
+    r'https://library.wmo.int/.*'
     ]
 
 # Dictionary of URL redirects allowed
@@ -434,7 +443,8 @@ linkcheck_allowed_redirects = {
     r'https://conda.io/docs/': r'https://conda.io/en/latest/',
     r'https://github.com/Unidata/MetPy/issues/new/choose': r'https://github.com/login.*choose',
     r'https://doi.org/.*': r'https://.*',
-    r'https://gitter.im/Unidata/MetPy': r'https://app.gitter.im/.*MetPy.*'
+    r'https://gitter.im/Unidata/MetPy': r'https://app.gitter.im/.*MetPy.*',
+    r'https://library.wmo.int/idurl/.*': r'https://library.wmo.int/.*'
 }
 
 # Domain-specific HTTP headers for requests

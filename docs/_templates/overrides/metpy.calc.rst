@@ -75,6 +75,7 @@ Soundings
       ccl
       critical_angle
       cross_totals
+      downdraft_cape
       el
       k_index
       lcl

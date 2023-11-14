@@ -9,9 +9,13 @@ This includes:
 """
 import contextlib
 import functools
+from importlib.metadata import requires, version
+import operator as op
+import re
 
 import numpy as np
 import numpy.testing
+from packaging.version import Version
 from pint import DimensionalityError
 import pytest
 import xarray as xr
@@ -20,6 +24,88 @@ from .calc import wind_components
 from .cbook import get_test_data
 from .deprecation import MetpyDeprecationWarning
 from .units import units
+
+
+def version_check(version_spec):
+    """Return comparison between the active module and a requested version number.
+
+    Will also validate specification against package metadata to alert if spec is irrelevant.
+
+    Parameters
+    ----------
+    version_spec : str
+        Module version specification to validate against installed package. Must take the form
+        of `f'{module_name}{comparison_operator}{version_number}'` where `comparison_operator`
+        must be one of `['==', '=', '!=', '<', '<=', '>', '>=']`, eg `'metpy>1.0'`.
+
+    Returns
+    -------
+        bool : Whether the installed package validates against the provided specification
+    """
+    comparison_operators = {
+        '==': op.eq, '=': op.eq, '!=': op.ne, '<': op.lt, '<=': op.le, '>': op.gt, '>=': op.ge,
+    }
+
+    # Match version_spec for groups of module name,
+    # comparison operator, and requested module version
+    module_name, comparison, version_number = _parse_version_spec(version_spec)
+
+    # Check MetPy metadata for minimum required version of same package
+    metadata_spec = _get_metadata_spec(module_name)
+    _, _, minimum_version_number = _parse_version_spec(metadata_spec)
+
+    installed_version = Version(version(module_name))
+    specified_version = Version(version_number)
+    minimum_version = Version(minimum_version_number)
+
+    if specified_version < minimum_version:
+        raise ValueError(
+            f'Specified {version_spec} outdated according to MetPy minimum {metadata_spec}.')
+
+    try:
+        return comparison_operators[comparison](installed_version, specified_version)
+    except KeyError:
+        raise ValueError(
+            f'Comparison operator {comparison} not one of {list(comparison_operators)}.'
+        ) from None
+
+
+def _parse_version_spec(version_spec):
+    """Parse module name, comparison, and version from pip-style package spec string.
+
+    Parameters
+    ----------
+    version_spec : str
+        Package spec to parse
+
+    Returns
+    -------
+        tuple of str : Parsed specification groups of package name, comparison, and version
+
+    """
+    pattern = re.compile(r'(\w+)\s*([<>!=]+)\s*([\d.]+)')
+    match = pattern.match(version_spec)
+
+    if not match:
+        raise ValueError(f'Invalid version specification {version_spec}.'
+                         f'See version_check documentation for more information.')
+    else:
+        return match.groups()
+
+
+def _get_metadata_spec(module_name):
+    """Get package spec string for requested module from package metadata.
+
+    Parameters
+    ----------
+    module_name : str
+        Name of MetPy required package to look up
+
+    Returns
+    -------
+        str : Package spec string for request module
+    """
+    return [entry for entry in requires('metpy') if module_name.lower() in entry.lower()][0]
 
 
 def needs_module(module):
