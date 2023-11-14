@@ -36,7 +36,7 @@ def version_check(version_spec):
     version_spec : str
         Module version specification to validate against installed package. Must take the form
         of `f'{module_name}{comparison_operator}{version_number}'` where `comparison_operator`
-        must be one of `['==', '=', '!=', '<', '<=', '>', '>=']`.
+        must be one of `['==', '=', '!=', '<', '<=', '>', '>=']`, eg `'metpy>1.0'`.
 
     Returns
     -------
@@ -53,20 +53,22 @@ def version_check(version_spec):
     module_name, comparison, version_number = _parse_version_spec(version_spec)
 
     # Check MetPy metadata for minimum required version of same package
-    _, _, minimum_version_number = _parse_version_spec(_get_metadata_spec(module_name))
+    metadata_spec = _get_metadata_spec(module_name)
+    _, _, minimum_version_number = _parse_version_spec(metadata_spec)
 
     installed_version = Version(version(module_name))
     specified_version = Version(version_number)
     minimum_version = Version(minimum_version_number)
 
     if specified_version < minimum_version:
-        raise ValueError('Specified package version older than MetPy minimum requirement.')
+        raise ValueError(
+            f'Specified {version_spec} outdated according to MetPy minimum {metadata_spec}.')
 
     try:
         return comparison_operators[comparison](installed_version, specified_version)
     except KeyError:
         raise ValueError(
-            "Comparison operator not one of ['==', '=', '!=', '<', '<=', '>', '>=']."
+            f'Comparison operator {comparison} not one of {list(comparison_operators)}.'
         ) from None
 
 
@@ -87,7 +89,8 @@ def _parse_version_spec(version_spec):
     match = pattern.match(version_spec)
 
     if not match:
-        raise ValueError('No valid version specification string matched.')
+        raise ValueError(f'Invalid version specification {version_spec}.'
+                         f'See version_check documentation for more information.')
     else:
         return match.groups()
 

@@ -52,17 +52,17 @@ def test_module_version_check():
 
 def test_module_version_check_outdated_spec():
     """Test checking test version specs against package metadata."""
-    with pytest.raises(ValueError, match='Specified package version '):
+    with pytest.raises(ValueError, match='Specified numpy'):
         version_check('numpy>0.0.0')
 
 
 def test_module_version_check_nonsense():
     """Test failed pattern match of package specification."""
-    with pytest.raises(ValueError, match='No valid version '):
+    with pytest.raises(ValueError, match='Invalid version '):
         version_check('thousands of birds picking packages')
 
 
 def test_module_version_check_invalid_comparison():
     """Test invalid operator in version comparison."""
-    with pytest.raises(ValueError, match='Comparison operator not '):
+    with pytest.raises(ValueError, match='Comparison operator << '):
         version_check('numpy << 36')
