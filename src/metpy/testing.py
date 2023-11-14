@@ -62,7 +62,7 @@ def module_version_check(version_spec):
         raise ValueError('Specified package version older than MetPy minimum requirement.')
 
     try:
-        return comparison_operators[comparison](specified_version, installed_version)
+        return comparison_operators[comparison](installed_version, specified_version)
     except KeyError:
         raise ValueError(
             "Comparison operator not one of ['==', '=', '!=', '<', '<=', '>', '>=']."
