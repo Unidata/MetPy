@@ -43,9 +43,7 @@ def version_check(version_spec):
         bool : Whether the installed package validates against the provided specification
     """
     comparison_operators = {
-        '==': op.eq, '=': op.eq, '!=': op.ne,
-        '<': op.lt, '<=': op.le,
-        '>': op.gt, '>=': op.ge,
+        '==': op.eq, '=': op.eq, '!=': op.ne, '<': op.lt, '<=': op.le, '>': op.gt, '>=': op.ge,
     }
 
     # Match version_spec for groups of module name,
