@@ -75,6 +75,7 @@ Soundings
       ccl
       critical_angle
       cross_totals
+      downdraft_cape
       el
       k_index
       lcl
@@ -93,7 +94,6 @@ Soundings
       storm_relative_helicity
       supercell_composite
       surface_based_cape_cin
-      downdraft_cape
       sweat_index
       total_totals_index
       vertical_totals
