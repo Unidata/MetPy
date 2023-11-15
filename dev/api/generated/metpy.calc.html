@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 15, 2023 at 00:57:55"/>
+    <meta name="docbuild:last-update" content="Nov 15, 2023 at 01:57:40"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.html" />
 
   </head>
@@ -515,6 +515,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.bulk_shear.html">bulk_shear</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.bunkers_storm_motion.html">bunkers_storm_motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.corfidi_storm_motion.html">corfidi_storm_motion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.cape_cin.html">cape_cin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.ccl.html">ccl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.critical_angle.html">critical_angle</a></li>
@@ -905,82 +906,85 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.bunkers_storm_motion.html#metpy.calc.bunkers_storm_motion" title="metpy.calc.bunkers_storm_motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bunkers_storm_motion</span></code></a>(pressure, u, v, height)</p></td>
 <td><p>Calculate right-mover and left-mover supercell storm motions using the Bunkers method.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.cape_cin.html#metpy.calc.cape_cin" title="metpy.calc.cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cape_cin</span></code></a>(pressure, temperature, dewpoint, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.corfidi_storm_motion.html#metpy.calc.corfidi_storm_motion" title="metpy.calc.corfidi_storm_motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">corfidi_storm_motion</span></code></a>(pressure, u, v, *[, ...])</p></td>
+<td><p>Calculate upwind- and downwind-developing MCS storm motions using the Corfidi method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.cape_cin.html#metpy.calc.cape_cin" title="metpy.calc.cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cape_cin</span></code></a>(pressure, temperature, dewpoint, ...)</p></td>
 <td><p>Calculate CAPE and CIN.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.ccl.html#metpy.calc.ccl" title="metpy.calc.ccl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ccl</span></code></a>(pressure, temperature, dewpoint[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.ccl.html#metpy.calc.ccl" title="metpy.calc.ccl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ccl</span></code></a>(pressure, temperature, dewpoint[, ...])</p></td>
 <td><p>Calculate the convective condensation level (CCL) and convective temperature.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.critical_angle.html#metpy.calc.critical_angle" title="metpy.calc.critical_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">critical_angle</span></code></a>(pressure, u, v, height, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.critical_angle.html#metpy.calc.critical_angle" title="metpy.calc.critical_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">critical_angle</span></code></a>(pressure, u, v, height, ...)</p></td>
 <td><p>Calculate the critical angle.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.cross_totals.html#metpy.calc.cross_totals" title="metpy.calc.cross_totals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_totals</span></code></a>(pressure, temperature, dewpoint)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.cross_totals.html#metpy.calc.cross_totals" title="metpy.calc.cross_totals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_totals</span></code></a>(pressure, temperature, dewpoint)</p></td>
 <td><p>Calculate Cross Totals from the pressure temperature and dewpoint.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.downdraft_cape.html#metpy.calc.downdraft_cape" title="metpy.calc.downdraft_cape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">downdraft_cape</span></code></a>(pressure, temperature, dewpoint)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.downdraft_cape.html#metpy.calc.downdraft_cape" title="metpy.calc.downdraft_cape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">downdraft_cape</span></code></a>(pressure, temperature, dewpoint)</p></td>
 <td><p>Calculate downward CAPE (DCAPE).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.el.html#metpy.calc.el" title="metpy.calc.el"><code class="xref py py-obj docutils literal notranslate"><span class="pre">el</span></code></a>(pressure, temperature, dewpoint[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.el.html#metpy.calc.el" title="metpy.calc.el"><code class="xref py py-obj docutils literal notranslate"><span class="pre">el</span></code></a>(pressure, temperature, dewpoint[, ...])</p></td>
 <td><p>Calculate the equilibrium level.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.k_index.html#metpy.calc.k_index" title="metpy.calc.k_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">k_index</span></code></a>(pressure, temperature, dewpoint[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.k_index.html#metpy.calc.k_index" title="metpy.calc.k_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">k_index</span></code></a>(pressure, temperature, dewpoint[, ...])</p></td>
 <td><p>Calculate K Index from the pressure temperature and dewpoint.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.lcl.html#metpy.calc.lcl" title="metpy.calc.lcl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lcl</span></code></a>(pressure, temperature, dewpoint[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.lcl.html#metpy.calc.lcl" title="metpy.calc.lcl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lcl</span></code></a>(pressure, temperature, dewpoint[, ...])</p></td>
 <td><p>Calculate the lifted condensation level (LCL) from the starting point.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.lfc.html#metpy.calc.lfc" title="metpy.calc.lfc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lfc</span></code></a>(pressure, temperature, dewpoint[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.lfc.html#metpy.calc.lfc" title="metpy.calc.lfc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lfc</span></code></a>(pressure, temperature, dewpoint[, ...])</p></td>
 <td><p>Calculate the level of free convection (LFC).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.lifted_index.html#metpy.calc.lifted_index" title="metpy.calc.lifted_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lifted_index</span></code></a>(pressure, temperature, ...[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.lifted_index.html#metpy.calc.lifted_index" title="metpy.calc.lifted_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lifted_index</span></code></a>(pressure, temperature, ...[, ...])</p></td>
 <td><p>Calculate Lifted Index from the pressure temperature and parcel profile.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.mixed_layer.html#metpy.calc.mixed_layer" title="metpy.calc.mixed_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_layer</span></code></a>(pressure, *args[, height, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.mixed_layer.html#metpy.calc.mixed_layer" title="metpy.calc.mixed_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_layer</span></code></a>(pressure, *args[, height, ...])</p></td>
 <td><p>Mix variable(s) over a layer, yielding a mass-weighted average.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.mixed_layer_cape_cin.html#metpy.calc.mixed_layer_cape_cin" title="metpy.calc.mixed_layer_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_layer_cape_cin</span></code></a>(pressure, temperature, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.mixed_layer_cape_cin.html#metpy.calc.mixed_layer_cape_cin" title="metpy.calc.mixed_layer_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_layer_cape_cin</span></code></a>(pressure, temperature, ...)</p></td>
 <td><p>Calculate mixed-layer CAPE and CIN.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.mixed_parcel.html#metpy.calc.mixed_parcel" title="metpy.calc.mixed_parcel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_parcel</span></code></a>(pressure, temperature, dewpoint)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.mixed_parcel.html#metpy.calc.mixed_parcel" title="metpy.calc.mixed_parcel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_parcel</span></code></a>(pressure, temperature, dewpoint)</p></td>
 <td><p>Calculate the properties of a parcel mixed from a layer.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.most_unstable_cape_cin.html#metpy.calc.most_unstable_cape_cin" title="metpy.calc.most_unstable_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">most_unstable_cape_cin</span></code></a>(pressure, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.most_unstable_cape_cin.html#metpy.calc.most_unstable_cape_cin" title="metpy.calc.most_unstable_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">most_unstable_cape_cin</span></code></a>(pressure, ...)</p></td>
 <td><p>Calculate most unstable CAPE/CIN.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.most_unstable_parcel.html#metpy.calc.most_unstable_parcel" title="metpy.calc.most_unstable_parcel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">most_unstable_parcel</span></code></a>(pressure, temperature, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.most_unstable_parcel.html#metpy.calc.most_unstable_parcel" title="metpy.calc.most_unstable_parcel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">most_unstable_parcel</span></code></a>(pressure, temperature, ...)</p></td>
 <td><p>Determine the most unstable parcel in a layer.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile</span></code></a>(pressure, temperature, dewpoint)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile</span></code></a>(pressure, temperature, dewpoint)</p></td>
 <td><p>Calculate the profile a parcel takes through the atmosphere.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.parcel_profile_with_lcl.html#metpy.calc.parcel_profile_with_lcl" title="metpy.calc.parcel_profile_with_lcl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile_with_lcl</span></code></a>(pressure, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.parcel_profile_with_lcl.html#metpy.calc.parcel_profile_with_lcl" title="metpy.calc.parcel_profile_with_lcl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile_with_lcl</span></code></a>(pressure, ...)</p></td>
 <td><p>Calculate the profile a parcel takes through the atmosphere.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html#metpy.calc.parcel_profile_with_lcl_as_dataset" title="metpy.calc.parcel_profile_with_lcl_as_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile_with_lcl_as_dataset</span></code></a>(pressure, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html#metpy.calc.parcel_profile_with_lcl_as_dataset" title="metpy.calc.parcel_profile_with_lcl_as_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile_with_lcl_as_dataset</span></code></a>(pressure, ...)</p></td>
 <td><p>Calculate the profile a parcel takes through the atmosphere, returning a Dataset.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.showalter_index.html#metpy.calc.showalter_index" title="metpy.calc.showalter_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showalter_index</span></code></a>(pressure, temperature, dewpoint)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.showalter_index.html#metpy.calc.showalter_index" title="metpy.calc.showalter_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showalter_index</span></code></a>(pressure, temperature, dewpoint)</p></td>
 <td><p>Calculate Showalter Index.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.significant_tornado.html#metpy.calc.significant_tornado" title="metpy.calc.significant_tornado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">significant_tornado</span></code></a>(sbcape, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.significant_tornado.html#metpy.calc.significant_tornado" title="metpy.calc.significant_tornado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">significant_tornado</span></code></a>(sbcape, ...)</p></td>
 <td><p>Calculate the significant tornado parameter (fixed layer).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.storm_relative_helicity.html#metpy.calc.storm_relative_helicity" title="metpy.calc.storm_relative_helicity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">storm_relative_helicity</span></code></a>(height, u, v, depth, *)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.storm_relative_helicity.html#metpy.calc.storm_relative_helicity" title="metpy.calc.storm_relative_helicity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">storm_relative_helicity</span></code></a>(height, u, v, depth, *)</p></td>
 <td><p>Calculate storm relative helicity.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.supercell_composite.html#metpy.calc.supercell_composite" title="metpy.calc.supercell_composite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">supercell_composite</span></code></a>(mucape, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.supercell_composite.html#metpy.calc.supercell_composite" title="metpy.calc.supercell_composite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">supercell_composite</span></code></a>(mucape, ...)</p></td>
 <td><p>Calculate the supercell composite parameter.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.surface_based_cape_cin.html#metpy.calc.surface_based_cape_cin" title="metpy.calc.surface_based_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface_based_cape_cin</span></code></a>(pressure, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.surface_based_cape_cin.html#metpy.calc.surface_based_cape_cin" title="metpy.calc.surface_based_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface_based_cape_cin</span></code></a>(pressure, ...)</p></td>
 <td><p>Calculate surface-based CAPE and CIN.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.sweat_index.html#metpy.calc.sweat_index" title="metpy.calc.sweat_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sweat_index</span></code></a>(pressure, temperature, dewpoint, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.sweat_index.html#metpy.calc.sweat_index" title="metpy.calc.sweat_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sweat_index</span></code></a>(pressure, temperature, dewpoint, ...)</p></td>
 <td><p>Calculate SWEAT Index.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.total_totals_index.html#metpy.calc.total_totals_index" title="metpy.calc.total_totals_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_totals_index</span></code></a>(pressure, temperature, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.total_totals_index.html#metpy.calc.total_totals_index" title="metpy.calc.total_totals_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_totals_index</span></code></a>(pressure, temperature, ...)</p></td>
 <td><p>Calculate Total Totals Index from the pressure temperature and dewpoint.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.vertical_totals.html#metpy.calc.vertical_totals" title="metpy.calc.vertical_totals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertical_totals</span></code></a>(pressure, temperature[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.vertical_totals.html#metpy.calc.vertical_totals" title="metpy.calc.vertical_totals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertical_totals</span></code></a>(pressure, temperature[, ...])</p></td>
 <td><p>Calculate Vertical Totals from the pressure and temperature.</p></td>
 </tr>
 </tbody>
