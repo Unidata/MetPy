@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 import xarray as xr
 
-from metpy.calc import (bulk_shear, bunkers_storm_motion, critical_angle,
+from metpy.calc import (bulk_shear, bunkers_storm_motion, corfidi_storm_motion, critical_angle,
                         mean_pressure_weighted, precipitable_water, significant_tornado,
                         supercell_composite, weighted_continuous_average)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, get_upper_air_data,
@@ -174,6 +174,67 @@ def test_bunkers_motion():
     truth = [2.062733, 0.96246913, 11.22554254, 12.83861839, 6.64413777,
              6.90054376] * units('m/s')
     assert_almost_equal(motion.flatten(), truth, 8)
+
+
+def test_corfidi_motion():
+    """Test corfidi MCS motion with observed sounding."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    motion_full = concatenate(corfidi_storm_motion(data['pressure'],
+                                                   data['u_wind'], data['v_wind']))
+    truth_full = [20.60174457, -22.38741441,
+                  38.32734963, -11.90040377] * units('kt')
+    assert_almost_equal(motion_full.flatten(), truth_full, 8)
+
+
+def test_corfidi_motion_override_llj():
+    """Test corfidi MCS motion with overridden LLJ."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    motion_override = concatenate(corfidi_storm_motion(data['pressure'],
+                                                       data['u_wind'], data['v_wind'],
+                                                       u_llj=0 * units('kt'),
+                                                       v_llj=0 * units('kt')))
+    truth_override = [17.72560506, 10.48701063,
+                      35.45121012, 20.97402126] * units('kt')
+    assert_almost_equal(motion_override.flatten(), truth_override, 8)
+
+    with pytest.raises(ValueError):
+        corfidi_storm_motion(data['pressure'], data['u_wind'],
+                             data['v_wind'], u_llj=10 * units('kt'))
+
+    with pytest.raises(ValueError):
+        corfidi_storm_motion(data['pressure'], data['u_wind'],
+                             data['v_wind'], v_llj=10 * units('kt'))
+
+
+def test_corfidi_corfidi_llj_unaivalable():
+    """Test corfidi MCS motion where the LLJ is unailable."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    with pytest.raises(ValueError):
+        corfidi_storm_motion(data['pressure'][6:], data['u_wind'][6:], data['v_wind'][6:])
+
+
+def test_corfidi_corfidi_cloudlayer_trimmed():
+    """Test corfidi MCS motion where sounding does not include the entire cloud layer."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    motion_no_top = concatenate(corfidi_storm_motion(data['pressure'][:37],
+                                                     data['u_wind'][:37], data['v_wind'][:37]))
+    truth_no_top = [20.40419260, -21.43467629,
+                    37.93224569, -9.99492754] * units('kt')
+    assert_almost_equal(motion_no_top.flatten(), truth_no_top, 8)
+
+
+def test_corfidi_motion_with_nans():
+    """Test corfidi MCS motion with observed sounding with nans."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    u_with_nans = data['u_wind']
+    u_with_nans[6:10] = np.nan
+    v_with_nans = data['v_wind']
+    v_with_nans[6:10] = np.nan
+    motion_with_nans = concatenate(corfidi_storm_motion(data['pressure'],
+                                                        u_with_nans, v_with_nans))
+    truth_with_nans = [20.01078763, -22.65208606,
+                       37.14543575, -12.42974709] * units('kt')
+    assert_almost_equal(motion_with_nans.flatten(), truth_with_nans, 8)
 
 
 def test_bunkers_motion_with_nans():

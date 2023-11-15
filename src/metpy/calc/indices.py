@@ -4,6 +4,7 @@
 """Contains calculation of various derived indices."""
 import numpy as np
 
+from .basic import wind_speed
 from .thermo import mixing_ratio, saturation_vapor_pressure
 from .tools import _remove_nans, get_layer
 from .. import constants as mpconsts
@@ -337,6 +338,124 @@ def bunkers_storm_motion(pressure, u, v, height):
     left_mover = wind_mean - rdev
 
     return right_mover, left_mover, wind_mean
+
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[speed]', '[speed]', u_llj='[speed]', v_llj='[speed]')
+def corfidi_storm_motion(pressure, u, v, *, u_llj=None, v_llj=None):
+    r"""Calculate upwind- and downwind-developing MCS storm motions using the Corfidi method.
+
+    Method described by ([Corfidi2003]_):
+
+    * Cloud-layer winds, estimated as the mean of the wind from 850 hPa to 300 hPa
+    * Convergence along the cold pool, defined as the negative of the low-level jet
+        (estimated as maximum in winds below 850 hPa unless specified in u_llj and v_llj)
+    * The vector sum of the above is used to describe upwind propagating MCSes
+    * Downwind propagating MCSes are taken as propagating along the sum of the cloud-layer wind
+        and negative of the low level jet, therefore the cloud-level winds are doubled
+        to re-add storm motion
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure from full profile
+
+    u : `pint.Quantity`
+        Full profile of the U-component of the wind
+
+    v : `pint.Quantity`
+        Full profile of the V-component of the wind
+
+    u_llj : `pint.Quantity`, optional
+        U-component of low-level jet
+
+    v_llj : `pint.Quantity`, optional
+        V-component of low-level jet
+
+    Returns
+    -------
+    upwind_prop: (`pint.Quantity`, `pint.Quantity`)
+        Scalar U- and V- components of Corfidi upwind propagating MCS motion
+
+    downwind_prop: (`pint.Quantity`, `pint.Quantity`)
+        Scalar U- and V- components of Corfidi downwind propagating MCS motion
+
+    Examples
+    --------
+    >>> from metpy.calc import corfidi_storm_motion, wind_components
+    >>> from metpy.units import units
+    >>> p = [1000, 925, 850, 700, 500, 400] * units.hPa
+    >>> wdir = [165, 180, 190, 210, 220, 250] * units.degree
+    >>> speed = [5, 15, 20, 30, 50, 60] * units.knots
+    >>> u, v = wind_components(speed, wdir)
+    >>> corfidi_storm_motion(p, u, v)
+    (<Quantity([16.4274315   7.75758388], 'knot')>,
+    <Quantity([36.32782655 35.21132283], 'knot')>)
+    >>> # Example with manually specified low-level jet as max wind below 1500m
+    >>> import numpy as np
+    >>> h = [100, 250, 700, 1500, 3100, 5720] * units.meters
+    >>> lowest1500_index = np.argmin(h <= units.Quantity(1500, 'meter'))
+    >>> llj_index = np.argmax(speed[:lowest1500_index])
+    >>> llj_u, llj_v = u[llj_index], v[llj_index]
+    >>> corfidi_storm_motion(p, u, v, u_llj=llj_u, v_llj=llj_v)
+    (<Quantity([4.90039505   1.47297683], 'knot')>,
+    <Quantity([24.8007901 28.92671577], 'knot')>)
+
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
+    """
+    # If user specifies only one component of low-level jet, raise
+    if (u_llj is None) ^ (v_llj is None):
+        raise ValueError('Must specify both u_llj and v_llj or neither')
+
+    # remove nans from input
+    pressure, u, v = _remove_nans(pressure, u, v)
+
+    # If LLJ specified, use that
+    if u_llj is not None and v_llj is not None:
+        # find inverse of low-level jet
+        llj_inverse = units.Quantity.from_list((-1 * u_llj, -1 * v_llj))
+    # If pressure values contain values below 850 hPa, find low-level jet
+    elif np.max(pressure) >= units.Quantity(850, 'hectopascal'):
+        # convert u/v wind to wind speed and direction
+        wind_magnitude = wind_speed(u, v)
+        # find inverse of low-level jet
+        lowlevel_index = np.argmin(pressure >= units.Quantity(850, 'hectopascal'))
+        llj_index = np.argmax(wind_magnitude[:lowlevel_index])
+        llj_inverse = units.Quantity.from_list((-u[llj_index], -v[llj_index]))
+    # If LLJ not specified and maximum pressure value is above 850 hPa, raise
+    else:
+        raise ValueError('Must specify low-level jet or '
+                         'specify pressure values below 850 hPa')
+
+    # cloud layer mean wind
+    # don't select outside bounds of given data
+    if pressure[0] < units.Quantity(850, 'hectopascal'):
+        bottom = pressure[0]
+    else:
+        bottom = units.Quantity(850, 'hectopascal')
+    if pressure[-1] > units.Quantity(300, 'hectopascal'):
+        depth = bottom - pressure[-1]
+    else:
+        depth = units.Quantity(550, 'hectopascal')
+    cloud_layer_winds = mean_pressure_weighted(pressure, u, v,
+                                               bottom=bottom,
+                                               depth=depth)
+
+    cloud_layer_winds = units.Quantity.from_list(cloud_layer_winds)
+
+    # calculate corfidi vectors
+    upwind = cloud_layer_winds + llj_inverse
+
+    downwind = 2 * cloud_layer_winds + llj_inverse
+
+    return upwind, downwind
 
 
 @exporter.export
