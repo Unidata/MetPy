@@ -36,7 +36,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         vapor_pressure, vertical_totals, vertical_velocity,
                         vertical_velocity_pressure, virtual_potential_temperature,
                         virtual_temperature, virtual_temperature_from_dewpoint,
-                        wet_bulb_temperature, wetbulb_potential_temperature)
+                        wet_bulb_potential_temperature, wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_nan,
                            version_check)
@@ -802,12 +802,12 @@ def test_equivalent_potential_temperature_masked():
     assert_array_almost_equal(ept, expected, 3)
 
 
-def test_wetbulb_potential_temperature():
-    """Test wetbulb potential temperature calculation."""
+def test_wet_bulb_potential_temperature():
+    """Test wet_bulb potential temperature calculation."""
     p = 1000 * units.mbar
     t = 293. * units.kelvin
     td = 291. * units.kelvin
-    wpt = wetbulb_potential_temperature(p, t, td)
+    wpt = wet_bulb_potential_temperature(p, t, td)
     assert_almost_equal(wpt, 291.65839705486565 * units.kelvin, 3)
 
 

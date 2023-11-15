@@ -1650,7 +1650,7 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
     broadcast=('pressure', 'temperature', 'dewpoint')
 )
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def wetbulb_potential_temperature(pressure, temperature, dewpoint):
+def wet_bulb_potential_temperature(pressure, temperature, dewpoint):
     r"""Calculate wet-bulb potential temperature.
 
     This calculation must be given an air parcel's pressure, temperature, and dewpoint.
