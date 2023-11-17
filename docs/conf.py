@@ -139,8 +139,8 @@ project = 'MetPy'
 
 # noinspection PyShadowingBuiltins
 copyright = (
-    f'2008\u2013{cur_date:%Y}, MetPy Developers.'
-    'Development is supported by Unidata and the National Science Foundation.'
+    f'2008\u2013{cur_date:%Y}, MetPy Developers. '
+    'Development is supported by Unidata and the National Science Foundation'
 )
 
 # The version info for the project you're documenting, acts as replacement for
@@ -214,13 +214,13 @@ html_theme_options = {
         {
             'name': 'GitHub',
             'url': 'https://github.com/Unidata/MetPy',
-            'icon': 'fa-brands fa-github-square',
+            'icon': 'fa-brands fa-github',
             'type': 'fontawesome',
         },
         {
             'name': 'Twitter',
             'url': 'https://twitter.com/MetPy',
-            'icon': 'fa-brands fa-twitter-square',
+            'icon': 'fa-brands fa-twitter',
             'type': 'fontawesome',
         }
     ],
