@@ -14,7 +14,7 @@ try:
         def __init__(self, name, scale, **kwargs):
             """Create MetPyMapFeature instance."""
             import cartopy.crs as ccrs
-            super().__init__(ccrs.PlateCarree(), **kwargs)
+            super().__init__(ccrs.PlateCarree(globe=ccrs.Globe('NAD83')), **kwargs)
             self.name = name
 
             if isinstance(scale, str):
@@ -27,7 +27,7 @@ try:
 
             # Ensure that the associated files are in the cache
             fname = f'{self.name}_{self.scaler.scale}'
-            for extension in ['.dbf', '.shx']:
+            for extension in ['.cpg', '.dbf', '.prj', '.shx']:
                 get_test_data(fname + extension, as_file_obj=False)
             path = get_test_data(fname + '.shp', as_file_obj=False)
             return iter(tuple(shapereader.Reader(path).geometries()))
