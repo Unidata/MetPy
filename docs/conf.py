@@ -222,6 +222,12 @@ html_theme_options = {
             'url': 'https://twitter.com/MetPy',
             'icon': 'fa-brands fa-twitter',
             'type': 'fontawesome',
+        },
+        {
+            'name': 'Calendar',
+            'url': 'https://calendar.google.com/calendar/embed?src=c_596cc34cd7196caec223786795c8730786aead6e2dbffe03403186f203075973%40group.calendar.google.com&ctz=America%2FDenver',
+            'icon': 'fa-solid fa-calendar',
+            'type': 'fontawesome',
         }
     ],
     'use_edit_page_button': False,
