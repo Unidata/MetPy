@@ -31,7 +31,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 18-28
 
-.. code-block:: default
+.. code-block:: Python
 
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
@@ -52,7 +52,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 29-32
 
-.. code-block:: default
+.. code-block:: Python
 
 
     crs = ccrs.LambertConformal(central_longitude=-100.0, central_latitude=45.0)
@@ -66,7 +66,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 33-44
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -88,7 +88,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 45-50
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Open the example netCDF data
@@ -125,7 +125,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 51-55
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Combine 1D latitude and longitudes into a 2D grid of locations
@@ -140,7 +140,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 56-63
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Pull out the data
@@ -158,7 +158,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 64-71
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Do unit conversions to what we wish to plot
@@ -176,7 +176,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 72-77
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Smooth the height data
@@ -192,7 +192,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 78-128
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Create the figure and plot background on different axes
@@ -259,7 +259,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 9.450 seconds)
+   **Total running time of the script:** (0 minutes 9.290 seconds)
 
 
 .. _sphx_glr_download_examples_Four_Panel_Map.py:
@@ -268,16 +268,13 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Four_Panel_Map.ipynb <Four_Panel_Map.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Four_Panel_Map.py <Four_Panel_Map.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Four_Panel_Map.ipynb <Four_Panel_Map.ipynb>`
 
 
 .. only:: html

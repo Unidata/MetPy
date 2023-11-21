@@ -26,7 +26,7 @@ Compares different point interpolation approaches.
 
 .. GENERATED FROM PYTHON SOURCE LINES 11-24
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import cartopy.crs as ccrs
@@ -50,7 +50,7 @@ Compares different point interpolation approaches.
 
 .. GENERATED FROM PYTHON SOURCE LINES 25-76
 
-.. code-block:: default
+.. code-block:: Python
 
     def basic_map(proj, title):
         """Make our basic default map for plotting"""
@@ -117,7 +117,7 @@ Scipy.interpolate linear
 
 .. GENERATED FROM PYTHON SOURCE LINES 79-85
 
-.. code-block:: default
+.. code-block:: Python
 
     gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='linear', hres=75000)
     img = np.ma.masked_where(np.isnan(img), img)
@@ -139,7 +139,7 @@ Scipy.interpolate linear
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f99f0baf7d0>
+    <matplotlib.colorbar.Colorbar object at 0x7f2ae5c28150>
 
 
 
@@ -151,7 +151,7 @@ Natural neighbor interpolation (MetPy implementation)
 
 .. GENERATED FROM PYTHON SOURCE LINES 89-95
 
-.. code-block:: default
+.. code-block:: Python
 
     gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='natural_neighbor', hres=75000)
     img = np.ma.masked_where(np.isnan(img), img)
@@ -173,7 +173,7 @@ Natural neighbor interpolation (MetPy implementation)
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f99e93b85d0>
+    <matplotlib.colorbar.Colorbar object at 0x7f2ae5bd1d90>
 
 
 
@@ -189,7 +189,7 @@ min_neighbors = 1
 
 .. GENERATED FROM PYTHON SOURCE LINES 103-110
 
-.. code-block:: default
+.. code-block:: Python
 
     gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='cressman', minimum_neighbors=1,
                                       hres=75000, search_radius=100000)
@@ -212,7 +212,7 @@ min_neighbors = 1
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f99e9360d90>
+    <matplotlib.colorbar.Colorbar object at 0x7f2ae6058ed0>
 
 
 
@@ -226,7 +226,7 @@ min_neighbors = 3
 
 .. GENERATED FROM PYTHON SOURCE LINES 116-123
 
-.. code-block:: default
+.. code-block:: Python
 
     gx, gy, img1 = interpolate_to_grid(x, y, temp, interp_type='barnes', hres=75000,
                                        search_radius=100000)
@@ -249,7 +249,7 @@ min_neighbors = 3
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f99f0c12910>
+    <matplotlib.colorbar.Colorbar object at 0x7f2ae58e9f90>
 
 
 
@@ -261,7 +261,7 @@ linear
 
 .. GENERATED FROM PYTHON SOURCE LINES 127-135
 
-.. code-block:: default
+.. code-block:: Python
 
     gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='rbf', hres=75000, rbf_func='linear',
                                       rbf_smooth=0)
@@ -286,7 +286,7 @@ linear
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.560 seconds)
+   **Total running time of the script:** (0 minutes 5.583 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Point_Interpolation.py:
@@ -295,16 +295,13 @@ linear
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Point_Interpolation.ipynb <Point_Interpolation.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Point_Interpolation.py <Point_Interpolation.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Point_Interpolation.ipynb <Point_Interpolation.ipynb>`
 
 
 .. only:: html

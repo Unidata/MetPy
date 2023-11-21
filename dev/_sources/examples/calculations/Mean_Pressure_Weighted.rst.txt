@@ -29,7 +29,7 @@ temperature over a depth of 500 hPa.
 
 .. GENERATED FROM PYTHON SOURCE LINES 14-20
 
-.. code-block:: default
+.. code-block:: Python
 
     import pandas as pd
 
@@ -51,7 +51,7 @@ some of MetPy's sample data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 23-31
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set column names
@@ -74,7 +74,7 @@ Drop any rows with all NaN values for T, Td, winds
 
 .. GENERATED FROM PYTHON SOURCE LINES 33-36
 
-.. code-block:: default
+.. code-block:: Python
 
     df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'),
                    how='all').reset_index(drop=True)
@@ -92,7 +92,7 @@ Isolate pressure, temperature, and height and add units
 
 .. GENERATED FROM PYTHON SOURCE LINES 38-42
 
-.. code-block:: default
+.. code-block:: Python
 
     p = df['pressure'].values * units.hPa
     T = df['temperature'].values * units.degC
@@ -111,7 +111,7 @@ Calculate the mean pressure weighted temperature over a depth of 500 hPa
 
 .. GENERATED FROM PYTHON SOURCE LINES 44-45
 
-.. code-block:: default
+.. code-block:: Python
 
     print(mean_pressure_weighted(p, T, height=h, depth=500 * units.hPa))
 
@@ -130,7 +130,7 @@ Calculate the mean pressure weighted temperature over a depth of 500 hPa
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.010 seconds)
+   **Total running time of the script:** (0 minutes 0.011 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Mean_Pressure_Weighted.py:
@@ -139,16 +139,13 @@ Calculate the mean pressure weighted temperature over a depth of 500 hPa
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Mean_Pressure_Weighted.ipynb <Mean_Pressure_Weighted.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Mean_Pressure_Weighted.py <Mean_Pressure_Weighted.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Mean_Pressure_Weighted.ipynb <Mean_Pressure_Weighted.ipynb>`
 
 
 .. only:: html

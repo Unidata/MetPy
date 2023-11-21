@@ -37,7 +37,7 @@ Plots time series data as a meteogram.
 
 
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import datetime as dt
@@ -253,7 +253,7 @@ Plots time series data as a meteogram.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.709 seconds)
+   **Total running time of the script:** (0 minutes 0.714 seconds)
 
 
 .. _sphx_glr_download_examples_meteogram_metpy.py:
@@ -262,16 +262,13 @@ Plots time series data as a meteogram.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: meteogram_metpy.ipynb <meteogram_metpy.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: meteogram_metpy.py <meteogram_metpy.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: meteogram_metpy.ipynb <meteogram_metpy.ipynb>`
 
 
 .. only:: html

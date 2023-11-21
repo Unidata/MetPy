@@ -30,7 +30,7 @@ existing point data in a format you can work with trivially, the station plot wi
 
 .. GENERATED FROM PYTHON SOURCE LINES 15-24
 
-.. code-block:: default
+.. code-block:: Python
 
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
@@ -59,7 +59,7 @@ https://thredds.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.html
 
 .. GENERATED FROM PYTHON SOURCE LINES 31-37
 
-.. code-block:: default
+.. code-block:: Python
 
 
     data = metar.parse_metar_file(get_test_data('metar_20190701_1200.txt', as_file_obj=False))
@@ -81,7 +81,7 @@ of stations plotted will be reduced using `reduce_point_density`.
 
 .. GENERATED FROM PYTHON SOURCE LINES 40-51
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set up the map projection
@@ -108,7 +108,7 @@ The payoff
 
 .. GENERATED FROM PYTHON SOURCE LINES 54-113
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Change the DPI of the resulting figure. Higher DPI drastically improves the
@@ -184,7 +184,7 @@ The payoff
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 13.729 seconds)
+   **Total running time of the script:** (0 minutes 13.892 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot.py:
@@ -193,16 +193,13 @@ The payoff
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Station_Plot.ipynb <Station_Plot.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Station_Plot.py <Station_Plot.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Station_Plot.ipynb <Station_Plot.ipynb>`
 
 
 .. only:: html

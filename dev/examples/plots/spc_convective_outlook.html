@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 20, 2023 at 22:42:18"/>
+    <meta name="docbuild:last-update" content="Nov 21, 2023 at 16:47:55"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/plots/spc_convective_outlook.html" />
 
   </head>
@@ -582,18 +582,18 @@ to download the full example code</p>
 plotting interface. This example walks through plotting the Day 1 Convective Outlook from NOAA
 Storm Prediction Center. The geoJSON file was retrieved from the <a class="reference external" href="https://www.spc.noaa.gov/archive/">Storm Prediction Center’s
 archives</a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">geopandas</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">geopandas</span>
 
 <span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
 <span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PanelContainer</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PlotGeometry</span></a>
 </pre></div>
 </div>
 <p>Read in the geoJSON file containing the convective outlook.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">day1_outlook</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;spc_day1otlk_20210317_1200_lyr.geojson&#39;</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">day1_outlook</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;spc_day1otlk_20210317_1200_lyr.geojson&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Preview the data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">day1_outlook</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">day1_outlook</span>
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -707,7 +707,7 @@ archives</a>.</p>
 <br /><p>Plot the shapes from the ‘geometry’ column. Give the shapes their fill and stroke color by
 providing the ‘fill’ and ‘stroke’ columns. Use text from the ‘LABEL’ column as labels for the
 shapes.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PlotGeometry</span></a><span class="p">()</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PlotGeometry</span></a><span class="p">()</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span><span class="o">.</span><span class="n">geometry</span></a> <span class="o">=</span> <span class="n">day1_outlook</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span><span class="o">.</span><span class="n">fill</span></a> <span class="o">=</span> <span class="n">day1_outlook</span><span class="p">[</span><span class="s1">&#39;fill&#39;</span><span class="p">]</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span><span class="o">.</span><span class="n">stroke</span></a> <span class="o">=</span> <span class="n">day1_outlook</span><span class="p">[</span><span class="s1">&#39;stroke&#39;</span><span class="p">]</span>
@@ -716,7 +716,7 @@ shapes.</p>
 </pre></div>
 </div>
 <p>Add the geometry plot to a panel and container.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">()</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">()</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">title</span></a> <span class="o">=</span> <span class="s1">&#39;SPC Day 1 Convective Outlook (Valid 12z Mar 17 2021)&#39;</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">plots</span></a> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">geo</span></a><span class="p">]</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">area</span></a> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="o">-</span><span class="mi">75</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
@@ -729,13 +729,13 @@ shapes.</p>
 <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_spc_convective_outlook_001.png" srcset="../../_images/sphx_glr_spc_convective_outlook_001.png" alt="SPC Day 1 Convective Outlook (Valid 12z Mar 17 2021)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 8.231 seconds)</p>
+<img src="../../_images/sphx_glr_spc_convective_outlook_001.png" srcset="../../_images/sphx_glr_spc_convective_outlook_001.png" alt="SPC Day 1 Convective Outlook (Valid 12z Mar 17 2021)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 8.404 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-spc-convective-outlook-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/440a38f198ce4b5f811d3749b2ed9089/spc_convective_outlook.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">spc_convective_outlook.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/0c4829bf9f81fa07605c78ac7049bb69/spc_convective_outlook.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">spc_convective_outlook.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/440a38f198ce4b5f811d3749b2ed9089/spc_convective_outlook.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">spc_convective_outlook.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

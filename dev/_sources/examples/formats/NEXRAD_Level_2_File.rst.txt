@@ -26,7 +26,7 @@ Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 11-22
 
-.. code-block:: default
+.. code-block:: Python
 
     import cartopy.crs as ccrs
     import matplotlib.gridspec as gridspec
@@ -52,7 +52,7 @@ Open the file
 
 .. GENERATED FROM PYTHON SOURCE LINES 24-28
 
-.. code-block:: default
+.. code-block:: Python
 
     name = get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False)
     f = Level2File(name)
@@ -75,7 +75,7 @@ Open the file
 
 .. GENERATED FROM PYTHON SOURCE LINES 29-36
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Pull data out of the file
@@ -99,7 +99,7 @@ where the azimuth crosses from 0 to 360.
 
 .. GENERATED FROM PYTHON SOURCE LINES 40-53
 
-.. code-block:: default
+.. code-block:: Python
 
     diff = np.diff(az)
     crossed = diff < -180
@@ -127,7 +127,7 @@ Calculate ranges for the gates from the metadata
 
 .. GENERATED FROM PYTHON SOURCE LINES 55-71
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # 5th item is a dict mapping a var name (byte string) to a tuple
@@ -154,7 +154,7 @@ Calculate ranges for the gates from the metadata
 
 .. GENERATED FROM PYTHON SOURCE LINES 72-94
 
-.. code-block:: default
+.. code-block:: Python
 
     spec = gridspec.GridSpec(1, 2)
     fig = plt.figure(figsize=(15, 8))
@@ -193,7 +193,7 @@ Calculate ranges for the gates from the metadata
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.559 seconds)
+   **Total running time of the script:** (0 minutes 5.551 seconds)
 
 
 .. _sphx_glr_download_examples_formats_NEXRAD_Level_2_File.py:
@@ -202,16 +202,13 @@ Calculate ranges for the gates from the metadata
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: NEXRAD_Level_2_File.ipynb <NEXRAD_Level_2_File.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: NEXRAD_Level_2_File.py <NEXRAD_Level_2_File.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: NEXRAD_Level_2_File.ipynb <NEXRAD_Level_2_File.ipynb>`
 
 
 .. only:: html

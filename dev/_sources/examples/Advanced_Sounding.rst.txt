@@ -30,7 +30,7 @@ ambient profile and the parcel profile is colored as well.
 
 .. GENERATED FROM PYTHON SOURCE LINES 15-24
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import matplotlib.pyplot as plt
@@ -55,7 +55,7 @@ some of MetPy's sample data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 27-37
 
-.. code-block:: default
+.. code-block:: Python
 
 
     col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'speed']
@@ -81,7 +81,7 @@ assign units.
 
 .. GENERATED FROM PYTHON SOURCE LINES 40-48
 
-.. code-block:: default
+.. code-block:: Python
 
 
     p = df['pressure'].values * units.hPa
@@ -104,7 +104,7 @@ Create a new figure. The dimensions here give a good aspect ratio.
 
 .. GENERATED FROM PYTHON SOURCE LINES 50-94
 
-.. code-block:: default
+.. code-block:: Python
 
 
     fig = plt.figure(figsize=(9, 9))
@@ -165,7 +165,7 @@ Create a new figure. The dimensions here give a good aspect ratio.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.231 seconds)
+   **Total running time of the script:** (0 minutes 0.234 seconds)
 
 
 .. _sphx_glr_download_examples_Advanced_Sounding.py:
@@ -174,16 +174,13 @@ Create a new figure. The dimensions here give a good aspect ratio.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Advanced_Sounding.ipynb <Advanced_Sounding.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Advanced_Sounding.py <Advanced_Sounding.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Advanced_Sounding.ipynb <Advanced_Sounding.ipynb>`
 
 
 .. only:: html

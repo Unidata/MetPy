@@ -29,7 +29,7 @@ lowest three kilometers for the provided sounding data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 14-20
 
-.. code-block:: default
+.. code-block:: Python
 
     import pandas as pd
 
@@ -51,7 +51,7 @@ some of MetPy's sample data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 23-31
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set column names
@@ -74,7 +74,7 @@ Drop any rows with all NaN values for T, Td, winds
 
 .. GENERATED FROM PYTHON SOURCE LINES 33-36
 
-.. code-block:: default
+.. code-block:: Python
 
     df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'),
                    how='all').reset_index(drop=True)
@@ -92,7 +92,7 @@ Isolate pressure, wind direction, wid speed, and height and add units
 
 .. GENERATED FROM PYTHON SOURCE LINES 38-43
 
-.. code-block:: default
+.. code-block:: Python
 
     p = df['pressure'].values * units.hPa
     wdir = df['direction'].values * units.degree
@@ -112,7 +112,7 @@ Calculate the u and v-components of the wind
 
 .. GENERATED FROM PYTHON SOURCE LINES 45-47
 
-.. code-block:: default
+.. code-block:: Python
 
     u, v = wind_components(sped, wdir)
 
@@ -129,7 +129,7 @@ Compute the bulk shear for the lowest three km
 
 .. GENERATED FROM PYTHON SOURCE LINES 49-50
 
-.. code-block:: default
+.. code-block:: Python
 
     print(bulk_shear(p, u, v, height, depth=3 * units.km, bottom=height[0]))
 
@@ -157,16 +157,13 @@ Compute the bulk shear for the lowest three km
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Bulk_Shear.ipynb <Bulk_Shear.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Bulk_Shear.py <Bulk_Shear.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Bulk_Shear.ipynb <Bulk_Shear.ipynb>`
 
 
 .. only:: html

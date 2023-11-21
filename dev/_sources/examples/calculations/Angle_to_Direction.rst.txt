@@ -29,7 +29,7 @@ It also  demonstrates the function's flexibility.
 
 .. GENERATED FROM PYTHON SOURCE LINES 14-17
 
-.. code-block:: default
+.. code-block:: Python
 
     import metpy.calc as mpcalc
     from metpy.units import units
@@ -47,7 +47,7 @@ Create a test value of an angle
 
 .. GENERATED FROM PYTHON SOURCE LINES 19-22
 
-.. code-block:: default
+.. code-block:: Python
 
     angle_deg = 70 * units('degree')
     print(angle_deg)
@@ -72,7 +72,7 @@ get the corresponding direction
 
 .. GENERATED FROM PYTHON SOURCE LINES 25-28
 
-.. code-block:: default
+.. code-block:: Python
 
     dir_str = mpcalc.angle_to_direction(angle_deg)
     print(dir_str)
@@ -98,7 +98,7 @@ and defaulting to degrees if no units are specified.
 
 .. GENERATED FROM PYTHON SOURCE LINES 32-36
 
-.. code-block:: default
+.. code-block:: Python
 
     angle_deg_list = [0, 361, 719]
     dir_str_list = mpcalc.angle_to_direction(angle_deg_list)
@@ -123,7 +123,7 @@ If you want the unabbrieviated version, input full=True
 
 .. GENERATED FROM PYTHON SOURCE LINES 38-40
 
-.. code-block:: default
+.. code-block:: Python
 
     full_dir_str_list = mpcalc.angle_to_direction(angle_deg_list, full=True)
     print(full_dir_str_list)
@@ -152,16 +152,13 @@ If you want the unabbrieviated version, input full=True
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Angle_to_Direction.ipynb <Angle_to_Direction.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Angle_to_Direction.py <Angle_to_Direction.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Angle_to_Direction.ipynb <Angle_to_Direction.ipynb>`
 
 
 .. only:: html

@@ -27,7 +27,7 @@ meteorological analyses including upper air observation plots.
 
 .. GENERATED FROM PYTHON SOURCE LINES 14-22
 
-.. code-block:: default
+.. code-block:: Python
 
     from datetime import datetime
 
@@ -54,7 +54,7 @@ The data are pre-processed to attach latitude/longitude locations for each RAOB 
 
 .. GENERATED FROM PYTHON SOURCE LINES 28-38
 
-.. code-block:: default
+.. code-block:: Python
 
 
     data = pd.read_csv(get_test_data('UPA_obs.csv', as_file_obj=False))
@@ -81,7 +81,7 @@ Use the declarative plotting interface to create a CONUS upper-air map for 500 h
 
 .. GENERATED FROM PYTHON SOURCE LINES 42-69
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Plotting the Observations
@@ -125,7 +125,7 @@ Use the declarative plotting interface to create a CONUS upper-air map for 500 h
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.744 seconds)
+   **Total running time of the script:** (0 minutes 0.758 seconds)
 
 
 .. _sphx_glr_download_examples_plots_upperair_declarative.py:
@@ -134,16 +134,13 @@ Use the declarative plotting interface to create a CONUS upper-air map for 500 h
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: upperair_declarative.ipynb <upperair_declarative.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: upperair_declarative.py <upperair_declarative.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: upperair_declarative.ipynb <upperair_declarative.ipynb>`
 
 
 .. only:: html

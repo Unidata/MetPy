@@ -27,7 +27,7 @@ boundaries you would like to plot.
 
 .. GENERATED FROM PYTHON SOURCE LINES 12-18
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import matplotlib.pyplot as plt
@@ -48,7 +48,7 @@ Define some synthetic points to represent the low pressure system and its fronta
 
 .. GENERATED FROM PYTHON SOURCE LINES 20-27
 
-.. code-block:: default
+.. code-block:: Python
 
     low_lon, low_lat = -94, 32
     cold_lat = np.linspace(low_lat - 0.15, low_lat - 1.75, 100)
@@ -71,7 +71,7 @@ standard lines, but add our path effects.
 
 .. GENERATED FROM PYTHON SOURCE LINES 30-36
 
-.. code-block:: default
+.. code-block:: Python
 
     fig, ax = plt.subplots(figsize=(8, 8), dpi=150)
     ax.text(low_lon, low_lat, 'L', color='red', size=30,
@@ -94,7 +94,7 @@ standard lines, but add our path effects.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.099 seconds)
+   **Total running time of the script:** (0 minutes 0.135 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simple_Fronts_Plot.py:
@@ -103,16 +103,13 @@ standard lines, but add our path effects.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Simple_Fronts_Plot.ipynb <Simple_Fronts_Plot.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Simple_Fronts_Plot.py <Simple_Fronts_Plot.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Simple_Fronts_Plot.ipynb <Simple_Fronts_Plot.ipynb>`
 
 
 .. only:: html

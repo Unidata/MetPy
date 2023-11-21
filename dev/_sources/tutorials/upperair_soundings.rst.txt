@@ -31,7 +31,7 @@ air weather service guide.
 
 .. GENERATED FROM PYTHON SOURCE LINES 16-27
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -61,7 +61,7 @@ some of MetPy's sample data. This event is the Veterans Day tornado outbreak in 
 
 .. GENERATED FROM PYTHON SOURCE LINES 33-43
 
-.. code-block:: default
+.. code-block:: Python
 
 
     col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'speed']
@@ -82,7 +82,7 @@ some of MetPy's sample data. This event is the Veterans Day tornado outbreak in 
 
 .. GENERATED FROM PYTHON SOURCE LINES 44-55
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # We will pull the data out of the example dataset into individual variables and
@@ -118,7 +118,7 @@ sounding. The MetPy calc module has many such calculations already implemented!
 
 .. GENERATED FROM PYTHON SOURCE LINES 67-76
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Calculate the LCL
@@ -171,7 +171,7 @@ These lines perform the following tasks:
 
 .. GENERATED FROM PYTHON SOURCE LINES 101-115
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Create a new figure. The dimensions here give a good aspect ratio
@@ -210,7 +210,7 @@ useful when performing further analysis on the Skew-T diagram. Often the
 
 .. GENERATED FROM PYTHON SOURCE LINES 122-156
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Create a new figure. The dimensions here give a good aspect ratio
@@ -271,7 +271,7 @@ which are not drawn.
 
 .. GENERATED FROM PYTHON SOURCE LINES 165-206
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Create a new figure. The dimensions here give a good aspect ratio
@@ -329,7 +329,7 @@ which are not drawn.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.330 seconds)
+   **Total running time of the script:** (0 minutes 1.245 seconds)
 
 
 .. _sphx_glr_download_tutorials_upperair_soundings.py:
@@ -338,16 +338,13 @@ which are not drawn.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: upperair_soundings.ipynb <upperair_soundings.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: upperair_soundings.py <upperair_soundings.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: upperair_soundings.ipynb <upperair_soundings.ipynb>`
 
 
 .. only:: html

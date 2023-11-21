@@ -29,7 +29,7 @@ layer of the provided sounding data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 14-21
 
-.. code-block:: default
+.. code-block:: Python
 
     import pandas as pd
 
@@ -52,7 +52,7 @@ some of MetPy's sample data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 24-32
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set column names
@@ -75,7 +75,7 @@ Drop any rows with all NaN values for T, Td, winds
 
 .. GENERATED FROM PYTHON SOURCE LINES 34-37
 
-.. code-block:: default
+.. code-block:: Python
 
     df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'
                            ), how='all').reset_index(drop=True)
@@ -93,7 +93,7 @@ Isolate pressure and temperature and add units
 
 .. GENERATED FROM PYTHON SOURCE LINES 39-42
 
-.. code-block:: default
+.. code-block:: Python
 
     p = df['pressure'].values * units.hPa
     T = df['temperature'].values * units.degC
@@ -111,7 +111,7 @@ Calculate the static stability and convert to K/Pa units
 
 .. GENERATED FROM PYTHON SOURCE LINES 44-45
 
-.. code-block:: default
+.. code-block:: Python
 
     print((static_stability(p, T) * (p / Rd)).to('K/Pa'))
 
@@ -139,16 +139,13 @@ Calculate the static stability and convert to K/Pa units
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Static_Stability.ipynb <Static_Stability.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Static_Stability.py <Static_Stability.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Static_Stability.ipynb <Static_Stability.ipynb>`
 
 
 .. only:: html

@@ -26,7 +26,7 @@ Layout a Skew-T plot with a hodograph inset into the plot.
 
 .. GENERATED FROM PYTHON SOURCE LINES 11-21
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import matplotlib.pyplot as plt
@@ -52,7 +52,7 @@ some of MetPy's sample data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 24-34
 
-.. code-block:: default
+.. code-block:: Python
 
 
     col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'speed']
@@ -78,7 +78,7 @@ assign units.
 
 .. GENERATED FROM PYTHON SOURCE LINES 37-46
 
-.. code-block:: default
+.. code-block:: Python
 
 
     hght = df['height'].values * units.hPa
@@ -98,7 +98,7 @@ assign units.
 
 .. GENERATED FROM PYTHON SOURCE LINES 47-78
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Create a new figure. The dimensions here give a good aspect ratio
@@ -146,7 +146,7 @@ assign units.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.210 seconds)
+   **Total running time of the script:** (0 minutes 0.261 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Hodograph_Inset.py:
@@ -155,16 +155,13 @@ assign units.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Hodograph_Inset.ipynb <Hodograph_Inset.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Hodograph_Inset.py <Hodograph_Inset.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Hodograph_Inset.ipynb <Hodograph_Inset.ipynb>`
 
 
 .. only:: html

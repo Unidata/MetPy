@@ -36,7 +36,7 @@ of a station plot.
 
 .. GENERATED FROM PYTHON SOURCE LINES 21-32
 
-.. code-block:: default
+.. code-block:: Python
 
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
@@ -67,7 +67,7 @@ the columns with string data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 39-48
 
-.. code-block:: default
+.. code-block:: Python
 
     with get_test_data('station_data.txt') as f:
         data_arr = pd.read_csv(f, header=0, usecols=(1, 2, 3, 4, 5, 6, 7, 17, 18, 19),
@@ -92,7 +92,7 @@ a few from around the U.S. and pull those out of the data file.
 
 .. GENERATED FROM PYTHON SOURCE LINES 51-68
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Pull out these specific stations
@@ -131,7 +131,7 @@ put them into a dictionary that we will hand the plotting function later:
 
 .. GENERATED FROM PYTHON SOURCE LINES 71-83
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # This is our container for the data
@@ -165,7 +165,7 @@ Now perform a few conversions:
 
 .. GENERATED FROM PYTHON SOURCE LINES 92-108
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Get the wind components, converting from m/s to knots as will be appropriate
@@ -197,7 +197,7 @@ Set up the map projection and set up a cartopy feature for state borders
 
 .. GENERATED FROM PYTHON SOURCE LINES 111-114
 
-.. code-block:: default
+.. code-block:: Python
 
     proj = ccrs.LambertConformal(central_longitude=-95, central_latitude=35,
                                  standard_parallels=[35])
@@ -216,7 +216,7 @@ The payoff
 
 .. GENERATED FROM PYTHON SOURCE LINES 117-154
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Change the DPI of the resulting figure. Higher DPI drastically improves the
@@ -273,7 +273,7 @@ or instead, a custom layout can be used:
 
 .. GENERATED FROM PYTHON SOURCE LINES 156-199
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Just winds, temps, and dewpoint, with colors. Dewpoint and temp will be plotted
@@ -333,7 +333,7 @@ or instead, a custom layout can be used:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.509 seconds)
+   **Total running time of the script:** (0 minutes 1.518 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot_with_Layout.py:
@@ -342,16 +342,13 @@ or instead, a custom layout can be used:
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Station_Plot_with_Layout.ipynb <Station_Plot_with_Layout.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Station_Plot_with_Layout.py <Station_Plot_with_Layout.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Station_Plot_with_Layout.ipynb <Station_Plot_with_Layout.ipynb>`
 
 
 .. only:: html

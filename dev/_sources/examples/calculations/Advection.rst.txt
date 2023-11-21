@@ -52,7 +52,7 @@ the example xarray Dataset and plotting using Matplotlib.
 
 |
 
-.. code-block:: default
+.. code-block:: Python
 
     import matplotlib.pyplot as plt
 
@@ -91,7 +91,7 @@ the example xarray Dataset and plotting using Matplotlib.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.141 seconds)
+   **Total running time of the script:** (0 minutes 0.139 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Advection.py:
@@ -100,16 +100,13 @@ the example xarray Dataset and plotting using Matplotlib.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Advection.ipynb <Advection.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Advection.py <Advection.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Advection.ipynb <Advection.ipynb>`
 
 
 .. only:: html

@@ -28,7 +28,7 @@ path effects for matplotlib than can be used to represent a line as a traditiona
 
 .. GENERATED FROM PYTHON SOURCE LINES 13-23
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import cartopy.crs as ccrs
@@ -56,7 +56,7 @@ features.
 
 .. GENERATED FROM PYTHON SOURCE LINES 28-59
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -102,7 +102,7 @@ Set up the map for plotting, parse the bulletin, and plot it
 
 .. GENERATED FROM PYTHON SOURCE LINES 61-79
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set up a default figure and map
@@ -137,7 +137,7 @@ Set up the map for plotting, parse the bulletin, and plot it
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.019 seconds)
+   **Total running time of the script:** (0 minutes 6.863 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Plotting_Surface_Analysis.py:
@@ -146,16 +146,13 @@ Set up the map for plotting, parse the bulletin, and plot it
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Plotting_Surface_Analysis.ipynb <Plotting_Surface_Analysis.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Plotting_Surface_Analysis.py <Plotting_Surface_Analysis.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Plotting_Surface_Analysis.ipynb <Plotting_Surface_Analysis.ipynb>`
 
 
 .. only:: html

@@ -29,7 +29,7 @@ event on May 22, 2011 from the Norman, OK sounding.
 
 .. GENERATED FROM PYTHON SOURCE LINES 14-21
 
-.. code-block:: default
+.. code-block:: Python
 
     import numpy as np
     import pandas as pd
@@ -51,7 +51,7 @@ Effective Shear Algorithm for use in Supercell Composite Calculation
 
 .. GENERATED FROM PYTHON SOURCE LINES 23-70
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -114,7 +114,7 @@ some of MetPy's sample data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 73-82
 
-.. code-block:: default
+.. code-block:: Python
 
     col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'speed']
 
@@ -138,7 +138,7 @@ Isolate needed variables from our data file and attach units
 
 .. GENERATED FROM PYTHON SOURCE LINES 84-91
 
-.. code-block:: default
+.. code-block:: Python
 
     p = df['pressure'].values * units.hPa
     T = df['temperature'].values * units.degC
@@ -160,7 +160,7 @@ Compute the wind components
 
 .. GENERATED FROM PYTHON SOURCE LINES 93-95
 
-.. code-block:: default
+.. code-block:: Python
 
     u, v = mpcalc.wind_components(sped, wdir)
 
@@ -177,7 +177,7 @@ Compute common sounding index parameters
 
 .. GENERATED FROM PYTHON SOURCE LINES 97-103
 
-.. code-block:: default
+.. code-block:: Python
 
     ctotals = mpcalc.cross_totals(p, T, Td)
     kindex = mpcalc.k_index(p, T, Td)
@@ -198,7 +198,7 @@ Compture the parcel profile for a surface-based parcel
 
 .. GENERATED FROM PYTHON SOURCE LINES 105-107
 
-.. code-block:: default
+.. code-block:: Python
 
     prof = mpcalc.parcel_profile(p, T[0], Td[0])
 
@@ -215,7 +215,7 @@ Compute the corresponding LI, CAPE, CIN values for a surface parcel
 
 .. GENERATED FROM PYTHON SOURCE LINES 109-112
 
-.. code-block:: default
+.. code-block:: Python
 
     lift_index = mpcalc.lifted_index(p, T, prof)
     cape, cin = mpcalc.cape_cin(p, T, Td, prof)
@@ -233,7 +233,7 @@ Determine the LCL, LFC, and EL for our surface parcel
 
 .. GENERATED FROM PYTHON SOURCE LINES 114-118
 
-.. code-block:: default
+.. code-block:: Python
 
     lclp, lclt = mpcalc.lcl(p[0], T[0], Td[0])
     lfcp, _ = mpcalc.lfc(p, T, Td)
@@ -252,7 +252,7 @@ Compute the characteristics of a mean layer parcel (50-hPa depth)
 
 .. GENERATED FROM PYTHON SOURCE LINES 120-124
 
-.. code-block:: default
+.. code-block:: Python
 
     ml_t, ml_td = mpcalc.mixed_layer(p, T, Td, depth=50 * units.hPa)
     ml_p, _, _ = mpcalc.mixed_parcel(p, T, Td, depth=50 * units.hPa)
@@ -271,7 +271,7 @@ Compute the characteristics of the most unstable parcel (50-hPa depth)
 
 .. GENERATED FROM PYTHON SOURCE LINES 126-129
 
-.. code-block:: default
+.. code-block:: Python
 
     mu_p, mu_t, mu_td, _ = mpcalc.most_unstable_parcel(p, T, Td, depth=50 * units.hPa)
     mucape, mucin = mpcalc.most_unstable_cape_cin(p, T, Td, depth=50 * units.hPa)
@@ -289,7 +289,7 @@ Compute the Bunkers Storm Motion vector and use to calculate the critical angle
 
 .. GENERATED FROM PYTHON SOURCE LINES 131-134
 
-.. code-block:: default
+.. code-block:: Python
 
     (u_storm, v_storm), *_ = mpcalc.bunkers_storm_motion(p, u, v, height)
     critical_angle = mpcalc.critical_angle(p, u, v, height, u_storm, v_storm)
@@ -307,7 +307,7 @@ Work on the calculations needed to compute the significant tornado parameter
 
 .. GENERATED FROM PYTHON SOURCE LINES 136-157
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Estimate height of LCL in meters from hydrostatic thickness
@@ -343,7 +343,7 @@ Compute the supercell composite parameter, if possible
 
 .. GENERATED FROM PYTHON SOURCE LINES 159-173
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Determine the top and bottom of the effective layer using our own function
@@ -372,7 +372,7 @@ Print Important Sounding Parameters
 
 .. GENERATED FROM PYTHON SOURCE LINES 175-211
 
-.. code-block:: default
+.. code-block:: Python
 
     print('Important Sounding Parameters for KOUN on 22 Mary 2011 12 UTC')
     print()
@@ -470,16 +470,13 @@ Print Important Sounding Parameters
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Sounding_Calculations.ipynb <Sounding_Calculations.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Sounding_Calculations.py <Sounding_Calculations.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Sounding_Calculations.ipynb <Sounding_Calculations.ipynb>`
 
 
 .. only:: html

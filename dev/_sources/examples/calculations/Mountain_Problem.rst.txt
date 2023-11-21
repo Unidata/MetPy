@@ -31,7 +31,7 @@ parcel started.
 
 .. GENERATED FROM PYTHON SOURCE LINES 16-21
 
-.. code-block:: default
+.. code-block:: Python
 
     import numpy as np
 
@@ -52,7 +52,7 @@ and ascend to 700-hPa with an initial temperature of 25 Celsius and a dewpoint o
 
 .. GENERATED FROM PYTHON SOURCE LINES 24-29
 
-.. code-block:: default
+.. code-block:: Python
 
 
     p = np.linspace(1000, 700, 301) * units.hPa
@@ -73,7 +73,7 @@ function and retain the pressure level and temperature of the parcel at the LCL
 
 .. GENERATED FROM PYTHON SOURCE LINES 32-38
 
-.. code-block:: default
+.. code-block:: Python
 
     lclp, lclt = lcl(p[0], T, Td)
     print('Initial dry ascent yields:')
@@ -106,7 +106,7 @@ at the top of our ascent (700-hPa in our case)
 
 .. GENERATED FROM PYTHON SOURCE LINES 43-49
 
-.. code-block:: default
+.. code-block:: Python
 
     moist_ascent_p = p[p <= lclp]
     moist_ascent_t = moist_lapse(moist_ascent_p, lclt)
@@ -137,7 +137,7 @@ and convert our solution to Celsius
 
 .. GENERATED FROM PYTHON SOURCE LINES 53-55
 
-.. code-block:: default
+.. code-block:: Python
 
     dry_descent = dry_lapse(p[::-1], moist_ascent_t[-1]).to('degC')
 
@@ -154,7 +154,7 @@ Pulling it all together
 
 .. GENERATED FROM PYTHON SOURCE LINES 57-62
 
-.. code-block:: default
+.. code-block:: Python
 
     print(f'Starting Temperature: {T:.2f}')
     print(f'Starting Dewpoint: {Td:.2f}', end='\n\n')
@@ -187,7 +187,7 @@ parcel
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.007 seconds)
+   **Total running time of the script:** (0 minutes 0.006 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Mountain_Problem.py:
@@ -196,16 +196,13 @@ parcel
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Mountain_Problem.ipynb <Mountain_Problem.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Mountain_Problem.py <Mountain_Problem.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Mountain_Problem.ipynb <Mountain_Problem.ipynb>`
 
 
 .. only:: html

@@ -27,7 +27,7 @@ data using CartoPy.
 
 .. GENERATED FROM PYTHON SOURCE LINES 12-19
 
-.. code-block:: default
+.. code-block:: Python
 
     import cartopy.feature as cfeature
     import matplotlib.pyplot as plt
@@ -45,7 +45,7 @@ data using CartoPy.
 
 .. GENERATED FROM PYTHON SOURCE LINES 20-25
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Use Xarray together with MetPy's GINI backend to directly open the file from the test data
@@ -85,7 +85,7 @@ netCDF Climate and Forecasting (CF) metadata to simplify working with projection
 
 .. GENERATED FROM PYTHON SOURCE LINES 28-32
 
-.. code-block:: default
+.. code-block:: Python
 
     x = ds.variables['x'][:]
     y = ds.variables['y'][:]
@@ -105,7 +105,7 @@ the projection information.
 
 .. GENERATED FROM PYTHON SOURCE LINES 35-46
 
-.. code-block:: default
+.. code-block:: Python
 
     fig = plt.figure(figsize=(10, 12))
     add_metpy_logo(fig, 125, 145)
@@ -133,7 +133,7 @@ the projection information.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.928 seconds)
+   **Total running time of the script:** (0 minutes 0.926 seconds)
 
 
 .. _sphx_glr_download_examples_formats_GINI_Water_Vapor.py:
@@ -142,16 +142,13 @@ the projection information.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: GINI_Water_Vapor.ipynb <GINI_Water_Vapor.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: GINI_Water_Vapor.py <GINI_Water_Vapor.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: GINI_Water_Vapor.ipynb <GINI_Water_Vapor.ipynb>`
 
 
 .. only:: html

@@ -26,7 +26,7 @@ Use MetPy as straightforward as possible to make a Skew-T LogP plot.
 
 .. GENERATED FROM PYTHON SOURCE LINES 11-21
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import matplotlib.pyplot as plt
@@ -47,7 +47,7 @@ Use MetPy as straightforward as possible to make a Skew-T LogP plot.
 
 .. GENERATED FROM PYTHON SOURCE LINES 22-26
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Change default to be better for skew-T
@@ -62,7 +62,7 @@ Use MetPy as straightforward as possible to make a Skew-T LogP plot.
 
 .. GENERATED FROM PYTHON SOURCE LINES 27-40
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Upper air data can be obtained using the siphon package, but for this example we will use
@@ -91,7 +91,7 @@ assign units.
 
 .. GENERATED FROM PYTHON SOURCE LINES 43-51
 
-.. code-block:: default
+.. code-block:: Python
 
 
     p = df['pressure'].values * units.hPa
@@ -110,7 +110,7 @@ assign units.
 
 .. GENERATED FROM PYTHON SOURCE LINES 52-75
 
-.. code-block:: default
+.. code-block:: Python
 
 
     skew = SkewT()
@@ -149,13 +149,13 @@ assign units.
  .. code-block:: none
 
 
-    <matplotlib.image.FigureImage object at 0x7f99f0b8b610>
+    <matplotlib.image.FigureImage object at 0x7f2ae5f6e2d0>
 
 
 
 .. GENERATED FROM PYTHON SOURCE LINES 76-110
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Example of defining your own vertical barb spacing
@@ -206,7 +206,7 @@ assign units.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.370 seconds)
+   **Total running time of the script:** (0 minutes 0.431 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simple_Sounding.py:
@@ -215,16 +215,13 @@ assign units.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Simple_Sounding.ipynb <Simple_Sounding.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Simple_Sounding.py <Simple_Sounding.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Simple_Sounding.ipynb <Simple_Sounding.ipynb>`
 
 
 .. only:: html

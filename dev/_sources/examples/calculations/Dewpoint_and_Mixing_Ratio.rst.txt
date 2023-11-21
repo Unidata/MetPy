@@ -31,7 +31,7 @@ temperature to degrees Fahrenheit.
 
 .. GENERATED FROM PYTHON SOURCE LINES 16-19
 
-.. code-block:: default
+.. code-block:: Python
 
     import metpy.calc as mpcalc
     from metpy.units import units
@@ -49,7 +49,7 @@ Create a test value of mixing ratio in grams per kilogram
 
 .. GENERATED FROM PYTHON SOURCE LINES 21-24
 
-.. code-block:: default
+.. code-block:: Python
 
     mixing = 10 * units('g/kg')
     print(mixing)
@@ -74,7 +74,7 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb
 
 .. GENERATED FROM PYTHON SOURCE LINES 27-30
 
-.. code-block:: default
+.. code-block:: Python
 
     e = mpcalc.vapor_pressure(1000. * units.mbar, mixing)
     print(e)
@@ -98,7 +98,7 @@ Take the odd units and force them to millibars
 
 .. GENERATED FROM PYTHON SOURCE LINES 32-34
 
-.. code-block:: default
+.. code-block:: Python
 
     print(e.to(units.mbar))
 
@@ -121,7 +121,7 @@ Take the raw vapor pressure and throw into the dewpoint function
 
 .. GENERATED FROM PYTHON SOURCE LINES 36-39
 
-.. code-block:: default
+.. code-block:: Python
 
     td = mpcalc.dewpoint(e)
     print(td)
@@ -145,7 +145,7 @@ Which can of course be converted to Fahrenheit
 
 .. GENERATED FROM PYTHON SOURCE LINES 41-43
 
-.. code-block:: default
+.. code-block:: Python
 
     print(td.to('degF'))
 
@@ -168,7 +168,7 @@ Now do the same thing for 850 mb, approximately the pressure of Denver
 
 .. GENERATED FROM PYTHON SOURCE LINES 45-48
 
-.. code-block:: default
+.. code-block:: Python
 
     e = mpcalc.vapor_pressure(850. * units.mbar, mixing)
     print(e.to(units.mbar))
@@ -192,7 +192,7 @@ And print the corresponding dewpoint
 
 .. GENERATED FROM PYTHON SOURCE LINES 50-52
 
-.. code-block:: default
+.. code-block:: Python
 
     td = mpcalc.dewpoint(e)
     print(td, td.to('degF'))
@@ -221,16 +221,13 @@ And print the corresponding dewpoint
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Dewpoint_and_Mixing_Ratio.ipynb <Dewpoint_and_Mixing_Ratio.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Dewpoint_and_Mixing_Ratio.py <Dewpoint_and_Mixing_Ratio.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Dewpoint_and_Mixing_Ratio.ipynb <Dewpoint_and_Mixing_Ratio.ipynb>`
 
 
 .. only:: html

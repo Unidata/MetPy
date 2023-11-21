@@ -38,7 +38,7 @@ behind the scenes.
 
 .. GENERATED FROM PYTHON SOURCE LINES 22-33
 
-.. code-block:: default
+.. code-block:: Python
 
     from datetime import datetime, timedelta
 
@@ -70,7 +70,7 @@ We'll start this tutorial by reading in a gridded dataset using Xarray.
 
 .. GENERATED FROM PYTHON SOURCE LINES 41-48
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Open the netCDF file as a xarray Dataset and parse the full dataset
@@ -126,7 +126,7 @@ Set the date/time of that you desire to plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 53-55
 
-.. code-block:: default
+.. code-block:: Python
 
     plot_time = datetime(2010, 10, 26, 12)
 
@@ -149,7 +149,7 @@ the U.S. for plotting purposes
 
 .. GENERATED FROM PYTHON SOURCE LINES 63-65
 
-.. code-block:: default
+.. code-block:: Python
 
     ds = data.metpy.sel(lat=slice(70, 10), lon=slice(360 - 150, 360 - 55))
 
@@ -178,7 +178,7 @@ to our Dataset.
 
 .. GENERATED FROM PYTHON SOURCE LINES 78-81
 
-.. code-block:: default
+.. code-block:: Python
 
     ds['wind_speed'] = mpcalc.wind_speed(ds['u-component_of_wind_isobaric'],
                                          ds['v-component_of_wind_isobaric'])
@@ -232,7 +232,7 @@ to have greater control over hour the data is plotted.
 
 .. GENERATED FROM PYTHON SOURCE LINES 118-130
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set attributes for contours of Geopotential Heights at 300 hPa
@@ -263,7 +263,7 @@ wind speed.
 
 .. GENERATED FROM PYTHON SOURCE LINES 136-148
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set attributes for plotting color-filled contours of wind speed at 300 hPa
@@ -294,7 +294,7 @@ attribute.
 
 .. GENERATED FROM PYTHON SOURCE LINES 154-163
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set the attributes for the map and add our data to the map
@@ -319,7 +319,7 @@ and ultimately show or save the figure.
 
 .. GENERATED FROM PYTHON SOURCE LINES 166-172
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set the attributes for the panel and put the panel in the figure
@@ -340,7 +340,7 @@ All of our setting now produce the following map!
 
 .. GENERATED FROM PYTHON SOURCE LINES 174-178
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Show the image
@@ -378,7 +378,7 @@ Geopotential Height contours, and color-filled wind speed.
 
 .. GENERATED FROM PYTHON SOURCE LINES 193-216
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set attributes for contours of Geopotential Heights at 300 hPa
@@ -418,7 +418,7 @@ wind barbs that are plotted on the map. Again we convert to units of knots.
 
 .. GENERATED FROM PYTHON SOURCE LINES 220-230
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set attributes for plotting wind barbs
@@ -444,7 +444,7 @@ list!
 
 .. GENERATED FROM PYTHON SOURCE LINES 233-251
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set the attributes for the map and add our data to the map
@@ -488,7 +488,7 @@ to plot the figure; similar to what you would do for a gridded plot.
 
 .. GENERATED FROM PYTHON SOURCE LINES 259-268
 
-.. code-block:: default
+.. code-block:: Python
 
     df = metar.parse_metar_file(get_test_data('metar_20190701_1200.txt', False), year=2019,
                                 month=7)
@@ -538,7 +538,7 @@ fields, and location attributes.
 
 .. GENERATED FROM PYTHON SOURCE LINES 281-297
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Plot desired data
@@ -570,7 +570,7 @@ panels on the figure. In this case we'll focus in on the state of Indiana for pl
 
 .. GENERATED FROM PYTHON SOURCE LINES 300-317
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Panel for plot with Map features
@@ -897,7 +897,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 11.113 seconds)
+   **Total running time of the script:** (0 minutes 11.073 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
@@ -906,16 +906,13 @@ Default value is zero (e.g., no points are removed from the plot).
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: declarative_tutorial.ipynb <declarative_tutorial.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: declarative_tutorial.py <declarative_tutorial.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: declarative_tutorial.ipynb <declarative_tutorial.ipynb>`
 
 
 .. only:: html

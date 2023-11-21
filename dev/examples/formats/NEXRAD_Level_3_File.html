@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 20, 2023 at 22:42:18"/>
+    <meta name="docbuild:last-update" content="Nov 21, 2023 at 16:47:55"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/formats/NEXRAD_Level_3_File.html" />
 
   </head>
@@ -579,7 +579,7 @@ to download the full example code</p>
 <section class="sphx-glr-example-title" id="nexrad-level-3-file">
 <span id="sphx-glr-examples-formats-nexrad-level-3-file-py"></span><h1>NEXRAD Level 3 File<a class="headerlink" href="#nexrad-level-3-file" title="Link to this heading">#</a></h1>
 <p>Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 <span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -591,7 +591,7 @@ to download the full example code</p>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.gridspec.GridSpec.html#matplotlib.gridspec.GridSpec" title="matplotlib.gridspec.GridSpec" class="sphx-glr-backref-module-matplotlib-gridspec sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">spec</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.gridspec.GridSpec.html#matplotlib.gridspec.GridSpec" title="matplotlib.gridspec.GridSpec" class="sphx-glr-backref-module-matplotlib-gridspec sphx-glr-backref-type-py-class"><span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.gridspec.GridSpec.html#matplotlib.gridspec.GridSpec" title="matplotlib.gridspec.GridSpec" class="sphx-glr-backref-module-matplotlib-gridspec sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">spec</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.gridspec.GridSpec.html#matplotlib.gridspec.GridSpec" title="matplotlib.gridspec.GridSpec" class="sphx-glr-backref-module-matplotlib-gridspec sphx-glr-backref-type-py-class"><span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_metpy_logo</span></a><span class="p">(</span><a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="mi">190</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ctables</span></a> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;NWSStormClearReflectivity&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>  <span class="c1"># dBZ</span>
@@ -633,13 +633,13 @@ to download the full example code</p>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_NEXRAD_Level_3_File_001.png" srcset="../../_images/sphx_glr_NEXRAD_Level_3_File_001.png" alt="NEXRAD Level 3 File" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.965 seconds)</p>
+<img src="../../_images/sphx_glr_NEXRAD_Level_3_File_001.png" srcset="../../_images/sphx_glr_NEXRAD_Level_3_File_001.png" alt="NEXRAD Level 3 File" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.933 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-formats-nexrad-level-3-file-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/8391eb2491209a8dddd4b7a4b8976f0b/NEXRAD_Level_3_File.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">NEXRAD_Level_3_File.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/111f8f913d47b49227ba6ea3c06fe84c/NEXRAD_Level_3_File.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">NEXRAD_Level_3_File.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/8391eb2491209a8dddd4b7a4b8976f0b/NEXRAD_Level_3_File.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">NEXRAD_Level_3_File.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

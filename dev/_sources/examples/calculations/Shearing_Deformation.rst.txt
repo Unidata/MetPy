@@ -40,7 +40,7 @@ Dataset and plotting using Matplotlib.
 
 
 
-.. code-block:: default
+.. code-block:: Python
 
     import matplotlib.pyplot as plt
 
@@ -68,7 +68,7 @@ Dataset and plotting using Matplotlib.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.161 seconds)
+   **Total running time of the script:** (0 minutes 0.160 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Shearing_Deformation.py:
@@ -77,16 +77,13 @@ Dataset and plotting using Matplotlib.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Shearing_Deformation.ipynb <Shearing_Deformation.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Shearing_Deformation.py <Shearing_Deformation.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Shearing_Deformation.ipynb <Shearing_Deformation.ipynb>`
 
 
 .. only:: html

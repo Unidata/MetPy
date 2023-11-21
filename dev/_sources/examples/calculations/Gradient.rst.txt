@@ -29,7 +29,7 @@ can be utilized.
 
 .. GENERATED FROM PYTHON SOURCE LINES 14-20
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import numpy as np
@@ -50,7 +50,7 @@ Create some test data to use for our example
 
 .. GENERATED FROM PYTHON SOURCE LINES 22-38
 
-.. code-block:: default
+.. code-block:: Python
 
     data = np.array([[23, 24, 23],
                      [25, 26, 25],
@@ -81,7 +81,7 @@ Calculate the gradient using the coordinates of the data
 
 .. GENERATED FROM PYTHON SOURCE LINES 40-44
 
-.. code-block:: default
+.. code-block:: Python
 
     grad = mpcalc.gradient(data, coordinates=(y, x))
     print('Gradient in y direction: ', grad[0])
@@ -109,7 +109,7 @@ axes.
 
 .. GENERATED FROM PYTHON SOURCE LINES 48-54
 
-.. code-block:: default
+.. code-block:: Python
 
     x_delta = 2 * units.km
     y_delta = 1 * units.km
@@ -137,7 +137,7 @@ Finally, the deltas can be arrays for unevenly spaced data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 56-66
 
-.. code-block:: default
+.. code-block:: Python
 
     x_deltas = np.array([[2, 3],
                          [1, 3],
@@ -175,16 +175,13 @@ Finally, the deltas can be arrays for unevenly spaced data.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Gradient.ipynb <Gradient.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Gradient.py <Gradient.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Gradient.ipynb <Gradient.ipynb>`
 
 
 .. only:: html

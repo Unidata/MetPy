@@ -28,7 +28,7 @@ Also shows how to control the maps that are plotted. Plots sample NARR data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 13-23
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import xarray as xr
@@ -53,7 +53,7 @@ Create a contour plot of temperature
 
 .. GENERATED FROM PYTHON SOURCE LINES 25-32
 
-.. code-block:: default
+.. code-block:: Python
 
     contour = ContourPlot()
     contour.data = narr
@@ -75,7 +75,7 @@ Create an image plot of Geopotential height
 
 .. GENERATED FROM PYTHON SOURCE LINES 34-40
 
-.. code-block:: default
+.. code-block:: Python
 
     img = ImagePlot()
     img.data = narr
@@ -96,7 +96,7 @@ Plot the data on a map
 
 .. GENERATED FROM PYTHON SOURCE LINES 42-52
 
-.. code-block:: default
+.. code-block:: Python
 
     panel = MapPanel()
     panel.area = 'us'
@@ -123,7 +123,7 @@ Plot the data on a map
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.531 seconds)
+   **Total running time of the script:** (0 minutes 6.729 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Combined_plotting.py:
@@ -132,16 +132,13 @@ Plot the data on a map
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Combined_plotting.ipynb <Combined_plotting.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Combined_plotting.py <Combined_plotting.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Combined_plotting.ipynb <Combined_plotting.ipynb>`
 
 
 .. only:: html

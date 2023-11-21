@@ -40,7 +40,7 @@ Dataset and plotting using Matplotlib.
 
 
 
-.. code-block:: default
+.. code-block:: Python
 
     import matplotlib.pyplot as plt
 
@@ -77,16 +77,13 @@ Dataset and plotting using Matplotlib.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Absolute_Vorticity.ipynb <Absolute_Vorticity.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Absolute_Vorticity.py <Absolute_Vorticity.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Absolute_Vorticity.ipynb <Absolute_Vorticity.ipynb>`
 
 
 .. only:: html

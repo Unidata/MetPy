@@ -26,7 +26,7 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 11-22
 
-.. code-block:: default
+.. code-block:: Python
 
     import cartopy.crs as ccrs
     import matplotlib.gridspec as gridspec
@@ -48,7 +48,7 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 23-63
 
-.. code-block:: default
+.. code-block:: Python
 
     spec = gridspec.GridSpec(1, 2)
     fig = plt.figure(figsize=(15, 8))
@@ -105,7 +105,7 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.965 seconds)
+   **Total running time of the script:** (0 minutes 1.933 seconds)
 
 
 .. _sphx_glr_download_examples_formats_NEXRAD_Level_3_File.py:
@@ -114,16 +114,13 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: NEXRAD_Level_3_File.ipynb <NEXRAD_Level_3_File.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: NEXRAD_Level_3_File.py <NEXRAD_Level_3_File.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: NEXRAD_Level_3_File.ipynb <NEXRAD_Level_3_File.ipynb>`
 
 
 .. only:: html

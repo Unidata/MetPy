@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 20, 2023 at 22:42:18"/>
+    <meta name="docbuild:last-update" content="Nov 21, 2023 at 16:47:55"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/plots/surface_declarative.html" />
 
   </head>
@@ -580,7 +580,7 @@ to download the full example code</p>
 <span id="sphx-glr-examples-plots-surface-declarative-py"></span><h1>Surface Analysis using Declarative Syntax<a class="headerlink" href="#surface-analysis-using-declarative-syntax" title="Link to this heading">#</a></h1>
 <p>The MetPy declarative syntax allows for a simplified interface to creating common
 meteorological analyses including surface observation plots.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">datetime</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="datetime.timedelta" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">timedelta</span></a>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">datetime</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="datetime.timedelta" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">timedelta</span></a>
 
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -594,7 +594,7 @@ meteorological analyses including surface observation plots.</p>
 (<a class="reference external" href="https://mesonet.agron.iastate.edu/request/download.phtml">https://mesonet.agron.iastate.edu/request/download.phtml</a>) downloaded through a separate
 Python script. The data are pre-processed to determine sky cover and weather symbols from
 text output.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html#pandas.read_csv" title="pandas.read_csv" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-function"><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;SFC_obs.csv&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html#pandas.read_csv" title="pandas.read_csv" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-function"><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;SFC_obs.csv&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
                    <span class="n">infer_datetime_format</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;valid&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -605,7 +605,7 @@ text output.</p>
 <p><strong>Plotting the data</strong></p>
 <p>Use the declarative plotting interface to plot surface observations over the state of
 Georgia.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting the Observations using a 15 minute time window for surface observations</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting the Observations using a 15 minute time window for surface observations</span>
 <a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="metpy.plots.PlotObs" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="metpy.plots.PlotObs" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">mpplots</span><span class="o">.</span><span class="n">PlotObs</span></a><span class="p">()</span>
 <a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs.data" title="metpy.plots.PlotObs.data" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-attribute"><span class="n">obs</span><span class="o">.</span><span class="n">data</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a>
 <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span><span class="o">.</span><span class="n">time</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">datetime</span></a><span class="p">(</span><span class="mi">1993</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
@@ -636,13 +636,13 @@ Georgia.</p>
 <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_surface_declarative_001.png" srcset="../../_images/sphx_glr_surface_declarative_001.png" alt="tmpf and dwpf and emsl and cloud_cover and wxsym" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.361 seconds)</p>
+<img src="../../_images/sphx_glr_surface_declarative_001.png" srcset="../../_images/sphx_glr_surface_declarative_001.png" alt="tmpf and dwpf and emsl and cloud_cover and wxsym" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.388 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-surface-declarative-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/651190fdc2d21b9d54206699c3284920/surface_declarative.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">surface_declarative.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/9041777e133eed610f5b243c688e89f9/surface_declarative.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">surface_declarative.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/651190fdc2d21b9d54206699c3284920/surface_declarative.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">surface_declarative.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

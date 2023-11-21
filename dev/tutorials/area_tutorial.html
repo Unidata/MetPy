@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 20, 2023 at 22:42:18"/>
+    <meta name="docbuild:last-update" content="Nov 21, 2023 at 16:47:55"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/tutorials/area_tutorial.html" />
 
   </head>
@@ -534,7 +534,7 @@ more than 400 pre-defined areas that also have associated projections, which you
 make quick plots over regions of interest with minimal effort on your part. While these were
 intended to be used with the MetPy declarative syntax, these areas and projections are now
 accessible for any use of plotting data on a map using Cartopy.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">datetime</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="datetime.timedelta" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">timedelta</span></a>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">datetime</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="datetime.timedelta" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">timedelta</span></a>
 
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
@@ -549,7 +549,7 @@ accessible for any use of plotting data on a map using Cartopy.</p>
 <h2>Table of Predefined Areas<a class="headerlink" href="#table-of-predefined-areas" title="Link to this heading">#</a></h2>
 <p>Here is a full list of all of the areas currently in MetPy with their reference name,
 descriptive name, and extent bounds.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;area      name                bounds&#39;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;area      name                bounds&#39;</span><span class="p">)</span>
 <span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">area</span></a> <span class="ow">in</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">named_areas</span></a><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">named_areas</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">area</span></a><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;10s</span><span class="si">}{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">named_areas</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">area</span></a><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="si">:</span><span class="s1">&lt;20s</span><span class="si">}{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">named_areas</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">area</span></a><span class="p">]</span><span class="o">.</span><span class="n">bounds</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
@@ -894,7 +894,7 @@ zw        ZIMBABWE            (25.0, 34.0, -22.9, -15.5)
 <p>Each area string given in the table above have a descriptive name, extent bounds, and a
 projection associated with each entry. We can pull any of this information to help us make a
 plot over the area domain.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select the area string</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select the area string</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">area</span></a> <span class="o">=</span> <span class="s1">&#39;epac&#39;</span>
 
 <span class="c1"># Get the extent and project for the selected area</span>
@@ -918,7 +918,7 @@ plot over the area domain.</p>
 <h2>Examaple Using Declarative Syntax<a class="headerlink" href="#examaple-using-declarative-syntax" title="Link to this heading">#</a></h2>
 <p>Here is an example using a predefined area with the declarative plotting syntax for plotting
 some surface observations.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the observation time</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the observation time</span>
 <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs_time</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">datetime</span></a><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
 
 <span class="c1"># Read in data</span>
@@ -957,13 +957,13 @@ some surface observations.</p>
 <a href="../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_area_tutorial_002.png" srcset="../_images/sphx_glr_area_tutorial_002.png" alt="Surface plot for 2019-07-01 12:00:00" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 10.659 seconds)</p>
+<img src="../_images/sphx_glr_area_tutorial_002.png" srcset="../_images/sphx_glr_area_tutorial_002.png" alt="Surface plot for 2019-07-01 12:00:00" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 10.660 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-area-tutorial-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/cc5c2e456e6d6cafc8e4243ba9db0272/area_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">area_tutorial.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/ec6e9c31a13f4fcc9282b83d07226ae0/area_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">area_tutorial.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/cc5c2e456e6d6cafc8e4243ba9db0272/area_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">area_tutorial.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

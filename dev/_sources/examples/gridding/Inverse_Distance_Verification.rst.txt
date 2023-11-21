@@ -44,7 +44,7 @@ Algorithmically:
 
 .. GENERATED FROM PYTHON SOURCE LINES 29-45
 
-.. code-block:: default
+.. code-block:: Python
 
     import matplotlib.pyplot as plt
     import numpy as np
@@ -77,7 +77,7 @@ Set up two test grid locations at (30, 30) and (60, 60).
 
 .. GENERATED FROM PYTHON SOURCE LINES 49-59
 
-.. code-block:: default
+.. code-block:: Python
 
     np.random.seed(100)
 
@@ -105,7 +105,7 @@ cKDTree's ``data`` list.
 
 .. GENERATED FROM PYTHON SOURCE LINES 64-70
 
-.. code-block:: default
+.. code-block:: Python
 
     grid_points = np.array(list(zip(sim_gridx, sim_gridy)))
 
@@ -126,7 +126,7 @@ For grid 0, we will use Cressman to interpolate its value.
 
 .. GENERATED FROM PYTHON SOURCE LINES 72-78
 
-.. code-block:: default
+.. code-block:: Python
 
     x1, y1 = obs_tree.data[indices[0]].T
     cress_dist = dist_2(sim_gridx[0], sim_gridy[0], x1, y1)
@@ -149,7 +149,7 @@ We need to calculate kappa--the average distance between observations over the d
 
 .. GENERATED FROM PYTHON SOURCE LINES 82-90
 
-.. code-block:: default
+.. code-block:: Python
 
     x2, y2 = obs_tree.data[indices[1]].T
     barnes_dist = dist_2(sim_gridx[1], sim_gridy[1], x2, y2)
@@ -172,7 +172,7 @@ Plot all of the affiliated information and interpolation values.
 
 .. GENERATED FROM PYTHON SOURCE LINES 92-111
 
-.. code-block:: default
+.. code-block:: Python
 
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
     for i, zval in enumerate(zp):
@@ -207,7 +207,7 @@ Plot all of the affiliated information and interpolation values.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f99e947b810>
+    <matplotlib.legend.Legend object at 0x7f2ae5edef90>
 
 
 
@@ -221,7 +221,7 @@ their distances from the grid point.
 
 .. GENERATED FROM PYTHON SOURCE LINES 117-138
 
-.. code-block:: default
+.. code-block:: Python
 
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
     ax.annotate(f'grid 0: ({sim_gridx[0]}, {sim_gridy[0]})', xy=(sim_gridx[0] + 2, sim_gridy[0]))
@@ -262,7 +262,7 @@ Step through the Cressman calculations.
 
 .. GENERATED FROM PYTHON SOURCE LINES 140-153
 
-.. code-block:: default
+.. code-block:: Python
 
     dists = np.array([22.803508502, 7.21110255093, 31.304951685, 33.5410196625])
     values = np.array([0.064, 1.156, 3.364, 0.225])
@@ -297,7 +297,7 @@ Now repeat for grid 1, except use Barnes interpolation.
 
 .. GENERATED FROM PYTHON SOURCE LINES 155-177
 
-.. code-block:: default
+.. code-block:: Python
 
 
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
@@ -339,7 +339,7 @@ Step through barnes calculations.
 
 .. GENERATED FROM PYTHON SOURCE LINES 179-190
 
-.. code-block:: default
+.. code-block:: Python
 
     dists = np.array([9.21954445729, 22.4722050542, 27.892651362, 38.8329756779])
     values = np.array([2.809, 6.241, 4.489, 2.704])
@@ -378,16 +378,13 @@ Step through barnes calculations.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Inverse_Distance_Verification.ipynb <Inverse_Distance_Verification.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Inverse_Distance_Verification.py <Inverse_Distance_Verification.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Inverse_Distance_Verification.ipynb <Inverse_Distance_Verification.ipynb>`
 
 
 .. only:: html

@@ -70,7 +70,7 @@ Algorithmically:
 
 .. GENERATED FROM PYTHON SOURCE LINES 53-61
 
-.. code-block:: default
+.. code-block:: Python
 
     import matplotlib.pyplot as plt
     import numpy as np
@@ -100,7 +100,7 @@ The locations of these observations are then used to generate a Delaunay triangu
 
 .. GENERATED FROM PYTHON SOURCE LINES 70-105
 
-.. code-block:: default
+.. code-block:: Python
 
     np.random.seed(100)
 
@@ -163,7 +163,7 @@ examine the results to see if they are correct.
 
 .. GENERATED FROM PYTHON SOURCE LINES 109-139
 
-.. code-block:: default
+.. code-block:: Python
 
     def draw_circle(ax, x, y, r, m, label):
         th = np.linspace(0, 2 * np.pi, 100)
@@ -209,7 +209,7 @@ examine the results to see if they are correct.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f99eba946d0>
+    <matplotlib.legend.Legend object at 0x7f2ae5924390>
 
 
 
@@ -220,7 +220,7 @@ grid 0 included in that circle?
 
 .. GENERATED FROM PYTHON SOURCE LINES 142-149
 
-.. code-block:: default
+.. code-block:: Python
 
     x_t, y_t = circumcenters[8]
     r = geometry.circumcircle_radius(*tri.points[tri.simplices[8]])
@@ -250,7 +250,7 @@ Grab the circumcenters and radii for natural neighbors
 
 .. GENERATED FROM PYTHON SOURCE LINES 152-158
 
-.. code-block:: default
+.. code-block:: Python
 
     cc = np.array([circumcenters[m] for m in members[0]])
     r = np.array([geometry.circumcircle_radius(*tri.points[tri.simplices[m]]) for m in members[0]])
@@ -286,7 +286,7 @@ in the Voronoi plot (green dots), and the observations are in the polygons (blue
 
 .. GENERATED FROM PYTHON SOURCE LINES 165-225
 
-.. code-block:: default
+.. code-block:: Python
 
     vort = Voronoi(list(zip(xp, yp)))
 
@@ -367,7 +367,7 @@ Calculate the total area of all of the generated polygons.
 
 .. GENERATED FROM PYTHON SOURCE LINES 228-233
 
-.. code-block:: default
+.. code-block:: Python
 
     areas = np.array([60.434, 448.296, 25.916, 70.647])
     values = np.array([0.064, 1.156, 2.809, 0.225])
@@ -393,7 +393,7 @@ For each polygon area, calculate its percent of total area.
 
 .. GENERATED FROM PYTHON SOURCE LINES 235-238
 
-.. code-block:: default
+.. code-block:: Python
 
     proportions = areas / total_area
     print(proportions)
@@ -417,7 +417,7 @@ Multiply the percent of total area by the respective values.
 
 .. GENERATED FROM PYTHON SOURCE LINES 240-243
 
-.. code-block:: default
+.. code-block:: Python
 
     contributions = proportions * values
     print(contributions)
@@ -441,7 +441,7 @@ The sum of this array is the interpolation value!
 
 .. GENERATED FROM PYTHON SOURCE LINES 245-251
 
-.. code-block:: default
+.. code-block:: Python
 
     interpolation_value = np.sum(contributions)
     function_output = natural_neighbor_point(xp, yp, zp, (sim_gridx[0], sim_gridy[0]), tri,
@@ -469,7 +469,7 @@ the above visual example to the 3rd decimal place.
 
 .. GENERATED FROM PYTHON SOURCE LINES 254-255
 
-.. code-block:: default
+.. code-block:: Python
 
     plt.show()
 
@@ -482,7 +482,7 @@ the above visual example to the 3rd decimal place.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.505 seconds)
+   **Total running time of the script:** (0 minutes 0.500 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Natural_Neighbor_Verification.py:
@@ -491,16 +491,13 @@ the above visual example to the 3rd decimal place.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Natural_Neighbor_Verification.ipynb <Natural_Neighbor_Verification.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Natural_Neighbor_Verification.py <Natural_Neighbor_Verification.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Natural_Neighbor_Verification.ipynb <Natural_Neighbor_Verification.ipynb>`
 
 
 .. only:: html

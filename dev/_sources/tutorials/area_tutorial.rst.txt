@@ -31,7 +31,7 @@ accessible for any use of plotting data on a map using Cartopy.
 
 .. GENERATED FROM PYTHON SOURCE LINES 16-27
 
-.. code-block:: default
+.. code-block:: Python
 
 
     from datetime import datetime, timedelta
@@ -61,7 +61,7 @@ descriptive name, and extent bounds.
 
 .. GENERATED FROM PYTHON SOURCE LINES 33-38
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print('area      name                bounds')
@@ -423,7 +423,7 @@ plot over the area domain.
 
 .. GENERATED FROM PYTHON SOURCE LINES 45-65
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Select the area string
@@ -467,7 +467,7 @@ some surface observations.
 
 .. GENERATED FROM PYTHON SOURCE LINES 71-109
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set the observation time
@@ -522,7 +522,7 @@ some surface observations.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 10.659 seconds)
+   **Total running time of the script:** (0 minutes 10.660 seconds)
 
 
 .. _sphx_glr_download_tutorials_area_tutorial.py:
@@ -531,16 +531,13 @@ some surface observations.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: area_tutorial.ipynb <area_tutorial.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: area_tutorial.py <area_tutorial.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: area_tutorial.ipynb <area_tutorial.ipynb>`
 
 
 .. only:: html

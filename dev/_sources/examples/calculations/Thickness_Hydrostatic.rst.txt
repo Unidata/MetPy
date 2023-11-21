@@ -29,7 +29,7 @@ between the surface and 500-hPa level for the provided sounding data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 14-21
 
-.. code-block:: default
+.. code-block:: Python
 
     import pandas as pd
 
@@ -52,7 +52,7 @@ some of MetPy's sample data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 24-32
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Set column names
@@ -75,7 +75,7 @@ Drop any rows with all NaN values for T, Td, winds
 
 .. GENERATED FROM PYTHON SOURCE LINES 34-37
 
-.. code-block:: default
+.. code-block:: Python
 
     df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'
                            ), how='all').reset_index(drop=True)
@@ -93,7 +93,7 @@ Isolate pressure, temperature, and dewpoint and add units
 
 .. GENERATED FROM PYTHON SOURCE LINES 39-43
 
-.. code-block:: default
+.. code-block:: Python
 
     p = df['pressure'].values * units.hPa
     T = df['temperature'].values * units.degC
@@ -112,7 +112,7 @@ Calculate the relative humidity to compute the mixing ratio
 
 .. GENERATED FROM PYTHON SOURCE LINES 45-48
 
-.. code-block:: default
+.. code-block:: Python
 
     rh = relative_humidity_from_dewpoint(T, Td)
     mixrat = mixing_ratio_from_relative_humidity(p, T, rh)
@@ -131,7 +131,7 @@ for the layer from the surface pressure to 500-hPa
 
 .. GENERATED FROM PYTHON SOURCE LINES 51-52
 
-.. code-block:: default
+.. code-block:: Python
 
     print(thickness_hydrostatic(p, T, mixing_ratio=mixrat, depth=p[0] - 500 * units.hPa))
 
@@ -159,16 +159,13 @@ for the layer from the surface pressure to 500-hPa
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Thickness_Hydrostatic.ipynb <Thickness_Hydrostatic.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Thickness_Hydrostatic.py <Thickness_Hydrostatic.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Thickness_Hydrostatic.ipynb <Thickness_Hydrostatic.ipynb>`
 
 
 .. only:: html

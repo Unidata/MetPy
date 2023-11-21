@@ -29,7 +29,7 @@ circle ("circumcircle") containing the triangle.
 
 .. GENERATED FROM PYTHON SOURCE LINES 14-38
 
-.. code-block:: default
+.. code-block:: Python
 
     import matplotlib.pyplot as plt
     import numpy as np
@@ -80,7 +80,7 @@ Point 3 is at the confluence of several triangles so it has many natural neighbo
 
 .. GENERATED FROM PYTHON SOURCE LINES 47-50
 
-.. code-block:: default
+.. code-block:: Python
 
     neighbors, circumcenters = find_natural_neighbors(tri, test_points)
     print(neighbors)
@@ -105,7 +105,7 @@ We can plot all of the triangles as well as the circles representing the circumc
 
 .. GENERATED FROM PYTHON SOURCE LINES 53-70
 
-.. code-block:: default
+.. code-block:: Python
 
     fig, ax = plt.subplots(figsize=(15, 10))
     for i, inds in enumerate(tri.simplices):
@@ -139,7 +139,7 @@ We can plot all of the triangles as well as the circles representing the circumc
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.355 seconds)
+   **Total running time of the script:** (0 minutes 0.353 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py:
@@ -148,16 +148,13 @@ We can plot all of the triangles as well as the circles representing the circumc
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: Find_Natural_Neighbors_Verification.ipynb <Find_Natural_Neighbors_Verification.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Find_Natural_Neighbors_Verification.py <Find_Natural_Neighbors_Verification.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: Find_Natural_Neighbors_Verification.ipynb <Find_Natural_Neighbors_Verification.ipynb>`
 
 
 .. only:: html
