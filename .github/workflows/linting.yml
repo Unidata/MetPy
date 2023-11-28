@@ -65,3 +65,10 @@ jobs:
         run: |
           set -o pipefail
           codespell | reviewdog -efm='%f:%l: %m' -name=codespell -reporter=github-check -filter-mode=nofilter
+
+      - name: Check static data registry
+        # Don't skip if any other steps fail
+        if: always()
+        run: |
+          python -c "import pooch; pooch.make_registry('staticdata', 'src/metpy/static-data-manifest.txt')"
+          git diff --exit-code
