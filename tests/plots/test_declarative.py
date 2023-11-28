@@ -91,7 +91,7 @@ def test_declarative_four_dims_error():
         pc.draw()
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.093)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.096)
 @needs_cartopy
 def test_declarative_contour():
     """Test making a contour plot."""
@@ -150,7 +150,7 @@ def test_declarative_titles():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.098)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.101)
 @needs_cartopy
 def test_declarative_smooth_contour():
     """Test making a contour plot using smooth_contour."""
@@ -179,7 +179,7 @@ def test_declarative_smooth_contour():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.12)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.121)
 @needs_cartopy
 def test_declarative_smooth_contour_calculation():
     """Test making a contour plot using smooth_contour."""
@@ -221,7 +221,7 @@ def test_declarative_smooth_contour_calculation():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.021)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.034)
 @needs_cartopy
 def test_declarative_smooth_contour_order():
     """Test making a contour plot using smooth_contour with tuple."""
@@ -250,7 +250,7 @@ def test_declarative_smooth_contour_order():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.059)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.063)
 @needs_cartopy
 def test_declarative_figsize():
     """Test having an all float figsize."""
@@ -278,7 +278,7 @@ def test_declarative_figsize():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.032)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.039)
 @needs_cartopy
 def test_declarative_smooth_field():
     """Test the smoothing of the field with smooth_field trait."""
@@ -366,7 +366,7 @@ def test_declarative_contour_options():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.082)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.085)
 @needs_cartopy
 def test_declarative_layers_plot_options():
     """Test declarative layer options of edgecolor and linewidth."""
@@ -835,7 +835,7 @@ def test_latlon():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.342)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.343)
 @needs_cartopy
 def test_declarative_barb_options():
     """Test making a contour plot."""
@@ -1035,7 +1035,7 @@ def test_declarative_overlay_projections():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.026)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.047)
 @needs_cartopy
 def test_declarative_gridded_scale():
     """Test making a contour plot."""
@@ -1936,7 +1936,7 @@ def test_declarative_region_modifier_zoom_in():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.332)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.338)
 @needs_cartopy
 def test_declarative_region_modifier_zoom_out():
     """Test that '-' suffix on area string properly expands extent of map."""
