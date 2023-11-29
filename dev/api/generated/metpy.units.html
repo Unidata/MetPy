@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
-    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css?v=e3e65d4f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css?v=45c5dac0" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
@@ -70,12 +70,12 @@
     <link rel="icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="check_units" href="metpy.units.check_units.html" />
+    <link rel="next" title="setup_registry" href="metpy.units.setup_registry.html" />
     <link rel="prev" title="Constants (metpy.constants)" href="metpy.constants.html" />
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 29, 2023 at 19:39:23"/>
+    <meta name="docbuild:last-update" content="Nov 29, 2023 at 23:08:38"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.units.html" />
 
   </head>
@@ -271,7 +271,7 @@ document.write(`
           
           
           
-          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github-square fa-lg" aria-hidden="true"></i></span>
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -283,8 +283,20 @@ document.write(`
           
           
           
-          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter-square fa-lg" aria-hidden="true"></i></span>
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://calendar.google.com/calendar/embed?src=c_596cc34cd7196caec223786795c8730786aead6e2dbffe03403186f203075973%40group.calendar.google.com&ctz=America%2FDenver" title="Calendar" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-solid fa-calendar fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Calendar</span></a>
         </li>
 </ul></div>
       
@@ -412,7 +424,7 @@ document.write(`
           
           
           
-          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github-square fa-lg" aria-hidden="true"></i></span>
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -424,8 +436,20 @@ document.write(`
           
           
           
-          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter-square fa-lg" aria-hidden="true"></i></span>
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://calendar.google.com/calendar/embed?src=c_596cc34cd7196caec223786795c8730786aead6e2dbffe03403186f203075973%40group.calendar.google.com&ctz=America%2FDenver" title="Calendar" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-solid fa-calendar fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Calendar</span></a>
         </li>
 </ul></div>
         
@@ -453,13 +477,8 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="metpy.constants.html">Constants <code class="docutils literal notranslate"><span class="pre">(metpy.constants)</span></code></a></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Units <code class="docutils literal notranslate"><span class="pre">(metpy.units)</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="metpy.units.check_units.html">check_units</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.units.concatenate.html">concatenate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.units.is_quantity.html">is_quantity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.units.masked_array.html">masked_array</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html">pandas_dataframe_to_unit_arrays</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.units.process_units.html">process_units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.setup_registry.html">setup_registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html">pandas_dataframe_to_unit_arrays</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="metpy.io.html">Reading Data <code class="docutils literal notranslate"><span class="pre">(metpy.io)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -778,26 +797,11 @@ import this registry and use it to grab units.</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.check_units.html#metpy.units.check_units" title="metpy.units.check_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_units</span></code></a>(*units_by_pos, **units_by_name)</p></td>
-<td><p>Create a decorator to check units of function arguments.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.units.concatenate.html#metpy.units.concatenate" title="metpy.units.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>(arrs[, axis])</p></td>
-<td><p>Concatenate multiple values into a new quantity.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.is_quantity.html#metpy.units.is_quantity" title="metpy.units.is_quantity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_quantity</span></code></a>(*args)</p></td>
-<td><p>Check whether an instance is a quantity.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.units.masked_array.html#metpy.units.masked_array" title="metpy.units.masked_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">masked_array</span></code></a>(data[, data_units])</p></td>
-<td><p>Create a <a class="reference external" href="https://numpy.org/doc/stable/reference/maskedarray.baseclass.html#numpy.ma.MaskedArray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ma.MaskedArray</span></code></a> with units attached.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays" title="metpy.units.pandas_dataframe_to_unit_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas_dataframe_to_unit_arrays</span></code></a>(df[, ...])</p></td>
-<td><p>Attach units to data in pandas dataframes and return quantities.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.units.process_units.html#metpy.units.process_units" title="metpy.units.process_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_units</span></code></a>(input_dimensionalities, ...[, ...])</p></td>
-<td><p>Wrap a non-Quantity-using function in base units to fully handle units.</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.setup_registry.html#metpy.units.setup_registry" title="metpy.units.setup_registry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_registry</span></code></a>(reg)</p></td>
 <td><p>Set up a given registry with MetPy's default tweaks and settings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays" title="metpy.units.pandas_dataframe_to_unit_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas_dataframe_to_unit_arrays</span></code></a>(df[, ...])</p></td>
+<td><p>Attach units to data in pandas dataframes and return quantities.</p></td>
 </tr>
 </tbody>
 </table>
@@ -823,11 +827,11 @@ import this registry and use it to grab units.</p>
       </div>
     </a>
     <a class="right-next"
-       href="metpy.units.check_units.html"
+       href="metpy.units.setup_registry.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">check_units</p>
+        <p class="prev-next-title">setup_registry</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -850,15 +854,6 @@ import this registry and use it to grab units.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.units.units"><code class="docutils literal notranslate"><span class="pre">units</span></code></a></li>
 </ul>
   </nav></div>
-
-  <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../../_sources/api/generated/metpy.units.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
 
 </div></div>
               
@@ -885,7 +880,7 @@ import this registry and use it to grab units.</p>
 
   <p class="copyright">
     
-      © Copyright 2008–2023, MetPy Developers.Development is supported by Unidata and the National Science Foundation..
+      © Copyright 2008–2023, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
       <br/>
     
   </p>
