@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**02:53.569** total execution time for 59 files **from all galleries**:
+**02:51.619** total execution time for 59 files **from all galleries**:
 
 .. container::
 
@@ -32,164 +32,164 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py` (``../examples/plots/Mesonet_Stationplot.py``)
-     - 00:13.789
-     - 0.0
    * - :ref:`sphx_glr_examples_plots_Station_Plot.py` (``../examples/plots/Station_Plot.py``)
-     - 00:13.770
+     - 00:13.516
+     - 0.0
+   * - :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py` (``../examples/plots/Mesonet_Stationplot.py``)
+     - 00:13.461
      - 0.0
    * - :ref:`sphx_glr_examples_plots_nhc_wind_probabilities.py` (``../examples/plots/nhc_wind_probabilities.py``)
-     - 00:13.001
+     - 00:12.937
      - 0.0
    * - :ref:`sphx_glr_examples_gridding_Wind_SLP_Interpolation.py` (``../examples/gridding/Wind_SLP_Interpolation.py``)
-     - 00:12.159
+     - 00:12.127
      - 0.0
    * - :ref:`sphx_glr_tutorials_declarative_tutorial.py` (``../tutorials/declarative_tutorial.py``)
-     - 00:11.120
+     - 00:10.936
      - 0.0
    * - :ref:`sphx_glr_examples_isentropic_example.py` (``../examples/isentropic_example.py``)
-     - 00:10.799
+     - 00:10.687
      - 0.0
    * - :ref:`sphx_glr_tutorials_area_tutorial.py` (``../tutorials/area_tutorial.py``)
-     - 00:10.704
+     - 00:10.625
      - 0.0
    * - :ref:`sphx_glr_examples_XArray_Projections.py` (``../examples/XArray_Projections.py``)
-     - 00:09.961
+     - 00:10.074
      - 0.0
    * - :ref:`sphx_glr_examples_Four_Panel_Map.py` (``../examples/Four_Panel_Map.py``)
-     - 00:09.344
+     - 00:09.390
      - 0.0
    * - :ref:`sphx_glr_examples_sigma_to_pressure_interpolation.py` (``../examples/sigma_to_pressure_interpolation.py``)
-     - 00:09.132
+     - 00:09.244
      - 0.0
    * - :ref:`sphx_glr_examples_plots_spc_convective_outlook.py` (``../examples/plots/spc_convective_outlook.py``)
-     - 00:08.285
+     - 00:08.061
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Plotting_Surface_Analysis.py` (``../examples/plots/Plotting_Surface_Analysis.py``)
-     - 00:06.878
+     - 00:06.970
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Combined_plotting.py` (``../examples/plots/Combined_plotting.py``)
-     - 00:06.595
+     - 00:06.585
      - 0.0
    * - :ref:`sphx_glr_examples_formats_NEXRAD_Level_2_File.py` (``../examples/formats/NEXRAD_Level_2_File.py``)
-     - 00:05.682
+     - 00:05.650
      - 0.0
    * - :ref:`sphx_glr_examples_gridding_Point_Interpolation.py` (``../examples/gridding/Point_Interpolation.py``)
-     - 00:05.644
+     - 00:05.573
      - 0.0
    * - :ref:`sphx_glr_examples_cross_section.py` (``../examples/cross_section.py``)
-     - 00:04.969
+     - 00:04.991
      - 0.0
    * - :ref:`sphx_glr_tutorials_xarray_tutorial.py` (``../tutorials/xarray_tutorial.py``)
-     - 00:02.926
+     - 00:02.870
      - 0.0
    * - :ref:`sphx_glr_examples_plots_US_Counties.py` (``../examples/plots/US_Counties.py``)
-     - 00:02.594
+     - 00:02.508
      - 0.0
    * - :ref:`sphx_glr_examples_formats_NEXRAD_Level_3_File.py` (``../examples/formats/NEXRAD_Level_3_File.py``)
-     - 00:02.056
+     - 00:02.038
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py` (``../examples/plots/Station_Plot_with_Layout.py``)
-     - 00:01.526
-     - 0.0
-   * - :ref:`sphx_glr_tutorials_upperair_soundings.py` (``../tutorials/upperair_soundings.py``)
-     - 00:01.368
+     - 00:01.503
      - 0.0
    * - :ref:`sphx_glr_examples_plots_surface_declarative.py` (``../examples/plots/surface_declarative.py``)
-     - 00:01.363
+     - 00:01.347
+     - 0.0
+   * - :ref:`sphx_glr_tutorials_upperair_soundings.py` (``../tutorials/upperair_soundings.py``)
+     - 00:01.318
      - 0.0
    * - :ref:`sphx_glr_examples_formats_GINI_Water_Vapor.py` (``../examples/formats/GINI_Water_Vapor.py``)
-     - 00:00.915
-     - 0.0
-   * - :ref:`sphx_glr_examples_Advanced_Sounding_With_Complex_Layout.py` (``../examples/Advanced_Sounding_With_Complex_Layout.py``)
-     - 00:00.830
+     - 00:00.916
      - 0.0
    * - :ref:`sphx_glr_examples_plots_raster_declarative.py` (``../examples/plots/raster_declarative.py``)
-     - 00:00.819
+     - 00:00.810
+     - 0.0
+   * - :ref:`sphx_glr_examples_Advanced_Sounding_With_Complex_Layout.py` (``../examples/Advanced_Sounding_With_Complex_Layout.py``)
+     - 00:00.753
      - 0.0
    * - :ref:`sphx_glr_examples_plots_upperair_declarative.py` (``../examples/plots/upperair_declarative.py``)
-     - 00:00.742
+     - 00:00.735
      - 0.0
    * - :ref:`sphx_glr_examples_meteogram_metpy.py` (``../examples/meteogram_metpy.py``)
-     - 00:00.726
-     - 0.0
-   * - :ref:`sphx_glr_examples_calculations_Smoothing.py` (``../examples/calculations/Smoothing.py``)
-     - 00:00.575
+     - 00:00.707
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py` (``../examples/plots/Simplified_Image_Plot.py``)
-     - 00:00.546
+     - 00:00.535
      - 0.0
-   * - :ref:`sphx_glr_examples_gridding_Natural_Neighbor_Verification.py` (``../examples/gridding/Natural_Neighbor_Verification.py``)
-     - 00:00.506
+   * - :ref:`sphx_glr_examples_calculations_Smoothing.py` (``../examples/calculations/Smoothing.py``)
+     - 00:00.507
      - 0.0
    * - :ref:`sphx_glr_examples_gridding_Inverse_Distance_Verification.py` (``../examples/gridding/Inverse_Distance_Verification.py``)
-     - 00:00.442
+     - 00:00.437
+     - 0.0
+   * - :ref:`sphx_glr_examples_gridding_Natural_Neighbor_Verification.py` (``../examples/gridding/Natural_Neighbor_Verification.py``)
+     - 00:00.432
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Simple_Sounding.py` (``../examples/plots/Simple_Sounding.py``)
-     - 00:00.429
+     - 00:00.417
      - 0.0
    * - :ref:`sphx_glr_examples_gridding_Find_Natural_Neighbors_Verification.py` (``../examples/gridding/Find_Natural_Neighbors_Verification.py``)
-     - 00:00.357
+     - 00:00.319
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Hodograph_Inset.py` (``../examples/plots/Hodograph_Inset.py``)
-     - 00:00.272
+     - 00:00.264
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Sounding_Calculations.py` (``../examples/calculations/Sounding_Calculations.py``)
-     - 00:00.270
+     - 00:00.264
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Skew-T_Layout.py` (``../examples/plots/Skew-T_Layout.py``)
-     - 00:00.269
+     - 00:00.261
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Sounding_LCL_Dataset.py` (``../examples/plots/Sounding_LCL_Dataset.py``)
-     - 00:00.242
+     - 00:00.235
      - 0.0
    * - :ref:`sphx_glr_examples_Advanced_Sounding.py` (``../examples/Advanced_Sounding.py``)
-     - 00:00.238
-     - 0.0
-   * - :ref:`sphx_glr_examples_calculations_QVector.py` (``../examples/calculations/QVector.py``)
-     - 00:00.168
-     - 0.0
-   * - :ref:`sphx_glr_examples_calculations_Vorticity.py` (``../examples/calculations/Vorticity.py``)
-     - 00:00.166
-     - 0.0
-   * - :ref:`sphx_glr_examples_calculations_Total_Deformation.py` (``../examples/calculations/Total_Deformation.py``)
-     - 00:00.165
+     - 00:00.231
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Absolute_Vorticity.py` (``../examples/calculations/Absolute_Vorticity.py``)
-     - 00:00.165
-     - 0.0
-   * - :ref:`sphx_glr_examples_calculations_Shearing_Deformation.py` (``../examples/calculations/Shearing_Deformation.py``)
-     - 00:00.163
-     - 0.0
-   * - :ref:`sphx_glr_examples_calculations_Stretching_Deformation.py` (``../examples/calculations/Stretching_Deformation.py``)
-     - 00:00.161
-     - 0.0
-   * - :ref:`sphx_glr_examples_calculations_Divergence.py` (``../examples/calculations/Divergence.py``)
-     - 00:00.147
-     - 0.0
-   * - :ref:`sphx_glr_examples_calculations_Advection.py` (``../examples/calculations/Advection.py``)
-     - 00:00.142
-     - 0.0
-   * - :ref:`sphx_glr_examples_plots_Simple_Fronts_Plot.py` (``../examples/plots/Simple_Fronts_Plot.py``)
      - 00:00.135
      - 0.0
+   * - :ref:`sphx_glr_examples_calculations_Shearing_Deformation.py` (``../examples/calculations/Shearing_Deformation.py``)
+     - 00:00.134
+     - 0.0
+   * - :ref:`sphx_glr_examples_calculations_QVector.py` (``../examples/calculations/QVector.py``)
+     - 00:00.134
+     - 0.0
+   * - :ref:`sphx_glr_examples_calculations_Total_Deformation.py` (``../examples/calculations/Total_Deformation.py``)
+     - 00:00.132
+     - 0.0
+   * - :ref:`sphx_glr_examples_calculations_Vorticity.py` (``../examples/calculations/Vorticity.py``)
+     - 00:00.132
+     - 0.0
+   * - :ref:`sphx_glr_examples_calculations_Stretching_Deformation.py` (``../examples/calculations/Stretching_Deformation.py``)
+     - 00:00.132
+     - 0.0
+   * - :ref:`sphx_glr_examples_calculations_Divergence.py` (``../examples/calculations/Divergence.py``)
+     - 00:00.118
+     - 0.0
+   * - :ref:`sphx_glr_examples_calculations_Advection.py` (``../examples/calculations/Advection.py``)
+     - 00:00.110
+     - 0.0
    * - :ref:`sphx_glr_examples_calculations_Wind_Speed.py` (``../examples/calculations/Wind_Speed.py``)
-     - 00:00.133
+     - 00:00.106
+     - 0.0
+   * - :ref:`sphx_glr_examples_plots_Simple_Fronts_Plot.py` (``../examples/plots/Simple_Fronts_Plot.py``)
+     - 00:00.097
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Equivalent_Potential_Temperature.py` (``../examples/calculations/Equivalent_Potential_Temperature.py``)
-     - 00:00.096
+     - 00:00.071
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Gradient.py` (``../examples/calculations/Gradient.py``)
      - 00:00.014
      - 0.0
    * - :ref:`sphx_glr_tutorials_unit_tutorial.py` (``../tutorials/unit_tutorial.py``)
-     - 00:00.013
+     - 00:00.012
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Thickness_Hydrostatic.py` (``../examples/calculations/Thickness_Hydrostatic.py``)
-     - 00:00.011
+     - 00:00.010
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Bulk_Shear.py` (``../examples/calculations/Bulk_Shear.py``)
-     - 00:00.011
+     - 00:00.010
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Mean_Pressure_Weighted.py` (``../examples/calculations/Mean_Pressure_Weighted.py``)
      - 00:00.010
@@ -201,7 +201,7 @@ Computation times
      - 00:00.006
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py` (``../examples/calculations/Dewpoint_and_Mixing_Ratio.py``)
-     - 00:00.005
+     - 00:00.006
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Angle_to_Direction.py` (``../examples/calculations/Angle_to_Direction.py``)
      - 00:00.004
