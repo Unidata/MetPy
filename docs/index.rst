@@ -19,7 +19,6 @@ with weather data. MetPy supports Python >= 3.9 and is freely available under a 
 
 If you're new to MetPy, check out our :doc:`Getting Started <userguide/startingguide>` guide.
 
-
 .. grid:: 1 2 2 2
     :gutter: 2
 
@@ -68,8 +67,21 @@ If you're new to MetPy, check out our :doc:`Getting Started <userguide/startingg
         Check out MetPy's gallery of examples which contains
         sample code demonstrating various parts of MetPy's functionality.
 
+Calendar
+--------
+Check out the MetPy Community Calendar below. The bi-weekly MetPy Community Dev Call
+is an open discussion for community input, developer highlights and updates, and
+community code showcase opportunities. Stop by!
+Find more information in the pinned thread in the
+`Announcements section <https://github.com/Unidata/MetPy/discussions/categories/announcements>`
+of MetPy GitHub Discussions.
 
-Our up-to-date references for grants and funding can be found `here <https://github.com/Unidata/MetPy/blob/main/CITATION.cff>`_.
+.. raw:: html
+
+    <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FDenver&title=MetPy%20Community%20Calendar&showPrint=0&showTabs=0&showCalendars=0&showTz=1&src=Y181OTZjYzM0Y2Q3MTk2Y2FlYzIyMzc4Njc5NWM4NzMwNzg2YWVhZDZlMmRiZmZlMDM0MDMxODZmMjAzMDc1OTczQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23D50000" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+
+Our up-to-date references for grants and funding can be found
+`here <https://github.com/Unidata/MetPy/blob/main/CITATION.cff>`_.
 
 .. image:: _static/NSF.jpg
    :width: 100 px

@@ -10,6 +10,7 @@
 # serve to show the default.
 
 from datetime import datetime
+import inspect
 import os
 from pathlib import Path
 import re
@@ -37,9 +38,9 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.coverage',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.linkcode',
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode',
     'sphinx_design',
     'sphinx_gallery.gen_gallery',
     'matplotlib.sphinxext.plot_directive',
@@ -138,8 +139,8 @@ project = 'MetPy'
 
 # noinspection PyShadowingBuiltins
 copyright = (
-    f'2008\u2013{cur_date:%Y}, MetPy Developers.'
-    'Development is supported by Unidata and the National Science Foundation.'
+    f'2008\u2013{cur_date:%Y}, MetPy Developers. '
+    'Development is supported by Unidata and the National Science Foundation'
 )
 
 # The version info for the project you're documenting, acts as replacement for
@@ -213,13 +214,19 @@ html_theme_options = {
         {
             'name': 'GitHub',
             'url': 'https://github.com/Unidata/MetPy',
-            'icon': 'fa-brands fa-github-square',
+            'icon': 'fa-brands fa-github',
             'type': 'fontawesome',
         },
         {
             'name': 'Twitter',
             'url': 'https://twitter.com/MetPy',
-            'icon': 'fa-brands fa-twitter-square',
+            'icon': 'fa-brands fa-twitter',
+            'type': 'fontawesome',
+        },
+        {
+            'name': 'Calendar',
+            'url': 'https://calendar.google.com/calendar/embed?src=c_596cc34cd7196caec223786795c8730786aead6e2dbffe03403186f203075973%40group.calendar.google.com&ctz=America%2FDenver',
+            'icon': 'fa-solid fa-calendar',
             'type': 'fontawesome',
         }
     ],
@@ -316,7 +323,7 @@ html_sidebars = {
 # html_split_index = False
 
 # If true, links to the reST sources are added to the pages.
-# html_show_sourcelink = True
+html_show_sourcelink = False
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 # html_show_sphinx = True
@@ -452,3 +459,61 @@ linkcheck_request_headers = {
     r'https://docs.github.com/': {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; '
                                                 'rv:24.0) Gecko/20100101 Firefox/24.0'}
 }
+
+# Function to resolve source code links for `linkcode`
+# adapted from NumPy, Pandas implementations
+def linkcode_resolve(domain, info):
+    """
+    Determine the URL corresponding to Python object
+    """
+    if domain != "py":
+        return None
+
+    modname = info["module"]
+    fullname = info["fullname"]
+
+    submod = sys.modules.get(modname)
+    if submod is None:
+        return None
+
+    obj = submod
+    for part in fullname.split("."):
+        try:
+            obj = getattr(obj, part)
+        except AttributeError:
+            return None
+
+    try:
+        fn = inspect.getsourcefile(inspect.unwrap(obj))
+    except TypeError:
+        try:  # property
+            fn = inspect.getsourcefile(inspect.unwrap(obj.fget))
+        except (AttributeError, TypeError):
+            fn = None
+    if not fn:
+        return None
+
+    try:
+        source, lineno = inspect.getsourcelines(obj)
+    except TypeError:
+        try:  # property
+            source, lineno = inspect.getsourcelines(obj.fget)
+        except (AttributeError, TypeError):
+            lineno = None
+    except OSError:
+        lineno = None
+
+    if lineno:
+        linespec = f"#L{lineno}-L{lineno + len(source) - 1}"
+    else:
+        linespec = ""
+
+    fn = os.path.relpath(fn, start=os.path.dirname(metpy.__file__))
+
+    if "+" in metpy.__version__:
+        return f"https://github.com/Unidata/MetPy/blob/main/src/metpy/{fn}{linespec}"
+    else:
+        return (
+            f"https://github.com/Unidata/MetPy/blob/"
+            f"v{metpy.__version__}/src/metpy/{fn}{linespec}"
+        )

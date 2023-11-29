@@ -27,8 +27,8 @@ import metpy.plots as mpplots
 # Python script. The data are pre-processed to determine sky cover and weather symbols from
 # text output.
 
-data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                   infer_datetime_format=True, parse_dates=['valid'])
+data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False))
+data['valid'] = pd.to_datetime(data['valid'], format='%Y-%m-%d %H:%M:%S')
 
 ########################################
 # **Plotting the data**

@@ -25,6 +25,10 @@ import warnings
 import numpy as np
 import pint
 
+from .package_tools import Exporter
+
+exporter = Exporter(globals())
+
 log = logging.getLogger(__name__)
 
 UndefinedUnitError = pint.UndefinedUnitError
@@ -55,6 +59,7 @@ _unit_preprocessors = [_fix_udunits_powers, lambda string: string.replace('%', '
                        _fix_udunits_div]
 
 
+@exporter.export
 def setup_registry(reg):
     """Set up a given registry with MetPy's default tweaks and settings."""
     reg.autoconvert_offset_to_baseunit = True
@@ -95,6 +100,7 @@ units = setup_registry(pint.get_application_registry())
 warnings.simplefilter('ignore', category=pint.UnitStrippedWarning)
 
 
+@exporter.export
 def pandas_dataframe_to_unit_arrays(df, column_units=None):
     """Attach units to data in pandas dataframes and return quantities.
 
