@@ -163,7 +163,7 @@ class StationPlot:
         kwargs['fontproperties'] = wx_symbol_font.copy()
         return self.plot_parameter(location, codes, symbol_mapper, **kwargs)
 
-    def plot_parameter(self, location, parameter, formatter='.0f', **kwargs):
+    def plot_parameter(self, location, parameter, formatter=None, **kwargs):
         """At the specified location in the station model plot a set of values.
 
         This specifies that at the offset `location`, the data in `parameter` should be
@@ -186,7 +186,7 @@ class StationPlot:
         formatter : str or Callable, optional
             How to format the data as a string for plotting. If a string, it should be
             compatible with the :func:`format` builtin. If a callable, this should take a
-            value and return a string. Defaults to '0.f'.
+            value and return a string. Defaults to 'z0.f'.
         plot_units: `pint.unit`
             Units to plot in (performing conversion if necessary). Defaults to given units.
         kwargs
@@ -372,6 +372,14 @@ class StationPlot:
     @staticmethod
     def _to_string_list(vals, fmt):
         """Convert a sequence of values to a list of strings."""
+        if fmt is None:
+            import sys
+            if sys.version_info >= (3, 11):
+                fmt = 'z.0f'
+            else:
+                def fmt(s):
+                    """Perform default formatting with no decimal places and no negative 0."""
+                    return format(round(s, 0) + 0., '.0f')
         if not callable(fmt):
             def formatter(s):
                 """Turn a format string into a callable."""

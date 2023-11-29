@@ -101,6 +101,18 @@ def test_station_plot_locations():
     return fig
 
 
+def test_station_plot_negative_zero():
+    """Test that we avoid formatting a negative 0 by default."""
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    sp = StationPlot(ax, [0], [0])
+    text = sp.plot_parameter('C', [-0.04])
+
+    assert text.text[0] == '0'
+
+    plt.close(fig)
+
+
 @pytest.mark.mpl_image_compare(tolerance=0.00413, savefig_kwargs={'dpi': 300},
                                remove_text=True)
 def test_stationlayout_api():
