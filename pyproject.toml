@@ -109,7 +109,10 @@ filterwarnings = [
     # See: https://github.com/dateutil/dateutil/issues/1314
     'ignore:datetime.datetime.utcfromtimestamp\(\) is deprecated:DeprecationWarning:dateutil.tz.tz:37',
     # Numpy deprecation triggered by Pint: https://github.com/hgrecco/pint/pull/1880
-    "ignore:Conversion of an array with ndim > 0 to a scalar is deprecated:DeprecationWarning:pint.facets.plain.quantity:575"
+    "ignore:Conversion of an array with ndim > 0 to a scalar is deprecated:DeprecationWarning:pint.facets.plain.quantity:575",
+    # PyProj automatically dispatching for single point, will be waiting for NumPy 2.0 to address
+    # See: https://github.com/pyproj4/pyproj/issues/1309
+    "ignore:Conversion of an array with ndim > 0 to a scalar is deprecated:DeprecationWarning:pyproj.geod:404"
 ]
 
 [tool.ruff]
