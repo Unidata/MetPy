@@ -1645,6 +1645,57 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
 
 
 @exporter.export
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'dewpoint')
+)
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def wet_bulb_potential_temperature(pressure, temperature, dewpoint):
+    r"""Calculate wet-bulb potential temperature.
+
+    This calculation must be given an air parcel's pressure, temperature, and dewpoint.
+    The implementation uses the formula outlined in [DaviesJones2008]_.
+    First, theta-e is calculated
+    then use the formula from [DaviesJones2008]_
+
+    .. math:: \theta_w = \theta_e -
+        exp(\frac{a_0 + a_1 x + a_2 x^2 + a_3 x^3 + a_4 x^4}
+            {1 + b_1 x + b_2 x^2 + b_3 x^3 + b_4 x^4})
+
+    where :math:`x = \theta_e / 273.15 K`.
+
+    When :math:`\theta_e <= -173.15 K` then :math:`\theta_w = \theta_e`.
+
+    Parameters
+    ----------
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    temperature: `pint.Quantity`
+        Temperature of parcel
+
+    dewpoint: `pint.Quantity`
+        Dewpoint of parcel
+
+    Returns
+    -------
+    `pint.Quantity`
+        wet-bulb potential temperature of the parcel
+
+    """
+    theta_e = equivalent_potential_temperature(pressure, temperature, dewpoint)
+    x = theta_e.m_as('kelvin') / 273.15
+    x2 = x * x
+    x3 = x2 * x
+    x4 = x2 * x2
+    a = 7.101574 - 20.68208 * x + 16.11182 * x2 + 2.574631 * x3 - 5.205688 * x4
+    b = 1 - 3.552497 * x + 3.781782 * x2 - 0.6899655 * x3 - 0.5929340 * x4
+
+    theta_w = units.Quantity(theta_e.m_as('kelvin') - np.exp(a / b), 'kelvin')
+    return np.where(theta_e <= units.Quantity(173.15, 'kelvin'), theta_e, theta_w)
+
+
+@exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'mixing_ratio'))
 @process_units(
     {
