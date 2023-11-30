@@ -107,7 +107,9 @@ filterwarnings = [
     "ignore:numpy.ndarray size changed:RuntimeWarning",
     # To be removed in the next python-dateutil release.
     # See: https://github.com/dateutil/dateutil/issues/1314
-    'ignore:datetime.datetime.utcfromtimestamp\(\) is deprecated:DeprecationWarning:dateutil.tz.tz:37'
+    'ignore:datetime.datetime.utcfromtimestamp\(\) is deprecated:DeprecationWarning:dateutil.tz.tz:37',
+    # Numpy deprecation triggered by Pint: https://github.com/hgrecco/pint/pull/1880
+    "ignore:Conversion of an array with ndim > 0 to a scalar is deprecated:DeprecationWarning:pint.facets.plain.quantity:575"
 ]
 
 [tool.ruff]
