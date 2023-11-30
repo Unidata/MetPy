@@ -1576,9 +1576,9 @@ def test_mixed_layer_cape_cin_bottom_pressure(multiple_intersections):
     """Test the calculation of mixed layer cape/cin with a specified bottom pressure."""
     pressure, temperature, dewpoint = multiple_intersections
     mlcape_middle, mlcin_middle = mixed_layer_cape_cin(pressure, temperature, dewpoint,
-                                                       parcel_start_pressure=800 * units.hPa)
-    assert_almost_equal(mlcape_middle, 0 * units('joule / kilogram'), 2)
-    assert_almost_equal(mlcin_middle, 0 * units('joule / kilogram'), 2)
+                                                       parcel_start_pressure=903 * units.hPa)
+    assert_almost_equal(mlcape_middle, 1177.86 * units('joule / kilogram'), 2)
+    assert_almost_equal(mlcin_middle, -37. * units('joule / kilogram'), 2)
 
 
 def test_dcape():
