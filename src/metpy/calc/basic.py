@@ -93,7 +93,7 @@ def wind_direction(u, v, convention='from'):
     origshape = wdir.shape
     wdir = np.atleast_1d(wdir)
 
-    # Handle oceanographic convection
+    # Handle oceanographic convention
     if convention == 'to':
         wdir -= units.Quantity(180., 'deg')
     elif convention not in ('to', 'from'):
