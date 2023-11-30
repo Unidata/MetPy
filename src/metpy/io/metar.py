@@ -477,7 +477,7 @@ def _metars_to_dataframe(metar_iter, *, year=None, month=None):
     # Set the units for the dataframe--filter out warning from Pandas
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', UserWarning)
-        df.units = col_units
+        df.units = col_units.copy()
 
     return df
 

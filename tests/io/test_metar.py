@@ -399,3 +399,12 @@ def test_repr():
                    "dewp=TreeNode(text='M10', offset=38)), "
                    "altim=TreeNode(text=' A3026', offset=41), "
                    "remarks=TreeNode(text='', offset=47), end=TreeNode(text='', offset=47))")
+
+
+def test_metar_units_in_place():
+    """Test that parsing a METAR yields units that can be changed safely in-place."""
+    df = parse_metar_to_dataframe('KDEN 012153Z 09010KT 10SM FEW060 BKN110 BKN220 27/13 A3010')
+    df.units['air_temperature'] = 'degF'
+
+    df = parse_metar_to_dataframe('KDEN 012153Z 09010KT 10SM FEW060 BKN110 BKN220 27/13 A3010')
+    assert df.units['air_temperature'] == 'degC'
