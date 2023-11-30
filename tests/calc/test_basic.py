@@ -800,6 +800,7 @@ def test_altimiter_to_sea_level_pressure_inhg():
     assert_almost_equal(res, truth, 3)
 
 
+@pytest.mark.filterwarnings('ignore:overflow encountered in exp:RuntimeWarning')
 def test_altimeter_to_sea_level_pressure_hpa(array_type):
     """Test the altimeter to sea level pressure function with hectopascals."""
     mask = [False, True, False, True]

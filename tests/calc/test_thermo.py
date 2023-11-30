@@ -203,6 +203,9 @@ def test_moist_lapse_starting_points(start, direction):
 @pytest.mark.xfail(platform.machine() == 'arm64', reason='ValueError is not raised on Mac M2')
 @pytest.mark.xfail((sys.platform == 'win32') and version_check('scipy<1.11.3'),
                    reason='solve_ivp() does not error on Windows + SciPy < 1.11.3')
+@pytest.mark.filterwarnings('ignore:overflow encountered in exp:RuntimeWarning')
+@pytest.mark.filterwarnings(r'ignore:invalid value encountered in \w*divide:RuntimeWarning')
+@pytest.mark.filterwarnings(r'ignore:.*Excess accuracy requested.*:UserWarning')
 def test_moist_lapse_failure():
     """Test moist_lapse under conditions that cause the ODE solver to fail."""
     p = np.logspace(3, -1, 10) * units.hPa
