@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>mixing_ratio_from_relative_humidity &#8212; MetPy 1.5dev</title>
+    <title>wet_bulb_potential_temperature &#8212; MetPy 1.5dev</title>
   
   
   
@@ -60,7 +60,7 @@
                 gtag('config', 'G-J48T2BG3J7');
             </script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/metpy.calc.mixing_ratio_from_relative_humidity';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/metpy.calc.wet_bulb_potential_temperature';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.14.4';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
@@ -71,13 +71,13 @@
     <link rel="icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="mixing_ratio_from_specific_humidity" href="metpy.calc.mixing_ratio_from_specific_humidity.html" />
-    <link rel="prev" title="mixing_ratio" href="metpy.calc.mixing_ratio.html" />
+    <link rel="next" title="bulk_shear" href="metpy.calc.bulk_shear.html" />
+    <link rel="prev" title="wet_bulb_temperature" href="metpy.calc.wet_bulb_temperature.html" />
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="Nov 30, 2023 at 16:36:49"/>
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.mixing_ratio_from_relative_humidity.html" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.wet_bulb_potential_temperature.html" />
 
   </head>
   
@@ -517,7 +517,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.dewpoint_from_specific_humidity.html">dewpoint_from_specific_humidity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.equivalent_potential_temperature.html">equivalent_potential_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio.html">mixing_ratio</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">mixing_ratio_from_relative_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio_from_relative_humidity.html">mixing_ratio_from_relative_humidity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio_from_specific_humidity.html">mixing_ratio_from_specific_humidity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_lapse.html">moist_lapse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_static_energy.html">moist_static_energy</a></li>
@@ -541,7 +541,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature.html">virtual_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html">virtual_temperature_from_dewpoint</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_potential_temperature.html">wet_bulb_potential_temperature</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">wet_bulb_potential_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.bulk_shear.html">bulk_shear</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.bunkers_storm_motion.html">bunkers_storm_motion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.corfidi_storm_motion.html">corfidi_storm_motion</a></li>
@@ -760,7 +760,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="metpy.calc.html" class="nav-link">Calculations <code class="docutils literal notranslate"><span class="pre">(metpy.calc)</span></code></a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">mixing_ratio...</li>
+    <li class="breadcrumb-item active" aria-current="page">wet_bulb_pot...</li>
   </ul>
 </nav>
 </div>
@@ -777,64 +777,37 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="mixing-ratio-from-relative-humidity">
-<h1>mixing_ratio_from_relative_humidity<a class="headerlink" href="#mixing-ratio-from-relative-humidity" title="Link to this heading">#</a></h1>
+  <section id="wet-bulb-potential-temperature">
+<h1>wet_bulb_potential_temperature<a class="headerlink" href="#wet-bulb-potential-temperature" title="Link to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="metpy.calc.mixing_ratio_from_relative_humidity">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">mixing_ratio_from_relative_humidity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_humidity</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L2048-L2108"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.mixing_ratio_from_relative_humidity" title="Link to this definition">#</a></dt>
-<dd><p>Calculate the mixing ratio from relative humidity, temperature, and pressure.</p>
+<dt class="sig sig-object py" id="metpy.calc.wet_bulb_potential_temperature">
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">wet_bulb_potential_temperature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L1647-L1695"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.wet_bulb_potential_temperature" title="Link to this definition">#</a></dt>
+<dd><p>Calculate wet-bulb potential temperature.</p>
+<p>This calculation must be given an air parcel’s pressure, temperature, and dewpoint.
+The implementation uses the formula outlined in <a class="reference internal" href="../references.html#daviesjones2008" id="id1"><span>[DaviesJones2008]</span></a>.
+First, theta-e is calculated
+then use the formula from <a class="reference internal" href="../references.html#daviesjones2008" id="id2"><span>[DaviesJones2008]</span></a></p>
+<div class="math notranslate nohighlight">
+\[\theta_w = \theta_e -
+exp(\frac{a_0 + a_1 x + a_2 x^2 + a_3 x^3 + a_4 x^4}
+    {1 + b_1 x + b_2 x^2 + b_3 x^3 + b_4 x^4})\]</div>
+<p>where <span class="math notranslate nohighlight">\(x = \theta_e / 273.15 K\)</span>.</p>
+<p>When <span class="math notranslate nohighlight">\(\theta_e &lt;= -173.15 K\)</span> then <span class="math notranslate nohighlight">\(\theta_w = \theta_e\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Total atmospheric pressure</p></li>
-<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Air temperature</p></li>
-<li><p><strong>relative_humidity</strong> (<em>array-like</em>) – The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass
-a percentage if proper units are attached.</p></li>
+<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Temperature of parcel</p></li>
+<li><p><strong>dewpoint</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Dewpoint of parcel</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Mixing ratio (dimensionless)</p>
+<dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – wet-bulb potential temperature of the parcel</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">mixing_ratio_from_relative_humidity</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="mf">1000.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="mf">28.1</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rh</span> <span class="o">=</span> <span class="mf">.65</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mixing_ratio_from_relative_humidity</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">rh</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;g/kg&#39;</span><span class="p">)</span>
-<span class="go">&lt;Quantity(15.7646969, &#39;gram / kilogram&#39;)&gt;</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio" title="metpy.calc.relative_humidity_from_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_from_mixing_ratio</span></code></a>, <a class="reference internal" href="metpy.calc.saturation_mixing_ratio.html#metpy.calc.saturation_mixing_ratio" title="metpy.calc.saturation_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">saturation_mixing_ratio</span></code></a></p>
-</div>
-<p class="rubric">Notes</p>
-<p>Employs <a class="reference internal" href="../references.html#wmo8" id="id1"><span>[WMO8]</span></a> eq. 4.A.16 as derived from WMO relative humidity definition based on
-vapor partial pressures (eq. 4.A.15).</p>
-<div class="math notranslate nohighlight">
-\[RH = \frac{w}{\epsilon + w} \frac{\epsilon + w_s}{w_s}\]</div>
-<div class="math notranslate nohighlight">
-\[\therefore w = \frac{\epsilon * w_s * RH}{\epsilon + w_s (1 - RH)}\]</div>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(w\)</span> is mixing ratio</p></li>
-<li><p><span class="math notranslate nohighlight">\(w_s\)</span> is the saturation mixing ratio</p></li>
-<li><p><span class="math notranslate nohighlight">\(\epsilon\)</span> is the molecular weight ratio of vapor to dry air</p></li>
-<li><p><span class="math notranslate nohighlight">\(RH\)</span> is relative humidity as a unitless ratio</p></li>
-</ul>
-<div class="versionchanged">
-<p><span class="versionmodified changed">Changed in version 1.0: </span>Changed signature from <code class="docutils literal notranslate"><span class="pre">(relative_humidity,</span> <span class="pre">temperature,</span> <span class="pre">pressure)</span></code></p>
-</div>
 </dd></dl>
 
-<section id="examples-using-metpy-calc-mixing-ratio-from-relative-humidity">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.mixing_ratio_from_relative_humidity</span></code><a class="headerlink" href="#examples-using-metpy-calc-mixing-ratio-from-relative-humidity" title="Link to this heading">#</a></h2>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations."><img alt="" src="../../_images/sphx_glr_Thickness_Hydrostatic_thumb.png" />
-<p><a class="reference internal" href="../../examples/calculations/Thickness_Hydrostatic.html#sphx-glr-examples-calculations-thickness-hydrostatic-py"><span class="std std-ref">Hydrostatic Thickness</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Hydrostatic Thickness</div>
-</div></div><div style='clear:both'></div></section>
-</section>
+<div style='clear:both'></div></section>
 
 
                 </article>
@@ -847,20 +820,20 @@ vapor partial pressures (eq. 4.A.15).</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="metpy.calc.mixing_ratio.html"
+       href="metpy.calc.wet_bulb_temperature.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">mixing_ratio</p>
+        <p class="prev-next-title">wet_bulb_temperature</p>
       </div>
     </a>
     <a class="right-next"
-       href="metpy.calc.mixing_ratio_from_specific_humidity.html"
+       href="metpy.calc.bulk_shear.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">mixing_ratio_from_specific_humidity</p>
+        <p class="prev-next-title">bulk_shear</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -880,8 +853,7 @@ vapor partial pressures (eq. 4.A.15).</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.calc.mixing_ratio_from_relative_humidity"><code class="docutils literal notranslate"><span class="pre">mixing_ratio_from_relative_humidity()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-using-metpy-calc-mixing-ratio-from-relative-humidity">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.mixing_ratio_from_relative_humidity</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.calc.wet_bulb_potential_temperature"><code class="docutils literal notranslate"><span class="pre">wet_bulb_potential_temperature()</span></code></a></li>
 </ul>
   </nav></div>
 

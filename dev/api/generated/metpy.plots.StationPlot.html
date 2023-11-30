@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 29, 2023 at 23:08:38"/>
+    <meta name="docbuild:last-update" content="Nov 30, 2023 at 16:36:49"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.StationPlot.html" />
 
   </head>
@@ -540,6 +540,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature.html">virtual_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html">virtual_temperature_from_dewpoint</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_potential_temperature.html">wet_bulb_potential_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.bulk_shear.html">bulk_shear</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.bunkers_storm_motion.html">bunkers_storm_motion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.corfidi_storm_motion.html">corfidi_storm_motion</a></li>
@@ -918,7 +919,7 @@ like color or line width.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlot.plot_parameter">
-<span class="sig-name descname"><span class="pre">plot_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.0f'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/station_plot.py#L166-L207"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_parameter" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/station_plot.py#L166-L207"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_parameter" title="Link to this definition">#</a></dt>
 <dd><p>At the specified location in the station model plot a set of values.</p>
 <p>This specifies that at the offset <em class="xref py py-obj">location</em>, the data in <em class="xref py py-obj">parameter</em> should be
 plotted. The conversion of the data values to a string is controlled by <code class="docutils literal notranslate"><span class="pre">formatter</span></code>.</p>
@@ -935,7 +936,7 @@ are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x a
 <li><p><strong>parameter</strong> (<em>array-like</em>) – The numeric values that should be plotted</p></li>
 <li><p><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><em>Callable</em><em>, </em><em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
 compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
-value and return a string. Defaults to ‘0.f’.</p></li>
+value and return a string. Defaults to ‘z0.f’.</p></li>
 <li><p><strong>plot_units</strong> (<em class="xref py py-obj">pint.unit</em>) – Units to plot in (performing conversion if necessary). Defaults to given units.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</p></li>
 </ul>

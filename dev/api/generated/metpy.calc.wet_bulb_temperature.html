@@ -70,12 +70,12 @@
     <link rel="icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="bulk_shear" href="metpy.calc.bulk_shear.html" />
+    <link rel="next" title="wet_bulb_potential_temperature" href="metpy.calc.wet_bulb_potential_temperature.html" />
     <link rel="prev" title="virtual_temperature_from_dewpoint" href="metpy.calc.virtual_temperature_from_dewpoint.html" />
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 29, 2023 at 23:08:38"/>
+    <meta name="docbuild:last-update" content="Nov 30, 2023 at 16:36:49"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.wet_bulb_temperature.html" />
 
   </head>
@@ -540,6 +540,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature.html">virtual_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html">virtual_temperature_from_dewpoint</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">wet_bulb_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_potential_temperature.html">wet_bulb_potential_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.bulk_shear.html">bulk_shear</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.bunkers_storm_motion.html">bunkers_storm_motion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.corfidi_storm_motion.html">corfidi_storm_motion</a></li>
@@ -779,7 +780,7 @@ document.write(`
 <h1>wet_bulb_temperature<a class="headerlink" href="#wet-bulb-temperature" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.wet_bulb_temperature">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">wet_bulb_temperature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L3867-L3934"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.wet_bulb_temperature" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">wet_bulb_temperature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L3918-L3985"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.wet_bulb_temperature" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the wet-bulb temperature using Normand’s rule.</p>
 <p>This function calculates the wet-bulb temperature using the Normand method. The LCL is
 computed, and that parcel brought down to the starting pressure along a moist adiabat.
@@ -834,11 +835,11 @@ caution on large arrays.</p>
       </div>
     </a>
     <a class="right-next"
-       href="metpy.calc.bulk_shear.html"
+       href="metpy.calc.wet_bulb_potential_temperature.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">bulk_shear</p>
+        <p class="prev-next-title">wet_bulb_potential_temperature</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
