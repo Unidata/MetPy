@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 04, 2023 at 18:52:00"/>
+    <meta name="docbuild:last-update" content="Dec 04, 2023 at 20:18:58"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.heat_index.html" />
 
   </head>
@@ -780,7 +780,7 @@ document.write(`
 <h1>heat_index<a class="headerlink" href="#heat-index" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.heat_index">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">heat_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_humidity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_undefined</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/basic.py#L218-L329"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.heat_index" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">heat_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_humidity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_undefined</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/basic.py#L218-L341"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.heat_index" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the Heat Index from the current temperature and relative humidity.</p>
 <p>The implementation uses the formula outlined in <a class="reference internal" href="../references.html#rothfusz1990" id="id1"><span>[Rothfusz1990]</span></a>, which is a
 multi-variable least-squares regression of the values obtained in <a class="reference internal" href="../references.html#steadman1979" id="id2"><span>[Steadman1979]</span></a>.
@@ -801,6 +801,19 @@ values masked where the temperature &lt; 80F. Defaults to <em class="xref py py-
 <dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.22)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Corresponding Heat Index value(s)</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">heat_index</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">heat_index</span><span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span>
+<span class="go">&lt;Quantity([105.3943646], &#39;degree_Fahrenheit&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">heat_index</span><span class="p">(</span><span class="mi">90</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">,</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span>
+<span class="go">&lt;Quantity([121.901204], &#39;degree_Fahrenheit&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">heat_index</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">,</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span>
+<span class="go">&lt;Quantity([--], &#39;degree_Fahrenheit&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">heat_index</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">,</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">,</span> <span class="n">mask_undefined</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&lt;Quantity([59.93], &#39;degree_Fahrenheit&#39;)&gt;</span>
+</pre></div>
+</div>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.0: </span>Renamed <code class="docutils literal notranslate"><span class="pre">rh</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">relative_humidity</span></code></p>
 </div>
