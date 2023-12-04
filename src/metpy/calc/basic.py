@@ -246,6 +246,18 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
         A flag indicating whether a masked array should be returned with
         values masked where the temperature < 80F. Defaults to `True`.
 
+    Examples
+    --------
+    >>> from metpy.calc import heat_index
+    >>> from metpy.units import units
+    >>> heat_index(30 * units.degC, 90 * units.percent)
+    <Quantity([105.3943646], 'degree_Fahrenheit')>
+    >>> heat_index(90 * units.degF, 90 * units.percent)
+    <Quantity([121.901204], 'degree_Fahrenheit')>
+    >>> heat_index(60 * units.degF, 90 * units.percent)
+    <Quantity([--], 'degree_Fahrenheit')>
+    >>> heat_index(60 * units.degF, 90 * units.percent, mask_undefined=False)
+    <Quantity([59.93], 'degree_Fahrenheit')>
 
     .. versionchanged:: 1.0
        Renamed ``rh`` parameter to ``relative_humidity``
