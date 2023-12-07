@@ -251,7 +251,7 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
     >>> from metpy.calc import heat_index
     >>> from metpy.units import units
     >>> heat_index(30 * units.degC, 90 * units.percent)
-    <Quantity([105.3943646], 'degree_Fahrenheit')>
+    <Quantity([40.774647], 'degree_Celsius')>
     >>> heat_index(90 * units.degF, 90 * units.percent)
     <Quantity([121.901204], 'degree_Fahrenheit')>
     >>> heat_index(60 * units.degF, 90 * units.percent)
@@ -331,6 +331,9 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
         rh85adj = (0.02 * (relative_humidity[sel] * 100. - 85.)
                    * (units.Quantity(87., 'delta_degF') - delta[sel]))
         hi[sel] = hi[sel] + rh85adj
+
+    # Convert heat index to temperature units
+    hi = hi.to(temperature.units)
 
     # See if we need to mask any undefined values
     if mask_undefined:
