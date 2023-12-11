@@ -332,16 +332,13 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
                    * (units.Quantity(87., 'delta_degF') - delta[sel]))
         hi[sel] = hi[sel] + rh85adj
 
-    # Convert heat index to temperature units
-    hi = hi.to(temperature.units)
-
     # See if we need to mask any undefined values
     if mask_undefined:
         mask = np.array(temperature < units.Quantity(80., 'degF'))
         if mask.any():
             hi = masked_array(hi, mask=mask)
 
-    return hi
+    return hi.to(temperature.units)
 
 
 @exporter.export
