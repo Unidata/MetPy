@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 11, 2023 at 19:47:43"/>
+    <meta name="docbuild:last-update" content="Dec 11, 2023 at 21:40:21"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.heat_index.html" />
 
   </head>
@@ -805,7 +805,7 @@ values masked where the temperature &lt; 80F. Defaults to <em class="xref py py-
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">heat_index</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">heat_index</span><span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span>
-<span class="go">&lt;Quantity([105.3943646], &#39;degree_Fahrenheit&#39;)&gt;</span>
+<span class="go">&lt;Quantity([40.774647], &#39;degree_Celsius&#39;)&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">heat_index</span><span class="p">(</span><span class="mi">90</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">,</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span>
 <span class="go">&lt;Quantity([121.901204], &#39;degree_Fahrenheit&#39;)&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">heat_index</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">,</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span>
