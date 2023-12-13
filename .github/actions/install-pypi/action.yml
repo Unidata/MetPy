@@ -44,6 +44,12 @@ runs:
       shell: bash
       run: echo "PIP_NO_BINARY=shapely" >> $GITHUB_ENV
 
+    - name: Upgrade pip and setuptools
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install --upgrade setuptools
+
     - name: Set dependency groups for install
       shell: bash
       run: |
