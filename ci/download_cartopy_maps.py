@@ -21,9 +21,6 @@ if __name__ == '__main__':
         for r in ['110m', '50m', '10m']:
             grab_ne('cultural', feat, r)
 
-    for feat, r in [('coastline', '10m'), ('coastline', '50m'), ('coastline', '110m'),
-                    ('lakes', '10m'), ('lakes', '50m'),
-                    ('land', '10m'), ('land', '50m'), ('land', '110m'),
-                    ('ocean', '110m'), ('ocean', '50m'),
-                    ('rivers_lake_centerlines', '10m'), ('rivers_lake_centerlines', '110m')]:
-        grab_ne('physical', feat, r)
+    for feat in ['coastline', 'lakes', 'land', 'ocean', 'rivers_lake_centerlines']:
+        for r in ['110m', '50m', '10m']:
+            grab_ne('physical', feat, r)
