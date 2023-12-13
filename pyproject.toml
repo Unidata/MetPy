@@ -104,6 +104,7 @@ doctest_optionflags = "NORMALIZE_WHITESPACE"
 mpl-results-path = "test_output"
 xfail_strict = true
 filterwarnings = [
+    "error",
     "ignore:numpy.ndarray size changed:RuntimeWarning",
     # To be removed in the next python-dateutil release.
     # See: https://github.com/dateutil/dateutil/issues/1314
