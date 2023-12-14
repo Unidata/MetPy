@@ -2786,7 +2786,8 @@ def isentropic_interpolation_as_dataset(
     *args,
     max_iters=50,
     eps=1e-6,
-    bottom_up_search=True
+    bottom_up_search=True,
+    pressure=None
 ):
     r"""Interpolate xarray data in isobaric coords to isentropic coords, returning a Dataset.
 
@@ -2806,6 +2807,9 @@ def isentropic_interpolation_as_dataset(
     bottom_up_search : bool, optional
         Controls whether to search for levels bottom-up (starting at lower indices),
         or top-down (starting at higher indices). Defaults to True, which is bottom-up search.
+    pressure : `xarray.DataArray`, optional
+        Array of pressure to use when the vertical coordinate for the passed in data is not
+        pressure (e.g. data using sigma coordinates)
 
     Returns
     -------
@@ -2840,10 +2844,20 @@ def isentropic_interpolation_as_dataset(
                        'The output Dataset includes duplicate levels as a result. '
                        'This may cause xarray to crash when working with this Dataset!')
 
+    if pressure is None:
+        pressure = all_args[0].metpy.vertical
+
+    if (units.get_dimensionality(pressure.metpy.units)
+            != units.get_dimensionality('[pressure]')):
+        raise ValueError('The pressure array/vertical coordinate for the passed in data does '
+                         'not appear to be pressure. In this case you need to pass in '
+                         'pressure values with proper units using the `pressure` keyword '
+                         'argument.')
+
     # Obtain result as list of Quantities
     ret = isentropic_interpolation(
         levels,
-        all_args[0].metpy.vertical,
+        pressure,
         all_args[0].metpy.unit_array,
         *(arg.metpy.unit_array for arg in all_args[1:]),
         vertical_dim=all_args[0].metpy.find_axis_number('vertical'),

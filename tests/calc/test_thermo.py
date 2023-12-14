@@ -1467,6 +1467,78 @@ def test_isentropic_interpolation_as_dataset_duplicate(xarray_isentropic_data):
                                                 xarray_isentropic_data.rh)
 
 
+@pytest.fixture
+def xarray_sigma_isentropic_data():
+    """Generate test xarray dataset on sigma vertical coords for interpolation functions."""
+    return xr.Dataset(
+        {
+            'temperature': (
+                ('z', 'y', 'x'),
+                [[[296.]], [[292.]], [[290.]], [[288.]]] * units.K
+            ),
+            'rh': (
+                ('z', 'y', 'x'),
+                [[[100.]], [[80.]], [[40.]], [[20.]]] * units.percent
+            ),
+            'pressure': (
+                ('z', 'y', 'x'),
+                [[[1000.]], [[950.]], [[900.]], [[850.]]] * units.hPa
+            )
+        },
+        coords={
+            'z': (('z',), [0.98, 0.928, 0.876, 0.825], {'units': 'dimensionless'}),
+            'time': '2020-01-01T00:00Z'
+        }
+    )
+
+
+def test_isen_interpolation_as_dataset_non_pressure_default(xarray_sigma_isentropic_data):
+    """Test isentropic interpolation with xarray data with non-pressure vertical coord."""
+    isentlev = [296., 297.] * units.kelvin
+    with pytest.raises(ValueError, match='vertical coordinate for the.*does not'):
+        isentropic_interpolation_as_dataset(isentlev,
+                                            xarray_sigma_isentropic_data.temperature,
+                                            xarray_sigma_isentropic_data.rh)
+
+
+def test_isen_interpolation_as_dataset_passing_pressre(xarray_sigma_isentropic_data):
+    """Test isentropic interpolation with xarray when passing a pressure array."""
+    isentlev = [296., 297.] * units.kelvin
+    result = isentropic_interpolation_as_dataset(
+        isentlev, xarray_sigma_isentropic_data.temperature,
+        xarray_sigma_isentropic_data.rh, pressure=xarray_sigma_isentropic_data.pressure)
+    expected = xr.Dataset(
+        {
+            'pressure': (
+                ('isentropic_level', 'y', 'x'),
+                [[[1000.]], [[936.213]]] * units.hPa,
+                {'standard_name': 'air_pressure'}
+            ),
+            'temperature': (
+                ('isentropic_level', 'y', 'x'),
+                [[[296.]], [[291.4579]]] * units.K,
+                {'standard_name': 'air_temperature'}
+            ),
+            'rh': (
+                ('isentropic_level', 'y', 'x'),
+                [[[100.]], [[69.19706]]] * units.percent
+            )
+        },
+        coords={
+            'isentropic_level': (
+                ('isentropic_level',),
+                [296., 297.],
+                {'units': 'kelvin', 'positive': 'up'}
+            ),
+            'time': '2020-01-01T00:00Z'
+        }
+    )
+    xr.testing.assert_allclose(result, expected)
+    assert result['pressure'].attrs == expected['pressure'].attrs
+    assert result['temperature'].attrs == expected['temperature'].attrs
+    assert result['isentropic_level'].attrs == expected['isentropic_level'].attrs
+
+
 @pytest.mark.parametrize('array_class', (units.Quantity, masked_array))
 def test_surface_based_cape_cin(array_class):
     """Test the surface-based CAPE and CIN calculation."""
