@@ -8,7 +8,7 @@ import logging
 
 import numpy as np
 from scipy.interpolate import griddata, Rbf
-from scipy.spatial import cKDTree, ConvexHull, Delaunay, qhull
+from scipy.spatial import cKDTree, ConvexHull, Delaunay, QhullError
 
 from . import geometry, tools
 from ..package_tools import Exporter
@@ -153,7 +153,7 @@ def natural_neighbor_point(xp, yp, variable, grid_loc, tri, neighbors, circumcen
 
             area_list.append(cur_area * value[0])
 
-        except (ZeroDivisionError, qhull.QhullError) as e:
+        except (ZeroDivisionError, QhullError) as e:
             message = ('Error during processing of a grid. '
                        'Interpolation will continue but be mindful '
                        f'of errors in output. {e}')

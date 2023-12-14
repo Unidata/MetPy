@@ -67,7 +67,7 @@ def test_cross_xy():
         },
         coords={
             'time': xr.DataArray(
-                np.array([np.datetime64('2018-07-01T00:00')]),
+                np.array(['2018-07-01T00:00'], dtype='datetime64[ns]'),
                 name='time',
                 dims=['time']
             ),

@@ -209,6 +209,7 @@ def masked_array(data, data_units=None, **kwargs):
     """
     if data_units is None:
         data_units = data.units
+        data = data.magnitude
     return units.Quantity(np.ma.masked_array(data, **kwargs), data_units)
 
 

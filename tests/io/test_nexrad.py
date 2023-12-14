@@ -72,8 +72,15 @@ def test_level2_fobj(filename, use_seek):
                 """Read bytes."""
                 return self._f.read(n)
 
+            def close(self):
+                """Close object."""
+                return self._f.close()
+
         f = SeeklessReader(f)
-    Level2File(f)
+
+    # Need to close manually (since we own the fboj) to avoid a warning
+    with contextlib.closing(f):
+        Level2File(f)
 
 
 def test_doubled_file():

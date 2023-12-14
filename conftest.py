@@ -111,9 +111,8 @@ def test_da_xy():
          'lambert_conformal': ([], '')},
         coords={
             'time': xarray.DataArray(
-                numpy.array([numpy.datetime64('2018-07-01T00:00'),
-                             numpy.datetime64('2018-07-01T06:00'),
-                             numpy.datetime64('2018-07-01T12:00')]),
+                numpy.array(['2018-07-01T00:00', '2018-07-01T06:00', '2018-07-01T12:00'],
+                            dtype='datetime64[ns]'),
                 name='time',
                 dims=['time']
             ),
@@ -151,17 +150,6 @@ def test_da_xy():
     }
 
     return ds.metpy.parse_cf('temperature')
-
-
-@pytest.fixture()
-def set_agg_backend():
-    """Fixture to ensure the Agg backend is active."""
-    prev_backend = matplotlib.pyplot.get_backend()
-    try:
-        matplotlib.pyplot.switch_backend('agg')
-        yield
-    finally:
-        matplotlib.pyplot.switch_backend(prev_backend)
 
 
 @pytest.fixture(params=['dask', 'xarray', 'masked', 'numpy'])

@@ -6,7 +6,7 @@
 import bz2
 from collections import defaultdict, namedtuple, OrderedDict
 import contextlib
-import datetime
+from datetime import datetime, timezone
 import logging
 import pathlib
 import re
@@ -75,7 +75,8 @@ def bzip_blocks_decompress_all(data):
 def nexrad_to_datetime(julian_date, ms_midnight):
     """Convert NEXRAD date time format to python `datetime.datetime`."""
     # Subtracting one from julian_date is because epoch date is 1
-    return datetime.datetime.utcfromtimestamp((julian_date - 1) * day + ms_midnight * milli)
+    return datetime.fromtimestamp((julian_date - 1) * day + ms_midnight * milli,
+                                  tz=timezone.utc).replace(tzinfo=None)
 
 
 def remap_status(val):

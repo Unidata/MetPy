@@ -13,6 +13,7 @@ from importlib.metadata import requires, version
 import operator as op
 import re
 
+import matplotlib.pyplot as plt
 import numpy as np
 import numpy.testing
 from packaging.version import Version
@@ -124,6 +125,19 @@ def needs_module(module):
 
 
 needs_cartopy = needs_module('cartopy')
+
+
+@contextlib.contextmanager
+def autoclose_figure(*args, **kwargs):
+    """Create a figure that is automatically closed when exiting a block.
+
+    ``*args`` and ``**kwargs`` are forwarded onto the call to `plt.figure()`.
+    """
+    fig = plt.figure(*args, **kwargs)
+    try:
+        yield fig
+    finally:
+        plt.close(fig)
 
 
 def get_upper_air_data(date, station):

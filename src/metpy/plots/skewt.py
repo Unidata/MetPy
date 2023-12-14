@@ -421,6 +421,10 @@ class SkewT:
                 raise ValueError('To convert to plotting units, units must be attached to '
                                  'u and v wind components.')
 
+        # Drop units for u,v since they're not used and trigger warnings
+        u = getattr(u, 'magnitude', u)
+        v = getattr(v, 'magnitude', v)
+
         # Assemble array of x-locations in axes space
         x = np.empty_like(pressure)
         x.fill(xloc)
@@ -966,7 +970,8 @@ class Hodograph:
         else:
             line_args = self._form_line_args(kwargs)
 
-        # Do the plotting
+        # Do the plotting -- drop units on c since it's not used
+        c = getattr(c, 'magnitude', c)
         lc = colored_line(u, v, c, **line_args)
         self.ax.add_collection(lc)
         return lc

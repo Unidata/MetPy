@@ -10,6 +10,7 @@ from difflib import get_close_matches
 from itertools import cycle
 import re
 
+from matplotlib.contour import ContourSet
 import matplotlib.patheffects as patheffects
 import matplotlib.pyplot as plt
 import numpy as np
@@ -683,7 +684,10 @@ class Plots2D(SubsetTraits):
 
         """
         if getattr(self, 'handle', None) is not None:
-            if getattr(self.handle, 'collections', None) is not None:
+            # In matplotlib 3.8, the collections attribute on ContourSet was deprecated.
+            # Check for that here so we can avoid the deprecation warning.
+            if (not isinstance(ContourSet.__dict__.get('collections'), property)
+                    and getattr(self.handle, 'collections', None) is not None):
                 self.clear_collections()
             else:
                 self.clear_handle()
@@ -1062,7 +1066,8 @@ class ContourPlot(PlotScalar, ContourTraits, ValidationMixin):
         kwargs.setdefault('colors', self.linecolor)
         kwargs.setdefault('linestyles', self.linestyle)
 
-        self.handle = self.parent.ax.contour(x_like, y_like, imdata, self.contours, **kwargs)
+        self.handle = self.parent.ax.contour(x_like, y_like, imdata.metpy.dequantify(),
+                                             self.contours, **kwargs)
         if self.clabels:
             self.handle.clabel(inline=1, fmt='%.0f', inline_spacing=8,
                                use_clabeltext=True, fontsize=self.label_fontsize)
@@ -1203,11 +1208,13 @@ class PlotVector(Plots2D):
 
             if self.plot_units is not None:
                 data_subset_u = data_subset_u.metpy.convert_units(self.plot_units)
+                data_subset_u = data_subset_u.metpy.dequantify()
                 data_subset_v = data_subset_v.metpy.convert_units(self.plot_units)
+                data_subset_v = data_subset_v.metpy.dequantify()
             self._griddata_u = data_subset_u * self.scale
             self._griddata_v = data_subset_v * self.scale
 
-        return (self._griddata_u, self._griddata_v)
+        return self._griddata_u, self._griddata_v
 
     @property
     def plotdata(self):

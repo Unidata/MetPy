@@ -11,7 +11,7 @@ import numpy as np
 import pytest
 
 from metpy.plots import Hodograph, SkewT
-from metpy.testing import version_check
+from metpy.testing import autoclose_figure, version_check
 from metpy.units import units
 
 
@@ -126,7 +126,8 @@ def test_skewt_with_grid_enabled():
     """Test using SkewT when gridlines are already enabled (#271)."""
     with plt.rc_context(rc={'axes.grid': True}):
         # Also tests when we don't pass in Figure
-        SkewT(aspect='auto')
+        s = SkewT(aspect='auto')
+        plt.close(s.ax.figure)
 
 
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
@@ -139,8 +140,8 @@ def test_skewt_arbitrary_rect():
 
 def test_skewt_subplot_rect_conflict():
     """Test the subplot/rect conflict failure."""
-    with pytest.raises(ValueError):
-        SkewT(rect=(0.15, 0.35, 0.8, 0.3), subplot=(1, 1, 1))
+    with pytest.raises(ValueError), autoclose_figure(figsize=(7, 7)) as fig:
+        SkewT(fig, rect=(0.15, 0.35, 0.8, 0.3), subplot=(1, 1, 1))
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.0198, remove_text=True, style='default')
@@ -262,12 +263,12 @@ def test_skewt_shade_area(test_profile):
 def test_skewt_shade_area_invalid(test_profile):
     """Test shading areas on a SkewT plot."""
     p, t, _, tp = test_profile
-    fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig, aspect='auto')
-    skew.plot(p, t, 'r')
-    skew.plot(p, tp, 'k')
-    with pytest.raises(ValueError):
-        skew.shade_area(p, t, tp, which='positve')
+    with autoclose_figure(figsize=(9, 9)) as fig:
+        skew = SkewT(fig, aspect='auto')
+        skew.plot(p, t, 'r')
+        skew.plot(p, tp, 'k')
+        with pytest.raises(ValueError):
+            skew.shade_area(p, t, tp, which='positve')
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.033, remove_text=True, style='default')
@@ -356,7 +357,8 @@ def test_hodograph_masked_array():
 
 def test_hodograph_alone():
     """Test to create Hodograph without specifying axes."""
-    Hodograph()
+    h = Hodograph()
+    plt.close(h.ax.figure)
 
 
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
@@ -430,10 +432,10 @@ def test_skewt_barb_unit_conversion_exception(u, v):
     """Test that an error is raised if unit conversion is requested on plain arrays."""
     p_wind = np.array([500]) * units.hPa
 
-    fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig, aspect='auto')
-    with pytest.raises(ValueError):
-        skew.plot_barbs(p_wind, u, v, plot_units='knots')
+    with autoclose_figure(figsize=(9, 9)) as fig:
+        skew = SkewT(fig, aspect='auto')
+        with pytest.raises(ValueError):
+            skew.plot_barbs(p_wind, u, v, plot_units='knots')
 
 
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
@@ -571,6 +573,6 @@ def test_hodograph_wind_vectors():
 
 def test_hodograph_range_with_units():
     """Tests making a hodograph with a range with units."""
-    fig = plt.figure(figsize=(6, 6))
-    ax = fig.add_subplot(1, 1, 1)
-    Hodograph(ax, component_range=60. * units.knots)
+    with autoclose_figure(figsize=(6, 6)) as fig:
+        ax = fig.add_subplot(1, 1, 1)
+        Hodograph(ax, component_range=60. * units.knots)

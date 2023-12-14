@@ -59,7 +59,9 @@ def test_find_intersections(direction, expected):
     y1 = 3 * x**2
     y2 = 100 * x - 650
     # Note: Truth is what we will get with this sampling, not the mathematical intersection
-    assert_array_almost_equal(expected, find_intersections(x, y1, y2, direction=direction), 2)
+    x_int, y_int = find_intersections(x, y1, y2, direction=direction)
+    assert_array_almost_equal(x_int, expected[0], 2)
+    assert_array_almost_equal(y_int, expected[1], 2)
 
 
 def test_find_intersections_no_intersections():
@@ -67,10 +69,10 @@ def test_find_intersections_no_intersections():
     x = np.linspace(5, 30, 17)
     y1 = 3 * x + 0
     y2 = 5 * x + 5
-    # Note: Truth is what we will get with this sampling, not the mathematical intersection
-    truth = np.array([[],
-                      []])
-    assert_array_equal(truth, find_intersections(x, y1, y2))
+
+    x_int, y_int = find_intersections(x, y1, y2)
+    assert_array_equal(x_int, np.array([]))
+    assert_array_equal(y_int, np.array([]))
 
 
 def test_find_intersections_invalid_direction():
@@ -107,7 +109,9 @@ def test_find_intersections_intersections_in_data_at_ends(direction, expected):
     x = np.arange(14)
     y1 = np.array([0, 3, 2, 1, -1, 2, 2, 0, 1, 0, 0, -2, 2, 0])
     y2 = np.zeros_like(y1)
-    assert_array_almost_equal(expected, find_intersections(x, y1, y2, direction=direction), 2)
+    x_int, y_int = find_intersections(x, y1, y2, direction=direction)
+    assert_array_almost_equal(x_int, expected[0], 2)
+    assert_array_almost_equal(y_int, expected[1], 2)
 
 
 @pytest.mark.parametrize('mask, expected_idx, expected_element', [
@@ -693,15 +697,15 @@ def test_laplacian_2d(deriv_2d_data):
     assert_array_almost_equal(laplac, laplac_true, 5)
 
 
-def test_parse_angle_abbrieviated():
-    """Test abbrieviated directional text in degrees."""
+def test_parse_angle_abbreviated():
+    """Test abbreviated directional text in degrees."""
     expected_angles_degrees = FULL_CIRCLE_DEGREES
     output_angles_degrees = parse_angle(DIR_STRS[:-1])
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
 
 
 def test_parse_angle_ext():
-    """Test extended (unabbrieviated) directional text in degrees."""
+    """Test extended (unabbreviated) directional text in degrees."""
     test_dir_strs = ['NORTH', 'NORTHnorthEast', 'North_East', 'East__North_East',
                      'easT', 'east  south east', 'south east', ' south southeast',
                      'SOUTH', 'SOUTH SOUTH WEST', 'southWEST', 'WEST south_WEST',
@@ -712,7 +716,7 @@ def test_parse_angle_ext():
 
 
 def test_parse_angle_mix_multiple():
-    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    """Test list of extended (unabbreviated) directional text in degrees in one go."""
     test_dir_strs = ['NORTH', 'nne', 'ne', 'east north east',
                      'easT', 'east  se', 'south east', ' south southeast',
                      'SOUTH', 'SOUTH SOUTH WEST', 'sw', 'WEST south_WEST',
@@ -723,7 +727,7 @@ def test_parse_angle_mix_multiple():
 
 
 def test_parse_angle_none():
-    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    """Test list of extended (unabbreviated) directional text in degrees in one go."""
     test_dir_strs = None
     expected_angles_degrees = np.nan
     output_angles_degrees = parse_angle(test_dir_strs)
@@ -731,7 +735,7 @@ def test_parse_angle_none():
 
 
 def test_parse_angle_invalid_number():
-    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    """Test list of extended (unabbreviated) directional text in degrees in one go."""
     test_dir_strs = 365.
     expected_angles_degrees = np.nan
     output_angles_degrees = parse_angle(test_dir_strs)
@@ -739,15 +743,16 @@ def test_parse_angle_invalid_number():
 
 
 def test_parse_angle_invalid_arr():
-    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    """Test list of extended (unabbreviated) directional text in degrees in one go."""
     test_dir_strs = ['nan', None, np.nan, 35, 35.5, 'north', 'andrewiscool']
     expected_angles_degrees = [np.nan, np.nan, np.nan, np.nan, np.nan, 0, np.nan]
     output_angles_degrees = parse_angle(test_dir_strs)
+    assert isinstance(output_angles_degrees, units.Quantity)
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
 
 
 def test_parse_angle_mix_multiple_arr():
-    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    """Test list of extended (unabbreviated) directional text in degrees in one go."""
     test_dir_strs = np.array(['NORTH', 'nne', 'ne', 'east north east',
                               'easT', 'east  se', 'south east', ' south southeast',
                               'SOUTH', 'SOUTH SOUTH WEST', 'sw', 'WEST south_WEST',
@@ -791,14 +796,16 @@ def test_gradient_2d(deriv_2d_data):
                        [-3, -1, 4],
                        [-3, -1, 4],
                        [-3, -1, 4]]))
-    assert_array_almost_equal(res, truth, 5)
+    for r, t in zip(res, truth):
+        assert_array_almost_equal(r, t, 5)
 
 
 def test_gradient_4d(deriv_4d_data):
     """Test gradient with 4D arrays."""
     res = gradient(deriv_4d_data, deltas=(1, 1, 1, 1))
     truth = tuple(factor * np.ones_like(deriv_4d_data) for factor in (48., 16., 4., 1.))
-    assert_array_almost_equal(res, truth, 8)
+    for r, t in zip(res, truth):
+        assert_array_almost_equal(r, t, 8)
 
 
 def test_gradient_restricted_axes(deriv_2d_data):
@@ -813,7 +820,8 @@ def test_gradient_restricted_axes(deriv_2d_data):
                        [[-3], [-1], [4]],
                        [[-3], [-1], [4]],
                        [[-3], [-1], [4]]]))
-    assert_array_almost_equal(res, truth, 5)
+    for r, t in zip(res, truth):
+        assert_array_almost_equal(r, t, 5)
 
 
 def test_bounding_indices():
@@ -876,6 +884,7 @@ def test_angle_to_direction_full():
     assert_array_equal(output_dirs, expected_dirs)
 
 
+@pytest.mark.filterwarnings('ignore:invalid value encountered in remainder:RuntimeWarning')
 def test_angle_to_direction_invalid_scalar():
     """Test invalid angle."""
     expected_dirs = UND
@@ -883,6 +892,7 @@ def test_angle_to_direction_invalid_scalar():
     assert_array_equal(output_dirs, expected_dirs)
 
 
+@pytest.mark.filterwarnings('ignore:invalid value encountered in remainder:RuntimeWarning')
 def test_angle_to_direction_invalid_arr():
     """Test array of invalid angles."""
     expected_dirs = ['NE', UND, UND, UND, 'N']
@@ -991,7 +1001,8 @@ def test_3d_gradient_3d_data_no_axes(deriv_4d_data):
     test = deriv_4d_data[0]
     res = gradient(test, deltas=(1, 1, 1))
     truth = tuple(factor * np.ones_like(test) for factor in (16., 4., 1.))
-    assert_array_almost_equal(res, truth, 8)
+    for r, t in zip(res, truth):
+        assert_array_almost_equal(r, t, 8)
 
 
 def test_2d_gradient_3d_data_no_axes(deriv_4d_data):
@@ -1014,14 +1025,16 @@ def test_2d_gradient_4d_data_2_axes_3_deltas(deriv_4d_data):
     """Test 2D gradient of 4D data with 2 axes and 3 deltas."""
     res = gradient(deriv_4d_data, deltas=(1, 1, 1), axes=(-2, -1))
     truth = tuple(factor * np.ones_like(deriv_4d_data) for factor in (4., 1.))
-    assert_array_almost_equal(res, truth, 8)
+    for r, t in zip(res, truth):
+        assert_array_almost_equal(r, t, 8)
 
 
 def test_2d_gradient_4d_data_2_axes_2_deltas(deriv_4d_data):
     """Test 2D gradient of 4D data with 2 axes and 2 deltas."""
     res = gradient(deriv_4d_data, deltas=(1, 1), axes=(0, 1))
     truth = tuple(factor * np.ones_like(deriv_4d_data) for factor in (48., 16.))
-    assert_array_almost_equal(res, truth, 8)
+    for r, t in zip(res, truth):
+        assert_array_almost_equal(r, t, 8)
 
 
 def test_2d_gradient_4d_data_2_axes_1_deltas(deriv_4d_data):
@@ -1106,7 +1119,7 @@ def test_first_derivative_xarray_time_subsecond_precision():
                            coords={'time': np.array(['2019-01-01T00:00:00.0',
                                                      '2019-01-01T00:00:00.1',
                                                      '2019-01-01T00:00:00.2'],
-                                                    dtype='datetime64[ms]')},
+                                                    dtype='datetime64[ns]')},
                            attrs={'units': 'kelvin'})
 
     deriv = first_derivative(test_da)
@@ -1317,7 +1330,11 @@ def test_parse_grid_arguments_xarray(datafile, assign_lat_lon, no_crs, transpose
     if subset:
         temp = temp.isel(time=0).metpy.sel(vertical=500 * units.hPa)
 
-    t, dx, dy, p, m, lat, x_dim, y_dim = check_params(temp)
+    if datafile != 'GFS_test.nc' and (not assign_lat_lon or no_crs):
+        with pytest.warns(UserWarning, match='Latitude and longitude computed on-demand'):
+            t, dx, dy, p, m, lat, x_dim, y_dim = check_params(temp)
+    else:
+        t, dx, dy, p, m, lat, x_dim, y_dim = check_params(temp)
 
     if transpose:
         if subset:
@@ -1403,8 +1420,9 @@ def test_parse_grid_arguments_missing_coords():
         },
         attrs={'units': 'K'}).to_dataset().metpy.parse_cf('temperature')
 
-    with pytest.raises(AttributeError,
-                       match='horizontal dimension coordinates cannot be found.'):
+    with (pytest.raises(AttributeError,
+                        match='horizontal dimension coordinates cannot be found.'),
+          pytest.warns(UserWarning, match='Horizontal dimension numbers not found.')):
         check_params(test_da)
 
 

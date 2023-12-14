@@ -1316,6 +1316,7 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
                 for i, arg in enumerate(wrap_like):
                     if isinstance(arg, str):
                         match[i] = bound_args.arguments[arg]
+                match = tuple(match)
 
             # Cast all DataArrays to Pint Quantities
             _mutate_arguments(bound_args, xr.DataArray, lambda arg, _: arg.metpy.unit_array)
@@ -1336,7 +1337,7 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
                 else:
                     wrapping = _wrap_output_like_not_matching_units
 
-                if isinstance(match, list):
+                if isinstance(match, tuple):
                     return tuple(wrapping(*args) for args in zip(result, match))
                 else:
                     return wrapping(result, match)

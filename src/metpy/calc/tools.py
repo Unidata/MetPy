@@ -25,19 +25,19 @@ exporter = Exporter(globals())
 
 UND = 'UND'
 UND_ANGLE = -999.
-DIR_STRS = (
+DIR_STRS = [
     'N', 'NNE', 'NE', 'ENE',
     'E', 'ESE', 'SE', 'SSE',
     'S', 'SSW', 'SW', 'WSW',
     'W', 'WNW', 'NW', 'NNW',
     UND
-)  # note the order matters!
+]  # note the order matters!
 
 MAX_DEGREE_ANGLE = units.Quantity(360, 'degree')
 BASE_DEGREE_MULTIPLIER = units.Quantity(22.5, 'degree')
 
 DIR_DICT = {dir_str: i * BASE_DEGREE_MULTIPLIER for i, dir_str in enumerate(DIR_STRS)}
-DIR_DICT[UND] = np.nan
+DIR_DICT[UND] = units.Quantity(np.nan, 'degree')
 
 
 @exporter.export
@@ -1773,16 +1773,15 @@ def parse_angle(input_dir):
 
     """
     if isinstance(input_dir, str):
-        # abb_dirs = abbrieviated directions
-        abb_dirs = _clean_direction([_abbrieviate_direction(input_dir)])
+        abb_dir = _clean_direction([_abbreviate_direction(input_dir)])[0]
+        return DIR_DICT[abb_dir]
     elif hasattr(input_dir, '__len__'):  # handle np.array, pd.Series, list, and array-like
         input_dir_str = ','.join(_clean_direction(input_dir, preprocess=True))
-        abb_dir_str = _abbrieviate_direction(input_dir_str)
+        abb_dir_str = _abbreviate_direction(input_dir_str)
         abb_dirs = _clean_direction(abb_dir_str.split(','))
+        return units.Quantity.from_list(itemgetter(*abb_dirs)(DIR_DICT))
     else:  # handle unrecognizable scalar
-        return np.nan
-
-    return itemgetter(*abb_dirs)(DIR_DICT)
+        return units.Quantity(np.nan, 'degree')
 
 
 def _clean_direction(dir_list, preprocess=False):
@@ -1795,7 +1794,7 @@ def _clean_direction(dir_list, preprocess=False):
                 for the_dir in dir_list]
 
 
-def _abbrieviate_direction(ext_dir_str):
+def _abbreviate_direction(ext_dir_str):
     """Convert extended (non-abbreviated) directions to abbreviation."""
     return (ext_dir_str
             .upper()
@@ -1846,11 +1845,10 @@ def angle_to_direction(input_angle, full=False, level=3):
 
     # clean any numeric strings, negatives, and None does not handle strings with alphabet
     input_angle = units.Quantity(np.array(input_angle).astype(float), origin_units)
-    input_angle[input_angle < 0] = units.Quantity(np.nan, origin_units)
+    input_angle[input_angle < 0] = np.nan
 
-    # normalizer used for angles > 360 degree to normalize between 0 - 360
-    normalizer = np.array(input_angle.m / MAX_DEGREE_ANGLE.m, dtype=int)
-    norm_angles = abs(input_angle - MAX_DEGREE_ANGLE * normalizer)
+    # Normalize between 0 - 360
+    norm_angles = input_angle % MAX_DEGREE_ANGLE
 
     if level == 3:
         nskip = 1
@@ -1889,12 +1887,12 @@ def angle_to_direction(input_angle, full=False, level=3):
         return dir_str_arr
 
     dir_str_arr = ','.join(dir_str_arr)
-    dir_str_arr = _unabbrieviate_direction(dir_str_arr)
+    dir_str_arr = _unabbreviate_direction(dir_str_arr)
     return dir_str_arr.replace(',', ' ') if scalar else dir_str_arr.split(',')
 
 
-def _unabbrieviate_direction(abb_dir_str):
-    """Convert abbrieviated directions to non-abbrieviated direction."""
+def _unabbreviate_direction(abb_dir_str):
+    """Convert abbreviated directions to non-abbreviated direction."""
     return (abb_dir_str
             .upper()
             .replace(UND, 'Undefined ')

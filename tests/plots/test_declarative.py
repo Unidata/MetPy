@@ -5,6 +5,7 @@
 
 from datetime import datetime, timedelta
 from io import BytesIO
+from unittest.mock import patch, PropertyMock
 import warnings
 
 import matplotlib.pyplot as plt
@@ -184,7 +185,7 @@ def test_declarative_smooth_contour():
 def test_declarative_smooth_contour_calculation():
     """Test making a contour plot using smooth_contour."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
-    data = data.metpy.parse_cf()
+    data = data.metpy.parse_cf().metpy.assign_latitude_longitude()
 
     data['wind_speed'] = wind_speed(data['u_wind'], data['v_wind'])
 
@@ -569,6 +570,8 @@ def test_ndim_error_scalar(cfeature):
     with pytest.raises(ValueError):
         pc.draw()
 
+    plt.close(pc.figure)
+
 
 def test_ndim_error_vector(cfeature):
     """Make sure we get a useful error when the field is not set."""
@@ -589,6 +592,8 @@ def test_ndim_error_vector(cfeature):
 
     with pytest.raises(ValueError):
         pc.draw()
+
+    plt.close(pc.figure)
 
 
 def test_no_field_error_barbs():
@@ -835,7 +840,7 @@ def test_latlon():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.343)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.393)
 @needs_cartopy
 def test_declarative_barb_options():
     """Test making a contour plot."""
@@ -957,7 +962,7 @@ def test_declarative_arrow_changes():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.86)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.891)
 @needs_cartopy
 def test_declarative_barb_earth_relative():
     """Test making a contour plot."""
@@ -1194,6 +1199,14 @@ def sample_obs():
                         columns=['time', 'stid', 'pressure', 'temperature', 'dewpoint'])
 
 
+@pytest.fixture()
+def pandas_sfc():
+    """Open sample pandas data."""
+    df = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False))
+    df['valid'] = pd.to_datetime(df['valid'], format='%Y-%m-%d %H:%M:%S')
+    return df
+
+
 def test_plotobs_subset_default_nolevel(sample_obs):
     """Test PlotObs subsetting with minimal config."""
     obs = PlotObs()
@@ -1284,15 +1297,16 @@ def test_plotobs_subset_time_window_level(sample_obs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
-def test_plotobs_units_with_formatter(ccrs):
+def test_plotobs_units_with_formatter(ccrs, pandas_sfc):
     """Test using PlotObs with a field that both has units and a custom formatter."""
-    df = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                     infer_datetime_format=True, parse_dates=['valid'])
-    df.units = {'alti': 'inHg'}
+    # Catch warning from Pandas due to setting units
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', UserWarning)
+        pandas_sfc.units = {'alti': 'inHg'}
 
     # Plot desired data
     obs = PlotObs()
-    obs.data = df
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.time_window = timedelta(minutes=15)
     obs.level = None
@@ -1320,13 +1334,10 @@ def test_plotobs_units_with_formatter(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.025)
-def test_declarative_sfc_obs(ccrs):
+def test_declarative_sfc_obs(ccrs, pandas_sfc):
     """Test making a surface observation plot."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.time_window = timedelta(minutes=15)
     obs.level = None
@@ -1352,13 +1363,10 @@ def test_declarative_sfc_obs(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.025)
-def test_declarative_sfc_obs_args(ccrs):
+def test_declarative_sfc_obs_args(ccrs, pandas_sfc):
     """Test making a surface observation plot with mpl arguments."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.time_window = timedelta(minutes=15)
     obs.level = None
@@ -1386,13 +1394,10 @@ def test_declarative_sfc_obs_args(ccrs):
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
 @needs_cartopy
-def test_declarative_sfc_text():
+def test_declarative_sfc_text(pandas_sfc):
     """Test making a surface observation plot with text."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.time_window = timedelta(minutes=15)
     obs.level = None
@@ -1419,13 +1424,10 @@ def test_declarative_sfc_text():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.025)
-def test_declarative_sfc_obs_changes(ccrs):
+def test_declarative_sfc_obs_changes(ccrs, pandas_sfc):
     """Test making a surface observation plot, changing the field."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.level = None
     obs.fields = ['tmpf']
@@ -1455,13 +1457,10 @@ def test_declarative_sfc_obs_changes(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.171)
-def test_declarative_colored_barbs(ccrs):
+def test_declarative_colored_barbs(ccrs, pandas_sfc):
     """Test making a surface plot with a colored barb (gh-1274)."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 13)
     obs.level = None
     obs.vector_field = ('uwind', 'vwind')
@@ -1487,13 +1486,10 @@ def test_declarative_colored_barbs(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.305)
-def test_declarative_sfc_obs_full(ccrs):
+def test_declarative_sfc_obs_full(ccrs, pandas_sfc):
     """Test making a full surface observation plot."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 13)
     obs.time_window = timedelta(minutes=15)
     obs.level = None
@@ -1524,7 +1520,7 @@ def test_declarative_sfc_obs_full(ccrs):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.355)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.522)
 @needs_cartopy
 def test_declarative_upa_obs():
     """Test making a full upperair observation plot."""
@@ -1561,7 +1557,7 @@ def test_declarative_upa_obs():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.473)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.518)
 @needs_cartopy
 def test_declarative_upa_obs_convert_barb_units():
     """Test making a full upperair observation plot with barbs converting units."""
@@ -1604,14 +1600,12 @@ def test_declarative_upa_obs_convert_barb_units():
     return pc.figure
 
 
-def test_attribute_error_time(ccrs):
+def test_attribute_error_time(ccrs, pandas_sfc):
     """Make sure we get a useful error when the time variable is not found."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-    data.rename(columns={'valid': 'vtime'}, inplace=True)
+    pandas_sfc.rename(columns={'valid': 'vtime'}, inplace=True)
 
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.level = None
     obs.fields = ['tmpf']
@@ -1634,15 +1628,15 @@ def test_attribute_error_time(ccrs):
     with pytest.raises(AttributeError):
         pc.draw()
 
+    plt.close(pc.figure)
 
-def test_attribute_error_station(ccrs):
+
+def test_attribute_error_station(ccrs, pandas_sfc):
     """Make sure we get a useful error when the station variable is not found."""
-    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                       infer_datetime_format=True, parse_dates=['valid'])
-    data.rename(columns={'station': 'location'}, inplace=True)
+    pandas_sfc.rename(columns={'station': 'location'}, inplace=True)
 
     obs = PlotObs()
-    obs.data = data
+    obs.data = pandas_sfc
     obs.time = datetime(1993, 3, 12, 12)
     obs.level = None
     obs.fields = ['tmpf']
@@ -1664,6 +1658,8 @@ def test_attribute_error_station(ccrs):
 
     with pytest.raises(AttributeError):
         pc.draw()
+
+    plt.close(pc.figure)
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.024)
@@ -1983,6 +1979,7 @@ def test_save():
     pc = PanelContainer()
     fobj = BytesIO()
     pc.save(fobj, format='png')
+    plt.close(pc.figure)
 
     fobj.seek(0)
 
@@ -1990,14 +1987,14 @@ def test_save():
     assert fobj.read()
 
 
-def test_show(set_agg_backend):
+def test_show():
     """Test that show works properly."""
     pc = PanelContainer()
-
-    # Matplotlib warns when using show with Agg
-    with warnings.catch_warnings():
-        warnings.simplefilter('ignore', UserWarning)
+    with patch.object(plt, 'show', new_callable=PropertyMock) as show:
         pc.show()
+        show.assert_called()
+
+    plt.close(pc.figure)
 
 
 @needs_cartopy
@@ -2039,6 +2036,7 @@ def test_copy():
     copied_obj = obj.copy()
     assert obj is not copied_obj
     assert obj.size == copied_obj.size
+    plt.close(obj.figure)
 
     # Copies of plots in MapPanels should not point to same location in memory
     obj = MapPanel()

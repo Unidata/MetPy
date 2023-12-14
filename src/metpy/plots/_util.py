@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Utilities for use in making plots."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from matplotlib.collections import LineCollection
 import matplotlib.patheffects as mpatheffects
@@ -24,7 +24,7 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=Fals
     ax : `matplotlib.axes.Axes`
         The `Axes` instance used for plotting
     time : `datetime.datetime` (or any object with a compatible ``strftime`` method)
-        Specific time to be plotted - datetime.utcnow will be use if not specified
+        Specific time to be plotted - ``datetime.now(UTC)`` will be use if not specified
     x : float
         Relative x position on the axes of the timestamp
     y : float
@@ -52,7 +52,7 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=Fals
         text_args = {}
     text_args.update(**kwargs)
     if not time:
-        time = datetime.utcnow()
+        time = datetime.now(timezone.utc)
     timestr = time.strftime(time_format)
     # If we don't have a time string after that, assume xarray/numpy and see if item
     if not isinstance(timestr, str):

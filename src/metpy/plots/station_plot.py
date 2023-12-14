@@ -339,9 +339,7 @@ class StationPlot:
                                  'u and v wind components.')
 
         # Strip units, CartoPy transform doesn't like
-        u = np.array(u)
-        v = np.array(v)
-        return u, v
+        return np.array(getattr(u, 'magnitude', u)), np.array(getattr(v, 'magnitude', v))
 
     @staticmethod
     def _scalar_plotting_units(scalar_value, plotting_units):

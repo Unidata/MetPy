@@ -203,8 +203,9 @@ def test_moist_lapse_starting_points(start, direction):
 @pytest.mark.xfail(platform.machine() == 'arm64', reason='ValueError is not raised on Mac M2')
 @pytest.mark.xfail((sys.platform == 'win32') and version_check('scipy<1.11.3'),
                    reason='solve_ivp() does not error on Windows + SciPy < 1.11.3')
-@pytest.mark.xfail(version_check('scipy<1.7'),
-                   reason='solve_ivp() does not error on Scipy < 1.7')
+@pytest.mark.filterwarnings('ignore:overflow encountered in exp:RuntimeWarning')
+@pytest.mark.filterwarnings(r'ignore:invalid value encountered in \w*divide:RuntimeWarning')
+@pytest.mark.filterwarnings(r'ignore:.*Excess accuracy requested.*:UserWarning')
 def test_moist_lapse_failure():
     """Test moist_lapse under conditions that cause the ODE solver to fail."""
     p = np.logspace(3, -1, 10) * units.hPa
@@ -1575,9 +1576,9 @@ def test_mixed_layer_cape_cin_bottom_pressure(multiple_intersections):
     """Test the calculation of mixed layer cape/cin with a specified bottom pressure."""
     pressure, temperature, dewpoint = multiple_intersections
     mlcape_middle, mlcin_middle = mixed_layer_cape_cin(pressure, temperature, dewpoint,
-                                                       parcel_start_pressure=800 * units.hPa)
-    assert_almost_equal(mlcape_middle, 0 * units('joule / kilogram'), 2)
-    assert_almost_equal(mlcin_middle, 0 * units('joule / kilogram'), 2)
+                                                       parcel_start_pressure=903 * units.hPa)
+    assert_almost_equal(mlcape_middle, 1177.86 * units('joule / kilogram'), 2)
+    assert_almost_equal(mlcin_middle, -37. * units('joule / kilogram'), 2)
 
 
 def test_dcape():
@@ -2528,7 +2529,8 @@ def test_parcel_profile_with_lcl_as_dataset_duplicates():
         }
     )
 
-    profile = parcel_profile_with_lcl_as_dataset(pressure, temperature, dewpoint)
+    with pytest.warns(UserWarning, match='Duplicate pressure'):
+        profile = parcel_profile_with_lcl_as_dataset(pressure, temperature, dewpoint)
 
     xr.testing.assert_allclose(profile, truth, atol=1e-5)
 

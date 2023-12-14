@@ -28,13 +28,13 @@ requires-python = ">=3.9"
 dependencies = [
     "matplotlib>=3.5.0",
     "numpy>=1.20.0",
-    "pandas>=1.2.0",
-    "pint>=0.15",
+    "pandas>=1.4.0",
+    "pint>=0.17",
     "pooch>=1.2.0",
     "pyproj>=3.0.0",
-    "scipy>=1.6.0",
+    "scipy>=1.8.0",
     "traitlets>=5.0.5",
-    "xarray>=0.18.0"
+    "xarray>=0.21.0"
 ]
 
 [project.entry-points."xarray.backends"]
@@ -103,6 +103,18 @@ norecursedirs = "build docs .idea"
 doctest_optionflags = "NORMALIZE_WHITESPACE"
 mpl-results-path = "test_output"
 xfail_strict = true
+filterwarnings = [
+    "error",
+    "ignore:numpy.ndarray size changed:RuntimeWarning",
+    # To be removed in the next python-dateutil release.
+    # See: https://github.com/dateutil/dateutil/issues/1314
+    'ignore:datetime.datetime.utcfromtimestamp\(\) is deprecated:DeprecationWarning:dateutil.tz.tz:37',
+    # Numpy deprecation triggered by Pint: https://github.com/hgrecco/pint/pull/1880
+    "ignore:Conversion of an array with ndim > 0 to a scalar is deprecated:DeprecationWarning:pint.facets.plain.quantity:575",
+    # PyProj automatically dispatching for single point, will be waiting for NumPy 2.0 to address
+    # See: https://github.com/pyproj4/pyproj/issues/1309
+    "ignore:Conversion of an array with ndim > 0 to a scalar is deprecated:DeprecationWarning:pyproj.geod:404"
+]
 
 [tool.ruff]
 line-length = 95
