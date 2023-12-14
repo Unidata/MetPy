@@ -1386,29 +1386,10 @@ def test_isentropic_pressure_4d():
     assert_almost_equal(isentprs[1][:, 1, ], truerh, 3)
 
 
-def test_isentropic_interpolation_dataarray():
-    """Test calculation of isentropic interpolation with xarray dataarrays."""
-    temp = xr.DataArray([[[296.]], [[292.]], [[290.]], [[288.]]] * units.K,
-                        dims=('isobaric', 'y', 'x'),
-                        coords={'isobaric': (('isobaric',), [1000., 950., 900., 850.],
-                                             {'units': 'hPa'}),
-                                'time': '2020-01-01T00:00Z'})
-
-    rh = xr.DataArray([[[100.]], [[80.]], [[40.]], [[20.]]] * units.percent,
-                      dims=('isobaric', 'y', 'x'), coords={
-        'isobaric': (('isobaric',), [1000., 950., 900., 850.], {'units': 'hPa'}),
-        'time': '2020-01-01T00:00Z'})
-
-    isentlev = [296., 297.] * units.kelvin
-    press, rh_interp = isentropic_interpolation(isentlev, temp.isobaric, temp, rh)
-
-    assert_array_almost_equal(press, np.array([[[1000.]], [[936.213]]]) * units.hPa, 3)
-    assert_array_almost_equal(rh_interp, np.array([[[100.]], [[69.19706]]]) * units.percent, 3)
-
-
-def test_isentropic_interpolation_as_dataset():
-    """Test calculation of isentropic interpolation with xarray."""
-    data = xr.Dataset(
+@pytest.fixture
+def xarray_isentropic_data():
+    """Generate test xarray dataset for interpolation functions."""
+    return xr.Dataset(
         {
             'temperature': (
                 ('isobaric', 'y', 'x'),
@@ -1424,8 +1405,25 @@ def test_isentropic_interpolation_as_dataset():
             'time': '2020-01-01T00:00Z'
         }
     )
+
+
+def test_isentropic_interpolation_dataarray(xarray_isentropic_data):
+    """Test calculation of isentropic interpolation with xarray dataarrays."""
+    rh = xarray_isentropic_data.rh
+    temp = xarray_isentropic_data.temperature
+
     isentlev = [296., 297.] * units.kelvin
-    result = isentropic_interpolation_as_dataset(isentlev, data['temperature'], data['rh'])
+    press, rh_interp = isentropic_interpolation(isentlev, temp.isobaric, temp, rh)
+
+    assert_array_almost_equal(press, np.array([[[1000.]], [[936.213]]]) * units.hPa, 3)
+    assert_array_almost_equal(rh_interp, np.array([[[100.]], [[69.19706]]]) * units.percent, 3)
+
+
+def test_isentropic_interpolation_as_dataset(xarray_isentropic_data):
+    """Test calculation of isentropic interpolation with xarray."""
+    isentlev = [296., 297.] * units.kelvin
+    result = isentropic_interpolation_as_dataset(isentlev, xarray_isentropic_data.temperature,
+                                                 xarray_isentropic_data.rh)
     expected = xr.Dataset(
         {
             'pressure': (
@@ -1456,6 +1454,14 @@ def test_isentropic_interpolation_as_dataset():
     assert result['pressure'].attrs == expected['pressure'].attrs
     assert result['temperature'].attrs == expected['temperature'].attrs
     assert result['isentropic_level'].attrs == expected['isentropic_level'].attrs
+
+
+def test_isentropic_interpolation_as_dataset_duplicate(xarray_isentropic_data):
+    """Test duplicate-level check in isentropic_interpolation_as_dataset."""
+    isentlev = [296., 296.] * units.kelvin
+    with pytest.warns(UserWarning):
+        _ = isentropic_interpolation_as_dataset(isentlev, xarray_isentropic_data.temperature,
+                                                xarray_isentropic_data.rh)
 
 
 @pytest.mark.parametrize('array_class', (units.Quantity, masked_array))
