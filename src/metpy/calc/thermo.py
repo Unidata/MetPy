@@ -2624,7 +2624,7 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
         One-dimensional array of desired potential temperature surfaces
 
     pressure : array-like
-        One-dimensional array of pressure levels
+        Array of pressure
 
     temperature : array-like
         Array of temperature
@@ -2691,10 +2691,17 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     pressure = pressure.to('hPa')
     temperature = temperature.to('kelvin')
 
+    # Construct slices for broadcasting with temperature (used for pressure & theta levels)
     slices = [np.newaxis] * temperature.ndim
     slices[vertical_dim] = slice(None)
     slices = tuple(slices)
-    pressure = units.Quantity(np.broadcast_to(pressure[slices].magnitude, temperature.shape),
+
+    # For 1-D pressure, we assume it's the vertical coordinate and know how it should broadcast
+    # to the same shape as temperature. Otherwise, just assume it's ready for broadcast, or
+    # it has the same shape and is a no-op.
+    if pressure.ndim == 1:
+        pressure = pressure[slices]
+    pressure = units.Quantity(np.broadcast_to(pressure.magnitude, temperature.shape),
                               pressure.units)
 
     # Sort input data
