@@ -1458,6 +1458,29 @@ def test_isentropic_interpolation_as_dataset():
     assert result['isentropic_level'].attrs == expected['isentropic_level'].attrs
 
 
+def test_isentropic_interpolation_as_dataset_duplicate():
+    """Test duplicate-level check in isentropic_interpolation_as_dataset."""
+    data = xr.Dataset(
+        {
+            'temperature': (
+                ('isobaric', 'y', 'x'),
+                [[[296.]], [[292.]], [[290.]], [[288.]]] * units.K
+            ),
+            'rh': (
+                ('isobaric', 'y', 'x'),
+                [[[100.]], [[80.]], [[40.]], [[20.]]] * units.percent
+            )
+        },
+        coords={
+            'isobaric': (('isobaric',), [1000., 950., 900., 850.], {'units': 'hPa'}),
+            'time': '2020-01-01T00:00Z'
+        }
+    )
+    isentlev = [296., 296.] * units.kelvin
+    with pytest.warns(UserWarning):
+        _ = isentropic_interpolation_as_dataset(isentlev, data['temperature'], data['rh'])
+
+
 @pytest.mark.parametrize('array_class', (units.Quantity, masked_array))
 def test_surface_based_cape_cin(array_class):
     """Test the surface-based CAPE and CIN calculation."""
