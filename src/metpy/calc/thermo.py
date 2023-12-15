@@ -3293,7 +3293,6 @@ def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
         Pressure of the mixed parcel
     `pint.Quantity`
         Temperature of the mixed parcel
-
     `pint.Quantity`
         Dewpoint of the mixed parcel
 
@@ -4354,7 +4353,8 @@ def lifted_index(pressure, temperature, parcel_profile, vertical_dim=0):
 
     Calculation of the lifted index is defined as the temperature difference between the
     observed 500 hPa temperature and the temperature of a parcel lifted from the
-    surface to 500 hPa.
+    surface to 500 hPa. As noted in [Galway1956]_, a low-level mixed parcel is often used
+    as the surface parcel.
 
     Parameters
     ----------
@@ -4379,29 +4379,38 @@ def lifted_index(pressure, temperature, parcel_profile, vertical_dim=0):
 
     Examples
     --------
-    >>> from metpy.calc import dewpoint_from_relative_humidity, lifted_index, parcel_profile
+    >>> from metpy.calc import lifted_index, mixed_parcel, parcel_profile
     >>> from metpy.units import units
-    >>> # pressure
-    >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
-    ...      550., 500., 450., 400., 350., 300., 250., 200.,
-    ...      175., 150., 125., 100., 80., 70., 60., 50.,
-    ...      40., 30., 25., 20.] * units.hPa
-    >>> # temperature
-    >>> T = [29.3, 28.1, 23.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
-    ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
-    ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
-    ...      -56.3, -51.7, -50.7, -47.5] * units.degC
-    >>> # relative humidity
-    >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
-    ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
-    ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
-    >>> # calculate dewpoint
-    >>> Td = dewpoint_from_relative_humidity(T, rh)
-    >>> # compute the parcel temperatures from surface parcel
-    >>> prof = parcel_profile(p, T[0], Td[0])
-    >>> # calculate the LI
-    >>> lifted_index(p, T, prof)
-    <Quantity([-7.42560365], 'delta_degree_Celsius')>
+    >>> from numpy import concatenate
+    >>>
+    >>> # Define pressure, temperature, dewpoint temperature, and height
+    >>> p = [1002., 1000., 993., 925., 850., 846., 723., 632., 479., 284.,
+    ...      239., 200., 131., 91., 72.7, 54.6, 41., 30., 22.8] * units.hPa
+    >>> T = [28.2, 27., 25.4, 19.4, 12.8, 12.3, 4.2, 0.8, -12.7, -41.7, -52.3,
+    ...      -57.5, -54.9, -57.8, -58.5, -52.3, -53.4, -50.3, -49.9] * units.degC
+    >>> Td = [14.2, 14., 12.4, 11.4, 10.2, 10.1, -7.8, -16.2, -37.7, -55.7,
+    ...       -58.3, -69.5, -85.5, -88., -89.5, -88.3, -88.4, -87.3, -87.9] * units.degC
+    >>> h = [139, 159, 221, 839, 1559, 1599, 2895, 3982, 6150, 9933, 11072,
+    ...      12200, 14906, 17231, 18650, 20474, 22323, 24350, 26149] * units.m
+    >>>
+    >>> # Calculate 500m mixed parcel
+    >>> parcel_p, parcel_t, parcel_td = mixed_parcel(p, T, Td, depth=500 * units.m, height=h)
+    >>>
+    >>> # Replace sounding temp/pressure in lowest 500m with mixed values
+    >>> above = h > 500 * units.m
+    >>> press = concatenate([[parcel_p], p[above]])
+    >>> temp = concatenate([[parcel_t], T[above]])
+    >>>
+    >>> # Calculate parcel profile from our new mixed parcel
+    >>> mixed_prof = parcel_profile(press, parcel_t, parcel_td)
+    >>>
+    >>> # Calculate lifted index using our mixed profile
+    >>> lifted_index(press, temp, mixed_prof)
+    <Quantity([2.4930656], 'delta_degree_Celsius')>
+
+    See Also
+    --------
+    mixed_parcel, parcel_profile
 
     """
     # find the measured temperature and parcel profile temperature at 500 hPa.
