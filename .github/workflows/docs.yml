@@ -67,7 +67,7 @@ jobs:
 
     steps:
     - name: Download doc build
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: Linux-3.11-docs
         path: ./docs/build/html
