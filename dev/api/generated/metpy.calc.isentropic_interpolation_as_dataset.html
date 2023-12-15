@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 15, 2023 at 16:23:29"/>
+    <meta name="docbuild:last-update" content="Dec 15, 2023 at 17:09:53"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.isentropic_interpolation_as_dataset.html" />
 
   </head>
@@ -780,7 +780,7 @@ document.write(`
 <h1>isentropic_interpolation_as_dataset<a class="headerlink" href="#isentropic-interpolation-as-dataset" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.isentropic_interpolation_as_dataset">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">isentropic_interpolation_as_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom_up_search</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L2775-L2891"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.isentropic_interpolation_as_dataset" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">isentropic_interpolation_as_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom_up_search</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pressure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L2782-L2912"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.isentropic_interpolation_as_dataset" title="Link to this definition">#</a></dt>
 <dd><p>Interpolate xarray data in isobaric coords to isentropic coords, returning a Dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -793,6 +793,8 @@ names in order to have a well-formed output Dataset.</p></li>
 <li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – The desired absolute error in the calculated value, defaults to 1e-6.</p></li>
 <li><p><strong>bottom_up_search</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Controls whether to search for levels bottom-up (starting at lower indices),
 or top-down (starting at higher indices). Defaults to True, which is bottom-up search.</p></li>
+<li><p><strong>pressure</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.12.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, optional) – Array of pressure to use when the vertical coordinate for the passed in data is not
+pressure (e.g. data using sigma coordinates)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
