@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 15, 2023 at 00:06:06"/>
+    <meta name="docbuild:last-update" content="Dec 15, 2023 at 16:23:29"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/devel/CONTRIBUTING.html" />
 
   </head>
@@ -724,7 +724,11 @@ to install required packages to build our documentation.
 Then, still from within your <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment,</p>
 <ul class="simple">
 <li><p>Navigate to the docs folder <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">docs</span></code></p></li>
-<li><p>Remove any old builds and build the current docs <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span> <span class="pre">html</span></code></p></li>
+<li><p>Remove any old builds and build the current docs <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span> <span class="pre">html</span></code></p>
+<ul>
+<li><p>(Try <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">cleanall</span> <span class="pre">html</span></code> if <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span> <span class="pre">html</span></code> fails)</p></li>
+</ul>
+</li>
 <li><p>Open <code class="docutils literal notranslate"><span class="pre">docs/build/html/index.html</span></code> and see your changes!</p></li>
 </ul>
 <section id="doc-server-py">
