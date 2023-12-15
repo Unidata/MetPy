@@ -3293,7 +3293,6 @@ def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
         Pressure of the mixed parcel
     `pint.Quantity`
         Temperature of the mixed parcel
-
     `pint.Quantity`
         Dewpoint of the mixed parcel
 
