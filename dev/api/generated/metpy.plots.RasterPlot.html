@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 14, 2023 at 23:03:31"/>
+    <meta name="docbuild:last-update" content="Dec 15, 2023 at 00:06:06"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.RasterPlot.html" />
 
   </head>
@@ -980,7 +980,7 @@ prior to entering the block.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.RasterPlot.data">
-<span class="sig-name descname"><span class="pre">data</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L720-L723"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.data" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">data</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L724-L727"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.data" title="Link to this definition">#</a></dt>
 <dd><p>Xarray dataset that contains the field to be plotted.</p>
 </dd></dl>
 
@@ -998,7 +998,7 @@ variables with the following command assuming the dataset was read using xarray 
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.RasterPlot.griddata">
-<span class="sig-name descname"><span class="pre">griddata</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L808-L861"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.griddata" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">griddata</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L812-L865"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.griddata" title="Link to this definition">#</a></dt>
 <dd><p>Return the internal cached data.</p>
 </dd></dl>
 
@@ -1056,7 +1056,7 @@ any other trait that corresponds to a specific kwarg for the particular plot typ
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.RasterPlot.name">
-<span class="sig-name descname"><span class="pre">name</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L730-L740"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.name" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L734-L744"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.name" title="Link to this definition">#</a></dt>
 <dd><p>Generate a name for the plot.</p>
 </dd></dl>
 
@@ -1078,7 +1078,7 @@ plotting using the MetPy Units module.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.RasterPlot.plotdata">
-<span class="sig-name descname"><span class="pre">plotdata</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L863-L881"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.plotdata" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plotdata</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L867-L885"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.plotdata" title="Link to this definition">#</a></dt>
 <dd><p>Return the data for plotting.</p>
 <p>The two dimension coordinates and the data array.</p>
 </dd></dl>
@@ -1202,32 +1202,32 @@ to the function.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.RasterPlot.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L679-L690"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.clear" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L680-L694"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.clear" title="Link to this definition">#</a></dt>
 <dd><p>Clear the plot.</p>
 <p>Resets all internal state and sets need for redraw.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.RasterPlot.clear_collections">
-<span class="sig-name descname"><span class="pre">clear_collections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L697-L701"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.clear_collections" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">clear_collections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L701-L705"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.clear_collections" title="Link to this definition">#</a></dt>
 <dd><p>Clear the handle collections to the plot instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.RasterPlot.clear_handle">
-<span class="sig-name descname"><span class="pre">clear_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L692-L695"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.clear_handle" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">clear_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L696-L699"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.clear_handle" title="Link to this definition">#</a></dt>
 <dd><p>Clear the handle to the plot instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.RasterPlot.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L742-L744"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.copy" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L746-L748"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.copy" title="Link to this definition">#</a></dt>
 <dd><p>Return a copy of the plot.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.RasterPlot.draw">
-<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L883-L896"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.draw" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L887-L900"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.RasterPlot.draw" title="Link to this definition">#</a></dt>
 <dd><p>Draw the plot.</p>
 </dd></dl>
 
