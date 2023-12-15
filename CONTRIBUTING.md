@@ -210,6 +210,7 @@ Then, still from within your ``devel`` environment,
 
 * Navigate to the docs folder ``cd docs``
 * Remove any old builds and build the current docs ``make clean html``
+  * (Try ``make cleanall html`` if ``make clean html`` fails)
 * Open ``docs/build/html/index.html`` and see your changes!
 
 ### `doc-server.py`
