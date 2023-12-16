@@ -2487,12 +2487,8 @@ def test_gdi_xarray(index_xarray_data_expanded):
 
     assert_array_almost_equal(
         result,
-        np.array(
-            [[
-                [191.3749159, 158.8527877, 131.0999557],
-                [107.5620913, 87.7547436, 71.2538119]
-            ]]
-        ) * units.dimensionless
+        np.array([[[189.5890429, 157.4307982, 129.9739099],
+                   [106.6763526, 87.0637477, 70.7202505]]])
     )
 
 

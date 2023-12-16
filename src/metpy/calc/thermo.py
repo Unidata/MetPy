@@ -14,7 +14,6 @@ from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_boundi
                     find_intersections, first_derivative, get_layer)
 from .. import _warnings, constants as mpconsts
 from ..cbook import broadcast_indices
-from ..constants import Cp_d
 from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
 from ..units import check_units, concatenate, process_units, units
@@ -4631,14 +4630,15 @@ def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
     alpha = units.Quantity(-10, 'K')  # Empirical adjustment
 
     # Latent heat of vaporization of water - different from MetPy constant
-    #  Using different value, from paper, since GDI unlikely to be used to
-    #  derive other metrics
-    l_0 = units.Quantity(2.69E6, 'J/kg')
+    #  Using different value, from MetPy, since GDI unlikely to be used to
+    #  derive other metrics and a more appropriate value for tropical
+    #  atmosphere.
+    l_0 = units.Quantity(2.69e6, 'J/kg')
 
     # Temperature math from here on requires kelvin units
-    eptp_a = th_a * np.exp((l_0 * r_a) / (Cp_d * t850))
-    eptp_b = th_b * np.exp((l_0 * r_b) / (Cp_d * t850)) + alpha
-    eptp_c = th_c * np.exp((l_0 * r_c) / (Cp_d * t850)) + alpha
+    eptp_a = th_a * np.exp((l_0 * r_a) / (mpconsts.Cp_d * t850))
+    eptp_b = th_b * np.exp((l_0 * r_b) / (mpconsts.Cp_d * t850)) + alpha
+    eptp_c = th_c * np.exp((l_0 * r_c) / (mpconsts.Cp_d * t850)) + alpha
 
     if t950.size == 1:
         is_array = False
