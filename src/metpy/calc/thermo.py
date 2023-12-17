@@ -4584,7 +4584,7 @@ def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
     >>> # calculate mixing ratio
     >>> mixrat = mixing_ratio_from_relative_humidity(p, T, rh)
     >>> galvez_davison_index(p, T, mixrat, p[0])
-    <Quantity(-8.06886508, 'dimensionless')>
+    <Quantity(-8.78797532, 'dimensionless')>
     """
     # Calculate potential temperature
     potential_temp = potential_temperature(pressure, temperature)
