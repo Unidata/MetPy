@@ -2476,12 +2476,13 @@ def test_gdi_xarray(index_xarray_data_expanded):
     pressure = index_xarray_data_expanded.isobaric
     temperature = index_xarray_data_expanded.temperature
     dewpoint = index_xarray_data_expanded.dewpoint
-    relative_humidity = relative_humidity_from_dewpoint(temperature, dewpoint)
-    mixrat = mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity)
+    mixing_ratio = mixing_ratio_from_relative_humidity(
+        pressure, temperature, relative_humidity_from_dewpoint(temperature, dewpoint))
+
     result = galvez_davison_index(
         pressure,
         temperature,
-        mixrat,
+        mixing_ratio,
         pressure[0]
     )
 
@@ -2490,6 +2491,39 @@ def test_gdi_xarray(index_xarray_data_expanded):
         np.array([[[189.5890429, 157.4307982, 129.9739099],
                    [106.6763526, 87.0637477, 70.7202505]]])
     )
+
+
+def test_gdi_arrays(index_xarray_data_expanded):
+    """Test GDI on 3-D Quantity arrays with an array of surface pressure."""
+    ds = index_xarray_data_expanded.isel(time=0).squeeze()
+    pressure = ds.isobaric.metpy.unit_array[:, None, None]
+    temperature = ds.temperature.metpy.unit_array
+    dewpoint = ds.dewpoint.metpy.unit_array
+    mixing_ratio = mixing_ratio_from_relative_humidity(
+        pressure, temperature, relative_humidity_from_dewpoint(temperature, dewpoint))
+    surface_pressure = units.Quantity(
+        np.broadcast_to(pressure.m, temperature.shape), pressure.units)[0]
+
+    result = galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure)
+
+    assert_array_almost_equal(
+        result,
+        np.array([[189.5890429, 157.4307982, 129.9739099],
+                  [106.6763526, 87.0637477, 70.7202505]])
+    )
+
+
+def test_gdi_profile(index_xarray_data_expanded):
+    """Test GDI calculation on an individual profile."""
+    ds = index_xarray_data_expanded.isel(time=0, y=0, x=0)
+    pressure = ds.isobaric.metpy.unit_array
+    temperature = ds.temperature.metpy.unit_array
+    dewpoint = ds.dewpoint.metpy.unit_array
+    mixing_ratio = mixing_ratio_from_relative_humidity(
+        pressure, temperature, relative_humidity_from_dewpoint(temperature, dewpoint))
+
+    assert_almost_equal(galvez_davison_index(pressure, temperature, mixing_ratio, pressure[0]),
+                        189.5890429, 4)
 
 
 def test_gdi_no_950_raises_valueerror(index_xarray_data):
