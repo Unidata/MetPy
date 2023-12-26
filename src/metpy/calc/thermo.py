@@ -4565,7 +4565,7 @@ def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
 
     Examples
     --------
-    >>> from metpy.calc import dewpoint_from_relative_humidity, k_index
+    >>> from metpy.calc import mixing_ratio_from_relative_humidity
     >>> from metpy.units import units
     >>> # pressure
     >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
@@ -4586,9 +4586,6 @@ def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
     >>> galvez_davison_index(p, T, mixrat, p[0])
     <Quantity(-8.78797532, 'dimensionless')>
     """
-    # Calculate potential temperature
-    potential_temp = potential_temperature(pressure, temperature)
-
     if np.any(np.max(pressure, axis=vertical_dim) < 950 * units.hectopascal):
         indices_without_950 = np.where(
             np.max(pressure, axis=vertical_dim) < 950 * units.hectopascal
@@ -4603,96 +4600,65 @@ def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
             f'\nMax provided pressures:'
             f'\n{np.max(pressure, axis=0)[indices_without_950]}'
         )
-    # Convert temperature before interpolation
-    temperature_k = temperature.to('kelvin')
-    potential_temp_k = potential_temp.to('kelvin')
 
-    # Interpolate to find temperature and mixing ratio at 950, 850, 700, and 500 hPa
+    potential_temp = potential_temperature(pressure, temperature)
+
+    # Interpolate to appropriate level with appropriate units
     (
         (t950, t850, t700, t500),
         (r950, r850, r700, r500),
         (th950, th850, th700, th500)
     ) = interpolate_1d(
         units.Quantity([950, 850, 700, 500], 'hPa'),
-        pressure, temperature_k, mixing_ratio, potential_temp_k,
+        pressure, temperature.to('K'), mixing_ratio, potential_temp.to('K'),
         axis=vertical_dim,
     )
 
-    th_a = th950
-    r_a = r950
-
-    th_b = 0.5 * (th850 + th700)
-    r_b = 0.5 * (r850 + r700)
-
-    th_c = th500
-    r_c = r500
-
-    alpha = units.Quantity(-10, 'K')  # Empirical adjustment
-
-    # Latent heat of vaporization of water - different from MetPy constant
-    #  Using different value, from MetPy, since GDI unlikely to be used to
-    #  derive other metrics and a more appropriate value for tropical
-    #  atmosphere.
+    # L_v definition preserved from referenced paper
+    # Value differs heavily from metpy.constants.Lv in tropical context
+    # and using MetPy value affects resulting GDI
     l_0 = units.Quantity(2.69e6, 'J/kg')
 
-    # Temperature math from here on requires kelvin units
-    eptp_a = th_a * np.exp((l_0 * r_a) / (mpconsts.Cp_d * t850))
-    eptp_b = th_b * np.exp((l_0 * r_b) / (mpconsts.Cp_d * t850)) + alpha
-    eptp_c = th_c * np.exp((l_0 * r_c) / (mpconsts.Cp_d * t850)) + alpha
+    # Calculate adjusted equivalent potential temperatures
+    alpha = units.Quantity(-10, 'K')
+    eptp_a = th950 * np.exp(l_0 * r950 / (mpconsts.Cp_d * t850))
+    eptp_b = ((th850 + th700) / 2 *
+              np.exp(l_0 * (r850 + r700) / 2 / (mpconsts.Cp_d * t850)) + alpha)
+    eptp_c = th500 * np.exp(l_0 * r500 / (mpconsts.Cp_d * t850)) + alpha
 
-    if t950.size == 1:
-        is_array = False
-    else:
-        is_array = True
-
-    # Calculate C.B.I.
-    beta = units.Quantity(303, 'K')  # Empirical adjustment
-    l_e = eptp_a - beta  # Low-troposphere EPT
-    m_e = eptp_c - beta  # Mid-troposphere EPT
+    # Calculate Column Buoyanci Index (CBI)
+    # Apply threshold to low and mid levels
+    beta = units.Quantity(303, 'K')
+    l_e = eptp_a - beta
+    m_e = eptp_c - beta
 
     # Gamma unit - likely a typo from the paper, should be units of K^(-2) to
     # result in dimensionless CBI
     gamma = units.Quantity(6.5e-2, '1/K^2')
-    zero_kelvin = units.Quantity(0, 'K')
 
-    if is_array:
-        # Replace conditional in paper for array compatibility.
-        # Will set CBI for any l_e < 0 to 0
-        l_e[l_e <= zero_kelvin] = zero_kelvin
-    else:
-        l_e = max(l_e, zero_kelvin)
-    column_buoyancy_index = gamma * (l_e * m_e)
+    column_buoyancy_index = np.atleast_1d(gamma * l_e * m_e)
+    column_buoyancy_index[l_e <= 0] = 0
 
-    # Calculate Mid-tropospheric Warming Index
-    tau = units.Quantity(263.15, 'K')  # Threshold
-    mu = units.Quantity(-7, '1/K')  # Empirical adjustment
-
+    # Calculate Mid-tropospheric Warming Index (MWI)
+    # Apply threshold to 500-hPa temperature
+    tau = units.Quantity(263.15, 'K')
     t_diff = t500 - tau
-    if is_array:
-        t_diff[t_diff <= zero_kelvin] = zero_kelvin
-    else:
-        t_diff = max(t_diff, zero_kelvin)
-    mid_tropospheric_warming_index = mu * t_diff
 
-    # Calculate Inversion Index
-    sigma = units.Quantity(1.5, '1/K')  # Empirical scaling constant
+    mu = units.Quantity(-7, '1/K')  # Empirical adjustment
+    mid_tropospheric_warming_index = np.atleast_1d(mu * t_diff)
+    mid_tropospheric_warming_index[t_diff <= 0] = 0
+
+    # Calculate Inversion Index (II)
     s = t950 - t700
     d = eptp_b - eptp_a
-
     inv_sum = s + d
-    if is_array:
-        inv_sum[inv_sum >= zero_kelvin] = zero_kelvin
-    else:
-        inv_sum = min(inv_sum, zero_kelvin)
 
-    inversion_index = sigma * inv_sum
+    sigma = units.Quantity(1.5, '1/K')  # Empirical scaling constant
+    inversion_index = np.atleast_1d(sigma * inv_sum)
+    inversion_index[inv_sum >= 0] = 0
 
     # Calculate Terrain Correction
-    p_3 = 18
-    p_2 = 9000 * units.hectopascal
-    p_1 = 500 * units.hectopascal
-    p_sfc = surface_pressure
-    terrain_correction = p_3 - (p_2 / (p_sfc - p_1))
+    terrain_correction = 18 - 9000 / (surface_pressure.m_as('hPa') - 500)
 
     # Calculate G.D.I.
     return (column_buoyancy_index
