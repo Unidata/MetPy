@@ -4622,8 +4622,8 @@ def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
     # Calculate adjusted equivalent potential temperatures
     alpha = units.Quantity(-10, 'K')
     eptp_a = th950 * np.exp(l_0 * r950 / (mpconsts.Cp_d * t850))
-    eptp_b = ((th850 + th700) / 2 *
-              np.exp(l_0 * (r850 + r700) / 2 / (mpconsts.Cp_d * t850)) + alpha)
+    eptp_b = ((th850 + th700) / 2
+              * np.exp(l_0 * (r850 + r700) / 2 / (mpconsts.Cp_d * t850)) + alpha)
     eptp_c = th500 * np.exp(l_0 * r500 / (mpconsts.Cp_d * t850)) + alpha
 
     # Calculate Column Buoyanci Index (CBI)
@@ -4661,10 +4661,15 @@ def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
     terrain_correction = 18 - 9000 / (surface_pressure.m_as('hPa') - 500)
 
     # Calculate G.D.I.
-    return (column_buoyancy_index
-            + mid_tropospheric_warming_index
-            + inversion_index
-            + terrain_correction)
+    gdi = (column_buoyancy_index
+           + mid_tropospheric_warming_index
+           + inversion_index
+           + terrain_correction)
+
+    if gdi.size == 1:
+        return gdi[0]
+    else:
+        return gdi
 
 
 @exporter.export
