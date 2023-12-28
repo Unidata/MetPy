@@ -89,6 +89,11 @@ sped = df['speed'].values * units.knot
 height = df['height'].values * units.meter
 
 ###########################################
+# Compute needed variables from our data file and attach units
+relhum = mpcalc.relative_humidity_from_dewpoint(T, Td)
+mixrat = mpcalc.mixing_ratio_from_relative_humidity(p, T, relhum)
+
+###########################################
 # Compute the wind components
 u, v = mpcalc.wind_components(sped, wdir)
 
@@ -96,6 +101,7 @@ u, v = mpcalc.wind_components(sped, wdir)
 # Compute common sounding index parameters
 ctotals = mpcalc.cross_totals(p, T, Td)
 kindex = mpcalc.k_index(p, T, Td)
+gdi = mpcalc.galvez_davison_index(p, T, mixrat, p[0])
 showalter = mpcalc.showalter_index(p, T, Td)
 total_totals = mpcalc.total_totals_index(p, T, Td)
 vert_totals = mpcalc.vertical_totals(p, T)

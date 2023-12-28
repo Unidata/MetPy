@@ -37,7 +37,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         vertical_velocity_pressure, virtual_potential_temperature,
                         virtual_temperature, virtual_temperature_from_dewpoint,
                         wet_bulb_potential_temperature, wet_bulb_temperature)
-from metpy.calc.thermo import _find_append_zero_crossings
+from metpy.calc.thermo import _find_append_zero_crossings, galvez_davison_index
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_nan,
                            version_check)
 from metpy.units import is_quantity, masked_array, units
@@ -2309,6 +2309,50 @@ def index_xarray_data():
                       coords={'isobaric': pressure, 'time': ['2020-01-01T00:00Z']})
 
 
+@pytest.fixture()
+def index_xarray_data_expanded():
+    """Create expanded data for testing that index calculations work with xarray data.
+
+    Specifically for Galvez Davison Index calculation, which requires 950hPa pressure
+    """
+    pressure = xr.DataArray(
+        [950., 850., 700., 500.], dims=('isobaric',), attrs={'units': 'hPa'}
+    )
+    temp = xr.DataArray([[[[306., 305., 304.], [303., 302., 301.]],
+                          [[296., 295., 294.], [293., 292., 291.]],
+                          [[286., 285., 284.], [283., 282., 281.]],
+                          [[276., 275., 274.], [273., 272., 271.]]]] * units.K,
+                        dims=('time', 'isobaric', 'y', 'x'))
+
+    profile = xr.DataArray([[[[299., 298., 297.], [296., 295., 294.]],
+                             [[289., 288., 287.], [286., 285., 284.]],
+                             [[279., 278., 277.], [276., 275., 274.]],
+                             [[269., 268., 267.], [266., 265., 264.]]]] * units.K,
+                           dims=('time', 'isobaric', 'y', 'x'))
+
+    dewp = xr.DataArray([[[[304., 303., 302.], [301., 300., 299.]],
+                          [[294., 293., 292.], [291., 290., 289.]],
+                          [[284., 283., 282.], [281., 280., 279.]],
+                          [[274., 273., 272.], [271., 270., 269.]]]] * units.K,
+                        dims=('time', 'isobaric', 'y', 'x'))
+
+    dirw = xr.DataArray([[[[135., 135., 135.], [135., 135., 135.]],
+                          [[180., 180., 180.], [180., 180., 180.]],
+                          [[225., 225., 225.], [225., 225., 225.]],
+                          [[270., 270., 270.], [270., 270., 270.]]]] * units.degree,
+                        dims=('time', 'isobaric', 'y', 'x'))
+
+    speed = xr.DataArray([[[[15., 15., 15.], [15., 15., 15.]],
+                           [[20., 20., 20.], [20., 20., 20.]],
+                           [[25., 25., 25.], [25., 25., 25.]],
+                           [[50., 50., 50.], [50., 50., 50.]]]] * units.knots,
+                         dims=('time', 'isobaric', 'y', 'x'))
+
+    return xr.Dataset({'temperature': temp, 'profile': profile, 'dewpoint': dewp,
+                       'wind_direction': dirw, 'wind_speed': speed},
+                      coords={'isobaric': pressure, 'time': ['2023-01-01T00:00Z']})
+
+
 def test_lifted_index():
     """Test the Lifted Index calculation."""
     pressure = np.array([1014., 1000., 997., 981.2, 947.4, 925., 914.9, 911.,
@@ -2396,6 +2440,109 @@ def test_k_index_xarray(index_xarray_data):
                      index_xarray_data.dewpoint)
     assert_array_almost_equal(result,
                               np.array([[[312., 311., 310.], [309., 308., 307.]]]) * units.K)
+
+
+def test_gdi():
+    """Test the Galvez Davison Index calculation."""
+    pressure = np.array([1014., 1000., 997., 981.2, 947.4, 925., 914.9, 911.,
+                         902., 883., 850., 822.3, 816., 807., 793.2, 770.,
+                         765.1, 753., 737.5, 737., 713., 700., 688., 685.,
+                         680., 666., 659.8, 653., 643., 634., 615., 611.8,
+                         566.2, 516., 500., 487., 484.2, 481., 475., 460.,
+                         400.]) * units.hPa
+    temperature = np.array([24.2, 24.2, 24., 23.1, 21., 19.6, 18.7, 18.4,
+                            19.2, 19.4, 17.2, 15.3, 14.8, 14.4, 13.4, 11.6,
+                            11.1, 10., 8.8, 8.8, 8.2, 7., 5.6, 5.6,
+                            5.6, 4.4, 3.8, 3.2, 3., 3.2, 1.8, 1.5,
+                            -3.4, -9.3, -11.3, -13.1, -13.1, -13.1, -13.7, -15.1,
+                            -23.5]) * units.degC
+    dewpoint = np.array([23.2, 23.1, 22.8, 22., 20.2, 19., 17.6, 17.,
+                         16.8, 15.5, 14., 11.7, 11.2, 8.4, 7., 4.6,
+                         5., 6., 4.2, 4.1, -1.8, -2., -1.4, -0.4,
+                         -3.4, -5.6, -4.3, -2.8, -7., -25.8, -31.2, -31.4,
+                         -34.1, -37.3, -32.3, -34.1, -37.3, -41.1, -37.7, -58.1,
+                         -57.5]) * units.degC
+
+    relative_humidity = relative_humidity_from_dewpoint(temperature, dewpoint)
+    mixrat = mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity)
+    gdi = galvez_davison_index(pressure, temperature, mixrat, pressure[0])
+
+    # Compare with value from hand calculation
+    assert_almost_equal(gdi, 6.635, decimal=1)
+
+
+def test_gdi_xarray(index_xarray_data_expanded):
+    """Test the GDI calculation with a grid of xarray data."""
+    pressure = index_xarray_data_expanded.isobaric
+    temperature = index_xarray_data_expanded.temperature
+    dewpoint = index_xarray_data_expanded.dewpoint
+    mixing_ratio = mixing_ratio_from_relative_humidity(
+        pressure, temperature, relative_humidity_from_dewpoint(temperature, dewpoint))
+
+    result = galvez_davison_index(
+        pressure,
+        temperature,
+        mixing_ratio,
+        pressure[0]
+    )
+
+    assert_array_almost_equal(
+        result,
+        np.array([[[189.5890429, 157.4307982, 129.9739099],
+                   [106.6763526, 87.0637477, 70.7202505]]])
+    )
+
+
+def test_gdi_arrays(index_xarray_data_expanded):
+    """Test GDI on 3-D Quantity arrays with an array of surface pressure."""
+    ds = index_xarray_data_expanded.isel(time=0).squeeze()
+    pressure = ds.isobaric.metpy.unit_array[:, None, None]
+    temperature = ds.temperature.metpy.unit_array
+    dewpoint = ds.dewpoint.metpy.unit_array
+    mixing_ratio = mixing_ratio_from_relative_humidity(
+        pressure, temperature, relative_humidity_from_dewpoint(temperature, dewpoint))
+    surface_pressure = units.Quantity(
+        np.broadcast_to(pressure.m, temperature.shape), pressure.units)[0]
+
+    result = galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure)
+
+    assert_array_almost_equal(
+        result,
+        np.array([[189.5890429, 157.4307982, 129.9739099],
+                  [106.6763526, 87.0637477, 70.7202505]])
+    )
+
+
+def test_gdi_profile(index_xarray_data_expanded):
+    """Test GDI calculation on an individual profile."""
+    ds = index_xarray_data_expanded.isel(time=0, y=0, x=0)
+    pressure = ds.isobaric.metpy.unit_array
+    temperature = ds.temperature.metpy.unit_array
+    dewpoint = ds.dewpoint.metpy.unit_array
+    mixing_ratio = mixing_ratio_from_relative_humidity(
+        pressure, temperature, relative_humidity_from_dewpoint(temperature, dewpoint))
+
+    assert_almost_equal(galvez_davison_index(pressure, temperature, mixing_ratio, pressure[0]),
+                        189.5890429, 4)
+
+
+def test_gdi_no_950_raises_valueerror(index_xarray_data):
+    """GDI requires a 950hPa or higher measurement.
+
+    Ensure error is raised if this data is not provided.
+    """
+    with pytest.raises(ValueError):
+        pressure = index_xarray_data.isobaric
+        temperature = index_xarray_data.temperature
+        dewpoint = index_xarray_data.dewpoint
+        relative_humidity = relative_humidity_from_dewpoint(temperature, dewpoint)
+        mixrat = mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity)
+        galvez_davison_index(
+            pressure,
+            temperature,
+            mixrat,
+            pressure[0]
+        )
 
 
 def test_gradient_richardson_number():

@@ -4499,6 +4499,181 @@ def k_index(pressure, temperature, dewpoint, vertical_dim=0):
 
 @exporter.export
 @add_vertical_dim_from_xarray
+@preprocess_and_wrap(broadcast=('pressure', 'temperature', 'mixing_ratio'))
+@check_units('[pressure]', '[temperature]', '[dimensionless]', '[pressure]')
+def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
+                         vertical_dim=0):
+    """
+    Calculate GDI from the pressure, temperature, mixing ratio, and surface pressure.
+
+    Calculation of the GDI relies on temperatures and mixing ratios at 950,
+    850, 700, and 500 hPa. These four levels define three layers: A) Boundary,
+    B) Trade Wind Inversion (TWI), C) Mid-Troposphere.
+
+    GDI formula derived from [Galvez2015]_:
+
+    .. math:: GDI = CBI + MWI + II + TC
+
+    where:
+
+    * :math:`CBI` is the Column Buoyancy Index
+    * :math:`MWI` is the Mid-tropospheric Warming Index
+    * :math:`II` is the Inversion Index
+    * :math:`TC` is the Terrain Correction [optional]
+
+    .. list-table:: GDI Values & Corresponding Convective Regimes
+        :widths: 15 75
+        :header-rows: 1
+
+        * - GDI Value
+          - Expected Convective Regime
+        * - >=45
+          - Scattered to widespread thunderstorms likely.
+        * - 35 to 45
+          - Scattered thunderstorms and/or scattered to widespread rain showers.
+        * - 25 to 35
+          - Isolated to scattered thunderstorms and/or scattered showers.
+        * - 15 to 25
+          - Isolated thunderstorms and/or isolated to scattered showers.
+        * - 5 to 10
+          - Isolated to scattered showers.
+        * - <5
+          - Strong TWI likely, light rain possible.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure level(s)
+
+    temperature : `pint.Quantity`
+        Temperature corresponding to pressure
+
+    mixing_ratio : `pint.Quantity`
+        Mixing ratio values corresponding to pressure
+
+    surface_pressure : `pint.Quantity`
+        Pressure of the surface.
+
+    vertical_dim : int, optional
+        The axis corresponding to vertical, defaults to 0. Automatically determined from
+        xarray DataArray arguments.
+
+    Returns
+    -------
+    `pint.Quantity`
+        GDI Index
+
+    Examples
+    --------
+    >>> from metpy.calc import mixing_ratio_from_relative_humidity
+    >>> from metpy.units import units
+    >>> # pressure
+    >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
+    ...      550., 500., 450., 400., 350., 300., 250., 200.,
+    ...      175., 150., 125., 100., 80., 70., 60., 50.,
+    ...      40., 30., 25., 20.] * units.hPa
+    >>> # temperature
+    >>> T = [29.3, 28.1, 23.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
+    ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
+    ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
+    ...      -56.3, -51.7, -50.7, -47.5] * units.degC
+    >>> # relative humidity
+    >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
+    ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
+    ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
+    >>> # calculate mixing ratio
+    >>> mixrat = mixing_ratio_from_relative_humidity(p, T, rh)
+    >>> galvez_davison_index(p, T, mixrat, p[0])
+    <Quantity(-8.78797532, 'dimensionless')>
+    """
+    if np.any(np.max(pressure, axis=vertical_dim) < 950 * units.hectopascal):
+        indices_without_950 = np.where(
+            np.max(pressure, axis=vertical_dim) < 950 * units.hectopascal
+        )
+        raise ValueError(
+            f'Data not provided for 950hPa or higher pressure. '
+            f'GDI requires 950hPa temperature and dewpoint data, '
+            f'see referenced paper section 3.d. in docstring for discussion of'
+            f' extrapolating sounding data below terrain surface in high-'
+            f'elevation regions.\nIndices without a 950hPa or higher datapoint'
+            f':\n{indices_without_950}'
+            f'\nMax provided pressures:'
+            f'\n{np.max(pressure, axis=0)[indices_without_950]}'
+        )
+
+    potential_temp = potential_temperature(pressure, temperature)
+
+    # Interpolate to appropriate level with appropriate units
+    (
+        (t950, t850, t700, t500),
+        (r950, r850, r700, r500),
+        (th950, th850, th700, th500)
+    ) = interpolate_1d(
+        units.Quantity([950, 850, 700, 500], 'hPa'),
+        pressure, temperature.to('K'), mixing_ratio, potential_temp.to('K'),
+        axis=vertical_dim,
+    )
+
+    # L_v definition preserved from referenced paper
+    # Value differs heavily from metpy.constants.Lv in tropical context
+    # and using MetPy value affects resulting GDI
+    l_0 = units.Quantity(2.69e6, 'J/kg')
+
+    # Calculate adjusted equivalent potential temperatures
+    alpha = units.Quantity(-10, 'K')
+    eptp_a = th950 * np.exp(l_0 * r950 / (mpconsts.Cp_d * t850))
+    eptp_b = ((th850 + th700) / 2
+              * np.exp(l_0 * (r850 + r700) / 2 / (mpconsts.Cp_d * t850)) + alpha)
+    eptp_c = th500 * np.exp(l_0 * r500 / (mpconsts.Cp_d * t850)) + alpha
+
+    # Calculate Column Buoyanci Index (CBI)
+    # Apply threshold to low and mid levels
+    beta = units.Quantity(303, 'K')
+    l_e = eptp_a - beta
+    m_e = eptp_c - beta
+
+    # Gamma unit - likely a typo from the paper, should be units of K^(-2) to
+    # result in dimensionless CBI
+    gamma = units.Quantity(6.5e-2, '1/K^2')
+
+    column_buoyancy_index = np.atleast_1d(gamma * l_e * m_e)
+    column_buoyancy_index[l_e <= 0] = 0
+
+    # Calculate Mid-tropospheric Warming Index (MWI)
+    # Apply threshold to 500-hPa temperature
+    tau = units.Quantity(263.15, 'K')
+    t_diff = t500 - tau
+
+    mu = units.Quantity(-7, '1/K')  # Empirical adjustment
+    mid_tropospheric_warming_index = np.atleast_1d(mu * t_diff)
+    mid_tropospheric_warming_index[t_diff <= 0] = 0
+
+    # Calculate Inversion Index (II)
+    s = t950 - t700
+    d = eptp_b - eptp_a
+    inv_sum = s + d
+
+    sigma = units.Quantity(1.5, '1/K')  # Empirical scaling constant
+    inversion_index = np.atleast_1d(sigma * inv_sum)
+    inversion_index[inv_sum >= 0] = 0
+
+    # Calculate Terrain Correction
+    terrain_correction = 18 - 9000 / (surface_pressure.m_as('hPa') - 500)
+
+    # Calculate G.D.I.
+    gdi = (column_buoyancy_index
+           + mid_tropospheric_warming_index
+           + inversion_index
+           + terrain_correction)
+
+    if gdi.size == 1:
+        return gdi[0]
+    else:
+        return gdi
+
+
+@exporter.export
+@add_vertical_dim_from_xarray
 @preprocess_and_wrap(
     wrap_like='potential_temperature',
     broadcast=('height', 'potential_temperature', 'u', 'v')

@@ -79,6 +79,7 @@ Soundings
       cross_totals
       downdraft_cape
       el
+      galvez_davison_index
       k_index
       lcl
       lfc
