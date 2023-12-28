@@ -1,0 +1,12 @@
+zoom_xarray
+======================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: zoom_xarray
+
+.. include:: metpy.calc.zoom_xarray.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

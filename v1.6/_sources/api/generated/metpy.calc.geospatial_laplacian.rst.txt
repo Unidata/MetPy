@@ -1,0 +1,12 @@
+geospatial_laplacian
+===============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: geospatial_laplacian
+
+.. include:: metpy.calc.geospatial_laplacian.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

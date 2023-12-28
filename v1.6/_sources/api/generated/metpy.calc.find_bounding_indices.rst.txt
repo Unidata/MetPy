@@ -1,0 +1,12 @@
+find_bounding_indices
+================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: find_bounding_indices
+
+.. include:: metpy.calc.find_bounding_indices.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

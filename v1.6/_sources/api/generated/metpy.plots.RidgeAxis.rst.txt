@@ -1,0 +1,45 @@
+RidgeAxis
+=====================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: RidgeAxis
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~RidgeAxis.__init__
+      ~RidgeAxis.draw_path
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: draw_path
+
+   
+   
+
+.. include:: metpy.plots.RidgeAxis.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

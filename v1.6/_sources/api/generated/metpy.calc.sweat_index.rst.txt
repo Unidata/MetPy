@@ -1,0 +1,12 @@
+sweat_index
+======================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: sweat_index
+
+.. include:: metpy.calc.sweat_index.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

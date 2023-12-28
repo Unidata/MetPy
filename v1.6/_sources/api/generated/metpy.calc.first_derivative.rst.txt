@@ -1,0 +1,12 @@
+first_derivative
+===========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: first_derivative
+
+.. include:: metpy.calc.first_derivative.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

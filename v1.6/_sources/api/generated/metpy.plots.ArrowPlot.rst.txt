@@ -1,0 +1,152 @@
+ArrowPlot
+=====================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: ArrowPlot
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~ArrowPlot.arrowkey
+      ~ArrowPlot.arrowscale
+      ~ArrowPlot.color
+      ~ArrowPlot.cross_validation_lock
+      ~ArrowPlot.data
+      ~ArrowPlot.earth_relative
+      ~ArrowPlot.field
+      ~ArrowPlot.griddata
+      ~ArrowPlot.latitude
+      ~ArrowPlot.level
+      ~ArrowPlot.longitude
+      ~ArrowPlot.mpl_args
+      ~ArrowPlot.name
+      ~ArrowPlot.parent
+      ~ArrowPlot.pivot
+      ~ArrowPlot.plot_units
+      ~ArrowPlot.plotdata
+      ~ArrowPlot.scale
+      ~ArrowPlot.skip
+      ~ArrowPlot.time
+      ~ArrowPlot.x
+      ~ArrowPlot.y
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~ArrowPlot.__init__
+      ~ArrowPlot.add_traits
+      ~ArrowPlot.class_own_trait_events
+      ~ArrowPlot.class_own_traits
+      ~ArrowPlot.class_trait_names
+      ~ArrowPlot.class_traits
+      ~ArrowPlot.clear
+      ~ArrowPlot.clear_collections
+      ~ArrowPlot.clear_handle
+      ~ArrowPlot.copy
+      ~ArrowPlot.draw
+      ~ArrowPlot.has_trait
+      ~ArrowPlot.hold_trait_notifications
+      ~ArrowPlot.notify_change
+      ~ArrowPlot.observe
+      ~ArrowPlot.on_trait_change
+      ~ArrowPlot.set_trait
+      ~ArrowPlot.setup_instance
+      ~ArrowPlot.trait_defaults
+      ~ArrowPlot.trait_events
+      ~ArrowPlot.trait_has_value
+      ~ArrowPlot.trait_metadata
+      ~ArrowPlot.trait_names
+      ~ArrowPlot.trait_values
+      ~ArrowPlot.traits
+      ~ArrowPlot.unobserve
+      ~ArrowPlot.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: arrowkey
+   .. autoattribute:: arrowscale
+   .. autoattribute:: color
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: data
+   .. autoattribute:: earth_relative
+   .. autoattribute:: field
+   .. autoattribute:: griddata
+   .. autoattribute:: latitude
+   .. autoattribute:: level
+   .. autoattribute:: longitude
+   .. autoattribute:: mpl_args
+   .. autoattribute:: name
+   .. autoattribute:: parent
+   .. autoattribute:: pivot
+   .. autoattribute:: plot_units
+   .. autoattribute:: plotdata
+   .. autoattribute:: scale
+   .. autoattribute:: skip
+   .. autoattribute:: time
+   .. autoattribute:: x
+   .. autoattribute:: y
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: clear
+   .. automethod:: clear_collections
+   .. automethod:: clear_handle
+   .. automethod:: copy
+   .. automethod:: draw
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: trait_defaults
+   .. automethod:: trait_events
+   .. automethod:: trait_has_value
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: trait_values
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.ArrowPlot.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

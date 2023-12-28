@@ -1,0 +1,12 @@
+absolute_momentum
+============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: absolute_momentum
+
+.. include:: metpy.calc.absolute_momentum.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

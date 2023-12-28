@@ -1,0 +1,12 @@
+dewpoint
+===================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: dewpoint
+
+.. include:: metpy.calc.dewpoint.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

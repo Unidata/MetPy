@@ -1,0 +1,152 @@
+RasterPlot
+======================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: RasterPlot
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~RasterPlot.colorbar
+      ~RasterPlot.colorbar_fontsize
+      ~RasterPlot.colormap
+      ~RasterPlot.cross_validation_lock
+      ~RasterPlot.data
+      ~RasterPlot.field
+      ~RasterPlot.griddata
+      ~RasterPlot.image_range
+      ~RasterPlot.latitude
+      ~RasterPlot.level
+      ~RasterPlot.longitude
+      ~RasterPlot.mpl_args
+      ~RasterPlot.name
+      ~RasterPlot.parent
+      ~RasterPlot.plot_units
+      ~RasterPlot.plotdata
+      ~RasterPlot.scale
+      ~RasterPlot.smooth_contour
+      ~RasterPlot.smooth_field
+      ~RasterPlot.time
+      ~RasterPlot.x
+      ~RasterPlot.y
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~RasterPlot.__init__
+      ~RasterPlot.add_traits
+      ~RasterPlot.class_own_trait_events
+      ~RasterPlot.class_own_traits
+      ~RasterPlot.class_trait_names
+      ~RasterPlot.class_traits
+      ~RasterPlot.clear
+      ~RasterPlot.clear_collections
+      ~RasterPlot.clear_handle
+      ~RasterPlot.copy
+      ~RasterPlot.draw
+      ~RasterPlot.has_trait
+      ~RasterPlot.hold_trait_notifications
+      ~RasterPlot.notify_change
+      ~RasterPlot.observe
+      ~RasterPlot.on_trait_change
+      ~RasterPlot.set_trait
+      ~RasterPlot.setup_instance
+      ~RasterPlot.trait_defaults
+      ~RasterPlot.trait_events
+      ~RasterPlot.trait_has_value
+      ~RasterPlot.trait_metadata
+      ~RasterPlot.trait_names
+      ~RasterPlot.trait_values
+      ~RasterPlot.traits
+      ~RasterPlot.unobserve
+      ~RasterPlot.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: colorbar
+   .. autoattribute:: colorbar_fontsize
+   .. autoattribute:: colormap
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: data
+   .. autoattribute:: field
+   .. autoattribute:: griddata
+   .. autoattribute:: image_range
+   .. autoattribute:: latitude
+   .. autoattribute:: level
+   .. autoattribute:: longitude
+   .. autoattribute:: mpl_args
+   .. autoattribute:: name
+   .. autoattribute:: parent
+   .. autoattribute:: plot_units
+   .. autoattribute:: plotdata
+   .. autoattribute:: scale
+   .. autoattribute:: smooth_contour
+   .. autoattribute:: smooth_field
+   .. autoattribute:: time
+   .. autoattribute:: x
+   .. autoattribute:: y
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: clear
+   .. automethod:: clear_collections
+   .. automethod:: clear_handle
+   .. automethod:: copy
+   .. automethod:: draw
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: trait_defaults
+   .. automethod:: trait_events
+   .. automethod:: trait_has_value
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: trait_values
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.RasterPlot.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

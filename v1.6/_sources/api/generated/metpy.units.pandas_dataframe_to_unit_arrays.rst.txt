@@ -1,0 +1,12 @@
+pandas_dataframe_to_unit_arrays
+===========================================
+
+.. currentmodule:: metpy.units
+
+.. autofunction:: pandas_dataframe_to_unit_arrays
+
+.. include:: metpy.units.pandas_dataframe_to_unit_arrays.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,1173 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>References &#8212; MetPy 1.6</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css?v=45c5dac0" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/documentation_options.js?v=72d88caf"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/references';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.14.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v1.6';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        </script>
+    <script src="../_static/doc_shared.js?v=fe4a670c"></script>
+    <link rel="icon" href="../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developer’s Guide" href="../devel/index.html" />
+    <link rel="prev" title="MetPy Area List" href="areas.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="Dec 28, 2023 at 06:43:21"/>
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/references.html" />
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6 - Home"/>
+    <script>document.write(`<img src="../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6 - Home"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Reference Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../devel/index.html">
+                        Developer’s Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples/index.html">
+                        Example Gallery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
+                        Support
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+                    Release Notes
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://calendar.google.com/calendar/embed?src=c_596cc34cd7196caec223786795c8730786aead6e2dbffe03403186f203075973%40group.calendar.google.com&ctz=America%2FDenver" title="Calendar" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-solid fa-calendar fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Calendar</span></a>
+        </li>
+</ul></div>
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+    
+    <div class="container-fluid" id="banner"></div>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Reference Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../devel/index.html">
+                        Developer’s Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples/index.html">
+                        Example Gallery
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
+                        Support
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+                    Release Notes
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-twitter fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://calendar.google.com/calendar/embed?src=c_596cc34cd7196caec223786795c8730786aead6e2dbffe03403186f203075973%40group.calendar.google.com&ctz=America%2FDenver" title="Calendar" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-solid fa-calendar fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Calendar</span></a>
+        </li>
+</ul></div>
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/metpy.constants.html">Constants <code class="docutils literal notranslate"><span class="pre">(metpy.constants)</span></code></a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.units.html">Units <code class="docutils literal notranslate"><span class="pre">(metpy.units)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.units.setup_registry.html">setup_registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.units.pandas_dataframe_to_unit_arrays.html">pandas_dataframe_to_unit_arrays</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.io.html">Reading Data <code class="docutils literal notranslate"><span class="pre">(metpy.io)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.parse_metar_to_dataframe.html">parse_metar_to_dataframe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.parse_metar_file.html">parse_metar_file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.is_precip_mode.html">is_precip_mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.add_station_lat_lon.html">add_station_lat_lon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.parse_wpc_surface_bulletin.html">parse_wpc_surface_bulletin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.GempakGrid.html">GempakGrid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.GempakSounding.html">GempakSounding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.GempakSurface.html">GempakSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.GiniFile.html">GiniFile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.Level2File.html">Level2File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.Level3File.html">Level3File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.io.StationLookup.html">StationLookup</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.calc.html">Calculations <code class="docutils literal notranslate"><span class="pre">(metpy.calc)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.add_pressure_to_height.html">add_pressure_to_height</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.density.html">density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.dry_lapse.html">dry_lapse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.dry_static_energy.html">dry_static_energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.geopotential_to_height.html">geopotential_to_height</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.height_to_geopotential.html">height_to_geopotential</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mean_pressure_weighted.html">mean_pressure_weighted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.potential_temperature.html">potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.sigma_to_pressure.html">sigma_to_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.static_stability.html">static_stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.temperature_from_potential_temperature.html">temperature_from_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.thickness_hydrostatic.html">thickness_hydrostatic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.weighted_continuous_average.html">weighted_continuous_average</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.dewpoint.html">dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.dewpoint_from_relative_humidity.html">dewpoint_from_relative_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.dewpoint_from_specific_humidity.html">dewpoint_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.equivalent_potential_temperature.html">equivalent_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mixing_ratio.html">mixing_ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mixing_ratio_from_relative_humidity.html">mixing_ratio_from_relative_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mixing_ratio_from_specific_humidity.html">mixing_ratio_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.moist_lapse.html">moist_lapse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.moist_static_energy.html">moist_static_energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.precipitable_water.html">precipitable_water</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.psychrometric_vapor_pressure_wet.html">psychrometric_vapor_pressure_wet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.relative_humidity_from_dewpoint.html">relative_humidity_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.relative_humidity_from_mixing_ratio.html">relative_humidity_from_mixing_ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.relative_humidity_from_specific_humidity.html">relative_humidity_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.relative_humidity_wet_psychrometric.html">relative_humidity_wet_psychrometric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.saturation_equivalent_potential_temperature.html">saturation_equivalent_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.saturation_mixing_ratio.html">saturation_mixing_ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.saturation_vapor_pressure.html">saturation_vapor_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.scale_height.html">scale_height</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.specific_humidity_from_dewpoint.html">specific_humidity_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.specific_humidity_from_mixing_ratio.html">specific_humidity_from_mixing_ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.thickness_hydrostatic_from_relative_humidity.html">thickness_hydrostatic_from_relative_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.vapor_pressure.html">vapor_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.vertical_velocity.html">vertical_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.vertical_velocity_pressure.html">vertical_velocity_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.virtual_potential_temperature.html">virtual_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.virtual_temperature.html">virtual_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.virtual_temperature_from_dewpoint.html">virtual_temperature_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.wet_bulb_potential_temperature.html">wet_bulb_potential_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.bulk_shear.html">bulk_shear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.bunkers_storm_motion.html">bunkers_storm_motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.corfidi_storm_motion.html">corfidi_storm_motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.cape_cin.html">cape_cin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.ccl.html">ccl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.critical_angle.html">critical_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.cross_totals.html">cross_totals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.downdraft_cape.html">downdraft_cape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.el.html">el</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.galvez_davison_index.html">galvez_davison_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.k_index.html">k_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.lcl.html">lcl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.lfc.html">lfc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.lifted_index.html">lifted_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mixed_layer.html">mixed_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mixed_layer_cape_cin.html">mixed_layer_cape_cin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.mixed_parcel.html">mixed_parcel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.most_unstable_cape_cin.html">most_unstable_cape_cin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.most_unstable_parcel.html">most_unstable_parcel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.parcel_profile.html">parcel_profile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.parcel_profile_with_lcl.html">parcel_profile_with_lcl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.parcel_profile_with_lcl_as_dataset.html">parcel_profile_with_lcl_as_dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.showalter_index.html">showalter_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.significant_tornado.html">significant_tornado</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.storm_relative_helicity.html">storm_relative_helicity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.supercell_composite.html">supercell_composite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.surface_based_cape_cin.html">surface_based_cape_cin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.sweat_index.html">sweat_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.total_totals_index.html">total_totals_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.vertical_totals.html">vertical_totals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.absolute_momentum.html">absolute_momentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.absolute_vorticity.html">absolute_vorticity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.advection.html">advection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.ageostrophic_wind.html">ageostrophic_wind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.coriolis_parameter.html">coriolis_parameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.divergence.html">divergence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.exner_function.html">exner_function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.frontogenesis.html">frontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.geostrophic_wind.html">geostrophic_wind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.inertial_advective_wind.html">inertial_advective_wind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.kinematic_flux.html">kinematic_flux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.montgomery_streamfunction.html">montgomery_streamfunction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.potential_vorticity_baroclinic.html">potential_vorticity_baroclinic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.potential_vorticity_barotropic.html">potential_vorticity_barotropic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.q_vector.html">q_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.shearing_deformation.html">shearing_deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.stretching_deformation.html">stretching_deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.total_deformation.html">total_deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.vorticity.html">vorticity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.wind_components.html">wind_components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.wind_direction.html">wind_direction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.wind_speed.html">wind_speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.brunt_vaisala_frequency.html">brunt_vaisala_frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.brunt_vaisala_frequency_squared.html">brunt_vaisala_frequency_squared</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.brunt_vaisala_period.html">brunt_vaisala_period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.friction_velocity.html">friction_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.gradient_richardson_number.html">gradient_richardson_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.tke.html">tke</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.cross_section_components.html">cross_section_components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.first_derivative.html">first_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.geospatial_gradient.html">geospatial_gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.geospatial_laplacian.html">geospatial_laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.gradient.html">gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.laplacian.html">laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.lat_lon_grid_deltas.html">lat_lon_grid_deltas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.normal_component.html">normal_component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.second_derivative.html">second_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.tangential_component.html">tangential_component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.unit_vectors_from_cross_section.html">unit_vectors_from_cross_section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.vector_derivative.html">vector_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.apparent_temperature.html">apparent_temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.heat_index.html">heat_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.windchill.html">windchill</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.altimeter_to_sea_level_pressure.html">altimeter_to_sea_level_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.altimeter_to_station_pressure.html">altimeter_to_station_pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.height_to_pressure_std.html">height_to_pressure_std</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.pressure_to_height_std.html">pressure_to_height_std</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.smooth_gaussian.html">smooth_gaussian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.smooth_window.html">smooth_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.smooth_rectangular.html">smooth_rectangular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.smooth_circular.html">smooth_circular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.smooth_n_point.html">smooth_n_point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.zoom_xarray.html">zoom_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.angle_to_direction.html">angle_to_direction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.azimuth_range_to_lat_lon.html">azimuth_range_to_lat_lon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.find_bounding_indices.html">find_bounding_indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.find_intersections.html">find_intersections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.get_layer.html">get_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.get_layer_heights.html">get_layer_heights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.get_perturbation.html">get_perturbation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.isentropic_interpolation.html">isentropic_interpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.isentropic_interpolation_as_dataset.html">isentropic_interpolation_as_dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.nearest_intersection_idx.html">nearest_intersection_idx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.parse_angle.html">parse_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.reduce_point_density.html">reduce_point_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.calc.resample_nn_1d.html">resample_nn_1d</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.plots.html">Plots <code class="docutils literal notranslate"><span class="pre">(metpy.plots)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.wx_code_to_numeric.html">wx_code_to_numeric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.add_timestamp.html">add_timestamp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.PanelContainer.html">PanelContainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.MapPanel.html">MapPanel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.Plots2D.html">Plots2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.PlotScalar.html">PlotScalar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ImagePlot.html">ImagePlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ContourPlot.html">ContourPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.RasterPlot.html">RasterPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.PlotVector.html">PlotVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.BarbPlot.html">BarbPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ArrowPlot.html">ArrowPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.PlotObs.html">PlotObs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.PlotGeometry.html">PlotGeometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ScallopedStroke.html">ScallopedStroke</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ColdFront.html">ColdFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ColdFrontogenesis.html">ColdFrontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ColdFrontolysis.html">ColdFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.Dryline.html">Dryline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.WarmFront.html">WarmFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.WarmFrontogenesis.html">WarmFrontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.WarmFrontolysis.html">WarmFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.OccludedFront.html">OccludedFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.OccludedFrontogenesis.html">OccludedFrontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.OccludedFrontolysis.html">OccludedFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.RidgeAxis.html">RidgeAxis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.Squall.html">Squall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.StationaryFront.html">StationaryFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.StationaryFrontogenesis.html">StationaryFrontogenesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.StationaryFrontolysis.html">StationaryFrontolysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.SkewT.html">SkewT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.Hodograph.html">Hodograph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.StationPlot.html">StationPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.StationPlotLayout.html">StationPlotLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.plots.ctables.html">Colortables <code class="docutils literal notranslate"><span class="pre">(metpy.plots.ctables)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ctables.convert_gempak_table.html">convert_gempak_table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ctables.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ctables.ColortableRegistry.html">ColortableRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.plots.ctables.colortables.html">colortables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.interpolate.html">Interpolate <code class="docutils literal notranslate"><span class="pre">(metpy.interpolate)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.natural_neighbor_to_grid.html">natural_neighbor_to_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.inverse_distance_to_grid.html">inverse_distance_to_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.interpolate_to_grid.html">interpolate_to_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.interpolate_to_isosurface.html">interpolate_to_isosurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.interpolate_nans_1d.html">interpolate_nans_1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.interpolate_1d.html">interpolate_1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.log_interpolate_1d.html">log_interpolate_1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.natural_neighbor_to_points.html">natural_neighbor_to_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.inverse_distance_to_points.html">inverse_distance_to_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.interpolate_to_points.html">interpolate_to_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.interpolate_to_slice.html">interpolate_to_slice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.geodesic.html">geodesic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.cross_section.html">cross_section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.remove_observations_below_value.html">remove_observations_below_value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.remove_nan_observations.html">remove_nan_observations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.interpolate.remove_repeat_coordinates.html">remove_repeat_coordinates</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generated/metpy.xarray.html">Xarray Integration <code class="docutils literal notranslate"><span class="pre">(metpy.xarray)</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/metpy.xarray.grid_deltas_from_dataarray.html">grid_deltas_from_dataarray</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="areas.html">MetPy Area List</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">References</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Reference Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">References</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="references">
+<h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
+<div role="list" class="citation-list">
+<div class="citation" id="anderson2013" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Anderson2013<span class="fn-bracket">]</span></span>
+<p>Anderson, G. B., M. L. Bell, and R. D. Peng, 2013: Methods to
+Calculate the Heat Index as an Exposure Metric in Environmental Health
+Research. <em>Environmental Health Perspectives</em>, <strong>121</strong>, 1111-1119,
+doi: <a class="reference external" href="https://doi.org/10.1289/ehp.1206273">10.1289/ehp.1206273</a>.</p>
+</div>
+<div class="citation" id="bakhshaii2013" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bakhshaii2013<span class="fn-bracket">]</span></span>
+<p>Bakhshaii, A. and R. Stull, 2013: Saturated pseudoadiabats–A
+noniterative approximation. <em>J. Appl. Meteor. Clim.</em>, <strong>52</strong>, 5-15,
+doi:<a class="reference external" href="https://doi.org/10.1175/JAMC-D-12-062.1">10.1175/JAMC-D-12-062.1</a>.</p>
+</div>
+<div class="citation" id="barnes1964" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Barnes1964<span class="fn-bracket">]</span></span>
+<p>Barnes, S. L., 1964: A technique for maximizing details in numerical weather
+map analysis. <em>J. Appl. Meteor. Climatol.</em>, <strong>3</strong>, 396-409,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0450(1964)003%3C0396:ATFMDI%3E2.0.CO;2">10.1175/1520-0450(1964)003%3C0396:ATFMDI%3E2.0.CO;2</a>.</p>
+</div>
+<div class="citation" id="bluestein1992" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bluestein1992<span class="fn-bracket">]</span></span>
+<p>Bluestein, H. B., 1992: <em>Principles of Kinematics and Dynamics.
+Vol. 1, Synoptic-Dynamic Meteorology in Midlatitudes</em>. Oxford University Press,
+448 pp.</p>
+</div>
+<div class="citation" id="bluestein1993" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bluestein1993<span class="fn-bracket">]</span></span>
+<p>Bluestein, H. B., 1993: <em>Observations and Theory of Weather Systems.
+Vol. 2, Synoptic-Dynamic Meteorology in Midlatitudes</em>. Oxford University Press,
+608 pp.</p>
+</div>
+<div class="citation" id="bolton1980" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bolton1980<span class="fn-bracket">]</span></span>
+<p>Bolton, D., 1980: The computation of equivalent potential
+temperature. <em>Mon. Wea. Rev.</em>, <strong>108</strong>, 1046-1053,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2">10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2</a>.</p>
+</div>
+<div class="citation" id="bowen2005" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bowen2005<span class="fn-bracket">]</span></span>
+<p>Bowen, M. K. and R. Smith, 2005: Derivative formulae and errors for
+non-uniformly spaced points. <em>Proc. R. Soc. A</em>, <strong>461</strong>, 1975-1997,
+doi:<a class="reference external" href="https://doi.org/10.1098/rspa.2004.1430">10.1098/rspa.2004.1430</a>.</p>
+</div>
+<div class="citation" id="bunkers2000" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bunkers2000<span class="fn-bracket">]</span></span>
+<p>Bunkers, M. J., B. A. Klimowski, J. W. Zeitler, R. L. Thompson,
+and M. L. Weisman, 2000: Predicting supercell motion using a new hodograph
+technique. <em>Wea. Forecasting.</em>, <strong>15</strong>, 61–79,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0434(2000)015&lt;0061:PSMUAN&gt;2.0.CO;2">10.1175/1520-0434(2000)015&lt;0061:PSMUAN&gt;2.0.CO;2</a>.</p>
+</div>
+<div class="citation" id="corfidi2003" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Corfidi2003<span class="fn-bracket">]</span></span>
+<p>Corfidi, S. F., 2003: Cold Pools and MCS Propagation:
+Forecasting the Motion of Downwind-Developing MCSs.
+<em>Wea. Forecasting.</em>, <strong>18</strong>, 997–1017,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0434(2003)018&lt;0997:CPAMPF&gt;2.0.CO;2">10.1175/1520-0434(2003)018&lt;0997:CPAMPF&gt;2.0.CO;2</a>.</p>
+</div>
+<div class="citation" id="codata2018" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CODATA2018<span class="fn-bracket">]</span></span>
+<p>Tiesinga, Eite, Peter J. Mohr, David B. Newell, and Barry N. Taylor, 2020:
+The 2018 CODATA Recommended Values of the Fundamental Physical Constants
+(Web Version 8.1). Database developed by J. Baker, M. Douma, and S. Kotochigova.
+Available at <a class="reference external" href="https://physics.nist.gov/cuu/Constants/index.html">https://physics.nist.gov/cuu/Constants/index.html</a>,
+National Institute of Standards and Technology, Gaithersburg, MD 20899.</p>
+</div>
+<div class="citation" id="cressman1959" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Cressman1959<span class="fn-bracket">]</span></span>
+<p>Cressman, G. P., 1959: An operational objective analysis system. <em>Mon.
+Wea. Rev.</em>, <strong>87</strong>, 367-374,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2">10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2</a>.</p>
+</div>
+<div class="citation" id="daviesjones2009" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DaviesJones2009<span class="fn-bracket">]</span></span>
+<p>Davies-Jones, R., 2009: On Formulas for Equivalent Potential Temperature.
+<em>Mon. Wea. Rev.</em>, <strong>137</strong>, 3137-3148,
+doi: <a class="reference external" href="https://doi.org/10.1175/2009MWR2774.1">10.1175/2009mwr2774.1</a>.</p>
+</div>
+<div class="citation" id="daviesjones2008" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DaviesJones2008<span class="fn-bracket">]</span></span>
+<p>Davies-Jones, R., 2008: An Efficient and Accurate Method for Computing the Wet-Bulb Temperature along Pseudoadiabats.
+<em>Mon. Wea. Rev.</em>, <strong>136</strong>, 2764-2785,
+doi: <a class="reference external" href="https://doi.org/10.1175/2007MWR2224.1">10.1175/2007mwr2224.1</a>.</p>
+</div>
+<div class="citation" id="doswellschultz2006" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DoswellSchultz2006<span class="fn-bracket">]</span></span>
+<p>Doswell, C. A. III, and D. M. Schultz, 2006: <a class="reference external" href="https://ejssm.org/archives/2006/vol-1-3-2006/">On the Use of Indices and
+Parameters in Forecasting Severe Storms</a>.
+<em>Electronic J. Severe Storms Meteor.</em>, <strong>1</strong> (3), 1-22.</p>
+</div>
+<div class="citation" id="emanuel1994" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Emanuel1994<span class="fn-bracket">]</span></span>
+<p>Emanuel, K. A., 1994: Atmospheric Convection. Oxford University Press, 592 pp.</p>
+</div>
+<div class="citation" id="esterheld2008" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Esterheld2008<span class="fn-bracket">]</span></span>
+<p>Esterheld, J. M. and D. J. Giuliano, 2008: <a class="reference external" href="https://ejssm.org/archives/2008/vol-3-2-2008/">Discriminating between Tornadic and
+Non-Tornadic Supercells: A New Hodograph Technique</a>.
+<em>Electronic J. Severe Storms Meteor.</em>, <strong>3</strong> (2), 1-50.</p>
+</div>
+<div class="citation" id="fan1987" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Fan1987<span class="fn-bracket">]</span></span>
+<p>Fan, J., 1987: Determination of the psychrometer coefficient A of the WMO
+reference psychrometer by comparison with a standard gravimetric hygrometer.
+<em>J. Atmos. Oceanic Technol.</em>, <strong>4</strong>, 239-244,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2">10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2</a>.</p>
+</div>
+<div class="citation" id="fcmr192003" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>FCMR192003<span class="fn-bracket">]</span></span>
+<p>Federal Coordinator for Meteorological Services and Supporting Research: Report
+on Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
+Projects. Washington, DC: Office of the Federal Coordinator for Meteorological
+Services and Supporting Research, 2003.
+<a class="reference external" href="../_static/FCM-R19-2003-WindchillReport.pdf">FCM-R19-2003</a>, 75 pp.</p>
+</div>
+<div class="citation" id="galvez2015" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Galvez2015<span class="fn-bracket">]</span></span>
+<p>Galvez, J. M. and Michel Davison, 2015. “The Gálvez-Davison Index for Tropical
+Convection.” <a class="reference external" href="https://www.wpc.ncep.noaa.gov/international/gdi/GDI_Manuscript_V20161021.pdf">GDI_Manuscript_V20161021</a>.</p>
+</div>
+<div class="citation" id="galway1956" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Galway1956<span class="fn-bracket">]</span></span>
+<p>Galway, J. G., 1956: The Lifted Index as a Predictor of Latent Instability.
+<em>American Meteorology Society</em>,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0477-37.10.528">10.1175/1520-0477-37.10.528</a>.</p>
+</div>
+<div class="citation" id="garratt1994" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Garratt1994<span class="fn-bracket">]</span></span>
+<p>Garratt, J.R., 1994: <em>The Atmospheric Boundary Layer</em>. Cambridge
+University Press, 316 pp.</p>
+</div>
+<div class="citation" id="george1960" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>George1960<span class="fn-bracket">]</span></span>
+<p>George, J.J., 1960: <em>Weather Forecasting for Aeronautics</em>. New York and
+London Academic Press, 673 pp.</p>
+</div>
+<div class="citation" id="hobbs1977" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Hobbs1977<span class="fn-bracket">]</span></span>
+<p>Hobbs, P. V., and J. M. Wallace, 1977: <em>Atmospheric Science: An
+Introductory Survey</em>. Academic Press, 350 pp.</p>
+</div>
+<div class="citation" id="hobbs2006" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Hobbs2006<span class="fn-bracket">]</span></span>
+<p>Hobbs, P. V., and J. M. Wallace, 2006: <em>Atmospheric Science: An Introductory
+Survey</em>. 2nd ed. Academic Press, 504 pp.</p>
+</div>
+<div class="citation" id="holton2004" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Holton2004<span class="fn-bracket">]</span></span>
+<p>Holton, J. R., 2004: <em>An Introduction to Dynamic Meteorology</em>. 4th ed.
+Academic Press, 535 pp.</p>
+</div>
+<div class="citation" id="iapws1995" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>IAPWS1995<span class="fn-bracket">]</span></span>
+<p>The International Association for the Properties of Water and Steam, 1995:
+<a class="reference external" href="../_static/IAPWS95-2018.pdf">Revised Release on the IAPWS Formulation 1995 for the Thermodynamic Properties
+of Ordinary Water Substance for General and Scientific Use (updated
+2018)</a>.</p>
+</div>
+<div class="citation" id="iapws2001" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>IAPWS2001<span class="fn-bracket">]</span></span>
+<p>The International Association for the Properties of Water and Steam, 2001:
+<a class="reference external" href="../_static/fundam.pdf">Guideline on the Use of Fundamental Physical Constants and Basic Constants of
+Water (updated 2020)</a>.</p>
+</div>
+<div class="citation" id="iau2012" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>IAU2012<span class="fn-bracket">]</span></span>
+<p>IAU Division I Working Group Numerical Standards, 2012: <a class="reference external" href="https://www.iau.org/static/resolutions/IAU2012_English.pdf">RESOLUTION B2 on
+the re-definition of the astronomical unit of length</a>.</p>
+</div>
+<div class="citation" id="knox2017" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Knox2017<span class="fn-bracket">]</span></span>
+<p>Knox, John A., David S. Nevius, and Pamela N. Knox., 2017: Two Simple and
+Accurate Approximations for Wet-Bulb Temperature in Moist Conditions, with
+Forecasting Applications. <em>Bulletin of the American Meteorological Society</em>,
+<strong>98.9</strong>, 1897-1906, doi:
+<a class="reference external" href="https://doi.org/10.1175/BAMS-D-16-0246.1">10.1175/BAMS-D-16-0246.1</a>.</p>
+</div>
+<div class="citation" id="koch1983" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Koch1983<span class="fn-bracket">]</span></span>
+<p>Koch, S. E., M. DesJardins, and P. J. Kocin, 1983: An interactive Barnes
+objective map analysis scheme for use with satellite and conventional data.
+<strong>J. Appl. Meteor. Climatol.</strong>, <em>22</em>, 1487-1503,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0450(1983)022%3C1487:AIBOMA%3E2.0.CO;2">10.1175/1520-0450(1983)022%3C1487:AIBOMA%3E2.0.CO;2</a>.</p>
+</div>
+<div class="citation" id="kopp2011" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Kopp2011<span class="fn-bracket">]</span></span>
+<p>Kopp, G., and Lean, J. L., 2011: A new, lower value of total solar irradiance:
+Evidence and climate significance. <em>Geophys. Res. Lett.</em>, <strong>38</strong>, L01706,
+<a class="reference external" href="https://doi.org/10.1029/2010GL045777">doi:10.1029/2010GL045777</a>.</p>
+</div>
+<div class="citation" id="lackmann2011" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Lackmann2011<span class="fn-bracket">]</span></span>
+<p>Lackmann, G., 2011: <em>Midlatitude Synoptic Meteorology</em>. Amer. Meteor. Soc.,
+345 pp.</p>
+</div>
+<div class="citation" id="liang2010" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Liang2010<span class="fn-bracket">]</span></span>
+<p>Liang, L., and D. Hale, 2010: <em>A Stable and Fast Implementation
+of Natural Neighbor Interpolation</em>. Center for Wave Phenomena <a class="reference external" href="https://cwp.mines.edu/wp-content/uploads/sites/112/2018/09/cwp-657.pdf">CWP-657</a>, 14 pp.</p>
+</div>
+<div class="citation" id="markowski2010" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Markowski2010<span class="fn-bracket">]</span></span>
+<p>Markowski, P. and Y. Richardson, 2010: <em>Mesoscale Meteorology in the
+Midlatitudes</em>. Wiley, 430 pp.</p>
+</div>
+<div class="citation" id="miller1972" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Miller1972<span class="fn-bracket">]</span></span>
+<p>Miller, R. C, 1972: <em>Notes on Analysis and Severe-Storm Forecasting Procedures
+of the Air Force Global Weather Central</em>. <a class="reference external" href="../_static/Miller1972.pdf">AD0744042</a>.</p>
+</div>
+<div class="citation" id="moritz2000" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Moritz2000<span class="fn-bracket">]</span></span>
+<p>Moritz, H., 2000: Geodetic Reference System 1980.
+<em>Journal of Geodesy</em> <strong>74</strong>, 128-133, doi:<a class="reference external" href="https://doi.org/10.1007/s001900050278">10.1007/s001900050278</a>.</p>
+</div>
+<div class="citation" id="noaa1976" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>NOAA1976<span class="fn-bracket">]</span></span>
+<p>National Oceanic and Atmospheric Administration, National Aeronautics and
+Space Administration, and U. S. Air Force, 1976: <a class="reference external" href="https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19770009539.pdf">U. S. Standard Atmosphere 1976</a>,
+U.S. Government Printing Office, Washington, DC.</p>
+</div>
+<div class="citation" id="nws10201" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>NWS10201<span class="fn-bracket">]</span></span>
+<p>2017: <a class="reference external" href="../_static/NWS_10-201.pdf">National Weather Service Instruction 10-201</a>.</p>
+</div>
+<div class="citation" id="philips1957" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Philips1957<span class="fn-bracket">]</span></span>
+<p>Philips, N. A., 1957: A coordinate system having some special
+advantages for numerical forecasting. <em>J. Meteor.</em>, <strong>14</strong>, 184-185,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0469(1957)014%3C0184:ACSHSS%3E2.0.CO;2">10.1175/1520-0469(1957)014%3C0184:ACSHSS%3E2.0.CO;2</a>.</p>
+</div>
+<div class="citation" id="picard2008" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Picard2008<span class="fn-bracket">]</span></span>
+<p>Picard, A., R. S. Davis, M. Gläser, and K. Fujii, 2008: Revised formula
+for the density of moist air (CIPM-2007), <em>Metrologia</em>, <strong>45</strong>, No. 2, <a class="reference external" href="https://doi.org/10.1088/0026-1394/45/2/004">doi:
+10.1088/0026-1394/45/2/004</a>.</p>
+</div>
+<div class="citation" id="rochette2006" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Rochette2006<span class="fn-bracket">]</span></span>
+<p>Rochette, Scott M., and Patrick S. Market. “A primer on the
+ageostrophic wind.” Natl. Weather Dig. 30 (2006): 17-28.</p>
+</div>
+<div class="citation" id="rothfusz1990" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Rothfusz1990<span class="fn-bracket">]</span></span>
+<p>Rothfusz, L.P.: <em>The Heat Index “Equation”</em>. Fort Worth, TX: Scientific
+Services Division, NWS Southern Region Headquarters, 1990.
+<a class="reference external" href="../_static/rothfusz-1990-heat-index-equation.pdf">SR90-23</a>, 2 pp.</p>
+</div>
+<div class="citation" id="salby1996" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Salby1996<span class="fn-bracket">]</span></span>
+<p>Salby, M. L., 1996: <em>Fundamentals of Atmospheric Physics</em>.
+Academic Press, 627 pp.</p>
+</div>
+<div class="citation" id="schultz1999" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Schultz1999<span class="fn-bracket">]</span></span>
+<p>Schultz, D. M. and P. N. Schumacher, 1999: The Use and Misuse of Conditional
+Symmetric Instability. Mon. Wea. Rev., 127, 2709–2732,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2">10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2</a>.</p>
+</div>
+<div class="citation" id="smithsonian1951" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Smithsonian1951<span class="fn-bracket">]</span></span>
+<p>Smithsonian Institution and List, Robert J. 1951:
+<a class="reference external" href="../_static/Smithsonian1951.pdf">Smithsonian meteorological tables</a> <em>Smithsonian
+Miscellaneous Collections</em>, <strong>144</strong>, 151 pp.</p>
+</div>
+<div class="citation" id="steadman1979" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Steadman1979<span class="fn-bracket">]</span></span>
+<p>Steadman, R.G., 1979: The assessment of sultriness. Part I: A
+temperature-humidity index based on human physiology and clothing
+science. <em>J. Appl. Meteor.</em>, <strong>18</strong>, 861-873,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2">10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2</a>.</p>
+</div>
+<div class="citation" id="thompson2004" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Thompson2004<span class="fn-bracket">]</span></span>
+<p>Thompson, R.L., R. Edwards, and C. M. Mead, 2004b: <a class="reference external" href="https://www.spc.noaa.gov/publications/thompson/stp_scp.pdf">An update to the
+supercell composite and significant tornado parameters</a>. Preprints,
+22nd Conf. on Severe Local Storms, Hyannis, MA, Amer. Meteor. Soc.</p>
+</div>
+<div class="citation" id="usaf1990" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>USAF1990<span class="fn-bracket">]</span></span>
+<p>United States Air Force, 1990: <a class="reference external" href="../_static/USAF_SkewT_manual.pdf">The Use of the Skew T Log P Diagram for Weather
+Forecasting</a>, Scott AFB,
+Illinois.</p>
+</div>
+<div class="citation" id="ziv1994" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Ziv1994<span class="fn-bracket">]</span></span>
+<p>Ziv, B., and Alpert, P., 1994: Isobaric to Isentropic Interpolation Errors
+and Implication to Potential Vorticity Analysis. <em>J. Appl. Meteor.</em>, <strong>33</strong>,
+694-703, doi:<a class="reference external" href="https://doi.org/10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2">10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2</a>.</p>
+</div>
+<div class="citation" id="wmo8" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WMO8<span class="fn-bracket">]</span></span>
+<p>WMO, 2020: Guide to Meteorological Instruments and Methods of Observation,
+Volume 1: Measurement of Meteorological Variables.
+<a class="reference external" href="https://library.wmo.int/idurl/4/41650">WMO No.8</a>.</p>
+</div>
+<div class="citation" id="wmo306" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WMO306<span class="fn-bracket">]</span></span>
+<p>WMO, 2011: Manual on Codes - International Codes, Volume I.1, Annex II to the WMO
+Technical Regulations: Part A - Alphanumeric Codes. <a class="reference external" href="https://library.wmo.int/idurl/4/35713">WMO No.306</a>.</p>
+</div>
+<div class="citation" id="wmo1966" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WMO1966<span class="fn-bracket">]</span></span>
+<p>WMO, 1966: International Meteorological Tables,
+<a class="reference external" href="https://library.wmo.int/idurl/4/59923">WMO-No. 188.TP.94</a>.</p>
+</div>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="areas.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">MetPy Area List</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../devel/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Developer’s Guide</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2008–2023, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

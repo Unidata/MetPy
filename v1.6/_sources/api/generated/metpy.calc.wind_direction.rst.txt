@@ -1,0 +1,12 @@
+wind_direction
+=========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: wind_direction
+
+.. include:: metpy.calc.wind_direction.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

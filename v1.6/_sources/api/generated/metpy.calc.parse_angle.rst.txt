@@ -1,0 +1,12 @@
+parse_angle
+======================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: parse_angle
+
+.. include:: metpy.calc.parse_angle.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

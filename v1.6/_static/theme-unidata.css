@@ -1,0 +1,61 @@
+/* Define "Unidata Blue" RGB values */
+html {
+    --unidata-blue-rgb: 6, 119, 143;
+}
+
+/* Header and heading font style */
+.header-style, h1, h2, h3, h4, h5, h6 {
+    font-family: Poppins, sans-serif;
+}
+
+/* Header colors */
+.bd-header {
+    background: rgb(var(--unidata-blue-rgb)) !important;
+}
+
+.theme-switch-button {
+    border-color: rgb(var(--unidata-blue-rgb)) !important;
+}
+
+.bd-header .navbar-nav>.nav-item>.nav-link, 
+.bd-header .dropdown-toggle,
+.bd-header .fa-solid,
+.bd-header .btn {
+    color: #fff !important;
+ }
+
+.version-switcher__button {
+    border-color: #fff !important;
+}
+
+.search-button {
+    padding: 0 0 0;
+}
+
+.navbar-nav .dropdown-menu {
+    background-color: var(--pst-color-background);
+}
+
+/* Increase contrast of links in code snippets */
+div[class^="highlight"] a {
+    background-color: rgb(var(--unidata-blue-rgb), 0.2);
+    color: var(--pst-color-text-muted);
+}
+
+/* Control the appearance of the version alert banner */
+#banner .alert-version, .alert-news {
+    margin: 1em;
+    padding: 0.5em;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 600; font-size: 16px;
+}
+
+/* Tweaks to the appearance of the sidebars */
+.bd-sidebar {
+    flex: 0 0 20%;
+    border-right: none;
+}
+
+.bd-sidebar-secondary div {
+    border-left: none;
+}

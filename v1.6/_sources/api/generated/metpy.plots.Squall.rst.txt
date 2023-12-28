@@ -1,0 +1,60 @@
+Squall
+==================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: Squall
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~Squall.symbol
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~Squall.__init__
+      ~Squall.draw_path
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: symbol
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: draw_path
+
+   
+   
+
+.. include:: metpy.plots.Squall.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

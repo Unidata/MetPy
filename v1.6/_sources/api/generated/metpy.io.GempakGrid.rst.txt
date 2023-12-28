@@ -1,0 +1,70 @@
+GempakGrid
+===================
+
+.. currentmodule:: metpy.io
+
+.. autoclass:: GempakGrid
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~GempakGrid.data_management_fmt
+      ~GempakGrid.grid_anl_fmt1
+      ~GempakGrid.grid_anl_fmt2
+      ~GempakGrid.grid_nav_fmt
+      ~GempakGrid.prod_desc_fmt
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~GempakGrid.__init__
+      ~GempakGrid.gdinfo
+      ~GempakGrid.gdxarray
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: data_management_fmt
+   .. autoattribute:: grid_anl_fmt1
+   .. autoattribute:: grid_anl_fmt2
+   .. autoattribute:: grid_nav_fmt
+   .. autoattribute:: prod_desc_fmt
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: gdinfo
+   .. automethod:: gdxarray
+
+   
+   
+
+.. include:: metpy.io.GempakGrid.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>
