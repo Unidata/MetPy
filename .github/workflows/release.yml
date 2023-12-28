@@ -11,9 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-      with:
-        fetch-depth: 10
-        fetch-tags: true
 
     - name: Set up Python
       id: setup
