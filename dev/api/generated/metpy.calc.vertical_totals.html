@@ -76,7 +76,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 22, 2023 at 22:55:33"/>
+    <meta name="docbuild:last-update" content="Dec 28, 2023 at 03:22:50"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.vertical_totals.html" />
 
   </head>
@@ -551,6 +551,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.cross_totals.html">cross_totals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.downdraft_cape.html">downdraft_cape</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.el.html">el</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.galvez_davison_index.html">galvez_davison_index</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.k_index.html">k_index</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.lcl.html">lcl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.lfc.html">lfc</a></li>
@@ -781,7 +782,7 @@ document.write(`
 <h1>vertical_totals<a class="headerlink" href="#vertical-totals" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.vertical_totals">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">vertical_totals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertical_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L4732-L4792"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.vertical_totals" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">vertical_totals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertical_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L4907-L4967"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.vertical_totals" title="Link to this definition">#</a></dt>
 <dd><p>Calculate Vertical Totals from the pressure and temperature.</p>
 <p>Vertical Totals formula derived from <a class="reference internal" href="../references.html#miller1972" id="id1"><span>[Miller1972]</span></a>:</p>
 <div class="math notranslate nohighlight">
