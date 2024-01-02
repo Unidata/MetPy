@@ -176,7 +176,7 @@ def test_added_degrees_units():
     assert units('degrees_north').to_base_units().units == units.radian
     assert units('degrees_east') == units('degrees')
     assert units('degrees_east').to_base_units().units == units.radian
-    assert units("dBZ") == units("dB")
+    assert units('dBZ') == units('dB')
 
 
 def test_is_quantity():
