@@ -82,7 +82,7 @@ def setup_registry(reg):
                '= degreeN')
     reg.define('degrees_east = degree = degrees_E = degreesE = degree_east = degree_E '
                '= degreeE')
-    reg.define('dBZ = 1 ; logbase: 10; logfactor: 10')
+    reg.define('dBz = 1e-18 m^3; logbase: 10; logfactor: 10 = dBZ')
 
     # Alias geopotential meters (gpm) to just meters
     reg.define('@alias meter = gpm')
