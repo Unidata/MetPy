@@ -8,9 +8,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from metpy.testing import (assert_array_almost_equal, assert_array_equal,
-                           assert_nan, assert_almost_equal)
-
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
+assert_nan)
 from metpy.units import (check_units, concatenate, is_quantity,
                          pandas_dataframe_to_unit_arrays, units)
 
