@@ -95,16 +95,24 @@ def test_ds_xy():
     return ds.metpy.parse_cf()
 
 
-def test_interpolate_to_slice_against_selection(test_ds_lonlat):
+@pytest.mark.parametrize('bad_units', [False, True])
+def test_interpolate_to_slice_against_selection(test_ds_lonlat, bad_units):
     """Test interpolate_to_slice on a simple operation."""
     data = test_ds_lonlat['temperature']
+
+    # interpolate_to_slice shouldn't care about units
+    if bad_units:
+        # Needed so we can go back to using attribute metadata
+        data = data.metpy.dequantify()
+        data.attrs['units'] = 'my_bad_units'
+
     path = np.array([[265.0, 30.],
                      [265.0, 36.],
                      [265.0, 42.]])
     test_slice = interpolate_to_slice(data, path)
     true_slice = data.sel({'lat': [30., 36., 42.], 'lon': 265.0})
     # Coordinates differ, so just compare the data
-    assert_array_almost_equal(true_slice.metpy.unit_array, test_slice.metpy.unit_array, 5)
+    assert_array_almost_equal(true_slice.data, test_slice.data, 5)
 
 
 @needs_cartopy
