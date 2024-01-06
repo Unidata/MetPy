@@ -2133,6 +2133,42 @@ def test_declarative_plot_geometry_lines(ccrs):
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=False, tolerance=2.985)
+def test_declarative_plot_geometry_fills(ccrs):
+    """Test that `PlotGeometry` correctly plots MultiLineString and LineString objects."""
+    from shapely.geometry import MultiPolygon, Polygon
+
+    # MultiPolygons and Polygons to plot
+    mdt_risk_polygon = Polygon(
+        [(-87.07, 31.68), (-88.65, 30.96), (-91.83, 30.52), (-92.83, 30.82), (-93.18, 31.77),
+         (-92.65, 33.31), (-92.64, 35.22), (-91.74, 36.16), (-88.84, 35.53), (-86.13, 34.5),
+         (-85.45, 33.01), (-86, 32.05), (-87.07, 31.68)])
+    high_risk_polygon = Polygon(
+        [(-91.88, 32.99), (-89.82, 34.4), (-88.19, 34.21), (-87.72, 33.46), (-88.23, 32.48),
+         (-90.53, 32), (-91.74, 32.07), (-91.88, 32.99)])
+
+    # Plot geometry, set colors and labels
+    geo = PlotGeometry()
+    geo.geometry = [mdt_risk_polygon, high_risk_polygon]
+    geo.fill = ['#E06666', '#EE99EE']
+    geo.stroke = ['#E06666', '#EE99EE']
+    geo.labels = None
+
+    # Place plot in a panel and container
+    panel = MapPanel()
+    panel.area = [-120, -75, 25, 50]
+    panel.projection = 'lcc'
+    panel.title = ' '
+    panel.plots = [geo]
+
+    pc = PanelContainer()
+    pc.size = (12, 12)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
 @pytest.mark.mpl_image_compare(remove_text=False, tolerance=1.900)
 def test_declarative_plot_geometry_points(ccrs):
     """Test that `PlotGeometry` correctly plots Point and MultiPoint objects."""

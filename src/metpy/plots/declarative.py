@@ -1938,12 +1938,12 @@ class PlotGeometry(MetPyHasTraits):
                                 else self.label_edgecolor)
         self.label_facecolor = (['none'] if self.label_facecolor is None
                                 else self.label_facecolor)
-        kwargs = self.mpl_args
 
         # Each Shapely object is plotted separately with its corresponding colors and label
         for geo_obj, stroke, strokewidth, fill, label, fontcolor, fontoutline in zip(
                 self.geometry, cycle(self.stroke), cycle(self.stroke_width), cycle(self.fill),
                 cycle(self.labels), cycle(self.label_facecolor), cycle(self.label_edgecolor)):
+            kwargs = self.mpl_args.copy()
             # Plot the Shapely object with the appropriate method and colors
             if isinstance(geo_obj, (MultiPolygon, Polygon)):
                 kwargs.setdefault('edgecolor', stroke)
