@@ -2136,7 +2136,7 @@ def test_declarative_plot_geometry_lines(ccrs):
 @pytest.mark.mpl_image_compare(remove_text=False, tolerance=2.985)
 def test_declarative_plot_geometry_fills(ccrs):
     """Test that `PlotGeometry` correctly plots MultiLineString and LineString objects."""
-    from shapely.geometry import MultiPolygon, Polygon
+    from shapely.geometry import Polygon
 
     # MultiPolygons and Polygons to plot
     mdt_risk_polygon = Polygon(
