@@ -2133,7 +2133,7 @@ def test_declarative_plot_geometry_lines(ccrs):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=False, tolerance=2.985)
+@pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.013)
 def test_declarative_plot_geometry_fills(ccrs):
     """Test that `PlotGeometry` correctly plots MultiLineString and LineString objects."""
     from shapely.geometry import Polygon
