@@ -8,7 +8,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from metpy.testing import assert_array_almost_equal, assert_array_equal, assert_nan
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
+                           assert_nan)
 from metpy.units import (check_units, concatenate, is_quantity,
                          pandas_dataframe_to_unit_arrays, units)
 
@@ -176,6 +177,7 @@ def test_added_degrees_units():
     assert units('degrees_north').to_base_units().units == units.radian
     assert units('degrees_east') == units('degrees')
     assert units('degrees_east').to_base_units().units == units.radian
+    assert_almost_equal(0 * units.dBz, 1 * units('mm^6/m^3'))
 
 
 def test_is_quantity():
