@@ -139,11 +139,11 @@ explicit-preview-rules = true
 "tools/nexrad_msgs/parse_spec.py" = ["B028", "S101"]
 "tutorials/*.py" = ["D", "T201", "B018"]
 
-[tool.ruff.flake8-quotes]
+[tool.ruff.lint.flake8-quotes]
 inline-quotes = "single"
 multiline-quotes = "double"
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["metpy", "flake8_metpy"]
 force-single-line = false
 relative-imports-order = "closest-to-furthest"
@@ -151,10 +151,10 @@ force-sort-within-sections = true
 order-by-type = false
 combine-as-imports = true
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 61
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "numpy"
 
 [tool.setuptools_scm]
