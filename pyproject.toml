@@ -119,7 +119,7 @@ filterwarnings = [
 [tool.ruff]
 line-length = 95
 exclude = ["docs", "build", "src/metpy/io/_metar_parser/metar_parser.py"]
-select = ["A", "B", "C", "D", "E", "E226", "F", "G", "I", "N", "Q", "R", "S", "T", "U", "W"]
+select = ["A", "B", "C", "CPY001", "D", "E", "E226", "F", "G", "I", "N", "Q", "R", "S", "T", "U", "W"]
 ignore = ["F405", "I001", "RET504", "RET505", "RET506", "RET507", "RUF100"]
 preview = true
 explicit-preview-rules = true
@@ -129,7 +129,7 @@ explicit-preview-rules = true
 "docs/doc-server.py" = ["T201"]
 "examples/*.py" = ["D", "T201", "B018"]
 "src/metpy/_vendor/xarray.py" = ["UP032"]
-"src/metpy/deprecation.py" = ["UP032"]
+"src/metpy/deprecation.py" = ["CPY001", "UP032"]
 "src/metpy/testing.py" = ["S101"]
 "src/metpy/io/nexrad.py" = ["S101"]
 "tests/*/*.py" = ["S101"]
@@ -138,6 +138,11 @@ explicit-preview-rules = true
 "tools/flake8-metpy/test*.py" = ["S101"]
 "tools/nexrad_msgs/parse_spec.py" = ["B028", "S101"]
 "tutorials/*.py" = ["D", "T201", "B018"]
+
+[tool.ruff.lint.flake8-copyright]
+# Needed to add a comma
+notice-rgx = "(?i)Copyright\\s+(\\(C\\)\\s+)?\\d{4}([-,]\\d{4})*"
+author = "MetPy Developers"
 
 [tool.ruff.lint.flake8-quotes]
 inline-quotes = "single"
