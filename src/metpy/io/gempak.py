@@ -489,43 +489,25 @@ def _wx_to_wnum(wx1, wx2, wx3, missing=-9999):
     Notes
     -----
     See GEMAPK function PT_WNMT.
+
     """
-    metar_codes = [
-        'BR', 'DS', 'DU', 'DZ', 'FC', 'FG', 'FU', 'GR', 'GS',
-        'HZ', 'IC', 'PL', 'PO', 'RA', 'SA', 'SG', 'SN', 'SQ',
-        'SS', 'TS', 'UP', 'VA', '+DS', '-DZ', '+DZ', '+FC',
-        '-GS', '+GS', '-PL', '+PL', '-RA', '+RA', '-SG',
-        '+SG', '-SN', '+SN', '+SS', 'BCFG', 'BLDU', 'BLPY',
-        'BLSA', 'BLSN', 'DRDU', 'DRSA', 'DRSN', 'FZDZ', 'FZFG',
-        'FZRA', 'MIFG', 'PRFG', 'SHGR', 'SHGS', 'SHPL', 'SHRA',
-        'SHSN', 'TSRA', '+BLDU', '+BLSA', '+BLSN', '-FZDZ',
-        '+FZDZ', '+FZFG', '-FZRA', '+FZRA', '-SHGS', '+SHGS',
-        '-SHPL', '+SHPL', '-SHRA', '+SHRA', '-SHSN', '+SHSN',
-        '-TSRA', '+TSRA'
-    ]
+    metar_to_gempak_wnum = {'BR': 9, 'DS': 33, 'DU': 8, 'DZ': 2, 'FC': -2, 'FG': 9, 'FU': 7,
+                            'GR': 4, 'GS': 25, 'HZ': 6, 'IC': 36, 'PL': 23, 'PO': 40, 'RA': 1,
+                            'SA': 35, 'SG': 24, 'SN': 3, 'SQ': 10, 'SS': 35, 'TS': 5, 'UP': 41,
+                            'VA': 11, '+DS': 68, '-DZ': 17, '+DZ': 18, '+FC': -1, '-GS': 61,
+                            '+GS': 62, '-PL': 57, '+PL': 58, '-RA': 13, '+RA': 14, '-SG': 59,
+                            '+SG': 60, '-SN': 20, '+SN': 21, '+SS': 69, 'BCFG': 9, 'BLDU': 33,
+                            'BLPY': 34, 'BLSA': 35, 'BLSN': 32, 'DRDU': 33, 'DRSA': 35,
+                            'DRSN': 32, 'FZDZ': 19, 'FZFG': 30, 'FZRA': 15, 'MIFG': 31,
+                            'PRFG': 9, 'SHGR': 27, 'SHGS': 67, 'SHPL': 63, 'SHRA': 16,
+                            'SHSN': 22, 'TSRA': 66, '+BLDU': 68, '+BLSA': 69, '+BLSN': 70,
+                            '-FZDZ': 53, '+FZDZ': 54, '+FZFG': 30, '-FZRA': 49, '+FZRA': 50,
+                            '-SHGS': 67, '+SHGS': 67, '-SHPL': 75, '+SHPL': 76, '-SHRA': 51,
+                            '+SHRA': 52, '-SHSN': 55, '+SHSN': 56, '-TSRA': 77, '+TSRA': 78}
 
-    gempak_wnum = [
-        9, 33, 8, 2, -2, 9, 7, 4, 25, 6, 36, 23, 40, 1, 35, 24, 3, 10,
-        35, 5, 41, 11, 68, 17, 18, -1, 61, 62, 57, 58, 13, 14, 59, 60, 20,
-        21, 69, 9, 33, 34, 35, 32, 33, 35, 32, 19, 30, 15, 31, 9, 27, 67,
-        63, 16, 22, 66, 68, 69, 70, 53, 54, 30, 49, 50, 67, 67, 75, 76, 51,
-        52, 55, 56, 77, 78
-    ]
-
-    if wx1 in metar_codes:
-        wn1 = gempak_wnum[metar_codes.index(wx1)]
-    else:
-        wn1 = 0
-
-    if wx2 in metar_codes:
-        wn2 = gempak_wnum[metar_codes.index(wx2)]
-    else:
-        wn2 = 0
-
-    if wx3 in metar_codes:
-        wn3 = gempak_wnum[metar_codes.index(wx3)]
-    else:
-        wn3 = 0
+    wn1 = metar_to_gempak_wnum.get(wx1, 0)
+    wn2 = metar_to_gempak_wnum.get(wx2, 0)
+    wn3 = metar_to_gempak_wnum.get(wx3, 0)
 
     if all(w >= 0 for w in [wn1, wn2, wn3]):
         wnum = wn3 * 80 * 80 + wn2 * 80 + wn1
@@ -2216,10 +2198,7 @@ class GempakSounding(GempakFile):
 
         sndno = [(s.DTNO, s.SNDNO) for s in matched]
 
-        if self.merged:
-            data = self._unpack_merged(sndno)
-        else:
-            data = self._unpack_unmerged(sndno)
+        data = self._unpack_merged(sndno) if self.merged else self._unpack_unmerged(sndno)
 
         soundings = []
         for snd in data:

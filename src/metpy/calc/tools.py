@@ -298,12 +298,7 @@ def reduce_point_density(points, radius, priority=None):
 
     # Need to use sorted indices rather than sorting the position
     # so that the keep mask matches *original* order.
-    if priority is not None:
-        # Need to sort the locations in decreasing priority.
-        sorted_indices = np.argsort(priority)[::-1]
-    else:
-        # Take advantage of iterator nature of range here to avoid making big lists
-        sorted_indices = range(len(points))
+    sorted_indices = range(len(points)) if priority is None else np.argsort(priority)[::-1]
 
     # Keep all good points initially
     keep = np.logical_and.reduce(good_vals, axis=-1)

@@ -906,10 +906,7 @@ def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
         raise ValueError('The shape of the smoothing window must be odd in all dimensions.')
 
     # Optionally normalize the supplied weighting window
-    if normalize_weights:
-        weights = window / np.sum(window)
-    else:
-        weights = window
+    weights = window / np.sum(window) if normalize_weights else window
 
     # Set indexes
     # Inner index for the centered array elements that are affected by the smoothing

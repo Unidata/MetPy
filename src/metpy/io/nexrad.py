@@ -717,15 +717,8 @@ def float16(val):
     exp = (val >> 10) & 0x1F
     sign = val >> 15
 
-    if exp:
-        value = 2 ** (exp - 16) * (1 + float(frac) / 2**10)
-    else:
-        value = float(frac) / 2**9
-
-    if sign:
-        value *= -1
-
-    return value
+    value = 2 ** (exp - 16) * (1 + float(frac) / 2**10) if exp else float(frac) / 2**9
+    return -value if sign else value
 
 
 def float32(short1, short2):
