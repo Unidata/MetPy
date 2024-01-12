@@ -19,10 +19,10 @@ from traitlets import (Any, Bool, Dict, Float, HasTraits, Instance, Int, List, o
                        TraitError, Tuple, Unicode, Union, validate)
 
 from . import ctables, wx_symbols
-from ._mpl import TextCollection
 from .cartopy_utils import import_cartopy
 from .patheffects import ColdFront, OccludedFront, StationaryFront, WarmFront
 from .station_plot import StationPlot
+from .text import scattertext, TextCollection
 from ..calc import reduce_point_density, smooth_n_point, zoom_xarray
 from ..package_tools import Exporter
 from ..units import units
@@ -2188,13 +2188,9 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         if offset is None:
             offset = tuple(x * self.label_fontsize * 0.8 for x in self.strength_offset)
 
-        self.parent.ax.scattertext([lon], [lat], [str(text)],
-                                   color=color,
-                                   loc=offset,
-                                   weight='demi',
-                                   size=int(self.label_fontsize * 0.7),
-                                   transform=ccrs.PlateCarree(),
-                                   clip_on=True)
+        scattertext(self.parent.ax, [lon], [lat], [str(text)], color=color, loc=offset,
+                    weight='demi', size=int(self.label_fontsize * 0.7),
+                    transform=ccrs.PlateCarree(), clip_on=True)
 
     def _draw_labels(self, text, lon, lat, color, offset=(0, 0)):
         """Draw labels in the plot.
@@ -2212,13 +2208,9 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         offset : tuple (default: (0, 0))
             A tuple containing the x- and y-offset of the label, respectively
         """
-        self.parent.ax.scattertext([lon], [lat], [str(text)],
-                                   color=color,
-                                   loc=offset,
-                                   weight='demi',
-                                   size=self.label_fontsize,
-                                   transform=ccrs.PlateCarree(),
-                                   clip_on=True)
+        scattertext(self.parent.ax, [lon], [lat], [str(text)], color=color, loc=offset,
+                    weight='demi', size=self.label_fontsize, transform=ccrs.PlateCarree(),
+                    clip_on=True)
 
     def draw(self):
         """Draw the plot."""
