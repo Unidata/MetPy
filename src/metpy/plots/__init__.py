@@ -3,8 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 r"""Contains functionality for making meteorological plots."""
 
-# Trigger matplotlib wrappers
-from . import _mpl  # noqa: F401
 from . import cartopy_utils, plot_areas
 from ._util import (add_metpy_logo, add_timestamp, add_unidata_logo,  # noqa: F401
                     convert_gempak_color)
@@ -13,6 +11,7 @@ from .declarative import *  # noqa: F403
 from .patheffects import *  # noqa: F403
 from .skewt import *  # noqa: F403
 from .station_plot import *  # noqa: F403
+from .text import *  # noqa: F403
 from .wx_symbols import *  # noqa: F403
 from ..package_tools import set_module
 
@@ -21,6 +20,7 @@ __all__.extend(declarative.__all__)  # pylint: disable=undefined-variable
 __all__.extend(patheffects.__all__)  # pylint: disable=undefined-variable
 __all__.extend(skewt.__all__)  # pylint: disable=undefined-variable
 __all__.extend(station_plot.__all__)  # pylint: disable=undefined-variable
+__all__.extend(text.__all__)  # pylint: disable=undefined-variable
 __all__.extend(wx_symbols.__all__)  # pylint: disable=undefined-variable
 __all__.extend(['add_metpy_logo', 'add_timestamp', 'add_unidata_logo',
                 'convert_gempak_color'])

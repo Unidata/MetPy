@@ -7,6 +7,7 @@ from enum import Enum
 
 import numpy as np
 
+from .text import scattertext
 from .wx_symbols import (current_weather, high_clouds, low_clouds, mid_clouds,
                          pressure_tendency, sky_cover, wx_symbol_font)
 from ..package_tools import Exporter
@@ -209,7 +210,7 @@ class StationPlot:
     def plot_text(self, location, text, **kwargs):
         """At the specified location in the station model plot a collection of text.
 
-        This specifies that at the offset `location`, the strings in `text` should be
+        This specifies that at the offset ``location``, the strings in ``text`` should be
         plotted.
 
         Additional keyword arguments given will be passed onto the actual plotting
@@ -220,7 +221,7 @@ class StationPlot:
         Parameters
         ----------
         location : str or tuple[float, float]
-            The offset (relative to center) to plot this parameter. If str, should be one of
+            The offset (relative to center) to plot this parameter. If `str`, should be one of
             'C', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', or 'NW'. Otherwise, should be a tuple
             specifying the number of increments in the x and y directions; increments
             are multiplied by `spacing` to give offsets in x and y relative to the center.
@@ -237,9 +238,8 @@ class StationPlot:
         location = self._handle_location(location)
 
         kwargs = self._make_kwargs(kwargs)
-        text_collection = self.ax.scattertext(self.x, self.y, text, loc=location,
-                                              size=kwargs.pop('fontsize', self.fontsize),
-                                              **kwargs)
+        text_collection = scattertext(self.ax, self.x, self.y, text, loc=location,
+                                      size=kwargs.pop('fontsize', self.fontsize), **kwargs)
         if location in self.items:
             self.items[location].remove()
         self.items[location] = text_collection
