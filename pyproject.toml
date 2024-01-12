@@ -119,7 +119,7 @@ filterwarnings = [
 [tool.ruff]
 line-length = 95
 exclude = ["docs", "build", "src/metpy/io/_metar_parser/metar_parser.py"]
-select = ["A", "B", "C", "CPY001", "D", "E", "E226", "F", "G", "I", "N", "Q", "R", "S", "T", "U", "W"]
+select = ["A", "B", "C", "CPY001", "D", "E", "E226", "F", "G", "I", "N", "NPY", "Q", "R", "S", "T", "U", "W"]
 ignore = ["F405", "I001", "RET504", "RET505", "RET506", "RET507", "RUF100"]
 preview = true
 explicit-preview-rules = true
