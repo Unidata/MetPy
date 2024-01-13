@@ -17,8 +17,8 @@ import matplotlib.pyplot as plt
 
 from metpy.cbook import get_test_data
 from metpy.io import parse_wpc_surface_bulletin
-from metpy.plots import (add_metpy_logo, ColdFront, OccludedFront, StationaryFront,
-                         StationPlot, WarmFront)
+from metpy.plots import (add_metpy_logo, ColdFront, OccludedFront, scattertext,
+                         StationaryFront, WarmFront)
 
 ###########################################
 # Define a function that can be used to readily plot a bulletin that has been parsed into a
@@ -45,9 +45,10 @@ def plot_bulletin(ax, data):
     for field in ('HIGH', 'LOW'):
         rows = data[data.feature == field]
         x, y = zip(*((pt.x, pt.y) for pt in rows.geometry), strict=False)
-        sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree(), clip_on=True)
-        sp.plot_text('C', [field[0]] * len(x), **complete_style[field])
-        sp.plot_parameter('S', rows.strength, **complete_style[field])
+        scattertext(ax, x, y, field[0],
+                    **complete_style[field], transform=ccrs.PlateCarree(), clip_on=True)
+        scattertext(ax, x, y, rows.strength, formatter='.0f', loc=(0, -10),
+                    **complete_style[field], transform=ccrs.PlateCarree(), clip_on=True)
 
     # Handle all the boundary types
     for field in ('WARM', 'COLD', 'STNRY', 'OCFNT', 'TROF'):
