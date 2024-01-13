@@ -98,13 +98,15 @@ estimate a value using natural neighbor interpolation.
 
 The locations of these observations are then used to generate a Delaunay triangulation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-105
+.. GENERATED FROM PYTHON SOURCE LINES 70-107
 
 .. code-block:: Python
 
-    np.random.seed(100)
 
-    pts = np.random.randint(0, 100, (10, 2))
+    # Some randomly selected points
+    pts = np.array([[8, 24], [67, 87], [79, 48], [10, 94], [52, 98],
+                    [53, 66], [98, 14], [34, 24], [15, 60], [58, 16]])
+
     xp = pts[:, 0]
     yp = pts[:, 1]
     zp = (pts[:, 0] * pts[:, 0]) / 1000
@@ -155,13 +157,13 @@ The locations of these observations are then used to generate a Delaunay triangu
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-109
+.. GENERATED FROM PYTHON SOURCE LINES 108-111
 
 Using the circumcenter and circumcircle radius information from
 `metpy.interpolate.find_natural_neighbors`, we can visually
 examine the results to see if they are correct.
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-139
+.. GENERATED FROM PYTHON SOURCE LINES 111-141
 
 .. code-block:: Python
 
@@ -209,16 +211,16 @@ examine the results to see if they are correct.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f531a849610>
+    <matplotlib.legend.Legend object at 0x7fe0464ca010>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-142
+.. GENERATED FROM PYTHON SOURCE LINES 142-144
 
 What?....the circle from triangle 8 looks pretty darn close. Why isn't
 grid 0 included in that circle?
 
-.. GENERATED FROM PYTHON SOURCE LINES 142-149
+.. GENERATED FROM PYTHON SOURCE LINES 144-151
 
 .. code-block:: Python
 
@@ -243,12 +245,12 @@ grid 0 included in that circle?
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 150-152
+.. GENERATED FROM PYTHON SOURCE LINES 152-154
 
 Lets do a manual check of the above interpolation value for grid 0 (southernmost grid)
 Grab the circumcenters and radii for natural neighbors
 
-.. GENERATED FROM PYTHON SOURCE LINES 152-158
+.. GENERATED FROM PYTHON SOURCE LINES 154-160
 
 .. code-block:: Python
 
@@ -275,7 +277,7 @@ Grab the circumcenters and radii for natural neighbors
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 159-165
+.. GENERATED FROM PYTHON SOURCE LINES 161-167
 
 Draw the natural neighbor triangles and their circumcenters. Also plot a `Voronoi diagram
 <https://docs.scipy.org/doc/scipy/tutorial/spatial.html#voronoi-diagrams>`_
@@ -284,7 +286,7 @@ spatial data structure that we use here simply to show areal ratios.
 Notice that the two natural neighbor triangle circumcenters are also vertices
 in the Voronoi plot (green dots), and the observations are in the polygons (blue dots).
 
-.. GENERATED FROM PYTHON SOURCE LINES 165-225
+.. GENERATED FROM PYTHON SOURCE LINES 167-227
 
 .. code-block:: Python
 
@@ -360,12 +362,12 @@ in the Voronoi plot (green dots), and the observations are in the polygons (blue
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 226-228
+.. GENERATED FROM PYTHON SOURCE LINES 228-230
 
 Put all of the generated polygon areas and their affiliated values in arrays.
 Calculate the total area of all of the generated polygons.
 
-.. GENERATED FROM PYTHON SOURCE LINES 228-233
+.. GENERATED FROM PYTHON SOURCE LINES 230-235
 
 .. code-block:: Python
 
@@ -387,11 +389,11 @@ Calculate the total area of all of the generated polygons.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 234-235
+.. GENERATED FROM PYTHON SOURCE LINES 236-237
 
 For each polygon area, calculate its percent of total area.
 
-.. GENERATED FROM PYTHON SOURCE LINES 235-238
+.. GENERATED FROM PYTHON SOURCE LINES 237-240
 
 .. code-block:: Python
 
@@ -411,11 +413,11 @@ For each polygon area, calculate its percent of total area.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 239-240
+.. GENERATED FROM PYTHON SOURCE LINES 241-242
 
 Multiply the percent of total area by the respective values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 240-243
+.. GENERATED FROM PYTHON SOURCE LINES 242-245
 
 .. code-block:: Python
 
@@ -435,11 +437,11 @@ Multiply the percent of total area by the respective values.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 244-245
+.. GENERATED FROM PYTHON SOURCE LINES 246-247
 
 The sum of this array is the interpolation value!
 
-.. GENERATED FROM PYTHON SOURCE LINES 245-251
+.. GENERATED FROM PYTHON SOURCE LINES 247-253
 
 .. code-block:: Python
 
@@ -462,12 +464,12 @@ The sum of this array is the interpolation value!
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 252-254
+.. GENERATED FROM PYTHON SOURCE LINES 254-256
 
 The values are slightly different due to truncating the area values in
 the above visual example to the 3rd decimal place.
 
-.. GENERATED FROM PYTHON SOURCE LINES 254-255
+.. GENERATED FROM PYTHON SOURCE LINES 256-257
 
 .. code-block:: Python
 
@@ -482,7 +484,7 @@ the above visual example to the 3rd decimal place.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.507 seconds)
+   **Total running time of the script:** (0 minutes 0.502 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Natural_Neighbor_Verification.py:

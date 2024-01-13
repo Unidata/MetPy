@@ -22,11 +22,11 @@ import metpy.calc as mpcalc
 
 ###########################################
 # Start with a base pattern with random noise
-np.random.seed(61461542)
+rng = np.random.default_rng(61461542)
 size = 128
 x, y = np.mgrid[:size, :size]
 distance = np.sqrt((x - size / 2) ** 2 + (y - size / 2) ** 2)
-raw_data = np.random.random((size, size)) * 0.3 + distance / distance.max() * 0.7
+raw_data = rng.random((size, size)) * 0.3 + distance / distance.max() * 0.7
 
 fig, ax = plt.subplots(1, 1, figsize=(4, 4))
 ax.set_title('Raw Data')

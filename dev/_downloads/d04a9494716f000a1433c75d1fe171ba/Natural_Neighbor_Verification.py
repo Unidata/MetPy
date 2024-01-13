@@ -67,9 +67,11 @@ from metpy.interpolate.points import natural_neighbor_point
 # estimate a value using natural neighbor interpolation.
 #
 # The locations of these observations are then used to generate a Delaunay triangulation.
-np.random.seed(100)
 
-pts = np.random.randint(0, 100, (10, 2))
+# Some randomly selected points
+pts = np.array([[8, 24], [67, 87], [79, 48], [10, 94], [52, 98],
+                [53, 66], [98, 14], [34, 24], [15, 60], [58, 16]])
+
 xp = pts[:, 0]
 yp = pts[:, 1]
 zp = (pts[:, 0] * pts[:, 0]) / 1000

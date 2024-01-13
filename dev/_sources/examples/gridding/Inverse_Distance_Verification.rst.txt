@@ -79,9 +79,9 @@ Set up two test grid locations at (30, 30) and (60, 60).
 
 .. code-block:: Python
 
-    np.random.seed(100)
 
-    pts = np.random.randint(0, 100, (10, 2))
+    pts = np.array([[8, 24], [67, 87], [79, 48], [10, 94], [52, 98],
+                    [53, 66], [98, 14], [34, 24], [15, 60], [58, 16]])
     xp = pts[:, 0]
     yp = pts[:, 1]
     zp = xp**2 / 1000
@@ -207,7 +207,7 @@ Plot all of the affiliated information and interpolation values.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f531aac8750>
+    <matplotlib.legend.Legend object at 0x7fe0463138d0>
 
 
 
@@ -369,7 +369,7 @@ Step through barnes calculations.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.343 seconds)
+   **Total running time of the script:** (0 minutes 0.435 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Inverse_Distance_Verification.py:
