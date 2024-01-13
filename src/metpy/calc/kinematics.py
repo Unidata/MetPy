@@ -629,10 +629,7 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 
     """
     f = coriolis_parameter(latitude)
-    if height.dimensionality['[length]'] == 2.0:
-        norm_factor = 1. / f
-    else:
-        norm_factor = mpconsts.g / f
+    norm_factor = 1. / f if height.dimensionality['[length]'] == 2.0 else mpconsts.g / f
 
     dhdx, dhdy = geospatial_gradient(height, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
                                      parallel_scale=parallel_scale,

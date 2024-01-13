@@ -1936,9 +1936,9 @@ def test_dewpoint_specific_humidity_old_signature():
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
-    with pytest.deprecated_call(match='Temperature argument'):
-        with pytest.raises(ValueError, match='changed in version'):
-            dewpoint_from_specific_humidity(q, temperature, p)
+    with (pytest.deprecated_call(match='Temperature argument'),
+          pytest.raises(ValueError, match='changed in version')):
+        dewpoint_from_specific_humidity(q, temperature, p)
 
 
 def test_dewpoint_specific_humidity_kwargs():

@@ -2441,10 +2441,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
                         parcel_temperature_profile=parcel_profile, which=which_el)
 
     # No EL and we use the top reading of the sounding.
-    if np.isnan(el_pressure):
-        el_pressure = pressure[-1].magnitude
-    else:
-        el_pressure = el_pressure.magnitude
+    el_pressure = pressure[-1].magnitude if np.isnan(el_pressure) else el_pressure.magnitude
 
     # Difference between the parcel path and measured temperature profiles
     y = (parcel_profile - temperature).to(units.degK)

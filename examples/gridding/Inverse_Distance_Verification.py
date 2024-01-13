@@ -46,9 +46,9 @@ def draw_circle(ax, x, y, r, m, label):
 # Generate random x and y coordinates, and observation values proportional to x * y.
 #
 # Set up two test grid locations at (30, 30) and (60, 60).
-np.random.seed(100)
 
-pts = np.random.randint(0, 100, (10, 2))
+pts = np.array([[8, 24], [67, 87], [79, 48], [10, 94], [52, 98],
+                [53, 66], [98, 14], [34, 24], [15, 60], [58, 16]])
 xp = pts[:, 0]
 yp = pts[:, 1]
 zp = xp**2 / 1000
