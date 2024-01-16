@@ -96,6 +96,162 @@ def vorticity(
 @exporter.export
 @parse_grid_arguments
 @preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
+@check_units('[speed]', '[speed]', dx='[length]', dy='[length]')
+def shear_vorticity(
+    u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
+    parallel_scale=None, meridional_scale=None
+):
+    r"""Calculate the vertical shear vorticity of the horizontal wind.
+
+    Parameters
+    ----------
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        x component of the wind
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        y component of the wind
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        vertical vorticity
+
+    Other Parameters
+    ----------------
+    dx : `pint.Quantity`, optional
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    dy : `pint.Quantity`, optional
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+
+    See Also
+    --------
+    divergence, absolute_vorticity, vorticity, curvature_vorticity
+
+    Notes
+    -----
+    This implements a numerical version of the vertical shear vorticity:
+
+    .. math:: \zeta_s = \frac{1}{u^2 + v^2}(v u \frac{\partial u}{\partial x} +
+                         v v \frac{\partial v}{\partial x} -
+                         u u \frac{\partial u}{\partial y} -
+                         u v \frac{\partial v}{\partial y})
+
+    If sufficient grid projection information is provided, these partial derivatives are
+    taken from the projection-correct derivative matrix of the vector wind. Otherwise, they
+    are evaluated as scalar derivatives on a Cartesian grid.
+    """
+    dudx, dudy, dvdx, dvdy = vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale
+    )
+
+    return (v * u * dudx + v * v * dvdx - u * u * dudy - u * v * dvdy) / (u ** 2 + v ** 2)
+
+
+@exporter.export
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
+@check_units('[speed]', '[speed]', dx='[length]', dy='[length]')
+def curvature_vorticity(
+    u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
+    parallel_scale=None, meridional_scale=None
+):
+    r"""Calculate the vertical curvature vorticity of the horizontal wind.
+
+    Parameters
+    ----------
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        x component of the wind
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        y component of the wind
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        vertical vorticity
+
+    Other Parameters
+    ----------------
+    dx : `pint.Quantity`, optional
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    dy : `pint.Quantity`, optional
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+
+    See Also
+    --------
+    divergence, absolute_vorticity
+
+    Notes
+    -----
+    This implements a numerical version of the vertical curvature vorticity:
+
+    .. math:: \zeta_c = \frac{1}{u^2 + v^2}(u u \frac{\partial v}{\partial x} -
+                         v v \frac{\partial u}{\partial y} -
+                         v u \frac{\partial u}{\partial x} +
+                         u v \frac{\partial v}{\partial y})
+
+    If sufficient grid projection information is provided, these partial derivatives are
+    taken from the projection-correct derivative matrix of the vector wind. Otherwise, they
+    are evaluated as scalar derivatives on a Cartesian grid.
+    """
+    dudx, dudy, dvdx, dvdy = vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale
+    )
+
+    return (u * u * dvdx - v * v * dudy - v * u * dudx + u * v * dvdy) / (u ** 2 + v ** 2)
+
+
+@exporter.export
+@parse_grid_arguments
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
 @check_units(dx='[length]', dy='[length]')
 def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
                parallel_scale=None, meridional_scale=None):

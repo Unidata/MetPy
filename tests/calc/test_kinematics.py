@@ -8,11 +8,11 @@ import pytest
 import xarray as xr
 
 from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind, coriolis_parameter,
-                        divergence, first_derivative, frontogenesis, geospatial_laplacian,
-                        geostrophic_wind, inertial_advective_wind, lat_lon_grid_deltas,
-                        montgomery_streamfunction, potential_temperature,
+                        curvature_vorticity, divergence, first_derivative, frontogenesis,
+                        geospatial_laplacian, geostrophic_wind, inertial_advective_wind,
+                        lat_lon_grid_deltas, montgomery_streamfunction, potential_temperature,
                         potential_vorticity_baroclinic, potential_vorticity_barotropic,
-                        q_vector, shearing_deformation, static_stability,
+                        q_vector, shear_vorticity, shearing_deformation, static_stability,
                         storm_relative_helicity, stretching_deformation, total_deformation,
                         vorticity, wind_components)
 from metpy.constants import g, Re
@@ -149,6 +149,14 @@ def test_vorticity_grid_pole():
     vort = vorticity(ds.u, ds.v)
 
     assert_array_almost_equal(vort.isel(y=0), vort.isel(y=-1), decimal=9)
+
+
+def test_sum_shear_curvature(basic_dataset):
+    """Test the sum of shear and curvature vorticity equals the total vorticity."""
+    d = vorticity(basic_dataset.u, basic_dataset.v)
+    s = shear_vorticity(basic_dataset.u, basic_dataset.v)
+    c = curvature_vorticity(basic_dataset.u, basic_dataset.v)
+    assert_array_almost_equal(s + c, d)
 
 
 def test_zero_divergence():

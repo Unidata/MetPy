@@ -119,6 +119,7 @@ Dynamic/Kinematic
       advection
       ageostrophic_wind
       coriolis_parameter
+      curvature_vorticity
       divergence
       exner_function
       frontogenesis
@@ -129,6 +130,7 @@ Dynamic/Kinematic
       potential_vorticity_baroclinic
       potential_vorticity_barotropic
       q_vector
+      shear_vorticity
       shearing_deformation
       stretching_deformation
       total_deformation
