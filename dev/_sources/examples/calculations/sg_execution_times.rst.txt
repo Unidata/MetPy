@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:02.189** total execution time for 21 files **from examples/calculations**:
+**00:02.519** total execution time for 21 files **from examples/calculations**:
 
 .. container::
 
@@ -33,40 +33,40 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_examples_calculations_Smoothing.py` (``Smoothing.py``)
-     - 00:00.510
+     - 00:00.566
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Sounding_Calculations.py` (``Sounding_Calculations.py``)
-     - 00:00.256
+     - 00:00.259
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_QVector.py` (``QVector.py``)
-     - 00:00.182
-     - 0.0
-   * - :ref:`sphx_glr_examples_calculations_Absolute_Vorticity.py` (``Absolute_Vorticity.py``)
-     - 00:00.149
+     - 00:00.227
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Total_Deformation.py` (``Total_Deformation.py``)
-     - 00:00.149
+     - 00:00.175
+     - 0.0
+   * - :ref:`sphx_glr_examples_calculations_Absolute_Vorticity.py` (``Absolute_Vorticity.py``)
+     - 00:00.173
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Vorticity.py` (``Vorticity.py``)
-     - 00:00.146
-     - 0.0
-   * - :ref:`sphx_glr_examples_calculations_Shearing_Deformation.py` (``Shearing_Deformation.py``)
-     - 00:00.144
+     - 00:00.172
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Stretching_Deformation.py` (``Stretching_Deformation.py``)
-     - 00:00.143
+     - 00:00.171
+     - 0.0
+   * - :ref:`sphx_glr_examples_calculations_Shearing_Deformation.py` (``Shearing_Deformation.py``)
+     - 00:00.170
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Advection.py` (``Advection.py``)
-     - 00:00.130
+     - 00:00.164
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Divergence.py` (``Divergence.py``)
-     - 00:00.129
+     - 00:00.151
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Wind_Speed.py` (``Wind_Speed.py``)
-     - 00:00.108
+     - 00:00.130
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Equivalent_Potential_Temperature.py` (``Equivalent_Potential_Temperature.py``)
-     - 00:00.074
+     - 00:00.094
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Gradient.py` (``Gradient.py``)
      - 00:00.014
