@@ -407,10 +407,10 @@ def test_resolve_axis_conflict_double_lonlat(test_ds_generic):
     test_ds_generic['d'].attrs['_CoordinateAxisType'] = 'Lat'
     test_ds_generic['e'].attrs['_CoordinateAxisType'] = 'Lon'
 
-    with pytest.warns(UserWarning, match='More than one x coordinate'),\
+    with pytest.warns(UserWarning, match=r'More than one \w+ coordinate'),\
             pytest.raises(AttributeError):
         test_ds_generic['test'].metpy.x
-    with pytest.warns(UserWarning, match='More than one y coordinate'),\
+    with pytest.warns(UserWarning, match=r'More than one \w+ coordinate'),\
             pytest.raises(AttributeError):
         test_ds_generic['test'].metpy.y
 
@@ -422,10 +422,10 @@ def test_resolve_axis_conflict_double_xy(test_ds_generic):
     test_ds_generic['d'].attrs['standard_name'] = 'projection_x_coordinate'
     test_ds_generic['e'].attrs['standard_name'] = 'projection_y_coordinate'
 
-    with pytest.warns(UserWarning, match='More than one x coordinate'),\
+    with pytest.warns(UserWarning, match=r'More than one \w+ coordinate'),\
             pytest.raises(AttributeError):
         test_ds_generic['test'].metpy.x
-    with pytest.warns(UserWarning, match='More than one y coordinate'),\
+    with pytest.warns(UserWarning, match=r'More than one \w+ coordinate'),\
             pytest.raises(AttributeError):
         test_ds_generic['test'].metpy.y
 
