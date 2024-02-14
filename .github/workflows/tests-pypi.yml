@@ -84,6 +84,8 @@ jobs:
     needs: PyPITests
     name: CodeCov Upload
     runs-on: ubuntu-latest
+    environment:
+      name: CodeCov
     timeout-minutes: 2
     steps:
       - name: Checkout source
@@ -97,3 +99,4 @@ jobs:
         with:
           name: ${{ github.workflow }}
           fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
