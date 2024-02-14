@@ -963,7 +963,7 @@ def parcel_profile(pressure, temperature, dewpoint):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # computer parcel temperature
     >>> parcel_profile(p, T[0], Td[0]).to('degC')
-    <Quantity([  29.3          28.61221952   25.22214738   23.46097535   21.5835928
+    <Quantity([  29.3          28.61221952   25.22214738   23.46097684   21.5835928
     19.57260398   17.40636185   15.05748615   12.49064866    9.6592539
         6.50023491    2.92560365   -1.19172846   -6.04257884  -11.92497517
     -19.3176536   -28.97672464  -41.94444385  -50.01173076  -59.30936248
@@ -2375,7 +2375,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
     >>> # calculate surface based CAPE/CIN
     >>> cape_cin(p, T, Td, prof)
-    (<Quantity(4703.77306, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4703.77308, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -3013,7 +3013,7 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # calculate most unstbale CAPE/CIN
     >>> most_unstable_cape_cin(p, T, Td)
-    (<Quantity(4703.77306, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4703.77308, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -3172,9 +3172,9 @@ def downdraft_cape(pressure, temperature, dewpoint):
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> downdraft_cape(p, T, Td)
-    (<Quantity(1222.67968, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
+    (<Quantity(1222.67967, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
     900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity([17.50959548
-    17.20643425 15.237249 13.12607097 10.85045704 8.38243809 5.68671014 2.71808363
+    17.20643425 15.237249 13.12607097 10.85045704 8.38243809 5.68671014 2.71808368
     -0.58203825 -4.29053485], 'degree_Celsius')>)
 
     See Also
