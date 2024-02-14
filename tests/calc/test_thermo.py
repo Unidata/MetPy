@@ -1747,14 +1747,14 @@ def test_mixing_ratio_dimensions():
     """Verify mixing ratio returns a dimensionless number."""
     p = 998. * units.mbar
     e = 73.75 * units.hPa
-    assert str(mixing_ratio(e, p).units) == 'dimensionless'
+    assert mixing_ratio(e, p).units == units('dimensionless')
 
 
 def test_saturation_mixing_ratio_dimensions():
     """Verify saturation mixing ratio returns a dimensionless number."""
     p = 998. * units.mbar
     temp = 20 * units.celsius
-    assert str(saturation_mixing_ratio(p, temp).units) == 'dimensionless'
+    assert saturation_mixing_ratio(p, temp).units == units('dimensionless')
 
 
 def test_mixing_ratio_from_rh_dimensions():
@@ -1762,8 +1762,8 @@ def test_mixing_ratio_from_rh_dimensions():
     p = 1000. * units.mbar
     temperature = 0. * units.degC
     rh = 100. * units.percent
-    assert (str(mixing_ratio_from_relative_humidity(p, temperature, rh).units)
-            == 'dimensionless')
+    assert (mixing_ratio_from_relative_humidity(p, temperature, rh).units
+            == units('dimensionless'))
 
 
 @pytest.fixture

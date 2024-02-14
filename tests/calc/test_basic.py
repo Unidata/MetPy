@@ -104,7 +104,7 @@ def test_direction_with_north_and_calm(array_type):
 def test_direction_dimensions():
     """Verify wind_direction returns degrees."""
     d = wind_direction(3. * units('m/s'), 4. * units('m/s'))
-    assert str(d.units) == 'degree'
+    assert d.units == units('degree')
 
 
 def test_oceanographic_direction(array_type):
