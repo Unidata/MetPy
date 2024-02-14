@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 14, 2024 at 21:12:26"/>
+    <meta name="docbuild:last-update" content="Feb 14, 2024 at 23:14:02"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/gridding/Inverse_Distance_Verification.html" />
 
   </head>
@@ -649,7 +649,7 @@ cKDTree’s <code class="docutils literal notranslate"><span class="pre">data</s
 
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">radius</span></a> <span class="o">=</span> <span class="mi">40</span>
 <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="scipy.spatial.cKDTree" class="sphx-glr-backref-module-scipy-spatial sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs_tree</span></a> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="scipy.spatial.cKDTree" class="sphx-glr-backref-module-scipy-spatial sphx-glr-backref-type-py-class"><span class="n">cKDTree</span></a><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">xp</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">yp</span></a><span class="p">)))</span>
-<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">indices</span></a> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="scipy.spatial.cKDTree" class="sphx-glr-backref-module-scipy-spatial sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs_tree</span></a><span class="o">.</span><span class="n">query_ball_point</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid_points</span></a><span class="p">,</span> <span class="n">r</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">radius</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">indices</span></a> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.query_ball_point.html#scipy.spatial.cKDTree.query_ball_point" title="scipy.spatial.cKDTree.query_ball_point" class="sphx-glr-backref-module-scipy-spatial sphx-glr-backref-type-py-method"><span class="n">obs_tree</span><span class="o">.</span><span class="n">query_ball_point</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid_points</span></a><span class="p">,</span> <span class="n">r</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">radius</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p>For grid 0, we will use Cressman to interpolate its value.</p>
@@ -692,7 +692,7 @@ cKDTree’s <code class="docutils literal notranslate"><span class="pre">data</s
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html#matplotlib.axes.Axes.legend" title="matplotlib.axes.Axes.legend" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_Inverse_Distance_Verification_001.png" srcset="../../_images/sphx_glr_Inverse_Distance_Verification_001.png" alt="Inverse Distance Verification" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f199d114490&gt;
+<img src="../../_images/sphx_glr_Inverse_Distance_Verification_001.png" srcset="../../_images/sphx_glr_Inverse_Distance_Verification_001.png" alt="Inverse Distance Verification" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f5c92ba5ed0&gt;
 </pre></div>
 </div>
 <p>For each point, we will do a manual check of the interpolation values by doing a step by
@@ -781,7 +781,7 @@ Metpy cressman value for grid 1:         1.0549944440416752
 Metpy barnes value:      4.112066483188547
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.338 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.444 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gridding-inverse-distance-verification-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/f8c7f51c50c58b17901913e49a5b977e/Inverse_Distance_Verification.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Inverse_Distance_Verification.ipynb</span></code></a></p>
