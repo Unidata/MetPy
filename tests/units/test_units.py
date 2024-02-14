@@ -195,7 +195,7 @@ def test_is_quantity_multiple():
 def test_gpm_unit():
     """Test that the gpm unit does alias to meters."""
     x = 1 * units('gpm')
-    assert str(x.units) == 'meter'
+    assert x.units == units('meter')
 
 
 def test_assert_nan():
@@ -212,7 +212,7 @@ def test_assert_nan_checks_units():
 
 def test_percent_units():
     """Test that percent sign units are properly parsed and interpreted."""
-    assert str(units('%').units) == 'percent'
+    assert units('%').units == units('percent')
 
 
 @pytest.mark.parametrize(
