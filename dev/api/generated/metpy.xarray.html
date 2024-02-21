@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 21, 2024 at 22:34:56"/>
+    <meta name="docbuild:last-update" content="Feb 21, 2024 at 22:59:59"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.xarray.html" />
 
   </head>
@@ -790,10 +790,10 @@ to a particular axis (given sufficient metadata):</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">),</span>
 <span class="gp">... </span>                           <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">41</span><span class="p">],</span> <span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">105</span><span class="p">,</span> <span class="o">-</span><span class="mi">104</span><span class="p">]})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
-<span class="go">&lt;xarray.DataArray &#39;lon&#39; (lon: 2)&gt;</span>
+<span class="go">&lt;xarray.DataArray &#39;lon&#39; (lon: 2)&gt; Size: 16B</span>
 <span class="go">array([-105, -104])</span>
 <span class="go">Coordinates:</span>
-<span class="go">  * lon      (lon) int64 -105 -104</span>
+<span class="go">  * lon      (lon) int64 16B -105 -104</span>
 <span class="go">Attributes:</span>
 <span class="go">    _metpy_axis:  x,longitude</span>
 </pre></div>
