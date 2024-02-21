@@ -18,7 +18,6 @@ from xarray.backends import BackendEntrypoint
 from xarray.backends.common import AbstractDataStore
 from xarray.coding.times import CFDatetimeCoder
 from xarray.coding.variables import CFMaskCoder
-from xarray.core.utils import FrozenDict
 
 from ._tools import Bits, IOBuffer, NamedStruct, open_as_needed, zlib_decompress_all_frames
 from ..package_tools import Exporter
@@ -368,7 +367,7 @@ class GiniFile(AbstractDataStore):
         variables.extend(self._make_coord_vars())
         variables.extend(self._make_data_vars())
 
-        return FrozenDict(variables)
+        return dict(variables)
 
     def get_attrs(self):
         """Get the global attributes.
@@ -376,8 +375,8 @@ class GiniFile(AbstractDataStore):
         This is used by `xarray.open_dataset`.
 
         """
-        return FrozenDict(satellite=self.prod_desc.creating_entity,
-                          sector=self.prod_desc.sector_id)
+        return {'satellite': self.prod_desc.creating_entity,
+                'sector': self.prod_desc.sector_id}
 
 
 class GiniXarrayBackend(BackendEntrypoint):
