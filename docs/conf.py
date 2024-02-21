@@ -441,7 +441,9 @@ linkcheck_ignore = [
     r'https://doi\.org/10\.1029/2010GL045777',
     r'https://doi\.org/10\.1098/rspa\.2004\.1430',
     # Currently giving certificate errors on GitHub
-    r'https://library.wmo.int/.*'
+    r'https://library.wmo.int/.*',
+    # For some reason GHA gets a 403 from Stack Overflow
+    r'https://stackoverflow.com/questions/tagged/metpy'
     ]
 
 # Dictionary of URL redirects allowed
