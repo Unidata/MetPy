@@ -1733,6 +1733,17 @@ def test_thickness_hydrostatic_isothermal_subset():
     assert_almost_equal(thickness, 4242.527 * units.m, 2)
 
 
+def test_thickness_hydrostatic_full_profile():
+    """Test the thickness calculation for a moist layer."""
+    pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
+    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
+    mixing = np.array([0.01458, 0.00209, 0.00224, 0.00240, 0.00256, 0.00010])
+    thickness = thickness_hydrostatic(pressure, temperature, mixing_ratio=mixing,
+                                      full_profile=True)
+    result = [1780.778, 306.126, 304.513, 281.455, 7218.833] * units.m
+    assert_almost_equal(thickness, result, 2)
+
+
 def test_thickness_hydrostatic_from_relative_humidity():
     """Test the thickness calculation for a moist layer using RH data."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
