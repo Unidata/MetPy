@@ -115,10 +115,10 @@ class MetPyDataArrayAccessor:
         >>> temperature = xr.DataArray([[0, 1], [2, 3]] * units.degC, dims=('lat', 'lon'),
         ...                            coords={'lat': [40, 41], 'lon': [-105, -104]})
         >>> temperature.metpy.x
-        <xarray.DataArray 'lon' (lon: 2)>
+        <xarray.DataArray 'lon' (lon: 2)> Size: 16B
         array([-105, -104])
         Coordinates:
-          * lon      (lon) int64 -105 -104
+          * lon      (lon) int64 16B -105 -104
         Attributes:
             _metpy_axis:  x,longitude
 
