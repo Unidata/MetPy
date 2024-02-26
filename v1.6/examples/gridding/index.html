@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Gridding &#8212; MetPy 1.6</title>
+    <title>Gridding &#8212; MetPy 1.6dev</title>
   
   
   
@@ -18,12 +18,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css?v=45c5dac0" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
-  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
     <script src="../../_static/documentation_options.js?v=d6a008b6"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
@@ -61,9 +61,9 @@
             </script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/gridding/index';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.15.1';
+        DOCUMENTATION_OPTIONS.theme_version = '0.15.2';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v1.6';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
         DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
         </script>
     <script src="../../_static/doc_shared.js?v=fe4a670c"></script>
@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 10, 2024 at 19:56:49"/>
+    <meta name="docbuild:last-update" content="Feb 26, 2024 at 20:29:48"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/gridding/index.html" />
 
   </head>
@@ -88,7 +88,6 @@
   <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -128,11 +127,9 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-  <header>
   
     
-    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
     <span class="fa-solid fa-bars"></span>
@@ -154,8 +151,8 @@
     
     
     
-    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6 - Home"/>
-    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6 - Home"/>`);</script>
+    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6dev - Home"/>
+    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6dev - Home"/>`);</script>
   
   
 </a></div>
@@ -326,27 +323,20 @@ document.write(`
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
-      <span class="fa-solid fa-outdent"></span>
-    </label>
-  
 </div>
 
-    </div>
+    </header>
   
     
     <div class="container-fluid" id="banner"></div>
 
-  </header>
 
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
       
       
-        
-      
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -464,6 +454,85 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../XArray_Projections.html">XArray Projection Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Advanced_Sounding.html">Advanced Sounding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cross_section.html">Cross Section Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Four_Panel_Map.html">Four Panel Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../isentropic_example.html">Isentropic Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meteogram_metpy.html">Meteogram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Advanced_Sounding_With_Complex_Layout.html">Advanced Sounding Plot with Complex Layout</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../calculations/index.html">Calculations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Parse_Angles.html">Parse angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Dewpoint_and_Mixing_Ratio.html">Dewpoint and Mixing Ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Angle_to_Direction.html">Angle to Direction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Wind_Speed.html">Wind Speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Divergence.html">Divergence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Vorticity.html">Vorticity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Absolute_Vorticity.html">Absolute Vorticity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Total_Deformation.html">Total Deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Shearing_Deformation.html">Shearing Deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Stretching_Deformation.html">Stretching Deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Static_Stability.html">Static Stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Mean_Pressure_Weighted.html">Mean Pressure Weighted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Mountain_Problem.html">Mountain Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Bulk_Shear.html">Bulk Shear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Thickness_Hydrostatic.html">Hydrostatic Thickness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Equivalent_Potential_Temperature.html">Equivalent Potential Temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Advection.html">Advection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Gradient.html">Gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/QVector.html">Q-Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Smoothing.html">Smoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calculations/Sounding_Calculations.html">Sounding Calculation Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../formats/index.html">File Formats</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../formats/GINI_Water_Vapor.html">GINI Water Vapor Imagery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../formats/NEXRAD_Level_3_File.html">NEXRAD Level 3 File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../formats/NEXRAD_Level_2_File.html">NEXRAD Level 2 File</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Gridding</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="Find_Natural_Neighbors_Verification.html">Find Natural Neighbors Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Wind_SLP_Interpolation.html">Wind and Sea Level Pressure Interpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Point_Interpolation.html">Point Interpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Inverse_Distance_Verification.html">Inverse Distance Verification: Cressman and Barnes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Natural_Neighbor_Verification.html">Natural Neighbor Verification</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../plots/index.html">Plotting</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Simplified_Image_Plot.html">Simple Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/US_Counties.html">US Counties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/raster_declarative.html">Raster Plots using Declarative Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Simple_Fronts_Plot.html">Simple Plotting of Fronts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/spc_convective_outlook.html">NOAA SPC Convective Outlook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Combined_plotting.html">Combined Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/surface_declarative.html">Surface Analysis using Declarative Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/upperair_declarative.html">Upper Air Analysis using Declarative Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/nhc_wind_probabilities.html">NOAA NHC Wind Speed Probabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Skew-T_Layout.html">Skew-T with Complex Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Hodograph_Inset.html">Hodograph Inset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Sounding_LCL_Dataset.html">Sounding as Dataset Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Plotting_Surface_Analysis.html">Plotting Fronts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Simple_Sounding.html">Simple Sounding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Mesonet_Stationplot.html">Mesonet Station Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Station_Plot.html">Station Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Station_Plot_with_Layout.html">Station Plot with Layout</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -587,8 +656,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -621,7 +690,7 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
 </p></div>
       
     </div>
