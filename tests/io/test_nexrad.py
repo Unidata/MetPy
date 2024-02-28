@@ -109,6 +109,12 @@ def test_msg15():
     assert f.clutter_filter_map['datetime'] == datetime(2013, 5, 19, 5, 15, 0, 0)
 
 
+def test_msg18_novcps():
+    """Check handling of message type 18 with VCP info now spares does not crash."""
+    f = Level2File(get_test_data('KJKL_20240227_102059', as_file_obj=False))
+    assert 'VCPAT11' not in f.rda
+
+
 def test_single_chunk(caplog):
     """Check that Level2File copes with reading a file containing a single chunk."""
     # Need to override the test level set above

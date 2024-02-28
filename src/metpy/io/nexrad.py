@@ -545,12 +545,17 @@ class Level2File:
                 attr = f'VCPAT{num}'
                 dat = self.rda[attr]
                 vcp_hdr = self.vcp_fmt.unpack_from(dat, 0)
-                off = self.vcp_fmt.size
-                els = []
-                for _ in range(vcp_hdr.num_el_cuts):
-                    els.append(self.vcp_el_fmt.unpack_from(dat, off))
-                    off += self.vcp_el_fmt.size
-                self.rda[attr] = vcp_hdr._replace(els=els)
+                # At some point these got changed to spares, so only try to parse the rest if
+                # it looks like the right data.
+                if vcp_hdr.num == num and 0 < 2 * vcp_hdr.size_hw <= len(dat):
+                    off = self.vcp_fmt.size
+                    els = []
+                    for _ in range(vcp_hdr.num_el_cuts):
+                        els.append(self.vcp_el_fmt.unpack_from(dat, off))
+                        off += self.vcp_el_fmt.size
+                    self.rda[attr] = vcp_hdr._replace(els=els)
+                else:  # Otherwise this is just spare and we should dump
+                    self.rda.pop(attr)
 
     msg31_data_hdr_fmt = NamedStruct([('stid', '4s'), ('time_ms', 'L'),
                                       ('date', 'H'), ('az_num', 'H'),
