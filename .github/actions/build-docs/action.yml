@@ -28,6 +28,8 @@ runs:
     - name: Build docs
       shell: bash -l {0}
       id: builddocs
+      env:
+        DOC_VERSION: ${{ steps.docversion.outputs.doc_version }}
       # set -e makes sure bash fails on the first failing command, which isn't the case due to
       # starting with -l
       run: |
