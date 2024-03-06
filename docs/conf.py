@@ -206,6 +206,10 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = 'pydata_sphinx_theme'
+
+# Use the version set in CI as necessary, which allows building "release" docs on a
+# maintenance branch--strip leading 'v' since our json file doesn't have the v on the 'version'
+doc_version = os.environ.get('DOC_VERSION', 'dev' if 'dev' in version else version).lstrip('v')
 html_theme_options = {
     'external_links': [
         {'name': 'Release Notes', 'url': 'https://github.com/Unidata/MetPy/releases'},
@@ -240,7 +244,7 @@ html_theme_options = {
     'navbar_end': ['navbar-icon-links', 'theme-switcher'],
     'switcher': {
         'json_url': 'https://unidata.github.io/MetPy/pst-versions.json',
-        'version_match': 'dev' if 'dev' in version else f'v{version}',
+        'version_match': doc_version
     },
     'navigation_with_keys': False
 }
