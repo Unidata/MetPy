@@ -7,7 +7,7 @@ from datetime import datetime
 import logging
 
 import numpy as np
-from numpy.testing import assert_allclose, assert_almost_equal
+from numpy.testing import assert_allclose, assert_almost_equal, assert_equal
 import pandas as pd
 import pytest
 
@@ -15,6 +15,18 @@ from metpy.cbook import get_test_data
 from metpy.io.gempak import GempakGrid, GempakSounding, GempakSurface
 
 logging.getLogger('metpy.io.gempak').setLevel(logging.ERROR)
+
+
+@pytest.mark.parametrize('order', ['little', 'big'])
+def test_byte_swap(order):
+    """"Test byte swapping."""
+    g = get_test_data(f'gem_{order}_endian.grd')
+
+    grid = GempakGrid(g).gdxarray()[0].squeeze()
+
+    reference = np.ones((113, 151), dtype='int32')
+
+    assert_equal(grid, reference)
 
 
 @pytest.mark.parametrize('grid_name', ['none', 'diff', 'dec', 'grib'])
@@ -94,6 +106,35 @@ def test_merged_sounding():
     np.testing.assert_allclose(gdtar, ddtar, rtol=1e-10, atol=1e-2)
 
 
+def test_merged_sounding_no_packing():
+    """Test loading a merged sounding without data packing."""
+    gso = GempakSounding(get_test_data('gem_merged_nopack.snd')).snxarray(
+        station_id='OUN')
+
+    gpres = gso[0].pressure.values
+    gtemp = gso[0].temp.values.squeeze()
+    gdwpt = gso[0].dwpt.values.squeeze()
+    gdrct = gso[0].drct.values.squeeze()
+    gsped = gso[0].sped.values.squeeze()
+    ghght = gso[0].hght.values.squeeze()
+
+    gempak = pd.read_csv(get_test_data('gem_merged_nopack.csv', as_file_obj=False),
+                         na_values=-9999)
+    dpres = gempak.PRES.values
+    dtemp = gempak.TEMP.values
+    ddwpt = gempak.DWPT.values
+    ddrct = gempak.DRCT.values
+    dsped = gempak.SPED.values
+    dhght = gempak.HGHT.values
+
+    assert_allclose(gpres, dpres, rtol=1e-10, atol=1e-2)
+    assert_allclose(gtemp, dtemp, rtol=1e-10, atol=1e-2)
+    assert_allclose(gdwpt, ddwpt, rtol=1e-10, atol=1e-2)
+    assert_allclose(gdrct, ddrct, rtol=1e-10, atol=1e-2)
+    assert_allclose(gsped, dsped, rtol=1e-10, atol=1e-2)
+    assert_allclose(ghght, dhght, rtol=1e-10, atol=1e-1)
+
+
 @pytest.mark.parametrize('gem,gio,station', [
     ('gem_sigw_hght_unmrg.csv', 'gem_sigw_hght_unmrg.snd', 'TOP'),
     ('gem_sigw_pres_unmrg.csv', 'gem_sigw_pres_unmrg.snd', 'WAML')
@@ -158,6 +199,24 @@ def test_unmerged_sigw_pressure_sounding():
     assert_allclose(gdrct, ddrct, rtol=1e-10, atol=1e-2)
     assert_allclose(gsped, dsped, rtol=1e-10, atol=1e-2)
     assert_allclose(ghght, dhght, rtol=1e-10, atol=1e-1)
+
+
+def test_climate_surface():
+    """Test to read a cliamte surface file."""
+    gsf = GempakSurface(get_test_data('gem_climate.sfc'))
+    gstns = gsf.sfjson()
+
+    gempak = pd.read_csv(get_test_data('gem_climate.csv', as_file_obj=False))
+    gempak['YYMMDD/HHMM'] = pd.to_datetime(gempak['YYMMDD/HHMM'], format='%y%m%d/%H%M')
+    gempak = gempak.set_index(['STN', 'YYMMDD/HHMM'])
+
+    for stn in gstns:
+        idx_key = (stn['properties']['station_id'],
+                   stn['properties']['date_time'])
+        gemsfc = gempak.loc[idx_key, :]
+
+        for param, val in stn['values'].items():
+            assert val == pytest.approx(gemsfc[param.upper()])
 
 
 def test_standard_surface():
@@ -261,6 +320,20 @@ def test_date_parsing():
     assert dat == datetime(2000, 1, 2)
 
 
+@pytest.mark.parametrize('access_type', ['STID', 'STNM'])
+def test_surface_access(access_type):
+    """Test for proper surface retrieval with multi-parameter filter."""
+    g = get_test_data('gem_surface_with_text.sfc')
+    gsf = GempakSurface(g)
+
+    if access_type == 'STID':
+        gsf.sfjson(station_id='MSN', country='US', state='WI',
+                   date_time='202109070000')
+    elif access_type == 'STNM':
+        gsf.sfjson(station_number=726410, country='US', state='WI',
+                   date_time='202109070000')
+
+
 @pytest.mark.parametrize('text_type,date_time', [
     ('text', '202109070000'), ('spcl', '202109071600')
 ])
@@ -274,6 +347,20 @@ def test_surface_text(text_type, date_time):
     gem_text = gempak.loc[:, text_type.upper()][0]
 
     assert text == gem_text
+
+
+@pytest.mark.parametrize('access_type', ['STID', 'STNM'])
+def test_sounding_access(access_type):
+    """Test for proper sounding retrieval with multi-parameter filter."""
+    g = get_test_data('gem_merged_nopack.snd')
+    gso = GempakSounding(g)
+
+    if access_type == 'STID':
+        gso.snxarray(station_id='OUN', country='US', state='OK',
+                     date_time='202101200000')
+    elif access_type == 'STNM':
+        gso.snxarray(station_number=72357, country='US', state='OK',
+                     date_time='202101200000')
 
 
 @pytest.mark.parametrize('text_type', ['txta', 'txtb', 'txtc', 'txpb'])
@@ -311,6 +398,21 @@ def test_special_surface_observation():
     assert stn['chc2'] == 8004
     assert stn['chc3'] == -9999
     assert stn['vsby'] == 2
+
+
+def test_multi_level_multi_time_access():
+    """Test accessing data with multiple levels and times."""
+    g = get_test_data('gem_multilevel_multidate.grd')
+
+    grid = GempakGrid(g)
+
+    grid.gdxarray(
+        parameter='STPC',
+        date_time='202403040000',
+        level=0,
+        date_time2='202403050000',
+        level2=1
+    )
 
 
 def test_multi_time_grid():

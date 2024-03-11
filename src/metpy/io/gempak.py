@@ -645,7 +645,7 @@ class GempakFile:
                                     'NavigationBlock')
 
             if navb_size != nav_stuct.size // BYTES_PER_WORD:
-                raise ValueError('Navigation block size does not match GEMPAK specification')
+                raise ValueError('Navigation block size does not match GEMPAK specification.')
             else:
                 self.navigation_block = (
                     self._buffer.read_struct(nav_stuct)
@@ -665,7 +665,7 @@ class GempakFile:
 
             if anlb_size not in [anlb1_struct.size // BYTES_PER_WORD,
                                  anlb2_struct.size // BYTES_PER_WORD]:
-                raise ValueError('Analysis block size does not match GEMPAK specification')
+                raise ValueError('Analysis block size does not match GEMPAK specification.')
             else:
                 anlb_type = self._buffer.read_struct(struct.Struct(self.prefmt + 'f'))[0]
                 self._buffer.jump_to(anlb_start)
@@ -741,9 +741,9 @@ class GempakFile:
 
     def _swap_bytes(self, binary):
         """Swap between little and big endian."""
-        self.swaped_bytes = (struct.pack('@i', 1) != binary)
+        self.swapped_bytes = (struct.pack('@i', 1) != binary)
 
-        if self.swaped_bytes:
+        if self.swapped_bytes:
             if sys.byteorder == 'little':
                 self.prefmt = '>'
                 self.endian = 'big'
@@ -932,9 +932,9 @@ class GempakGrid(GempakFile):
             if self._buffer.read_int(4, self.endian, False) == USED_FLAG:
                 self.column_headers.append(self._buffer.read_struct(column_headers_fmt))
 
-        self._gdinfo = []
+        self._gdinfo = set()
         for n, head in enumerate(self.column_headers):
-            self._gdinfo.append(
+            self._gdinfo.add(
                 Grid(
                     n,
                     head.GTM1[0],
@@ -954,7 +954,7 @@ class GempakGrid(GempakFile):
 
     def gdinfo(self):
         """Return grid information."""
-        return self._gdinfo
+        return sorted(self._gdinfo)
 
     def _get_crs(self):
         """Create CRS from GEMPAK navigation block."""
@@ -1244,7 +1244,7 @@ class GempakGrid(GempakFile):
             level2 = [level2]
 
         # Figure out which columns to extract from the file
-        matched = self._gdinfo.copy()
+        matched = sorted(self._gdinfo)
 
         if parameter is not None:
             matched = filter(
@@ -1291,9 +1291,8 @@ class GempakGrid(GempakFile):
 
         grids = []
         irow = 0  # Only one row for grids
-        for icol, col_head in enumerate(self.column_headers):
-            if icol not in gridno:
-                continue
+        for icol in gridno:
+            col_head = self.column_headers[icol]
             for iprt, part in enumerate(self.parts):
                 pointer = (self.prod_desc.data_block_ptr
                            + (irow * self.prod_desc.columns * self.prod_desc.parts)
@@ -1391,7 +1390,7 @@ class GempakSounding(GempakFile):
 
         self.merged = 'SNDT' in (part.name for part in self.parts)
 
-        self._sninfo = []
+        self._sninfo = set()
         for irow, row_head in enumerate(self.row_headers):
             for icol, col_head in enumerate(self.column_headers):
                 pointer = (self.prod_desc.data_block_ptr
@@ -1402,7 +1401,7 @@ class GempakSounding(GempakFile):
                 data_ptr = self._buffer.read_int(4, self.endian, False)
 
                 if data_ptr:
-                    self._sninfo.append(
+                    self._sninfo.add(
                         Sounding(
                             irow,
                             icol,
@@ -1419,144 +1418,140 @@ class GempakSounding(GempakFile):
 
     def sninfo(self):
         """Return sounding information."""
-        return self._sninfo
+        return sorted(self._sninfo)
 
     def _unpack_merged(self, sndno):
         """Unpack merged sounding data."""
         soundings = []
-        for irow, row_head in enumerate(self.row_headers):
-            for icol, col_head in enumerate(self.column_headers):
-                if (irow, icol) not in sndno:
+        for irow, icol in sndno:
+            row_head = self.row_headers[irow]
+            col_head = self.column_headers[icol]
+            sounding = {
+                'STID': col_head.STID,
+                'STNM': col_head.STNM,
+                'SLAT': col_head.SLAT,
+                'SLON': col_head.SLON,
+                'SELV': col_head.SELV,
+                'STAT': col_head.STAT,
+                'COUN': col_head.COUN,
+                'DATE': row_head.DATE,
+                'TIME': row_head.TIME,
+            }
+            for iprt, part in enumerate(self.parts):
+                pointer = (self.prod_desc.data_block_ptr
+                           + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                           + (icol * self.prod_desc.parts + iprt))
+                self._buffer.jump_to(self._start, _word_to_position(pointer))
+                self.data_ptr = self._buffer.read_int(4, self.endian, False)
+                if not self.data_ptr:
                     continue
-                sounding = {'STID': col_head.STID,
-                            'STNM': col_head.STNM,
-                            'SLAT': col_head.SLAT,
-                            'SLON': col_head.SLON,
-                            'SELV': col_head.SELV,
-                            'STAT': col_head.STAT,
-                            'COUN': col_head.COUN,
-                            'DATE': row_head.DATE,
-                            'TIME': row_head.TIME,
-                            }
-                for iprt, part in enumerate(self.parts):
-                    pointer = (self.prod_desc.data_block_ptr
-                               + (irow * self.prod_desc.columns * self.prod_desc.parts)
-                               + (icol * self.prod_desc.parts + iprt))
-                    self._buffer.jump_to(self._start, _word_to_position(pointer))
-                    self.data_ptr = self._buffer.read_int(4, self.endian, False)
-                    if not self.data_ptr:
-                        continue
-                    self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
-                    self.data_header_length = self._buffer.read_int(4, self.endian, False)
-                    data_header = self._buffer.set_mark()
-                    self._buffer.jump_to(data_header,
-                                         _word_to_position(part.header_length + 1))
-                    lendat = self.data_header_length - part.header_length
+                self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
+                self.data_header_length = self._buffer.read_int(4, self.endian, False)
+                data_header = self._buffer.set_mark()
+                self._buffer.jump_to(data_header,
+                                     _word_to_position(part.header_length + 1))
+                lendat = self.data_header_length - part.header_length
 
-                    fmt_code = {
-                        DataTypes.real: 'f',
-                        DataTypes.realpack: 'i',
-                        DataTypes.character: 's',
-                    }.get(part.data_type)
+                fmt_code = {
+                    DataTypes.real: 'f',
+                    DataTypes.realpack: 'i',
+                }.get(part.data_type)
 
-                    if fmt_code is None:
-                        raise NotImplementedError(f'No methods for data type {part.data_type}')
+                if fmt_code is None:
+                    raise NotImplementedError(f'No methods for data type {part.data_type}')
 
-                    if fmt_code == 's':
-                        lendat *= BYTES_PER_WORD
-
-                    packed_buffer = (
-                        self._buffer.read_struct(
-                            struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
-                        )
+                packed_buffer = (
+                    self._buffer.read_struct(
+                        struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
                     )
+                )
 
-                    parameters = self.parameters[iprt]
-                    nparms = len(parameters['name'])
+                parameters = self.parameters[iprt]
+                nparms = len(parameters['name'])
 
-                    if part.data_type == DataTypes.realpack:
-                        unpacked = self._unpack_real(packed_buffer, parameters, lendat)
-                        for iprm, param in enumerate(parameters['name']):
-                            sounding[param] = unpacked[iprm::nparms]
-                    else:
-                        for iprm, param in enumerate(parameters['name']):
-                            sounding[param] = np.array(
-                                packed_buffer[iprm::nparms], dtype=np.float32
-                            )
+                if part.data_type == DataTypes.realpack:
+                    unpacked = self._unpack_real(packed_buffer, parameters, lendat)
+                    for iprm, param in enumerate(parameters['name']):
+                        sounding[param] = unpacked[iprm::nparms]
+                else:
+                    for iprm, param in enumerate(parameters['name']):
+                        sounding[param] = np.array(
+                            packed_buffer[iprm::nparms], dtype=np.float32
+                        )
 
-                soundings.append(sounding)
+            soundings.append(sounding)
         return soundings
 
     def _unpack_unmerged(self, sndno):
         """Unpack unmerged sounding data."""
         soundings = []
-        for irow, row_head in enumerate(self.row_headers):
-            for icol, col_head in enumerate(self.column_headers):
-                if (irow, icol) not in sndno:
+        for irow, icol in sndno:
+            row_head = self.row_headers[irow]
+            col_head = self.column_headers[icol]
+            sounding = {
+                'STID': col_head.STID,
+                'STNM': col_head.STNM,
+                'SLAT': col_head.SLAT,
+                'SLON': col_head.SLON,
+                'SELV': col_head.SELV,
+                'STAT': col_head.STAT,
+                'COUN': col_head.COUN,
+                'DATE': row_head.DATE,
+                'TIME': row_head.TIME,
+            }
+            for iprt, part in enumerate(self.parts):
+                pointer = (self.prod_desc.data_block_ptr
+                           + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                           + (icol * self.prod_desc.parts + iprt))
+                self._buffer.jump_to(self._start, _word_to_position(pointer))
+                self.data_ptr = self._buffer.read_int(4, self.endian, False)
+                if not self.data_ptr:
                     continue
-                sounding = {'STID': col_head.STID,
-                            'STNM': col_head.STNM,
-                            'SLAT': col_head.SLAT,
-                            'SLON': col_head.SLON,
-                            'SELV': col_head.SELV,
-                            'STAT': col_head.STAT,
-                            'COUN': col_head.COUN,
-                            'DATE': row_head.DATE,
-                            'TIME': row_head.TIME,
-                            }
-                for iprt, part in enumerate(self.parts):
-                    pointer = (self.prod_desc.data_block_ptr
-                               + (irow * self.prod_desc.columns * self.prod_desc.parts)
-                               + (icol * self.prod_desc.parts + iprt))
-                    self._buffer.jump_to(self._start, _word_to_position(pointer))
-                    self.data_ptr = self._buffer.read_int(4, self.endian, False)
-                    if not self.data_ptr:
-                        continue
-                    self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
-                    self.data_header_length = self._buffer.read_int(4, self.endian, False)
-                    data_header = self._buffer.set_mark()
-                    self._buffer.jump_to(data_header,
-                                         _word_to_position(part.header_length + 1))
-                    lendat = self.data_header_length - part.header_length
+                self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
+                self.data_header_length = self._buffer.read_int(4, self.endian, False)
+                data_header = self._buffer.set_mark()
+                self._buffer.jump_to(data_header,
+                                     _word_to_position(part.header_length + 1))
+                lendat = self.data_header_length - part.header_length
 
-                    fmt_code = {
-                        DataTypes.real: 'f',
-                        DataTypes.realpack: 'i',
-                        DataTypes.character: 's',
-                    }.get(part.data_type)
+                fmt_code = {
+                    DataTypes.real: 'f',
+                    DataTypes.realpack: 'i',
+                    DataTypes.character: 's',
+                }.get(part.data_type)
 
-                    if fmt_code is None:
-                        raise NotImplementedError(f'No methods for data type {part.data_type}')
+                if fmt_code is None:
+                    raise NotImplementedError(f'No methods for data type {part.data_type}')
 
-                    if fmt_code == 's':
-                        lendat *= BYTES_PER_WORD
+                if fmt_code == 's':
+                    lendat *= BYTES_PER_WORD
 
-                    packed_buffer = (
-                        self._buffer.read_struct(
-                            struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
-                        )
+                packed_buffer = (
+                    self._buffer.read_struct(
+                        struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
                     )
+                )
 
-                    parameters = self.parameters[iprt]
-                    nparms = len(parameters['name'])
-                    sounding[part.name] = {}
+                parameters = self.parameters[iprt]
+                nparms = len(parameters['name'])
+                sounding[part.name] = {}
 
-                    if part.data_type == DataTypes.realpack:
-                        unpacked = self._unpack_real(packed_buffer, parameters, lendat)
-                        for iprm, param in enumerate(parameters['name']):
-                            sounding[part.name][param] = unpacked[iprm::nparms]
-                    elif part.data_type == DataTypes.character:
-                        for iprm, param in enumerate(parameters['name']):
-                            sounding[part.name][param] = (
-                                self._decode_strip(packed_buffer[iprm])
-                            )
-                    else:
-                        for iprm, param in enumerate(parameters['name']):
-                            sounding[part.name][param] = (
-                                np.array(packed_buffer[iprm::nparms], dtype=np.float32)
-                            )
+                if part.data_type == DataTypes.realpack:
+                    unpacked = self._unpack_real(packed_buffer, parameters, lendat)
+                    for iprm, param in enumerate(parameters['name']):
+                        sounding[part.name][param] = unpacked[iprm::nparms]
+                elif part.data_type == DataTypes.character:
+                    for iprm, param in enumerate(parameters['name']):
+                        sounding[part.name][param] = (
+                            self._decode_strip(packed_buffer[iprm])
+                        )
+                else:
+                    for iprm, param in enumerate(parameters['name']):
+                        sounding[part.name][param] = (
+                            np.array(packed_buffer[iprm::nparms], dtype=np.float32)
+                        )
 
-                soundings.append(self._merge_sounding(sounding))
+            soundings.append(self._merge_sounding(sounding))
         return soundings
 
     def _merge_significant_temps(self, merged, parts, section, pbot):
@@ -2159,7 +2154,7 @@ class GempakSounding(GempakFile):
             country = [c.upper() for c in country]
 
         # Figure out which columns to extract from the file
-        matched = self._sninfo.copy()
+        matched = sorted(self._sninfo)
 
         if station_id is not None:
             matched = filter(
@@ -2278,7 +2273,7 @@ class GempakSurface(GempakFile):
 
         self._get_surface_type()
 
-        self._sfinfo = []
+        self._sfinfo = set()
         if self.surface_type == 'standard':
             for irow, row_head in enumerate(self.row_headers):
                 for icol, col_head in enumerate(self.column_headers):
@@ -2291,7 +2286,7 @@ class GempakSurface(GempakFile):
                         data_ptr = self._buffer.read_int(4, self.endian, False)
 
                         if data_ptr:
-                            self._sfinfo.append(
+                            self._sfinfo.add(
                                 Surface(
                                     irow,
                                     icol,
@@ -2317,7 +2312,7 @@ class GempakSurface(GempakFile):
                     data_ptr = self._buffer.read_int(4, self.endian, False)
 
                     if data_ptr:
-                        self._sfinfo.append(
+                        self._sfinfo.add(
                             Surface(
                                 irow,
                                 icol,
@@ -2343,7 +2338,7 @@ class GempakSurface(GempakFile):
                         data_ptr = self._buffer.read_int(4, self.endian, False)
 
                         if data_ptr:
-                            self._sfinfo.append(
+                            self._sfinfo.add(
                                 Surface(
                                     irow,
                                     icol,
@@ -2362,15 +2357,22 @@ class GempakSurface(GempakFile):
 
     def sfinfo(self):
         """Return station information."""
-        return self._sfinfo
+        return sorted(self._sfinfo)
 
     def _get_surface_type(self):
-        """Determine type of surface file."""
-        if len(self.row_headers) == 1:
+        """Determine type of surface file.
+
+        Notes
+        -----
+        See GEMPAK SFLIB documentation for type definitions.
+        """
+        if (len(self.row_headers) == 1
+           and 'DATE' in self.column_keys
+           and 'STID' in self.column_keys):
             self.surface_type = 'ship'
-        elif 'DATE' in self.row_keys:
+        elif 'DATE' in self.row_keys and 'STID' in self.column_keys:
             self.surface_type = 'standard'
-        elif 'DATE' in self.column_keys:
+        elif 'DATE' in self.column_keys and 'STID' in self.row_keys:
             self.surface_type = 'climate'
         else:
             raise TypeError('Unknown surface data type')
@@ -2393,92 +2395,91 @@ class GempakSurface(GempakFile):
     def _unpack_climate(self, sfcno):
         """Unpack a climate surface data file."""
         stations = []
-        for icol, col_head in enumerate(self.column_headers):
-            for irow, row_head in enumerate(self.row_headers):
-                if (irow, icol) not in sfcno:
+        for irow, icol in sfcno:
+            col_head = self.column_headers[icol]
+            row_head = self.row_headers[irow]
+            station = {
+                'STID': row_head.STID,
+                'STNM': row_head.STNM,
+                'SLAT': row_head.SLAT,
+                'SLON': row_head.SLON,
+                'SELV': row_head.SELV,
+                'STAT': row_head.STAT,
+                'COUN': row_head.COUN,
+                'STD2': row_head.STD2,
+                'SPRI': row_head.SPRI,
+                'DATE': col_head.DATE,
+                'TIME': col_head.TIME,
+            }
+            for iprt, part in enumerate(self.parts):
+                pointer = (self.prod_desc.data_block_ptr
+                           + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                           + (icol * self.prod_desc.parts + iprt))
+                self._buffer.jump_to(self._start, _word_to_position(pointer))
+                self.data_ptr = self._buffer.read_int(4, self.endian, False)
+                if not self.data_ptr:
                     continue
-                station = {'STID': row_head.STID,
-                           'STNM': row_head.STNM,
-                           'SLAT': row_head.SLAT,
-                           'SLON': row_head.SLON,
-                           'SELV': row_head.SELV,
-                           'STAT': row_head.STAT,
-                           'COUN': row_head.COUN,
-                           'STD2': row_head.STD2,
-                           'SPRI': row_head.SPRI,
-                           'DATE': col_head.DATE,
-                           'TIME': col_head.TIME,
-                           }
-                for iprt, part in enumerate(self.parts):
-                    pointer = (self.prod_desc.data_block_ptr
-                               + (irow * self.prod_desc.columns * self.prod_desc.parts)
-                               + (icol * self.prod_desc.parts + iprt))
-                    self._buffer.jump_to(self._start, _word_to_position(pointer))
-                    self.data_ptr = self._buffer.read_int(4, self.endian, False)
-                    if not self.data_ptr:
-                        continue
-                    self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
-                    self.data_header_length = self._buffer.read_int(4, self.endian, False)
-                    data_header = self._buffer.set_mark()
-                    self._buffer.jump_to(data_header,
-                                         _word_to_position(part.header_length + 1))
-                    lendat = self.data_header_length - part.header_length
+                self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
+                self.data_header_length = self._buffer.read_int(4, self.endian, False)
+                data_header = self._buffer.set_mark()
+                self._buffer.jump_to(data_header,
+                                     _word_to_position(part.header_length + 1))
+                lendat = self.data_header_length - part.header_length
 
-                    fmt_code = {
-                        DataTypes.real: 'f',
-                        DataTypes.realpack: 'i',
-                        DataTypes.character: 's',
-                    }.get(part.data_type)
+                fmt_code = {
+                    DataTypes.real: 'f',
+                    DataTypes.realpack: 'i',
+                    DataTypes.character: 's',
+                }.get(part.data_type)
 
-                    if fmt_code is None:
-                        raise NotImplementedError(f'No methods for data type {part.data_type}')
+                if fmt_code is None:
+                    raise NotImplementedError(f'No methods for data type {part.data_type}')
 
-                    if fmt_code == 's':
-                        lendat *= BYTES_PER_WORD
+                if fmt_code == 's':
+                    lendat *= BYTES_PER_WORD
 
-                    packed_buffer = (
-                        self._buffer.read_struct(
-                            struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
-                        )
+                packed_buffer = (
+                    self._buffer.read_struct(
+                        struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
                     )
+                )
 
-                    parameters = self.parameters[iprt]
+                parameters = self.parameters[iprt]
 
-                    if part.data_type == DataTypes.realpack:
-                        unpacked = self._unpack_real(packed_buffer, parameters, lendat)
-                        for iprm, param in enumerate(parameters['name']):
-                            station[param] = unpacked[iprm]
-                    elif part.data_type == DataTypes.character:
-                        for iprm, param in enumerate(parameters['name']):
-                            station[param] = self._decode_strip(packed_buffer[iprm])
-                    else:
-                        for iprm, param in enumerate(parameters['name']):
-                            station[param] = np.array(
-                                packed_buffer[iprm], dtype=np.float32
-                            )
+                if part.data_type == DataTypes.realpack:
+                    unpacked = self._unpack_real(packed_buffer, parameters, lendat)
+                    for iprm, param in enumerate(parameters['name']):
+                        station[param] = unpacked[iprm]
+                elif part.data_type == DataTypes.character:
+                    for iprm, param in enumerate(parameters['name']):
+                        station[param] = self._decode_strip(packed_buffer[iprm])
+                else:
+                    for iprm, param in enumerate(parameters['name']):
+                        station[param] = np.array(
+                            packed_buffer[iprm], dtype=np.float32
+                        )
 
-                stations.append(station)
+            stations.append(station)
         return stations
 
     def _unpack_ship(self, sfcno):
         """Unpack ship (moving observation) surface data file."""
         stations = []
-        irow = 0
-        for icol, col_head in enumerate(self.column_headers):
-            if (irow, icol) not in sfcno:
-                continue
-            station = {'STID': col_head.STID,
-                       'STNM': col_head.STNM,
-                       'SLAT': col_head.SLAT,
-                       'SLON': col_head.SLON,
-                       'SELV': col_head.SELV,
-                       'STAT': col_head.STAT,
-                       'COUN': col_head.COUN,
-                       'STD2': col_head.STD2,
-                       'SPRI': col_head.SPRI,
-                       'DATE': col_head.DATE,
-                       'TIME': col_head.TIME,
-                       }
+        for irow, icol in sfcno:  # irow should always be zero
+            col_head = self.column_headers[icol]
+            station = {
+                'STID': col_head.STID,
+                'STNM': col_head.STNM,
+                'SLAT': col_head.SLAT,
+                'SLON': col_head.SLON,
+                'SELV': col_head.SELV,
+                'STAT': col_head.STAT,
+                'COUN': col_head.COUN,
+                'STD2': col_head.STD2,
+                'SPRI': col_head.SPRI,
+                'DATE': col_head.DATE,
+                'TIME': col_head.TIME,
+            }
             for iprt, part in enumerate(self.parts):
                 pointer = (self.prod_desc.data_block_ptr
                            + (irow * self.prod_desc.columns * self.prod_desc.parts)
@@ -2533,69 +2534,69 @@ class GempakSurface(GempakFile):
     def _unpack_standard(self, sfcno):
         """Unpack a standard surface data file."""
         stations = []
-        for irow, row_head in enumerate(self.row_headers):
-            for icol, col_head in enumerate(self.column_headers):
-                if (irow, icol) not in sfcno:
+        for irow, icol in sfcno:
+            row_head = self.row_headers[irow]
+            col_head = self.column_headers[icol]
+            station = {
+                'STID': col_head.STID,
+                'STNM': col_head.STNM,
+                'SLAT': col_head.SLAT,
+                'SLON': col_head.SLON,
+                'SELV': col_head.SELV,
+                'STAT': col_head.STAT,
+                'COUN': col_head.COUN,
+                'STD2': col_head.STD2,
+                'SPRI': col_head.SPRI,
+                'DATE': row_head.DATE,
+                'TIME': row_head.TIME,
+            }
+            for iprt, part in enumerate(self.parts):
+                pointer = (self.prod_desc.data_block_ptr
+                           + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                           + (icol * self.prod_desc.parts + iprt))
+                self._buffer.jump_to(self._start, _word_to_position(pointer))
+                self.data_ptr = self._buffer.read_int(4, self.endian, False)
+                if not self.data_ptr:
                     continue
-                station = {'STID': col_head.STID,
-                           'STNM': col_head.STNM,
-                           'SLAT': col_head.SLAT,
-                           'SLON': col_head.SLON,
-                           'SELV': col_head.SELV,
-                           'STAT': col_head.STAT,
-                           'COUN': col_head.COUN,
-                           'STD2': col_head.STD2,
-                           'SPRI': col_head.SPRI,
-                           'DATE': row_head.DATE,
-                           'TIME': row_head.TIME,
-                           }
-                for iprt, part in enumerate(self.parts):
-                    pointer = (self.prod_desc.data_block_ptr
-                               + (irow * self.prod_desc.columns * self.prod_desc.parts)
-                               + (icol * self.prod_desc.parts + iprt))
-                    self._buffer.jump_to(self._start, _word_to_position(pointer))
-                    self.data_ptr = self._buffer.read_int(4, self.endian, False)
-                    if not self.data_ptr:
-                        continue
-                    self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
-                    self.data_header_length = self._buffer.read_int(4, self.endian, False)
-                    data_header = self._buffer.set_mark()
-                    self._buffer.jump_to(data_header,
-                                         _word_to_position(part.header_length + 1))
-                    lendat = self.data_header_length - part.header_length
+                self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
+                self.data_header_length = self._buffer.read_int(4, self.endian, False)
+                data_header = self._buffer.set_mark()
+                self._buffer.jump_to(data_header,
+                                     _word_to_position(part.header_length + 1))
+                lendat = self.data_header_length - part.header_length
 
-                    fmt_code = {
-                        DataTypes.real: 'f',
-                        DataTypes.realpack: 'i',
-                        DataTypes.character: 's',
-                    }.get(part.data_type)
+                fmt_code = {
+                    DataTypes.real: 'f',
+                    DataTypes.realpack: 'i',
+                    DataTypes.character: 's',
+                }.get(part.data_type)
 
-                    if fmt_code is None:
-                        raise NotImplementedError(f'No methods for data type {part.data_type}')
+                if fmt_code is None:
+                    raise NotImplementedError(f'No methods for data type {part.data_type}')
 
-                    if fmt_code == 's':
-                        lendat *= BYTES_PER_WORD
+                if fmt_code == 's':
+                    lendat *= BYTES_PER_WORD
 
-                    packed_buffer = (
-                        self._buffer.read_struct(
-                            struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
-                        )
+                packed_buffer = (
+                    self._buffer.read_struct(
+                        struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
                     )
+                )
 
-                    parameters = self.parameters[iprt]
+                parameters = self.parameters[iprt]
 
-                    if part.data_type == DataTypes.realpack:
-                        unpacked = self._unpack_real(packed_buffer, parameters, lendat)
-                        for iprm, param in enumerate(parameters['name']):
-                            station[param] = unpacked[iprm]
-                    elif part.data_type == DataTypes.character:
-                        for iprm, param in enumerate(parameters['name']):
-                            station[param] = self._decode_strip(packed_buffer[iprm])
-                    else:
-                        for iprm, param in enumerate(parameters['name']):
-                            station[param] = packed_buffer[iprm]
+                if part.data_type == DataTypes.realpack:
+                    unpacked = self._unpack_real(packed_buffer, parameters, lendat)
+                    for iprm, param in enumerate(parameters['name']):
+                        station[param] = unpacked[iprm]
+                elif part.data_type == DataTypes.character:
+                    for iprm, param in enumerate(parameters['name']):
+                        station[param] = self._decode_strip(packed_buffer[iprm])
+                else:
+                    for iprm, param in enumerate(parameters['name']):
+                        station[param] = packed_buffer[iprm]
 
-                stations.append(station)
+            stations.append(station)
         return stations
 
     @staticmethod
@@ -2772,7 +2773,7 @@ class GempakSurface(GempakFile):
             country = [c.upper() for c in country]
 
         # Figure out which columns to extract from the file
-        matched = self._sfinfo.copy()
+        matched = sorted(self._sfinfo)
 
         if station_id is not None:
             matched = filter(
