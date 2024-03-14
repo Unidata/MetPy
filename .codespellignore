@@ -6,12 +6,11 @@
     thta = 2
                 lambda grid: grid if grid.PARM in parameter else False,
                             col_head.SELV,
-                            'SELV': col_head.SELV,
+                'SELV': col_head.SELV,
                                 col_head.SELV,
                                 row_head.SELV,
-                           'SELV': row_head.SELV,
-                       'SELV': col_head.SELV,
-                           'SELV': col_head.SELV,
+                'SELV': row_head.SELV,
+                'SELV': col_head.SELV,
 Klystron Warmup    Integer*2  N/A  0 to 1  1  0=Normal, 1=Preheat  146
 # GFS, NAM, RAP, or other gridded dataset (e.g., NARR).
 # This attribute can be set to False if the vector components are grid relative (e.g., for NAM
