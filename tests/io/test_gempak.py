@@ -409,6 +409,7 @@ def test_multi_level_multi_time_access():
     grid.gdxarray(
         parameter='STPC',
         date_time='202403040000',
+        coordinate='HGHT',
         level=0,
         date_time2='202403050000',
         level2=1
