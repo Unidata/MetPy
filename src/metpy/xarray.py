@@ -338,15 +338,16 @@ class MetPyDataArrayAccessor:
     def _generate_coordinate_map(self):
         """Generate a coordinate map via CF conventions and other methods."""
         coords = self._data_array.coords.values()
-        # Parse all the coordinates, attempting to identify x, longitude, y, latitude,
-        # vertical, time
-        coord_lists = {'time': [], 'vertical': [], 'y': [], 'latitude': [], 'x': [],
-                       'longitude': []}
+        # Parse all the coordinates, attempting to identify longitude, latitude, x, y,
+        # time, vertical, in that order.
+        coord_lists = {'longitude': [], 'latitude': [], 'x': [], 'y': [], 'time': [],
+                       'vertical': []}
         for coord_var in coords:
             # Identify the coordinate type using check_axis helper
             for axis in coord_lists:
                 if check_axis(coord_var, axis):
                     coord_lists[axis].append(coord_var)
+                    break  # Ensure a coordinate variable only goes to one axis
 
         # Fill in x/y with longitude/latitude if x/y not otherwise present
         for geometric, graticule in (('y', 'latitude'), ('x', 'longitude')):
