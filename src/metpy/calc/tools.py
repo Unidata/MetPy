@@ -1830,7 +1830,7 @@ def angle_to_direction(input_angle, full=False, level=3):
     >>> from metpy.calc import angle_to_direction
     >>> from metpy.units import units
     >>> angle_to_direction(225. * units.deg)
-    "SW"
+    'SW'
 
     """
     try:  # strip units temporarily
