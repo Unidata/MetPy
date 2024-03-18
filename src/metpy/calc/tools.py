@@ -1838,8 +1838,11 @@ def angle_to_direction(input_angle, full=False, level=3):
     else:
         scalar = False
 
+    np_input_angle = np.array(input_angle).astype(float)
+    origshape = np_input_angle.shape
+    ndarray = len(origshape) > 1
     # clean any numeric strings, negatives, and None does not handle strings with alphabet
-    input_angle = units.Quantity(np.array(input_angle).astype(float), origin_units)
+    input_angle = units.Quantity(np_input_angle, origin_units)
     input_angle[input_angle < 0] = np.nan
 
     # Normalize between 0 - 360
@@ -1855,8 +1858,10 @@ def angle_to_direction(input_angle, full=False, level=3):
         err_msg = 'Level of complexity cannot be less than 1 or greater than 3!'
         raise ValueError(err_msg)
 
-    angle_dict = {i * BASE_DEGREE_MULTIPLIER.m * nskip: dir_str
-                  for i, dir_str in enumerate(DIR_STRS[::nskip])}
+    angle_dict = {
+        i * BASE_DEGREE_MULTIPLIER.m * nskip: dir_str
+        for i, dir_str in enumerate(DIR_STRS[::nskip])
+    }
     angle_dict[MAX_DEGREE_ANGLE.m] = 'N'  # handle edge case of 360.
     angle_dict[UND_ANGLE] = UND
 
@@ -1872,18 +1877,25 @@ def angle_to_direction(input_angle, full=False, level=3):
     # ['N', 'N', 'NE', 'NE', 'E', 'E', 'SE', 'SE',
     #  'S', 'S', 'SW', 'SW', 'W', 'W', 'NW', 'NW']
 
-    multiplier = np.round(
-        (norm_angles / BASE_DEGREE_MULTIPLIER / nskip) - 0.001).m
-    round_angles = (multiplier * BASE_DEGREE_MULTIPLIER.m * nskip)
+    multiplier = np.round((norm_angles / BASE_DEGREE_MULTIPLIER / nskip) - 0.001).m
+    round_angles = multiplier * BASE_DEGREE_MULTIPLIER.m * nskip
     round_angles[np.where(np.isnan(round_angles))] = UND_ANGLE
-
-    dir_str_arr = itemgetter(*round_angles)(angle_dict)  # for array
-    if not full:
-        return dir_str_arr
-
-    dir_str_arr = ','.join(dir_str_arr)
-    dir_str_arr = _unabbreviate_direction(dir_str_arr)
-    return dir_str_arr.replace(',', ' ') if scalar else dir_str_arr.split(',')
+    if ndarray:
+        round_angles = round_angles.flatten()
+    dir_str_arr = itemgetter(*round_angles)(angle_dict)  # returns str or tuple
+    if full:
+        dir_str_arr = ','.join(dir_str_arr)
+        dir_str_arr = _unabbreviate_direction(dir_str_arr)
+        dir_str_arr = dir_str_arr.split(',')
+        if scalar:
+            return dir_str_arr[0]
+        else:
+            return np.array(dir_str_arr).reshape(origshape)
+    else:
+        if scalar:
+            return dir_str_arr
+        else:
+            return np.array(dir_str_arr).reshape(origshape)
 
 
 def _unabbreviate_direction(abb_dir_str):
