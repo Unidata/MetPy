@@ -1825,6 +1825,13 @@ def angle_to_direction(input_angle, full=False, level=3):
     direction
         The directional text
 
+    Examples
+    --------
+    >>> from metpy.calc import angle_to_direction
+    >>> from metpy.units import units
+    >>> angle_to_direction(225. * units.deg)
+    "SW"
+
     """
     try:  # strip units temporarily
         origin_units = input_angle.units
