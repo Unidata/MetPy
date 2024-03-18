@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:02.501** total execution time for 21 files **from examples/calculations**:
+**00:02.514** total execution time for 21 files **from examples/calculations**:
 
 .. container::
 
@@ -33,34 +33,34 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_examples_calculations_Smoothing.py` (``Smoothing.py``)
-     - 00:00.559
+     - 00:00.565
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Sounding_Calculations.py` (``Sounding_Calculations.py``)
-     - 00:00.253
+     - 00:00.254
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_QVector.py` (``QVector.py``)
-     - 00:00.220
+     - 00:00.221
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Total_Deformation.py` (``Total_Deformation.py``)
-     - 00:00.176
-     - 0.0
-   * - :ref:`sphx_glr_examples_calculations_Vorticity.py` (``Vorticity.py``)
-     - 00:00.175
+     - 00:00.177
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Absolute_Vorticity.py` (``Absolute_Vorticity.py``)
+     - 00:00.173
+     - 0.0
+   * - :ref:`sphx_glr_examples_calculations_Vorticity.py` (``Vorticity.py``)
      - 00:00.172
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Shearing_Deformation.py` (``Shearing_Deformation.py``)
-     - 00:00.170
+     - 00:00.171
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Stretching_Deformation.py` (``Stretching_Deformation.py``)
-     - 00:00.168
+     - 00:00.170
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Advection.py` (``Advection.py``)
      - 00:00.164
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Divergence.py` (``Divergence.py``)
-     - 00:00.151
+     - 00:00.153
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Wind_Speed.py` (``Wind_Speed.py``)
      - 00:00.130
