@@ -52,6 +52,13 @@ def wind_speed(u, v):
     --------
     wind_components
 
+    Examples
+    --------
+    >>> from metpy.calc import wind_speed
+    >>> from metpy.units import units
+    >>> wind_speed(10. * units('m/s'), 10. * units('m/s'))
+    <Quantity(14.1421356, 'meter / second')>
+
     """
     return np.hypot(u, v)
 
@@ -87,6 +94,13 @@ def wind_direction(u, v, convention='from'):
     -----
     In the case of calm winds (where `u` and `v` are zero), this function returns a direction
     of 0.
+
+    Examples
+    --------
+    >>> from metpy.calc import wind_direction
+    >>> from metpy.units import units
+    >>> wind_direction(10. * units('m/s'), 10. * units('m/s'))
+    <Quantity(225.0, 'degree')>
 
     """
     wdir = units.Quantity(90., 'deg') - np.arctan2(-v, -u)
@@ -141,7 +155,7 @@ def wind_components(speed, wind_direction):
     >>> from metpy.calc import wind_components
     >>> from metpy.units import units
     >>> wind_components(10. * units('m/s'), 225. * units.deg)
-     (<Quantity(7.07106781, 'meter / second')>, <Quantity(7.07106781, 'meter / second')>)
+    (<Quantity(7.07106781, 'meter / second')>, <Quantity(7.07106781, 'meter / second')>)
 
     .. versionchanged:: 1.0
        Renamed ``wdir`` parameter to ``wind_direction``
