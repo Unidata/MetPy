@@ -112,7 +112,7 @@ and defaulting to degrees if no units are specified.
 
  .. code-block:: none
 
-    ('N', 'N', 'N')
+    ['N' 'N' 'N']
 
 
 
@@ -135,7 +135,7 @@ If you want the unabbrieviated version, input full=True
 
  .. code-block:: none
 
-    ['North', 'North', 'North']
+    ['North' 'North' 'North']
 
 
 
