@@ -273,6 +273,14 @@ def test_missing_grid_mapping_invalid(test_var_multidim_no_xy):
     assert 'metpy_crs' not in data_var.coords
 
 
+def test_xy_not_vertical(test_ds):
+    """Test not detecting x/y as a vertical coordinate based on metadata."""
+    test_ds.x.attrs['positive'] = 'up'
+    test_ds.y.attrs['positive'] = 'up'
+    data_var = test_ds.metpy.parse_cf('Temperature')
+    assert data_var.metpy.vertical.identical(data_var.coords['isobaric'])
+
+
 def test_missing_grid_mapping_var(caplog):
     """Test behavior when we can't find the variable pointed to by grid_mapping."""
     x = xr.DataArray(np.arange(3),
