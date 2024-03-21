@@ -933,6 +933,14 @@ def test_angle_to_direction_level_1():
     assert_array_equal(output_dirs, expected_dirs)
 
 
+def test_angle_to_direction_ndarray():
+    """Test array of angles in degree with a 2d numpy array."""
+    expected_dirs = np.array([['E', 'W'], ['E', 'W']])
+    input_angle = np.array([[90, 270], [90, 270]])
+    output_dirs = angle_to_direction(input_angle, level=1)
+    assert_array_equal(output_dirs, expected_dirs)
+
+
 def test_azimuth_range_to_lat_lon():
     """Test conversion of azimuth and range to lat/lon grid."""
     az = [332.2403, 334.6765, 337.2528, 339.73846, 342.26257]
