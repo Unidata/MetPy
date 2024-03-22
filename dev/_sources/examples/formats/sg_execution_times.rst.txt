@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:08.662** total execution time for 3 files **from examples/formats**:
+**00:08.518** total execution time for 3 files **from examples/formats**:
 
 .. container::
 
@@ -33,11 +33,11 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_examples_formats_NEXRAD_Level_2_File.py` (``NEXRAD_Level_2_File.py``)
-     - 00:05.695
+     - 00:05.583
      - 0.0
    * - :ref:`sphx_glr_examples_formats_NEXRAD_Level_3_File.py` (``NEXRAD_Level_3_File.py``)
-     - 00:02.051
+     - 00:02.028
      - 0.0
    * - :ref:`sphx_glr_examples_formats_GINI_Water_Vapor.py` (``GINI_Water_Vapor.py``)
-     - 00:00.915
+     - 00:00.908
      - 0.0
