@@ -130,7 +130,8 @@ Dynamic/Kinematic
       wind_components
       wind_direction
       wind_speed
-
+      rotational_wind_from_inversion
+      divergent_wind_from_inversion
 
 Boundary Layer/Turbulence
 -------------------------

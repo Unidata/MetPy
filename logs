@@ -1,0 +1,8 @@
+Obtaining file:///home/winash12/projects/metpy
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+    Preparing wheel metadata: started
+    Preparing wheel metadata: finished with status 'done'
+ERROR: Package 'MetPy-0.0.post5779-ge149219' requires a different Python: 3.8.10 not in '>=3.9'
