@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>interpolate_to_grid &#8212; MetPy 1.6dev</title>
+    <title>interpolate_to_grid &#8212; MetPy 1.6</title>
   
   
   
@@ -42,7 +42,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=d6a008b6"></script>
+    <script src="../../_static/documentation_options.js?v=e15882dc"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Mar 01, 2024 at 23:19:08"/>
+    <meta name="docbuild:last-update" content="Apr 02, 2024 at 16:50:59"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.interpolate.interpolate_to_grid.html" />
 
   </head>
@@ -151,8 +151,8 @@
     
     
     
-    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6dev - Home"/>
-    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6dev - Home"/>`);</script>
+    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6 - Home"/>
+    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6 - Home"/>`);</script>
   
   
 </a></div>
@@ -771,7 +771,7 @@ document.write(`
 <h1>interpolate_to_grid<a class="headerlink" href="#interpolate-to-grid" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.interpolate.interpolate_to_grid">
-<span class="sig-prename descclassname"><span class="pre">metpy.interpolate.</span></span><span class="sig-name descname"><span class="pre">interpolate_to_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hres</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_star</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.052</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbf_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbf_smooth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_coords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/interpolate/grid.py#L224-L306"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.interpolate.interpolate_to_grid" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.interpolate.</span></span><span class="sig-name descname"><span class="pre">interpolate_to_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hres</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_star</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.052</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbf_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbf_smooth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_coords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.2/src/metpy/interpolate/grid.py#L224-L306"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.interpolate.interpolate_to_grid" title="Link to this definition">#</a></dt>
 <dd><p>Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

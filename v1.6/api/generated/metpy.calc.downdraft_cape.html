@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>downdraft_cape &#8212; MetPy 1.6dev</title>
+    <title>downdraft_cape &#8212; MetPy 1.6</title>
   
   
   
@@ -42,7 +42,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=d6a008b6"></script>
+    <script src="../../_static/documentation_options.js?v=e15882dc"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -76,7 +76,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Mar 01, 2024 at 23:19:08"/>
+    <meta name="docbuild:last-update" content="Apr 02, 2024 at 16:50:59"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.downdraft_cape.html" />
 
   </head>
@@ -152,8 +152,8 @@
     
     
     
-    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6dev - Home"/>
-    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6dev - Home"/>`);</script>
+    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6 - Home"/>
+    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6 - Home"/>`);</script>
   
   
 </a></div>
@@ -772,7 +772,7 @@ document.write(`
 <h1>downdraft_cape<a class="headerlink" href="#downdraft-cape" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.downdraft_cape">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">downdraft_cape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L3125-L3249"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.downdraft_cape" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">downdraft_cape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.2/src/metpy/calc/thermo.py#L3122-L3246"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.downdraft_cape" title="Link to this definition">#</a></dt>
 <dd><p>Calculate downward CAPE (DCAPE).</p>
 <p>Calculate the downward convective available potential energy (DCAPE) of a given upper air
 profile. Downward CAPE is the maximum negative buoyancy energy available to a descending
@@ -817,9 +817,9 @@ throughout the descent.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># calculate dewpoint</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Td</span> <span class="o">=</span> <span class="n">dewpoint_from_relative_humidity</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">rh</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">downdraft_cape</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">Td</span><span class="p">)</span>
-<span class="go">(&lt;Quantity(1222.67968, &#39;joule / kilogram&#39;)&gt;, &lt;Quantity([1008. 1000.  950.</span>
+<span class="go">(&lt;Quantity(1222.67967, &#39;joule / kilogram&#39;)&gt;, &lt;Quantity([1008. 1000.  950.</span>
 <span class="go">900.  850.  800.  750.  700.  650.  600.], &#39;hectopascal&#39;)&gt;, &lt;Quantity([17.50959548</span>
-<span class="go">17.20643425 15.237249 13.12607097 10.85045704 8.38243809 5.68671014 2.71808363</span>
+<span class="go">17.20643425 15.237249 13.12607097 10.85045704 8.38243809 5.68671014 2.71808368</span>
 <span class="go">-0.58203825 -4.29053485], &#39;degree_Celsius&#39;)&gt;)</span>
 </pre></div>
 </div>

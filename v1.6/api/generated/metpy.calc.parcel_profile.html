@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>parcel_profile &#8212; MetPy 1.6dev</title>
+    <title>parcel_profile &#8212; MetPy 1.6</title>
   
   
   
@@ -42,7 +42,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=d6a008b6"></script>
+    <script src="../../_static/documentation_options.js?v=e15882dc"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Mar 01, 2024 at 23:19:08"/>
+    <meta name="docbuild:last-update" content="Apr 02, 2024 at 16:50:59"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.parcel_profile.html" />
 
   </head>
@@ -151,8 +151,8 @@
     
     
     
-    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6dev - Home"/>
-    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6dev - Home"/>`);</script>
+    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6 - Home"/>
+    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6 - Home"/>`);</script>
   
   
 </a></div>
@@ -771,7 +771,7 @@ document.write(`
 <h1>parcel_profile<a class="headerlink" href="#parcel-profile" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.parcel_profile">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">parcel_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L917-L992"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.parcel_profile" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">parcel_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.2/src/metpy/calc/thermo.py#L917-L992"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.parcel_profile" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the profile a parcel takes through the atmosphere.</p>
 <p>The parcel starts at <em class="xref py py-obj">temperature</em>, and <a class="reference internal" href="metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="metpy.calc.dewpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dewpoint</span></code></a>, lifted up
 dry adiabatically to the LCL, and then moist adiabatically from there.
@@ -810,7 +810,7 @@ high to low pressure.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Td</span> <span class="o">=</span> <span class="n">dewpoint_from_relative_humidity</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">rh</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># computer parcel temperature</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parcel_profile</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Td</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
-<span class="go">&lt;Quantity([  29.3          28.61221952   25.22214738   23.46097535   21.5835928</span>
+<span class="go">&lt;Quantity([  29.3          28.61221952   25.22214738   23.46097684   21.5835928</span>
 <span class="go">19.57260398   17.40636185   15.05748615   12.49064866    9.6592539</span>
 <span class="go">    6.50023491    2.92560365   -1.19172846   -6.04257884  -11.92497517</span>
 <span class="go">-19.3176536   -28.97672464  -41.94444385  -50.01173076  -59.30936248</span>

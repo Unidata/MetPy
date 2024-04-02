@@ -18,6 +18,7 @@ blue is uncertain of parity, and white is unevaluated.
    <style type="text/css">
     .wy-table-responsive {border-style:solid; border-width:1px;}
     .wy-table-responsive td, th{border-style:solid;border-width:1px;}
+    .wy-table-responsive td:nth-child(3){word-break: break-word;}
     .wy-table-responsive .tg-implemented{background-color: #D9EAD3}
     .wy-table-responsive .tg-notimplemented{background-color: #F4CDCD}
     .wy-table-responsive .tg-yes{background-color: #93C47D}
@@ -329,7 +330,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Absolute vorticity</td>
         <td class="tg-implemented"><a href="../api/generated/metpy.calc.absolute_vorticity.html">metpy.calc.absolute_vorticity</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -393,7 +394,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Total deformation</td>
         <td class="tg-implemented"><a href="../api/generated/metpy.calc.total_deformation.html#metpy.calc.total_deformation">metpy.calc.total_deformation</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -417,7 +418,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Divergence</td>
         <td class="tg-implemented"><a href="../api/generated/metpy.calc.h_divergence.html#metpy.calc.h_divergence">metpy.calc.h_divergence</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -465,7 +466,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Frontogenesis</td>
         <td class="tg-implemented"><a href="../api/generated/metpy.calc.frontogenesis.html#metpy.calc.frontogenesis">metpy.calc.frontogenesis</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -511,9 +512,9 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">LAP(S)</td>
         <td class="tg-implemented">Laplacian operator</td>
-        <td class="tg-implemented"><a href="../api/generated/metpy.calc.laplacian.html#metpy.calc.laplacian">metpy.calc.laplacian</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.geospatial_laplacian.html#metpy.calc.geospatial_laplacian">metpy.calc.geospatial_laplacian</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">Yes - Different Answer</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -674,7 +675,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented"><a href="../api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_baroclinic">metpy.calc.potential_vorticity_baroclinic</a>
                                    <br><a href="../api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_barotropic">metpy.calc.potential_vorticity_barotropic</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -754,7 +755,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Shearing deformation</td>
         <td class="tg-implemented"><a href="../api/generated/metpy.calc.shearing_deformation.html#metpy.calc.shearing_deformation">metpy.calc.shearing_deformation</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -786,7 +787,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Stretching deformation</td>
         <td class="tg-implemented"><a href="../api/generated/metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation">metpy.calc.stretching_deformation</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -906,7 +907,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Vorticity</td>
         <td class="tg-implemented"><a href="../api/generated/metpy.calc.v_vorticity.html#metpy.calc.v_vorticity">metpy.calc.v_vorticity</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -1040,7 +1041,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">GRAD(S)</td>
         <td class="tg-implemented">Gradient of a scalar</td>
-        <td class="tg-implemented"><a href="../api/generated/metpy.calc.gradient.html#metpy.calc.gradient">metpy.calc.gradient</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.geospatial_gradient.html#metpy.calc.geospatial_gradient">metpy.calc.geospatial_gradient</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>

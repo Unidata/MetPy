@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Angle to Direction &#8212; MetPy 1.6dev</title>
+    <title>Angle to Direction &#8212; MetPy 1.6</title>
   
   
   
@@ -42,7 +42,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=d6a008b6"></script>
+    <script src="../../_static/documentation_options.js?v=e15882dc"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Mar 01, 2024 at 23:19:08"/>
+    <meta name="docbuild:last-update" content="Apr 02, 2024 at 16:50:59"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/calculations/Angle_to_Direction.html" />
 
   </head>
@@ -151,8 +151,8 @@
     
     
     
-    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6dev - Home"/>
-    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6dev - Home"/>`);</script>
+    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6 - Home"/>
+    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6 - Home"/>`);</script>
   
   
 </a></div>
@@ -624,22 +624,22 @@ get the corresponding direction</p>
 rounding to the nearest direction, handling angles &gt; 360,
 and defaulting to degrees if no units are specified.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">angle_deg_list</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">361</span><span class="p">,</span> <span class="mi">719</span><span class="p">]</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str_list</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="metpy.calc.angle_to_direction" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">angle_deg_list</span></a><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str_list</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str_list</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="metpy.calc.angle_to_direction" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">angle_deg_list</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str_list</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;N&#39;, &#39;N&#39;, &#39;N&#39;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;N&#39; &#39;N&#39; &#39;N&#39;]
 </pre></div>
 </div>
 <p>If you want the unabbrieviated version, input full=True</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">full_dir_str_list</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="metpy.calc.angle_to_direction" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">angle_deg_list</span></a><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">full_dir_str_list</span></a><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">full_dir_str_list</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="metpy.calc.angle_to_direction" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">angle_deg_list</span></a><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">full_dir_str_list</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;North&#39;, &#39;North&#39;, &#39;North&#39;]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;North&#39; &#39;North&#39; &#39;North&#39;]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.003 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.004 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-calculations-angle-to-direction-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/5e50ab42ac6ec7bf58df35e403f36520/Angle_to_Direction.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Angle_to_Direction.ipynb</span></code></a></p>

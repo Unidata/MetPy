@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>most_unstable_cape_cin &#8212; MetPy 1.6dev</title>
+    <title>most_unstable_cape_cin &#8212; MetPy 1.6</title>
   
   
   
@@ -42,7 +42,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=d6a008b6"></script>
+    <script src="../../_static/documentation_options.js?v=e15882dc"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Mar 01, 2024 at 23:19:08"/>
+    <meta name="docbuild:last-update" content="Apr 02, 2024 at 16:50:59"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.most_unstable_cape_cin.html" />
 
   </head>
@@ -151,8 +151,8 @@
     
     
     
-    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6dev - Home"/>
-    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6dev - Home"/>`);</script>
+    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6 - Home"/>
+    <script>document.write(`<img src="../../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6 - Home"/>`);</script>
   
   
 </a></div>
@@ -771,7 +771,7 @@ document.write(`
 <h1>most_unstable_cape_cin<a class="headerlink" href="#most-unstable-cape-cin" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.most_unstable_cape_cin">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">most_unstable_cape_cin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L2963-L3037"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.most_unstable_cape_cin" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">most_unstable_cape_cin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.2/src/metpy/calc/thermo.py#L2960-L3034"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.most_unstable_cape_cin" title="Link to this definition">#</a></dt>
 <dd><p>Calculate most unstable CAPE/CIN.</p>
 <p>Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
 of a given upper air profile and most unstable parcel path. CIN is integrated between the
@@ -816,7 +816,7 @@ logarithmically interpolated.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Td</span> <span class="o">=</span> <span class="n">dewpoint_from_relative_humidity</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">rh</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># calculate most unstbale CAPE/CIN</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">most_unstable_cape_cin</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">Td</span><span class="p">)</span>
-<span class="go">(&lt;Quantity(4703.77306, &#39;joule / kilogram&#39;)&gt;, &lt;Quantity(0, &#39;joule / kilogram&#39;)&gt;)</span>
+<span class="go">(&lt;Quantity(4703.77308, &#39;joule / kilogram&#39;)&gt;, &lt;Quantity(0, &#39;joule / kilogram&#39;)&gt;)</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
