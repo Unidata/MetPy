@@ -121,12 +121,14 @@ filterwarnings = [
 [tool.ruff]
 line-length = 95
 exclude = ["docs", "build", "src/metpy/io/_metar_parser/metar_parser.py"]
+preview = true
+
+[tool.ruff.lint]
 select = ["A", "B", "C", "CPY001", "D", "E", "E226", "F", "G", "I", "N", "NPY", "Q", "R", "S", "SIM", "T", "U", "W"]
 ignore = ["F405", "I001", "RET504", "RET505", "RET506", "RET507", "RUF100"]
-preview = true
 explicit-preview-rules = true
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "ci/filter_links.py" = ["E731", "T201", "S603", "S607"]
 "docs/doc-server.py" = ["T201"]
 "examples/*.py" = ["D", "T201", "B018"]
@@ -142,7 +144,7 @@ explicit-preview-rules = true
 "tutorials/*.py" = ["D", "T201", "B018"]
 
 [tool.ruff.lint.flake8-copyright]
-# Needed to add a comma
+# Needed to avoid need for spaces after a comma
 notice-rgx = "(?i)Copyright\\s+(\\(C\\)\\s+)?\\d{4}([-,]\\d{4})*"
 author = "MetPy Developers"
 
