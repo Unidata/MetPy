@@ -1836,6 +1836,8 @@ def angle_to_direction(input_angle, full=False, level=3):
     if isinstance(input_angle, xr.DataArray):
         xr_da = True
         coords = input_angle.coords
+    else:
+        xr_da = False
     try:  # strip units temporarily
         origin_units = input_angle.units
         input_angle = input_angle.m
