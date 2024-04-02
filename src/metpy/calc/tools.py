@@ -1833,6 +1833,9 @@ def angle_to_direction(input_angle, full=False, level=3):
     'SW'
 
     """
+    if isinstance(input_angle, xr.DataArray):
+        xr_da = True
+        coords = input_angle.coords
     try:  # strip units temporarily
         origin_units = input_angle.units
         input_angle = input_angle.m
@@ -1897,12 +1900,20 @@ def angle_to_direction(input_angle, full=False, level=3):
         if scalar:
             return dir_str_arr[0]
         else:
-            return np.array(dir_str_arr).reshape(origshape)
+            out = np.array(dir_str_arr).reshape(origshape)
+            if xr_da:
+                return xr.DataArray(out, coords)
+            else:
+                return out
     else:
         if scalar:
             return dir_str_arr
         else:
-            return np.array(dir_str_arr).reshape(origshape)
+            out = np.array(dir_str_arr).reshape(origshape)
+            if xr_da:
+                return xr.DataArray(out, coords)
+            else:
+                return out
 
 
 def _unabbreviate_direction(abb_dir_str):
