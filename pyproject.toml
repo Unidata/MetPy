@@ -142,7 +142,7 @@ explicit-preview-rules = true
 "tutorials/*.py" = ["D", "T201", "B018"]
 
 [tool.ruff.lint.flake8-copyright]
-# Needed to add a comma
+# Needed to avoid need for spaces after a comma
 notice-rgx = "(?i)Copyright\\s+(\\(C\\)\\s+)?\\d{4}([-,]\\d{4})*"
 author = "MetPy Developers"
 
