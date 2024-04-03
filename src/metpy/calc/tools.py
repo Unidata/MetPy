@@ -1804,7 +1804,7 @@ def _abbreviate_direction(ext_dir_str):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='input_angle')
 def angle_to_direction(input_angle, full=False, level=3):
     """Convert the meteorological angle to directional text.
 
@@ -1833,16 +1833,12 @@ def angle_to_direction(input_angle, full=False, level=3):
     'SW'
 
     """
-    if isinstance(input_angle, xr.DataArray):
-        xr_da = True
-        coords = input_angle.coords
-        input_angle = input_angle.values
-    else:
-        xr_da = False
     try:  # strip units temporarily
         origin_units = input_angle.units
         input_angle = input_angle.m
     except AttributeError:  # no units associated
+        origin_units = units.degree
+    if origin_units == units.dimensionless:  # assume if dimensionless is degree
         origin_units = units.degree
 
     if not hasattr(input_angle, '__len__') or isinstance(input_angle, str):
@@ -1903,20 +1899,12 @@ def angle_to_direction(input_angle, full=False, level=3):
         if scalar:
             return dir_str_arr[0]
         else:
-            out = np.array(dir_str_arr).reshape(origshape)
-            if xr_da:
-                return xr.DataArray(out, coords)
-            else:
-                return out
+            return np.array(dir_str_arr).reshape(origshape)
     else:
         if scalar:
             return dir_str_arr
         else:
-            out = np.array(dir_str_arr).reshape(origshape)
-            if xr_da:
-                return xr.DataArray(out, coords)
-            else:
-                return out
+            return np.array(dir_str_arr).reshape(origshape)
 
 
 def _unabbreviate_direction(abb_dir_str):

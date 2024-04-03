@@ -933,7 +933,7 @@ def test_angle_to_direction_level_1():
     assert_array_equal(output_dirs, expected_dirs)
 
 
-def test_angle_to_direction_ndarray():
+def test_angle_to_direction_ndarray_np():
     """Test array of angles in degree with a 2d numpy array."""
     expected_dirs = np.array([['E', 'W'], ['E', 'W']])
     input_angle = np.array([[90, 270], [90, 270]])
@@ -941,7 +941,7 @@ def test_angle_to_direction_ndarray():
     assert_array_equal(output_dirs, expected_dirs)
 
 
-def test_angle_to_direction_ndarray_da():
+def test_angle_to_direction_ndarray_xr():
     """Test array of angles in degree with a 2d xarray.DataArray."""
     expected_dirs = xr.DataArray(np.array([['E', 'W'], ['E', 'W']]))
     input_angle = xr.DataArray(np.array([[90, 270], [90, 270]]))
