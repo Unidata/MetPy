@@ -111,6 +111,11 @@ nitpick_ignore_regex = [
     ('py:class', r'.*D\[k\].*'),  # Python dict docstring
 ]
 
+show_warning_types = True
+
+# Eliminates unnecessary warning about sphinx-gallery rebuild
+suppress_warnings = ['config.cache']
+
 # Tweak how docs are formatted
 napoleon_use_rtype = False
 
