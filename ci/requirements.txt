@@ -5,5 +5,5 @@ pooch==1.8.1
 pint==0.23
 pyproj==3.6.1
 scipy==1.13.0
-traitlets==5.14.2
+traitlets==5.14.3
 xarray==2024.3.0
