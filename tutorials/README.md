@@ -15,7 +15,7 @@ To get started with the tutorials, follow these steps:
    pip install metpy
    
 2. **Clone the Repository**: Clone or download this repository to access the tutorial files:
-```bash
+   ```bash
    git clone https://github.com/your_username/metpy-tutorials.git
 
 3. **Navigate to Tutorials**: Open the cloned repository and navigate to the `tutorials` directory.
