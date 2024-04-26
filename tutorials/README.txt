@@ -1,5 +1,3 @@
-.. _tutorials-index:
-
 # MetPy Tutorials
 
 Welcome to the MetPy tutorials! These tutorials are designed to help you get started with using MetPy for meteorological data analysis and visualization. Whether you're a beginner looking to explore the basics or an experienced user seeking advanced techniques, these tutorials will guide you through various aspects of MetPy.
@@ -15,3 +13,4 @@ To get started with the tutorials, follow these steps:
 1. **Installation**: Ensure you have MetPy installed. You can install it via pip:
    ```bash
    pip install metpy
+```
