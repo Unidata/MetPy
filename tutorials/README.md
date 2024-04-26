@@ -30,21 +30,20 @@ To get started with the tutorials, follow these steps:
 
 ### Beginner Level
 
-1. **Introduction to MetPy**: Learn the basics of MetPy, including data structures and common operations.
+1. **Area Tutorial**: Learn how to use predefined areas with MetPy.
 
-2. **Plotting Meteorological Data**: Explore how to visualize meteorological data using MetPy's plotting functions.
+2. **Declarative Tutorial**: MetPy's declarative syntax simplifies data exploration and analysis by streamlining plotting in Python, hiding complexity to make data investigation more accessible.
+ 
+3.  **Unit Tutorial**: Learn how to work with units within Metpy!
 
 ### Intermediate Level
 
-1. **Working with Gridded Data**: Dive deeper into handling and manipulating gridded meteorological data with MetPy.
+1. **Upper Air Soundings**: Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutorial we will gather weather balloon data, plot it, perform a series of thermodynamic calculations, and summarize the results.
 
-2. **Analyzing Atmospheric Soundings**: Learn how to analyze atmospheric soundings and perform thermodynamic calculations.
-
+2. **xarray with MetPy Tutorial**: This tutorial demonstrates how to work with xarray, a powerful Python package for labeled arrays and datasets. MetPy seamlessly integrates with xarray's data model, offering convenient methods and properties for coordinate, coordinate reference system, and unit operations. 
 ### Advanced Level
 
-1. **Advanced Plotting Techniques**: Discover advanced plotting techniques and customization options available in MetPy.
-
-2. **Case Studies**: Explore real-world case studies and apply MetPy to analyze and interpret meteorological phenomena.
+1. **Advanced Tutorials Coming Soon**
 
 ## Contribution
 
