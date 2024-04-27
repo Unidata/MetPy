@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import pytest
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.023)
+@pytest.mark.mpl_image_compare(tolerance=0.002)
 def test_uslcc_plotting(ccrs, cfeature):
     """Test plotting the uslcc area with projection."""
     from metpy.plots import named_areas
@@ -27,7 +27,7 @@ def test_uslcc_plotting(ccrs, cfeature):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.016)
+@pytest.mark.mpl_image_compare(tolerance=0.)
 def test_au_plotting(ccrs, cfeature):
     """Test plotting the au area with projection."""
     from metpy.plots import named_areas
