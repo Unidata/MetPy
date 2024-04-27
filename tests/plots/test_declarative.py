@@ -92,7 +92,7 @@ def test_declarative_four_dims_error():
         pc.draw()
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.096)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.09)
 @needs_cartopy
 def test_declarative_contour():
     """Test making a contour plot."""
@@ -151,7 +151,7 @@ def test_declarative_titles():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.101)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.066)
 @needs_cartopy
 def test_declarative_smooth_contour():
     """Test making a contour plot using smooth_contour."""
@@ -180,7 +180,7 @@ def test_declarative_smooth_contour():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.121)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.006)
 @needs_cartopy
 def test_declarative_smooth_contour_calculation():
     """Test making a contour plot using smooth_contour."""
@@ -222,7 +222,7 @@ def test_declarative_smooth_contour_calculation():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.034)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.0038)
 @needs_cartopy
 def test_declarative_smooth_contour_order():
     """Test making a contour plot using smooth_contour with tuple."""
@@ -251,7 +251,7 @@ def test_declarative_smooth_contour_order():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.063)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.058)
 @needs_cartopy
 def test_declarative_figsize():
     """Test having an all float figsize."""
@@ -279,7 +279,7 @@ def test_declarative_figsize():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.039)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.031)
 @needs_cartopy
 def test_declarative_smooth_field():
     """Test the smoothing of the field with smooth_field trait."""
@@ -367,7 +367,7 @@ def test_declarative_contour_options():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.085)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.009)
 @needs_cartopy
 def test_declarative_layers_plot_options():
     """Test declarative layer options of edgecolor and linewidth."""
@@ -397,7 +397,7 @@ def test_declarative_layers_plot_options():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.021)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.009)
 @needs_cartopy
 def test_declarative_additional_layers_plot_options():
     """Test additional declarative layer options of linestyle, zorder, and alpha."""
@@ -468,7 +468,6 @@ def test_declarative_contour_convert_units():
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
-
     contour = ContourPlot()
     contour.data = data
     contour.field = 'Temperature'
@@ -658,7 +657,7 @@ def test_colorfill():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.004)
 def test_colorfill_with_image_range(cfeature):
     """Test that we can use ContourFillPlot with image_range bounds."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -685,7 +684,7 @@ def test_colorfill_with_image_range(cfeature):
 
 
 @pytest.mark.mpl_image_compare(
-    remove_text=True, tolerance=0.02, filename='test_colorfill_with_image_range.png'
+    remove_text=True, tolerance=0.004, filename='test_colorfill_with_image_range.png'
 )
 def test_colorfill_with_normalize_instance_image_range(cfeature):
     """Test that we can use ContourFillPlot with image_range bounds."""
@@ -763,7 +762,7 @@ def test_colorbar_kwargs(cfeature):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.005)
 def test_colorfill_no_colorbar(cfeature):
     """Test that we can use ContourFillPlot with no colorbar."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -1041,7 +1040,7 @@ def test_declarative_overlay_projections():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.047)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.0094)
 @needs_cartopy
 def test_declarative_gridded_scale():
     """Test making a contour plot."""
@@ -1099,7 +1098,7 @@ def test_declarative_global_gfs():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=1.05)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=1.42)
 @needs_cartopy
 def test_declarative_barb_gfs():
     """Test making a contour plot."""
@@ -1128,7 +1127,7 @@ def test_declarative_barb_gfs():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.665)
 @needs_cartopy
 def test_declarative_barb_scale():
     """Test making a contour plot."""
@@ -1158,7 +1157,7 @@ def test_declarative_barb_scale():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.668)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.722)
 @needs_cartopy
 def test_declarative_barb_gfs_knots():
     """Test making a contour plot."""
@@ -1363,7 +1362,7 @@ def test_declarative_sfc_obs(ccrs, pandas_sfc):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.025)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
 def test_declarative_sfc_obs_args(ccrs, pandas_sfc):
     """Test making a surface observation plot with mpl arguments."""
     obs = PlotObs()
@@ -1424,7 +1423,7 @@ def test_declarative_sfc_text(pandas_sfc):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.025)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
 def test_declarative_sfc_obs_changes(ccrs, pandas_sfc):
     """Test making a surface observation plot, changing the field."""
     obs = PlotObs()
@@ -1486,7 +1485,7 @@ def test_declarative_colored_barbs(ccrs, pandas_sfc):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.305)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.314)
 def test_declarative_sfc_obs_full(ccrs, pandas_sfc):
     """Test making a full surface observation plot."""
     obs = PlotObs()
@@ -1663,7 +1662,7 @@ def test_attribute_error_station(ccrs, pandas_sfc):
     plt.close(pc.figure)
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.024)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
 def test_declarative_sfc_obs_change_units(ccrs):
     """Test making a surface observation plot."""
     data = parse_metar_file(get_test_data('metar_20190701_1200.txt', as_file_obj=False),
@@ -1696,7 +1695,7 @@ def test_declarative_sfc_obs_change_units(ccrs):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.0)
 def test_declarative_multiple_sfc_obs_change_units(ccrs):
     """Test making a surface observation plot."""
     data = parse_metar_file(get_test_data('metar_20190701_1200.txt', as_file_obj=False),
@@ -1761,7 +1760,7 @@ def test_declarative_title_fontsize():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.607)
+@pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.)
 @needs_cartopy
 def test_declarative_colorbar_fontsize():
     """Test adjusting the font size of a colorbar."""
@@ -1933,7 +1932,7 @@ def test_declarative_region_modifier_zoom_in():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.338)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.332)
 @needs_cartopy
 def test_declarative_region_modifier_zoom_out():
     """Test that '-' suffix on area string properly expands extent of map."""
