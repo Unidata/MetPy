@@ -3,17 +3,15 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Configure pytest for metpy."""
 
+import contextlib
+import importlib
 import os
+import textwrap
 
-import matplotlib
 import matplotlib.pyplot
 import numpy
-import pandas
-import pooch
 import pyproj
 import pytest
-import scipy
-import traitlets
 import xarray
 
 import metpy.calc
@@ -26,11 +24,16 @@ import pint  # noqa: I100, E402
 
 def pytest_report_header():
     """Add dependency information to pytest output."""
-    return (f'Dep Versions: Matplotlib {matplotlib.__version__}, '
-            f'NumPy {numpy.__version__}, Pandas {pandas.__version__}, '
-            f'Pint {pint.__version__}, Pooch {pooch.__version__}\n'
-            f'\tPyProj {pyproj.__version__}, SciPy {scipy.__version__}, '
-            f'Traitlets {traitlets.__version__}, Xarray {xarray.__version__}')
+    lines = []
+    for modname in ('cartopy', 'dask', 'matplotlib', 'numpy', 'pandas', 'pint', 'pooch',
+                    'pyproj', 'scipy', 'shapely', 'traitlets', 'xarray'):
+        with contextlib.suppress(ImportError):
+            mod = importlib.import_module(modname)
+            lines.append(f'{modname.title()}:{mod.__version__}')
+
+    # textwrap.wrap will split on the space in 'mod: version', so add space afterwards
+    lines = textwrap.wrap('Dep Versions:' + ', '.join(lines), width=80, subsequent_indent='\t')
+    return [line.replace(':', ': ') for line in lines]
 
 
 @pytest.fixture(autouse=True)
