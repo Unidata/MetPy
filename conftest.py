@@ -24,7 +24,7 @@ os.environ['PINT_ARRAY_PROTOCOL_FALLBACK'] = '0'
 import pint  # noqa: I100, E402
 
 
-def pytest_report_header(config, startdir):
+def pytest_report_header():
     """Add dependency information to pytest output."""
     return (f'Dep Versions: Matplotlib {matplotlib.__version__}, '
             f'NumPy {numpy.__version__}, Pandas {pandas.__version__}, '
