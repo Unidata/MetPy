@@ -5,7 +5,6 @@
 
 import contextlib
 import importlib
-import os
 import textwrap
 
 import matplotlib.pyplot
@@ -16,10 +15,6 @@ import xarray
 
 import metpy.calc
 import metpy.units
-
-# Need to disable fallback before importing pint
-os.environ['PINT_ARRAY_PROTOCOL_FALLBACK'] = '0'
-import pint  # noqa: I100, E402
 
 
 def pytest_report_header():
