@@ -23,17 +23,12 @@ import metpy.units
 os.environ['PINT_ARRAY_PROTOCOL_FALLBACK'] = '0'
 import pint  # noqa: I100, E402
 
-try:
-    pooch_version = pooch.__version__
-except AttributeError:
-    pooch_version = pooch.version.full_version
-
 
 def pytest_report_header(config, startdir):
     """Add dependency information to pytest output."""
     return (f'Dep Versions: Matplotlib {matplotlib.__version__}, '
             f'NumPy {numpy.__version__}, Pandas {pandas.__version__}, '
-            f'Pint {pint.__version__}, Pooch {pooch_version}\n'
+            f'Pint {pint.__version__}, Pooch {pooch.__version__}\n'
             f'\tPyProj {pyproj.__version__}, SciPy {scipy.__version__}, '
             f'Traitlets {traitlets.__version__}, Xarray {xarray.__version__}')
 
