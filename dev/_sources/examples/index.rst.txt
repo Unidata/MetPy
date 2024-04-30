@@ -21,6 +21,7 @@ Examples of using a variety of MetPy's functionality together.
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -158,6 +159,8 @@ Examples of using a variety of MetPy's functionality together.
     </div>
 
 
+.. thumbnail-parent-div-close
+
 .. raw:: html
 
     </div>
@@ -187,6 +190,7 @@ Examples using various calculation functions from MetPy.
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -545,6 +549,8 @@ Examples using various calculation functions from MetPy.
     </div>
 
 
+.. thumbnail-parent-div-close
+
 .. raw:: html
 
     </div>
@@ -561,6 +567,7 @@ Examples using MetPy's support for reading various file formats.
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -613,6 +620,8 @@ Examples using MetPy's support for reading various file formats.
     </div>
 
 
+.. thumbnail-parent-div-close
+
 .. raw:: html
 
     </div>
@@ -629,6 +638,7 @@ Examples generating a grid of data from scattered point observations.
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -715,6 +725,8 @@ Examples generating a grid of data from scattered point observations.
     </div>
 
 
+.. thumbnail-parent-div-close
+
 .. raw:: html
 
     </div>
@@ -731,6 +743,7 @@ Examples using MetPy's various specialty plotting routines.
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -1020,6 +1033,8 @@ Examples using MetPy's various specialty plotting routines.
       <div class="sphx-glr-thumbnail-title">Station Plot with Layout</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

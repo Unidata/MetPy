@@ -14,6 +14,7 @@ common meteorological tasks.
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -99,6 +100,8 @@ common meteorological tasks.
       <div class="sphx-glr-thumbnail-title">MetPy Declarative Syntax Tutorial</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

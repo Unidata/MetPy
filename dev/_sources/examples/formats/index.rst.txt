@@ -15,6 +15,7 @@ Examples using MetPy's support for reading various file formats.
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -66,6 +67,8 @@ Examples using MetPy's support for reading various file formats.
       <div class="sphx-glr-thumbnail-title">NEXRAD Level 2 File</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

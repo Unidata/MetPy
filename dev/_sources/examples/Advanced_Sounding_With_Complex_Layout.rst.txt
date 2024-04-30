@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_Advanced_Sounding_With_Complex_Layout.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -143,7 +143,7 @@ Create a new figure. The dimensions here give a good aspect ratio
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7f5e74cf39d0>]
+    [<matplotlib.lines.Line2D object at 0x7ffbccbf8290>]
 
 
 
@@ -429,7 +429,7 @@ try another Skew-T with a few more advanced features:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.806 seconds)
+   **Total running time of the script:** (0 minutes 0.817 seconds)
 
 
 .. _sphx_glr_download_examples_Advanced_Sounding_With_Complex_Layout.py:
