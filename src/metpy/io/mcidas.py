@@ -9,18 +9,17 @@ import logging
 import struct
 import sys
 
+from matplotlib.transforms import Affine2D
 import numpy as np
 import pyproj
-import rasterio
-import rasterio.mask
-import rasterio.transform
-import rasterio.warp
-import shapely.geometry as sgeom
-import shapely.ops as sops
+from xarray import DataArray
 
-from metpy.io._tools import IOBuffer, NamedStruct
+from ._tools import IOBuffer, NamedStruct, open_as_needed
+from ..package_tools import Exporter
+from ..plots.mapping import CFProjection
 
-logger = logging.getLogger(__name__)
+exporter = Exporter(globals())
+log = logging.getLogger(__name__)
 
 SENSOR_SOURCE = {
     0: 'Derived data',
@@ -258,6 +257,18 @@ def range_longitude(lon):
     return (lon + 180) % 360 - 180
 
 
+def repeat_format(*names, binary_format, repeat=1, call=None):
+    """Repeat a format for a NamedStruct."""
+    fmt = []
+    for n in range(1, repeat + 1):
+        for name in names:
+            fmt.append(
+                (f'{name}{n}', binary_format, call) if call else (f'{name}{n}', binary_format)
+            )
+
+    return fmt
+
+
 class AreaFile:
     """McIDAS AREA decoder class."""
 
@@ -288,25 +299,17 @@ class AreaFile:
         ('word62', 'i'), ('calibration_offset', 'i'), ('comment_length', 'i')
     ]
 
-    def __init__(self, file, projection=None, bbox=None, num_threads=2):
+    def __init__(self, file):
         """Instantiate AREA object from file.
 
         Parameters
         ----------
         file : str or `pathlib.Path`
             AREA file.
-
-        projection : `pyproj.Proj`
-            Optional projection for reprojection of the image.
-
-        bbox : tuple of floats
-            Tuple corresponding to (minlon, minlat, maxlon, maxlat).
-            Optional bounding box to crop raster.
-
-        num_threads : int
-            Number of threads to use for reprojection using `rasterio.warp`.
         """
-        with contextlib.closing(open(file, 'rb')) as fobj:  # noqa: SIM115
+        fobj = open_as_needed(file)
+
+        with contextlib.closing(fobj):
             self._buffer = IOBuffer.fromfile(fobj)
 
         self._start = self._buffer.set_mark()
@@ -314,8 +317,6 @@ class AreaFile:
         check = self._buffer.read_binary(8)
         self._swap_bytes(check[4:])
         self._buffer.jump_to(self._start)
-
-        self._num_threads = num_threads
 
         self.directory_block = self._buffer.read_struct(
             NamedStruct(self.directory_format, self.prefmt, 'Directory')
@@ -325,29 +326,18 @@ class AreaFile:
             self._buffer.jump_to(self._start, self.directory_block.navigation_offset)
             self.navigation_type = self._buffer.read_ascii(4)
 
-            if self.navigation_type == 'GVAR':
-                self.navigation_block = self._buffer.read_binary(639)
-            else:
-                self.navigation_block = self._buffer.read_struct(
-                    NamedStruct(self._get_navigation_format(self.navigation_type),
-                                self.prefmt, 'Navigation')
-                )
+            self.navigation_block = self._buffer.read_struct(
+                NamedStruct(self._get_navigation_format(self.navigation_type),
+                            self.prefmt, 'Navigation')
+            )
         else:
             self.navigation_type = None
 
         self._set_georeference()
 
-        self._get_data()
-
-        self._set_extent()
-
-        if projection is not None:
-            self._reproject(projection)
-
-        if bbox is not None:
-            self._crop_raster(bbox)
-
         self._set_timestamp()
+
+        self._get_data()
 
     @property
     def image(self):
@@ -365,109 +355,14 @@ class AreaFile:
         return self._crs
 
     @property
-    def transform(self):
-        """Get affine transform."""
-        return self._transform
-
-    @property
     def timestamp(self):
         """Get timestamp."""
         return self._timestamp
 
-    def get_extent(self, projection=None):
-        """Get extent of image.
-
-        Parameters
-        ----------
-        projection : `pyproj.Proj`
-            Optional projection for reprojection of the extent.
-        """
-        if projection is None:
-            return self._extent
-        else:
-            tform = pyproj.Transformer.from_crs(self.crs, projection.crs)
-            left, right, bot, top = self._extent
-            llx, lly = tform.transform(left, bot)
-            urx, ury = tform.transform(right, top)
-            return llx, urx, lly, ury
-
-    def _crop_raster(self, bbox):
-        """Crop raster to a given bounding box.
-
-        bbox : tuple of floats
-            Tuple corresponding to (minlon, minlat, maxlon, maxlat).
-        """
-        rect = sgeom.box(*bbox)
-
-        if self.is_projected:
-            reproject = pyproj.Transformer.from_crs(pyproj.CRS('EPSG:4326'),
-                                                    self._crs,
-                                                    always_xy=True).transform
-            rect = sops.transform(reproject, rect)
-
-        height, width = self._image.shape
-        src_profile = {
-            'driver': 'GTiff',
-            'height': height,
-            'width': width,
-            'count': 1,
-            'crs': self._crs,
-            'transform': self._transform,
-            'dtype': self._image.dtype,
-            'nodata': 0,
-            'compress': 'lzw',
-        }
-
-        with rasterio.MemoryFile() as mem, mem.open(**src_profile) as dataset:
-            dataset.write(self._image[np.newaxis, ...])  # [count, y, x]
-            crop_image, crop_affine = rasterio.mask.mask(
-                dataset, [rect], all_touched=True, crop=True, pad=False
-            )
-
-        self._image = crop_image[0, ...]
-        self._transform = crop_affine
-        self._set_extent()
-
-    def _reproject(self, projection):
-        """Reproject raster image.
-
-        Parameters
-        ----------
-        projection : `pyproj.Proj`
-            Projection for reprojection of the image.
-        """
-        height, width = self._image.shape
-        src_profile = {
-            'driver': 'GTiff',
-            'height': height,
-            'width': width,
-            'count': 1,
-            'crs': self._crs,
-            'transform': self._transform,
-            'dtype': self._image.dtype,
-            'nodata': 0,
-            'compress': 'lzw',
-        }
-
-        with rasterio.MemoryFile() as mem:
-            with mem.open(**src_profile) as dataset:
-                dataset.write(self._image[np.newaxis, ...])  # [count, y, x]
-            with mem.open() as dataset:
-                proj_img, aff = rasterio.warp.reproject(
-                    rasterio.band(dataset, 1),
-                    dst_crs=projection.crs,
-                    num_threads=self._num_threads,
-                    dst_nodata=0
-                )
-                self._image = proj_img[0, ...]
-
-        self._transform = aff
-        self._crs = projection.crs
-        if projection.crs.coordinate_operation:
-            self.is_projected = True
-        else:
-            self.is_projected = False
-        self._set_extent()
+    @property
+    def extent(self):
+        """Get image extent."""
+        return self._extent
 
     def _get_data(self):
         """Extract data from file."""
@@ -490,17 +385,17 @@ class AreaFile:
                 val_code = self._buffer.read_int(4, self.endian, False)
                 if val_code != self.directory_block.validity_code:
                     continue
-                docs = self._buffer.read_ascii(  # noqa: F841
+                _docs = self._buffer.read_ascii(
                     self.directory_block.prefix_doc_length
                 )
                 dtype = np.dtype('int32')
                 if self.prefmt:
                     dtype = dtype.newbyteorder(self.prefmt)
-                cal = self._buffer.read_array(  # noqa: F841
+                _cal = self._buffer.read_array(
                     self.directory_block.prefix_calibration_length,
                     dtype
                 )
-                bands = self._buffer.read_array(  # noqa: F841
+                _bands = self._buffer.read_array(
                     self.directory_block.prefix_band_length,
                     dtype
                 )
@@ -508,7 +403,31 @@ class AreaFile:
             buffer = self._buffer.read_array(nx, data_dtype)
             data[j, :] = buffer
 
-        self._image = data
+        # Store image in xarray.Dataset
+        da = DataArray(
+            data=data[np.newaxis, ...],
+            coords={
+                'time': [self._timestamp],
+                'x': self._x,
+                'y': self._y,
+                'longitude': (('y', 'x'), self._lons),
+                'latitude': (('y', 'x'), self._lats),
+                'metpy_crs': CFProjection(self._crs.to_cf())
+            },
+            dims=['time', 'y', 'x'],
+            name='image'
+        )
+
+        if self.is_projected:
+            da['x'].attrs['units'] = 'meters'
+            da['y'].attrs['units'] = 'meters'
+
+        da['longitude'].attrs['units'] = 'degrees_east'
+        da['longitude'].attrs['standard_name'] = 'longitude'
+        da['latitude'].attrs['units'] = 'degrees_north'
+        da['latitude'].attrs['standard_name'] = 'latitude'
+
+        self._image = da
 
     @staticmethod
     def _get_navigation_format(navigation_type):
@@ -547,6 +466,64 @@ class AreaFile:
                 ('second_beta_time1', 'i'), ('second_beta_time2', 'i'), ('beta_count2', 'i'),
                 ('gamma_offset', 'i'), ('time_zero', 'i'), ('gamma_dot', 'i'), (None, '4x'),
                 ('memo', '32s', _decode_strip)
+            ],
+            'GVAR': [
+                ('memo', '4s', _decode_strip),
+                ('scan_status1', 'i'), ('scan_status2', 'i'), (None, '4x'),
+                ('ref_longitude', 'i'), ('ref_dist_from_nominal', 'i'), ('ref_latitude', 'i'),
+                ('ref_yaw', 'i'), ('ref_attitude_roll', 'i'), ('ref_attitude_pitch', 'i'),
+                ('ref_attitude_yaw', 'i'), ('epoch_date', 'i'), ('epoch_time', 'i'),
+                ('epoch_delta', 'i'), ('image_motion_comp_roll', 'i'),
+                ('image_motion_comp_pitch', 'i'), ('image_motion_comp_yaw', 'i'),
+                *repeat_format('longitude_delta', binary_format='i', repeat=13),
+                *repeat_format('radial_dist_delta', binary_format='i', repeat=11),
+                *repeat_format('sin_geocentric_lat_delta', binary_format='i', repeat=9),
+                *repeat_format('sin_orbit_yaw_delta', binary_format='i', repeat=9),
+                ('daily_solar_rate', 'i'), ('exp_start_time', 'i'),
+                ('roll_exp_magnitude', 'i'), ('roll_exp_time_const', 'i'),
+                ('roll_mean_attitude', 'i'), ('roll_num_sin', 'i'),
+                *repeat_format('roll_sin_mag', 'roll_phase_sin', binary_format='i', repeat=15),
+                ('roll_num_mono_sin', 'i'),
+                *repeat_format('roll_order_app_sin', 'roll_order_mono_sin',
+                               'roll_magnitude_mono_sin', 'roll_phase_mono_sin',
+                               'roll_angle_from_epoch', binary_format='i', repeat=4),
+                (None, '48x'), ('pitch_exp_magnitude', 'i'), ('pitch_exp_time_const', 'i'),
+                ('pitch_mean_attitude', 'i'), ('pitch_num_sin', 'i'),
+                *repeat_format('pitch_sin_mag', 'pitch_phase_sin', binary_format='i',
+                               repeat=15),
+                ('pitch_num_mono_sin', 'i'),
+                *repeat_format('pitch_order_app_sin', 'pitch_order_mono_sin',
+                               'pitch_magnitude_mono_sin', 'pitch_phase_mono_sin',
+                               'pitch_angle_from_epoch', binary_format='i', repeat=4),
+                ('yaw_exp_magnitude', 'i'), ('yaw_exp_time_const', 'i'),
+                ('yaw_mean_attitude', 'i'), ('yaw_num_sin', 'i'),
+                *repeat_format('yaw_sin_mag', 'yaw_phase_sin', binary_format='i', repeat=15),
+                ('yaw_num_mono_sin', 'i'),
+                *repeat_format('yaw_order_app_sin', 'yaw_order_mono_sin',
+                               'yaw_magnitude_mono_sin', 'yaw_phase_mono_sin',
+                               'yaw_angle_from_epoch', binary_format='i', repeat=4),
+                (None, '72x'), ('pitch_misalign_exp_magnitude', 'i'),
+                ('pitch_misalign_exp_time_const', 'i'), ('pitch_misalign_mean_attitude', 'i'),
+                ('pitch_misalign_num_sin', 'i'),
+                *repeat_format('pitch_misalign_sin_mag', 'pitch_misalign_phase_sin',
+                               binary_format='i', repeat=15),
+                ('pitch_misalign_num_mono_sin', 'i'),
+                *repeat_format('pitch_misalign_order_app_sin', 'pitch_misalign_order_mono_sin',
+                               'pitch_misalign_magnitude_mono_sin',
+                               'pitch_misalign_phase_mono_sin',
+                               'pitch_misalign_angle_from_epoch', binary_format='i', repeat=4),
+                ('yaw_misalign_exp_magnitude', 'i'), ('yaw_misalign_exp_time_const', 'i'),
+                ('yaw_misalign_mean_attitude', 'i'), ('yaw_misalign_num_sin', 'i'),
+                *repeat_format('yaw_misalign_sin_mag', 'yaw_misalign_phase_sin',
+                               binary_format='i', repeat=15),
+                ('yaw_misalign_num_mono_sin', 'i'),
+                *repeat_format('yaw_misalign_order_app_sin', 'yaw_misalign_order_mono_sin',
+                               'yaw_misalign_magnitude_mono_sin',
+                               'yaw_misalign_phase_mono_sin', 'yaw_misalign_angle_from_epoch',
+                               binary_format='i', repeat=4),
+                ('julian_date', 'i'), ('image_start_time', 'i'), ('instrument_flag', 'i'),
+                (None, '36x'), ('nadir_ns', 'i'), ('nadir_ew', 'i'), ('nadir_ns_inc', 'i'),
+                ('nadir_ew_inc', 'i'), (None, '1028x')
             ],
             'LALO': [
                 ('navigation_source', '4s', bytes.decode), (None, '252x'),
@@ -627,6 +604,39 @@ class AreaFile:
         else:
             return navigation_format
 
+    @staticmethod
+    def _set_extent(origin, dx, dy, nx, ny):
+        """Set image extent.
+
+        Parameters
+        ----------
+        origin : tuple
+            (x, y) coordinate of image origin.
+
+        dx, dy : int, float
+            x and y resolutions.
+
+        nx, ny
+            x and y sizes.
+        """
+        west, north = origin
+        affine = Affine2D().scale(dx, -dy).translate(west, north)
+
+        a, b, c, d, e, f = affine.to_values()
+
+        if b == e == 0:
+            west, south, east, north = e, f + d * ny, e + a * nx, f
+        else:
+            c0x, c0y = e, f
+            c1x, c1y = (0 * a + ny * c + e, 0 * b + ny * d + f)
+            c2x, c2y = (nx * a + ny * c + e, nx * b + ny * d + f)
+            c3x, c3y = (nx * a + 0 * c + e, nx * b + 0 * d + f)
+            xs = (c0x, c1x, c2x, c3x)
+            ys = (c0y, c1y, c2y, c3y)
+            west, south, east, north = min(xs), min(ys), max(xs), max(ys)
+
+        return west, east, south, north
+
     def _set_georeference(self):
         """Get geographic transform for image data."""
         nav = self.navigation_type
@@ -636,10 +646,13 @@ class AreaFile:
         origin_line = self.directory_block.upper_left_line_coordinate
         origin_elem = self.directory_block.upper_left_image_element
 
+        ny = self.directory_block.image_lines
+        nx = self.directory_block.data_per_line
+
         if nav == 'RECT':
-            # FIXME: NASA RGBs have odd dx/dy values that seem to
-            # not be scaled correctly. We account for that here
-            # until a better way is found.
+            # NASA RGBs have odd dx/dy values that seem to
+            # not be scaled correctly. We account for that here.
+            # Will need to monitor for possible issues with other data.
             if self.navigation_block.dx > 1e4:
                 dx = self.navigation_block.dx / 1e6
             else:
@@ -650,9 +663,9 @@ class AreaFile:
             else:
                 dy = self.navigation_block.dy / 1e4
 
-            # ecc = self.navigation_block.sphere_eccentricity / 1e6
-            # semimajor_r = self.navigation_block.sphere_radius
-            # semiminor_r = (1 - ecc**2) * semimajor_r**2
+            _ecc = self.navigation_block.sphere_eccentricity / 1e6
+            _semimajor_r = self.navigation_block.sphere_radius
+            _semiminor_r = (1 - _ecc**2) * _semimajor_r**2
 
             # Account for area resolution and map to area coordinates
             diff_y = (self.navigation_block.image_row_number - origin_line) / yres
@@ -668,8 +681,12 @@ class AreaFile:
             origin_lat = base_lat + (diff_y * dy)
             origin_lon = base_lon - (diff_x * dx)
 
-            self._transform = rasterio.transform.from_origin(
-                origin_lon, origin_lat, dx, dy
+            self._x = np.arange(nx)
+            self._y = np.arange(ny)
+
+            self._lons, self._lats = np.meshgrid(
+                (origin_lon + self._x * dx),
+                (origin_lat - self._y * dy)
             )
 
             self._crs = pyproj.CRS(
@@ -677,6 +694,8 @@ class AreaFile:
                 R=self.navigation_block.sphere_radius,
                 e=self.navigation_block.sphere_eccentricity / 1e6,
             )
+
+            self._extent = self._set_extent((origin_lon, origin_lat), dx, dy, nx, ny)
 
             self.is_projected = False
         elif nav == 'MERC':
@@ -708,9 +727,13 @@ class AreaFile:
             origin_x = -diff_x * dx
             origin_y = diff_y * dy
 
-            self._transform = rasterio.transform.from_origin(
-                origin_x, origin_y, dx, dy
-            )
+            self._x = (origin_x + np.arange(nx) * dx).astype('int64')
+            self._y = (origin_y - np.arange(ny) * dy).astype('int64')
+
+            self._lons, self._lats = pyproj.Proj(self._crs)(*np.meshgrid(self._x, self._y),
+                                                            inverse=True)
+
+            self._extent = self._set_extent((origin_x, origin_y), dx, dy, nx, ny)
 
             self.is_projected = True
         elif nav == 'TANC':
@@ -743,20 +766,16 @@ class AreaFile:
             uly = pole_y + py
             ulx = -px
 
-            self._transform = rasterio.transform.from_origin(
-                ulx, uly, res, res
-            )
+            self._x = (ulx + np.arange(nx) * res).astype('int64')
+            self._y = (uly - np.arange(ny) * res).astype('int64')
+
+            self._lons, self._lats = proj(*np.meshgrid(self._x, self._y), inverse=True)
+
+            self._extent = self._set_extent((ulx, uly), res, res, nx, ny)
 
             self.is_projected = True
         else:
             raise NotImplementedError(f'{nav} navigation not currently supported.')
-
-    def _set_extent(self):
-        """Set image extent."""
-        left, bottom, right, top = rasterio.transform.array_bounds(
-            *self._image.shape, self._transform
-        )
-        self._extent = left, right, bottom, top
 
     def _set_timestamp(self):
         """Set timestamp."""
