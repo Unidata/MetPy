@@ -5,6 +5,13 @@
 from inspect import Parameter, Signature, signature
 
 import numpy as np
+
+# Can drop fallback once we rely on numpy>=2
+try:
+    from numpy import trapezoid
+except ImportError:
+    from numpy import trapz as trapezoid
+
 import scipy.integrate as si
 import scipy.optimize as so
 import xarray as xr
@@ -2455,7 +2462,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     x_clipped = x[p_mask].magnitude
     y_clipped = y[p_mask].magnitude
     cape = (mpconsts.Rd
-            * units.Quantity(np.trapz(y_clipped, np.log(x_clipped)), 'K')).to(units('J/kg'))
+            * units.Quantity(trapezoid(y_clipped, np.log(x_clipped)), 'K')).to(units('J/kg'))
 
     # CIN
     # Only use data between the surface and LFC for calculation
@@ -2463,7 +2470,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     x_clipped = x[p_mask].magnitude
     y_clipped = y[p_mask].magnitude
     cin = (mpconsts.Rd
-           * units.Quantity(np.trapz(y_clipped, np.log(x_clipped)), 'K')).to(units('J/kg'))
+           * units.Quantity(trapezoid(y_clipped, np.log(x_clipped)), 'K')).to(units('J/kg'))
 
     # Set CIN to 0 if it's returned as a positive value (#1190)
     if cin > units.Quantity(0, 'J/kg'):
@@ -3240,7 +3247,7 @@ def downdraft_cape(pressure, temperature, dewpoint):
 
     # Find DCAPE
     dcape = -(mpconsts.Rd
-              * units.Quantity(np.trapz(diff, lnp), 'K')
+              * units.Quantity(trapezoid(diff, lnp), 'K')
               ).to(units('J/kg'))
 
     return dcape, down_pressure, down_parcel_trace
@@ -3439,7 +3446,7 @@ def mixed_layer(pressure, *args, height=None, bottom=None, depth=None, interpola
     ret = []
     for datavar_layer in datavars_layer:
         actual_depth = abs(p_layer[0] - p_layer[-1])
-        ret.append(units.Quantity(np.trapz(datavar_layer.m, p_layer.m) / -actual_depth.m,
+        ret.append(units.Quantity(trapezoid(datavar_layer.m, p_layer.m) / -actual_depth.m,
                    datavar_layer.units))
     return ret
 
@@ -3691,7 +3698,7 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
     # Take the integral
     return (
         -mpconsts.nounit.Rd / mpconsts.nounit.g
-        * np.trapz(layer_virttemp, np.log(layer_p))
+        * trapezoid(layer_virttemp, np.log(layer_p))
     )
 
 

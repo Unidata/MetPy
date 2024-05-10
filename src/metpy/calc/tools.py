@@ -8,7 +8,13 @@ from inspect import Parameter, signature
 from operator import itemgetter
 
 import numpy as np
-from numpy.core.numeric import normalize_axis_index
+
+# Can drop fallback once we rely on numpy>=2
+try:
+    from numpy.lib.array_utils import normalize_axis_index
+except ImportError:
+    from numpy.core.numeric import normalize_axis_index
+
 import numpy.ma as ma
 from pyproj import CRS, Geod, Proj
 from scipy.spatial import cKDTree
