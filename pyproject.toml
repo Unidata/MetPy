@@ -39,6 +39,7 @@ dependencies = [
 
 [project.entry-points."xarray.backends"]
 gini = "metpy.io.gini:GiniXarrayBackend"
+area = "metpy.io.mcidas:AreaFileXarrayBackend"
 
 [project.optional-dependencies]
 doc = [

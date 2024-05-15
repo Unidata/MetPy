@@ -12,7 +12,9 @@ import sys
 from matplotlib.transforms import Affine2D
 import numpy as np
 import pyproj
-from xarray import DataArray
+from xarray import DataArray, Dataset, Variable
+from xarray.backends import BackendEntrypoint
+from xarray.backends.common import AbstractDataStore
 
 from ._tools import IOBuffer, NamedStruct, open_as_needed
 from ..package_tools import Exporter
@@ -269,7 +271,7 @@ def repeat_format(*names, binary_format, repeat=1, call=None):
     return fmt
 
 
-class AreaFile:
+class AreaFile(AbstractDataStore):
     """McIDAS AREA decoder class."""
 
     directory_format = [
@@ -403,31 +405,51 @@ class AreaFile:
             buffer = self._buffer.read_array(nx, data_dtype)
             data[j, :] = buffer
 
-        # Store image in xarray.Dataset
-        da = DataArray(
-            data=data[np.newaxis, ...],
-            coords={
-                'time': [self._timestamp],
-                'x': self._x,
-                'y': self._y,
-                'longitude': (('y', 'x'), self._lons),
-                'latitude': (('y', 'x'), self._lats),
-                'metpy_crs': CFProjection(self._crs.to_cf())
-            },
-            dims=['time', 'y', 'x'],
-            name='image'
-        )
+        self._image = data
 
-        if self.is_projected:
-            da['x'].attrs['units'] = 'meters'
-            da['y'].attrs['units'] = 'meters'
+    def _make_time_var(self):
+        return 'time', Variable('time', [self._timestamp])
 
-        da['longitude'].attrs['units'] = 'degrees_east'
-        da['longitude'].attrs['standard_name'] = 'longitude'
-        da['latitude'].attrs['units'] = 'degrees_north'
-        da['latitude'].attrs['standard_name'] = 'latitude'
+    def _make_coord_vars(self):
+        x_var = Variable(('x',), self._x, {
+            'units': 'm' if self.is_projected else None,
+            'long_name': 'x coordinate of projection',
+            'standard_name': 'projection_x_coordinate'
+        })
 
-        self._image = da
+        y_var = Variable(('y',), self._y, {
+            'units': 'm' if self.is_projected else None,
+            'long_name': 'y coordinate of projection',
+            'standard_name': 'projection_y_coordinate'
+        })
+
+        lon_var = Variable(('y', 'x'), self._lons, {
+            'units': 'degrees_east',
+            'long_name': 'longitude',
+            'standard_name': 'longitude'
+        })
+
+        lat_var = Variable(('y', 'x'), self._lats, {
+            'units': 'degrees_north',
+            'long_name': 'latitude',
+            'standard_name': 'latitude'
+        })
+
+        return [('x', x_var), ('y', y_var), ('lon', lon_var), ('lat', lat_var),
+                ('metpy_crs', CFProjection(self._crs.to_cf()))]
+
+    def _make_data_var(self):
+        data_var = Variable(('time', 'y', 'x'), self._image[np.newaxis, ...])
+
+        return 'image', data_var
+
+    def get_variables(self):
+        """Get variables in AREA file."""
+        variables = [self._make_time_var()]
+        variables.extend(self._make_coord_vars())
+        variables.extend(self._make_data_var())
+
+        return dict(variables)
 
     @staticmethod
     def _get_navigation_format(navigation_type):
@@ -806,3 +828,15 @@ class AreaFile:
         else:
             self.prefmt = ''
             self.endian = sys.byteorder
+
+
+class AreaFileXarrayBackend(BackendEntrypoint):
+    """"Entry point for the direct reacding of McIDAS AREA files."""
+
+    def open_dataset(self, filename_or_obj, *, drop_variables=None):
+        """Open the McIDAS AREA file as an Xarray dataset."""
+        area = AreaFile(filename_or_obj)
+        coords = dict(area._make_coord_vars() + [area._make_time_var()])
+        data_name, data_var = area._make_data_var()
+
+        return Dataset({data_name: data_var}, coords)
