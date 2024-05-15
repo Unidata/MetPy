@@ -12,7 +12,7 @@ import sys
 from matplotlib.transforms import Affine2D
 import numpy as np
 import pyproj
-from xarray import DataArray, Dataset, Variable
+from xarray import Dataset, Variable
 from xarray.backends import BackendEntrypoint
 from xarray.backends.common import AbstractDataStore
 
