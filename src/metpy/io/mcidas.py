@@ -18,7 +18,6 @@ from xarray.backends.common import AbstractDataStore
 
 from ._tools import IOBuffer, NamedStruct, open_as_needed
 from ..package_tools import Exporter
-from ..plots.mapping import CFProjection
 
 exporter = Exporter(globals())
 log = logging.getLogger(__name__)
@@ -435,13 +434,15 @@ class AreaFile(AbstractDataStore):
             'standard_name': 'latitude'
         })
 
-        return [('x', x_var), ('y', y_var), ('lon', lon_var), ('lat', lat_var),
-                ('metpy_crs', CFProjection(self._crs.to_cf()))]
+        return [('x', x_var), ('y', y_var), ('lon', lon_var), ('lat', lat_var)]
 
     def _make_data_var(self):
-        data_var = Variable(('time', 'y', 'x'), self._image[np.newaxis, ...])
+        data_var = Variable(('time', 'y', 'x'), self._image[np.newaxis, ...],
+                            {'grid_mapping': 'projection'})
 
-        return 'image', data_var
+        proj_var = Variable((), 0, self.crs.to_cf())
+
+        return [('projection', proj_var), ('image', data_var)]
 
     def get_variables(self):
         """Get variables in AREA file."""
@@ -671,133 +672,139 @@ class AreaFile(AbstractDataStore):
         ny = self.directory_block.image_lines
         nx = self.directory_block.data_per_line
 
-        if nav == 'RECT':
-            # NASA RGBs have odd dx/dy values that seem to
-            # not be scaled correctly. We account for that here.
-            # Will need to monitor for possible issues with other data.
-            if self.navigation_block.dx > 1e4:
-                dx = self.navigation_block.dx / 1e6
-            else:
-                dx = self.navigation_block.dx / 1e4
+        try:
+            getattr(self, f'_nav_{self.navigation_type.lower()}')(nx, ny, xres, yres,
+                                                                  origin_elem, origin_line)
+        except AttributeError:
+            raise NotImplementedError(f'{nav} navigation not currently supported.') from None
 
-            if self.navigation_block.dy > 1e4:
-                dy = self.navigation_block.dy / 1e6
-            else:
-                dy = self.navigation_block.dy / 1e4
-
-            _ecc = self.navigation_block.sphere_eccentricity / 1e6
-            _semimajor_r = self.navigation_block.sphere_radius
-            _semiminor_r = (1 - _ecc**2) * _semimajor_r**2
-
-            # Account for area resolution and map to area coordinates
-            diff_y = (self.navigation_block.image_row_number - origin_line) / yres
-            diff_x = (self.navigation_block.image_column_number - origin_elem) / xres
-
-            base_lat = self.navigation_block.image_row_latitude / 1e4
-            base_lon = self.navigation_block.image_column_longitude / 1e4
-
-            if self.navigation_block.longitude_convention >= 0:
-                base_lon *= -1
-
-            # Find upper-left coordinates
-            origin_lat = base_lat + (diff_y * dy)
-            origin_lon = base_lon - (diff_x * dx)
-
-            self._x = np.arange(nx)
-            self._y = np.arange(ny)
-
-            self._lons, self._lats = np.meshgrid(
-                (origin_lon + self._x * dx),
-                (origin_lat - self._y * dy)
-            )
-
-            self._crs = pyproj.CRS(
-                proj='longlat',
-                R=self.navigation_block.sphere_radius,
-                e=self.navigation_block.sphere_eccentricity / 1e6,
-            )
-
-            self._extent = self._set_extent((origin_lon, origin_lat), dx, dy, nx, ny)
-
-            self.is_projected = False
-        elif nav == 'MERC':
-            lat_ts = self.navigation_block.standard_lat
-            lat_ts_res = self.navigation_block.standard_lat_resolution
-            lon_0 = self.navigation_block.central_lon
-
-            # Account for area resolution and map to area coordinates
-            diff_y = (self.navigation_block.equator_line - origin_line) / yres
-            diff_x = (self.navigation_block.central_lon_element - origin_elem) / xres
-
-            # Account for area resolution in dx, dy too
-            dx = lat_ts_res * xres
-            dy = lat_ts_res * yres
-
-            if self.navigation_block.longitude_convention >= 0:
-                lon_0 *= -1
-
-            self._crs = pyproj.CRS(
-                proj='merc',
-                R=self.navigation_block.sphere_radius,
-                e=self.navigation_block.sphere_eccentricity / 1e6,
-                lat_ts=lat_ts,
-                lon_0=lon_0
-            )
-
-            # Center (x, y) always (0, 0), so skip some steps
-            # to get the origin
-            origin_x = -diff_x * dx
-            origin_y = diff_y * dy
-
-            self._x = (origin_x + np.arange(nx) * dx).astype('int64')
-            self._y = (origin_y - np.arange(ny) * dy).astype('int64')
-
-            self._lons, self._lats = pyproj.Proj(self._crs)(*np.meshgrid(self._x, self._y),
-                                                            inverse=True)
-
-            self._extent = self._set_extent((origin_x, origin_y), dx, dy, nx, ny)
-
-            self.is_projected = True
-        elif nav == 'TANC':
-            lon_0 = -self.navigation_block.standard_lon / 1e4
-            lat_1 = self.navigation_block.standard_lat / 1e4
-            r_sphere = 6371100.0  # m
-            res = (self.navigation_block.km_per_pixel / 1e4) * 1000  # m
-
-            # Account for area resolution
-            pole_line = self.navigation_block.image_pole_line / 1e4
-            pole_element = self.navigation_block.image_pole_element / 1e4
-            diff_y = (pole_line - origin_line) / yres
-            diff_x = (pole_element - origin_elem) / xres
-
-            px = diff_x * res
-            py = diff_y * res
-
-            self._crs = pyproj.CRS(
-                proj='lcc',
-                R=r_sphere,
-                lat_0=lat_1,
-                lat_1=lat_1,
-                lat_2=lat_1,
-                lon_0=lon_0
-            )
-
-            proj = pyproj.Proj(self._crs)
-            _pole_x, pole_y = proj(lon_0, 90)
-
-            uly = pole_y + py
-            ulx = -px
-
-            self._x = (ulx + np.arange(nx) * res).astype('int64')
-            self._y = (uly - np.arange(ny) * res).astype('int64')
-
-            self._lons, self._lats = proj(*np.meshgrid(self._x, self._y), inverse=True)
-
-            self._extent = self._set_extent((ulx, uly), res, res, nx, ny)
-
-            self.is_projected = True
+    def _nav_rect(self, nx, ny, xres, yres, origin_elem, origin_line):
+        # NASA RGBs have odd dx/dy values that seem to
+        # not be scaled correctly. We account for that here.
+        # Will need to monitor for possible issues with other data.
+        if self.navigation_block.dx > 1e4:
+            dx = self.navigation_block.dx / 1e6
         else:
-            raise NotImplementedError(f'{nav} navigation not currently supported.')
+            dx = self.navigation_block.dx / 1e4
+
+        if self.navigation_block.dy > 1e4:
+            dy = self.navigation_block.dy / 1e6
+        else:
+            dy = self.navigation_block.dy / 1e4
+
+        _ecc = self.navigation_block.sphere_eccentricity / 1e6
+        _semimajor_r = self.navigation_block.sphere_radius
+        _semiminor_r = (1 - _ecc**2) * _semimajor_r**2
+
+        # Account for area resolution and map to area coordinates
+        diff_y = (self.navigation_block.image_row_number - origin_line) / yres
+        diff_x = (self.navigation_block.image_column_number - origin_elem) / xres
+
+        base_lat = self.navigation_block.image_row_latitude / 1e4
+        base_lon = self.navigation_block.image_column_longitude / 1e4
+
+        if self.navigation_block.longitude_convention >= 0:
+            base_lon *= -1
+
+        # Find upper-left coordinates
+        origin_lat = base_lat + (diff_y * dy)
+        origin_lon = base_lon - (diff_x * dx)
+
+        self._x = np.arange(nx)
+        self._y = np.arange(ny)
+
+        self._lons, self._lats = np.meshgrid(
+            (origin_lon + self._x * dx),
+            (origin_lat - self._y * dy)
+        )
+
+        self._crs = pyproj.CRS(
+            proj='longlat',
+            R=self.navigation_block.sphere_radius,
+            e=self.navigation_block.sphere_eccentricity / 1e6,
+        )
+
+        self._extent = self._set_extent((origin_lon, origin_lat), dx, dy, nx, ny)
+
+        self.is_projected = False
+
+    def _nav_merc(self, nx, ny, xres, yres, origin_elem, origin_line):
+        lat_ts = self.navigation_block.standard_lat
+        lat_ts_res = self.navigation_block.standard_lat_resolution
+        lon_0 = self.navigation_block.central_lon
+
+        # Account for area resolution and map to area coordinates
+        diff_y = (self.navigation_block.equator_line - origin_line) / yres
+        diff_x = (self.navigation_block.central_lon_element - origin_elem) / xres
+
+        # Account for area resolution in dx, dy too
+        dx = lat_ts_res * xres
+        dy = lat_ts_res * yres
+
+        if self.navigation_block.longitude_convention >= 0:
+            lon_0 *= -1
+
+        self._crs = pyproj.CRS(
+            proj='merc',
+            R=self.navigation_block.sphere_radius,
+            e=self.navigation_block.sphere_eccentricity / 1e6,
+            lat_ts=lat_ts,
+            lon_0=lon_0
+        )
+
+        # Center (x, y) always (0, 0), so skip some steps
+        # to get the origin
+        origin_x = -diff_x * dx
+        origin_y = diff_y * dy
+
+        self._x = (origin_x + np.arange(nx) * dx).astype('int64')
+        self._y = (origin_y - np.arange(ny) * dy).astype('int64')
+
+        self._lons, self._lats = pyproj.Proj(self._crs)(*np.meshgrid(self._x, self._y),
+                                                        inverse=True)
+
+        self._extent = self._set_extent((origin_x, origin_y), dx, dy, nx, ny)
+
+        self.is_projected = True
+
+    def _nav_tanc(self, nx, ny, xres, yres, origin_elem, origin_line):
+        lon_0 = -self.navigation_block.standard_lon / 1e4
+        lat_1 = self.navigation_block.standard_lat / 1e4
+        r_sphere = 6371100.0  # m
+        res = (self.navigation_block.km_per_pixel / 1e4) * 1000  # m
+
+        # Account for area resolution
+        pole_line = self.navigation_block.image_pole_line / 1e4
+        pole_element = self.navigation_block.image_pole_element / 1e4
+        diff_y = (pole_line - origin_line) / yres
+        diff_x = (pole_element - origin_elem) / xres
+
+        px = diff_x * res
+        py = diff_y * res
+
+        self._crs = pyproj.CRS(
+            proj='lcc',
+            R=r_sphere,
+            lat_0=lat_1,
+            lat_1=lat_1,
+            lat_2=lat_1,
+            lon_0=lon_0
+        )
+
+        proj = pyproj.Proj(self._crs)
+        _pole_x, pole_y = proj(lon_0, 90)
+
+        uly = pole_y + py
+        ulx = -px
+
+        self._x = (ulx + np.arange(nx) * res).astype('int64')
+        self._y = (uly - np.arange(ny) * res).astype('int64')
+
+        self._lons, self._lats = proj(*np.meshgrid(self._x, self._y), inverse=True)
+
+        self._extent = self._set_extent((ulx, uly), res, res, nx, ny)
+
+        self.is_projected = True
 
     def _set_timestamp(self):
         """Set timestamp."""
@@ -837,6 +844,6 @@ class AreaFileXarrayBackend(BackendEntrypoint):
         """Open the McIDAS AREA file as an Xarray dataset."""
         area = AreaFile(filename_or_obj)
         coords = dict(area._make_coord_vars() + [area._make_time_var()])
-        data_name, data_var = area._make_data_var()
+        (proj_name, proj_var), (data_name, data_var) = area._make_data_var()
 
-        return Dataset({data_name: data_var}, coords)
+        return Dataset({proj_name: proj_var, data_name: data_var}, coords)
