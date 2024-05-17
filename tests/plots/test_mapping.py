@@ -5,6 +5,8 @@
 
 import pytest
 
+from metpy.testing import version_check
+
 ccrs = pytest.importorskip('cartopy.crs')
 
 from metpy.plots.mapping import CFProjection  # noqa: E402
@@ -147,6 +149,7 @@ def test_lcc():
     assert crs.globe.to_proj4_params()['ellps'] == 'sphere'
 
 
+@pytest.mark.xfail(version_check('cartopy==0.23.0'), reason='SciTools/cartopy#2377')
 def test_lcc_minimal():
     """Test handling lambert conformal conic projection with minimal attributes."""
     attrs = {'grid_mapping_name': 'lambert_conformal_conic'}
@@ -154,6 +157,7 @@ def test_lcc_minimal():
     assert isinstance(crs, ccrs.LambertConformal)
 
 
+@pytest.mark.xfail(version_check('cartopy==0.23.0'), reason='SciTools/cartopy#2377')
 def test_lcc_single_std_parallel():
     """Test lambert conformal projection with one standard parallel."""
     attrs = {'grid_mapping_name': 'lambert_conformal_conic', 'standard_parallel': 25}
