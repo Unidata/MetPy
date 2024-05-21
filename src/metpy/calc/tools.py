@@ -1942,3 +1942,44 @@ def _remove_nans(*variables):
     for v in variables:
         ret.append(v[~mask])
     return ret
+
+
+@exporter.export
+@xarray_derivative_wrap
+def cumulative_integrate(field, axis=None, x=None, delta=None):
+    """Return cumulative integral of field along axis.
+
+    Uses trapezoidal rule for integration.
+
+    Parameters
+    ----------
+    field : array-like
+        Array of values for which to calculate the integral
+    axis : int or str
+        The axis along which to integrate.  If `field` is an
+        `np.ndarray` or `pint.Quantity`, must be an integer.  Defaults
+        to zero.
+    x : array-like, optional
+        The coordinate values along which to integrate
+    delta : array-like, optional
+        Spacing between grid points in `field`.
+
+    Examples
+    --------
+    >>> cumulative_integrate(np.arange(5))
+    array([0. , 0.5, 2. , 4.5, 8. ])
+    >>> cumulative_integrate(xr.DataArray(np.arange(5), {"x": (("x",), np.ones(5), {"units": "m"})}, ("x",), "specific_humidity", {"units": "kg/kg"}), "x")
+    <DataArray dims: {"x": 5}
+    array([...])
+    Attrs:
+    units: kg m/kg
+    """
+    n, axis, delta = _process_deriv_args(f, axis, x, delta)
+    take = make_take(n, axis)
+
+    right = np.cumsum(
+        0.5 * (field[take(slice(1, None))] + field[take(slice(None, -1))]) * delta
+    )
+    left = np.zeros_like(field[take(0)])
+
+    return concatenate((left, right), axis=axis)

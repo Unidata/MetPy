@@ -16,7 +16,8 @@ from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersec
                         first_derivative, geospatial_gradient, get_layer, get_layer_heights,
                         gradient, laplacian, lat_lon_grid_deltas, nearest_intersection_idx,
                         parse_angle, pressure_to_height_std, reduce_point_density,
-                        resample_nn_1d, second_derivative, vector_derivative)
+                        resample_nn_1d, second_derivative, vector_derivative,
+                        cumulative_integrate)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
@@ -1557,3 +1558,28 @@ def test_vector_derivative_return_subset(return_only, length):
         u, v, longitude=lons, latitude=lats, crs=crs, return_only=return_only)
 
     assert len(ddx) == length
+
+
+def test_cumulative_integrate_numpy():
+    field = np.arange(5)
+    integral = cumulative_integrate(field)
+    assert integral == pytest.approx(np.array([0, 0.5, 2, 4.5, 8]))
+
+def test_cumulative_integrate_pint():
+    field = np.arange(6) * units("kg/m^3")
+    delta = np.array([1, 2, 3, 2, 1]) * units("cm")
+    integral = cumulative_integrate(field, delta=delta)
+    assert integral == pytest.approx(
+        np.array([0, 0.5, 3.5, 11, 18, 22.5]) / 100 * units("kg/m^2")
+    )
+
+def test_cumulative_integrate_xarray():
+    field = xr.DataArray(
+        np.arange(10) / 100,
+        {"x": (("x",), np.arange(100, 1001, 100), {"units": "hPa"})},
+        attrs={"units": "g/kg"}
+    )
+    integral = cumulative_integrate(field, "x")
+    assert integral.values == pytest.approx(
+        np.array([0, 0.5, 2, 4.5, 8, 12.5, 18, 24.5, 32, 40.5, 50])
+    )
