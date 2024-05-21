@@ -1565,6 +1565,7 @@ def test_cumulative_integrate_numpy():
     integral = cumulative_integrate(field)
     assert integral == pytest.approx(np.array([0, 0.5, 2, 4.5, 8]))
 
+
 def test_cumulative_integrate_pint():
     field = np.arange(6) * units("kg/m^3")
     delta = np.array([1, 2, 3, 2, 1]) * units("cm")
@@ -1572,6 +1573,7 @@ def test_cumulative_integrate_pint():
     assert integral == pytest.approx(
         np.array([0, 0.5, 3.5, 11, 18, 22.5]) / 100 * units("kg/m^2")
     )
+
 
 def test_cumulative_integrate_xarray():
     field = xr.DataArray(
