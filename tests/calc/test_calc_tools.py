@@ -1561,12 +1561,14 @@ def test_vector_derivative_return_subset(return_only, length):
 
 
 def test_cumulative_integrate_numpy():
+    """Test that cumulative_integrate works with numpy arrays."""
     field = np.arange(5)
     integral = cumulative_integrate(field)
     assert integral == pytest.approx(np.array([0, 0.5, 2, 4.5, 8]))
 
 
 def test_cumulative_integrate_pint():
+    """Test that cumulative_integrate works with pint Quantities."""
     field = np.arange(6) * units("kg/m^3")
     delta = np.array([1, 2, 3, 2, 1]) * units("cm")
     integral = cumulative_integrate(field, delta=delta)
@@ -1576,6 +1578,7 @@ def test_cumulative_integrate_pint():
 
 
 def test_cumulative_integrate_xarray():
+    """Test that cumulative_integrate works with XArray DataArrays."""
     field = xr.DataArray(
         np.arange(10) / 100,
         {"x": (("x",), np.arange(100, 1001, 100), {"units": "hPa"})},

@@ -1968,13 +1968,16 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
     --------
     >>> cumulative_integrate(np.arange(5))
     array([0. , 0.5, 2. , 4.5, 8. ])
-    >>> cumulative_integrate(xr.DataArray(np.arange(5), {"x": (("x",), np.ones(5), {"units": "m"})}, ("x",), "specific_humidity", {"units": "kg/kg"}), "x")
+    >>> data = xr.DataArray(
+    ...     np.arange(5), {"x": (("x",), np.ones(5), {"units": "m"})}, ("x",), "s", {"units": "kg/kg"}
+    ... )
+    >>> cumulative_integrate(data, "x")
     <DataArray dims: {"x": 5}
     array([...])
     Attrs:
     units: kg m/kg
     """
-    n, axis, delta = _process_deriv_args(f, axis, x, delta)
+    n, axis, delta = _process_deriv_args(field, axis, x, delta)
     take = make_take(n, axis)
 
     right = np.cumsum(
