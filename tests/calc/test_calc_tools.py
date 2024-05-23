@@ -1590,15 +1590,19 @@ def test_cumulative_integrate_xarray():
     assert integral.values == pytest.approx(
         np.array([0, 0.5, 2, 4.5, 8, 12.5, 18, 24.5, 32, 40.5, 50])
     )
+    assert integral.metpy.units = units('g/(m s^2)')
 
 def test_cumulative_integrate_xr_2d():
     """Test that cumulative_integrate works with 2D DataArrays."""
     arr = np.arange(5)
     data_xr = xr.DataArray(
         np.ones((5, 5)),
-        {'x': ('x', arr, {'units': 'm'}), 'y': ('y', arr, {'units': 'm'})},
+        {'y': ('y', arr, {'units': 'm'}), 'x': ('x', arr, {'units': 'm'})},
         ('y', 'x'),
         'height',
         {'units': 'm'}
     )
-    integral = cumulative_integrate(field, axis='x')
+    integral = cumulative_integrate(data_xr, axis='x')
+    assert integral.dims == data_xr.dims
+    assert integral.coords == data_xr.coords
+    assert integral.metpy.units == units('m^2')
