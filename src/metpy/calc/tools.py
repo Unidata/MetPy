@@ -1981,8 +1981,10 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
     take = make_take(n, axis)
 
     right = np.cumsum(
-        0.5 * (field[take(slice(1, None))] + field[take(slice(None, -1))]) * delta
+        0.5 * (field[take(slice(1, None))] + field[take(slice(None, -1))]) * delta,
+        axis=axis
     )
-    left = np.zeros_like(field[take(0)])
+    left = np.zeros_like(field[take(slice(1))])
 
-    return concatenate((left, right), axis=axis)
+    result = concatenate([left, right], axis=axis)
+    return result
