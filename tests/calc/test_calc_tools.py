@@ -1565,28 +1565,28 @@ def test_cumulative_integrate_numpy():
     field = np.arange(5)
     integral = cumulative_integrate(field, delta=1)
     assert integral.magnitude == pytest.approx(np.array([0, 0.5, 2, 4.5, 8]))
-    assert integral.units == units("dimensionless")
+    assert integral.units == units('dimensionless')
 
 
 def test_cumulative_integrate_pint():
     """Test that cumulative_integrate works with pint Quantities."""
-    field = np.arange(6) * units("kg/m^3")
-    delta = np.array([1, 2, 3, 2, 1]) * units("cm")
+    field = np.arange(6) * units('kg/m^3')
+    delta = np.array([1, 2, 3, 2, 1]) * units('cm')
     integral = cumulative_integrate(field, delta=delta)
     assert integral.magnitude == pytest.approx(
         np.array([0, 0.5, 3.5, 11, 18, 22.5]) / 100
     )
-    assert integral.units == units("kg/m^2")
+    assert integral.units == units('kg/m^2')
 
 
 def test_cumulative_integrate_xarray():
     """Test that cumulative_integrate works with XArray DataArrays."""
     field = xr.DataArray(
         np.arange(10) / 100,
-        {"x": (("x",), np.arange(100, 1001, 100), {"units": "hPa"})},
-        attrs={"units": "g/kg"}
+        {'x': (('x',), np.arange(100, 1001, 100), {'units': 'hPa'})},
+        attrs={'units': 'g/kg'}
     )
-    integral = cumulative_integrate(field, axis="x")
+    integral = cumulative_integrate(field, axis='x')
     assert integral.values == pytest.approx(
         np.array([0, 0.5, 2, 4.5, 8, 12.5, 18, 24.5, 32, 40.5, 50])
     )
@@ -1596,9 +1596,9 @@ def test_cumulative_integrate_xr_2d():
     arr = np.arange(5)
     data_xr = xr.DataArray(
         np.ones((5, 5)),
-        {"x": ("x", arr, {"units": "m"}), "y": ("y", arr, {"units": "m"})},
-        ("y", "x"),
-        "height",
-        {"units": "m"}
+        {'x': ('x', arr, {'units': 'm'}), 'y': ('y', arr, {'units': 'm'})},
+        ('y', 'x'),
+        'height',
+        {'units': 'm'}
     )
-    integral = cumulative_integrate(field, axis="x")
+    integral = cumulative_integrate(field, axis='x')
