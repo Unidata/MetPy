@@ -16,12 +16,12 @@ from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersec
                         first_derivative, geospatial_gradient, get_layer, get_layer_heights,
                         gradient, laplacian, lat_lon_grid_deltas, nearest_intersection_idx,
                         parse_angle, pressure_to_height_std, reduce_point_density,
-                        resample_nn_1d, second_derivative, vector_derivative,
-                        cumulative_integrate)
+                        resample_nn_1d, second_derivative, vector_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
-                              DIR_STRS, nominal_lat_lon_grid_deltas, parse_grid_arguments, UND)
+                              DIR_STRS, nominal_lat_lon_grid_deltas, parse_grid_arguments, UND,
+                              cumulative_integrate)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data)
 from metpy.units import units
@@ -1576,7 +1576,7 @@ def test_cumulative_integrate_pint():
     assert integral.magnitude == pytest.approx(
         np.array([0, 0.5, 3.5, 11, 18, 22.5])
     )
-    assert integral.units == units('kg/m^2')
+    assert integral.units == units('kg/m^2').units
 
 
 def test_cumulative_integrate_xarray():
@@ -1588,9 +1588,9 @@ def test_cumulative_integrate_xarray():
     )
     integral = cumulative_integrate(field, axis='x')
     assert integral.metpy.magnitude == pytest.approx(
-        np.array([0, 0.5, 2, 4.5, 8, 12.5, 18, 24.5, 32, 40.5, 50])
+        np.array([0, 0.5, 2, 4.5, 8, 12.5, 18, 24.5, 32, 40.5])
     )
-    assert integral.metpy.units == units('g/(m s^2)')
+    assert integral.metpy.units == units('g/(m s^2)').units
 
 
 def test_cumulative_integrate_xr_2d():
@@ -1606,4 +1606,4 @@ def test_cumulative_integrate_xr_2d():
     integral = cumulative_integrate(data_xr, axis='x')
     assert integral.dims == data_xr.dims
     assert integral.coords.keys() == data_xr.coords.keys()
-    assert integral.metpy.units == units('m^2')
+    assert integral.metpy.units == units('m^2').units
