@@ -2115,7 +2115,7 @@ def test_declarative_plot_geometry_lines(ccrs):
     geo.stroke = 'green'
     geo.labels = ['Irma', '+/- 0.25 deg latitude']
     geo.label_facecolor = None
-    geo.mpl_args = {'linewidth': 1}
+    geo.mpl_args = {'linewidths': 1}
 
     # Place plot in a panel and container
     panel = MapPanel()

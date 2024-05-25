@@ -1299,7 +1299,7 @@ def test_isentropic_pressure_interp(press_3d):
     """Test calculation of isentropic pressure function."""
     lev = [100000., 95000., 90000., 85000.] * units.Pa
     if press_3d:
-        lev = np.lib.stride_tricks.broadcast_to(lev[:, None, None], (4, 5, 5))
+        lev = np.broadcast_to(lev[:, None, None], (4, 5, 5))
     tmp = np.ones((4, 5, 5))
     tmp[0, :] = 296.
     tmp[1, :] = 292.

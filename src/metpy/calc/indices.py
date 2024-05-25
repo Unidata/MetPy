@@ -4,6 +4,12 @@
 """Contains calculation of various derived indices."""
 import numpy as np
 
+# Can drop fallback once we rely on numpy>=2
+try:
+    from numpy import trapezoid
+except ImportError:
+    from numpy import trapz as trapezoid
+
 from .basic import wind_speed
 from .thermo import mixing_ratio, saturation_vapor_pressure
 from .tools import _remove_nans, get_layer
@@ -90,7 +96,7 @@ def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
     w = mixing_ratio(saturation_vapor_pressure(dewpoint_layer), pres_layer)
 
     # Since pressure is in decreasing order, pw will be the opposite sign of that expected.
-    pw = -np.trapz(w, pres_layer) / (mpconsts.g * mpconsts.rho_l)
+    pw = -trapezoid(w, pres_layer) / (mpconsts.g * mpconsts.rho_l)
     return pw.to('millimeters')
 
 
@@ -168,7 +174,7 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
     pres_int = 0.5 * (pres_prof[-1] ** 2 - pres_prof[0] ** 2)
 
     # Perform integration on the profile for each variable
-    return [np.trapz(var_prof * pres_prof, x=pres_prof) / pres_int for var_prof in others]
+    return [trapezoid(var_prof * pres_prof, x=pres_prof) / pres_int for var_prof in others]
 
 
 @exporter.export
@@ -228,7 +234,7 @@ def weighted_continuous_average(pressure, *args, height=None, bottom=None, depth
         pressure, *args, height=height, bottom=bottom, depth=depth
     )
 
-    return [np.trapz(var_prof, x=pres_prof) / (pres_prof[-1] - pres_prof[0])
+    return [trapezoid(var_prof, x=pres_prof) / (pres_prof[-1] - pres_prof[0])
             for var_prof in others]
 
 

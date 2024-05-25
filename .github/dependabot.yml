@@ -28,75 +28,12 @@ updates:
 
   # Update GitHub Actions versions in workflows
   - package-ecosystem: "github-actions"
-    # Workflow files stored in the
-    # default location of `.github/workflows`
-    directory: "/"
-    schedule:
-      interval: "daily"
-    allow:
-      - dependency-type: all
-    open-pull-requests-limit: 10
-    pull-request-branch-name:
-      separator: "-"
-    labels:
-      - "Type: Maintenance"
-      - "Area: Infrastructure"
-    commit-message:
-      prefix: "CI: "
-      include: "scope"
-
-  # Update GitHub Actions versions in composite actions--hopefully eventually handled by a
-  # wildcard
-  - package-ecosystem: "github-actions"
-    directory: "/.github/actions/build-docs"
-    schedule:
-      interval: "daily"
-    allow:
-      - dependency-type: all
-    open-pull-requests-limit: 10
-    pull-request-branch-name:
-      separator: "-"
-    labels:
-      - "Type: Maintenance"
-      - "Area: Infrastructure"
-    commit-message:
-      prefix: "CI: "
-      include: "scope"
-
-  - package-ecosystem: "github-actions"
-    directory: "/.github/actions/install-conda"
-    schedule:
-      interval: "daily"
-    allow:
-      - dependency-type: all
-    open-pull-requests-limit: 10
-    pull-request-branch-name:
-      separator: "-"
-    labels:
-      - "Type: Maintenance"
-      - "Area: Infrastructure"
-    commit-message:
-      prefix: "CI: "
-      include: "scope"
-
-  - package-ecosystem: "github-actions"
-    directory: "/.github/actions/install-pypi"
-    schedule:
-      interval: "daily"
-    allow:
-      - dependency-type: all
-    open-pull-requests-limit: 10
-    pull-request-branch-name:
-      separator: "-"
-    labels:
-      - "Type: Maintenance"
-      - "Area: Infrastructure"
-    commit-message:
-      prefix: "CI: "
-      include: "scope"
-
-  - package-ecosystem: "github-actions"
-    directory: "/.github/actions/run-tests"
+    directories:
+      - "/.github/workflows"
+      - "/.github/actions/build-docs"
+      - "/.github/actions/install-conda"
+      - "/.github/actions/install-pypi"
+      - "/.github/actions/run-tests"
     schedule:
       interval: "daily"
     allow:

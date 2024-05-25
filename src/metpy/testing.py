@@ -84,7 +84,7 @@ def _parse_version_spec(version_spec):
         tuple of str : Parsed specification groups of package name, comparison, and version
 
     """
-    pattern = re.compile(r'(\w+)\s*([<>!=]+)\s*([\d.]+)')
+    pattern = re.compile(r'(\w+)\s*([<>!=]+)\s*([\d\w.]+)')
     match = pattern.match(version_spec)
 
     if not match:
