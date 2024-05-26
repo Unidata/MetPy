@@ -164,6 +164,7 @@ Mathematical Functions
       tangential_component
       unit_vectors_from_cross_section
       vector_derivative
+      cumulative_integrate
 
 
 Apparent Temperature
