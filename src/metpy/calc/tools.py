@@ -1985,5 +1985,5 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
     right = np.cumsum(delta, axis=axis)
     left = np.zeros_like(right[take(slice(1))])
     x = concatenate([left, right], axis=axis)
-    result = cumulative_trapezoid(field, x=x, axis=axis, initial=0)
+    result = cumulative_trapezoid(field.magnitude, x=x.magnitude, axis=axis, initial=0)
     return units.Quantity(result, field.units * x.units)
