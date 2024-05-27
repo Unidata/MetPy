@@ -18,6 +18,7 @@ except ImportError:
 import numpy.ma as ma
 from pyproj import CRS, Geod, Proj
 from scipy.spatial import cKDTree
+from scipy.integrate import cumulative_trapezoid
 import xarray as xr
 
 from .. import _warnings
@@ -1981,12 +1982,8 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
     """
     n, axis, delta = _process_deriv_args(field, axis, x, delta)
     take = make_take(n, axis)
-
-    right = np.cumsum(
-        0.5 * (field[take(slice(1, None))] + field[take(slice(None, -1))]) * delta,
-        axis=axis
-    )
-    left = np.zeros_like(field[take(slice(1))])
-
-    result = concatenate([left, right], axis=axis)
-    return result
+    right = np.cumsum(delta, axis=axis)
+    left = np.zeros_like(right[take(slice(1))])
+    x = concatenate([left, right], axis=axis)
+    result = cumulative_trapezoid(field, x=x, axis=axis, initial=0)
+    return units.Quantity(result, field.units * x.units)
