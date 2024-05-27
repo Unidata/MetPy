@@ -1967,7 +1967,7 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
 
     Examples
     --------
-    >>> cumulative_integrate(np.arange(5))
+    >>> cumulative_integrate(units.Quantity(np.arange(5), "m"), delta=units("1 m"))
     array([0. , 0.5, 2. , 4.5, 8. ])
     >>> data = xr.DataArray(
     ...     np.arange(5),
