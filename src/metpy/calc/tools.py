@@ -1975,9 +1975,9 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
     ...     {"x": (("x",), np.ones(5), {"units": "m"})}, ("x",),
     ...     "s", {"units": "kg/kg"}
     ... )
-    >>> cumulative_integrate(data, "x")
+    >>> cumulative_integrate(data, axis="x")
     <DataArray dims: {"x": 5}
-    array([...])
+    array([0, 0, 0, 0, 0])
     Attrs:
     units: kg m/kg
     """
