@@ -1990,5 +1990,7 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
         return units.Quantity(result, field.units * x.units)
     except AttributeError:
         # NumPy arrays without units
-        result = cumulative_trapezoid(field, x, axis=axis, initial=0)
-        return units.Quantity(result, 'dimensionless')
+        raise ValueError(
+            "cumulative_integrate called with unitless arguments\n"
+            "Either add units or use scipy.integrate.cumulative_trapezoid"
+        )

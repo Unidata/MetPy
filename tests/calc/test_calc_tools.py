@@ -1563,9 +1563,10 @@ def test_vector_derivative_return_subset(return_only, length):
 def test_cumulative_integrate_numpy():
     """Test that cumulative_integrate works with numpy arrays."""
     field = np.arange(5)
-    integral = cumulative_integrate(field, delta=1)
-    assert integral.magnitude == pytest.approx(np.array([0, 0.5, 2, 4.5, 8]))
-    assert str(integral.units) == 'dimensionless'
+    with pytest.raises(
+            ValueError, "cumulative_integrate called with unitless arguments"
+    ):
+        integral = cumulative_integrate(field, delta=1)
 
 
 def test_cumulative_integrate_pint():
