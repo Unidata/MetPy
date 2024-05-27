@@ -1985,8 +1985,10 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
     right = np.cumsum(delta, axis=axis)
     left = np.zeros_like(right[take(slice(1))])
     x = concatenate([left, right], axis=axis)
-    result = cumulative_trapezoid(field.magnitude, x=x.magnitude, axis=axis, initial=0)
     try:
+        result = cumulative_trapezoid(field.magnitude, x=x.magnitude, axis=axis, initial=0)
         return units.Quantity(result, field.units * x.units)
     except AttributeError:
+        # NumPy arrays without units
+        result = cumulative_trapezoid(field, x, axis=axis, initial=0)
         return units.Quantity(result, 'dimensionless')
