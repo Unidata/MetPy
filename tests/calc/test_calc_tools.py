@@ -1564,7 +1564,7 @@ def test_cumulative_integrate_numpy():
     """Test that cumulative_integrate works with numpy arrays."""
     field = np.arange(5)
     with pytest.raises(
-            ValueError, "cumulative_integrate called with unitless arguments"
+            ValueError, match="cumulative_integrate called with unitless arguments"
     ):
         cumulative_integrate(field, delta=1)
 
