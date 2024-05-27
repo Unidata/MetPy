@@ -1986,4 +1986,7 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
     left = np.zeros_like(right[take(slice(1))])
     x = concatenate([left, right], axis=axis)
     result = cumulative_trapezoid(field.magnitude, x=x.magnitude, axis=axis, initial=0)
-    return units.Quantity(result, field.units * x.units)
+    try:
+        return units.Quantity(result, field.units * x.units)
+    except AttributeError:
+        return units.Quantity(result, '')

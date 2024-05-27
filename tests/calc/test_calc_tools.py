@@ -1576,7 +1576,7 @@ def test_cumulative_integrate_pint():
     assert integral.magnitude == pytest.approx(
         np.array([0, 0.5, 3.5, 11, 18, 22.5])
     )
-    assert integral.units == units('kg/m^2').units
+    assert units.Quantity(1, integral.units).to('kg/m^2').magnitude == 1
 
 
 def test_cumulative_integrate_xarray():
@@ -1590,7 +1590,7 @@ def test_cumulative_integrate_xarray():
     assert integral.metpy.magnitude == pytest.approx(
         np.array([0, 0.5, 2, 4.5, 8, 12.5, 18, 24.5, 32, 40.5])
     )
-    assert integral.metpy.units == units('g/(m s^2)').units
+    assert units.Quantity(1, integral.metpy.units).to('hg/(m s^2)').magnitude == 1
 
 
 def test_cumulative_integrate_xr_2d():
@@ -1606,4 +1606,4 @@ def test_cumulative_integrate_xr_2d():
     integral = cumulative_integrate(data_xr, axis='x')
     assert integral.dims == data_xr.dims
     assert integral.coords.keys() == data_xr.coords.keys()
-    assert integral.metpy.units == units('m^2').units
+    assert units.Quantity(1, integral.metpy.units).to('m^2').magnitude == 1
