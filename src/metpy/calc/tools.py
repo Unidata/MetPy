@@ -1988,7 +1988,7 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
     x = concatenate([left, right], axis=axis)
     try:
         result = cumulative_trapezoid(field.magnitude, x=x.magnitude, axis=axis, initial=0)
-        return units.Quantity(result, field.units * x.units)
+        return units.Quantity(result, field.units * delta.units)
     except AttributeError:
         # NumPy arrays without units
         raise TypeError(
