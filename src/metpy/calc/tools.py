@@ -1969,6 +1969,7 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
     --------
     >>> cumulative_integrate(units.Quantity(np.arange(5), "m"), delta=units("1 m"))
     <Quantity([0.  0.5 2.  4.5 8. ], 'meter ** 2')>
+    >>> import xarray as xr
     >>> data = xr.DataArray(
     ...     np.arange(5),
     ...     {"x": (("x",), np.ones(5), {"units": "m"})}, ("x",),
