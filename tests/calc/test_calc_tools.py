@@ -1565,7 +1565,7 @@ def test_cumulative_integrate_numpy():
     field = np.arange(5)
     integral = cumulative_integrate(field, delta=1)
     assert integral.magnitude == pytest.approx(np.array([0, 0.5, 2, 4.5, 8]))
-    assert integral.units == units('dimensionless')
+    assert str(integral.units) == 'dimensionless'
 
 
 def test_cumulative_integrate_pint():
@@ -1576,7 +1576,7 @@ def test_cumulative_integrate_pint():
     assert integral.magnitude == pytest.approx(
         np.array([0, 0.5, 3.5, 11, 18, 22.5])
     )
-    assert units.Quantity(1, integral.units).to('kg/m^2').magnitude == 1
+    assert units.Quantity(1, integral.units).to('dg/m^2').magnitude == 1
 
 
 def test_cumulative_integrate_xarray():

@@ -1989,4 +1989,4 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
     try:
         return units.Quantity(result, field.units * x.units)
     except AttributeError:
-        return units.Quantity(result, '')
+        return units.Quantity(result, 'dimensionless')
