@@ -1576,7 +1576,7 @@ def test_cumulative_integrate_pint():
     assert integral.magnitude == pytest.approx(
         np.array([0, 0.5, 3.5, 11, 18, 22.5])
     )
-    assert units.Quantity(1, integral.units).to('dg/m^2').magnitude == 1
+    assert units.Quantity(1, integral.units).to('dag/m^2').magnitude == 1
 
 
 def test_cumulative_integrate_xarray():
