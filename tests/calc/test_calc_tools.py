@@ -1566,7 +1566,7 @@ def test_cumulative_integrate_numpy():
     with pytest.raises(
             ValueError, "cumulative_integrate called with unitless arguments"
     ):
-        integral = cumulative_integrate(field, delta=1)
+        cumulative_integrate(field, delta=1)
 
 
 def test_cumulative_integrate_pint():
