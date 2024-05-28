@@ -1967,7 +1967,7 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
 
     Examples
     --------
-    >>> cumulative_integrate(units.Quantity(np.arange(5), "m"), delta=units("1 m"))
+    >>> cumulative_integrate(units.Quantity(np.arange(5), 'm'), delta=units('1 m'))
     <Quantity([0.  0.5 2.  4.5 8. ], 'meter ** 2')>
     """
     n, axis, delta = _process_deriv_args(field, axis, x, delta)
@@ -1981,6 +1981,6 @@ def cumulative_integrate(field, axis=None, x=None, delta=None):
     except AttributeError:
         # NumPy arrays without units
         raise TypeError(
-            "cumulative_integrate called with unitless arguments\n"
-            "Either add units or use scipy.integrate.cumulative_trapezoid"
-        )
+            'cumulative_integrate called with unitless arguments\n'
+            'Either add units or use scipy.integrate.cumulative_trapezoid'
+        ) from None
