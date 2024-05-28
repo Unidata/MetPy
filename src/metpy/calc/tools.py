@@ -17,8 +17,8 @@ except ImportError:
 
 import numpy.ma as ma
 from pyproj import CRS, Geod, Proj
-from scipy.spatial import cKDTree
 from scipy.integrate import cumulative_trapezoid
+from scipy.spatial import cKDTree
 import xarray as xr
 
 from .. import _warnings

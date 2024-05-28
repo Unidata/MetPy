@@ -12,7 +12,8 @@ from pyproj import CRS, Geod
 import pytest
 import xarray as xr
 
-from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersections,
+from metpy.calc import (angle_to_direction, cumulative_integrate,
+                        find_bounding_indices, find_intersections,
                         first_derivative, geospatial_gradient, get_layer, get_layer_heights,
                         gradient, laplacian, lat_lon_grid_deltas, nearest_intersection_idx,
                         parse_angle, pressure_to_height_std, reduce_point_density,
@@ -20,7 +21,6 @@ from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersec
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
-                              cumulative_integrate,
                               DIR_STRS, nominal_lat_lon_grid_deltas, parse_grid_arguments, UND)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data)
