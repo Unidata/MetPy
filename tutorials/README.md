@@ -29,6 +29,8 @@ If this is your first time using MetPy head over to the [installation guide](htt
 
 1. **Advanced Tutorials Coming Soon**
 
+The [Examples Gallery](https://unidata.github.io/MetPy/latest/examples/index.html) has more examples of what else you can create with MetPy!
+
 ## Contribution
 
 We welcome contributions to these tutorials! If you have any suggestions for improvements or would like to add new tutorials feel free to submit an issue or make a pull request. More information on how to contribute can be found by checking out the [Contributors Guide](https://github.com/Unidata/MetPy/blob/main/CONTRIBUTING.md)
