@@ -8,23 +8,7 @@ The purpose of these tutorials is to provide hands-on examples and explanations 
 
 ## Getting Started
 
-To get started with the tutorials, follow these steps:
-
-1. **Installation**: Ensure you have MetPy installed. You can install it via pip:
-   ```bash
-   pip install metpy
-   
-2. **Clone the Repository**: Clone or download this repository to access the tutorial files:
-   ```bash
-   git clone https://github.com/your_username/metpy.git
-
-3. **Navigate to Tutorials**: Open the cloned repository and navigate to the `tutorials` directory.
-
-4. **Choose a Tutorial**: Browse through the available tutorials and choose one that aligns with your skill level and interests.
-
-5. **Run the Tutorial**: Open the tutorial file in your preferred Python environment (e.g., Jupyter Notebook) and follow along with the instructions.
-
-6. **Experiment**: Feel free to experiment with the code examples and modify them to suit your needs. This is the best way to learn!
+If this is your first time using MetPy head over to the [installation guide](https://unidata.github.io/MetPy/latest/userguide/installguide.html) to make sure the required dependencies have been installed.
 
 ## Tutorials by Difficulty Level
 
@@ -47,4 +31,4 @@ To get started with the tutorials, follow these steps:
 
 ## Contribution
 
-We welcome contributions to these tutorials! If you have any suggestions for improvements or would like to add new tutorials, feel free to submit a pull request.
+We welcome contributions to these tutorials! If you have any suggestions for improvements or would like to add new tutorials feel free to submit an issue or make a pull request. More information on how to contribute can be found by checking out the [Contributors Guide](https://github.com/Unidata/MetPy/blob/main/CONTRIBUTING.md)
