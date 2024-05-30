@@ -5,9 +5,7 @@ updates:
   - package-ecosystem: pip
     directory: "/ci"
     schedule:
-      interval: daily
-      time: "06:00"
-      timezone: "America/Denver"
+      interval: weekly
     allow:
       - dependency-type: all
     open-pull-requests-limit: 10
@@ -35,7 +33,7 @@ updates:
       - "/.github/actions/install-pypi"
       - "/.github/actions/run-tests"
     schedule:
-      interval: "daily"
+      interval: weekly
     allow:
       - dependency-type: all
     open-pull-requests-limit: 10
