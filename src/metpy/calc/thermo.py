@@ -4602,7 +4602,7 @@ def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
             f'elevation regions.\nIndices without a 950hPa or higher datapoint'
             f':\n{indices_without_950}'
             f'\nMax provided pressures:'
-            f'\n{np.max(pressure, axis=0)[indices_without_950]}'
+            f'\n{np.max(pressure, axis=0)}'
         )
 
     potential_temp = potential_temperature(pressure, temperature)
