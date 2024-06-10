@@ -16,4 +16,4 @@ restructuredtext_lint==1.4.0
 
 codespell==2.3.0
 
-pooch==1.8.1
+pooch==1.8.2
