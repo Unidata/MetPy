@@ -1,5 +1,5 @@
 packaging==24.1
 pytest==8.2.2
 pytest-mpl==0.17.0
-netCDF4==1.6.5
+netCDF4==1.7.0
 coverage==7.5.3
