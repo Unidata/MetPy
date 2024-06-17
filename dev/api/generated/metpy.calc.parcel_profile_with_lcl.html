@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jun 14, 2024 at 17:07:51"/>
+    <meta name="docbuild:last-update" content="Jun 17, 2024 at 17:47:53"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.parcel_profile_with_lcl.html" />
 
   </head>
@@ -831,7 +831,7 @@ including the LCL</p></li>
 <p>Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
 Duplicate pressure levels return duplicate parcel temperatures. Consider preprocessing
 low-precision, high frequency profiles with tools like <em class="xref py py-obj">scipy.medfilt</em>,
-<em class="xref py py-obj">pandas.drop_duplicates</em>, or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html#numpy.unique" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.unique</span></code></a>.</p>
+<em class="xref py py-obj">pandas.drop_duplicates</em>, or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html#numpy.unique" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.unique</span></code></a>.</p>
 <p>Will only return Pint Quantities, even when given xarray DataArray profiles. To
 obtain a xarray Dataset instead, use <a class="reference internal" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html#metpy.calc.parcel_profile_with_lcl_as_dataset" title="metpy.calc.parcel_profile_with_lcl_as_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile_with_lcl_as_dataset</span></code></a> instead.</p>
 <div class="versionchanged">
