@@ -4067,7 +4067,7 @@ def static_stability(pressure, temperature, vertical_dim=0):
     4.80962228e-06  7.72162917e-06  1.13637163e-05  1.89412484e-05
     5.12162481e-05  1.59883754e-04  3.74228296e-04  5.30145977e-04
     7.20889325e-04  1.00335001e-03  1.48043778e-03  2.32777913e-03
-    3.43878993e-03  5.74908298e-03], 'meter ** 2 / pascal ** 2 / second ** 2')>
+    3.43878993e-03  5.74908298e-03], 'meter ** 2 / second ** 2 / pascal ** 2')>
 
     .. versionchanged:: 1.0
        Renamed ``axis`` parameter ``vertical_dim``
