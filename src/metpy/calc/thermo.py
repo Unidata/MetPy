@@ -5117,7 +5117,7 @@ def sweat_index(pressure, temperature, dewpoint, speed, direction, vertical_dim=
     first_term = 12 * np.clip(td850.m_as('degC'), 0, None)
 
     # Second term is set to zero if TT is less than 49
-    second_term = 20 * np.clip(tt.m_as('degC') - 49, 0, None)
+    second_term = 20 * np.clip(tt.m_as('delta_degC') - 49, 0, None)
 
     # Shear term is set to zero if any of four conditions are not met
     required = ((units.Quantity(130, 'deg') <= dd850) & (dd850 <= units.Quantity(250, 'deg'))
