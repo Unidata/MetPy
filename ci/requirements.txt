@@ -2,7 +2,7 @@ matplotlib==3.8.4
 numpy==1.26.4
 pandas==2.2.2
 pooch==1.8.2
-pint==0.23
+pint==0.24
 pyproj==3.6.1
 scipy==1.13.1
 traitlets==5.14.3
