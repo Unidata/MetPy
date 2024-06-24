@@ -8,7 +8,7 @@ import numpy as np
 
 from metpy.cbook import get_test_data
 from metpy.io import parse_wpc_surface_bulletin
-#from src.metpy.io.text import _decode_coords
+from metpy.io.text import _decode_coords
 from metpy.testing import needs_module
 
 
@@ -65,19 +65,19 @@ def test_parse_wpc_surface_bulletin():
 
 #testing coordinates with negative latitude values
 
-# def test_negative_lat_highres():
-#     coord = '-4920344'
-#     lon, lat =_decode_coords(coord)
-#     assert lon == -034.4
-#     assert lat == -49.2
+def test_negative_lat_highres():
+    coord = '-4920344'
+    lon, lat =_decode_coords(coord)
+    assert lon == -034.4
+    assert lat == -49.2
 
-# def test_negative_lat():
-#     coord_4_digit = '-2378'
-#     lon, lat = _decode_coords(coord_4_digit)
-#     assert lon == -78
-#     assert lat == -23
+def test_negative_lat():
+    coord_4_digit = '-2378'
+    lon, lat = _decode_coords(coord_4_digit)
+    assert lon == -78
+    assert lat == -23
 
-#     coord_5_digit = '-65134'
-#     lon, lat = _decode_coords(coord_5_digit)
-#     assert lon == -134
-#     assert lat == -65
+    coord_5_digit = '-65134'
+    lon, lat = _decode_coords(coord_5_digit)
+    assert lon == -134
+    assert lat == -65
