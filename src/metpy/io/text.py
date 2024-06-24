@@ -44,14 +44,24 @@ def _decode_coords(coordinates):
     """
     # Based on the number of digits, find the correct place to split between lat and lon
     # Hires bulletins provide 7 digits for coordinates; regular bulletins provide 4 or 5 digits
-    split_pos = int(len(coordinates) / 2)
-    lat, lon = coordinates[:split_pos], coordinates[split_pos:]
+    if coordinates[0] == '-':
+        coordinates = coordinates[1:]
+        split_pos = int(len(coordinates) / 2)
+        lat, lon = coordinates[:split_pos], coordinates[split_pos:]
 
-    # Insert decimal point at the correct place and convert to float
-    lat = float(f'{lat[:2]}.{lat[2:]}')
-    lon = -float(f'{lon[:3]}.{lon[3:]}')
+        # Insert decimal point at the correct place and convert to float
+        lat = -float(f'{lat[:2]}.{lat[2:]}')
+        lon = -float(f'{lon[:3]}.{lon[3:]}')
+        return lon, lat
+    
+    if coordinates[0] != '-':
+        split_pos = int(len(coordinates) / 2)
+        lat, lon = coordinates[:split_pos], coordinates[split_pos:]
 
-    return lon, lat
+        # Insert decimal point at the correct place and convert to float
+        lat = float(f'{lat[:2]}.{lat[2:]}')
+        lon = -float(f'{lon[:3]}.{lon[3:]}')
+        return lon, lat
 
 
 def _regroup_lines(iterable):
