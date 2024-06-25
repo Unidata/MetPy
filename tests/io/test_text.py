@@ -66,7 +66,7 @@ def test_parse_wpc_surface_bulletin():
 #testing coordinates with negative latitude values
 
 def test_negative_lat_highres():
-    """Test decoding of high res coordinates with negative latitude"""
+    """Test decoding of high res coordinates with negative latitude."""
     coord = '-4920344'
     lon, lat =_decode_coords(coord)
     assert lon == -034.4
