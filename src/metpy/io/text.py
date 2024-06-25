@@ -53,7 +53,7 @@ def _decode_coords(coordinates):
         lat = -float(f'{lat[:2]}.{lat[2:]}')
         lon = -float(f'{lon[:3]}.{lon[3:]}')
         return lon, lat
-    
+
     if coordinates[0] != '-':
         split_pos = int(len(coordinates) / 2)
         lat, lon = coordinates[:split_pos], coordinates[split_pos:]
