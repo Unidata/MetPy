@@ -28,10 +28,7 @@ updates:
   - package-ecosystem: "github-actions"
     directories:
       - "/.github/workflows"
-      - "/.github/actions/build-docs"
-      - "/.github/actions/install-conda"
-      - "/.github/actions/install-pypi"
-      - "/.github/actions/run-tests"
+      - "/.github/actions/*"
     schedule:
       interval: weekly
     allow:
