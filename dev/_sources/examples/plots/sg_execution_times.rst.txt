@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:11.767** total execution time for 17 files **from examples/plots**:
+**01:10.638** total execution time for 17 files **from examples/plots**:
 
 .. container::
 
@@ -32,53 +32,53 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py` (``Mesonet_Stationplot.py``)
-     - 00:14.030
-     - 0.0
    * - :ref:`sphx_glr_examples_plots_Station_Plot.py` (``Station_Plot.py``)
-     - 00:13.713
+     - 00:13.871
+     - 0.0
+   * - :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py` (``Mesonet_Stationplot.py``)
+     - 00:13.742
      - 0.0
    * - :ref:`sphx_glr_examples_plots_nhc_wind_probabilities.py` (``nhc_wind_probabilities.py``)
-     - 00:13.137
+     - 00:12.878
      - 0.0
    * - :ref:`sphx_glr_examples_plots_spc_convective_outlook.py` (``spc_convective_outlook.py``)
-     - 00:08.481
+     - 00:08.383
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Combined_plotting.py` (``Combined_plotting.py``)
-     - 00:06.752
+     - 00:06.623
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Plotting_Surface_Analysis.py` (``Plotting_Surface_Analysis.py``)
-     - 00:06.645
+     - 00:06.553
      - 0.0
    * - :ref:`sphx_glr_examples_plots_US_Counties.py` (``US_Counties.py``)
-     - 00:02.594
+     - 00:02.550
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py` (``Station_Plot_with_Layout.py``)
-     - 00:01.529
+     - 00:01.525
      - 0.0
    * - :ref:`sphx_glr_examples_plots_surface_declarative.py` (``surface_declarative.py``)
-     - 00:01.382
+     - 00:01.347
      - 0.0
    * - :ref:`sphx_glr_examples_plots_raster_declarative.py` (``raster_declarative.py``)
-     - 00:00.829
+     - 00:00.813
      - 0.0
    * - :ref:`sphx_glr_examples_plots_upperair_declarative.py` (``upperair_declarative.py``)
-     - 00:00.771
+     - 00:00.729
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py` (``Simplified_Image_Plot.py``)
-     - 00:00.547
+     - 00:00.549
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Simple_Sounding.py` (``Simple_Sounding.py``)
-     - 00:00.427
+     - 00:00.317
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Hodograph_Inset.py` (``Hodograph_Inset.py``)
-     - 00:00.275
+     - 00:00.217
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Skew-T_Layout.py` (``Skew-T_Layout.py``)
-     - 00:00.272
+     - 00:00.210
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Sounding_LCL_Dataset.py` (``Sounding_LCL_Dataset.py``)
-     - 00:00.248
+     - 00:00.196
      - 0.0
    * - :ref:`sphx_glr_examples_plots_Simple_Fronts_Plot.py` (``Simple_Fronts_Plot.py``)
      - 00:00.135
