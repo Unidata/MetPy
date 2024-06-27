@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:19.450** total execution time for 5 files **from examples/gridding**:
+**00:18.753** total execution time for 5 files **from examples/gridding**:
 
 .. container::
 
@@ -33,17 +33,17 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_examples_gridding_Wind_SLP_Interpolation.py` (``Wind_SLP_Interpolation.py``)
-     - 00:12.363
+     - 00:11.988
      - 0.0
    * - :ref:`sphx_glr_examples_gridding_Point_Interpolation.py` (``Point_Interpolation.py``)
-     - 00:05.745
+     - 00:05.581
      - 0.0
    * - :ref:`sphx_glr_examples_gridding_Natural_Neighbor_Verification.py` (``Natural_Neighbor_Verification.py``)
-     - 00:00.526
+     - 00:00.500
      - 0.0
    * - :ref:`sphx_glr_examples_gridding_Inverse_Distance_Verification.py` (``Inverse_Distance_Verification.py``)
-     - 00:00.449
+     - 00:00.362
      - 0.0
    * - :ref:`sphx_glr_examples_gridding_Find_Natural_Neighbors_Verification.py` (``Find_Natural_Neighbors_Verification.py``)
-     - 00:00.367
+     - 00:00.322
      - 0.0
