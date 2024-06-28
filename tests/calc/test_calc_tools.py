@@ -11,6 +11,8 @@ import pandas as pd
 from pyproj import CRS, Geod
 import pytest
 import xarray as xr
+import datetime
+import time
 
 from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersections,
                         first_derivative, geospatial_gradient, get_layer, get_layer_heights,
@@ -20,7 +22,9 @@ from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersec
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
-                              DIR_STRS, nominal_lat_lon_grid_deltas, parse_grid_arguments, UND)
+                              DIR_STRS, nominal_lat_lon_grid_deltas, parse_grid_arguments, UND,
+                              bounding_box_mask, find_bounding_box_indices,
+                              get_vectorized_array_indices)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data)
 from metpy.units import units
@@ -1557,3 +1561,92 @@ def test_vector_derivative_return_subset(return_only, length):
         u, v, longitude=lons, latitude=lats, crs=crs, return_only=return_only)
 
     assert len(ddx) == length
+
+
+def test_bounding_box_mask():
+
+    temperature = 273 + 20 * np.random.random([4, 17, 73, 144])
+    latitude = np.linspace(-90., 90., 73)
+    longitude = np.linspace(0., 360., 144, endpoint=False)
+    pres = ["1000", "925", "850", "700", "600", "500", "400", "300", "250",
+            "200", "150", "100", "70", "50", "30", "20", "10"]
+    level = np.array(pres)
+    level = level.astype(float) * 100
+    time = np.empty((4))
+    time[0] = np.datetime64(datetime.datetime(2023, 1, 14, 0))
+    time[1] = np.datetime64(datetime.datetime(2023, 1, 14, 6))
+    time[2] = np.datetime64(datetime.datetime(2023, 1, 14, 12))
+    time[3] = np.datetime64(datetime.datetime(2023, 1, 14, 18))
+    temp = xr.DataArray(temperature, coords=[time, level, latitude,
+                                             longitude], dims=['time',
+                                                               'level',
+                                                               'latitude',
+                                                               'longitude'])
+    min_lat = 0.
+    max_lat = 30.
+    min_lon = 30.
+    max_lon = 100.
+    temp_mask1 = bounding_box_mask(temp, min_lat, max_lat, min_lon, max_lon)
+    temp_mask2 = bounding_box_mask(temp, 0., 30., 30., 100.)
+    assert_array_equal(temp_mask1.values, temp_mask2.values)
+
+
+def test_find_bounding_box_indices():
+    temperature = 273 + 20 * np.random.random([4, 17, 73, 144])
+    latitude = np.linspace(-90., 90., 73)
+    longitude = np.linspace(0., 360., 144, endpoint=False)
+    pres = ["1000", "925", "850", "700", "600", "500", "400", "300", "250",
+            "200", "150", "100", "70", "50", "30", "20", "10"]
+    level = np.array(pres)
+    level = level.astype(float) * 100
+    time = np.empty((4))
+    time[0] = np.datetime64(datetime.datetime(2023, 1, 14, 0))
+    time[1] = np.datetime64(datetime.datetime(2023, 1, 14, 6))
+    time[2] = np.datetime64(datetime.datetime(2023, 1, 14, 12))
+    time[3] = np.datetime64(datetime.datetime(2023, 1, 14, 18))
+    temp = xr.DataArray(temperature, coords=[time, level, latitude,
+                                             longitude], dims=['time',
+                                                               'level',
+                                                               'latitude',
+                                                               'longitude'])
+    min_lat = 0.
+    max_lat = 30.
+    min_lon = 30.
+    max_lon = 100.
+    temp_mask1 = bounding_box_mask(temp, min_lat, max_lat, min_lon, max_lon)
+    temp_mask2 = bounding_box_mask(temp, 0., 30., 30., 100.)
+    data_class1 = find_bounding_box_indices(temp_mask1, min_lat, max_lat, min_lon, max_lon)
+    data_class2 = find_bounding_box_indices(temp_mask2, 0., 30., 30., 100.)
+    assert data_class1 != data_class2
+
+
+def test_get_vectorized_array_indices():
+    temperature = 273 + 20 * np.random.random([4, 17, 73, 144])
+    latitude = np.linspace(-90., 90., 73)
+    longitude = np.linspace(0., 360., 144, endpoint=False)
+    pres = ["1000", "925", "850", "700", "600", "500", "400", "300", "250",
+            "200", "150", "100", "70", "50", "30", "20", "10"]
+    level = np.array(pres)
+    level = level.astype(float) * 100
+    time = np.empty((4))
+    time[0] = np.datetime64(datetime.datetime(2023, 1, 14, 0))
+    time[1] = np.datetime64(datetime.datetime(2023, 1, 14, 6))
+    time[2] = np.datetime64(datetime.datetime(2023, 1, 14, 12))
+    time[3] = np.datetime64(datetime.datetime(2023, 1, 14, 18))
+    temp = xr.DataArray(temperature, coords=[time, level, latitude,
+                                             longitude], dims=['time',
+                                                               'level',
+                                                               'latitude',
+                                                               'longitude'])
+    min_lat = 0.
+    max_lat = 30.
+    min_lon = 30.
+    max_lon = 100.
+    temp_mask1 = bounding_box_mask(temp, min_lat, max_lat, min_lon, max_lon)
+    temp_mask2 = bounding_box_mask(temp, 0., 30., 30., 100.)
+    data_class1 = find_bounding_box_indices(temp_mask1, min_lat, max_lat, min_lon, max_lon)
+    data_class2 = find_bounding_box_indices(temp_mask2, 0., 30., 30., 100.)
+    [xindices1, yindices1] = get_vectorized_array_indices(data_class1)
+    [xindices2, yindices2] = get_vectorized_array_indices(data_class2)
+    assert_array_equal(xindices1, xindices2)
+    assert_array_equal(yindices1, yindices2)
