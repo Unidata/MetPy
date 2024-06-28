@@ -68,7 +68,7 @@ def test_negative_lat_highres():
     """Test decoding of high res coordinates with negative latitude."""
     coord = '-4920344'
     lon, lat = _decode_coords(coord)
-    assert lon == -034.4
+    assert lon == -34.4
     assert lat == -49.2
 
 
