@@ -6,11 +6,8 @@ from datetime import datetime
 
 import numpy as np
 
-from io import StringIO
-
 from metpy.cbook import get_test_data
 from metpy.io import parse_wpc_surface_bulletin
-from metpy.io.text import _decode_coords
 from metpy.testing import needs_module
 
 
@@ -68,11 +65,10 @@ def test_parse_wpc_surface_bulletin():
 
 def  test_negative_lat_highres():
     """Test decoding of high res coordinates with negative latitude."""
-
     from io import BytesIO
     import shapely.geometry as sgeom
 
-    sample = BytesIO(b'''
+    sample = BytesIO(b"""
 178 
 ASUS02 KWBC 281800
 CODSUS
@@ -83,19 +79,18 @@ NWS WEATHER PREDICTION CENTER COLLEGE PARK MD
  
 VALID 062818Z
 HIGHS 1022 -3961069 1020 -3851069 1026 3750773 1022 4430845 1019 5520728 1018
-''')
+""")
     df = parse_wpc_surface_bulletin(sample)
     assert df.geometry[0] == sgeom.Point([-106.9, -39.6])
 
 
 def test_negative_lat():
     """Test decoding of coordinates with negative latitude."""
-
     from io import BytesIO
     import shapely.geometry as sgeom
 
-    sample = BytesIO(b'''12HR PROG VALID xxxxxxZ
+    sample = BytesIO(b"""12HR PROG VALID xxxxxxZ
 HIGHS -351 -3985 -4046 -38117 -7510 
- ''')
+ """)
     df = parse_wpc_surface_bulletin(sample)
     assert df.geometry[0] == sgeom.Point([-51, -3])
