@@ -63,6 +63,7 @@ def test_parse_wpc_surface_bulletin():
     assert all(df.valid == datetime(2021, 6, 28, 18, 0, 0))
 
 
+@needs_module('shapely')
 def test_negative_lat_highres():
     """Test decoding of high res coordinates with negative latitude."""
     from io import BytesIO
@@ -85,6 +86,7 @@ HIGHS 1022 -3961069 1020 -3851069 1026 3750773 1022 4430845 1019 5520728 1018
     assert df.geometry[0] == sgeom.Point([-106.9, -39.6])
 
 
+@needs_module('shapely')
 def test_negative_lat():
     """Test decoding of coordinates with negative latitude."""
     from io import BytesIO
