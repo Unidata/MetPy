@@ -2551,7 +2551,7 @@ def test_gdi_no_950_by_simplevalue():
         pressure = np.array([922., 850., 700., 600., 500., 400., 300., 250.,
                              200., 150.]) * units.hPa
         temperature = np.array([22.6, 18.6, 8.6, 2.8, -4.6, -15.5, -30.6, -40.4,
-                                -52.9, -67.8,]) * units.degC
+                                -52.9, -67.8]) * units.degC
         relative_humidity = np.array([71.12, 71.16, 70.79, 50.33, 28.22, 4.80, 3.68, 5.82,
                                       18.18, 27.33]) * units.percent
         mixrat = mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity)
