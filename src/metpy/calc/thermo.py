@@ -4591,16 +4591,12 @@ def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
     <Quantity(-8.78797532, 'dimensionless')>
     """
     if np.any(np.max(pressure, axis=vertical_dim) < 950 * units.hectopascal):
-        indices_without_950 = np.where(
-            np.max(pressure, axis=vertical_dim) < 950 * units.hectopascal
-        )
         raise ValueError(
             f'Data not provided for 950hPa or higher pressure. '
             f'GDI requires 950hPa temperature and dewpoint data, '
             f'see referenced paper section 3.d. in docstring for discussion of'
             f' extrapolating sounding data below terrain surface in high-'
             f'elevation regions.\nIndices without a 950hPa or higher datapoint'
-            f':\n{indices_without_950}'
             f'\nMax provided pressures:'
             f'\n{np.max(pressure, axis=0)}'
         )
