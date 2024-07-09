@@ -64,6 +64,9 @@ jobs:
             for dep in src:
               dep = dep.split(';')[0]
               out.write(dep.replace('>=', '==') + '\n')
+            # Only needed while we support numpy 1.20
+            if fname == 'requirements.txt':
+              out.write('pillow!=10.4.0\n')
         EOF
 
     - name: Install from PyPI
