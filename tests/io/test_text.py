@@ -61,3 +61,40 @@ def test_parse_wpc_surface_bulletin():
                                                 [-102, 32], [-103, 31]])
 
     assert all(df.valid == datetime(2021, 6, 28, 18, 0, 0))
+
+
+@needs_module('shapely')
+def test_negative_lat_highres():
+    """Test decoding of high res coordinates with negative latitude."""
+    from io import BytesIO
+
+    import shapely.geometry as sgeom
+
+    sample = BytesIO(b"""
+178
+ASUS02 KWBC 281800
+CODSUS
+
+CODED SURFACE FRONTAL POSITIONS
+NWS WEATHER PREDICTION CENTER COLLEGE PARK MD
+342 PM EDT MON JUN 28 2021
+
+VALID 062818Z
+HIGHS 1022 -3961069 1020 -3851069 1026 3750773 1022 4430845 1019 5520728 1018
+""")
+    df = parse_wpc_surface_bulletin(sample)
+    assert df.geometry[0] == sgeom.Point([-106.9, -39.6])
+
+
+@needs_module('shapely')
+def test_negative_lat():
+    """Test decoding of coordinates with negative latitude."""
+    from io import BytesIO
+
+    import shapely.geometry as sgeom
+
+    sample = BytesIO(b"""12HR PROG VALID xxxxxxZ
+HIGHS -351 -3985 -4046 -38117 -7510
+ """)
+    df = parse_wpc_surface_bulletin(sample)
+    assert df.geometry[0] == sgeom.Point([-51, -3])

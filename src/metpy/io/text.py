@@ -42,15 +42,22 @@ def _decode_coords(coordinates):
     (-119.3, 47.3)
 
     """
+    # Define latitude orientation
+    flip = 1
+
+    if coordinates[0] == '-':
+        coordinates = coordinates[1:]
+        # Flip latitude to Southern Hemisphere
+        flip = -1
+
     # Based on the number of digits, find the correct place to split between lat and lon
     # Hires bulletins provide 7 digits for coordinates; regular bulletins provide 4 or 5 digits
     split_pos = int(len(coordinates) / 2)
     lat, lon = coordinates[:split_pos], coordinates[split_pos:]
 
     # Insert decimal point at the correct place and convert to float
-    lat = float(f'{lat[:2]}.{lat[2:]}')
+    lat = float(f'{lat[:2]}.{lat[2:]}') * flip
     lon = -float(f'{lon[:3]}.{lon[3:]}')
-
     return lon, lat
 
 
