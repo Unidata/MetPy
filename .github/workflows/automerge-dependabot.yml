@@ -21,4 +21,4 @@ jobs:
     - name: Set auto-merge
       run: gh pr merge -R ${{ github.repository }} --merge --auto ${{ github.event.pull_request.number }}
     - name: Review PR
-      run: gh pr review -R ${{ github.repository }} ${{ github.event.pull_request.number }}
+      run: gh pr review -R ${{ github.repository }} --approve ${{ github.event.pull_request.number }}
