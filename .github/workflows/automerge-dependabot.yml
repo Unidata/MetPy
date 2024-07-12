@@ -1,0 +1,24 @@
+name: Auto-merge Dependabot PRs
+
+on:
+  pull_request_target:
+
+jobs:
+  #
+  # Automatically review dependabot PRs and set them to automerge (on successful checks)
+  #
+  Automerge:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    env:
+      GH_TOKEN: ${{ github.token }}
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+    - name: Set auto-merge
+      run: gh pr merge -R ${{ github.repository }} --merge --auto ${{ github.event.pull_request.number }}
+    - name: Review PR
+      run: gh pr review -R ${{ github.repository }} --approve ${{ github.event.pull_request.number }}
