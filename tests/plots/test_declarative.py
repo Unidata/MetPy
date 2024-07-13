@@ -462,7 +462,8 @@ def test_declarative_contour_convert_units():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.276)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance=2.731 if version_check('matplotlib<3.9') else 0.246)
 @needs_cartopy
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
