@@ -20,6 +20,8 @@ from traitlets import (Any, Bool, Dict, Float, HasTraits, Instance, Int, List, o
 
 from . import ctables, wx_symbols
 from ._mpl import TextCollection
+from metpy.plots import (ColdFront, OccludedFront, StationaryFront, 
+                         StationPlot, WarmFront)
 from .cartopy_utils import import_cartopy
 from .station_plot import StationPlot
 from ..calc import reduce_point_density, smooth_n_point, zoom_xarray
@@ -1986,3 +1988,179 @@ class PlotGeometry(MetPyHasTraits):
 
                 # Finally, draw the label
                 self._draw_label(label, lon, lat, fontcolor, fontoutline, offset)
+
+
+class PlotBulletin(MetPyHasTraits):
+
+    parent = Instance(Panel)
+    _need_redraw = Bool(default_value=True)
+
+    geometry = Instance(collections.abc.Iterable, allow_none=False)
+    geometry.__doc__ = """A collection of Shapely objects to plot.
+
+    A collection of Shapely objects, such as the 'geometry' column from a
+    ``geopandas.GeoDataFrame``. Acceptable Shapely objects are ``shapely.MultiPolygon``,
+    ``shapely.Polygon``, ``shapely.MultiLineString``, ``shapely.LineString``,
+    ``shapely.MultiPoint``, and ``shapely.Point``.
+    """
+    feature = Union([Instance(collections.abc.Iterable), Unicode()],
+                   allow_none=False)
+    feature.__doc__= """name of the features to be plotted
+    """
+
+    HIGH_color = Union([Unicode()], default_value='blue', allow_none=True)
+
+    LOW_color = Union([Unicode()], default_value='red', allow_none=True)
+
+    WARM_color = Union([Unicode()], default_value='red', allow_none=True)
+
+    COLD_color = Union([Unicode()], default_value='blue', allow_none=True)
+
+    OCFNT_color = Union([Unicode()], default_value='purple', allow_none=True)
+    
+    TROF_color = Union([Unicode()], default_value='darkorange', allow_none=True)
+
+
+    HIGH_label = Union([Unicode()], default_value='H', allow_none=True)
+
+    LOW_label = Union([Unicode()], default_value='L', allow_none=True)
+
+
+    TROF_linestyle = Union([Unicode()], default_value='dashed',
+                   allow_none=True)
+    
+    label_fontsize =  Union([Int(), Float(), Unicode()], default_value=10, allow_none=True) #labels will be Hs and Ls
+    label_fontsize.__doc__ = """font sizes of labels.
+
+    Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
+    'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
+    """
+
+    TROF_linewidth = Union([Float()], default_value=2, 
+                         allow_none=True)
+    TROF_linewidth.__doc__ = """Stroke width(s) for polygons and lines.
+
+    A single integer or floating point value or collection of values representing the size of
+    the stroke width. 
+    """
+    FRONT_linewidth = Union([Float()], default_value=1, 
+                         allow_none=True)
+
+    FRONT_marker_size = Union([Int(), Float(), Unicode()], default_value=3, allow_none=True)
+    FRONT_marker_size.__doc__ = """
+    """
+
+    strength = Union([Instance(collections.abc.Iterable), Float()], default_value=[], 
+                         allow_none=True)
+    
+    strength_offset = Union([Tuple()], default_value=(0,-6), allow_none=True)
+
+    def _effect_map(self):
+        return {
+            'WARM': [WarmFront(size=self.FRONT_marker_size, color=self.WARM_color)],
+            'COLD': [ColdFront(size=self.FRONT_marker_size, color=self.COLD_color)],
+            'OCFNT': [OccludedFront(size=self.FRONT_marker_size, color=self.OCFNT_color)],
+            'STNRY': [StationaryFront(size=self.FRONT_marker_size, colors=(self.WARM_color, self.COLD_color))],
+            'TROF': None
+        }
+
+
+    def _color_map(self):
+        return  {
+            'HIGH' : self.HIGH_color,
+            'LOW' : self.LOW_color,
+            'TROF' : self.TROF_color
+        }
+    
+    def _linewidth_map(self):
+        return {
+            'WARM': self.FRONT_linewidth,
+            'COLD': self.FRONT_linewidth,
+            'OCFNT': self.FRONT_linewidth,
+            'STNRY': self.FRONT_linewidth,
+            'TROF': self.TROF_linewidth
+        }
+    
+    def _label_map(self):
+        return {
+            'HIGH' : self.HIGH_label,
+            'LOW' : self.LOW_label
+        }
+
+    @property
+    def name(self):
+        """Generate a name for the plot."""
+        # Unlike Plots2D and PlotObs, there are no other attributes (such as 'fields' or
+        # 'levels') from which to name the plot. A generic name is returned here in case the
+        # user does not provide their own title, in which case MapPanel.draw() looks here.
+        return 'WPC Bulletin Plot'
+    
+    def _draw_strengths(self, text, lon, lat, color, offset=None): #(0,-6)): #change to self.offset?
+        """Draw
+        """
+        import math
+        offset = self.strength_offset if offset is None else offset
+        self.parent.ax.add_artist(TextCollection([lon], [lat], [str(text)],
+                                                 va='center',
+                                                 ha='center',
+                                                 color=color,
+                                                 offset=offset,
+                                                 weight='demi',
+                                                 size = math.floor(self.label_fontsize * 0.7),
+                                                 transform=ccrs.PlateCarree()))
+        
+    def _draw_labels(self, text, lon, lat, color, offset=(0,0)):
+        """Draw
+        """
+        self.parent.ax.add_artist(TextCollection([lon], [lat], [str(text)],
+                                                 va='center',
+                                                 ha='center',
+                                                 color=color,
+                                                 offset=offset,
+                                                 weight='demi',
+                                                 size=self.label_fontsize,
+                                                 transform=ccrs.PlateCarree()))
+    
+    def draw(self):
+        """Draw the plot."""
+        if self._need_redraw:
+            if getattr(self, 'handles', None) is None:
+                self._build()
+            self._need_redraw = False
+
+    def copy(self):
+        """Return a copy of the plot."""
+        return copy.copy(self)
+    
+    def _build(self):
+        """Build the plot by calling needed plotting methods as necessary."""
+        from shapely.geometry import (LineString, Point)
+        from matplotlib.text import Text
+
+        # Ensure strength is a valid iterable
+        strengths = self.strength if len(self.strength) > 0 else cycle([None]) 
+
+        effect_map = self._effect_map()
+        color_map = self._color_map()
+        linewidth_map = self._linewidth_map()
+        label_map = self._label_map()
+        
+        for geo_obj, strengthvalues, feature in zip(
+                self.geometry, strengths, self.feature):
+            kwargs = self.mpl_args.copy()
+            if isinstance(geo_obj, (LineString)):
+                kwargs.setdefault('linewidths', linewidth_map[feature])
+                kwargs.setdefault('facecolor', 'none')
+                kwargs.setdefault('crs', ccrs.PlateCarree())
+                kwargs.setdefault('path_effects', effect_map[feature])
+                if feature=='TROF':
+                    kwargs.setdefault('edgecolor', color_map[feature])
+                    kwargs.setdefault('linestyle', self.TROF_linestyle)                
+                self.parent.ax.add_geometries([geo_obj], **kwargs)
+            elif isinstance(geo_obj, Point):
+                kwargs.setdefault('color', color_map[feature])
+                lon, lat = geo_obj.coords[0]
+                self._draw_labels(label_map[feature],lon,lat, **kwargs)
+            
+                if strengthvalues is not None:
+                    self._draw_strengths(strengthvalues, lon, lat, **kwargs)     
