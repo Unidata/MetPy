@@ -20,7 +20,7 @@ from traitlets import (Any, Bool, Dict, Float, HasTraits, Instance, Int, List, o
 
 from . import ctables, wx_symbols
 from ._mpl import TextCollection
-from metpy.plots import (ColdFront, OccludedFront, StationaryFront, 
+from metpy.plots import (ColdFront, OccludedFront, StationaryFront,
                          StationPlot, WarmFront)
 from .cartopy_utils import import_cartopy
 from .station_plot import StationPlot
@@ -1991,6 +1991,7 @@ class PlotGeometry(MetPyHasTraits):
 
 
 class PlotBulletin(MetPyHasTraits):
+    """Plot previously parsed WPC Surface Analysis Bulletins with optional customization."""
 
     parent = Instance(Panel)
     _need_redraw = Bool(default_value=True)
@@ -1998,62 +1999,126 @@ class PlotBulletin(MetPyHasTraits):
     geometry = Instance(collections.abc.Iterable, allow_none=False)
     geometry.__doc__ = """A collection of Shapely objects to plot.
 
-    A collection of Shapely objects, such as the 'geometry' column from a
-    ``geopandas.GeoDataFrame``. Acceptable Shapely objects are ``shapely.MultiPolygon``,
-    ``shapely.Polygon``, ``shapely.MultiLineString``, ``shapely.LineString``,
-    ``shapely.MultiPoint``, and ``shapely.Point``.
+    A collection of Shapely objects, such as the 'geometry' column from a bulletin parsed
+    with `parse_wpc_surface_bulletin()`. Acceptable Shapely objects are 
+    ``shapely.LineString``, and ``shapely.Point``.
     """
+
     feature = Union([Instance(collections.abc.Iterable), Unicode()],
                    allow_none=False)
-    feature.__doc__= """name of the features to be plotted
+    feature.__doc__ = """Collection of names of features to be plotted.
+
+    Collection of strings, each corresponding one-to-one with geometries, such as the 
+    'features' column from a bulletin parsed with `parse_wpc_surface_bulletin()`.
+    Acceptable feature names include: 'HIGH', 'LOW', 'WARM', 'COLD', 'OCFNT', 'STNRY', 'TROF'.
+    """
+
+    strength = Union([Instance(collections.abc.Iterable), Float()], default_value=[],
+                         allow_none=True)
+    strength.__doc__ = """Collection of strengths corresponding to pressure systems.
+
+    Collection of floats, each corresponding one-to-one with pressure system features. Such
+    as the 'strength' column from a bulletin parsed with `parse_wpc_surface_bulletin()`.
     """
 
     HIGH_color = Union([Unicode()], default_value='blue', allow_none=True)
+    HIGH_color.__doc__ = """Color for plotting high-pressure systems.
+    
+    A single string (color name or hex code) used to plot label of high-pressure system and
+    their strength, if provided. Default value is 'blue'.
+    """
 
     LOW_color = Union([Unicode()], default_value='red', allow_none=True)
+    LOW_color.__doc__ = """Color for plotting low-pressure systems.
+    
+    A single string (color name or hex code) used to plot label of low-pressure system and
+    their strength, if provided. Default value is 'red'.
+    """
 
     WARM_color = Union([Unicode()], default_value='red', allow_none=True)
+    WARM_color.__doc__ = """Color for plotting warm fronts.
+    
+    A single string (color name or hex code) used to plot warm fronts. Default
+    color is 'red', which is used by `WarmFront()` class. `WARM_color` alternates
+    with `COLD_color` to plot stationary fronts.
+    """
 
     COLD_color = Union([Unicode()], default_value='blue', allow_none=True)
+    COLD_color.__doc__ = """Color for plotting cold fronts.
+    
+    A single string (color name or hex code) used to plot cold fronts. Default
+    color is 'blue', which is used by `ColdFront()` class. `COLD_color` alternates
+    with `WARM_color` to plot stationary fronts.
+    """
 
     OCFNT_color = Union([Unicode()], default_value='purple', allow_none=True)
+    OCFNT_color.__doc__ = """Color for plotting occluded fronts.
     
-    TROF_color = Union([Unicode()], default_value='darkorange', allow_none=True)
+    A single string (color name or hex code) used to plot Occluded fronts. Default
+    color is 'purple', which is used by `OccludedFront()` class.
+    """
 
+    TROF_color = Union([Unicode()], default_value='darkorange', allow_none=True)
+    TROF_color.__doc__ = """Color for plotting trough lines.
+    
+    A single string (color name or hex code) used to plot trough lines. Default
+    color is 'darkorange'.
+    """
 
     HIGH_label = Union([Unicode()], default_value='H', allow_none=True)
+    HIGH_label.__doc__ = """Label used to plot high-pressure systems.
+
+    Single string used as marker to plot high-pressure systems. Default value is 'H'.
+    """
 
     LOW_label = Union([Unicode()], default_value='L', allow_none=True)
+    LOW_label.__doc__ = """Label used to plot low-pressure systems.
 
+    Single string used as marker to plot low-pressure systems. Default value is 'L'.
+    """
 
     TROF_linestyle = Union([Unicode()], default_value='dashed',
                    allow_none=True)
-    
-    label_fontsize =  Union([Int(), Float(), Unicode()], default_value=10, allow_none=True) #labels will be Hs and Ls
-    label_fontsize.__doc__ = """font sizes of labels.
+    TROF_linestyle.__doc__ = """Linestyle of Trough lines.
+
+    Single string, default value is 'dashed'. 
+    Accept matplotlib linestyles: 'solid', 'dotted', 'dashdot'.
+    """
+
+    label_fontsize =  Union([Int(), Float(), Unicode()], default_value=10, allow_none=True)
+    label_fontsize.__doc__ = """Font sizes of pressure systems labels.
 
     Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
     'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
     """
 
-    TROF_linewidth = Union([Float()], default_value=2, 
+    TROF_linewidth = Union([Float()], default_value=2,
                          allow_none=True)
-    TROF_linewidth.__doc__ = """Stroke width(s) for polygons and lines.
+    TROF_linewidth.__doc__ = """Stroke width for trough lines.
 
-    A single integer or floating point value or collection of values representing the size of
-    the stroke width. 
+    A single integer or floating point value representing the size of the stroke width. 
     """
-    FRONT_linewidth = Union([Float()], default_value=1, 
+
+    FRONT_linewidth = Union([Float()], default_value=1,
                          allow_none=True)
+    TROF_linewidth.__doc__ = """Stroke width for front lines.
+
+    A single floating point value representing the size of the stroke width. 
+    """
 
     FRONT_marker_size = Union([Int(), Float(), Unicode()], default_value=3, allow_none=True)
-    FRONT_marker_size.__doc__ = """
+    FRONT_marker_size.__doc__ = """Size of symbols in front lines.
+
+    Accepts size in points or relative size. Default value is 3. Allowed relative sizes are those 
+    of Matplotlib: 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
     """
 
-    strength = Union([Instance(collections.abc.Iterable), Float()], default_value=[], 
-                         allow_none=True)
-    
     strength_offset = Union([Tuple()], default_value=(0,-6), allow_none=True)
+    strength_offset.__doc__ = """Offset between label of pressure system and its corresponding strength.
+    
+    Tuple representing the position of strength value with respect to label of pressure system.
+    Default value is (0,-6).
+    """
 
     def _effect_map(self):
         return {
@@ -2071,7 +2136,7 @@ class PlotBulletin(MetPyHasTraits):
             'LOW' : self.LOW_color,
             'TROF' : self.TROF_color
         }
-    
+
     def _linewidth_map(self):
         return {
             'WARM': self.FRONT_linewidth,
@@ -2080,7 +2145,7 @@ class PlotBulletin(MetPyHasTraits):
             'STNRY': self.FRONT_linewidth,
             'TROF': self.TROF_linewidth
         }
-    
+
     def _label_map(self):
         return {
             'HIGH' : self.HIGH_label,
@@ -2094,9 +2159,22 @@ class PlotBulletin(MetPyHasTraits):
         # 'levels') from which to name the plot. A generic name is returned here in case the
         # user does not provide their own title, in which case MapPanel.draw() looks here.
         return 'WPC Bulletin Plot'
-    
-    def _draw_strengths(self, text, lon, lat, color, offset=None): #(0,-6)): #change to self.offset?
-        """Draw
+
+    def _draw_strengths(self, text, lon, lat, color, offset=None):
+        """Draw strengths in the plot.
+
+        Parameters
+        ----------
+        text : str
+            The strength's value
+        lon : float
+            Longitude at which to position the label
+        lat : float
+            Latitude at which to position the label
+        color : str
+            Name or hex code for the color of the text
+        offset : tuple (default: (0, 0))
+            A tuple containing the x- and y-offset of the label, respectively
         """
         import math
         offset = self.strength_offset if offset is None else offset
@@ -2108,9 +2186,22 @@ class PlotBulletin(MetPyHasTraits):
                                                  weight='demi',
                                                  size = math.floor(self.label_fontsize * 0.7),
                                                  transform=ccrs.PlateCarree()))
-        
+
     def _draw_labels(self, text, lon, lat, color, offset=(0,0)):
-        """Draw
+        """Draw labels in the plot.
+
+        Parameters
+        ----------
+        text : str
+            The label's text
+        lon : float
+            Longitude at which to position the label
+        lat : float
+            Latitude at which to position the label
+        color : str
+            Name or hex code for the color of the text
+        offset : tuple (default: (0, 0))
+            A tuple containing the x- and y-offset of the label, respectively
         """
         self.parent.ax.add_artist(TextCollection([lon], [lat], [str(text)],
                                                  va='center',
@@ -2120,7 +2211,7 @@ class PlotBulletin(MetPyHasTraits):
                                                  weight='demi',
                                                  size=self.label_fontsize,
                                                  transform=ccrs.PlateCarree()))
-    
+
     def draw(self):
         """Draw the plot."""
         if self._need_redraw:
@@ -2131,23 +2222,26 @@ class PlotBulletin(MetPyHasTraits):
     def copy(self):
         """Return a copy of the plot."""
         return copy.copy(self)
-    
+
     def _build(self):
         """Build the plot by calling needed plotting methods as necessary."""
         from shapely.geometry import (LineString, Point)
-        from matplotlib.text import Text
 
         # Ensure strength is a valid iterable
-        strengths = self.strength if len(self.strength) > 0 else cycle([None]) 
+        strengths = self.strength if len(self.strength) > 0 else cycle([None])
 
+        # Map plotting parameters
         effect_map = self._effect_map()
         color_map = self._color_map()
         linewidth_map = self._linewidth_map()
         label_map = self._label_map()
-        
+
+        # Each Shapely object is plotted separately with its corresponding strength
+        # and customizable parameters
         for geo_obj, strengthvalues, feature in zip(
                 self.geometry, strengths, self.feature):
             kwargs = self.mpl_args.copy()
+            # Plot the Shapely object with the appropriate method and style
             if isinstance(geo_obj, (LineString)):
                 kwargs.setdefault('linewidths', linewidth_map[feature])
                 kwargs.setdefault('facecolor', 'none')
@@ -2155,12 +2249,12 @@ class PlotBulletin(MetPyHasTraits):
                 kwargs.setdefault('path_effects', effect_map[feature])
                 if feature=='TROF':
                     kwargs.setdefault('edgecolor', color_map[feature])
-                    kwargs.setdefault('linestyle', self.TROF_linestyle)                
+                    kwargs.setdefault('linestyle', self.TROF_linestyle)
                 self.parent.ax.add_geometries([geo_obj], **kwargs)
             elif isinstance(geo_obj, Point):
                 kwargs.setdefault('color', color_map[feature])
                 lon, lat = geo_obj.coords[0]
                 self._draw_labels(label_map[feature],lon,lat, **kwargs)
-            
+                # Plot strengths if provided
                 if strengthvalues is not None:
-                    self._draw_strengths(strengthvalues, lon, lat, **kwargs)     
+                    self._draw_strengths(strengthvalues, lon, lat, **kwargs)
