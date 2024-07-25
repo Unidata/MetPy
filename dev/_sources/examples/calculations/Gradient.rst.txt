@@ -183,6 +183,10 @@ Finally, the deltas can be arrays for unevenly spaced data.
 
       :download:`Download Python source code: Gradient.py <Gradient.py>`
 
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Gradient.zip <Gradient.zip>`
+
 
 .. only:: html
 

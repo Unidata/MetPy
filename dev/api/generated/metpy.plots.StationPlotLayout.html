@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jul 13, 2024 at 02:40:13"/>
+    <meta name="docbuild:last-update" content="Jul 25, 2024 at 20:48:39"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.StationPlotLayout.html" />
 
   </head>
@@ -862,7 +862,7 @@ code; this is useful for specifying things like color or line width.</p>
 a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
 <li><p><strong>v_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the parameter for the v-component for <em class="xref py py-obj">barbs</em>, which is used as
 a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
-<li><p><strong>units</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="(in pint v0.1.dev52+g4c2cacc)"><em>pint.Unit</em></a><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
+<li><p><strong>units</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="(in pint v0.24.3.dev1+g79e636c)"><em>pint.Unit</em></a><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
 conversion to a string. If not specified, no conversion is done.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s
 <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v3.9.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function.</p></li>
@@ -955,7 +955,7 @@ data container passed to <a class="reference internal" href="#metpy.plots.Statio
 <li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><em>Callable</em><em>, </em><em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
 compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
 value and return a string. Defaults to ‘0.f’.</p></li>
-<li><p><strong>units</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="(in pint v0.1.dev52+g4c2cacc)"><em>pint.Unit</em></a><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
+<li><p><strong>units</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="(in pint v0.24.3.dev1+g79e636c)"><em>pint.Unit</em></a><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
 conversion to a string. If not specified, no conversion is done.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</p></li>
 </ul>
@@ -1068,7 +1068,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 
 <section id="examples-using-metpy-plots-stationplotlayout">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.StationPlotLayout</span></code><a class="headerlink" href="#examples-using-metpy-plots-stationplotlayout" title="Link to this heading">#</a></h2>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout b..."><img alt="" src="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" />
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout built into MetPy."><img alt="" src="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" />
 <p><a class="reference internal" href="../../examples/plots/Station_Plot_with_Layout.html#sphx-glr-examples-plots-station-plot-with-layout-py"><span class="std std-ref">Station Plot with Layout</span></a></p>
   <div class="sphx-glr-thumbnail-title">Station Plot with Layout</div>
 </div></div><div style='clear:both'></div></section>

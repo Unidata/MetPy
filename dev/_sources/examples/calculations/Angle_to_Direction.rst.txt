@@ -143,7 +143,7 @@ If you want the unabbrieviated version, input full=True
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.003 seconds)
+   **Total running time of the script:** (0 minutes 0.004 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Angle_to_Direction.py:
@@ -159,6 +159,10 @@ If you want the unabbrieviated version, input full=True
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Angle_to_Direction.py <Angle_to_Direction.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Angle_to_Direction.zip <Angle_to_Direction.zip>`
 
 
 .. only:: html

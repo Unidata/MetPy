@@ -167,6 +167,10 @@ for the layer from the surface pressure to 500-hPa
 
       :download:`Download Python source code: Thickness_Hydrostatic.py <Thickness_Hydrostatic.py>`
 
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Thickness_Hydrostatic.zip <Thickness_Hydrostatic.zip>`
+
 
 .. only:: html
 

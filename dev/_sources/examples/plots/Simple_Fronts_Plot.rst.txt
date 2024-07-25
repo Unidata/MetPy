@@ -111,6 +111,10 @@ standard lines, but add our path effects.
 
       :download:`Download Python source code: Simple_Fronts_Plot.py <Simple_Fronts_Plot.py>`
 
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Simple_Fronts_Plot.zip <Simple_Fronts_Plot.zip>`
+
 
 .. only:: html
 

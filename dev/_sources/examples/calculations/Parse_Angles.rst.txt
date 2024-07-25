@@ -135,6 +135,10 @@ with different abbreviations and capitalizations
 
       :download:`Download Python source code: Parse_Angles.py <Parse_Angles.py>`
 
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Parse_Angles.zip <Parse_Angles.zip>`
+
 
 .. only:: html
 

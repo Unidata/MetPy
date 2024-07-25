@@ -204,6 +204,10 @@ parcel
 
       :download:`Download Python source code: Mountain_Problem.py <Mountain_Problem.py>`
 
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Mountain_Problem.zip <Mountain_Problem.zip>`
+
 
 .. only:: html
 

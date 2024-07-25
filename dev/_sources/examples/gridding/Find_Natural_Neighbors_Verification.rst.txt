@@ -139,7 +139,7 @@ We can plot all of the triangles as well as the circles representing the circumc
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.351 seconds)
+   **Total running time of the script:** (0 minutes 0.339 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py:
@@ -155,6 +155,10 @@ We can plot all of the triangles as well as the circles representing the circumc
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Find_Natural_Neighbors_Verification.py <Find_Natural_Neighbors_Verification.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Find_Natural_Neighbors_Verification.zip <Find_Natural_Neighbors_Verification.zip>`
 
 
 .. only:: html

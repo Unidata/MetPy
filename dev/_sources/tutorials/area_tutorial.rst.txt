@@ -522,7 +522,7 @@ some surface observations.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 10.448 seconds)
+   **Total running time of the script:** (0 minutes 10.487 seconds)
 
 
 .. _sphx_glr_download_tutorials_area_tutorial.py:
@@ -538,6 +538,10 @@ some surface observations.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: area_tutorial.py <area_tutorial.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: area_tutorial.zip <area_tutorial.zip>`
 
 
 .. only:: html

@@ -25,7 +25,7 @@ Examples of using a variety of MetPy's functionality together.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s XArray accessors to simplify opening a data file and plotting data on a map using C...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s XArray accessors to simplify opening a data file and plotting data on a map using CartoPy.">
 
 .. only:: html
 
@@ -42,7 +42,7 @@ Examples of using a variety of MetPy's functionality together.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="By using metpy.calc.log_interp, data with sigma as the vertical coordinate can be interpolated ...">
+    <div class="sphx-glr-thumbcontainer" tooltip="By using metpy.calc.log_interp, data with sigma as the vertical coordinate can be interpolated to isobaric coordinates.">
 
 .. only:: html
 
@@ -76,7 +76,7 @@ Examples of using a variety of MetPy's functionality together.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy function metpy.interpolate.cross_section can obtain a cross-sectional slice through g...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy function metpy.interpolate.cross_section can obtain a cross-sectional slice through gridded data.">
 
 .. only:: html
 
@@ -110,7 +110,7 @@ Examples of using a variety of MetPy's functionality together.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy function mpcalc.isentropic_interpolation allows for isentropic analysis from model an...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy function mpcalc.isentropic_interpolation allows for isentropic analysis from model analysis data in isobaric coordinates.">
 
 .. only:: html
 
@@ -144,7 +144,7 @@ Examples of using a variety of MetPy's functionality together.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example combines simple MetPy plotting functionality, metpy.calc computation functionality...">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example combines simple MetPy plotting functionality, metpy.calc computation functionality, and a few basic Matplotlib tricks to create an advanced sounding plot with a complex layout &amp; high readability.">
 
 .. only:: html
 
@@ -571,7 +571,7 @@ Examples using MetPy's support for reading various file formats.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s support for GINI files to read in a water vapor satellite image and plot the data u...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s support for GINI files to read in a water vapor satellite image and plot the data using CartoPy.">
 
 .. only:: html
 
@@ -659,7 +659,7 @@ Examples generating a grid of data from scattered point observations.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking an...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking analysis, featuring contours of pressure and wind barbs.">
 
 .. only:: html
 
@@ -710,7 +710,7 @@ Examples generating a grid of data from scattered point observations.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Walks through the steps of Natural Neighbor interpolation to validate that the algorithmic appr...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Walks through the steps of Natural Neighbor interpolation to validate that the algorithmic approach taken in MetPy is correct.">
 
 .. only:: html
 
@@ -781,7 +781,7 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorologica...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorological analyses including surface observation plots. This example creates a temperature raster plot, though other potential raster plots include radar.">
 
 .. only:: html
 
@@ -815,7 +815,7 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy&#x27;s simplified plott...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy&#x27;s simplified plotting interface. This example walks through plotting the Day 1 Convective Outlook from NOAA Storm Prediction Center. The geoJSON file was retrieved from the Storm Prediction Center&#x27;s archives.">
 
 .. only:: html
 
@@ -849,7 +849,7 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorologica...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorological analyses including surface observation plots.">
 
 .. only:: html
 
@@ -866,7 +866,7 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorologica...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorological analyses including upper air observation plots.">
 
 .. only:: html
 
@@ -883,7 +883,7 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy&#x27;s simplified plott...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy&#x27;s simplified plotting interface. This example walks through plotting cities, along with 5-day tropical-storm-force wind speed probabilities from NOAA National Hurricane Center.">
 
 .. only:: html
 
@@ -951,7 +951,7 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This uses MetPy to decode text surface analysis bulletins from the Weather Prediction Center. T...">
+    <div class="sphx-glr-thumbcontainer" tooltip="This uses MetPy to decode text surface analysis bulletins from the Weather Prediction Center. The features in this bulletin are then plotted on a map, making use of MetPy&#x27;s various path effects for matplotlib than can be used to represent a line as a traditional front.">
 
 .. only:: html
 
@@ -1019,7 +1019,7 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout b...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout built into MetPy.">
 
 .. only:: html
 

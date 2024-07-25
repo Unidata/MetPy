@@ -85,6 +85,10 @@ Dataset and plotting using Matplotlib.
 
       :download:`Download Python source code: Divergence.py <Divergence.py>`
 
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Divergence.zip <Divergence.zip>`
+
 
 .. only:: html
 

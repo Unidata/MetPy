@@ -147,6 +147,10 @@ Calculate the mean pressure weighted temperature over a depth of 500 hPa
 
       :download:`Download Python source code: Mean_Pressure_Weighted.py <Mean_Pressure_Weighted.py>`
 
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Mean_Pressure_Weighted.zip <Mean_Pressure_Weighted.zip>`
+
 
 .. only:: html
 

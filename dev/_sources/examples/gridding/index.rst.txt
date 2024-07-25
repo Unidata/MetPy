@@ -36,7 +36,7 @@ Examples generating a grid of data from scattered point observations.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking an...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking analysis, featuring contours of pressure and wind barbs.">
 
 .. only:: html
 
@@ -87,7 +87,7 @@ Examples generating a grid of data from scattered point observations.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Walks through the steps of Natural Neighbor interpolation to validate that the algorithmic appr...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Walks through the steps of Natural Neighbor interpolation to validate that the algorithmic approach taken in MetPy is correct.">
 
 .. only:: html
 

@@ -357,7 +357,7 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.943 seconds)
+   **Total running time of the script:** (0 minutes 4.845 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:
@@ -373,6 +373,10 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: cross_section.py <cross_section.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: cross_section.zip <cross_section.zip>`
 
 
 .. only:: html

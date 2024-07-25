@@ -480,7 +480,7 @@ Print Important Sounding Parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.258 seconds)
+   **Total running time of the script:** (0 minutes 0.254 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Sounding_Calculations.py:
@@ -496,6 +496,10 @@ Print Important Sounding Parameters
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Sounding_Calculations.py <Sounding_Calculations.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Sounding_Calculations.zip <Sounding_Calculations.zip>`
 
 
 .. only:: html

@@ -735,6 +735,10 @@ these when you're having issues.
 
       :download:`Download Python source code: unit_tutorial.py <unit_tutorial.py>`
 
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: unit_tutorial.zip <unit_tutorial.zip>`
+
 
 .. only:: html
 
