@@ -20,8 +20,7 @@ from traitlets import (Any, Bool, Dict, Float, HasTraits, Instance, Int, List, o
 
 from . import ctables, wx_symbols
 from ._mpl import TextCollection
-from metpy.plots import (ColdFront, OccludedFront, StationaryFront,
-                         StationPlot, WarmFront)
+from .patheffects import (ColdFront, OccludedFront, WarmFront, StationaryFront)
 from .cartopy_utils import import_cartopy
 from .station_plot import StationPlot
 from ..calc import reduce_point_density, smooth_n_point, zoom_xarray
@@ -1989,9 +1988,13 @@ class PlotGeometry(MetPyHasTraits):
                 # Finally, draw the label
                 self._draw_label(label, lon, lat, fontcolor, fontoutline, offset)
 
-
-class PlotBulletin(MetPyHasTraits):
-    """Plot previously parsed WPC Surface Analysis Bulletins with optional customization."""
+@exporter.export
+class PlotSurfaceAnalysis(MetPyHasTraits):
+    """Plot Surface Analysis Features.
+    
+    This class visualizes Surface Analysis features, including the parsed WPC Surface 
+    Analysis bulletins processed by the `parse_wpc_surface_bulletin()` function.
+    """
 
     parent = Instance(Panel)
     _need_redraw = Bool(default_value=True)
@@ -2106,26 +2109,26 @@ class PlotBulletin(MetPyHasTraits):
     A single floating point value representing the size of the stroke width. 
     """
 
-    FRONT_marker_size = Union([Int(), Float(), Unicode()], default_value=3, allow_none=True)
-    FRONT_marker_size.__doc__ = """Size of symbols in front lines.
+    FRONT_markersize = Union([Int(), Float(), Unicode()], default_value=3, allow_none=True)
+    FRONT_markersize.__doc__ = """Size of symbols in front lines.
 
     Accepts size in points or relative size. Default value is 3. Allowed relative sizes are those 
     of Matplotlib: 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
     """
 
-    strength_offset = Union([Tuple()], default_value=(0,-6), allow_none=True)
+    strength_offset = Union([Tuple()], default_value=(0,-1), allow_none=True)
     strength_offset.__doc__ = """Offset between label of pressure system and its corresponding strength.
     
-    Tuple representing the position of strength value with respect to label of pressure system.
-    Default value is (0,-6).
+    Tuple representing the relative position of strength value with respect to label of pressure system.
+    Default value is (0,-1). Scaled by multiplying times 80% of label_fontsize value
     """
 
     def _effect_map(self):
         return {
-            'WARM': [WarmFront(size=self.FRONT_marker_size, color=self.WARM_color)],
-            'COLD': [ColdFront(size=self.FRONT_marker_size, color=self.COLD_color)],
-            'OCFNT': [OccludedFront(size=self.FRONT_marker_size, color=self.OCFNT_color)],
-            'STNRY': [StationaryFront(size=self.FRONT_marker_size, colors=(self.WARM_color, self.COLD_color))],
+            'WARM': [WarmFront(size=self.FRONT_markersize, color=self.WARM_color)],
+            'COLD': [ColdFront(size=self.FRONT_markersize, color=self.COLD_color)],
+            'OCFNT': [OccludedFront(size=self.FRONT_markersize, color=self.OCFNT_color)],
+            'STNRY': [StationaryFront(size=self.FRONT_markersize, colors=(self.WARM_color, self.COLD_color))],
             'TROF': None
         }
 
@@ -2158,7 +2161,7 @@ class PlotBulletin(MetPyHasTraits):
         # Unlike Plots2D and PlotObs, there are no other attributes (such as 'fields' or
         # 'levels') from which to name the plot. A generic name is returned here in case the
         # user does not provide their own title, in which case MapPanel.draw() looks here.
-        return 'WPC Bulletin Plot'
+        return 'Surface Analysis Plot'
 
     def _draw_strengths(self, text, lon, lat, color, offset=None):
         """Draw strengths in the plot.
@@ -2177,7 +2180,7 @@ class PlotBulletin(MetPyHasTraits):
             A tuple containing the x- and y-offset of the label, respectively
         """
         import math
-        offset = self.strength_offset if offset is None else offset
+        offset = tuple(element*self.label_fontsize*0.8 for element in self.strength_offset) if offset is None else offset
         self.parent.ax.add_artist(TextCollection([lon], [lat], [str(text)],
                                                  va='center',
                                                  ha='center',
