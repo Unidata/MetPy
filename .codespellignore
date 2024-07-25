@@ -17,3 +17,7 @@ Klystron Warmup    Integer*2  N/A  0 to 1  1  0=Normal, 1=Preheat  146
     components that are earth-relative. The primary exception is NAM output with wind
                                     col_head.SELV,
                                     row_head.SELV,
+    26: 'GOES-4 Visible (VAS)',
+    27: 'GOES-4 Infrared and Water Vapor (VAS)',
+    28: 'GOES-5 Visible (VAS)',
+    29: 'GOES-5 Infrared and Water Vapor (VAS)',
