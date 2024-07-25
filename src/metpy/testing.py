@@ -9,7 +9,7 @@ This includes:
 """
 import contextlib
 import functools
-from importlib.metadata import requires, version
+from importlib.metadata import PackageNotFoundError, requires, version
 import operator as op
 import re
 
@@ -55,7 +55,12 @@ def version_check(version_spec):
     metadata_spec = _get_metadata_spec(module_name)
     _, _, minimum_version_number = _parse_version_spec(metadata_spec)
 
-    installed_version = Version(version(module_name))
+    try:
+        installed_version = Version(version(module_name))
+    except PackageNotFoundError:
+        # Package not installed considered false condition for spec
+        return False
+
     specified_version = Version(version_number)
     minimum_version = Version(minimum_version_number)
 
