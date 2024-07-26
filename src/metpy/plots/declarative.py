@@ -1991,8 +1991,8 @@ class PlotGeometry(MetPyHasTraits):
 @exporter.export
 class PlotSurfaceAnalysis(MetPyHasTraits):
     """Plot Surface Analysis Features.
-    
-    This class visualizes Surface Analysis features, including the parsed WPC Surface 
+
+    This class visualizes Surface Analysis features, including the parsed WPC Surface
     Analysis bulletins processed by the `parse_wpc_surface_bulletin()` function.
     """
 
@@ -2003,7 +2003,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
     geometry.__doc__ = """A collection of Shapely objects to plot.
 
     A collection of Shapely objects, such as the 'geometry' column from a bulletin parsed
-    with `parse_wpc_surface_bulletin()`. Acceptable Shapely objects are 
+    with `parse_wpc_surface_bulletin()`. Acceptable Shapely objects are
     ``shapely.LineString``, and ``shapely.Point``.
     """
 
@@ -2011,7 +2011,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
                    allow_none=False)
     feature.__doc__ = """Collection of names of features to be plotted.
 
-    Collection of strings, each corresponding one-to-one with geometries, such as the 
+    Collection of strings, each corresponding one-to-one with geometries, such as the
     'features' column from a bulletin parsed with `parse_wpc_surface_bulletin()`.
     Acceptable feature names include: 'HIGH', 'LOW', 'WARM', 'COLD', 'OCFNT', 'STNRY', 'TROF'.
     """
@@ -2026,21 +2026,21 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
 
     HIGH_color = Union([Unicode()], default_value='blue', allow_none=True)
     HIGH_color.__doc__ = """Color for plotting high-pressure systems.
-    
+
     A single string (color name or hex code) used to plot label of high-pressure system and
     their strength, if provided. Default value is 'blue'.
     """
 
     LOW_color = Union([Unicode()], default_value='red', allow_none=True)
     LOW_color.__doc__ = """Color for plotting low-pressure systems.
-    
+
     A single string (color name or hex code) used to plot label of low-pressure system and
     their strength, if provided. Default value is 'red'.
     """
 
     WARM_color = Union([Unicode()], default_value='red', allow_none=True)
     WARM_color.__doc__ = """Color for plotting warm fronts.
-    
+
     A single string (color name or hex code) used to plot warm fronts. Default
     color is 'red', which is used by `WarmFront()` class. `WARM_color` alternates
     with `COLD_color` to plot stationary fronts.
@@ -2048,7 +2048,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
 
     COLD_color = Union([Unicode()], default_value='blue', allow_none=True)
     COLD_color.__doc__ = """Color for plotting cold fronts.
-    
+
     A single string (color name or hex code) used to plot cold fronts. Default
     color is 'blue', which is used by `ColdFront()` class. `COLD_color` alternates
     with `WARM_color` to plot stationary fronts.
@@ -2056,14 +2056,14 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
 
     OCFNT_color = Union([Unicode()], default_value='purple', allow_none=True)
     OCFNT_color.__doc__ = """Color for plotting occluded fronts.
-    
+
     A single string (color name or hex code) used to plot Occluded fronts. Default
     color is 'purple', which is used by `OccludedFront()` class.
     """
 
     TROF_color = Union([Unicode()], default_value='darkorange', allow_none=True)
     TROF_color.__doc__ = """Color for plotting trough lines.
-    
+
     A single string (color name or hex code) used to plot trough lines. Default
     color is 'darkorange'.
     """
@@ -2084,7 +2084,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
                    allow_none=True)
     TROF_linestyle.__doc__ = """Linestyle of Trough lines.
 
-    Single string, default value is 'dashed'. 
+    Single string, default value is 'dashed'.
     Accept matplotlib linestyles: 'solid', 'dotted', 'dashdot'.
     """
 
@@ -2099,28 +2099,31 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
                          allow_none=True)
     TROF_linewidth.__doc__ = """Stroke width for trough lines.
 
-    A single integer or floating point value representing the size of the stroke width. 
+    A single integer or floating point value representing the size of the stroke width.
     """
 
     FRONT_linewidth = Union([Float()], default_value=1,
                          allow_none=True)
     TROF_linewidth.__doc__ = """Stroke width for front lines.
 
-    A single floating point value representing the size of the stroke width. 
+    A single floating point value representing the size of the stroke width.
     """
 
     FRONT_markersize = Union([Int(), Float(), Unicode()], default_value=3, allow_none=True)
     FRONT_markersize.__doc__ = """Size of symbols in front lines.
 
-    Accepts size in points or relative size. Default value is 3. Allowed relative sizes are those 
-    of Matplotlib: 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
+    Accepts size in points or relative size. Default value is 3. Allowed relative sizes are
+    those of Matplotlib: 'xx-small', 'x-small', 'small', 'medium', 'large',
+    'x-large', 'xx-large'.
     """
 
     strength_offset = Union([Tuple()], default_value=(0,-1), allow_none=True)
-    strength_offset.__doc__ = """Offset between label of pressure system and its corresponding strength.
-    
-    Tuple representing the relative position of strength value with respect to label of pressure system.
-    Default value is (0,-1). Scaled by multiplying times 80% of label_fontsize value
+    strength_offset.__doc__ = """Offset between label of pressure system and its
+    corresponding strength.
+
+    Tuple representing the relative position of strength value with respect to label of
+    pressure system. Default value is (0,-1). Scaled by multiplying times 80% of
+    label_fontsize value.
     """
 
     def _effect_map(self):
@@ -2128,7 +2131,8 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
             'WARM': [WarmFront(size=self.FRONT_markersize, color=self.WARM_color)],
             'COLD': [ColdFront(size=self.FRONT_markersize, color=self.COLD_color)],
             'OCFNT': [OccludedFront(size=self.FRONT_markersize, color=self.OCFNT_color)],
-            'STNRY': [StationaryFront(size=self.FRONT_markersize, colors=(self.WARM_color, self.COLD_color))],
+            'STNRY': [StationaryFront(size=self.FRONT_markersize,
+                                      colors=(self.WARM_color, self.COLD_color))],
             'TROF': None
         }
 
@@ -2180,7 +2184,10 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
             A tuple containing the x- and y-offset of the label, respectively
         """
         import math
-        offset = tuple(element*self.label_fontsize*0.8 for element in self.strength_offset) if offset is None else offset
+        if offset is None:
+            offset = tuple(x * self.label_fontsize * 0.8 for x in self.strength_offset)
+        else:
+            offset = offset
         self.parent.ax.add_artist(TextCollection([lon], [lat], [str(text)],
                                                  va='center',
                                                  ha='center',
