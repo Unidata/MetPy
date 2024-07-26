@@ -2104,7 +2104,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
     """
 
     FRONT_linewidth = Union([Float()], default_value=1,
-                         allow_none=True)
+                            allow_none=True)
     TROF_linewidth.__doc__ = """Stroke width for front lines.
 
     A single floating point value representing the size of the stroke width.
@@ -2136,7 +2136,6 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
                                       colors=(self.WARM_color, self.COLD_color))],
             'TROF': None
         }
-
 
     def _color_map(self):
         return {
@@ -2257,7 +2256,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
                 kwargs.setdefault('facecolor', 'none')
                 kwargs.setdefault('crs', ccrs.PlateCarree())
                 kwargs.setdefault('path_effects', effect_map[feature])
-                if feature =='TROF':
+                if feature == 'TROF':
                     kwargs.setdefault('edgecolor', color_map[feature])
                     kwargs.setdefault('linestyle', self.TROF_linestyle)
                 self.parent.ax.add_geometries([geo_obj], **kwargs)
