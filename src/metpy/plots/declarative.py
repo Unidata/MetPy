@@ -1988,6 +1988,7 @@ class PlotGeometry(MetPyHasTraits):
                 # Finally, draw the label
                 self._draw_label(label, lon, lat, fontcolor, fontoutline, offset)
 
+
 @exporter.export
 class PlotSurfaceAnalysis(MetPyHasTraits):
     """Plot Surface Analysis Features.
@@ -2008,7 +2009,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
     """
 
     feature = Union([Instance(collections.abc.Iterable), Unicode()],
-                   allow_none=False)
+                    allow_none=False)
     feature.__doc__ = """Collection of names of features to be plotted.
 
     Collection of strings, each corresponding one-to-one with geometries, such as the
@@ -2017,7 +2018,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
     """
 
     strength = Union([Instance(collections.abc.Iterable), Float()], default_value=[],
-                         allow_none=True)
+                     allow_none=True)
     strength.__doc__ = """Collection of strengths corresponding to pressure systems.
 
     Collection of floats, each corresponding one-to-one with pressure system features. Such
@@ -2081,14 +2082,14 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
     """
 
     TROF_linestyle = Union([Unicode()], default_value='dashed',
-                   allow_none=True)
+                           allow_none=True)
     TROF_linestyle.__doc__ = """Linestyle of Trough lines.
 
     Single string, default value is 'dashed'.
     Accept matplotlib linestyles: 'solid', 'dotted', 'dashdot'.
     """
 
-    label_fontsize =  Union([Int(), Float(), Unicode()], default_value=10, allow_none=True)
+    label_fontsize = Union([Int(), Float(), Unicode()], default_value=10, allow_none=True)
     label_fontsize.__doc__ = """Font sizes of pressure systems labels.
 
     Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
@@ -2096,7 +2097,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
     """
 
     TROF_linewidth = Union([Float()], default_value=2,
-                         allow_none=True)
+                           allow_none=True)
     TROF_linewidth.__doc__ = """Stroke width for trough lines.
 
     A single integer or floating point value representing the size of the stroke width.
@@ -2117,7 +2118,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
     'x-large', 'xx-large'.
     """
 
-    strength_offset = Union([Tuple()], default_value=(0,-1), allow_none=True)
+    strength_offset = Union([Tuple()], default_value=(0, -1), allow_none=True)
     strength_offset.__doc__ = """Offset between label of pressure system and its
     corresponding strength.
 
@@ -2138,10 +2139,10 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
 
 
     def _color_map(self):
-        return  {
-            'HIGH' : self.HIGH_color,
-            'LOW' : self.LOW_color,
-            'TROF' : self.TROF_color
+        return {
+            'HIGH': self.HIGH_color,
+            'LOW': self.LOW_color,
+            'TROF': self.TROF_color
         }
 
     def _linewidth_map(self):
@@ -2155,8 +2156,8 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
 
     def _label_map(self):
         return {
-            'HIGH' : self.HIGH_label,
-            'LOW' : self.LOW_label
+            'HIGH': self.HIGH_label,
+            'LOW': self.LOW_label
         }
 
     @property
@@ -2186,18 +2187,17 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         import math
         if offset is None:
             offset = tuple(x * self.label_fontsize * 0.8 for x in self.strength_offset)
-        else:
-            offset = offset
+
         self.parent.ax.add_artist(TextCollection([lon], [lat], [str(text)],
                                                  va='center',
                                                  ha='center',
                                                  color=color,
                                                  offset=offset,
                                                  weight='demi',
-                                                 size = math.floor(self.label_fontsize * 0.7),
+                                                 size=math.floor(self.label_fontsize * 0.7),
                                                  transform=ccrs.PlateCarree()))
 
-    def _draw_labels(self, text, lon, lat, color, offset=(0,0)):
+    def _draw_labels(self, text, lon, lat, color, offset=(0, 0)):
         """Draw labels in the plot.
 
         Parameters
@@ -2257,14 +2257,14 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
                 kwargs.setdefault('facecolor', 'none')
                 kwargs.setdefault('crs', ccrs.PlateCarree())
                 kwargs.setdefault('path_effects', effect_map[feature])
-                if feature=='TROF':
+                if feature =='TROF':
                     kwargs.setdefault('edgecolor', color_map[feature])
                     kwargs.setdefault('linestyle', self.TROF_linestyle)
                 self.parent.ax.add_geometries([geo_obj], **kwargs)
             elif isinstance(geo_obj, Point):
                 kwargs.setdefault('color', color_map[feature])
                 lon, lat = geo_obj.coords[0]
-                self._draw_labels(label_map[feature],lon,lat, **kwargs)
+                self._draw_labels(label_map[feature], lon, lat, **kwargs)
                 # Plot strengths if provided
                 if strengthvalues is not None:
                     self._draw_strengths(strengthvalues, lon, lat, **kwargs)
