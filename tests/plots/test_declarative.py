@@ -17,10 +17,11 @@ import xarray as xr
 
 from metpy.calc import wind_speed
 from metpy.cbook import get_test_data
-from metpy.io import GiniFile
+from metpy.io import (GiniFile, parse_wpc_surface_bulletin)
 from metpy.io.metar import parse_metar_file
 from metpy.plots import (ArrowPlot, BarbPlot, ContourPlot, FilledContourPlot, ImagePlot,
-                         MapPanel, PanelContainer, PlotGeometry, PlotObs, RasterPlot)
+                         MapPanel, PanelContainer, PlotGeometry, PlotObs, RasterPlot,
+                        PlotSurfaceAnalysis)
 from metpy.testing import needs_cartopy, version_check
 from metpy.units import units
 
@@ -2245,3 +2246,75 @@ def test_attribute_error_no_suggest():
         panel = MapPanel()
         panel.galaxy = 'Andromeda'
     assert 'Perhaps you meant' not in str(excinfo.value)
+
+
+@pytest.mark.mpl_image_compare(remove_text=False)
+@needs_cartopy
+def test_declarative_plot_surface_analysis_default():
+    """Test that `PlotSurfaceAnalysis` correctly plots features and strengths."""
+    # WPC Surface Analysis Bulletin to plot
+    df = parse_wpc_surface_bulletin(get_test_data('WPC_sfc_fronts_20210628_1800.txt'))
+
+    # Plot geometries and strengths
+    ps = PlotSurfaceAnalysis()
+    ps.geometry = df['geometry']
+    ps.feature = df['feature']
+    ps.strength = df['strength']
+
+    # Place plot in a panel and container
+    panel = MapPanel()
+    panel.area = [-120, -80, 30, 70]
+    panel.projection = 'lcc'
+    panel.layers = ['lakes', 'land', 'ocean',
+                    'states', 'coastline', 'borders']
+    panel.plots = [ps]
+
+    pc = PanelContainer()
+    pc.size = (12,8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+@pytest.mark.mpl_image_compare(remove_text=False)
+@needs_cartopy
+def test_declarative_plot_surface_analysis_custom():
+    """Test customization traits of `PlotSurfaceAnalysis`."""
+    # WPC Surface Analysis Bulletin to plot
+    df = parse_wpc_surface_bulletin(get_test_data('WPC_sfc_fronts_20210628_1800.txt'))
+
+    # Plot geometries and strengths
+    ps = PlotSurfaceAnalysis()
+    ps.geometry = df['geometry']
+    ps.feature = df['feature']
+    ps.strength = df['strength']
+    #customize
+    ps.HIGH_color = '#377eb8'
+    ps.COLD_color = '#ff7f00'
+    ps.TROF_color = '#4daf4a'
+    ps.OCFNT_color = '#f781bf'
+    ps.WARM_color = '#a65628'
+    ps.LOW_color = '#984ea3'
+    ps.FRONT_markersize = 4
+    ps.FRONT_linewidth = 3
+    ps.HIGH_label = 'HIGH'
+    ps.LOW_label = 'LOW'
+    ps.TROF_linestyle = 'dotted'
+    ps.label_fontsize = 15
+    ps.TROF_linewidth = 5
+    ps.strength_offset = (0,1)
+
+    # Place plot in a panel and container
+    panel = MapPanel()
+    panel.area = [-120, -80, 30, 70]
+    panel.projection = 'lcc'
+    panel.layers = ['lakes', 'land', 'ocean',
+                    'states', 'coastline', 'borders']
+    panel.plots = [ps]
+
+    pc = PanelContainer()
+    pc.size = (12,8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure

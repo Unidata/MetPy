@@ -20,7 +20,7 @@ from traitlets import (Any, Bool, Dict, Float, HasTraits, Instance, Int, List, o
 
 from . import ctables, wx_symbols
 from ._mpl import TextCollection
-from .patheffects import (ColdFront, OccludedFront, WarmFront, StationaryFront)
+from .patheffects import ColdFront, OccludedFront, WarmFront, StationaryFront
 from .cartopy_utils import import_cartopy
 from .station_plot import StationPlot
 from ..calc import reduce_point_density, smooth_n_point, zoom_xarray
@@ -2183,7 +2183,6 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         offset : tuple (default: (0, 0))
             A tuple containing the x- and y-offset of the label, respectively
         """
-        import math
         if offset is None:
             offset = tuple(x * self.label_fontsize * 0.8 for x in self.strength_offset)
 
@@ -2193,7 +2192,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
                                                  color=color,
                                                  offset=offset,
                                                  weight='demi',
-                                                 size=math.floor(self.label_fontsize * 0.7),
+                                                 size=int(self.label_fontsize * 0.7),
                                                  transform=ccrs.PlateCarree()))
 
     def _draw_labels(self, text, lon, lat, color, offset=(0, 0)):
