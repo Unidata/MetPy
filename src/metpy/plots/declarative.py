@@ -20,8 +20,8 @@ from traitlets import (Any, Bool, Dict, Float, HasTraits, Instance, Int, List, o
 
 from . import ctables, wx_symbols
 from ._mpl import TextCollection
-from .patheffects import ColdFront, OccludedFront, WarmFront, StationaryFront
 from .cartopy_utils import import_cartopy
+from .patheffects import ColdFront, OccludedFront, StationaryFront, WarmFront
 from .station_plot import StationPlot
 from ..calc import reduce_point_density, smooth_n_point, zoom_xarray
 from ..package_tools import Exporter
@@ -2186,14 +2186,13 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         if offset is None:
             offset = tuple(x * self.label_fontsize * 0.8 for x in self.strength_offset)
 
-        self.parent.ax.add_artist(TextCollection([lon], [lat], [str(text)],
-                                                 va='center',
-                                                 ha='center',
-                                                 color=color,
-                                                 offset=offset,
-                                                 weight='demi',
-                                                 size=int(self.label_fontsize * 0.7),
-                                                 transform=ccrs.PlateCarree()))
+        self.parent.ax.scattertext([lon], [lat], [str(text)],
+                                   color=color,
+                                   loc=offset,
+                                   weight='demi',
+                                   size=int(self.label_fontsize * 0.7),
+                                   transform=ccrs.PlateCarree(),
+                                   clip_on=True)
 
     def _draw_labels(self, text, lon, lat, color, offset=(0, 0)):
         """Draw labels in the plot.
@@ -2211,14 +2210,13 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         offset : tuple (default: (0, 0))
             A tuple containing the x- and y-offset of the label, respectively
         """
-        self.parent.ax.add_artist(TextCollection([lon], [lat], [str(text)],
-                                                 va='center',
-                                                 ha='center',
-                                                 color=color,
-                                                 offset=offset,
-                                                 weight='demi',
-                                                 size=self.label_fontsize,
-                                                 transform=ccrs.PlateCarree()))
+        self.parent.ax.scattertext([lon], [lat], [str(text)],
+                                   color=color,
+                                   loc=offset,
+                                   weight='demi',
+                                   size=self.label_fontsize,
+                                   transform=ccrs.PlateCarree(),
+                                   clip_on=True)
 
     def draw(self):
         """Draw the plot."""
@@ -2233,7 +2231,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
 
     def _build(self):
         """Build the plot by calling needed plotting methods as necessary."""
-        from shapely.geometry import (LineString, Point)
+        from shapely.geometry import LineString, Point
 
         # Ensure strength is a valid iterable
         strengths = self.strength if len(self.strength) > 0 else cycle([None])
