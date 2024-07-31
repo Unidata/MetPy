@@ -21,7 +21,7 @@ from metpy.io import (GiniFile, parse_wpc_surface_bulletin)
 from metpy.io.metar import parse_metar_file
 from metpy.plots import (ArrowPlot, BarbPlot, ContourPlot, FilledContourPlot, ImagePlot,
                          MapPanel, PanelContainer, PlotGeometry, PlotObs, RasterPlot,
-                        PlotSurfaceAnalysis)
+                         PlotSurfaceAnalysis)
 from metpy.testing import needs_cartopy, version_check
 from metpy.units import units
 
@@ -2270,11 +2270,12 @@ def test_declarative_plot_surface_analysis_default():
     panel.plots = [ps]
 
     pc = PanelContainer()
-    pc.size = (12,8)
+    pc.size = (12, 8)
     pc.panels = [panel]
     pc.draw()
 
     return pc.figure
+
 
 @pytest.mark.mpl_image_compare(remove_text=False)
 @needs_cartopy
@@ -2288,7 +2289,7 @@ def test_declarative_plot_surface_analysis_custom():
     ps.geometry = df['geometry']
     ps.feature = df['feature']
     ps.strength = df['strength']
-    #customize
+    # customize
     ps.HIGH_color = '#377eb8'
     ps.COLD_color = '#ff7f00'
     ps.TROF_color = '#4daf4a'
@@ -2302,7 +2303,7 @@ def test_declarative_plot_surface_analysis_custom():
     ps.TROF_linestyle = 'dotted'
     ps.label_fontsize = 15
     ps.TROF_linewidth = 5
-    ps.strength_offset = (0,1)
+    ps.strength_offset = (0, 1)
 
     # Place plot in a panel and container
     panel = MapPanel()
@@ -2313,7 +2314,7 @@ def test_declarative_plot_surface_analysis_custom():
     panel.plots = [ps]
 
     pc = PanelContainer()
-    pc.size = (12,8)
+    pc.size = (12, 8)
     pc.panels = [panel]
     pc.draw()
 
