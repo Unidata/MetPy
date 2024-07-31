@@ -17,11 +17,11 @@ import xarray as xr
 
 from metpy.calc import wind_speed
 from metpy.cbook import get_test_data
-from metpy.io import (GiniFile, parse_wpc_surface_bulletin)
+from metpy.io import GiniFile, parse_wpc_surface_bulletin
 from metpy.io.metar import parse_metar_file
 from metpy.plots import (ArrowPlot, BarbPlot, ContourPlot, FilledContourPlot, ImagePlot,
-                         MapPanel, PanelContainer, PlotGeometry, PlotObs, RasterPlot,
-                         PlotSurfaceAnalysis)
+                         MapPanel, PanelContainer, PlotGeometry, PlotObs, PlotSurfaceAnalysis,
+                         RasterPlot)
 from metpy.testing import needs_cartopy, version_check
 from metpy.units import units
 
