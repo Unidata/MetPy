@@ -93,13 +93,15 @@ def bulk_richardson_number(
     `pint.Quantity`
         Bulk Richardson number profile
     """
-
-    u[0] = 0 * units.meter_per_second
-    v[0] = 0 * units.meter_per_second
-
+    if idxfoot == 0:
+        # Force the ground level to have null wind
+        Du = u
+        Dv = v
+    else:
+        Du = u - u[idxfoot]
+        Dv = v - v[idxfoot]
+    
     Dtheta = potential_temperature - potential_temperature[idxfoot]
-    Du = u - u[idxfoot]
-    Dv = v - v[idxfoot]
     Dz = height - height[idxfoot]
 
     idx0 = Du**2 + Dv**2 + ustar**2 == 0
