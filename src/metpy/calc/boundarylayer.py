@@ -1,13 +1,12 @@
-#!/usr/bin/python
-# -*-coding:utf-8 -*-
+# Copyright (c) 2024 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 """
 Contains a collection of boundary layer height estimations.
 
-
-References:
------------
-
-[Col14]: Collaud Coen, M., Praz, C., Haefele, A., Ruffieux, D., Kaufmann, P., and Calpini, B. (2014): 
+References
+----------
+[Col14]: Collaud Coen, M., Praz, C., Haefele, A., Ruffieux, D., Kaufmann, P., and Calpini, B. (2014)
     Determination and climatology of the planetary boundary layer height above the Swiss plateau by in situ and remote sensing measurements as well as by the COSMO-2 model
     Atmos. Chem. Phys., 14, 13205–13221.
 
@@ -15,19 +14,18 @@ References:
     Determination of the atmospheric boundary layer height from radiosonde and lidar backscatter.
     Boundary-Layer Meteorology, 120(1), 181-200.
 
-[Guo16]: Guo, J., Miao, Y., Zhang, Y., Liu, H., Li, Z., Zhang, W., ... & Zhai, P. (2016):
+[Guo16]: Guo, J., Miao, Y., Zhang, Y., Liu, H., Li, Z., Zhang, W., ... & Zhai, P. (2016)
     The climatology of planetary boundary layer height in China derived from radiosonde and reanalysis data.
     Atmos. Chem. Phys, 16(20), 13309-13319.
 
-[Sei00]: Seidel, D. J., Ao, C. O., & Li, K. (2010):
+[Sei00]: Seidel, D. J., Ao, C. O., & Li, K. (2010)
     Estimating climatological planetary boundary layer heights from radiosonde observations: Comparison of methods and uncertainty analysis.
     Journal of Geophysical Research: Atmospheres, 115(D16).
     
-[VH96]: Vogelezang, D. H. P., & Holtslag, A. A. M. (1996):
+[VH96]: Vogelezang, D. H. P., & Holtslag, A. A. M. (1996)
     Evaluation and model impacts of alternative boundary-layer height formulations.
     Boundary-Layer Meteorology, 81(3-4), 245-269.
 """
-
 import numpy as np
 from copy import deepcopy
 
@@ -51,11 +49,17 @@ def smooth(val, span):
     -------
     smoothed_val: array-like
         Array of smoothed values
+
+    See also
+    --------
+    [`bottleneck.move_mean`](https://bottleneck.readthedocs.io/en/latest/reference.html#bottleneck.move_mean), 
+    [`scipy.ndimage.uniform_filter1d`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.uniform_filter1d.html#scipy.ndimage.uniform_filter1d), 
+    [`pandas.DataFrame.rolling`](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.rolling.html)
     """
-    N = len(val)
+    n = len(val)
     smoothed_val = deepcopy(val)
-    for i in range(N):
-        smoothed_val[i] = np.nanmean(val[i - min(span, i) : i + min(span, N - i)])
+    for i in range(n):
+        smoothed_val[i] = np.nanmean(val[i - min(span, i) : i + min(span, n - i)])
 
     return smoothed_val
 
@@ -136,7 +140,7 @@ def blh_from_richardson_bulk(
     bulk Richardson number.
 
     It is the height where the bulk Richardson number exceeds a given threshold.
-    See [VH96, Sei00, Col14, Guo16].
+    Well indicated for unstable boundary layers. See [VH96, Sei00, Col14, Guo16].
 
     Parameters
     ----------
@@ -189,11 +193,11 @@ def blh_from_parcel(
     smoothingspan: int = 5,
     theta0=None,
 ):
-    """Calculate atmospheric boundary layer height with the parcel method.
+    """Calculate atmospheric boundary layer height with the "parcel method"
+    (or "potential temperature threshold method").
 
-    It is the height where the potential temperature profile reaches its
-    foot value.
-    See [Sei00, HL06, Col14].
+    It is the height where the potential temperature profile exceeds its
+    foot value. Well indicated for unstable boundary layers. See [Sei00, HL06, Col14].
 
     Parameters
     ----------
@@ -235,7 +239,7 @@ def blh_from_concentration_gradient(
     profile (specific/relative humidity, aerosol backscatter, TKE..)
 
     It is the height where the gradient of the concentration profile reaches a minimum.
-    See [Sei00, HL06, Col14].
+    Well indicated for stable boundary layers. See [Sei00, HL06, Col14].
 
     Parameters
     ----------
@@ -253,7 +257,6 @@ def blh_from_concentration_gradient(
     blh : `pint.Quantity`
         Boundary layer height estimation
     """
-
     dcdz = mpcalc.first_derivative(smooth(concentration_profile, smoothingspan), x=height)
     dcdz = dcdz[idxfoot:]
     height = height[idxfoot:]
@@ -272,7 +275,7 @@ def blh_from_temperature_inversion(
     absolute temperature gradient
 
     It is the height where the temperature gradient (absolute or potential) changes of sign.
-    See [Col14].
+    Well indicated for stable boundary layers. See [Col14].
 
     Parameters
     ----------
@@ -290,7 +293,6 @@ def blh_from_temperature_inversion(
     blh : `pint.Quantity`
         Boundary layer height estimation
     """
-
     dTdz = mpcalc.first_derivative(smooth(temperature, smoothingspan), x=height)
 
     dTdz = dTdz[idxfoot:]
