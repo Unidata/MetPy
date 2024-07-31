@@ -225,24 +225,24 @@ def blh_from_parcel(
     return blh
 
 
-def blh_from_humidity_gradient(
+def blh_from_concentration_gradient(
     height,
-    humidity,
+    concentration_profile,
     smoothingspan: int = 5,
     idxfoot: int = 0,
 ):
-    """Calculate atmospheric boundary layer height from the relative
-    humidity gradient
+    """Calculate atmospheric boundary layer height from a concentration
+    profile (specific/relative humidity, aerosol backscatter, TKE..)
 
-    It is the height where the relative humidity or specific humidity gradient reaches a minimum.
+    It is the height where the gradient of the concentration profile reaches a minimum.
     See [Sei00, HL06, Col14].
 
     Parameters
     ----------
     height : `pint.Quantity`
         Altitude (metres above ground) of the points in the profile
-    humidity : `pint.Quantity`
-        Humidity (relative or specific) profile
+    concentration_profile : `pint.Quantity`
+        Concentration profile (specific/relative humidity, aerosol backscatter, TKE..)
     smoothingspan : int, optional
         The amount of smoothing (number of points in moving average)
     idxfoot : int, optional
@@ -254,12 +254,10 @@ def blh_from_humidity_gradient(
         Boundary layer height estimation
     """
 
-    dRHdz = mpcalc.first_derivative(smooth(humidity, smoothingspan), x=height)
-
-    dRHdz = dRHdz[idxfoot:]
+    dcdz = mpcalc.first_derivative(smooth(concentration_profile, smoothingspan), x=height)
+    dcdz = dcdz[idxfoot:]
     height = height[idxfoot:]
-
-    iblh = np.argmin(dRHdz)
+    iblh = np.argmin(dcdz)
 
     return height[iblh]
 
