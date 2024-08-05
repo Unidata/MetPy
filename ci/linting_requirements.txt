@@ -1,7 +1,7 @@
 ruff==0.5.5
 
-flake8==7.1.0
-pycodestyle==2.12.0
+flake8==7.1.1
+pycodestyle==2.12.1
 pyflakes==3.2.0
 
 flake8-continuation==1.0.5
