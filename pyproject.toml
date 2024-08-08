@@ -77,7 +77,8 @@ extras = [
 
 [tool.codespell]
 skip = "*.tbl,*.ipynb,AUTHORS.txt,gempak.rst,.git,./staticdata,./docs/build,*.pdf,./talks"
-exclude-file = ".codespellignore"
+exclude-file = ".codespellexclude"
+ignore-words = ".codespellignore"
 
 [tool.doc8]
 ignore-path = ["docs/build", "docs/api/generated", "docs/_templates", "docs/tutorials",
