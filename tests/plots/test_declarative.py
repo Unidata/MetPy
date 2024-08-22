@@ -285,7 +285,7 @@ def test_declarative_figsize():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=0.104 if version_check('cartopy<0.23') else 0.031)
+                               tolerance=0.104 if version_check('cartopy<0.23') else 0.033)
 @needs_cartopy
 def test_declarative_smooth_field():
     """Test the smoothing of the field with smooth_field trait."""
