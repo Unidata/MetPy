@@ -2588,7 +2588,7 @@ def most_unstable_parcel(pressure, temperature, dewpoint, height=None, bottom=No
     >>> # find most unstable parcel of depth 50 hPa
     >>> most_unstable_parcel(p, T, Td, depth=50*units.hPa)
     (<Quantity(1008.0, 'hectopascal')>, <Quantity(29.3, 'degree_Celsius')>,
-    <Quantity(26.5176931, 'degree_Celsius')>, 0)
+    <Quantity(26.5176931, 'degree_Celsius')>, np.int64(0))
 
     See Also
     --------

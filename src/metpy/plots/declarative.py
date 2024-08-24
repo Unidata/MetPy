@@ -1012,7 +1012,9 @@ class ImagePlot(PlotScalar, ColorfillTraits, ValidationMixin):
         # If we're on a map, we use min/max for y and manually figure out origin to try to
         # avoid upside down images created by images where y[0] > y[-1], as well as
         # specifying the transform
-        kwargs['extent'] = (x_like[0], x_like[-1], y_like.min(), y_like.max())
+        # TODO item() shouldn't be necessary, but is until pydata/xarray#9043 is fixed.
+        kwargs['extent'] = (x_like[0].item(), x_like[-1].item(),
+                            y_like.min().item(), y_like.max().item())
         kwargs['origin'] = 'upper' if y_like[0] > y_like[-1] else 'lower'
         kwargs.setdefault('cmap', self._cmap_obj)
         kwargs.setdefault('norm', self._norm_obj)

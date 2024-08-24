@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import pytest
 
 import metpy.plots as mpplots
+from metpy.testing import version_check
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.053, remove_text=True)
@@ -48,7 +49,8 @@ def test_us_states_defaults(ccrs):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.092, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.248 if version_check('cartopy<0.23') else 0.,
+                               remove_text=True)
 def test_us_states_scales(ccrs):
     """Test the default US States plotting with all scales."""
     proj = ccrs.LambertConformal(central_longitude=-85.0, central_latitude=45.0)
