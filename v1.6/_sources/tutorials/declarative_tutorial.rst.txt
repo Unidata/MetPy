@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_tutorials_declarative_tutorial.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -897,7 +897,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 10.907 seconds)
+   **Total running time of the script:** (0 minutes 10.763 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
@@ -913,6 +913,10 @@ Default value is zero (e.g., no points are removed from the plot).
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: declarative_tutorial.py <declarative_tutorial.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: declarative_tutorial.zip <declarative_tutorial.zip>`
 
 
 .. only:: html

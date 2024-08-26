@@ -30,11 +30,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css?v=45c5dac0" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -42,10 +42,10 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=e15882dc"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/documentation_options.js?v=452006c5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -70,12 +70,12 @@
     <link rel="icon" href="../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Tutorials" href="../tutorials/index.html" />
+    <link rel="next" title="&lt;no title&gt;" href="../tutorials/index.html" />
     <link rel="prev" title="Install Guide" href="installguide.html" />
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Apr 02, 2024 at 16:50:59"/>
+    <meta name="docbuild:last-update" content="Aug 26, 2024 at 23:24:29"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/userguide/startingguide.html" />
 
   </head>
@@ -467,15 +467,12 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="installguide.html">Install Guide</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Getting Started with MetPy</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../tutorials/unit_tutorial.html">Working With Units</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tutorials/area_tutorial.html">Using Predefined Areas with MetPy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tutorials/upperair_soundings.html">Upper Air Sounding Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tutorials/xarray_tutorial.html">xarray with MetPy Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tutorials/declarative_tutorial.html">MetPy Declarative Syntax Tutorial</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="upgradeguide.html">MetPy 1.0 Upgrade Guide</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/unit_tutorial.html">Working With Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/area_tutorial.html">Using Predefined Areas with MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/upperair_soundings.html">Upper Air Sounding Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/xarray_tutorial.html">xarray with MetPy Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/declarative_tutorial.html">MetPy Declarative Syntax Tutorial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="upgradeguide.html">MetPy 1.0 Upgrade Guide</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apichange.html">MetPy 1.0 API Changes</a></li>
 </ul>
 </li>
@@ -566,7 +563,7 @@ to worry about unit conversion for any calculation. MetPy does it for you!</p>
 <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span>
 </pre></div>
 </div>
-<p>Another way to attach units is do create the array directly with the <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.23rc3.dev1+g52ac9f5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>
+<p>Another way to attach units is do create the array directly with the <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.3.dev1+g79e636c)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>
 object:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;sec&#39;</span><span class="p">)</span>
 </pre></div>
@@ -684,7 +681,7 @@ which will make plotting a simple task with straight-forward syntax, similar to 
 <section id="skew-t">
 <h4>Skew-T<a class="headerlink" href="#skew-t" title="Link to this heading">#</a></h4>
 <p>The Skew-T Log-P diagram is the canonical thermodynamic diagram within meteorology. Using
-<a class="reference external" href="https://matplotlib.org/stable/index.html#module-matplotlib" title="(in Matplotlib v3.8.3)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code></a>, MetPy is able to readily create a Skew-T for you:</p>
+<a class="reference external" href="https://matplotlib.org/stable/index.html#module-matplotlib" title="(in Matplotlib v3.9.2)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code></a>, MetPy is able to readily create a Skew-T for you:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
@@ -740,7 +737,7 @@ check out the <a class="reference internal" href="../examples/plots/Simple_Sound
 <p>Station plots display surface or upper-air station data in a concise manner. The creation of
 these plots is made straightforward with MetPy. MetPy supplies the ability to create each
 station plot and place the points on the map. The creation of 2-D cartographic maps, commonly
-used in meteorology for observational and model visualization, relies upon the <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/reference/config.html#module-cartopy" title="(in cartopy v0.22.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cartopy</span></code></a>
+used in meteorology for observational and model visualization, relies upon the <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/reference/config.html#module-cartopy" title="(in cartopy v0.23.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cartopy</span></code></a>
 library. This package handles projections and transforms to make sure your data is plotted in
 the correct location.</p>
 <p>For examples on how to make a station plot, please see the
@@ -854,7 +851,7 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Tutorials</p>
+        <p class="prev-next-title">&lt;no title&gt;</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -928,7 +925,7 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

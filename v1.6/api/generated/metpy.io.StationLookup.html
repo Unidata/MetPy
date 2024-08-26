@@ -30,11 +30,11 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css?v=45c5dac0" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -42,10 +42,10 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=e15882dc"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/documentation_options.js?v=452006c5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Apr 02, 2024 at 16:50:59"/>
+    <meta name="docbuild:last-update" content="Aug 26, 2024 at 23:24:29"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.io.StationLookup.html" />
 
   </head>
@@ -771,7 +771,7 @@ document.write(`
 <h1>StationLookup<a class="headerlink" href="#stationlookup" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="metpy.io.StationLookup">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.io.</span></span><span class="sig-name descname"><span class="pre">StationLookup</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.2/src/metpy/io/__init__.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.StationLookup" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.io.</span></span><span class="sig-name descname"><span class="pre">StationLookup</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.3/src/metpy/io/__init__.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.StationLookup" title="Link to this definition">#</a></dt>
 <dd><p>Look up station information from multiple sources.</p>
 <p>This class follows the <em class="xref py py-obj">Mapping</em> protocol with station ID as the key. This makes it
 possible to e.g. iterate over all locations and get all of a certain criteria:</p>
@@ -824,22 +824,22 @@ possible to e.g. iterate over all locations and get all of a certain criteria:</
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.io.StationLookup.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="optional">]</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">D[k]</span> <span class="pre">if</span> <span class="pre">k</span> <span class="pre">in</span> <span class="pre">D,</span> <span class="pre">else</span> <span class="pre">d.</span>&#160; <span class="pre">d</span> <span class="pre">defaults</span> <span class="pre">to</span> <span class="pre">None.</span></span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.2/src/metpy/../../../../../../../../../home/runner/work/MetPy/MetPy/docs/&lt;frozen _collections_abc&gt;"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.StationLookup.get" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="optional">]</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">D[k]</span> <span class="pre">if</span> <span class="pre">k</span> <span class="pre">in</span> <span class="pre">D,</span> <span class="pre">else</span> <span class="pre">d.</span>&#160; <span class="pre">d</span> <span class="pre">defaults</span> <span class="pre">to</span> <span class="pre">None.</span></span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.3/src/metpy/../../../../../../../../../home/runner/work/MetPy/MetPy/docs/&lt;frozen _collections_abc&gt;"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.StationLookup.get" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.io.StationLookup.items">
-<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">items</span></span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.2/src/metpy/../../../../../../../../../home/runner/work/MetPy/MetPy/docs/&lt;frozen _collections_abc&gt;"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.StationLookup.items" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">items</span></span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.3/src/metpy/../../../../../../../../../home/runner/work/MetPy/MetPy/docs/&lt;frozen _collections_abc&gt;"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.StationLookup.items" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.io.StationLookup.keys">
-<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">keys</span></span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.2/src/metpy/../../../../../../../../../home/runner/work/MetPy/MetPy/docs/&lt;frozen _collections_abc&gt;"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.StationLookup.keys" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">keys</span></span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.3/src/metpy/../../../../../../../../../home/runner/work/MetPy/MetPy/docs/&lt;frozen _collections_abc&gt;"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.StationLookup.keys" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.io.StationLookup.values">
-<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">an</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">values</span></span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.2/src/metpy/../../../../../../../../../home/runner/work/MetPy/MetPy/docs/&lt;frozen _collections_abc&gt;"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.StationLookup.values" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">an</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">values</span></span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.3/src/metpy/../../../../../../../../../home/runner/work/MetPy/MetPy/docs/&lt;frozen _collections_abc&gt;"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.StationLookup.values" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -938,7 +938,7 @@ possible to e.g. iterate over all locations and get all of a certain criteria:</
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

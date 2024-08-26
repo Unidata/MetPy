@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_tutorials_unit_tutorial.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -734,6 +734,10 @@ these when you're having issues.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: unit_tutorial.py <unit_tutorial.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: unit_tutorial.zip <unit_tutorial.zip>`
 
 
 .. only:: html

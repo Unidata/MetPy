@@ -30,11 +30,11 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css?v=45c5dac0" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -42,10 +42,10 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=e15882dc"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/documentation_options.js?v=452006c5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Apr 02, 2024 at 16:50:59"/>
+    <meta name="docbuild:last-update" content="Aug 26, 2024 at 23:24:29"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.xarray.grid_deltas_from_dataarray.html" />
 
   </head>
@@ -771,14 +771,14 @@ document.write(`
 <h1>grid_deltas_from_dataarray<a class="headerlink" href="#grid-deltas-from-dataarray" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.xarray.grid_deltas_from_dataarray">
-<span class="sig-prename descclassname"><span class="pre">metpy.xarray.</span></span><span class="sig-name descname"><span class="pre">grid_deltas_from_dataarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.2/src/metpy/xarray.py#L1433-L1517"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.grid_deltas_from_dataarray" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.xarray.</span></span><span class="sig-name descname"><span class="pre">grid_deltas_from_dataarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.3/src/metpy/xarray.py#L1433-L1517"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.grid_deltas_from_dataarray" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the horizontal deltas between grid points of a DataArray.</p>
 <p>Calculate the signed delta distance between grid points of a DataArray in the horizontal
 directions, using actual (real distance) or nominal (in projection space) deltas.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.3.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Parsed DataArray (<code class="docutils literal notranslate"><span class="pre">metpy_crs</span></code> coordinate must be available for kind=”actual”)</p></li>
+<li><p><strong>f</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.7.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Parsed DataArray (<code class="docutils literal notranslate"><span class="pre">metpy_crs</span></code> coordinate must be available for kind=”actual”)</p></li>
 <li><p><strong>kind</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Type of grid delta to calculate. “actual” returns true distances as calculated from
 longitude and latitude via <em class="xref py py-obj">lat_lon_grid_deltas</em>. “nominal” returns horizontal
 differences in the data’s coordinate space, either in degrees (for lat/lon CRS) or
@@ -883,7 +883,7 @@ matching those of <em class="xref py py-obj">f</em>.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

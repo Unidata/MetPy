@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_plots_Plotting_Surface_Analysis.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -137,7 +137,7 @@ Set up the map for plotting, parse the bulletin, and plot it
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.516 seconds)
+   **Total running time of the script:** (0 minutes 6.194 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Plotting_Surface_Analysis.py:
@@ -153,6 +153,10 @@ Set up the map for plotting, parse the bulletin, and plot it
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Plotting_Surface_Analysis.py <Plotting_Surface_Analysis.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Plotting_Surface_Analysis.zip <Plotting_Surface_Analysis.zip>`
 
 
 .. only:: html

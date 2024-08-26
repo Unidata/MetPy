@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_calculations_Mountain_Problem.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -203,6 +203,10 @@ parcel
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Mountain_Problem.py <Mountain_Problem.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Mountain_Problem.zip <Mountain_Problem.zip>`
 
 
 .. only:: html

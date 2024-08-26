@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_calculations_Gradient.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -166,7 +166,7 @@ Finally, the deltas can be arrays for unevenly spaced data.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.015 seconds)
+   **Total running time of the script:** (0 minutes 0.013 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Gradient.py:
@@ -182,6 +182,10 @@ Finally, the deltas can be arrays for unevenly spaced data.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Gradient.py <Gradient.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Gradient.zip <Gradient.zip>`
 
 
 .. only:: html

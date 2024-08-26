@@ -30,11 +30,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css?v=45c5dac0" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -42,10 +42,10 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=e15882dc"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/documentation_options.js?v=452006c5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Apr 02, 2024 at 16:50:59"/>
+    <meta name="docbuild:last-update" content="Aug 26, 2024 at 23:24:29"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/tutorials/area_tutorial.html" />
 
   </head>
@@ -467,15 +467,12 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../userguide/installguide.html">Install Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../userguide/startingguide.html">Getting Started with MetPy</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="unit_tutorial.html">Working With Units</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Using Predefined Areas with MetPy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="upperair_soundings.html">Upper Air Sounding Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xarray_tutorial.html">xarray with MetPy Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="declarative_tutorial.html">MetPy Declarative Syntax Tutorial</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../userguide/upgradeguide.html">MetPy 1.0 Upgrade Guide</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1"><a class="reference internal" href="unit_tutorial.html">Working With Units</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Using Predefined Areas with MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upperair_soundings.html">Upper Air Sounding Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xarray_tutorial.html">xarray with MetPy Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="declarative_tutorial.html">MetPy Declarative Syntax Tutorial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../userguide/upgradeguide.html">MetPy 1.0 Upgrade Guide</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../userguide/apichange.html">MetPy 1.0 API Changes</a></li>
 </ul>
 </li>
@@ -524,7 +521,7 @@ document.write(`
     <li class="breadcrumb-item"><a href="../userguide/index.html" class="nav-link">User Guide</a></li>
     
     
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Tutorials</a></li>
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">&lt;no title&gt;</a></li>
     
     <li class="breadcrumb-item active" aria-current="page">Using...</li>
   </ul>
@@ -546,7 +543,7 @@ document.write(`
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-tutorials-area-tutorial-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="using-predefined-areas-with-metpy">
 <span id="sphx-glr-tutorials-area-tutorial-py"></span><h1>Using Predefined Areas with MetPy<a class="headerlink" href="#using-predefined-areas-with-metpy" title="Link to this heading">#</a></h1>
@@ -979,13 +976,16 @@ some surface observations.</p>
 <a href="../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_area_tutorial_002.png" srcset="../_images/sphx_glr_area_tutorial_002.png" alt="Surface plot for 2019-07-01 12:00:00" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 10.468 seconds)</p>
+<img src="../_images/sphx_glr_area_tutorial_002.png" srcset="../_images/sphx_glr_area_tutorial_002.png" alt="Surface plot for 2019-07-01 12:00:00" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 10.394 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-area-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/ec6e9c31a13f4fcc9282b83d07226ae0/area_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">area_tutorial.ipynb</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cc5c2e456e6d6cafc8e4243ba9db0272/area_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">area_tutorial.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/a58816c4f3cacfddb44ac6fe03c60c83/area_tutorial.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">area_tutorial.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -1078,7 +1078,7 @@ some surface observations.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

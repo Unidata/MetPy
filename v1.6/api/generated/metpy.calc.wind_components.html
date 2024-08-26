@@ -30,11 +30,11 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css?v=45c5dac0" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -42,10 +42,10 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=e15882dc"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/documentation_options.js?v=452006c5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Apr 02, 2024 at 16:50:59"/>
+    <meta name="docbuild:last-update" content="Aug 26, 2024 at 23:24:29"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.wind_components.html" />
 
   </head>
@@ -771,18 +771,18 @@ document.write(`
 <h1>wind_components<a class="headerlink" href="#wind-components" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.wind_components">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">wind_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_direction</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.2/src/metpy/calc/basic.py#L128-L167"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.wind_components" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">wind_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_direction</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/v1.6.3/src/metpy/calc/basic.py#L128-L167"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.wind_components" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the U, V wind vector components from the speed and direction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>speed</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.23rc3.dev1+g52ac9f5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Wind speed (magnitude)</p></li>
-<li><p><strong>wind_direction</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.23rc3.dev1+g52ac9f5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Wind direction, specified as the direction from which the wind is
+<li><p><strong>speed</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.3.dev1+g79e636c)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Wind speed (magnitude)</p></li>
+<li><p><strong>wind_direction</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.3.dev1+g79e636c)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Wind direction, specified as the direction from which the wind is
 blowing (0-2 pi radians or 0-360 degrees), with 360 degrees being North.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>u, v</strong> (tuple of <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.23rc3.dev1+g52ac9f5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – The wind components in the X (East-West) and Y (North-South)
+<dd class="field-even"><p><strong>u, v</strong> (tuple of <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.3.dev1+g79e636c)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – The wind components in the X (East-West) and Y (North-South)
 directions, respectively.</p>
 </dd>
 </dl>
@@ -807,7 +807,7 @@ directions, respectively.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Plot a sounding using MetPy with more advanced features."><img alt="" src="../../_images/sphx_glr_Advanced_Sounding_thumb.png" />
 <p><a class="reference internal" href="../../examples/Advanced_Sounding.html#sphx-glr-examples-advanced-sounding-py"><span class="std std-ref">Advanced Sounding</span></a></p>
   <div class="sphx-glr-thumbnail-title">Advanced Sounding</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example combines simple MetPy plotting functionality, metpy.calc computation functionality..."><img alt="" src="../../_images/sphx_glr_Advanced_Sounding_With_Complex_Layout_thumb.png" />
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example combines simple MetPy plotting functionality, metpy.calc computation functionality, and a few basic Matplotlib tricks to create an advanced sounding plot with a complex layout &amp; high readability."><img alt="" src="../../_images/sphx_glr_Advanced_Sounding_With_Complex_Layout_thumb.png" />
 <p><a class="reference internal" href="../../examples/Advanced_Sounding_With_Complex_Layout.html#sphx-glr-examples-advanced-sounding-with-complex-layout-py"><span class="std std-ref">Advanced Sounding Plot with Complex Layout</span></a></p>
   <div class="sphx-glr-thumbnail-title">Advanced Sounding Plot with Complex Layout</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations."><img alt="" src="../../_images/sphx_glr_Bulk_Shear_thumb.png" />
@@ -816,7 +816,7 @@ directions, respectively.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc to perform a number of calculations using sounding data."><img alt="" src="../../_images/sphx_glr_Sounding_Calculations_thumb.png" />
 <p><a class="reference internal" href="../../examples/calculations/Sounding_Calculations.html#sphx-glr-examples-calculations-sounding-calculations-py"><span class="std std-ref">Sounding Calculation Examples</span></a></p>
   <div class="sphx-glr-thumbnail-title">Sounding Calculation Examples</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking an..."><img alt="" src="../../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" />
+</div><div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking analysis, featuring contours of pressure and wind barbs."><img alt="" src="../../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" />
 <p><a class="reference internal" href="../../examples/gridding/Wind_SLP_Interpolation.html#sphx-glr-examples-gridding-wind-slp-interpolation-py"><span class="std std-ref">Wind and Sea Level Pressure Interpolation</span></a></p>
   <div class="sphx-glr-thumbnail-title">Wind and Sea Level Pressure Interpolation</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s GridSpec layout capability."><img alt="" src="../../_images/sphx_glr_Skew-T_Layout_thumb.png" />
@@ -834,10 +834,10 @@ directions, respectively.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Make a surface station plot with Oklahoma Mesonet data."><img alt="" src="../../_images/sphx_glr_Mesonet_Stationplot_thumb.png" />
 <p><a class="reference internal" href="../../examples/plots/Mesonet_Stationplot.html#sphx-glr-examples-plots-mesonet-stationplot-py"><span class="std std-ref">Mesonet Station Plot</span></a></p>
   <div class="sphx-glr-thumbnail-title">Mesonet Station Plot</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout b..."><img alt="" src="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" />
+</div><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout built into MetPy."><img alt="" src="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" />
 <p><a class="reference internal" href="../../examples/plots/Station_Plot_with_Layout.html#sphx-glr-examples-plots-station-plot-with-layout-py"><span class="std std-ref">Station Plot with Layout</span></a></p>
   <div class="sphx-glr-thumbnail-title">Station Plot with Layout</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutori..."><img alt="" src="../../_images/sphx_glr_upperair_soundings_thumb.png" />
+</div><div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutorial we will gather weather balloon data, plot it, perform a series of thermodynamic calculations, and summarize the results. To learn more about the Skew-T diagram and its use in weather analysis and forecasting, checkout this air weather service guide."><img alt="" src="../../_images/sphx_glr_upperair_soundings_thumb.png" />
 <p><a class="reference internal" href="../../tutorials/upperair_soundings.html#sphx-glr-tutorials-upperair-soundings-py"><span class="std std-ref">Upper Air Sounding Tutorial</span></a></p>
   <div class="sphx-glr-thumbnail-title">Upper Air Sounding Tutorial</div>
 </div></div><div style='clear:both'></div></section>
@@ -928,7 +928,7 @@ directions, respectively.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

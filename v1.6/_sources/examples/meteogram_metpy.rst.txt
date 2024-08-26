@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_meteogram_metpy.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -212,7 +212,7 @@ Plots time series data as a meteogram.
 
     # Parse dates from .csv file, knowing their format as a string and convert to datetime
     def parse_date(date):
-        return dt.datetime.strptime(date.decode('ascii'), '%Y-%m-%d %H:%M:%S')
+        return dt.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
 
 
     testdata = np.genfromtxt(get_test_data('timeseries.csv', False), names=True, dtype=None,
@@ -253,7 +253,7 @@ Plots time series data as a meteogram.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.540 seconds)
+   **Total running time of the script:** (0 minutes 0.531 seconds)
 
 
 .. _sphx_glr_download_examples_meteogram_metpy.py:
@@ -269,6 +269,10 @@ Plots time series data as a meteogram.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: meteogram_metpy.py <meteogram_metpy.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: meteogram_metpy.zip <meteogram_metpy.zip>`
 
 
 .. only:: html

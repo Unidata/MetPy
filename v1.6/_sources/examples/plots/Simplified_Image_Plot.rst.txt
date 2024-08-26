@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_plots_Simplified_Image_Plot.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -75,7 +75,7 @@ Plots a sample satellite image file.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.538 seconds)
+   **Total running time of the script:** (0 minutes 0.508 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simplified_Image_Plot.py:
@@ -91,6 +91,10 @@ Plots a sample satellite image file.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Simplified_Image_Plot.py <Simplified_Image_Plot.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Simplified_Image_Plot.zip <Simplified_Image_Plot.zip>`
 
 
 .. only:: html

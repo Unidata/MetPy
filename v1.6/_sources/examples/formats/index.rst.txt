@@ -15,10 +15,11 @@ Examples using MetPy's support for reading various file formats.
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s support for GINI files to read in a water vapor satellite image and plot the data u...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s support for GINI files to read in a water vapor satellite image and plot the data using CartoPy.">
 
 .. only:: html
 
@@ -66,6 +67,8 @@ Examples using MetPy's support for reading various file formats.
       <div class="sphx-glr-thumbnail-title">NEXRAD Level 2 File</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

@@ -1,12 +1,41 @@
 :orphan:
 
-.. _tutorials-index:
+# MetPy Tutorials
 
-Tutorials
-=========
+Welcome to the MetPy tutorials! These tutorials are designed to help you get started with using MetPy for meteorological data analysis and visualization. Whether you're a beginner looking to explore the basics or an experienced user seeking advanced techniques, these tutorials will guide you through various aspects of MetPy.
 
-This collection of tutorials (under development) demonstrates the use of MetPy to perform
-common meteorological tasks.
+## Purpose
+
+The purpose of these tutorials is to provide hands-on examples and explanations to help you learn how to use MetPy effectively for your meteorological data analysis tasks. Each tutorial focuses on a specific aspect of MetPy, gradually building your understanding and skills as you progress through them.
+
+## Getting Started
+
+If this is your first time using MetPy head over to the [installation guide](https://unidata.github.io/MetPy/latest/userguide/installguide.html) to make sure the required dependencies have been installed.
+
+## Tutorials by Difficulty Level
+
+### Beginner Level
+
+1. **Area Tutorial**: Learn how to use predefined areas with MetPy.
+
+2. **Declarative Tutorial**: MetPy's declarative syntax simplifies data exploration and analysis by streamlining plotting in Python, hiding complexity to make data investigation more accessible.
+ 
+3.  **Unit Tutorial**: Learn how to work with units within Metpy!
+
+### Intermediate Level
+
+1. **Upper Air Soundings**: Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutorial we will gather weather balloon data, plot it, perform a series of thermodynamic calculations, and summarize the results.
+
+2. **xarray with MetPy Tutorial**: This tutorial demonstrates how to work with xarray, a powerful Python package for labeled arrays and datasets. MetPy seamlessly integrates with xarray's data model, offering convenient methods and properties for coordinate, coordinate reference system, and unit operations. 
+### Advanced Level
+
+1. **Advanced Tutorials Coming Soon**
+
+The [Examples Gallery](https://unidata.github.io/MetPy/latest/examples/index.html) has more examples of what else you can create with MetPy!
+
+## Contribution
+
+We welcome contributions to these tutorials! If you have any suggestions for improvements or would like to add new tutorials feel free to submit an issue or make a pull request. More information on how to contribute can be found by checking out the [Contributors Guide](https://github.com/Unidata/MetPy/blob/main/CONTRIBUTING.md)
 
 
 
@@ -14,10 +43,11 @@ common meteorological tasks.
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Early in our scientific careers we all learn about the importance of paying attention to units ...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Early in our scientific careers we all learn about the importance of paying attention to units in our calculations. Unit conversions can still get the best of us and have caused more than one major technical disaster, including the crash and complete loss of the $327 million Mars Climate Orbiter.">
 
 .. only:: html
 
@@ -34,7 +64,7 @@ common meteorological tasks.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="When plotting your data on a map you want to be able to plot the data in a useful area and with...">
+    <div class="sphx-glr-thumbcontainer" tooltip="When plotting your data on a map you want to be able to plot the data in a useful area and with a projection that would match the areal extent well. Within MetPy we have generated more than 400 pre-defined areas that also have associated projections, which you can use to make quick plots over regions of interest with minimal effort on your part. While these were intended to be used with the MetPy declarative syntax, these areas and projections are now accessible for any use of plotting data on a map using Cartopy.">
 
 .. only:: html
 
@@ -51,7 +81,7 @@ common meteorological tasks.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutori...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutorial we will gather weather balloon data, plot it, perform a series of thermodynamic calculations, and summarize the results. To learn more about the Skew-T diagram and its use in weather analysis and forecasting, checkout this air weather service guide.">
 
 .. only:: html
 
@@ -68,7 +98,7 @@ common meteorological tasks.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="xarray is a powerful Python package that provides N-dimensional labeled arrays and datasets fol...">
+    <div class="sphx-glr-thumbcontainer" tooltip="xarray is a powerful Python package that provides N-dimensional labeled arrays and datasets following the Common Data Model. MetPy&#x27;s suite of meteorological calculations are designed to integrate with xarray DataArrays as one of its two primary data models (the other being Pint Quantities). MetPy also provides DataArray and Dataset accessors (collections of methods and properties attached to the .metpy property) for coordinate/CRS and unit operations.">
 
 .. only:: html
 
@@ -85,7 +115,7 @@ common meteorological tasks.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The declarative syntax that is a part of the MetPy packaged is designed to aid in simple data e...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The declarative syntax that is a part of the MetPy packaged is designed to aid in simple data exploration and analysis needs by simplifying the plotting context from typical verbose Python code. The complexity of data wrangling and plotting are hidden behind the simplified syntax to allow a lower barrier to investigating your data.">
 
 .. only:: html
 
@@ -99,6 +129,8 @@ common meteorological tasks.
       <div class="sphx-glr-thumbnail-title">MetPy Declarative Syntax Tutorial</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

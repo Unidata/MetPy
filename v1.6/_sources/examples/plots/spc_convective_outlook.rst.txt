@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_plots_spc_convective_outlook.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -245,7 +245,7 @@ Add the geometry plot to a panel and container.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.070 seconds)
+   **Total running time of the script:** (0 minutes 7.574 seconds)
 
 
 .. _sphx_glr_download_examples_plots_spc_convective_outlook.py:
@@ -261,6 +261,10 @@ Add the geometry plot to a panel and container.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: spc_convective_outlook.py <spc_convective_outlook.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: spc_convective_outlook.zip <spc_convective_outlook.zip>`
 
 
 .. only:: html

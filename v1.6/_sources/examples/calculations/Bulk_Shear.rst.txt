@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_calculations_Bulk_Shear.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -164,6 +164,10 @@ Compute the bulk shear for the lowest three km
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Bulk_Shear.py <Bulk_Shear.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Bulk_Shear.zip <Bulk_Shear.zip>`
 
 
 .. only:: html

@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_formats_GINI_Water_Vapor.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -133,7 +133,7 @@ the projection information.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.926 seconds)
+   **Total running time of the script:** (0 minutes 0.869 seconds)
 
 
 .. _sphx_glr_download_examples_formats_GINI_Water_Vapor.py:
@@ -149,6 +149,10 @@ the projection information.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: GINI_Water_Vapor.py <GINI_Water_Vapor.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: GINI_Water_Vapor.zip <GINI_Water_Vapor.zip>`
 
 
 .. only:: html

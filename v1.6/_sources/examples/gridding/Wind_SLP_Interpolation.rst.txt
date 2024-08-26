@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_gridding_Wind_SLP_Interpolation.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -247,7 +247,7 @@ Set up the map and plot the interpolated grids appropriately.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 12.051 seconds)
+   **Total running time of the script:** (0 minutes 11.302 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Wind_SLP_Interpolation.py:
@@ -263,6 +263,10 @@ Set up the map and plot the interpolated grids appropriately.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Wind_SLP_Interpolation.py <Wind_SLP_Interpolation.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Wind_SLP_Interpolation.zip <Wind_SLP_Interpolation.zip>`
 
 
 .. only:: html

@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_plots_Sounding_LCL_Dataset.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -160,7 +160,7 @@ assign units.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.240 seconds)
+   **Total running time of the script:** (0 minutes 0.177 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Sounding_LCL_Dataset.py:
@@ -176,6 +176,10 @@ assign units.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Sounding_LCL_Dataset.py <Sounding_LCL_Dataset.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Sounding_LCL_Dataset.zip <Sounding_LCL_Dataset.zip>`
 
 
 .. only:: html

@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_calculations_Mean_Pressure_Weighted.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -146,6 +146,10 @@ Calculate the mean pressure weighted temperature over a depth of 500 hPa
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Mean_Pressure_Weighted.py <Mean_Pressure_Weighted.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Mean_Pressure_Weighted.zip <Mean_Pressure_Weighted.zip>`
 
 
 .. only:: html

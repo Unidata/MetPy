@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_tutorials_upperair_soundings.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -329,7 +329,7 @@ which are not drawn.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.301 seconds)
+   **Total running time of the script:** (0 minutes 1.117 seconds)
 
 
 .. _sphx_glr_download_tutorials_upperair_soundings.py:
@@ -345,6 +345,10 @@ which are not drawn.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: upperair_soundings.py <upperair_soundings.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: upperair_soundings.zip <upperair_soundings.zip>`
 
 
 .. only:: html
