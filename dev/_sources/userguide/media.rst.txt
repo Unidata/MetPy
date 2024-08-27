@@ -25,7 +25,7 @@ Talks and Other Media
 .. _`2016 AMS Annual Meeting`: https://ams.confex.com/ams/96Annual/webprogram/Paper286983.html
 .. _`SSEC/Wisconsin AOS Python Workshop`: https://www.youtube.com/watch?v=RRvJI_vouQc
 .. _`SciPy 2016`: https://www.youtube.com/watch?v=moLKGjbXvgE
-.. _`Episode 100 of Podcast.__init__`: https://www.pythonpodcast.com/episode-100-metpy-with-ryan-may-sean-arms-and-john-leeman/
+.. _`Episode 100 of Podcast.__init__`: https://www.pythonpodcast.com/episodepage/episode-100-metpy-with-ryan-may-sean-arms-and-john-leeman/
 .. _`SciPy 2017 talk`: https://www.youtube.com/watch?v=qCo9bkT9sow
 .. _`SciPy 2017 poster`: https://github.com/jrleeman/CAPE-SciPy-2017/blob/master/Poster/SciPy_Poster_2017.pdf
 .. _`2018 AMS Annual Meeting`: https://ams.confex.com/ams/98Annual/webprogram/Paper333578.html
