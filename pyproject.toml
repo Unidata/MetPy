@@ -32,7 +32,7 @@ dependencies = [
     "pooch>=1.2.0",
     "pyproj>=3.3.0",
     "scipy>=1.8.0",
-    "traitlets>=5.0.5",
+    "traitlets>=5.1.0",
     "xarray>=0.21.0"
 ]
 
