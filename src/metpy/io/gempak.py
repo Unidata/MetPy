@@ -790,7 +790,7 @@ class GempakFile:
     @staticmethod
     def _convert_level(level):
         """Convert levels."""
-        if isinstance(level, (int, float)) and level >= 0:
+        if isinstance(level, int | float) and level >= 0:
             return level
         else:
             return None

@@ -1288,10 +1288,7 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
                 arg_names_to_broadcast = tuple(
                     arg_name for arg_name in broadcast
                     if arg_name in bound_args.arguments
-                    and isinstance(
-                        bound_args.arguments[arg_name],
-                        (xr.DataArray, xr.Variable)
-                    )
+                    and isinstance(bound_args.arguments[arg_name], xr.DataArray | xr.Variable)
                 )
                 broadcasted_args = xr.broadcast(
                     *(bound_args.arguments[arg_name] for arg_name in arg_names_to_broadcast)
