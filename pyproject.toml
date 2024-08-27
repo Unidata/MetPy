@@ -26,11 +26,11 @@ classifiers = [
 requires-python = ">=3.10"
 dependencies = [
     "matplotlib>=3.5.0",
-    "numpy>=1.20.0",
+    "numpy>=1.22.0",
     "pandas>=1.4.0",
     "pint>=0.17",
     "pooch>=1.2.0",
-    "pyproj>=3.0.0",
+    "pyproj>=3.3.0",
     "scipy>=1.8.0",
     "traitlets>=5.0.5",
     "xarray>=0.21.0"
