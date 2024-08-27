@@ -14,7 +14,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Framework :: Matplotlib",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -24,7 +23,7 @@ classifiers = [
     "Operating System :: OS Independent",
     "License :: OSI Approved :: BSD License"
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "matplotlib>=3.5.0",
     "numpy>=1.20.0",
