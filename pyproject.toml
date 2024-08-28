@@ -14,7 +14,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Framework :: Matplotlib",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -24,17 +23,17 @@ classifiers = [
     "Operating System :: OS Independent",
     "License :: OSI Approved :: BSD License"
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "matplotlib>=3.5.0",
-    "numpy>=1.20.0",
+    "numpy>=1.22.0",
     "pandas>=1.4.0",
     "pint>=0.17",
     "pooch>=1.2.0",
-    "pyproj>=3.0.0",
+    "pyproj>=3.3.0",
     "scipy>=1.8.0",
-    "traitlets>=5.0.5",
-    "xarray>=0.21.0"
+    "traitlets>=5.1.0",
+    "xarray>=2022.6.0"
 ]
 
 [project.entry-points."xarray.backends"]
@@ -57,7 +56,7 @@ examples = [
 test = [
     "netCDF4",
     "packaging>=21.0",
-    "pytest>=6.2",
+    "pytest>=7.0",
     "pytest-mpl"
 ]
 extras = [

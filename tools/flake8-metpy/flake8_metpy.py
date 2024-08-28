@@ -37,7 +37,7 @@ class MetPyVisitor(ast.NodeVisitor):
     def visit_BinOp(self, node):  # noqa: N802
         """Visit binary operations."""
         # Check whether this is multiplying or dividing by units
-        if (isinstance(node.op, (ast.Mult, ast.Div))
+        if (isinstance(node.op, ast.Mult | ast.Div)
                 and (self._is_unit(node.right) or self._is_unit(node.left))):
             self.error(node.lineno, node.col_offset, 1)
 

@@ -1379,7 +1379,7 @@ class ArrowPlot(PlotVector, ValidationMixin):
         # The order here needs to match the order of the tuple
         if self.arrowkey is not None:
             key_kwargs = {'U': 100, 'X': 0.85, 'Y': 1.02, 'labelpos': 'E', 'label': ''}
-            for name, val in zip(key_kwargs, self.arrowkey):
+            for name, val in zip(key_kwargs, self.arrowkey, strict=False):
                 if val is not None:
                     key_kwargs[name] = val
             self.parent.ax.quiverkey(self.handle, labelcolor=self.color, **key_kwargs)
@@ -1869,7 +1869,7 @@ class PlotGeometry(MetPyHasTraits):
         # If object is a MultiPolygon or MultiLineString, associate the label with the single
         # largest Polygon or LineString from the collection. If MultiPoint, associate the label
         # with one of the Points in the MultiPoint, chosen based on the label hash.
-        if isinstance(geo_obj, (MultiPolygon, MultiLineString)):
+        if isinstance(geo_obj, MultiPolygon | MultiLineString):
             geo_obj = max(geo_obj.geoms, key=lambda x: x.length)
         elif isinstance(geo_obj, MultiPoint):
             geo_obj = geo_obj.geoms[label_hash % len(geo_obj.geoms)]
@@ -1940,13 +1940,13 @@ class PlotGeometry(MetPyHasTraits):
                 cycle(self.labels), cycle(self.label_facecolor), cycle(self.label_edgecolor)):
             kwargs = self.mpl_args.copy()
             # Plot the Shapely object with the appropriate method and colors
-            if isinstance(geo_obj, (MultiPolygon, Polygon)):
+            if isinstance(geo_obj, MultiPolygon | Polygon):
                 kwargs.setdefault('edgecolor', stroke)
                 kwargs.setdefault('linewidths', strokewidth)
                 kwargs.setdefault('facecolor', fill)
                 kwargs.setdefault('crs', ccrs.PlateCarree())
                 self.parent.ax.add_geometries([geo_obj], **kwargs)
-            elif isinstance(geo_obj, (MultiLineString, LineString)):
+            elif isinstance(geo_obj, MultiLineString | LineString):
                 kwargs.setdefault('edgecolor', stroke)
                 kwargs.setdefault('linewidths', strokewidth)
                 kwargs.setdefault('facecolor', 'none')
@@ -1985,7 +1985,7 @@ class PlotGeometry(MetPyHasTraits):
 
                 # If polygon, put label directly on edge of polygon. If line or point, put
                 # label slightly below line/point.
-                offset = (0, 0) if isinstance(geo_obj, (MultiPolygon, Polygon)) else (0, -12)
+                offset = (0, 0) if isinstance(geo_obj, MultiPolygon | Polygon) else (0, -12)
 
                 # Finally, draw the label
                 self._draw_label(label, lon, lat, fontcolor, fontoutline, offset)
@@ -2247,7 +2247,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         # Each Shapely object is plotted separately with its corresponding strength
         # and customizable parameters
         for geo_obj, strengthvalues, feature in zip(
-                self.geometry, strengths, self.feature):
+                self.geometry, strengths, self.feature, strict=True):
             kwargs = self.mpl_args.copy()
             # Plot the Shapely object with the appropriate method and style
             if isinstance(geo_obj, (LineString)):
