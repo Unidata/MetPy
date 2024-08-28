@@ -56,7 +56,7 @@ examples = [
 test = [
     "netCDF4",
     "packaging>=21.0",
-    "pytest>=6.2",
+    "pytest>=7.0",
     "pytest-mpl"
 ]
 extras = [
