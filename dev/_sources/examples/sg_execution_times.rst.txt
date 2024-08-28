@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:42.208** total execution time for 8 files **from examples**:
+**00:42.595** total execution time for 8 files **from examples**:
 
 .. container::
 
@@ -33,25 +33,25 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_examples_isentropic_example.py` (``isentropic_example.py``)
-     - 00:09.626
+     - 00:09.762
      - 0.0
    * - :ref:`sphx_glr_examples_XArray_Projections.py` (``XArray_Projections.py``)
-     - 00:09.405
+     - 00:09.571
      - 0.0
    * - :ref:`sphx_glr_examples_sigma_to_pressure_interpolation.py` (``sigma_to_pressure_interpolation.py``)
-     - 00:08.954
+     - 00:08.987
      - 0.0
    * - :ref:`sphx_glr_examples_Four_Panel_Map.py` (``Four_Panel_Map.py``)
-     - 00:08.167
+     - 00:08.223
      - 0.0
    * - :ref:`sphx_glr_examples_cross_section.py` (``cross_section.py``)
-     - 00:04.723
+     - 00:04.697
      - 0.0
    * - :ref:`sphx_glr_examples_Advanced_Sounding_With_Complex_Layout.py` (``Advanced_Sounding_With_Complex_Layout.py``)
-     - 00:00.636
+     - 00:00.648
      - 0.0
    * - :ref:`sphx_glr_examples_meteogram_metpy.py` (``meteogram_metpy.py``)
-     - 00:00.531
+     - 00:00.540
      - 0.0
    * - :ref:`sphx_glr_examples_Advanced_Sounding.py` (``Advanced_Sounding.py``)
      - 00:00.166

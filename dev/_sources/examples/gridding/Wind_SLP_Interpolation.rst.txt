@@ -175,6 +175,15 @@ Both will have the same underlying grid so throw away grid returned from v inter
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /home/runner/work/MetPy/MetPy/examples/gridding/Wind_SLP_Interpolation.py:69: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments.
+      windgridx, windgridy, uwind = interpolate_to_grid(x_masked, y_masked, np.array(u),
+    /home/runner/work/MetPy/MetPy/examples/gridding/Wind_SLP_Interpolation.py:73: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments.
+      _, _, vwind = interpolate_to_grid(x_masked, y_masked, np.array(v), interp_type='cressman',
+
 
 
 
@@ -247,7 +256,7 @@ Set up the map and plot the interpolated grids appropriately.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 11.285 seconds)
+   **Total running time of the script:** (0 minutes 11.427 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Wind_SLP_Interpolation.py:
