@@ -116,6 +116,8 @@ filterwarnings = [
     "ignore:Conversion of an array with ndim > 0 to a scalar is deprecated:DeprecationWarning:pyproj.geod:404",
     # Pandas >=2.2 warns about PyArrow being a future dependency
     'ignore:\nPyarrow will become a required dependency of pandas:DeprecationWarning',
+    # Not yet fixed in xarray
+    "ignore:__array__ implementation doesn't accept a copy keyword:DeprecationWarning"
 ]
 
 [tool.ruff]
