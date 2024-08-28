@@ -1,0 +1,144 @@
+PlotSurfaceAnalysis
+===============================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: PlotSurfaceAnalysis
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~PlotSurfaceAnalysis.COLD_color
+      ~PlotSurfaceAnalysis.FRONT_linewidth
+      ~PlotSurfaceAnalysis.FRONT_markersize
+      ~PlotSurfaceAnalysis.HIGH_color
+      ~PlotSurfaceAnalysis.HIGH_label
+      ~PlotSurfaceAnalysis.LOW_color
+      ~PlotSurfaceAnalysis.LOW_label
+      ~PlotSurfaceAnalysis.OCFNT_color
+      ~PlotSurfaceAnalysis.TROF_color
+      ~PlotSurfaceAnalysis.TROF_linestyle
+      ~PlotSurfaceAnalysis.TROF_linewidth
+      ~PlotSurfaceAnalysis.WARM_color
+      ~PlotSurfaceAnalysis.cross_validation_lock
+      ~PlotSurfaceAnalysis.feature
+      ~PlotSurfaceAnalysis.geometry
+      ~PlotSurfaceAnalysis.label_fontsize
+      ~PlotSurfaceAnalysis.mpl_args
+      ~PlotSurfaceAnalysis.name
+      ~PlotSurfaceAnalysis.parent
+      ~PlotSurfaceAnalysis.strength
+      ~PlotSurfaceAnalysis.strength_offset
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~PlotSurfaceAnalysis.__init__
+      ~PlotSurfaceAnalysis.add_traits
+      ~PlotSurfaceAnalysis.class_own_trait_events
+      ~PlotSurfaceAnalysis.class_own_traits
+      ~PlotSurfaceAnalysis.class_trait_names
+      ~PlotSurfaceAnalysis.class_traits
+      ~PlotSurfaceAnalysis.copy
+      ~PlotSurfaceAnalysis.draw
+      ~PlotSurfaceAnalysis.has_trait
+      ~PlotSurfaceAnalysis.hold_trait_notifications
+      ~PlotSurfaceAnalysis.notify_change
+      ~PlotSurfaceAnalysis.observe
+      ~PlotSurfaceAnalysis.on_trait_change
+      ~PlotSurfaceAnalysis.set_trait
+      ~PlotSurfaceAnalysis.setup_instance
+      ~PlotSurfaceAnalysis.trait_defaults
+      ~PlotSurfaceAnalysis.trait_events
+      ~PlotSurfaceAnalysis.trait_has_value
+      ~PlotSurfaceAnalysis.trait_metadata
+      ~PlotSurfaceAnalysis.trait_names
+      ~PlotSurfaceAnalysis.trait_values
+      ~PlotSurfaceAnalysis.traits
+      ~PlotSurfaceAnalysis.unobserve
+      ~PlotSurfaceAnalysis.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: COLD_color
+   .. autoattribute:: FRONT_linewidth
+   .. autoattribute:: FRONT_markersize
+   .. autoattribute:: HIGH_color
+   .. autoattribute:: HIGH_label
+   .. autoattribute:: LOW_color
+   .. autoattribute:: LOW_label
+   .. autoattribute:: OCFNT_color
+   .. autoattribute:: TROF_color
+   .. autoattribute:: TROF_linestyle
+   .. autoattribute:: TROF_linewidth
+   .. autoattribute:: WARM_color
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: feature
+   .. autoattribute:: geometry
+   .. autoattribute:: label_fontsize
+   .. autoattribute:: mpl_args
+   .. autoattribute:: name
+   .. autoattribute:: parent
+   .. autoattribute:: strength
+   .. autoattribute:: strength_offset
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: copy
+   .. automethod:: draw
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: trait_defaults
+   .. automethod:: trait_events
+   .. automethod:: trait_has_value
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: trait_values
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.PlotSurfaceAnalysis.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

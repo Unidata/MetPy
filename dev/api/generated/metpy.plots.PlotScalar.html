@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Aug 27, 2024 at 21:51:28"/>
+    <meta name="docbuild:last-update" content="Aug 28, 2024 at 20:58:52"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.PlotScalar.html" />
 
   </head>
@@ -649,6 +649,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ArrowPlot.html">ArrowPlot</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.PlotObs.html">PlotObs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.PlotGeometry.html">PlotGeometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.PlotSurfaceAnalysis.html">PlotSurfaceAnalysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ScallopedStroke.html">ScallopedStroke</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ColdFront.html">ColdFront</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ColdFrontogenesis.html">ColdFrontogenesis</a></li>
@@ -933,7 +934,7 @@ prior to entering the block.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.PlotScalar.data">
-<span class="sig-name descname"><span class="pre">data</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L724-L727"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.data" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">data</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L725-L728"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.data" title="Link to this definition">#</a></dt>
 <dd><p>Xarray dataset that contains the field to be plotted.</p>
 </dd></dl>
 
@@ -951,7 +952,7 @@ variables with the following command assuming the dataset was read using xarray 
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.PlotScalar.griddata">
-<span class="sig-name descname"><span class="pre">griddata</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L812-L865"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.griddata" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">griddata</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L813-L866"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.griddata" title="Link to this definition">#</a></dt>
 <dd><p>Return the internal cached data.</p>
 </dd></dl>
 
@@ -1000,7 +1001,7 @@ any other trait that corresponds to a specific kwarg for the particular plot typ
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.PlotScalar.name">
-<span class="sig-name descname"><span class="pre">name</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L734-L744"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.name" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L735-L745"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.name" title="Link to this definition">#</a></dt>
 <dd><p>Generate a name for the plot.</p>
 </dd></dl>
 
@@ -1022,7 +1023,7 @@ plotting using the MetPy Units module.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.PlotScalar.plotdata">
-<span class="sig-name descname"><span class="pre">plotdata</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L867-L885"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.plotdata" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plotdata</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L868-L886"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.plotdata" title="Link to this definition">#</a></dt>
 <dd><p>Return the data for plotting.</p>
 <p>The two dimension coordinates and the data array.</p>
 </dd></dl>
@@ -1146,32 +1147,32 @@ to the function.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.PlotScalar.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L680-L694"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.clear" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L681-L695"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.clear" title="Link to this definition">#</a></dt>
 <dd><p>Clear the plot.</p>
 <p>Resets all internal state and sets need for redraw.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.PlotScalar.clear_collections">
-<span class="sig-name descname"><span class="pre">clear_collections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L701-L705"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.clear_collections" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">clear_collections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L702-L706"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.clear_collections" title="Link to this definition">#</a></dt>
 <dd><p>Clear the handle collections to the plot instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.PlotScalar.clear_handle">
-<span class="sig-name descname"><span class="pre">clear_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L696-L699"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.clear_handle" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">clear_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L697-L700"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.clear_handle" title="Link to this definition">#</a></dt>
 <dd><p>Clear the handle to the plot instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.PlotScalar.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L746-L748"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.copy" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L747-L749"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.copy" title="Link to this definition">#</a></dt>
 <dd><p>Return a copy of the plot.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.PlotScalar.draw">
-<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L887-L900"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.draw" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L888-L901"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.PlotScalar.draw" title="Link to this definition">#</a></dt>
 <dd><p>Draw the plot.</p>
 </dd></dl>
 

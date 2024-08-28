@@ -143,7 +143,7 @@ Create a new figure. The dimensions here give a good aspect ratio
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7ff1b3fa99d0>]
+    [<matplotlib.lines.Line2D object at 0x7fb0a3b76390>]
 
 
 
@@ -295,7 +295,7 @@ try another Skew-T with a few more advanced features:
     # mixed layer parcel properties!
     ml_t, ml_td = mpcalc.mixed_layer(p, T, Td, depth=50 * units.hPa)
     ml_p, _, _ = mpcalc.mixed_parcel(p, T, Td, depth=50 * units.hPa)
-    mlcape, mlcin = mpcalc.mixed_layer_cape_cin(p, T, prof, depth=50 * units.hPa)
+    mlcape, mlcin = mpcalc.mixed_layer_cape_cin(p, T, Td, depth=50 * units.hPa)
 
     # most unstable parcel properties!
     mu_p, mu_t, mu_td, _ = mpcalc.most_unstable_parcel(p, T, Td, depth=50 * units.hPa)
@@ -429,7 +429,7 @@ try another Skew-T with a few more advanced features:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.643 seconds)
+   **Total running time of the script:** (0 minutes 0.644 seconds)
 
 
 .. _sphx_glr_download_examples_Advanced_Sounding_With_Complex_Layout.py:
