@@ -49,7 +49,7 @@ def _scaled_int(s):
 
 def _name_lookup(names):
     r"""Create an io helper to convert an integer to a named value."""
-    mapper = dict(zip(range(len(names)), names))
+    mapper = dict(zip(range(len(names)), names, strict=False))
 
     def lookup(val):
         return mapper.get(val, 'UnknownValue')

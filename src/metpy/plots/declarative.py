@@ -1379,7 +1379,7 @@ class ArrowPlot(PlotVector, ValidationMixin):
         # The order here needs to match the order of the tuple
         if self.arrowkey is not None:
             key_kwargs = {'U': 100, 'X': 0.85, 'Y': 1.02, 'labelpos': 'E', 'label': ''}
-            for name, val in zip(key_kwargs, self.arrowkey):
+            for name, val in zip(key_kwargs, self.arrowkey, strict=False):
                 if val is not None:
                     key_kwargs[name] = val
             self.parent.ax.quiverkey(self.handle, labelcolor=self.color, **key_kwargs)
@@ -2247,7 +2247,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         # Each Shapely object is plotted separately with its corresponding strength
         # and customizable parameters
         for geo_obj, strengthvalues, feature in zip(
-                self.geometry, strengths, self.feature):
+                self.geometry, strengths, self.feature, strict=True):
             kwargs = self.mpl_args.copy()
             # Plot the Shapely object with the appropriate method and style
             if isinstance(geo_obj, (LineString)):

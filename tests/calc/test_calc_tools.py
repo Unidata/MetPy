@@ -796,7 +796,7 @@ def test_gradient_2d(deriv_2d_data):
                        [-3, -1, 4],
                        [-3, -1, 4],
                        [-3, -1, 4]]))
-    for r, t in zip(res, truth):
+    for r, t in zip(res, truth, strict=False):
         assert_array_almost_equal(r, t, 5)
 
 
@@ -804,7 +804,7 @@ def test_gradient_4d(deriv_4d_data):
     """Test gradient with 4D arrays."""
     res = gradient(deriv_4d_data, deltas=(1, 1, 1, 1))
     truth = tuple(factor * np.ones_like(deriv_4d_data) for factor in (48., 16., 4., 1.))
-    for r, t in zip(res, truth):
+    for r, t in zip(res, truth, strict=False):
         assert_array_almost_equal(r, t, 8)
 
 
@@ -820,7 +820,7 @@ def test_gradient_restricted_axes(deriv_2d_data):
                        [[-3], [-1], [4]],
                        [[-3], [-1], [4]],
                        [[-3], [-1], [4]]]))
-    for r, t in zip(res, truth):
+    for r, t in zip(res, truth, strict=False):
         assert_array_almost_equal(r, t, 5)
 
 
@@ -1009,7 +1009,7 @@ def test_3d_gradient_3d_data_no_axes(deriv_4d_data):
     test = deriv_4d_data[0]
     res = gradient(test, deltas=(1, 1, 1))
     truth = tuple(factor * np.ones_like(test) for factor in (16., 4., 1.))
-    for r, t in zip(res, truth):
+    for r, t in zip(res, truth, strict=False):
         assert_array_almost_equal(r, t, 8)
 
 
@@ -1033,7 +1033,7 @@ def test_2d_gradient_4d_data_2_axes_3_deltas(deriv_4d_data):
     """Test 2D gradient of 4D data with 2 axes and 3 deltas."""
     res = gradient(deriv_4d_data, deltas=(1, 1, 1), axes=(-2, -1))
     truth = tuple(factor * np.ones_like(deriv_4d_data) for factor in (4., 1.))
-    for r, t in zip(res, truth):
+    for r, t in zip(res, truth, strict=False):
         assert_array_almost_equal(r, t, 8)
 
 
@@ -1041,7 +1041,7 @@ def test_2d_gradient_4d_data_2_axes_2_deltas(deriv_4d_data):
     """Test 2D gradient of 4D data with 2 axes and 2 deltas."""
     res = gradient(deriv_4d_data, deltas=(1, 1), axes=(0, 1))
     truth = tuple(factor * np.ones_like(deriv_4d_data) for factor in (48., 16.))
-    for r, t in zip(res, truth):
+    for r, t in zip(res, truth, strict=False):
         assert_array_almost_equal(r, t, 8)
 
 

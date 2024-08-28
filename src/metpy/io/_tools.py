@@ -64,7 +64,7 @@ class NamedStruct:
         """Initialize the NamedStruct."""
         if tuple_name is None:
             tuple_name = 'NamedStruct'
-        names, fmts = zip(*info)
+        names, fmts = zip(*info, strict=False)
         self.converters = {}
         conv_off = 0
         for ind, i in enumerate(info):
@@ -118,7 +118,7 @@ class DictStruct:
 
     def __init__(self, info, prefmt=''):
         """Initialize the DictStruct."""
-        names, formats = zip(*info)
+        names, formats = zip(*info, strict=False)
 
         # Remove empty names
         self._names = [n for n in names if n]
@@ -131,7 +131,7 @@ class DictStruct:
         return self._struct.size
 
     def _create(self, items):
-        return dict(zip(self._names, items))
+        return dict(zip(self._names, items, strict=False))
 
     def unpack(self, s):
         """Parse bytes and return a dict."""
@@ -151,7 +151,7 @@ class Enum:
         self.val_map = dict(enumerate(args))
 
         # Invert the kwargs dict so that we can map from value to name
-        self.val_map.update(zip(kwargs.values(), kwargs.keys()))
+        self.val_map.update(zip(kwargs.values(), kwargs.keys(), strict=False))
 
     def __call__(self, val):
         """Map an integer to the string representation."""

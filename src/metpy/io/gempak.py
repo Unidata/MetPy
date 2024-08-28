@@ -629,8 +629,9 @@ class GempakFile:
             fkey_prod = product(['header_name', 'header_length', 'header_type'],
                                 range(1, self.prod_desc.file_headers + 1))
             fkey_names = ['{}{}'.format(*x) for x in fkey_prod]
-            fkey_info = list(zip(fkey_names, np.repeat(('4s', 'i', 'i'),
-                                                       self.prod_desc.file_headers)))
+            fkey_info = list(zip(fkey_names,
+                                 np.repeat(('4s', 'i', 'i'), self.prod_desc.file_headers),
+                                 strict=False))
             self.file_keys_format = NamedStruct(fkey_info, self.prefmt, 'FileKeys')
 
             self._buffer.jump_to(self._start, _word_to_position(self.prod_desc.file_keys_ptr))
@@ -1897,7 +1898,7 @@ class GempakSounding(GempakFile):
         if num_man_levels >= 1:
             for mp, mt, mz in zip(parts['TTAA']['PRES'],
                                   parts['TTAA']['TEMP'],
-                                  parts['TTAA']['HGHT']):
+                                  parts['TTAA']['HGHT'], strict=False):
                 if self.prod_desc.missing_float not in [
                     mp,
                     mt,

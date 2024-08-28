@@ -622,7 +622,7 @@ class MetPyDataArrayAccessor:
             """Parse key using xarray utils to ensure we have dimension names."""
             if not is_dict_like(key):
                 labels = expanded_indexer(key, self.data_array.ndim)
-                key = dict(zip(self.data_array.dims, labels))
+                key = dict(zip(self.data_array.dims, labels, strict=False))
             return key
 
         def __getitem__(self, key):
@@ -1336,7 +1336,7 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
                     wrapping = _wrap_output_like_not_matching_units
 
                 if isinstance(match, tuple):
-                    return tuple(wrapping(*args) for args in zip(result, match))
+                    return tuple(wrapping(*args) for args in zip(result, match, strict=False))
                 else:
                     return wrapping(result, match)
         return wrapper

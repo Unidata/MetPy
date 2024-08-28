@@ -196,7 +196,7 @@ if not hasattr(Axes, 'scattertext'):
 
             angle = self.get_rotation()
 
-            for (posx, posy), t in zip(pts, self.text):
+            for (posx, posy), t in zip(pts, self.text, strict=False):
                 # Skip empty strings--not only is this a performance gain, but it fixes
                 # rendering with path effects below.
                 if not t:

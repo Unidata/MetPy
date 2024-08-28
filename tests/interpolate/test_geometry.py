@@ -27,7 +27,7 @@ def test_get_points_within_r():
 
     radius = 5
 
-    matches = get_points_within_r(center, list(zip(x, y)), radius).T
+    matches = get_points_within_r(center, list(zip(x, y, strict=False)), radius).T
 
     truth = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]
 
@@ -44,7 +44,7 @@ def test_get_point_count_within_r():
 
     radius = 5
 
-    count = get_point_count_within_r([center1, center2], list(zip(x, y)), radius)
+    count = get_point_count_within_r([center1, center2], list(zip(x, y, strict=False)), radius)
 
     truth = np.array([5, 2])
 
