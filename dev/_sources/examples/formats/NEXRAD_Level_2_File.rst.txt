@@ -152,7 +152,7 @@ Calculate ranges for the gates from the metadata
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-94
+.. GENERATED FROM PYTHON SOURCE LINES 72-95
 
 .. code-block:: Python
 
@@ -160,7 +160,8 @@ Calculate ranges for the gates from the metadata
     fig = plt.figure(figsize=(15, 8))
     add_metpy_logo(fig, 190, 85, size='large')
 
-    for var_data, var_range, ax_rect in zip((ref, rho), (ref_range, rho_range), spec):
+    for var_data, var_range, ax_rect in zip((ref, rho), (ref_range, rho_range), spec,
+                                            strict=False):
         # Turn into an array, then mask
         data = np.ma.array(var_data)
         data[np.isnan(data)] = np.ma.masked
@@ -193,7 +194,7 @@ Calculate ranges for the gates from the metadata
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.473 seconds)
+   **Total running time of the script:** (0 minutes 5.419 seconds)
 
 
 .. _sphx_glr_download_examples_formats_NEXRAD_Level_2_File.py:

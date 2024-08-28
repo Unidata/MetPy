@@ -77,7 +77,7 @@ features.
         # Handle H/L points using MetPy's StationPlot class
         for field in ('HIGH', 'LOW'):
             rows = data[data.feature == field]
-            x, y = zip(*((pt.x, pt.y) for pt in rows.geometry))
+            x, y = zip(*((pt.x, pt.y) for pt in rows.geometry), strict=False)
             sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree(), clip_on=True)
             sp.plot_text('C', [field[0]] * len(x), **complete_style[field])
             sp.plot_parameter('S', rows.strength, **complete_style[field])
@@ -137,7 +137,7 @@ Set up the map for plotting, parse the bulletin, and plot it
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.229 seconds)
+   **Total running time of the script:** (0 minutes 6.010 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Plotting_Surface_Analysis.py:

@@ -107,10 +107,10 @@ cKDTree's ``data`` list.
 
 .. code-block:: Python
 
-    grid_points = np.array(list(zip(sim_gridx, sim_gridy)))
+    grid_points = np.array(list(zip(sim_gridx, sim_gridy, strict=False)))
 
     radius = 40
-    obs_tree = cKDTree(list(zip(xp, yp)))
+    obs_tree = cKDTree(list(zip(xp, yp, strict=False)))
     indices = obs_tree.query_ball_point(grid_points, r=radius)
 
 
@@ -155,7 +155,7 @@ We need to calculate kappa--the average distance between observations over the d
     barnes_dist = dist_2(sim_gridx[1], sim_gridy[1], x2, y2)
     barnes_obs = zp[indices[1]]
 
-    kappa = calc_kappa(average_spacing(list(zip(xp, yp))))
+    kappa = calc_kappa(average_spacing(list(zip(xp, yp, strict=False))))
 
     barnes_val = barnes_point(barnes_dist, barnes_obs, kappa)
 
@@ -207,7 +207,7 @@ Plot all of the affiliated information and interpolation values.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fb0a37e2690>
+    <matplotlib.legend.Legend object at 0x7fea9078dd90>
 
 
 
@@ -230,7 +230,7 @@ their distances from the grid point.
     mx, my = obs_tree.data[indices[0]].T
     mz = zp[indices[0]]
 
-    for x, y, z in zip(mx, my, mz):
+    for x, y, z in zip(mx, my, mz, strict=False):
         d = np.sqrt((sim_gridx[0] - x)**2 + (y - sim_gridy[0])**2)
         ax.plot([sim_gridx[0], x], [sim_gridy[0], y], '--')
 
@@ -307,7 +307,7 @@ Now repeat for grid 1, except use Barnes interpolation.
     mx, my = obs_tree.data[indices[1]].T
     mz = zp[indices[1]]
 
-    for x, y, z in zip(mx, my, mz):
+    for x, y, z in zip(mx, my, mz, strict=False):
         d = np.sqrt((sim_gridx[1] - x)**2 + (y - sim_gridy[1])**2)
         ax.plot([sim_gridx[1], x], [sim_gridy[1], y], '--')
 
@@ -369,7 +369,7 @@ Step through barnes calculations.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.338 seconds)
+   **Total running time of the script:** (0 minutes 0.339 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Inverse_Distance_Verification.py:

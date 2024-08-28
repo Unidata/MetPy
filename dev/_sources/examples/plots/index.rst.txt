@@ -36,23 +36,6 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to plot US counties at all three available resolutions.">
-
-.. only:: html
-
-  .. image:: /examples/plots/images/thumb/sphx_glr_US_Counties_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_examples_plots_US_Counties.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">US Counties</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorological analyses including surface observation plots. This example creates a temperature raster plot, though other potential raster plots include radar.">
 
 .. only:: html
@@ -65,6 +48,23 @@ Examples using MetPy's various specialty plotting routines.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Raster Plots using Declarative Syntax</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to plot US counties at all three available resolutions.">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_US_Counties_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_plots_US_Counties.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">US Counties</div>
     </div>
 
 
@@ -317,8 +317,8 @@ Examples using MetPy's various specialty plotting routines.
    :hidden:
 
    /examples/plots/Simplified_Image_Plot
-   /examples/plots/US_Counties
    /examples/plots/raster_declarative
+   /examples/plots/US_Counties
    /examples/plots/Simple_Fronts_Plot
    /examples/plots/spc_convective_outlook
    /examples/plots/Combined_plotting

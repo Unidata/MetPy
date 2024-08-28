@@ -26,7 +26,7 @@ add_metpy_logo(fig, 190, 85, size='large')
 ctables = (('NWSStormClearReflectivity', -20, 0.5),  # dBZ
            ('NWS8bitVel', -100, 1.0))  # m/s
 
-for v, ctable, ax_rect in zip(('N0Q', 'N0U'), ctables, spec):
+for v, ctable, ax_rect in zip(('N0Q', 'N0U'), ctables, spec, strict=False):
     # Open the file
     name = get_test_data(f'nids/KOUN_SDUS54_{v}TLX_201305202016', as_file_obj=False)
     f = Level3File(name)
