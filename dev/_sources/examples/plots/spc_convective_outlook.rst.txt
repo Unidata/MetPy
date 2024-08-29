@@ -118,7 +118,7 @@ Preview the data.
           <td>General Thunderstorms Risk</td>
           <td>#55BB55</td>
           <td>#C1E9C1</td>
-          <td>MULTIPOLYGON (((-75.21498 35.85713, -75.12000 ...</td>
+          <td>MULTIPOLYGON (((-75.21498 35.85713, -75.12 35....</td>
         </tr>
         <tr>
           <th>1</th>
@@ -130,7 +130,7 @@ Preview the data.
           <td>Marginal Risk</td>
           <td>#005500</td>
           <td>#66A366</td>
-          <td>MULTIPOLYGON (((-85.71646 29.55317, -85.76700 ...</td>
+          <td>MULTIPOLYGON (((-85.71646 29.55317, -85.767 29...</td>
         </tr>
         <tr>
           <th>2</th>
@@ -142,7 +142,7 @@ Preview the data.
           <td>Slight Risk</td>
           <td>#DDAA00</td>
           <td>#FFE066</td>
-          <td>MULTIPOLYGON (((-85.95065 29.84763, -85.98500 ...</td>
+          <td>MULTIPOLYGON (((-85.95065 29.84763, -85.985 29...</td>
         </tr>
         <tr>
           <th>3</th>
@@ -154,7 +154,7 @@ Preview the data.
           <td>Enhanced Risk</td>
           <td>#FF6600</td>
           <td>#FFA366</td>
-          <td>MULTIPOLYGON (((-88.40000 30.20000, -90.09000 ...</td>
+          <td>MULTIPOLYGON (((-88.4 30.2, -90.09 29.87, -91....</td>
         </tr>
         <tr>
           <th>4</th>
@@ -166,7 +166,7 @@ Preview the data.
           <td>Moderate Risk</td>
           <td>#CC0000</td>
           <td>#E06666</td>
-          <td>MULTIPOLYGON (((-87.07000 31.68000, -88.65000 ...</td>
+          <td>MULTIPOLYGON (((-87.07 31.68, -88.65 30.96, -9...</td>
         </tr>
         <tr>
           <th>5</th>
@@ -178,7 +178,7 @@ Preview the data.
           <td>High Risk</td>
           <td>#CC00CC</td>
           <td>#EE99EE</td>
-          <td>MULTIPOLYGON (((-91.88000 32.99000, -89.82000 ...</td>
+          <td>MULTIPOLYGON (((-91.88 32.99, -89.82 34.4, -88...</td>
         </tr>
       </tbody>
     </table>
@@ -245,7 +245,7 @@ Add the geometry plot to a panel and container.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.541 seconds)
+   **Total running time of the script:** (0 minutes 7.480 seconds)
 
 
 .. _sphx_glr_download_examples_plots_spc_convective_outlook.py:

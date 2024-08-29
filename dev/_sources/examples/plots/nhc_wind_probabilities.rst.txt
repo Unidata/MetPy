@@ -61,6 +61,13 @@ Read in the shapefile file containing the wind probabilities.
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pyogrio/geopandas.py:261: UserWarning: More than one layer found in 'a4ffe3285e5b4a668b37982c1703e7a8.zip': '2021082012_wsp34knt120hr_5km' (default), '2021082012_wsp50knt120hr_5km', '2021082012_wsp64knt120hr_5km'. Specify layer parameter to avoid this warning.
+      result = read_func(
+
 
 
 
@@ -130,7 +137,7 @@ Hurricane Center for their wind speed probability plots.
         <tr>
           <th>3</th>
           <td>20-30%</td>
-          <td>MULTIPOLYGON (((-144.55314 19.88150, -144.5531...</td>
+          <td>MULTIPOLYGON (((-144.55314 19.8815, -144.55314...</td>
           <td>#7FFF00</td>
         </tr>
         <tr>
@@ -322,7 +329,7 @@ to display on our plot.
           <td>-75.084906</td>
           <td>1.0</td>
           <td>3.0</td>
-          <td>POINT (-75.08491 38.33650)</td>
+          <td>POINT (-75.08491 38.3365)</td>
         </tr>
         <tr>
           <th>8329</th>
@@ -419,19 +426,12 @@ lies within. That information is stored in the 'PERCENTAGE' column below.
 
 .. code-block:: Python
 
-    cities = geopandas.sjoin(cities, wind_data, how='left', op='within')
+    cities = geopandas.sjoin(cities, wind_data, how='left', predicate='within')
     cities
 
 
 
 
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/sphinx_gallery/gen_rst.py:1700: FutureWarning: The `op` parameter is deprecated and will be removed in a future release. Please use the `predicate` parameter instead.
-      return 0.0, func()
 
 
 .. raw:: html
@@ -542,7 +542,7 @@ lies within. That information is stored in the 'PERCENTAGE' column below.
           <td>-75.084906</td>
           <td>1.0</td>
           <td>3.0</td>
-          <td>POINT (-75.08491 38.33650)</td>
+          <td>POINT (-75.08491 38.3365)</td>
           <td>3</td>
           <td>20-30%</td>
           <td>#7FFF00</td>
@@ -704,7 +704,7 @@ wind speed probabilities, along with some select cities and their specific proba
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 12.544 seconds)
+   **Total running time of the script:** (0 minutes 6.447 seconds)
 
 
 .. _sphx_glr_download_examples_plots_nhc_wind_probabilities.py:

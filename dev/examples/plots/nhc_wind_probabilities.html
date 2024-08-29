@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Aug 28, 2024 at 23:51:09"/>
+    <meta name="docbuild:last-update" content="Aug 29, 2024 at 20:35:46"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/plots/nhc_wind_probabilities.html" />
 
   </head>
@@ -610,6 +610,10 @@ tropical-storm-force wind speed probabilities from NOAA National Hurricane Cente
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">wind_data</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;nhc_wind_prob_2021082012.zip&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pyogrio/geopandas.py:261: UserWarning: More than one layer found in &#39;a4ffe3285e5b4a668b37982c1703e7a8.zip&#39;: &#39;2021082012_wsp34knt120hr_5km&#39; (default), &#39;2021082012_wsp50knt120hr_5km&#39;, &#39;2021082012_wsp64knt120hr_5km&#39;. Specify layer parameter to avoid this warning.
+  result = read_func(
+</pre></div>
+</div>
 <p>Add the color scheme to the GeoDataFrame. This is the same color scheme used by the National
 Hurricane Center for their wind speed probability plots.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">wind_data</span><span class="p">[</span><span class="s1">&#39;fill&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="s1">&#39;#008B00&#39;</span><span class="p">,</span> <span class="s1">&#39;#00CD00&#39;</span><span class="p">,</span> <span class="s1">&#39;#7FFF00&#39;</span><span class="p">,</span> <span class="s1">&#39;#FFFF00&#39;</span><span class="p">,</span> <span class="s1">&#39;#FFD700&#39;</span><span class="p">,</span>
@@ -663,7 +667,7 @@ Hurricane Center for their wind speed probability plots.</p>
     <tr>
       <th>3</th>
       <td>20-30%</td>
-      <td>MULTIPOLYGON (((-144.55314 19.88150, -144.5531...</td>
+      <td>MULTIPOLYGON (((-144.55314 19.8815, -144.55314...</td>
       <td>#7FFF00</td>
     </tr>
     <tr>
@@ -827,7 +831,7 @@ to display on our plot.</p>
       <td>-75.084906</td>
       <td>1.0</td>
       <td>3.0</td>
-      <td>POINT (-75.08491 38.33650)</td>
+      <td>POINT (-75.08491 38.3365)</td>
     </tr>
     <tr>
       <th>8329</th>
@@ -902,12 +906,8 @@ to display on our plot.</p>
 cities we selected above. Geopandas provides a spatial join method, which merges the two
 GeoDataFrames and can tell us which wind speed probability polygon each of our city points
 lies within. That information is stored in the ‘PERCENTAGE’ column below.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">cities</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">sjoin</span><span class="p">(</span><span class="n">cities</span><span class="p">,</span> <span class="n">wind_data</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="s1">&#39;within&#39;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">cities</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">sjoin</span><span class="p">(</span><span class="n">cities</span><span class="p">,</span> <span class="n">wind_data</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="s1">&#39;within&#39;</span><span class="p">)</span>
 <span class="n">cities</span>
-</pre></div>
-</div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/sphinx_gallery/gen_rst.py:1700: FutureWarning: The `op` parameter is deprecated and will be removed in a future release. Please use the `predicate` parameter instead.
-  return 0.0, func()
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -1016,7 +1016,7 @@ lies within. That information is stored in the ‘PERCENTAGE’ column below.</p
       <td>-75.084906</td>
       <td>1.0</td>
       <td>3.0</td>
-      <td>POINT (-75.08491 38.33650)</td>
+      <td>POINT (-75.08491 38.3365)</td>
       <td>3</td>
       <td>20-30%</td>
       <td>#7FFF00</td>
@@ -1130,7 +1130,7 @@ wind speed probabilities, along with some select cities and their specific proba
 <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_nhc_wind_probabilities_001.png" srcset="../../_images/sphx_glr_nhc_wind_probabilities_001.png" alt="NHC 5-Day Tropical-Storm-Force Wind Probabilities (Valid 12z Aug 20 2021)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 12.544 seconds)</p>
+<img src="../../_images/sphx_glr_nhc_wind_probabilities_001.png" srcset="../../_images/sphx_glr_nhc_wind_probabilities_001.png" alt="NHC 5-Day Tropical-Storm-Force Wind Probabilities (Valid 12z Aug 20 2021)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 6.447 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-nhc-wind-probabilities-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/6942e8beca3b4515ffd0e6d7988f8561/nhc_wind_probabilities.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">nhc_wind_probabilities.ipynb</span></code></a></p>
