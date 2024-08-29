@@ -57,7 +57,7 @@ cities = cities.to_crs(wind_data.crs)
 # cities we selected above. Geopandas provides a spatial join method, which merges the two
 # GeoDataFrames and can tell us which wind speed probability polygon each of our city points
 # lies within. That information is stored in the 'PERCENTAGE' column below.
-cities = geopandas.sjoin(cities, wind_data, how='left', op='within')
+cities = geopandas.sjoin(cities, wind_data, how='left', predicate='within')
 cities
 
 ###########################
