@@ -9,14 +9,14 @@ Reference Guide
 .. autosummary::
    :toctree: generated/
 
-   metpy.constants
-   metpy.units
-   metpy.io
-   metpy.calc
-   metpy.plots
-   metpy.plots.ctables
-   metpy.interpolate
-   metpy.xarray
+   constants
+   units
+   io
+   calc
+   plots
+   plots.ctables
+   interpolate
+   xarray
 
 .. toctree::
    :maxdepth: 1
