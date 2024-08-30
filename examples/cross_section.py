@@ -96,7 +96,6 @@ ax.barbs(cross['lon'][wind_slc_horz], cross['isobaric'][wind_slc_vert],
 
 # Adjust the y-axis to be logarithmic
 ax.set_yscale('symlog')
-ax.set_yticklabels(np.arange(1000, 50, -100))
 ax.set_ylim(cross['isobaric'].max(), cross['isobaric'].min())
 ax.set_yticks(np.arange(1000, 50, -100))
 
