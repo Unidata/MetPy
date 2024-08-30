@@ -265,7 +265,7 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
 
 Now, we can make the plot.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-133
+.. GENERATED FROM PYTHON SOURCE LINES 73-132
 
 .. code-block:: Python
 
@@ -295,7 +295,6 @@ Now, we can make the plot.
 
     # Adjust the y-axis to be logarithmic
     ax.set_yscale('symlog')
-    ax.set_yticklabels(np.arange(1000, 50, -100))
     ax.set_ylim(cross['isobaric'].max(), cross['isobaric'].min())
     ax.set_yticks(np.arange(1000, 50, -100))
 
@@ -338,17 +337,10 @@ Now, we can make the plot.
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /home/runner/work/MetPy/MetPy/examples/cross_section.py:99: UserWarning: set_ticklabels() should only be used with a fixed number of ticks, i.e. after set_ticks() or using a FixedLocator.
-      ax.set_yticklabels(np.arange(1000, 50, -100))
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 134-137
+.. GENERATED FROM PYTHON SOURCE LINES 133-136
 
 Note: The x-axis can display any variable that is the same length as the
 plotted variables, including latitude. Additionally, arguments can be provided
@@ -357,7 +349,7 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.337 seconds)
+   **Total running time of the script:** (0 minutes 4.365 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:
