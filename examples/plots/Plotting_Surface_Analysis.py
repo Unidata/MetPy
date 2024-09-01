@@ -44,7 +44,7 @@ def plot_bulletin(ax, data):
     # Handle H/L points using MetPy's StationPlot class
     for field in ('HIGH', 'LOW'):
         rows = data[data.feature == field]
-        x, y = zip(*((pt.x, pt.y) for pt in rows.geometry))
+        x, y = zip(*((pt.x, pt.y) for pt in rows.geometry), strict=False)
         sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree(), clip_on=True)
         sp.plot_text('C', [field[0]] * len(x), **complete_style[field])
         sp.plot_parameter('S', rows.strength, **complete_style[field])

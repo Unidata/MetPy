@@ -391,7 +391,8 @@ def process_units(
             # Wrap output
             if multiple_output:
                 wrapped_result = []
-                for this_result, this_output_control in zip(result, output_control):
+                for this_result, this_output_control in zip(result, output_control,
+                                                            strict=False):
                     q = units.Quantity(this_result, this_output_control[0])
                     if this_output_control[1] is not None:
                         q = q.to(this_output_control[1])

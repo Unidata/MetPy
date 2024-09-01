@@ -214,7 +214,7 @@ total_totals = mpcalc.total_totals_index(p, T, Td)
 # mixed layer parcel properties!
 ml_t, ml_td = mpcalc.mixed_layer(p, T, Td, depth=50 * units.hPa)
 ml_p, _, _ = mpcalc.mixed_parcel(p, T, Td, depth=50 * units.hPa)
-mlcape, mlcin = mpcalc.mixed_layer_cape_cin(p, T, prof, depth=50 * units.hPa)
+mlcape, mlcin = mpcalc.mixed_layer_cape_cin(p, T, Td, depth=50 * units.hPa)
 
 # most unstable parcel properties!
 mu_p, mu_t, mu_td, _ = mpcalc.most_unstable_parcel(p, T, Td, depth=50 * units.hPa)

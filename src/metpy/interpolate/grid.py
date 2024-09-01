@@ -162,7 +162,7 @@ def natural_neighbor_to_grid(xp, yp, variable, grid_x, grid_y):
 
     """
     # Handle grid-to-points conversion, and use function from `interpolation`
-    points_obs = list(zip(xp, yp))
+    points_obs = list(zip(xp, yp, strict=False))
     points_grid = generate_grid_coords(grid_x, grid_y)
     img = natural_neighbor_to_points(points_obs, variable, points_grid)
     return img.reshape(grid_x.shape)
@@ -214,7 +214,7 @@ def inverse_distance_to_grid(xp, yp, variable, grid_x, grid_y, r, gamma=None, ka
 
     """
     # Handle grid-to-points conversion, and use function from `interpolation`
-    points_obs = list(zip(xp, yp))
+    points_obs = list(zip(xp, yp, strict=False))
     points_grid = generate_grid_coords(grid_x, grid_y)
     img = inverse_distance_to_points(points_obs, variable, points_grid, r, gamma=gamma,
                                      kappa=kappa, min_neighbors=min_neighbors, kind=kind)
@@ -296,7 +296,7 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
     grid_x, grid_y = generate_grid(hres, boundary_coords)
 
     # Handle grid-to-points conversion, and use function from `interpolation`
-    points_obs = np.array(list(zip(x, y)))
+    points_obs = np.array(list(zip(x, y, strict=False)))
     points_grid = generate_grid_coords(grid_x, grid_y)
     img = interpolate_to_points(points_obs, z, points_grid, interp_type=interp_type,
                                 minimum_neighbors=minimum_neighbors, gamma=gamma,

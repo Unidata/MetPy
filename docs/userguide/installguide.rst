@@ -7,7 +7,7 @@ Requirements
 ------------
 In general, MetPy tries to support minor versions of dependencies released within the last two
 years. For Python itself, that generally means supporting the last two minor releases; MetPy
-currently supports Python >= 3.9.
+currently supports Python >= 3.10.
 
 .. literalinclude:: ../../pyproject.toml
    :start-at: matplotlib

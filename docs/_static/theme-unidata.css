@@ -19,7 +19,7 @@ html {
 
 .bd-header .navbar-nav>.nav-item>.nav-link, 
 .bd-header .dropdown-toggle,
-.bd-header .fa-solid,
+.bd-header .pst-navbar-icon,
 .bd-header .btn {
     color: #fff !important;
  }

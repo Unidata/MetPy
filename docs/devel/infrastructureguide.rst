@@ -10,7 +10,7 @@ Versioning
 ----------
 
 To manage identifying the version of the code, MetPy relies upon `setuptools_scm
-<https://github.com/pypa/setuptools_scm>`_. ``setuptools_scm`` takes the current version of the
+<https://github.com/pypa/setuptools-scm>`_. ``setuptools_scm`` takes the current version of the
 source from git tags and any additional commits. For development, the version will have a
 string like ``0.10.0.post209+gff2e549f.d20190918``, which comes from ``git describe``. This
 version means that the current code is 209 commits past the 0.10.0 tag, on git hash

@@ -1130,7 +1130,7 @@ def zoom_xarray(input_field, zoom, output=None, order=3, mode='constant', cval=0
     if not np.iterable(zoom):
         zoom = tuple(zoom for _ in input_field.dims)
     zoomed_dim_coords = {}
-    for dim_name, dim_zoom in zip(input_field.dims, zoom):
+    for dim_name, dim_zoom in zip(input_field.dims, zoom, strict=False):
         if dim_name in input_field.coords:
             zoomed_dim_coords[dim_name] = scipy_zoom(
                 input_field[dim_name].data, dim_zoom, order=order, mode=mode, cval=cval,

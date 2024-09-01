@@ -133,7 +133,7 @@ def remove_repeat_coordinates(x, y, z):
     coords = []
     variable = []
 
-    for (x_, y_, t_) in zip(x, y, z):
+    for (x_, y_, t_) in zip(x, y, z, strict=False):
         if (x_, y_) not in coords:
             coords.append((x_, y_))
             variable.append(t_)

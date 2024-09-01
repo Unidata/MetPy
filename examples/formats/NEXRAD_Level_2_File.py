@@ -73,7 +73,8 @@ spec = gridspec.GridSpec(1, 2)
 fig = plt.figure(figsize=(15, 8))
 add_metpy_logo(fig, 190, 85, size='large')
 
-for var_data, var_range, ax_rect in zip((ref, rho), (ref_range, rho_range), spec):
+for var_data, var_range, ax_rect in zip((ref, rho), (ref_range, rho_range), spec,
+                                        strict=False):
     # Turn into an array, then mask
     data = np.ma.array(var_data)
     data[np.isnan(data)] = np.ma.masked

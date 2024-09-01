@@ -44,13 +44,13 @@ def test_nn_point(test_data):
     r"""Test find natural neighbors for a point interpolation function."""
     xp, yp, z = test_data
 
-    tri = Delaunay(list(zip(xp, yp)))
+    tri = Delaunay(list(zip(xp, yp, strict=False)))
 
     sim_gridx = [30]
     sim_gridy = [30]
 
     members, tri_info = find_natural_neighbors(tri,
-                                               list(zip(sim_gridx, sim_gridy)))
+                                               list(zip(sim_gridx, sim_gridy, strict=False)))
 
     val = natural_neighbor_point(xp, yp, z, (sim_gridx[0], sim_gridy[0]),
                                  tri, members[0], tri_info)
@@ -66,7 +66,7 @@ def test_cressman_point(test_data):
 
     r = 40
 
-    obs_tree = cKDTree(list(zip(xp, yp)))
+    obs_tree = cKDTree(list(zip(xp, yp, strict=False)))
 
     indices = obs_tree.query_ball_point([30, 30], r=r)
 
@@ -86,7 +86,7 @@ def test_barnes_point(test_data):
 
     r = 40
 
-    obs_tree = cKDTree(list(zip(xp, yp)))
+    obs_tree = cKDTree(list(zip(xp, yp, strict=False)))
 
     indices = obs_tree.query_ball_point([60, 60], r=r)
 

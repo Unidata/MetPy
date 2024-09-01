@@ -61,10 +61,10 @@ sim_gridy = [30, 60]
 #
 # The variable ``indices`` represents the index of each matched coordinate within the
 # cKDTree's ``data`` list.
-grid_points = np.array(list(zip(sim_gridx, sim_gridy)))
+grid_points = np.array(list(zip(sim_gridx, sim_gridy, strict=False)))
 
 radius = 40
-obs_tree = cKDTree(list(zip(xp, yp)))
+obs_tree = cKDTree(list(zip(xp, yp, strict=False)))
 indices = obs_tree.query_ball_point(grid_points, r=radius)
 
 ###########################################
@@ -83,7 +83,7 @@ x2, y2 = obs_tree.data[indices[1]].T
 barnes_dist = dist_2(sim_gridx[1], sim_gridy[1], x2, y2)
 barnes_obs = zp[indices[1]]
 
-kappa = calc_kappa(average_spacing(list(zip(xp, yp))))
+kappa = calc_kappa(average_spacing(list(zip(xp, yp, strict=False))))
 
 barnes_val = barnes_point(barnes_dist, barnes_obs, kappa)
 
@@ -121,7 +121,7 @@ ax.plot(sim_gridx[0], sim_gridy[0], '+', markersize=10)
 mx, my = obs_tree.data[indices[0]].T
 mz = zp[indices[0]]
 
-for x, y, z in zip(mx, my, mz):
+for x, y, z in zip(mx, my, mz, strict=False):
     d = np.sqrt((sim_gridx[0] - x)**2 + (y - sim_gridy[0])**2)
     ax.plot([sim_gridx[0], x], [sim_gridy[0], y], '--')
 
@@ -160,7 +160,7 @@ ax.plot(sim_gridx[1], sim_gridy[1], '+', markersize=10)
 mx, my = obs_tree.data[indices[1]].T
 mz = zp[indices[1]]
 
-for x, y, z in zip(mx, my, mz):
+for x, y, z in zip(mx, my, mz, strict=False):
     d = np.sqrt((sim_gridx[1] - x)**2 + (y - sim_gridy[1])**2)
     ax.plot([sim_gridx[1], x], [sim_gridy[1], y], '--')
 

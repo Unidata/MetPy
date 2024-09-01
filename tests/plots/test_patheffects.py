@@ -123,7 +123,7 @@ def test_scalloped_stroke_closed():
          -0.212, -0.482, -0.722, -0.462, -0.172]
     y = [1.264, 0.784, -0.076, -0.846, -1.126,
          -1.246, -1.006, 0.234, 0.754, 1.264]
-    verts = np.array([[x, y] for x, y in zip(x, y)])
+    verts = np.array([[x, y] for x, y in zip(x, y, strict=False)])
     codes = np.repeat(mpath.Path.LINETO, len(x))
     codes[0] = mpath.Path.MOVETO
     codes[-1] = mpath.Path.CLOSEPOLY
@@ -150,7 +150,7 @@ def test_scalloped_stroke_segment():
     # test data
     x = np.arange(9)
     y = np.concatenate([np.arange(5), np.arange(3, -1, -1)])
-    verts = np.array([[x, y] for x, y in zip(x, y)])
+    verts = np.array([[x, y] for x, y in zip(x, y, strict=False)])
     codes = np.repeat(mpath.Path.LINETO, len(x))
     codes[0] = mpath.Path.MOVETO
 

@@ -130,7 +130,7 @@ class Front(mpatheffects.AbstractPathEffect):
         line_shift = renderer.points_to_pixels(gc.get_linewidth()) / 2
 
         # Loop over all the markers to draw
-        for ind, marker_offset in zip(segment_indices, marker_offsets):
+        for ind, marker_offset in zip(segment_indices, marker_offsets, strict=False):
             sym_trans = self._get_symbol_transform(renderer, marker_offset, line_shift,
                                                    angles[ind], starts[ind])
             renderer.draw_path(gc0, self._symbol, sym_trans,
@@ -218,12 +218,12 @@ class Frontogenesis(Front):
         line_shift = renderer.points_to_pixels(gc.get_linewidth()) / 2
 
         # Loop over all the segments to draw
-        for start_path, end_path in zip(segment_starts, segment_ends):
+        for start_path, end_path in zip(segment_starts, segment_ends, strict=False):
             renderer.draw_path(gc0, mpath.Path(starts[start_path:end_path]),
                                mtransforms.Affine2D(), None)
 
         # Loop over all the markers to draw
-        for ind, marker_offset in zip(segment_indices, marker_offsets):
+        for ind, marker_offset in zip(segment_indices, marker_offsets, strict=False):
             sym_trans = self._get_symbol_transform(renderer, marker_offset, line_shift,
                                                    angles[ind], starts[ind])
 
@@ -311,12 +311,12 @@ class Frontolysis(Front):
         line_shift = renderer.points_to_pixels(gc.get_linewidth()) / 2
 
         # Loop over all the segments to draw
-        for start_path, end_path in zip(segment_starts, segment_ends):
+        for start_path, end_path in zip(segment_starts, segment_ends, strict=False):
             renderer.draw_path(gc0, mpath.Path(starts[start_path:end_path]),
                                mtransforms.Affine2D(), None)
 
         # Loop over all the markers to draw
-        for ind, marker_offset in zip(segment_indices[::2], marker_offsets[::2]):
+        for ind, marker_offset in zip(segment_indices[::2], marker_offsets[::2], strict=False):
             sym_trans = self._get_symbol_transform(renderer, marker_offset, line_shift,
                                                    angles[ind], starts[ind])
 
@@ -906,7 +906,8 @@ class StationaryFront(Front):
 
         # Loop over all the markers to draw
         for ind, start_path, end_path, marker_offset in zip(segment_indices, start_path_inds,
-                                                            end_path_inds, marker_offsets):
+                                                            end_path_inds, marker_offsets,
+                                                            strict=False):
             sym_trans = self._get_symbol_transform(renderer, marker_offset, line_shift,
                                                    angles[ind], starts[ind])
             gc = next(self._gc_cycle)
@@ -970,7 +971,8 @@ class StationaryFrontogenesis(Frontogenesis):
 
         # Loop over all the markers to draw
         for ind, start_path, end_path, marker_offset in zip(segment_indices, segment_starts,
-                                                            segment_ends, marker_offsets):
+                                                            segment_ends, marker_offsets,
+                                                            strict=False):
             sym_trans = self._get_symbol_transform(renderer, marker_offset, line_shift,
                                                    angles[ind], starts[ind])
             gc = next(self._gc_cycle)
@@ -1040,7 +1042,7 @@ class StationaryFrontolysis(Frontolysis):
         line_shift = renderer.points_to_pixels(gc.get_linewidth()) / 2
 
         # Loop over all the markers to draw
-        for ind, marker_offset in zip(segment_indices[::2], marker_offsets[::2]):
+        for ind, marker_offset in zip(segment_indices[::2], marker_offsets[::2], strict=False):
             sym_trans = self._get_symbol_transform(renderer, marker_offset, line_shift,
                                                    angles[ind], starts[ind])
             gc = next(self._gc_cycle)
@@ -1053,7 +1055,7 @@ class StationaryFrontolysis(Frontolysis):
 
         for start_path, mid_path, end_path in zip(segment_starts,
                                                   segment_indices,
-                                                  segment_ends):
+                                                  segment_ends, strict=False):
             color1, color2 = next(self._segment_cycle)
 
             gcx = self._override_gc(renderer, gc, foreground=mcolors.to_rgb(color1))

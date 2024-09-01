@@ -464,7 +464,7 @@ def advection(
 
     return -sum(
         wind * gradient
-        for wind, gradient in zip(wind_vector.values(), gradient_vector)
+        for wind, gradient in zip(wind_vector.values(), gradient_vector, strict=False)
     )
 
 

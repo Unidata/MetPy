@@ -518,7 +518,7 @@ class Level2File:
                     num_rng = data[offset]
                     codes = data[offset + 1:offset + 1 + 2 * num_rng:2]
                     ends = data[offset + 2:offset + 2 + 2 * num_rng:2]
-                    az_data.append(list(zip(ends, codes)))
+                    az_data.append(list(zip(ends, codes, strict=False)))
                     offset += 2 * num_rng + 1
                 self.clutter_filter_map['data'].append(az_data)
 
@@ -1963,7 +1963,7 @@ class Level3File:
             rads.append((start_az, end_az,
                          self._unpack_rle_data(
                              self._buffer.read_binary(2 * rad.num_hwords))))
-        start, end, vals = zip(*rads)
+        start, end, vals = zip(*rads, strict=False)
         return {'start_az': list(start), 'end_az': list(end), 'data': list(vals),
                 'center': (hdr.i_center * self.pos_scale(in_sym_block),
                            hdr.j_center * self.pos_scale(in_sym_block)),
@@ -1984,7 +1984,7 @@ class Level3File:
             start_az = rad.start_angle * 0.1
             end_az = start_az + rad.angle_delta * 0.1
             rads.append((start_az, end_az, self._buffer.read_binary(rad.num_bytes)))
-        start, end, vals = zip(*rads)
+        start, end, vals = zip(*rads, strict=False)
         return {'start_az': list(start), 'end_az': list(end), 'data': list(vals),
                 'center': (hdr.i_center * self.pos_scale(in_sym_block),
                            hdr.j_center * self.pos_scale(in_sym_block)),
@@ -2148,7 +2148,7 @@ class Level3File:
                 row = self._unpack_rle_data(row_bytes)
             else:
                 row = []
-                for run, level in zip(row_bytes[::2], row_bytes[1::2]):
+                for run, level in zip(row_bytes[::2], row_bytes[1::2], strict=False):
                     row.extend([level] * run)
             assert len(row) == lfm_boxes
             rows.append(row)
@@ -2164,7 +2164,7 @@ class Level3File:
             value = None
         scale = self.pos_scale(in_sym_block)
         pos = [b * scale for b in self._buffer.read_binary(num_bytes / 2, '>h')]
-        vectors = list(zip(pos[::2], pos[1::2]))
+        vectors = list(zip(pos[::2], pos[1::2], strict=False))
         return {'vectors': vectors, 'color': value}
 
     def _unpack_packet_vector(self, code, in_sym_block):
@@ -2176,7 +2176,7 @@ class Level3File:
             value = None
         scale = self.pos_scale(in_sym_block)
         pos = [p * scale for p in self._buffer.read_binary(num_bytes / 2, '>h')]
-        vectors = list(zip(pos[::4], pos[1::4], pos[2::4], pos[3::4]))
+        vectors = list(zip(pos[::4], pos[1::4], pos[2::4], pos[3::4], strict=False))
         return {'vectors': vectors, 'color': value}
 
     def _unpack_packet_contour_color(self, code, in_sym_block):
@@ -2196,7 +2196,7 @@ class Level3File:
         vectors = [(startx, starty)]
         num_bytes = self._buffer.read_int(2, 'big', signed=False)
         pos = [b * scale for b in self._buffer.read_binary(num_bytes / 2, '>h')]
-        vectors.extend(zip(pos[::2], pos[1::2]))
+        vectors.extend(zip(pos[::2], pos[1::2], strict=False))
         return {'vectors': vectors}
 
     def _unpack_packet_wind_barbs(self, code, in_sym_block):

@@ -1,0 +1,18 @@
+            r'^(z|lv_|bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|isotherm)'
+  | ``(thta, u, v, dx, dy, dim_order='yx')``                                                                         |
+       Changed signature from ``(thta, u, v, dx, dy, dim_order='yx')``
+    dpres = gempak.PRES.values
+    pres = 1
+    thta = 2
+                lambda grid: grid if grid.PARM in parameter else False,
+                            col_head.SELV,
+                'SELV': col_head.SELV,
+                                col_head.SELV,
+                                row_head.SELV,
+                'SELV': row_head.SELV,
+                'SELV': col_head.SELV,
+# GFS, NAM, RAP, or other gridded dataset (e.g., NARR).
+# This attribute can be set to False if the vector components are grid relative (e.g., for NAM
+    components that are earth-relative. The primary exception is NAM output with wind
+                                    col_head.SELV,
+                                    row_head.SELV,
