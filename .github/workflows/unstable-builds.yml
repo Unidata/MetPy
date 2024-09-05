@@ -12,7 +12,7 @@ on:
 
 jobs:
   Tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       result: ${{ steps.tests.outcome }}
     steps:
@@ -52,7 +52,7 @@ jobs:
         retention-days: 5
 
   Docs:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       result: ${{ steps.build.outcome }}
     steps:
