@@ -105,7 +105,7 @@ skew.ax.set_facecolor('#ffffff')
 x1 = np.linspace(-100, 40, 8)
 x2 = np.linspace(-90, 50, 8)
 y = [1100, 50]
-for i in range(0, 8):
+for i in range(8):
     skew.shade_area(y=y, x1=x1[i], x2=x2[i], color='gray', alpha=0.02, zorder=1)
 
 # STEP 2: PLOT DATA ON THE SKEW-T. TAKE A COUPLE EXTRA STEPS TO

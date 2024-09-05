@@ -126,7 +126,7 @@ exclude = ["docs", "build", "src/metpy/io/_metar_parser/metar_parser.py", "talks
 preview = true
 
 [tool.ruff.lint]
-select = ["A", "B", "C", "CPY001", "D", "E", "E226", "F", "G", "I", "N", "NPY", "Q", "R", "S", "SIM", "T", "U", "W"]
+select = ["A", "B", "C", "CPY001", "D", "E", "E226", "F", "G", "I", "N", "NPY", "PIE", "Q", "R", "S", "SIM", "T", "U", "W"]
 # NPY201 ignores the use of 'trapz' false alarm
 ignore = ["F405", "I001", "NPY201", "RET504", "RET505", "RET506", "RET507", "RUF100"]
 explicit-preview-rules = true
