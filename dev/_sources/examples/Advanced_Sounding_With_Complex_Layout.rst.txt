@@ -143,7 +143,7 @@ Create a new figure. The dimensions here give a good aspect ratio
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7fe1a48fbb90>]
+    [<matplotlib.lines.Line2D object at 0x7f5486b32110>]
 
 
 
@@ -186,7 +186,7 @@ try another Skew-T with a few more advanced features:
     x1 = np.linspace(-100, 40, 8)
     x2 = np.linspace(-90, 50, 8)
     y = [1100, 50]
-    for i in range(0, 8):
+    for i in range(8):
         skew.shade_area(y=y, x1=x1[i], x2=x2[i], color='gray', alpha=0.02, zorder=1)
 
     # STEP 2: PLOT DATA ON THE SKEW-T. TAKE A COUPLE EXTRA STEPS TO
@@ -429,7 +429,7 @@ try another Skew-T with a few more advanced features:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.646 seconds)
+   **Total running time of the script:** (0 minutes 0.602 seconds)
 
 
 .. _sphx_glr_download_examples_Advanced_Sounding_With_Complex_Layout.py:
