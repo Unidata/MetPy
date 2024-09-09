@@ -118,10 +118,10 @@ To build and upload manually (if for some reason it is necessary):
 2. (optional) Perform a ``git clean -f -x -d`` from the root of the repository. This will
    **delete** everything not tracked by git, but will also ensure clean source distribution.
    ``MANIFEST.in`` is set to include/exclude mostly correctly, but could miss some things.
-3. Run ``python setup.py sdist bdist_wheel`` (this requires that ``wheel`` is installed).
+3. Run ``python -m build`` (this requires that ``build`` is installed).
 4. Upload using ``twine``: ``twine upload dist/*``, assuming the ``dist/`` directory contains
    only files for this release. This upload process will include any changes to the ``README``
-   as well as any updated flags from ``setup.py``.
+   as well as any updated flags from ``pyproject.toml``.
 
 ~~~~~
 Conda
