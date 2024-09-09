@@ -75,7 +75,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Sep 05, 2024 at 20:08:15"/>
+    <meta name="docbuild:last-update" content="Sep 09, 2024 at 19:58:07"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/devel/infrastructureguide.html" />
 
   </head>
@@ -631,10 +631,10 @@ you the proper version.</p></li>
 <li><p>(optional) Perform a <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clean</span> <span class="pre">-f</span> <span class="pre">-x</span> <span class="pre">-d</span></code> from the root of the repository. This will
 <strong>delete</strong> everything not tracked by git, but will also ensure clean source distribution.
 <code class="docutils literal notranslate"><span class="pre">MANIFEST.in</span></code> is set to include/exclude mostly correctly, but could miss some things.</p></li>
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">sdist</span> <span class="pre">bdist_wheel</span></code> (this requires that <code class="docutils literal notranslate"><span class="pre">wheel</span></code> is installed).</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">build</span></code> (this requires that <code class="docutils literal notranslate"><span class="pre">build</span></code> is installed).</p></li>
 <li><p>Upload using <code class="docutils literal notranslate"><span class="pre">twine</span></code>: <code class="docutils literal notranslate"><span class="pre">twine</span> <span class="pre">upload</span> <span class="pre">dist/*</span></code>, assuming the <code class="docutils literal notranslate"><span class="pre">dist/</span></code> directory contains
 only files for this release. This upload process will include any changes to the <code class="docutils literal notranslate"><span class="pre">README</span></code>
-as well as any updated flags from <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.</p></li>
+as well as any updated flags from <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p></li>
 </ol>
 </section>
 <section id="conda">
