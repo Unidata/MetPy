@@ -2275,7 +2275,7 @@ def test_declarative_skewt_plot():
     return panel.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance = 0.03)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.03)
 def test_declarative_skewt_plot_shade_cape():
     """Test plotting of a skewT with declarative and shading."""
     from metpy.calc import parcel_profile
