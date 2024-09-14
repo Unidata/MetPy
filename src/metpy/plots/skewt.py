@@ -622,13 +622,15 @@ class SkewT:
         r"""Plot common skewt lines and labels.
 
         This function plots the three common SkewT lines, dry adiabats, moist adiabats,
-        and mixing ratio lines with labels using a default coloring.
+        and mixing ratio lines with labels using a default coloring. Function assumes
+        that temperature value limits are in Celsius and pressure value limits are in
+        hPa.
         """
         from metpy.constants import Cp_d, Rd
 
         # Get axes x, y limits
         xmin, xmax = self.ax.get_xlim()
-        ymax, ymin = self.ax.get_ylim()
+        ymax, _ = self.ax.get_ylim()
 
         # Pressure for plotting mixing ratio lines
         pressure = units.Quantity(np.linspace(500, ymax, 25)[::-1], 'hPa')
@@ -636,7 +638,7 @@ class SkewT:
         # Set plotting certain mixing ratio values
         mixing_ratio = units.Quantity(np.array([0.1, 0.2, 0.4, 0.6, 1, 1.5, 2, 3,
                                                 4, 6, 8, 10, 13, 16, 20, 25, 30, 36, 42
-                                                ]).reshape(-1, 1), 'g/kg')
+                                                ]).reshape(-1, 1)[:, 0], 'g/kg')
 
         # Calculate the dewpoint at 500 hPa based on the mixing ratio (for plotting mixing
         # ratio values)
@@ -674,10 +676,7 @@ class SkewT:
 
         # Add saturation mixing ratio labels
         for i in range(mixing_ratio.m.size):
-            if mixing_ratio.m[i, 0] % 1:
-                val = str(mixing_ratio[i, 0].m)
-            else:
-                val = int(mixing_ratio[i, 0].m)
+            val = str(mixing_ratio[i].m) if mixing_ratio.m[i] % 1 else int(mixing_ratio[i].m)
             _ = self.ax.text(plottd.m[i], 500, f'{val}', ha='center', va='bottom',
                              weight='bold', size=8, color='dodgerblue', clip_on=True,
                              rotation=30)

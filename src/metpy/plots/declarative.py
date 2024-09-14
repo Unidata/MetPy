@@ -587,12 +587,14 @@ class SkewtPanel(PanelTraits, Panel):
     ylimits = Tuple(Int(), Int(), default_value=(1000, 100), allow_none=True)
     ylimits.__doc__ = """A tuple of y-axis limits to plot the skew-T.
 
-    Order is in higher pressure to lower pressure."""
+    Order is in higher pressure to lower pressure. Assumption is that y-limit values are
+    hPa."""
 
     xlimits = Tuple(Int(), Int(), default_value=(-40, 40), allow_none=True)
     xlimits.__doc__ = """A tuple of x-axis limits to plot the skew-T.
 
-    Order is lower temperature to higher temperature."""
+    Order is lower temperature to higher temperature. Assumption is that x-limit values are
+    Celsius."""
 
     ylabel = Unicode(default_value='pressure [hPa]')
     ylabel.__doc__ = """A string to plot for the y-axis label.
