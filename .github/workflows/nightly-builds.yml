@@ -3,7 +3,7 @@ name: Nightly Checks
 on:
   schedule:
   # Runs at 09Z (3am MDT)
-    - cron: "0 9 * * *"
+    - cron: "0 9 * * 2"
 
   # Allow a manual run
   workflow_dispatch:
