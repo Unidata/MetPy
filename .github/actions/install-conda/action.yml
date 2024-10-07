@@ -11,7 +11,7 @@ runs:
   using: composite
   steps:
     - name: Set up Python ${{ inputs.python-version }}
-      uses: mamba-org/setup-micromamba@v1
+      uses: mamba-org/setup-micromamba@v2
       with:
         environment-name: CI
         create-args: python=${{ inputs.python-version }}
