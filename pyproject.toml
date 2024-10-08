@@ -113,7 +113,7 @@ filterwarnings = [
     "ignore:Conversion of an array with ndim > 0 to a scalar is deprecated:DeprecationWarning:pint.facets.plain.quantity:575",
     # PyProj automatically dispatching for single point, will be waiting for NumPy 2.0 to address
     # See: https://github.com/pyproj4/pyproj/issues/1309
-    "ignore:Conversion of an array with ndim > 0 to a scalar is deprecated:DeprecationWarning:pyproj.geod:404",
+    "ignore:Conversion of an array with ndim > 0 to a scalar is deprecated:DeprecationWarning:pyproj.geod",
     # Pandas >=2.2 warns about PyArrow being a future dependency
     'ignore:\nPyarrow will become a required dependency of pandas:DeprecationWarning',
     # Not yet fixed in xarray
