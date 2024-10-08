@@ -83,12 +83,8 @@ of MetPy GitHub Discussions.
 Our up-to-date references for grants and funding can be found
 `here <https://github.com/Unidata/MetPy/blob/main/CITATION.cff>`_.
 
-.. image:: _static/NSF.jpg
-   :width: 100 px
-   :align: left
-   :alt: National Science Foundation logo
-
-.. image:: _static/unidata_150x150.png
-   :width: 100 px
+.. image:: _static/NSF-Unidata_lockup_horizontal_2024.png
+   :class: no-scaled-link
    :align: center
-   :alt: Unidata logo
+   :height: 100px
+   :alt: NSF Unidata logo
