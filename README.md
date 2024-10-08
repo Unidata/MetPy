@@ -2,7 +2,7 @@ MetPy
 =====
 
 [![MetPy Logo](https://github.com/Unidata/MetPy/raw/main/docs/_static/metpy_150x150.png)](https://unidata.github.io/MetPy/)
-[![Unidata Logo](https://github.com/Unidata/MetPy/raw/main/docs/_static/unidata_150x150.png)](https://www.unidata.ucar.edu)
+[![NSF Unidata Logo](https://github.com/Unidata/MetPy/raw/main/docs/_static/NSF-Unidata_lockup_horizontal_2024.png)](https://www.unidata.ucar.edu)
 
 [![License](https://img.shields.io/pypi/l/metpy.svg)](https://pypi.python.org/pypi/MetPy/)
 [![Gitter](https://badges.gitter.im/Unidata/MetPy.svg)](https://gitter.im/Unidata/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
