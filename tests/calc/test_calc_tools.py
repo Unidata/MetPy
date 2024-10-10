@@ -12,7 +12,8 @@ from pyproj import CRS, Geod
 import pytest
 import xarray as xr
 
-from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersections,
+from metpy.calc import (angle_to_direction, cumulative_integrate,
+                        find_bounding_indices, find_intersections,
                         first_derivative, geospatial_gradient, get_layer, get_layer_heights,
                         gradient, laplacian, lat_lon_grid_deltas, nearest_intersection_idx,
                         parse_angle, pressure_to_height_std, reduce_point_density,
@@ -1557,3 +1558,53 @@ def test_vector_derivative_return_subset(return_only, length):
         u, v, longitude=lons, latitude=lats, crs=crs, return_only=return_only)
 
     assert len(ddx) == length
+
+
+def test_cumulative_integrate_numpy():
+    """Test that cumulative_integrate works with numpy arrays."""
+    field = np.arange(5)
+    with pytest.raises(
+            TypeError, match='cumulative_integrate called with unitless arguments'
+    ):
+        cumulative_integrate(field, delta=1)
+
+
+def test_cumulative_integrate_pint():
+    """Test that cumulative_integrate works with pint Quantities."""
+    field = np.arange(6) * units('kg/m^3')
+    delta = np.array([1, 2, 3, 2, 1]) * units('cm')
+    integral = cumulative_integrate(field, delta=delta)
+    assert integral.magnitude == pytest.approx(
+        np.array([0, 0.5, 3.5, 11, 18, 22.5])
+    )
+    assert units.Quantity(1, integral.units).to('dag/m^2').magnitude == 1
+
+
+def test_cumulative_integrate_xarray():
+    """Test that cumulative_integrate works with XArray DataArrays."""
+    field = xr.DataArray(
+        np.arange(10) / 100,
+        {'x': (('x',), np.arange(100, 1001, 100), {'units': 'hPa'})},
+        attrs={'units': 'g/kg'}
+    )
+    integral = cumulative_integrate(field, axis='x')
+    assert integral.metpy.magnitude == pytest.approx(
+        np.array([0, 0.5, 2, 4.5, 8, 12.5, 18, 24.5, 32, 40.5])
+    )
+    assert units.Quantity(1, integral.metpy.units).to('hg/(m s^2)').magnitude == 1
+
+
+def test_cumulative_integrate_xr_2d():
+    """Test that cumulative_integrate works with 2D DataArrays."""
+    arr = np.arange(5)
+    data_xr = xr.DataArray(
+        np.ones((5, 5)),
+        {'y': ('y', arr, {'units': 'm'}), 'x': ('x', arr, {'units': 'm'})},
+        ('y', 'x'),
+        'height',
+        {'units': 'm'}
+    )
+    integral = cumulative_integrate(data_xr, axis='x')
+    assert integral.dims == data_xr.dims
+    assert integral.coords.keys() == data_xr.coords.keys()
+    assert units.Quantity(1, integral.metpy.units).to('m^2').magnitude == 1
