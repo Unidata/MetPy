@@ -8,7 +8,7 @@ import logging
 
 import numpy as np
 from scipy.interpolate import griddata, Rbf
-from scipy.spatial import cKDTree, ConvexHull, Delaunay, QhullError
+from scipy.spatial import KDTree, ConvexHull, Delaunay, QhullError
 
 from . import geometry, tools
 from ..package_tools import Exporter
@@ -260,7 +260,7 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
     else:
         raise ValueError(f'{kind} interpolation not supported.')
 
-    obs_tree = cKDTree(points)
+    obs_tree = KDTree(points)
     indices = obs_tree.query_ball_point(xi, r=r)
 
     if hasattr(values, 'units'):

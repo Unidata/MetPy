@@ -7,7 +7,7 @@ import logging
 import math
 
 import numpy as np
-from scipy.spatial import cKDTree
+from scipy.spatial import KDTree
 
 log = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ def get_points_within_r(center_points, target_points, r):
         order as, center_points
 
     """
-    tree = cKDTree(target_points)
+    tree = KDTree(target_points)
     indices = tree.query_ball_point(center_points, r)
     return tree.data[indices].T
 
@@ -59,7 +59,7 @@ def get_point_count_within_r(center_points, target_points, r):
         order as, center_points
 
     """
-    tree = cKDTree(target_points)
+    tree = KDTree(target_points)
     indices = tree.query_ball_point(center_points, r)
     return np.array([len(x) for x in indices])
 
@@ -255,7 +255,7 @@ def find_natural_neighbors(tri, grid_points):
 
     """
     # Used for fast identification of points with a radius of another point
-    tree = cKDTree(grid_points)
+    tree = KDTree(grid_points)
 
     # Mask for points that are outside the triangulation
     in_triangulation = tri.find_simplex(tree.data) >= 0

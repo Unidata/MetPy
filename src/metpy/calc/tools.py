@@ -17,7 +17,7 @@ except ImportError:
 
 import numpy.ma as ma
 from pyproj import CRS, Geod, Proj
-from scipy.spatial import cKDTree
+from scipy.spatial import KDTree
 import xarray as xr
 
 from .. import _warnings
@@ -300,7 +300,7 @@ def reduce_point_density(points, radius, priority=None):
     points = np.where(good_vals, points, 0)
 
     # Make a kd-tree to speed searching of data.
-    tree = cKDTree(points)
+    tree = KDTree(points)
 
     # Need to use sorted indices rather than sorting the position
     # so that the keep mask matches *original* order.
