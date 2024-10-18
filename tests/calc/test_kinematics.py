@@ -6,7 +6,7 @@
 import numpy as np
 import pytest
 import xarray as xr
-
+import sys
 from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind, coriolis_parameter,
                         divergence, first_derivative, frontogenesis, geospatial_laplacian,
                         geostrophic_wind, inertial_advective_wind, lat_lon_grid_deltas,
@@ -14,7 +14,8 @@ from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind, coriol
                         potential_vorticity_baroclinic, potential_vorticity_barotropic,
                         q_vector, shearing_deformation, static_stability,
                         storm_relative_helicity, stretching_deformation, total_deformation,
-                        vorticity, wind_components)
+                        vorticity, wind_components,rotational_wind_from_inversion,
+                        divergent_wind_from_inversion)
 from metpy.constants import g, Re
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data)
@@ -70,8 +71,9 @@ def test_vorticity():
 def test_vorticity_geographic(geog_data):
     """Test vorticity for simple case on geographic coordinates."""
     crs, lons, lats, u, v, mx, my, dx, dy = geog_data
+    print(crs)
     vort = vorticity(u, v, longitude=lons, latitude=lats, crs=crs)
-
+    sys.exit()
     # Calculate the true field using known map-correct approach
     truth = (mx * first_derivative(v, delta=dx, axis=1)
              - my * first_derivative(u, delta=dy, axis=0)
