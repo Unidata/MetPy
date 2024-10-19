@@ -8,7 +8,7 @@ import logging
 
 import numpy as np
 from scipy.interpolate import griddata, Rbf
-from scipy.spatial import KDTree, ConvexHull, Delaunay, QhullError
+from scipy.spatial import ConvexHull, Delaunay, KDTree, QhullError
 
 from . import geometry, tools
 from ..package_tools import Exporter
