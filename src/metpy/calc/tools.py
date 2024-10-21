@@ -17,6 +17,7 @@ except ImportError:
 
 import numpy.ma as ma
 from pyproj import CRS, Geod, Proj
+from scipy.integrate import cumulative_trapezoid
 from scipy.spatial import cKDTree
 import xarray as xr
 
@@ -1942,3 +1943,44 @@ def _remove_nans(*variables):
     for v in variables:
         ret.append(v[~mask])
     return ret
+
+
+@exporter.export
+@xarray_derivative_wrap
+def cumulative_integrate(field, axis=None, x=None, delta=None):
+    """Return cumulative integral of field along axis.
+
+    Uses trapezoidal rule for integration.
+
+    Parameters
+    ----------
+    field : array-like
+        Array of values for which to calculate the integral
+    axis : int or str
+        The axis along which to integrate.  If `field` is an
+        `np.ndarray` or `pint.Quantity`, must be an integer.  Defaults
+        to zero.
+    x : array-like, optional
+        The coordinate values along which to integrate
+    delta : array-like, optional
+        Spacing between grid points in `field`.
+
+    Examples
+    --------
+    >>> cumulative_integrate(units.Quantity(np.arange(5), 'm'), delta=units('1 m'))
+    <Quantity([0.  0.5 2.  4.5 8. ], 'meter ** 2')>
+    """
+    n, axis, delta = _process_deriv_args(field, axis, x, delta)
+    take = make_take(n, axis)
+    right = np.cumsum(delta, axis=axis)
+    left = np.zeros_like(right[take(slice(1))])
+    x = concatenate([left, right], axis=axis)
+    try:
+        result = cumulative_trapezoid(field.magnitude, x=x.magnitude, axis=axis, initial=0)
+        return units.Quantity(result, field.units * delta.units)
+    except AttributeError:
+        # NumPy arrays without units
+        raise TypeError(
+            'cumulative_integrate called with unitless arguments\n'
+            'Either add units or use scipy.integrate.cumulative_trapezoid'
+        ) from None
