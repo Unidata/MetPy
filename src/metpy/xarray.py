@@ -835,9 +835,10 @@ class MetPyDatasetAccessor:
 
         # Attempt to build the crs coordinate
         crs = None
-        if 'grid_mapping' in var.attrs:
-            # Use given CF grid_mapping
-            proj_name = var.attrs['grid_mapping']
+
+        # Check both raw attribute and xarray-handled and moved to encoding
+        proj_name = var.encoding.get('grid_mapping', var.attrs.get('grid_mapping'))
+        if proj_name is not None:
             try:
                 proj_var = self._dataset.variables[proj_name]
             except KeyError:
