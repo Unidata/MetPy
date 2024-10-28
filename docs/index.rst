@@ -84,7 +84,13 @@ Our up-to-date references for grants and funding can be found
 `here <https://github.com/Unidata/MetPy/blob/main/CITATION.cff>`_.
 
 .. image:: _static/NSF-Unidata_lockup_horizontal_2024.png
-   :class: no-scaled-link
+   :class: no-scaled-link only-light
+   :align: center
+   :height: 100px
+   :alt: NSF Unidata logo
+
+.. image:: _static/NSF-Unidata_lockup_horizontal_2024_darkmode_v3.png
+   :class: no-scaled-link only-dark
    :align: center
    :height: 100px
    :alt: NSF Unidata logo
