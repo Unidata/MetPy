@@ -276,7 +276,7 @@ html_context = {
     'github_user': 'Unidata',
     'github_repo': 'MetPy',
     'github_version': 'main',  # Make changes to the main branch
-    'default_mode': 'light',
+    'default_mode': 'auto',
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
