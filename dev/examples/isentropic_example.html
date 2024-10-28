@@ -16,17 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -37,10 +39,11 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css?v=3aab54e7" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../_static/documentation_options.js?v=452006c5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
@@ -62,7 +65,7 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/isentropic_example';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.15.4';
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.6';
         DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
@@ -76,7 +79,8 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Oct 21, 2024 at 20:43:57"/>
+  <meta name="docsearch:version" content="1.6dev" />
+    <meta name="docbuild:last-update" content="Oct 28, 2024 at 20:57:54"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/isentropic_example.html" />
 
   </head>
@@ -94,19 +98,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -114,7 +107,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -122,8 +114,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -156,34 +148,30 @@
     
     
     <img src="../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6dev - Home"/>
-    <script>document.write(`<img src="../_static/metpy_horizontal.png" class="logo__image only-dark" alt="MetPy 1.6dev - Home"/>`);</script>
+    <img src="../_static/metpy_horizontal.png" class="logo__image only-dark pst-js-only" alt="MetPy 1.6dev - Home"/>
   
   
 </a></div>
     
       <div class="navbar-item">
-<script>
-document.write(`
-  <div class="version-switcher__container dropdown">
-    <button id="pst-version-switcher-button-2"
-      type="button"
-      class="version-switcher__button btn btn-sm dropdown-toggle"
-      data-bs-toggle="dropdown"
-      aria-haspopup="listbox"
-      aria-controls="pst-version-switcher-list-2"
-      aria-label="Version switcher list"
-    >
-      Choose version  <!-- this text may get changed later by javascript -->
-      <span class="caret"></span>
-    </button>
-    <div id="pst-version-switcher-list-2"
-      class="version-switcher__menu dropdown-menu list-group-flush py-0"
-      role="listbox" aria-labelledby="pst-version-switcher-button-2">
-      <!-- dropdown will be populated by javascript on page load -->
-    </div>
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
   </div>
-`);
-</script></div>
+</div></div>
     
   </div>
   
@@ -247,13 +235,9 @@ document.write(`
         <div class="navbar-item navbar-persistent--container">
           
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
         </div>
       
       
@@ -299,15 +283,11 @@ document.write(`
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
     </div>
     
@@ -316,13 +296,9 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
     </div>
   
 
@@ -340,7 +316,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -448,15 +425,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
       </div>
     
@@ -563,8 +536,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -576,7 +547,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Example Gallery</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Isentropic Analysis</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Isentropic Analysis</span></li>
   </ul>
 </nav>
 </div>
@@ -1048,7 +1019,7 @@ Data variables:
     u_wind               (isentropic_level, y, x) float64 276kB &lt;Quantity([[[...
     v_wind               (isentropic_level, y, x) float64 276kB &lt;Quantity([[[...
     Specific_humidity    (isentropic_level, y, x) float64 276kB &lt;Quantity([[[...
-    Geopotential_height  (isentropic_level, y, x) float64 276kB &lt;Quantity([[[...</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-2c557334-90cf-4073-bce1-7ef9a963bf4c' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-2c557334-90cf-4073-bce1-7ef9a963bf4c' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>isentropic_level</span>: 1</li><li><span class='xr-has-index'>y</span>: 118</li><li><span class='xr-has-index'>x</span>: 292</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-b68f107d-5603-4f5c-8507-a0e6d043d721' class='xr-section-summary-in' type='checkbox'  checked><label for='section-b68f107d-5603-4f5c-8507-a0e6d043d721' class='xr-section-summary' >Coordinates: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>isentropic_level</span></div><div class='xr-var-dims'>(isentropic_level)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>296.0</div><input id='attrs-20166316-a69f-4b2d-8d24-dac67a1213ab' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-20166316-a69f-4b2d-8d24-dac67a1213ab' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f46715f7-56c1-413e-8532-8f92d0f7714b' class='xr-var-data-in' type='checkbox'><label for='data-f46715f7-56c1-413e-8532-8f92d0f7714b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>kelvin</dd><dt><span>positive :</span></dt><dd>up</dd></dl></div><div class='xr-var-data'><pre>array([296.])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>time</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>1987-04-04T18:00:00</div><input id='attrs-7262a172-7fcd-4f8c-9270-1081b9d14c9a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-7262a172-7fcd-4f8c-9270-1081b9d14c9a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f8fe51a1-c162-4fda-819f-9606449636ed' class='xr-var-data-in' type='checkbox'><label for='data-f8fe51a1-c162-4fda-819f-9606449636ed' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>forecast time</dd><dt><span>_CoordinateAxisType :</span></dt><dd>Time</dd><dt><span>_metpy_axis :</span></dt><dd>time</dd></dl></div><div class='xr-var-data'><pre>array(&#x27;1987-04-04T18:00:00.000000000&#x27;, dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>y</span></div><div class='xr-var-dims'>(y)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.087e+03 -3.054e+03 ... 711.4</div><input id='attrs-b6b1bec6-99b4-43bc-a970-f6a98bcda6c5' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-b6b1bec6-99b4-43bc-a970-f6a98bcda6c5' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-3ebc4080-c9a3-490b-95de-26addf45c89b' class='xr-var-data-in' type='checkbox'><label for='data-3ebc4080-c9a3-490b-95de-26addf45c89b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>km</dd><dt><span>long_name :</span></dt><dd>y coordinate of projection</dd><dt><span>standard_name :</span></dt><dd>projection_y_coordinate</dd><dt><span>grid_spacing :</span></dt><dd>32.463 km</dd><dt><span>_CoordinateAxisType :</span></dt><dd>GeoY</dd><dt><span>_metpy_axis :</span></dt><dd>y</dd></dl></div><div class='xr-var-data'><pre>array([-3.086806e+03, -3.054343e+03, -3.021880e+03, -2.989417e+03,
+    Geopotential_height  (isentropic_level, y, x) float64 276kB &lt;Quantity([[[...</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-2d5d9050-5c38-4f36-baeb-34bc5f9419c8' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-2d5d9050-5c38-4f36-baeb-34bc5f9419c8' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>isentropic_level</span>: 1</li><li><span class='xr-has-index'>y</span>: 118</li><li><span class='xr-has-index'>x</span>: 292</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-a9d2eaf7-ea9e-4748-a5b2-d03fb41869ca' class='xr-section-summary-in' type='checkbox'  checked><label for='section-a9d2eaf7-ea9e-4748-a5b2-d03fb41869ca' class='xr-section-summary' >Coordinates: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>isentropic_level</span></div><div class='xr-var-dims'>(isentropic_level)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>296.0</div><input id='attrs-84f3cd89-907c-4cb7-8231-f62aea12af75' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-84f3cd89-907c-4cb7-8231-f62aea12af75' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-8f222588-d652-47ff-b44f-e4e8deef8812' class='xr-var-data-in' type='checkbox'><label for='data-8f222588-d652-47ff-b44f-e4e8deef8812' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>kelvin</dd><dt><span>positive :</span></dt><dd>up</dd></dl></div><div class='xr-var-data'><pre>array([296.])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>time</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>1987-04-04T18:00:00</div><input id='attrs-bb5a8965-7d9c-4ff4-b663-c65689d40315' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-bb5a8965-7d9c-4ff4-b663-c65689d40315' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-330f6d3c-5d5e-461c-8f05-c53f92034f92' class='xr-var-data-in' type='checkbox'><label for='data-330f6d3c-5d5e-461c-8f05-c53f92034f92' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>forecast time</dd><dt><span>_CoordinateAxisType :</span></dt><dd>Time</dd><dt><span>_metpy_axis :</span></dt><dd>time</dd></dl></div><div class='xr-var-data'><pre>array(&#x27;1987-04-04T18:00:00.000000000&#x27;, dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>y</span></div><div class='xr-var-dims'>(y)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.087e+03 -3.054e+03 ... 711.4</div><input id='attrs-f6c03b9a-8222-4cca-8ce4-753499be41c7' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-f6c03b9a-8222-4cca-8ce4-753499be41c7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-16ac4e4a-7b63-4c9a-a82c-bb4f7daac5c4' class='xr-var-data-in' type='checkbox'><label for='data-16ac4e4a-7b63-4c9a-a82c-bb4f7daac5c4' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>km</dd><dt><span>long_name :</span></dt><dd>y coordinate of projection</dd><dt><span>standard_name :</span></dt><dd>projection_y_coordinate</dd><dt><span>grid_spacing :</span></dt><dd>32.463 km</dd><dt><span>_CoordinateAxisType :</span></dt><dd>GeoY</dd><dt><span>_metpy_axis :</span></dt><dd>y</dd></dl></div><div class='xr-var-data'><pre>array([-3.086806e+03, -3.054343e+03, -3.021880e+03, -2.989417e+03,
        -2.956954e+03, -2.924491e+03, -2.892028e+03, -2.859565e+03,
        -2.827102e+03, -2.794639e+03, -2.762176e+03, -2.729713e+03,
        -2.697250e+03, -2.664787e+03, -2.632324e+03, -2.599861e+03,
@@ -1077,8 +1048,8 @@ Data variables:
         2.893464e+02,  3.218094e+02,  3.542724e+02,  3.867354e+02,
         4.191984e+02,  4.516614e+02,  4.841244e+02,  5.165874e+02,
         5.490504e+02,  5.815134e+02,  6.139764e+02,  6.464394e+02,
-        6.789024e+02,  7.113654e+02])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>x</span></div><div class='xr-var-dims'>(x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.977e+03 -3.945e+03 ... 5.47e+03</div><input id='attrs-44d7f2b5-a284-46d1-a667-8990ba4100ac' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-44d7f2b5-a284-46d1-a667-8990ba4100ac' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-afde2415-bc14-4cb2-9a3a-6ca26196a28f' class='xr-var-data-in' type='checkbox'><label for='data-afde2415-bc14-4cb2-9a3a-6ca26196a28f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>km</dd><dt><span>long_name :</span></dt><dd>x coordinate of projection</dd><dt><span>standard_name :</span></dt><dd>projection_x_coordinate</dd><dt><span>grid_spacing :</span></dt><dd>32.463 km</dd><dt><span>_CoordinateAxisType :</span></dt><dd>GeoX</dd><dt><span>_metpy_axis :</span></dt><dd>x</dd></dl></div><div class='xr-var-data'><pre>array([-3977.054864, -3944.591864, -3912.128864, ...,  5404.752136,
-        5437.215136,  5469.678136])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lat</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-8a29337f-4607-499d-8369-682e154d4953' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-8a29337f-4607-499d-8369-682e154d4953' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e9d861f5-6ffc-49cf-bfa9-23be4ab80ca4' class='xr-var-data-in' type='checkbox'><label for='data-e9d861f5-6ffc-49cf-bfa9-23be4ab80ca4' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_north</dd><dt><span>long_name :</span></dt><dd>latitude coordinate</dd><dt><span>standard_name :</span></dt><dd>latitude</dd><dt><span>_CoordinateAxisType :</span></dt><dd>Lat</dd><dt><span>_metpy_axis :</span></dt><dd>latitude</dd></dl></div><div class='xr-var-data'><pre>[34456 values with dtype=float64]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lon</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-2551fd00-4b79-48aa-9a74-47c435a313e1' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-2551fd00-4b79-48aa-9a74-47c435a313e1' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-98c0ff0e-d4da-456b-a401-644a87ae62bc' class='xr-var-data-in' type='checkbox'><label for='data-98c0ff0e-d4da-456b-a401-644a87ae62bc' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_east</dd><dt><span>long_name :</span></dt><dd>longitude coordinate</dd><dt><span>standard_name :</span></dt><dd>longitude</dd><dt><span>_CoordinateAxisType :</span></dt><dd>Lon</dd><dt><span>_metpy_axis :</span></dt><dd>longitude</dd></dl></div><div class='xr-var-data'><pre>[34456 values with dtype=float64]</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-32439ec7-7d0b-4173-84cc-fa9448bf64cc' class='xr-section-summary-in' type='checkbox'  checked><label for='section-32439ec7-7d0b-4173-84cc-fa9448bf64cc' class='xr-section-summary' >Data variables: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>pressure</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[900.34124661 900.62...</div><input id='attrs-e4c79b01-b53e-4163-81ed-c8cfc1d0dece' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-e4c79b01-b53e-4163-81ed-c8cfc1d0dece' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-54fd7e04-517a-4b98-b3a2-4cfa67578c52' class='xr-var-data-in' type='checkbox'><label for='data-54fd7e04-517a-4b98-b3a2-4cfa67578c52' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>air_pressure</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[900.3412466141666 900.6282002263883 902.6954128823945 ... nan nan nan]  [898.7657927677703 899.3957330451849 901.1369631046779 ... nan nan nan]  [893.4104553118616 894.6623958512805 896.9688329797301 ... nan nan nan]  ...  [582.3629328442938 575.0471009518434 567.6847140894419 ...   802.8899086222864 803.7246159207159 804.6379705007769]  [578.6096930396801 570.8991740469492 563.2216412523484 ...   805.1512754403952 804.8142480497339 806.6181326510635]  [574.5889551269233 566.5030728802834 558.5810569436891 ...   806.337127284374 805.6222086748181 802.7520376016056]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>hectopascal</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>temperature</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[287.25340245 287.27...</div><input id='attrs-3e197992-9ad9-45fa-ba42-8ed6a25bdf1c' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-3e197992-9ad9-45fa-ba42-8ed6a25bdf1c' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-efafb98b-5ca5-4c0d-9f10-9e50ca422124' class='xr-var-data-in' type='checkbox'><label for='data-efafb98b-5ca5-4c0d-9f10-9e50ca422124' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>air_temperature</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[287.25340245256615 287.2795573040488 287.4678010688309 ... nan nan   nan]  [287.10969897713835 287.16717993275586 287.32591469161804 ... nan nan   nan]  [286.61986771514216 286.73456514566794 286.94557123352325 ... nan nan   nan]  ...  [253.63209195921524 252.717632787544 251.78892602876513 ...   278.003694857879 278.0862415261764 278.1764957251152]  [253.16397872663083 252.19545647830967 251.22174909805472 ...   278.2271864365298 278.19390637133625 278.37191674895575]  [252.66008992959777 251.63907141231874 250.628598944255 ...   278.34420537550375 278.27367248968466 277.9900544878668]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>kelvin</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>u_wind</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[-1.31929409e+01 -1....</div><input id='attrs-1a8267f5-0e17-41bf-9c45-f57ba664e3e3' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-1a8267f5-0e17-41bf-9c45-f57ba664e3e3' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-38e65ed2-df29-4850-87d6-80a08150bf9f' class='xr-var-data-in' type='checkbox'><label for='data-38e65ed2-df29-4850-87d6-80a08150bf9f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>m/s</dd><dt><span>long_name :</span></dt><dd>u_wind @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>u_wind</dd><dt><span>GRIB_param_short_name :</span></dt><dd>UGRD</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>33</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131  33]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[-13.192940863873579 -13.65521105416572 -13.558986233473753 ... nan   nan nan]  [-13.154258338549946 -12.98898740158556 -13.336929044329297 ... nan   nan nan]  [-12.389387286673664 -12.847664967104013 -12.39843211370755 ... nan   nan nan]  ...  [16.320100145853562 16.248921495708423 16.27194989717565 ...   0.43525579995775154 0.4346660048174416 0.7816840383266616]  [15.922591200947153 15.982942665930192 16.393562189156018 ...   -0.32284152376445374 -0.008841481805421963 -0.713418414296644]  [15.44181947114877 16.037097609603688 16.108870219801382 ...   -1.6896393580322255 -1.4068366627204874 -0.6618929663249936]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>meter/second</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>v_wind</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[ 0.06423312  0.0747...</div><input id='attrs-736aff0b-5423-4701-a931-40a8868fbfdf' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-736aff0b-5423-4701-a931-40a8868fbfdf' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-08c7b1c0-f19c-406d-a239-2629a28bb5ea' class='xr-var-data-in' type='checkbox'><label for='data-08c7b1c0-f19c-406d-a239-2629a28bb5ea' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>m/s</dd><dt><span>long_name :</span></dt><dd>v_wind @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>v_wind</dd><dt><span>GRIB_param_short_name :</span></dt><dd>VGRD</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>34</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131  34]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[0.06423312212716725 0.07479514517840302 -0.16838919556261756 ... nan   nan nan]  [1.1180292752741479 2.250400198749113 1.09121576156247 ... nan nan nan]  [2.86035077803406 1.8788880201288263 2.9904647623598932 ... nan nan   nan]  ...  [9.61300257672279 9.179177276496405 8.184948214882459 ...   -3.193627618337275 -3.2024544913787394 -2.7355462054862016]  [9.729327578400945 8.739680329084148 8.594322262130628 ...   -2.9011261628292413 -2.4743690966545935 -1.4870536737766273]  [9.750396540416503 9.148816761411762 8.764094179929574 ...   -1.6580673585775016 -1.2225487839300855 -1.4803113138672654]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>meter/second</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Specific_humidity</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[0.00884235 0.008867...</div><input id='attrs-17e56f2c-9b33-4d7a-9c18-67bdf46d1ad6' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-17e56f2c-9b33-4d7a-9c18-67bdf46d1ad6' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-dfc3c173-6f01-47c5-bc49-e4bd5b06c8f5' class='xr-var-data-in' type='checkbox'><label for='data-dfc3c173-6f01-47c5-bc49-e4bd5b06c8f5' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>kg/kg</dd><dt><span>long_name :</span></dt><dd>Specific_humidity @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>Specific_humidity</dd><dt><span>GRIB_param_short_name :</span></dt><dd>SPFH</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>51</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131  51]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[0.008842348434263451 0.008867832268411289 0.008968565810944646 ...   nan nan nan]  [0.008817476631944828 0.008827154165882183 0.008907068600540524 ...   nan nan nan]  [0.008702820998113198 0.008732749531454769 0.00879103717829932 ... nan   nan nan]  ...  [0.0011029793308478734 0.001015732765712061 0.0009286300454721744 ...   0.00512211463389555 0.005146296653073053 0.005172386155577593]  [0.0010581905576279396 0.0009681548405628524 0.0008815840993866111 ...   0.005132649195315607 0.005147182989988019 0.005189398218805244]  [0.0010114271531914936 0.0009211118186668137 0.0008354252304436883 ...   0.005119733826822016 0.0051194957281872145 0.005091090654842702]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>dimensionless</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Geopotential_height</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[1063.66065133 1061....</div><input id='attrs-08e5c815-a7d8-4fea-b7df-3a9a6477cf45' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-08e5c815-a7d8-4fea-b7df-3a9a6477cf45' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-970ddc44-aea6-4889-ae31-aed4e654f449' class='xr-var-data-in' type='checkbox'><label for='data-970ddc44-aea6-4889-ae31-aed4e654f449' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>gpm</dd><dt><span>long_name :</span></dt><dd>Geopotential_height @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>Geopotential_height</dd><dt><span>GRIB_param_short_name :</span></dt><dd>HGT</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>7</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131   7]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[1063.6606513260513 1061.4421473443042 1041.4938116153148 ... nan nan   nan]  [1079.478028125831 1073.556038742922 1057.65625580821 ... nan nan nan]  [1130.3143074681877 1119.0241948332116 1097.3894374693677 ... nan nan   nan]  ...  [4295.995558709708 4389.615879082378 4484.595154991587 ...   1937.4693639478376 1928.4660956108726 1918.677476615039]  [4337.046065967439 4436.491575694289 4536.385003616522 ...   1914.4659073478065 1916.8617994669883 1898.00906942551]  [4381.873356400557 4486.902635937249 4590.036687709444 ...   1902.9080146834517 1909.1451375862387 1937.4070179509758]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>meter</td></tr></tbody></table></div></li></ul></div></li><li class='xr-section-item'><input id='section-38d47dd6-1b5e-4433-a144-e484194218bc' class='xr-section-summary-in' type='checkbox'  ><label for='section-38d47dd6-1b5e-4433-a144-e484194218bc' class='xr-section-summary' >Indexes: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>isentropic_level</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-95f29cf7-e064-45ad-baa4-c6aeb4ab6674' class='xr-index-data-in' type='checkbox'/><label for='index-95f29cf7-e064-45ad-baa4-c6aeb4ab6674' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([296.0], dtype=&#x27;float64&#x27;, name=&#x27;isentropic_level&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>y</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-ae34368f-c4cd-4440-b77c-9deea852b514' class='xr-index-data-in' type='checkbox'/><label for='index-ae34368f-c4cd-4440-b77c-9deea852b514' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([-3086.8056464496035, -3054.3426464496033, -3021.8796464496036,
+        6.789024e+02,  7.113654e+02])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>x</span></div><div class='xr-var-dims'>(x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.977e+03 -3.945e+03 ... 5.47e+03</div><input id='attrs-fe860bd6-6627-4281-b2d6-430a6badfc82' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-fe860bd6-6627-4281-b2d6-430a6badfc82' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-467e5dc3-a5a6-44e1-a410-aba825ba4c6b' class='xr-var-data-in' type='checkbox'><label for='data-467e5dc3-a5a6-44e1-a410-aba825ba4c6b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>km</dd><dt><span>long_name :</span></dt><dd>x coordinate of projection</dd><dt><span>standard_name :</span></dt><dd>projection_x_coordinate</dd><dt><span>grid_spacing :</span></dt><dd>32.463 km</dd><dt><span>_CoordinateAxisType :</span></dt><dd>GeoX</dd><dt><span>_metpy_axis :</span></dt><dd>x</dd></dl></div><div class='xr-var-data'><pre>array([-3977.054864, -3944.591864, -3912.128864, ...,  5404.752136,
+        5437.215136,  5469.678136])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lat</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-78dab90d-0993-4bdf-a79f-98eb01f06cf6' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-78dab90d-0993-4bdf-a79f-98eb01f06cf6' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-880cbd8a-9914-4243-a458-f1910a544b1e' class='xr-var-data-in' type='checkbox'><label for='data-880cbd8a-9914-4243-a458-f1910a544b1e' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_north</dd><dt><span>long_name :</span></dt><dd>latitude coordinate</dd><dt><span>standard_name :</span></dt><dd>latitude</dd><dt><span>_CoordinateAxisType :</span></dt><dd>Lat</dd><dt><span>_metpy_axis :</span></dt><dd>latitude</dd></dl></div><div class='xr-var-data'><pre>[34456 values with dtype=float64]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lon</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-75b200a5-4fe4-4780-8a85-6d3cc6a7915f' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-75b200a5-4fe4-4780-8a85-6d3cc6a7915f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e834389d-7faa-4cd3-9af0-2b6893a0b170' class='xr-var-data-in' type='checkbox'><label for='data-e834389d-7faa-4cd3-9af0-2b6893a0b170' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_east</dd><dt><span>long_name :</span></dt><dd>longitude coordinate</dd><dt><span>standard_name :</span></dt><dd>longitude</dd><dt><span>_CoordinateAxisType :</span></dt><dd>Lon</dd><dt><span>_metpy_axis :</span></dt><dd>longitude</dd></dl></div><div class='xr-var-data'><pre>[34456 values with dtype=float64]</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-6e78feb0-5cd2-436e-87ae-74afa451bb56' class='xr-section-summary-in' type='checkbox'  checked><label for='section-6e78feb0-5cd2-436e-87ae-74afa451bb56' class='xr-section-summary' >Data variables: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>pressure</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[900.34124661 900.62...</div><input id='attrs-9f177939-5165-4494-b961-a68263bf6eca' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-9f177939-5165-4494-b961-a68263bf6eca' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-616d8ec0-c983-4929-aa5f-80e45b564bb6' class='xr-var-data-in' type='checkbox'><label for='data-616d8ec0-c983-4929-aa5f-80e45b564bb6' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>air_pressure</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[900.3412466141666 900.6282002263883 902.6954128823945 ... nan nan nan]  [898.7657927677703 899.3957330451849 901.1369631046779 ... nan nan nan]  [893.4104553118616 894.6623958512805 896.9688329797301 ... nan nan nan]  ...  [582.3629328442938 575.0471009518434 567.6847140894419 ...   802.8899086222864 803.7246159207159 804.6379705007769]  [578.6096930396801 570.8991740469492 563.2216412523484 ...   805.1512754403952 804.8142480497339 806.6181326510635]  [574.5889551269233 566.5030728802834 558.5810569436891 ...   806.337127284374 805.6222086748181 802.7520376016056]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>hectopascal</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>temperature</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[287.25340245 287.27...</div><input id='attrs-7a838776-5e8f-450c-9c95-3a791a6df128' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-7a838776-5e8f-450c-9c95-3a791a6df128' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7fb94b49-d6fb-42cf-b262-af2351af05b9' class='xr-var-data-in' type='checkbox'><label for='data-7fb94b49-d6fb-42cf-b262-af2351af05b9' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>air_temperature</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[287.25340245256615 287.2795573040488 287.4678010688309 ... nan nan   nan]  [287.10969897713835 287.16717993275586 287.32591469161804 ... nan nan   nan]  [286.61986771514216 286.73456514566794 286.94557123352325 ... nan nan   nan]  ...  [253.63209195921524 252.717632787544 251.78892602876513 ...   278.003694857879 278.0862415261764 278.1764957251152]  [253.16397872663083 252.19545647830967 251.22174909805472 ...   278.2271864365298 278.19390637133625 278.37191674895575]  [252.66008992959777 251.63907141231874 250.628598944255 ...   278.34420537550375 278.27367248968466 277.9900544878668]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>kelvin</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>u_wind</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[-1.31929409e+01 -1....</div><input id='attrs-1a19a164-ab75-4f9d-a866-1c5dc1968ce3' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-1a19a164-ab75-4f9d-a866-1c5dc1968ce3' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f5c79e0b-802e-4e58-8350-479111103be7' class='xr-var-data-in' type='checkbox'><label for='data-f5c79e0b-802e-4e58-8350-479111103be7' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>m/s</dd><dt><span>long_name :</span></dt><dd>u_wind @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>u_wind</dd><dt><span>GRIB_param_short_name :</span></dt><dd>UGRD</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>33</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131  33]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[-13.192940863873579 -13.65521105416572 -13.558986233473753 ... nan   nan nan]  [-13.154258338549946 -12.98898740158556 -13.336929044329297 ... nan   nan nan]  [-12.389387286673664 -12.847664967104013 -12.39843211370755 ... nan   nan nan]  ...  [16.320100145853562 16.248921495708423 16.27194989717565 ...   0.43525579995775154 0.4346660048174416 0.7816840383266616]  [15.922591200947153 15.982942665930192 16.393562189156018 ...   -0.32284152376445374 -0.008841481805421963 -0.713418414296644]  [15.44181947114877 16.037097609603688 16.108870219801382 ...   -1.6896393580322255 -1.4068366627204874 -0.6618929663249936]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>meter/second</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>v_wind</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[ 0.06423312  0.0747...</div><input id='attrs-1ea34621-2f33-4fa9-8a3a-d2bd4570d0b7' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-1ea34621-2f33-4fa9-8a3a-d2bd4570d0b7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-66679032-7d15-4796-ac16-60d26ab982e1' class='xr-var-data-in' type='checkbox'><label for='data-66679032-7d15-4796-ac16-60d26ab982e1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>m/s</dd><dt><span>long_name :</span></dt><dd>v_wind @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>v_wind</dd><dt><span>GRIB_param_short_name :</span></dt><dd>VGRD</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>34</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131  34]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[0.06423312212716725 0.07479514517840302 -0.16838919556261756 ... nan   nan nan]  [1.1180292752741479 2.250400198749113 1.09121576156247 ... nan nan nan]  [2.86035077803406 1.8788880201288263 2.9904647623598932 ... nan nan   nan]  ...  [9.61300257672279 9.179177276496405 8.184948214882459 ...   -3.193627618337275 -3.2024544913787394 -2.7355462054862016]  [9.729327578400945 8.739680329084148 8.594322262130628 ...   -2.9011261628292413 -2.4743690966545935 -1.4870536737766273]  [9.750396540416503 9.148816761411762 8.764094179929574 ...   -1.6580673585775016 -1.2225487839300855 -1.4803113138672654]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>meter/second</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Specific_humidity</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[0.00884235 0.008867...</div><input id='attrs-814cc6fe-d1cb-442f-9f32-bc3350065c22' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-814cc6fe-d1cb-442f-9f32-bc3350065c22' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f153554c-e94f-4b2e-a71d-d4acf94fc897' class='xr-var-data-in' type='checkbox'><label for='data-f153554c-e94f-4b2e-a71d-d4acf94fc897' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>kg/kg</dd><dt><span>long_name :</span></dt><dd>Specific_humidity @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>Specific_humidity</dd><dt><span>GRIB_param_short_name :</span></dt><dd>SPFH</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>51</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131  51]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[0.008842348434263451 0.008867832268411289 0.008968565810944646 ...   nan nan nan]  [0.008817476631944828 0.008827154165882183 0.008907068600540524 ...   nan nan nan]  [0.008702820998113198 0.008732749531454769 0.00879103717829932 ... nan   nan nan]  ...  [0.0011029793308478734 0.001015732765712061 0.0009286300454721744 ...   0.00512211463389555 0.005146296653073053 0.005172386155577593]  [0.0010581905576279396 0.0009681548405628524 0.0008815840993866111 ...   0.005132649195315607 0.005147182989988019 0.005189398218805244]  [0.0010114271531914936 0.0009211118186668137 0.0008354252304436883 ...   0.005119733826822016 0.0051194957281872145 0.005091090654842702]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>dimensionless</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Geopotential_height</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[1063.66065133 1061....</div><input id='attrs-0dd6b0aa-d579-4101-ba60-c4f073db876e' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-0dd6b0aa-d579-4101-ba60-c4f073db876e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-8986678a-9860-4d1c-b7fa-ea54a5e7179a' class='xr-var-data-in' type='checkbox'><label for='data-8986678a-9860-4d1c-b7fa-ea54a5e7179a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>gpm</dd><dt><span>long_name :</span></dt><dd>Geopotential_height @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>Geopotential_height</dd><dt><span>GRIB_param_short_name :</span></dt><dd>HGT</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>7</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131   7]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[1063.6606513260513 1061.4421473443042 1041.4938116153148 ... nan nan   nan]  [1079.478028125831 1073.556038742922 1057.65625580821 ... nan nan nan]  [1130.3143074681877 1119.0241948332116 1097.3894374693677 ... nan nan   nan]  ...  [4295.995558709708 4389.615879082378 4484.595154991587 ...   1937.4693639478376 1928.4660956108726 1918.677476615039]  [4337.046065967439 4436.491575694289 4536.385003616522 ...   1914.4659073478065 1916.8617994669883 1898.00906942551]  [4381.873356400557 4486.902635937249 4590.036687709444 ...   1902.9080146834517 1909.1451375862387 1937.4070179509758]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>meter</td></tr></tbody></table></div></li></ul></div></li><li class='xr-section-item'><input id='section-fc37031f-6d7e-42f0-89b6-bcd7a39f82c1' class='xr-section-summary-in' type='checkbox'  ><label for='section-fc37031f-6d7e-42f0-89b6-bcd7a39f82c1' class='xr-section-summary' >Indexes: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>isentropic_level</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-94f0e05c-2496-4bf9-87ed-12b04ea5cc5c' class='xr-index-data-in' type='checkbox'/><label for='index-94f0e05c-2496-4bf9-87ed-12b04ea5cc5c' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([296.0], dtype=&#x27;float64&#x27;, name=&#x27;isentropic_level&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>y</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-c2b3d64e-90be-46eb-993a-67eedbc4fce5' class='xr-index-data-in' type='checkbox'/><label for='index-c2b3d64e-90be-46eb-993a-67eedbc4fce5' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([-3086.8056464496035, -3054.3426464496033, -3021.8796464496036,
        -2989.4166464496034,  -2956.953646449603, -2924.4906464496034,
        -2892.0276464496037, -2859.5646464496035, -2827.1016464496033,
        -2794.6386464496036,
@@ -1087,7 +1058,7 @@ Data variables:
           516.587353550397,   549.0503535503967,   581.5133535503965,
          613.9763535503971,   646.4393535503968,   678.9023535503966,
          711.3653535503963],
-      dtype=&#x27;float64&#x27;, name=&#x27;y&#x27;, length=118))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>x</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-d0f4a037-41b5-4b8e-a4ab-b81b938aac5b' class='xr-index-data-in' type='checkbox'/><label for='index-d0f4a037-41b5-4b8e-a4ab-b81b938aac5b' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([ -3977.054863757302, -3944.5918637573022, -3912.1288637573025,
+      dtype=&#x27;float64&#x27;, name=&#x27;y&#x27;, length=118))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>x</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-2fcf1dd7-2bd6-4e10-909b-2fa79107de18' class='xr-index-data-in' type='checkbox'/><label for='index-2fcf1dd7-2bd6-4e10-909b-2fa79107de18' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([ -3977.054863757302, -3944.5918637573022, -3912.1288637573025,
        -3879.6658637573023,  -3847.202863757302, -3814.7398637573024,
         -3782.276863757302,  -3749.813863757302, -3717.3508637573022,
        -3684.8878637573025,
@@ -1096,7 +1067,7 @@ Data variables:
          5274.900136242699,   5307.363136242699,   5339.826136242698,
          5372.289136242698,   5404.752136242698,   5437.215136242698,
          5469.678136242697],
-      dtype=&#x27;float64&#x27;, name=&#x27;x&#x27;, length=292))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-e5494f3f-7194-4c24-a5bc-1020683af7a0' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-e5494f3f-7194-4c24-a5bc-1020683af7a0' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div>
+      dtype=&#x27;float64&#x27;, name=&#x27;x&#x27;, length=292))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-6d7b35d3-8085-4742-b4f3-955b0eef2ee8' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-6d7b35d3-8085-4742-b4f3-955b0eef2ee8' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div>
 </div>
 <br />
 <br /><p>Note that the units on our wind variables are not ideal for plotting. Instead, let us
@@ -1210,7 +1181,7 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_isentropic_example_002.png" srcset="../_images/sphx_glr_isentropic_example_002.png" alt="296 K Montgomery Streamfunction ($10^{-2} m^2 s^{-2}$), Wind (kt), Relative Humidity (percent)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 9.880 seconds)</p>
+<img src="../_images/sphx_glr_isentropic_example_002.png" srcset="../_images/sphx_glr_isentropic_example_002.png" alt="296 K Montgomery Streamfunction ($10^{-2} m^2 s^{-2}$), Wind (kt), Relative Humidity (percent)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 9.797 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-isentropic-example-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/83b6998284b63bb8a8f46a92e71d6000/isentropic_example.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">isentropic_example.ipynb</span></code></a></p>
@@ -1271,8 +1242,8 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1305,7 +1276,7 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
 </p></div>
       
     </div>
