@@ -19,6 +19,10 @@ inputs:
     description: 'Whether to enable old builds for shapely and cartopy'
     required: false
     default: 'false'
+  need-cartopy:
+    description: 'Whether Cartopy support is needed'
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -74,7 +78,7 @@ runs:
         -c ci/${{ inputs.version-file }} -c ci/${{ inputs.type }}_requirements.txt -c ci/extra_requirements.txt
 
     - name: Download Cartopy Maps
-      if: ${{ inputs.need-extras == 'true' }}
+      if: ${{ inputs.need-cartopy == 'true' }}
       shell: bash
       run: ci/download_cartopy_maps.py
 

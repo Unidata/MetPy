@@ -50,6 +50,7 @@ jobs:
         type: 'doc'
         python-version: ${{ matrix.python-version }}
         need-extras: true
+        need-cartopy: true
 
     - name: Build docs
       id: build-docs
