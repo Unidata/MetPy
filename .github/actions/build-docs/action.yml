@@ -27,7 +27,11 @@ runs:
     - name: Set doc version
       id: docversion
       shell: bash -l {0}
-      run: echo "doc_version=$(python -c 'import metpy,re; print(re.search(r"(\d+\.\d+)", metpy.__version__)[0])')" >> $GITHUB_OUTPUT
+      run: echo "doc_version=$(python -c 'import importlib.metadata,os,re; print(re.search(r"(\d+\.\d+)", importlib.metadata.version(os.environ["GITHUB_REPOSITORY"].split("/")[-1].lower()))[0])')" >> $GITHUB_OUTPUT
+
+    - name: Show doc version
+      shell: bash -l {0}
+      run: echo Building docs for version ${{ steps.docversion.outputs.doc_version }}
 
     - name: Build docs
       shell: bash -l {0}
