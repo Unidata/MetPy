@@ -9,6 +9,10 @@ inputs:
     description: 'Key to use for artifacts'
     required: false
     default: ''
+  make-targets:
+    description: 'Extra Makefile targets to build'
+    required: false
+    default: 'overridecheck'
 outputs:
   doc-version:
     description: 'What version the docs correspond to'
@@ -35,7 +39,7 @@ runs:
       run: |
         set -e -o pipefail
         pushd docs
-        make overridecheck html O=-W 2>&1 | tee ../build.log && popd || (popd && false)
+        make ${{ inputs.make-targets }} html O=-W 2>&1 | tee ../build.log && popd || (popd && false)
 
     - name: Run link checker
       # Running linkchecker separately so that we avoid problems with vendored LICENSE
