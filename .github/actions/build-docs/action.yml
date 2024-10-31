@@ -9,6 +9,10 @@ inputs:
     description: 'Key to use for artifacts'
     required: false
     default: ''
+  make-targets:
+    description: 'Extra Makefile targets to build'
+    required: false
+    default: 'overridecheck'
 outputs:
   doc-version:
     description: 'What version the docs correspond to'
@@ -23,7 +27,11 @@ runs:
     - name: Set doc version
       id: docversion
       shell: bash -l {0}
-      run: echo "doc_version=$(python -c 'import metpy,re; print(re.search(r"(\d+\.\d+)", metpy.__version__)[0])')" >> $GITHUB_OUTPUT
+      run: echo "doc_version=$(python -c 'import importlib.metadata,os,re; print(re.search(r"(\d+\.\d+)", importlib.metadata.version(os.environ["GITHUB_REPOSITORY"].split("/")[-1].lower()))[0])')" >> $GITHUB_OUTPUT
+
+    - name: Show doc version
+      shell: bash -l {0}
+      run: echo Building docs for version ${{ steps.docversion.outputs.doc_version }}
 
     - name: Build docs
       shell: bash -l {0}
@@ -35,7 +43,7 @@ runs:
       run: |
         set -e -o pipefail
         pushd docs
-        make overridecheck html O=-W 2>&1 | tee ../build.log && popd || (popd && false)
+        make ${{ inputs.make-targets }} html O=-W 2>&1 | tee ../build.log && popd || (popd && false)
 
     - name: Run link checker
       # Running linkchecker separately so that we avoid problems with vendored LICENSE

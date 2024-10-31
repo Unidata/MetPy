@@ -76,6 +76,7 @@ jobs:
         type: 'test'
         python-version: ${{ matrix.python-version }}
         old-build: ${{ matrix.no-extras != 'No Extras' && matrix.dep-versions == 'Minimum' }}
+        need-cartopy: ${{ matrix.no-extras != 'No Extras' }}
 
     - name: Run tests
       uses: ./.github/actions/run-tests
