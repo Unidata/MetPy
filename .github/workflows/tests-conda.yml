@@ -46,6 +46,7 @@ jobs:
       with:
         type: 'test'
         python-version: ${{ matrix.python-version }}
+        need-cartopy: true
 
     - name: Run tests
       uses: ./.github/actions/run-tests

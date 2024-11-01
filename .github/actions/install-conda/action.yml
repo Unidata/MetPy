@@ -7,6 +7,11 @@ inputs:
   python-version:
     description: 'What version of Python to use'
     required: true
+  need-cartopy:
+    description: 'Whether Cartopy support is needed'
+    required: false
+    default: 'false'
+
 runs:
   using: composite
   steps:
