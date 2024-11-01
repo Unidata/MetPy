@@ -32,6 +32,7 @@ runs:
       run: micromamba install --yes --file ci/${{ inputs.type }}_requirements.txt --file ci/extra_requirements.txt --file ci/requirements.txt
 
     - name: Download Cartopy Maps
+      if: ${{ inputs.need-cartopy == 'true' }}
       shell: bash -l {0}
       run: ci/download_cartopy_maps.py
 
