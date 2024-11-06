@@ -18,6 +18,8 @@ runs:
     - name: Set up Python ${{ inputs.python-version }}
       uses: mamba-org/setup-micromamba@v2
       with:
+        micromamba-version: 2.0.2-2
+        # Name is needed for caching
         environment-name: CI
         create-args: python=${{ inputs.python-version }}
         condarc: |
