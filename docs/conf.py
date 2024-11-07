@@ -519,12 +519,15 @@ def linkcode_resolve(domain, info):
     else:
         linespec = ""
 
-    fn = os.path.relpath(fn, start=os.path.dirname(metpy.__file__))
+    if 'metpy' in fn:
+        fn = os.path.relpath(fn, start=os.path.dirname(metpy.__file__))
 
-    if "+" in metpy.__version__:
-        return f"https://github.com/Unidata/MetPy/blob/main/src/metpy/{fn}{linespec}"
+        if "+" in metpy.__version__:
+            return f"https://github.com/Unidata/MetPy/blob/main/src/metpy/{fn}{linespec}"
+        else:
+            return (
+                f"https://github.com/Unidata/MetPy/blob/"
+                f"v{metpy.__version__}/src/metpy/{fn}{linespec}"
+            )
     else:
-        return (
-            f"https://github.com/Unidata/MetPy/blob/"
-            f"v{metpy.__version__}/src/metpy/{fn}{linespec}"
-        )
+        return None
