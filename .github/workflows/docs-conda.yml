@@ -27,6 +27,8 @@ jobs:
           - python-version: 3.11
             os: macOS
           - python-version: 3.12
+            os: Windows
+          - python-version: 3.13
             os: macOS
 
     steps:
