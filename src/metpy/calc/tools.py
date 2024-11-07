@@ -6,6 +6,7 @@ import contextlib
 import functools
 from inspect import Parameter, signature
 from operator import itemgetter
+import textwrap
 
 import numpy as np
 
@@ -982,32 +983,35 @@ def xarray_derivative_wrap(func):
 
 def _add_grid_params_to_docstring(docstring: str, orig_includes: dict) -> str:
     """Add documentation for some dynamically added grid parameters to the docstring."""
-    other_params = docstring.find('Other Parameters')
-    blank = docstring.find('\n\n', other_params)
+    other_params = 'Other Parameters'
+    other_ind = docstring.find(other_params)
+    indent = docstring.find('-', other_ind) - other_ind - len(other_params) - 1  # -1 for \n
+    blank = docstring.find('\n\n', other_ind)
 
     entries = {
         'longitude': """
-    longitude : `pint.Quantity`, optional
-        Longitude of data. Optional if `xarray.DataArray` with latitude/longitude coordinates
-        used as input. Also optional if parallel_scale and meridional_scale are given. If
-        otherwise omitted, calculation will be carried out on a Cartesian, rather than
-        geospatial, grid. Keyword-only argument.""",
+longitude : `pint.Quantity`, optional
+    Longitude of data. Optional if `xarray.DataArray` with latitude/longitude coordinates
+    used as input. Also optional if parallel_scale and meridional_scale are given. If
+    otherwise omitted, calculation will be carried out on a Cartesian, rather than
+    geospatial, grid. Keyword-only argument.""",
         'latitude': """
-    latitude : `pint.Quantity`, optional
-        Latitude of data. Optional if `xarray.DataArray` with latitude/longitude coordinates
-        used as input. Also optional if parallel_scale and meridional_scale are given. If
-        otherwise omitted, calculation will be carried out on a Cartesian, rather than
-        geospatial, grid. Keyword-only argument.""",
+latitude : `pint.Quantity`, optional
+    Latitude of data. Optional if `xarray.DataArray` with latitude/longitude coordinates
+    used as input. Also optional if parallel_scale and meridional_scale are given. If
+    otherwise omitted, calculation will be carried out on a Cartesian, rather than
+    geospatial, grid. Keyword-only argument.""",
         'crs': """
-    crs : `pyproj.crs.CRS`, optional
-        Coordinate Reference System of data. Optional if `xarray.DataArray` with MetPy CRS
-        used as input. Also optional if parallel_scale and meridional_scale are given. If
-        otherwise omitted, calculation will be carried out on a Cartesian, rather than
-        geospatial, grid. Keyword-only argument."""
+crs : `pyproj.crs.CRS`, optional
+    Coordinate Reference System of data. Optional if `xarray.DataArray` with MetPy CRS
+    used as input. Also optional if parallel_scale and meridional_scale are given. If
+    otherwise omitted, calculation will be carried out on a Cartesian, rather than
+    geospatial, grid. Keyword-only argument."""
     }
 
     return ''.join([docstring[:blank],
-                    *(entries[p] for p, included in orig_includes.items() if not included),
+                    *(textwrap.indent(entries[p], ' ' * indent)
+                      for p, included in orig_includes.items() if not included),
                     docstring[blank:]])
 
 
