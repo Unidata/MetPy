@@ -33,7 +33,7 @@ jobs:
         need-extras: true
         type: test
         version-file: Prerelease
-        python-version: 3.12
+        python-version: 3.13
 
     - name: Run tests
       id: tests
@@ -72,7 +72,7 @@ jobs:
       with:
         type: doc
         version-file: Prerelease
-        python-version: 3.12
+        python-version: 3.13
 
     - name: Build docs
       id: build

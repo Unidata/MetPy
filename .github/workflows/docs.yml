@@ -27,10 +27,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.10', 3.11]
+        python-version: ['3.10', 3.11, 3.12]
         check-links: [false]
         include:
-          - python-version: 3.12
+          - python-version: 3.13
             check-links: true
     outputs:
       doc-version: ${{ steps.build-docs.outputs.doc-version }}
@@ -72,7 +72,7 @@ jobs:
     - name: Download doc build
       uses: actions/download-artifact@v4
       with:
-        name: Linux-3.11-docs
+        name: Linux-3.13-docs
         path: ./docs/build/html
 
     # This overrides the version "dev" with the proper version if we're building off a
