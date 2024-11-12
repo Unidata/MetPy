@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Nov 06, 2024 at 18:41:25"/>
+    <meta name="docbuild:last-update" content="Nov 12, 2024 at 00:58:13"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.StationPlotLayout.html" />
 
   </head>
@@ -777,10 +777,10 @@ up of arrays based on a name) to be passed to <em class="xref py py-obj">plot()<
 <td><p>Add a numeric value to the station layout.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.clear" title="metpy.plots.StationPlotLayout.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
-<td><p></p></td>
+<td><p>Remove all items from the dict.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.copy" title="metpy.plots.StationPlotLayout.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p></p></td>
+<td><p>Return a shallow copy of the dict.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.fromkeys" title="metpy.plots.StationPlotLayout.fromkeys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fromkeys</span></code></a>([value])</p></td>
 <td><p>Create a new dictionary with keys from iterable and values set to value.</p></td>
@@ -789,10 +789,10 @@ up of arrays based on a name) to be passed to <em class="xref py py-obj">plot()<
 <td><p>Return the value for key if key is in the dictionary, else default.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.items" title="metpy.plots.StationPlotLayout.items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">items</span></code></a>()</p></td>
-<td><p></p></td>
+<td><p>Return a set-like object providing a view on the dict's items.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.keys" title="metpy.plots.StationPlotLayout.keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code></a>()</p></td>
-<td><p></p></td>
+<td><p>Return a set-like object providing a view on the dict's keys.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.names" title="metpy.plots.StationPlotLayout.names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">names</span></code></a>()</p></td>
 <td><p>Get the list of names used by the layout.</p></td>
@@ -813,7 +813,7 @@ up of arrays based on a name) to be passed to <em class="xref py py-obj">plot()<
 <td><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.values" title="metpy.plots.StationPlotLayout.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a>()</p></td>
-<td><p></p></td>
+<td><p>Return an object providing a view on the dict's values.</p></td>
 </tr>
 </tbody>
 </table>
@@ -841,7 +841,7 @@ code; this is useful for specifying things like color or line width.</p>
 a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
 <li><p><strong>v_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – The name of the parameter for the v-component for <em class="xref py py-obj">barbs</em>, which is used as
 a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
-<li><p><strong>units</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="(in pint v0.24.3.dev1+g79e636c)"><em>pint.Unit</em></a><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
+<li><p><strong>units</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="(in pint v0.24.4)"><em>pint.Unit</em></a><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
 conversion to a string. If not specified, no conversion is done.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s
 <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v3.9.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function.</p></li>
@@ -934,7 +934,7 @@ data container passed to <a class="reference internal" href="#metpy.plots.Statio
 <li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em> or </em><em>Callable</em><em>, </em><em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
 compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.13)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
 value and return a string. Defaults to ‘0.f’.</p></li>
-<li><p><strong>units</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="(in pint v0.24.3.dev1+g79e636c)"><em>pint.Unit</em></a><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
+<li><p><strong>units</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="(in pint v0.24.4)"><em>pint.Unit</em></a><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
 conversion to a string. If not specified, no conversion is done.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</p></li>
 </ul>
@@ -948,13 +948,15 @@ conversion to a string. If not specified, no conversion is done.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlotLayout.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None.</span>&#160; <span class="pre">Remove</span> <span class="pre">all</span> <span class="pre">items</span> <span class="pre">from</span> <span class="pre">D.</span></span></span><a class="headerlink" href="#metpy.plots.StationPlotLayout.clear" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.StationPlotLayout.clear" title="Link to this definition">#</a></dt>
+<dd><p>Remove all items from the dict.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlotLayout.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">shallow</span> <span class="pre">copy</span> <span class="pre">of</span> <span class="pre">D</span></span></span><a class="headerlink" href="#metpy.plots.StationPlotLayout.copy" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.StationPlotLayout.copy" title="Link to this definition">#</a></dt>
+<dd><p>Return a shallow copy of the dict.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlotLayout.fromkeys">
@@ -970,13 +972,15 @@ conversion to a string. If not specified, no conversion is done.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlotLayout.items">
-<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">items</span></span></span><a class="headerlink" href="#metpy.plots.StationPlotLayout.items" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.StationPlotLayout.items" title="Link to this definition">#</a></dt>
+<dd><p>Return a set-like object providing a view on the dict’s items.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlotLayout.keys">
-<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">keys</span></span></span><a class="headerlink" href="#metpy.plots.StationPlotLayout.keys" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.StationPlotLayout.keys" title="Link to this definition">#</a></dt>
+<dd><p>Return a set-like object providing a view on the dict’s keys.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlotLayout.names">
@@ -1040,8 +1044,9 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlotLayout.values">
-<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">an</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">values</span></span></span><a class="headerlink" href="#metpy.plots.StationPlotLayout.values" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.StationPlotLayout.values" title="Link to this definition">#</a></dt>
+<dd><p>Return an object providing a view on the dict’s values.</p>
+</dd></dl>
 
 </dd></dl>
 
