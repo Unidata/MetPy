@@ -227,6 +227,12 @@ html_theme_options = {
             'type': 'fontawesome',
         },
         {
+            'name': 'Bluesky',
+            'url': 'https://bsky.app/profile/metpy.bsky.social',
+            'icon': 'fa-brands fa-bluesky',
+            'type': 'fontawesome',
+        },
+        {
             'name': 'Twitter',
             'url': 'https://twitter.com/MetPy',
             'icon': 'fa-brands fa-twitter',
