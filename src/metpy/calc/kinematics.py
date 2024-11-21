@@ -567,20 +567,18 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
-    arg = (-ddx_theta * np.cos(psi) - ddy_theta * np.sin(psi)) / mag_theta
+    # We need to be careful to avoid division by zero.  When mag_theta
+    # is zero, the frontogenesis will also be zero.  The minus signs
+    # are omitted from the numerator since this expression is squared
+    # to compute the frontogenesis.
+    sin_beta = np.divide(ddx_theta * np.cos(psi) + ddy_theta * np.sin(psi), mag_theta,
+                         out=np.zeros_like(mag_theta), where=mag_theta != 0)
 
-    # A few problems may occur when calculating the argument to the arcsin function.
-    # First, we may have divided by zero, since a constant theta field would mean
-    # mag_theta is zero.  To counter this, we set the argument to zero in this case.
-    # Second, due to round-off error, the argument may be slightly outside the domain
-    # of arcsin.  To counter this, we use np.clip to force the argument to be an
-    # acceptable value.  With these adjustments, we can make sure beta doesn't end up
-    # with nans somewhere.
-    arg[mag_theta == 0] = 0
-    arg = np.clip(arg, -1, 1)
-    beta = np.arcsin(arg)
-
-    return 0.5 * mag_theta * (tdef * np.cos(2 * beta) - div)
+    # The textbook definition of frontogenesis includes the term
+    # cos(2*beta).  However, using trig identities, one can show that
+    # cos(2*beta) = 1 - 2 * sin(beta)**2, and the expression involving
+    # sin(beta) is more numerically stable.
+    return 0.5 * mag_theta * (tdef * (1 - 2 * sin_beta**2) - div)
 
 
 @exporter.export
