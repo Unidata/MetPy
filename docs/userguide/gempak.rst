@@ -544,7 +544,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">MAG(V)</td>
         <td class="tg-implemented">Magnitude of a vector</td>
-        <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.norm.html#numpy.linalg.norm">numpy.linalg.norm</a></td>
+        <td class="tg-implemented"><a href="https://numpy.org/doc/stable/reference/generated/numpy.hypot.html">numpy.hypot</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
