@@ -1,9 +1,5 @@
 name: Backport PRs
 
-permissions:
-  pull-requests: write
-  contents: write
-
 on:
   pull_request_target:
     types:
@@ -14,6 +10,10 @@ jobs:
   Backport:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged && contains( github.event.pull_request.labels.*.name, 'backport' )
+    permissions:
+      pull-requests: write
+      contents: write
+
     steps:
       - name: Checkout PR HEAD
         uses: actions/checkout@v4

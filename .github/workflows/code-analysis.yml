@@ -18,13 +18,13 @@ on:
   schedule:
     - cron: '0 8 * * 6'
 
-permissions:
-  contents: read
-  security-events: write
 
 jobs:
   CodeQL:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
 
     steps:
     - name: Checkout repository
