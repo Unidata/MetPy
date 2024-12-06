@@ -21,6 +21,7 @@ jobs:
       with:
         fetch-depth: 150
         fetch-tags: true
+        persist-credentials: false
 
     - name: Assemble test requirements
       run: |
@@ -61,6 +62,7 @@ jobs:
       with:
         fetch-depth: 150
         fetch-tags: true
+        persist-credentials: false
 
     - name: Assemble doc requirements
       run: |

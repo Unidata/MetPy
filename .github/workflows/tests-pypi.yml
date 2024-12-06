@@ -44,6 +44,7 @@ jobs:
       with:
         fetch-depth: 150
         fetch-tags: true
+        persist-credentials: false
 
     - name: Generate minimum dependencies
       if: ${{ matrix.dep-versions == 'Minimum' }}
@@ -94,6 +95,8 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Download coverage artifacts
         uses: actions/download-artifact@v4

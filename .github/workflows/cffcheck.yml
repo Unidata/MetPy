@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Check out a copy of the repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Check validity of CITATION.cff
         uses: citation-file-format/cffconvert-github-action@2.0.0
