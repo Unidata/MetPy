@@ -72,6 +72,7 @@ extras = [
 "Release Notes" = "https://github.com/Unidata/MetPy/releases"
 "Bug Tracker" = "https://github.com/Unidata/MetPy/issues"
 "Source Code" = "https://github.com/Unidata/MetPy"
+"Bluesky" = "https://bsky.app/profile/metpy.bsky.social"
 "Twitter" = "https://twitter.com/MetPy"
 "MetPy Mondays" = "https://www.youtube.com/playlist?list=PLQut5OXpV-0ir4IdllSt1iEZKTwFBa7kO"
 

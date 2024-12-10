@@ -20,6 +20,7 @@ of these, so you only need to pick one to share your problem. 😉
   Unidata's Python support email address.
 * [Gitter](https://gitter.im/Unidata/MetPy): text-based chat with the developers; sign in
   using GitHub or Twitter.
+* [MetPy on Bluesky](https://bsky.app/profile/metpy.bsky.social)
 * [MetPy on Twitter](https://twitter.com/MetPy)
 * [Unidata Python User’s Mailing List](https://www.unidata.ucar.edu/support/#mailinglists)
 
