@@ -37,6 +37,7 @@ jobs:
       with:
         fetch-depth: 150
         fetch-tags: true
+        persist-credentials: false
 
     - name: Install from Conda
       uses: ./.github/actions/install-conda

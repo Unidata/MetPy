@@ -6,12 +6,12 @@ on:
     types: [closed]
     branches: [main]
 
-permissions:
-  pull-requests: write
-  issues: write
-
 jobs:
   sync:
+    permissions:
+      pull-requests: write
+      issues: write
+
     name: Assign Latest Milestone
     runs-on: ubuntu-latest
     steps:

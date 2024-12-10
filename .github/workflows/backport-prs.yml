@@ -1,9 +1,5 @@
 name: Backport PRs
 
-permissions:
-  pull-requests: write
-  contents: write
-
 on:
   pull_request_target:
     types:
@@ -14,6 +10,13 @@ jobs:
   Backport:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged && contains( github.event.pull_request.labels.*.name, 'backport' )
+    permissions:
+      pull-requests: write
+      contents: write
+    env:
+      GH_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      GH_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+
     steps:
       - name: Checkout PR HEAD
         uses: actions/checkout@v4
@@ -22,7 +25,7 @@ jobs:
           fetch-depth: 100
 
       - name: Fetch PR merge base
-        run: git fetch --no-tags --depth=100 origin ${{ github.event.pull_request.base.sha }}
+        run: git fetch --no-tags --depth=100 origin "$GH_BASE_SHA"
 
       - name: Set up git
         run: |
@@ -38,7 +41,7 @@ jobs:
       - name: Apply PR commits to ${{ steps.get-branch.outputs.backport-branch}} branch
         run: |
           git checkout -b ${{ steps.get-branch.outputs.backport-branch}} origin/${{ steps.get-branch.outputs.backport-branch}}
-          git cherry-pick -x ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
+          git cherry-pick -x "$GH_BASE_SHA".."$GH_HEAD_SHA"
 
       - name: Create backport PR
         id: create-pr
