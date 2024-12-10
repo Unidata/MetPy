@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Nov 22, 2024 at 21:31:17"/>
+    <meta name="docbuild:last-update" content="Dec 10, 2024 at 18:32:34"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/userguide/apichange.html" />
 
   </head>
@@ -529,7 +529,7 @@ relevant breakages you might encounter.</p>
 <h2>Xarray support for function input/output<a class="headerlink" href="#xarray-support-for-function-input-output" title="Link to this heading">#</a></h2>
 <p>One of the most important changes you may run into is that many of the functions in
 <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> would have only returned <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> even when provided
-<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.10.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>. Now, MetPy will properly return a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.10.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataArray</span></code></a> when
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.11.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>. Now, MetPy will properly return a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.11.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataArray</span></code></a> when
 provided one where able, except where otherwise explicitly stated. See the
 <a class="reference internal" href="../tutorials/xarray_tutorial.html"><span class="doc">MetPy xarray tutorial</span></a> for more information.</p>
 </section>
