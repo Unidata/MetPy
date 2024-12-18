@@ -26,7 +26,8 @@ from metpy.testing import needs_cartopy, version_check
 from metpy.units import units
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance=2.58 if version_check('matplotlib<3.10') else 0.0081)
 @needs_cartopy
 def test_declarative_image():
     """Test making an image plot."""
@@ -474,7 +475,7 @@ def test_declarative_contour_convert_units():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=2.731 if version_check('matplotlib<3.9') else 0.246)
+                               tolerance=5.34 if version_check('matplotlib<3.10') else 0.246)
 @needs_cartopy
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
@@ -802,7 +803,8 @@ def test_colorfill_no_colorbar(cfeature):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=1.23)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance=1.389 if version_check('matplotlib<3.10') else 0.0012)
 @needs_cartopy
 def test_global():
     """Test that we can set global extent."""
@@ -824,7 +826,8 @@ def test_global():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance=5.101 if version_check('matplotlib<3.10') else 0.019)
 @needs_cartopy
 def test_latlon():
     """Test our handling of lat/lon information."""
