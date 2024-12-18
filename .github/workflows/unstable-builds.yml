@@ -35,6 +35,7 @@ jobs:
         type: test
         version-file: Prerelease
         python-version: 3.13
+        need-cartopy: true
 
     - name: Run tests
       id: tests
