@@ -37,9 +37,11 @@ with exporter:
     Cp_l = water_specific_heat = units.Quantity(4.2194, 'kJ / kg / K').to('J / kg / K')
     Lv = water_heat_vaporization = units.Quantity(2.50084e6, 'J / kg')
     Lf = water_heat_fusion = units.Quantity(3.337e5, 'J / kg')
+    Ls = water_heat_sublimation = Lv + Lf
     Cp_i = ice_specific_heat = units.Quantity(2090, 'J / kg / K')
     rho_i = density_ice = units.Quantity(917, 'kg / m^3')
     sat_pressure_0c = units.Quantity(6.112, 'millibar')
+    T0 = water_triple_point_temperature = units.Quantity(273.16, 'K')
 
     # Dry air
     Md = dry_air_molecular_weight = units.Quantity(28.96546e-3, 'kg / mol')
