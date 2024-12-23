@@ -30,6 +30,238 @@ exporter = Exporter(globals())
 
 
 @exporter.export
+@preprocess_and_wrap(wrap_like='specific_humidity')
+@check_units('[dimensionless]')
+def moist_air_gas_constant(specific_humidity):
+    r"""Calculate R_m, the specific gas constant for a parcel of moist air.
+
+    Parameters
+    ----------
+    specific_humidity : `pint.Quantity`
+
+    Returns
+    -------
+    `pint.Quantity`
+        Specific gas constant
+
+    Examples
+    --------
+    >>> from metpy.calc import moist_air_gas_constant
+    >>> from metpy.units import units
+    >>> moist_air_gas_constant(11 * units('g/kg'))
+    <Quantity(288.966723, 'joule / kelvin / kilogram')>
+
+    See Also
+    --------
+    moist_air_specific_heat_pressure, moist_air_poisson_exponent
+
+    Notes
+    -----
+    .. math:: R_m = (1 - q_v) R_a + q_v R_v
+
+    Eq 16, [Romps2017]_ using MetPy-defined constants in place of cited values.
+
+    """
+    return ((1 - specific_humidity) * mpconsts.dry_air_gas_constant
+            + specific_humidity * mpconsts.water_gas_constant)
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='specific_humidity')
+@check_units('[dimensionless]')
+def moist_air_specific_heat_pressure(specific_humidity):
+    r"""Calculate C_pm, the specific heat at constant pressure for a moist air parcel.
+
+    Parameters
+    ----------
+    specific_humidity : `pint.Quantity`
+
+    Returns
+    -------
+    `pint.Quantity`
+        Specific heat capacity of air at constant pressure
+
+    Examples
+    --------
+    >>> from metpy.calc import moist_air_specific_heat_pressure
+    >>> from metpy.units import units
+    >>> moist_air_specific_heat_pressure(11 * units('g/kg'))
+    <Quantity(1014.07575, 'joule / kelvin / kilogram')>
+
+    See Also
+    --------
+    moist_air_gas_constant, moist_air_poisson_exponent
+
+    Notes
+    -----
+    .. math:: c_{pm} = (1 - q_v) c_{pa} + q_v c_{pv}
+
+    Eq 17, [Romps2017]_ using MetPy-defined constants in place of cited values.
+
+    """
+    return ((1 - specific_humidity) * mpconsts.dry_air_spec_heat_press
+            + specific_humidity * mpconsts.wv_specific_heat_press)
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='specific_humidity')
+@process_units(
+    input_dimensionalities={'specific_humidity': 'dimensionless'},
+    output_dimensionalities='[dimensionless]'
+)
+def moist_air_poisson_exponent(specific_humidity):
+    r"""Calculate kappa_m, the Poisson exponent for a moist air parcel.
+
+    Parameters
+    ----------
+    specific_humidity : `pint.Quantity`
+
+    Returns
+    -------
+    `pint.Quantity`
+        Poisson exponent of moist air parcel
+
+    Examples
+    --------
+    >>> from metpy.calc import moist_air_poisson_exponent
+    >>> from metpy.units import units
+    >>> moist_air_poisson_exponent(11 * units('g/kg'))
+    <Quantity(0.284955757, 'dimensionless')>
+
+    See Also
+    --------
+    moist_air_gas_constant, moist_air_specific_heat_pressure
+
+    """
+    return (moist_air_gas_constant._nounit(specific_humidity)
+            / moist_air_specific_heat_pressure._nounit(specific_humidity))
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='temperature')
+@check_units('[temperature]')
+def water_latent_heat_vaporization(temperature):
+    r"""Calculate the latent heat of vaporization for water.
+
+    Accounts for variations in latent heat across valid temperature range.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+
+    Returns
+    -------
+    `pint.Quantity`
+        Latent heat of vaporization
+
+    Examples
+    --------
+    >>> from metpy.calc import water_latent_heat_vaporization
+    >>> from metpy.units import units
+    >>> water_latent_heat_vaporization(20 * units.degC)
+    <Quantity(2453677.15, 'joule / kilogram')>
+
+    See Also
+    --------
+    water_latent_heat_sublimation, water_latent_heat_melting
+
+    Notes
+    -----
+    Assumption of constant :math:`C_{pv}` limits validity to :math:`0` -- :math:`100^{\circ} C`
+    range.
+
+    .. math:: L = L_0 - (c_{pl} - c_{pv}) (T - T_0)
+
+    Eq 15, [Ambaum2020]_, using MetPy-defined constants in place of cited values.
+
+    """
+    return (mpconsts.water_heat_vaporization
+            - (mpconsts.water_specific_heat - mpconsts.wv_specific_heat_press)
+            * (temperature - mpconsts.water_triple_point_temperature))
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='temperature')
+@check_units('[temperature]')
+def water_latent_heat_sublimation(temperature):
+    r"""Calculate the latent heat of sublimation for water.
+
+    Accounts for variations in latent heat across valid temperature range.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+
+    Returns
+    -------
+    `pint.Quantity`
+        Latent heat of vaporization
+
+    Examples
+    --------
+    >>> from metpy.calc import water_latent_heat_sublimation
+    >>> from metpy.units import units
+    >>> water_latent_heat_sublimation(-15 * units.degC)
+    <Quantity(2837991.13, 'joule / kilogram')>
+
+    See Also
+    --------
+    water_latent_heat_vaporization, water_latent_heat_melting
+
+    Notes
+    -----
+    .. math:: L_s = L_{s0} - (c_{pl} - c_{pv}) (T - T_0)
+
+    Eq 18, [Ambaum2020]_, using MetPy-defined constants in place of cited values.
+
+    """
+    return (mpconsts.water_heat_sublimation
+            - (mpconsts.ice_specific_heat - mpconsts.wv_specific_heat_press)
+            * (temperature - mpconsts.water_triple_point_temperature))
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='temperature')
+@check_units('[temperature]')
+def water_latent_heat_melting(temperature):
+    r"""Calculate the latent heat of melting for water.
+
+    Accounts for variations in latent heat across valid temperature range.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+
+    Returns
+    -------
+    `pint.Quantity`
+        Latent heat of vaporization
+
+    Examples
+    --------
+    >>> from metpy.calc import water_latent_heat_melting
+    >>> from metpy.units import units
+    >>> water_latent_heat_melting(-15 * units.degC)
+    <Quantity(365662.294, 'joule / kilogram')>
+
+    See Also
+    --------
+    water_latent_heat_vaporization, water_latent_heat_sublimation
+
+    Notes
+    -----
+    .. math:: L_m = L_{m0} + (c_{pl} - c_{pi}) (T - T_0)
+
+    Body text below Eq 20, [Ambaum2020]_, derived from Eq 15, Eq 18.
+    Uses MetPy-defined constants in place of cited values.
+
+    """
+    return (mpconsts.water_heat_fusion
+            - (mpconsts.water_specific_heat - mpconsts.ice_specific_heat)
+            * (temperature - mpconsts.water_triple_point_temperature))
+
+
+@exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'dewpoint'))
 @check_units('[temperature]', '[temperature]')
 def relative_humidity_from_dewpoint(temperature, dewpoint):
