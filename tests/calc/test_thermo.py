@@ -20,11 +20,13 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         isentropic_interpolation, isentropic_interpolation_as_dataset, k_index,
                         lcl, lfc, lifted_index, mixed_layer, mixed_layer_cape_cin,
                         mixed_parcel, mixing_ratio, mixing_ratio_from_relative_humidity,
-                        mixing_ratio_from_specific_humidity, moist_lapse, moist_static_energy,
-                        most_unstable_cape_cin, most_unstable_parcel, parcel_profile,
-                        parcel_profile_with_lcl, parcel_profile_with_lcl_as_dataset,
-                        potential_temperature, psychrometric_vapor_pressure_wet,
-                        relative_humidity_from_dewpoint, relative_humidity_from_mixing_ratio,
+                        mixing_ratio_from_specific_humidity, moist_air_gas_constant,
+                        moist_air_poisson_exponent, moist_air_specific_heat_pressure,
+                        moist_lapse, moist_static_energy, most_unstable_cape_cin,
+                        most_unstable_parcel, parcel_profile, parcel_profile_with_lcl,
+                        parcel_profile_with_lcl_as_dataset, potential_temperature,
+                        psychrometric_vapor_pressure_wet, relative_humidity_from_dewpoint,
+                        relative_humidity_from_mixing_ratio,
                         relative_humidity_from_specific_humidity,
                         relative_humidity_wet_psychrometric,
                         saturation_equivalent_potential_temperature, saturation_mixing_ratio,
@@ -36,11 +38,62 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         vapor_pressure, vertical_totals, vertical_velocity,
                         vertical_velocity_pressure, virtual_potential_temperature,
                         virtual_temperature, virtual_temperature_from_dewpoint,
-                        wet_bulb_potential_temperature, wet_bulb_temperature)
+                        water_latent_heat_melting, water_latent_heat_sublimation,
+                        water_latent_heat_vaporization, wet_bulb_potential_temperature,
+                        wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings, galvez_davison_index
+from metpy.constants import Cp_d, Lf, Ls, Lv, Rd, T0
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_nan,
                            version_check)
 from metpy.units import is_quantity, masked_array, units
+
+
+def test_moist_air_gas_constant():
+    """Test calculation of gas constant for moist air."""
+    q = 9 * units('g/kg')
+    assert_almost_equal(moist_air_gas_constant(q), 288.62 * units('J / kg / K'), 2)
+    assert_almost_equal(moist_air_gas_constant(0), Rd)
+
+
+def test_moist_air_specific_heat_pressure():
+    """Test calculation of specific heat for moist air."""
+    q = 9 * units('g/kg')
+    assert_almost_equal(moist_air_specific_heat_pressure(q), 1012.36 * units('J / kg /K'), 2)
+    assert_almost_equal(moist_air_specific_heat_pressure(0), Cp_d)
+
+
+def test_moist_air_poisson_exponent():
+    """Test calculation of kappa for moist air."""
+    q = 9 * units('g/kg')
+    assert_almost_equal(moist_air_poisson_exponent(q), 0.2851, 3)
+    assert_almost_equal(moist_air_poisson_exponent(0), kappa)
+
+
+def test_water_latent_heat_vaporization():
+    """Test temperature-dependent calculation of latent heat of vaporization for water."""
+    temperature = 300 * units.K
+    # Divide out sig figs in results for decimal comparison
+    assert_almost_equal(water_latent_heat_vaporization(temperature) / 10**6,
+                        2.4375 * units('J / kg'), 4)
+    assert_almost_equal(water_latent_heat_vaporization(T0), Lv)
+
+
+def test_water_latent_heat_sublimation():
+    """Test temperature-dependent calculation of latent heat of sublimation for water."""
+    temperature = 233 * units.K
+    # Divide out sig figs in results for decimal comparison
+    assert_almost_equal(water_latent_heat_sublimation(temperature) / 10**6,
+                        2.8438 * units('J / kg'), 4)
+    assert_almost_equal(water_latent_heat_sublimation(T0), Ls)
+
+
+def test_water_latent_heat_melting():
+    """Test temperature-dependent calculation of latent heat of melting for water."""
+    temperature = 233 * units.K
+    # Divide out sig figs in results for decimal comparison
+    assert_almost_equal(water_latent_heat_melting(temperature) / 10**6,
+                        0.4192 * units('J / kg'), 4)
+    assert_almost_equal(water_latent_heat_melting(T0), Lf)
 
 
 def test_relative_humidity_from_dewpoint():
