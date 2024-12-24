@@ -31,7 +31,9 @@ exporter = Exporter(globals())
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='specific_humidity')
-@check_units('[dimensionless]')
+@process_units(input_dimensionalities={'specific_humidity': 'dimensionless'},
+               output_dimensionalities='[specific_heat_capacity]',
+               output_to='J K**-1 kg**-1 ')
 def moist_air_gas_constant(specific_humidity):
     r"""Calculate R_m, the specific gas constant for a parcel of moist air.
 
@@ -62,13 +64,15 @@ def moist_air_gas_constant(specific_humidity):
     Eq 16, [Romps2017]_ using MetPy-defined constants in place of cited values.
 
     """
-    return ((1 - specific_humidity) * mpconsts.dry_air_gas_constant
-            + specific_humidity * mpconsts.water_gas_constant)
+    return ((1 - specific_humidity) * mpconsts.nounit.Rd
+            + specific_humidity * mpconsts.nounit.Rv)
 
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='specific_humidity')
-@check_units('[dimensionless]')
+@process_units(input_dimensionalities={'specific_humidity': 'dimensionless'},
+               output_dimensionalities='[specific_heat_capacity]',
+               output_to='J K**-1 kg**-1 ')
 def moist_air_specific_heat_pressure(specific_humidity):
     r"""Calculate C_pm, the specific heat at constant pressure for a moist air parcel.
 
@@ -99,8 +103,8 @@ def moist_air_specific_heat_pressure(specific_humidity):
     Eq 17, [Romps2017]_ using MetPy-defined constants in place of cited values.
 
     """
-    return ((1 - specific_humidity) * mpconsts.dry_air_spec_heat_press
-            + specific_humidity * mpconsts.wv_specific_heat_press)
+    return ((1 - specific_humidity) * mpconsts.nounit.Cp_d
+            + specific_humidity * mpconsts.nounit.Cp_v)
 
 
 @exporter.export
@@ -139,7 +143,9 @@ def moist_air_poisson_exponent(specific_humidity):
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature')
-@check_units('[temperature]')
+@process_units(input_dimensionalities={'temperature': '[temperature]'},
+               output_dimensionalities='[specific_enthalpy]',
+               output_to='J kg**-1')
 def water_latent_heat_vaporization(temperature):
     r"""Calculate the latent heat of vaporization for water.
 
@@ -175,14 +181,16 @@ def water_latent_heat_vaporization(temperature):
     Eq 15, [Ambaum2020]_, using MetPy-defined constants in place of cited values.
 
     """
-    return (mpconsts.water_heat_vaporization
-            - (mpconsts.water_specific_heat - mpconsts.wv_specific_heat_press)
-            * (temperature - mpconsts.water_triple_point_temperature))
+    return (mpconsts.nounit.Lv
+            - (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v)
+            * (temperature - mpconsts.nounit.T0))
 
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature')
-@check_units('[temperature]')
+@process_units(input_dimensionalities={'temperature': '[temperature]'},
+               output_dimensionalities='[specific_enthalpy]',
+               output_to='J kg**-1')
 def water_latent_heat_sublimation(temperature):
     r"""Calculate the latent heat of sublimation for water.
 
@@ -215,14 +223,16 @@ def water_latent_heat_sublimation(temperature):
     Eq 18, [Ambaum2020]_, using MetPy-defined constants in place of cited values.
 
     """
-    return (mpconsts.water_heat_sublimation
-            - (mpconsts.ice_specific_heat - mpconsts.wv_specific_heat_press)
-            * (temperature - mpconsts.water_triple_point_temperature))
+    return (mpconsts.nounit.Ls
+            - (mpconsts.nounit.Cp_i - mpconsts.nounit.Cp_v)
+            * (temperature - mpconsts.nounit.T0))
 
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature')
-@check_units('[temperature]')
+@process_units(input_dimensionalities={'temperature': '[temperature]'},
+               output_dimensionalities='[specific_enthalpy]',
+               output_to='J kg**-1')
 def water_latent_heat_melting(temperature):
     r"""Calculate the latent heat of melting for water.
 
@@ -256,9 +266,9 @@ def water_latent_heat_melting(temperature):
     Uses MetPy-defined constants in place of cited values.
 
     """
-    return (mpconsts.water_heat_fusion
-            - (mpconsts.water_specific_heat - mpconsts.ice_specific_heat)
-            * (temperature - mpconsts.water_triple_point_temperature))
+    return (mpconsts.nounit.Lf
+            - (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_i)
+            * (temperature - mpconsts.nounit.T0))
 
 
 @exporter.export
