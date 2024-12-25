@@ -1541,7 +1541,7 @@ def saturation_vapor_pressure(temperature):
     >>> from metpy.calc import saturation_vapor_pressure
     >>> from metpy.units import units
     >>> saturation_vapor_pressure(25 * units.degC).to('hPa')
-    <Quantity(31.6742944, 'hectopascal')>
+    <Quantity(31.623456, 'hectopascal')>
 
     See Also
     --------
@@ -1552,14 +1552,21 @@ def saturation_vapor_pressure(temperature):
     Instead of temperature, dewpoint may be used in order to calculate
     the actual (ambient) water vapor (partial) pressure.
 
-    The formula used is that from [Bolton1980]_ for T in degrees Celsius:
-
-    .. math:: 6.112 e^\frac{17.67T}{T + 243.5}
+    Implemented solution from [Ambaum2020]_, Eq. 13,
+    .. math:: e = e_{s0} \frac{T_0}{T}^{(c_{pl} - c_{pv}) / R_v} \exp{
+    \frac{L_0}{R_v T_0} - \frac{L}{R_v T}}
 
     """
-    # Converted from original in terms of C to use kelvin.
-    return mpconsts.nounit.sat_pressure_0c * np.exp(
-        17.67 * (temperature - 273.15) / (temperature - 29.65)
+    latent_heat = water_latent_heat_vaporization._nounit(temperature)
+    temp_ratio = mpconsts.nounit.T0 / temperature
+    heat_power = (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
+    exp_term = ((mpconsts.nounit.Lv / mpconsts.nounit.T0 - latent_heat / temperature)
+                / mpconsts.nounit.Rv)
+
+    return (
+        mpconsts.nounit.sat_pressure_0c
+        * temp_ratio ** heat_power
+        * np.exp(exp_term)
     )
 
 
