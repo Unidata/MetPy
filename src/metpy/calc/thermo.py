@@ -14,6 +14,7 @@ except ImportError:
 
 import scipy.integrate as si
 import scipy.optimize as so
+from scipy.special import lambertw
 import xarray as xr
 
 from .exceptions import InvalidSoundingError
@@ -276,7 +277,9 @@ def water_latent_heat_melting(temperature):
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'dewpoint'))
-@check_units('[temperature]', '[temperature]')
+@process_units(input_dimensionalities={'temperature': '[temperature]',
+                                       'dewpoint': '[temperature]'},
+               output_dimensionalities='[dimensionless]')
 def relative_humidity_from_dewpoint(temperature, dewpoint, *, phase='liquid'):
     r"""Calculate the relative humidity.
 
@@ -321,8 +324,8 @@ def relative_humidity_from_dewpoint(temperature, dewpoint, *, phase='liquid'):
 
     """
     validate_choice({'liquid', 'solid', 'auto'}, phase=phase)
-    e = saturation_vapor_pressure(dewpoint, phase=phase)
-    e_s = saturation_vapor_pressure(temperature, phase=phase)
+    e = saturation_vapor_pressure._nounit(dewpoint, phase=phase)
+    e_s = saturation_vapor_pressure._nounit(temperature, phase=phase)
     return e / e_s
 
 
@@ -657,7 +660,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     {'pressure': '[pressure]', 'temperature': '[temperature]', 'dewpoint': '[temperature]'},
     ('[pressure]', '[temperature]')
 )
-def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
+def lcl(pressure, temperature, dewpoint, max_iters=None, eps=None):
     r"""Calculate the lifted condensation level (LCL) from the starting point.
 
     The starting state for the parcel is defined by `temperature`, `dewpoint`,
@@ -683,14 +686,6 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     `pint.Quantity`
         LCL temperature
 
-    Other Parameters
-    ----------------
-    max_iters : int, optional
-        The maximum number of iterations to use in calculation, defaults to 50.
-
-    eps : float, optional
-        The desired relative error in the calculated value, defaults to 1e-5.
-
     Examples
     --------
     >>> from metpy.calc import lcl
@@ -704,39 +699,40 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 
     Notes
     -----
-    This function is implemented using an iterative approach to solve for the
-    LCL. The basic algorithm is:
-
-    1. Find the dewpoint from the LCL pressure and starting mixing ratio
-    2. Find the LCL pressure from the starting temperature and dewpoint
-    3. Iterate until convergence
-
-    The function is guaranteed to finish by virtue of the `max_iters` counter.
+    From [Romps2017]_, this directly solves for the temperature at the LCL, Eq 22a,
+    .. math:: T_{LCL} = c [W_{-1}(RH_l^{1/a} c \exp{c})]^{-1} T
+    and similarly for pressure at the LCL, Eq 22b,
+    .. math:: p_{LCL} = p \left( \frac{T_{LCL}}{T} \right)^{c_{pm} / R_m}
+    where :math:`a` (Eq 22d), :math:`b` (Eq 22e), and :math:`c` (Eq 22f) are derived constants,
+    and :math:`W_{-1}` is the :math:`k=-1` branch of the Lambert :math:`W` function.
 
     .. versionchanged:: 1.0
        Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
-    def _lcl_iter(p, p0, w, t):
-        nonlocal nan_mask
-        td = globals()['dewpoint']._nounit(vapor_pressure._nounit(p, w))
-        p_new = (p0 * (td / t) ** (1. / mpconsts.nounit.kappa))
-        nan_mask = nan_mask | np.isnan(p_new)
-        return np.where(np.isnan(p_new), p, p_new)
+    if max_iters or eps:
+        _warnings.warn(
+            'max_iters, eps arguments unused and will be deprecated in a future version.',
+            PendingDeprecationWarning)
 
-    # Handle nans by creating a mask that gets set by our _lcl_iter function if it
-    # ever encounters a nan, at which point pressure is set to p, stopping iteration.
-    nan_mask = False
-    w = mixing_ratio._nounit(saturation_vapor_pressure._nounit(dewpoint), pressure)
-    lcl_p = so.fixed_point(_lcl_iter, pressure, args=(pressure, w, temperature),
-                           xtol=eps, maxiter=max_iters)
-    lcl_p = np.where(nan_mask, np.nan, lcl_p)
+    q = specific_humidity_from_dewpoint._nounit(pressure, dewpoint, phase='liquid')
+    moist_heat_ratio = (moist_air_specific_heat_pressure._nounit(q)
+                        / moist_air_gas_constant._nounit(q))
+    spec_heat_diff = mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v
 
-    # np.isclose needed if surface is LCL due to precision error with np.log in dewpoint.
-    # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
-    lcl_p = np.where(np.isclose(lcl_p, pressure), pressure, lcl_p)
+    a = moist_heat_ratio + spec_heat_diff / mpconsts.nounit.Rv
+    b = (-(mpconsts.nounit.Lv + spec_heat_diff * mpconsts.nounit.T0)
+         / (mpconsts.nounit.Rv * temperature))
+    c = b / a
 
-    return lcl_p, globals()['dewpoint']._nounit(vapor_pressure._nounit(lcl_p, w))
+    w_minus1 = lambertw(
+        (relative_humidity_from_dewpoint._nounit(temperature, dewpoint, phase='liquid')
+         ** (1 / a) * c * np.exp(c)), k=-1).real
+
+    t_lcl = c / w_minus1 * temperature
+    p_lcl = pressure * (t_lcl / temperature) ** moist_heat_ratio
+
+    return p_lcl, t_lcl
 
 
 @exporter.export
