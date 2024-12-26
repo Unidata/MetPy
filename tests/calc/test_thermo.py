@@ -15,7 +15,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         brunt_vaisala_period, cape_cin, ccl, cross_totals, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
                         downdraft_cape, dry_lapse, dry_static_energy, el,
-                        equivalent_potential_temperature, exner_function,
+                        equivalent_potential_temperature, exner_function, galvez_davison_index,
                         gradient_richardson_number, InvalidSoundingError,
                         isentropic_interpolation, isentropic_interpolation_as_dataset, k_index,
                         lcl, lfc, lifted_index, mixed_layer, mixed_layer_cape_cin,
@@ -41,8 +41,8 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         water_latent_heat_melting, water_latent_heat_sublimation,
                         water_latent_heat_vaporization, wet_bulb_potential_temperature,
                         wet_bulb_temperature)
-from metpy.calc.thermo import _find_append_zero_crossings, galvez_davison_index
-from metpy.constants import Cp_d, Lf, Ls, Lv, Rd, T0
+from metpy.calc.thermo import _find_append_zero_crossings
+from metpy.constants import Cp_d, kappa, Lf, Ls, Lv, Rd, T0
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_nan,
                            version_check)
 from metpy.units import is_quantity, masked_array, units
