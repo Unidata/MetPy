@@ -59,13 +59,14 @@ def moist_air_gas_constant(specific_humidity):
 
     Notes
     -----
+    Adapted from
+
     .. math:: R_m = (1 - q_v) R_a + q_v R_v
 
     Eq 16, [Romps2017]_ using MetPy-defined constants in place of cited values.
 
     """
-    return ((1 - specific_humidity) * mpconsts.nounit.Rd
-            + specific_humidity * mpconsts.nounit.Rv)
+    return mpconsts.nounit.Rd + specific_humidity * (mpconsts.nounit.Rv - mpconsts.nounit.Rd)
 
 
 @exporter.export
@@ -98,13 +99,15 @@ def moist_air_specific_heat_pressure(specific_humidity):
 
     Notes
     -----
+    Adapted from
+
     .. math:: c_{pm} = (1 - q_v) c_{pa} + q_v c_{pv}
 
     Eq 17, [Romps2017]_ using MetPy-defined constants in place of cited values.
 
     """
-    return ((1 - specific_humidity) * mpconsts.nounit.Cp_d
-            + specific_humidity * mpconsts.nounit.Cp_v)
+    return (mpconsts.nounit.Cp_d
+            + specific_humidity * (mpconsts.nounit.Cp_v - mpconsts.nounit.Cp_d))
 
 
 @exporter.export
