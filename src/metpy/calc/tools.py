@@ -8,6 +8,7 @@ from inspect import Parameter, signature
 from operator import itemgetter
 import textwrap
 
+from dataclasses import dataclass
 import numpy as np
 
 # Can drop fallback once we rely on numpy>=2
@@ -1946,3 +1947,53 @@ def _remove_nans(*variables):
     for v in variables:
         ret.append(v[~mask])
     return ret
+
+
+@exporter.export
+def bounding_box_mask(data_array, min_lat, max_lat, min_lon, max_lon):
+    """Construct  a bounding box mask  within the specified coordinates.
+
+    All values that satisfy the condition below will have 1 in the mask
+    and others zero.
+    """
+    mask = ((data_array.latitude <= max_lat) & (data_array.latitude >= min_lat)
+            & (data_array.longitude <= max_lon) & (data_array.longitude >= min_lon))
+    data_mask = data_array.where(mask)
+    data_mask = data_mask.fillna(0.0)
+    return data_mask
+
+
+@exporter.export
+def find_bounding_box_indices(data_mask, min_lat, max_lat, min_lon, max_lon):
+    """Returns the array indices of a  bounding box."""
+    
+    @dataclass
+    class BoundingBoxIndices:
+        x_ll: int = None
+        x_ur: int = None
+        y_ll: int = None
+        y_ur: int = None
+    x_ll = list(data_mask.longitude.values).index(min_lon)
+    x_ur = list(data_mask.longitude.values).index(max_lon)
+    y_ll = list(data_mask.latitude.values).index(min_lat)
+    y_ur = list(data_mask.latitude.values).index(max_lat)
+    bounding_box_indices = BoundingBoxIndices(x_ll, x_ur, y_ll, y_ur)
+    return bounding_box_indices
+
+
+@exporter.export
+def get_vectorized_array_indices(i_bb_indices):
+    """Returns the vectorization indices for  inner for loop in the
+    wind field reconstruction method.
+    """
+    i_x_ll = i_bb_indices.x_ll
+    i_x_ur = i_bb_indices.x_ur
+    i_y_ll = i_bb_indices.y_ll
+    i_y_ur = i_bb_indices.y_ur
+    x = np.abs(i_x_ll - i_x_ur)
+    y = np.abs(i_y_ll - i_y_ur)
+    xindex = np.linspace(i_x_ll, i_x_ur, num=x * y, endpoint=False, dtype=np.int32)
+    yindex = np.linspace(i_y_ur, i_y_ll, num=y * x, endpoint=False, dtype=np.int32)
+    xindex = xindex.reshape((y, x), order='F')
+    yindex = yindex.reshape((y, x), order='C')
+    return [xindex, yindex]

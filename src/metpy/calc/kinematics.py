@@ -3,10 +3,10 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of kinematic parameters (e.g. divergence or vorticity)."""
 import numpy as np
-
+import xarray as xa
 from . import coriolis_parameter
-from .tools import (first_derivative, geospatial_gradient, get_layer_heights,
-                    parse_grid_arguments, vector_derivative)
+from .tools import (first_derivative, geospatial_gradient, get_vectorized_array_indices,
+                    get_layer_heights, parse_grid_arguments, vector_derivative)
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
@@ -1439,3 +1439,119 @@ def geospatial_laplacian(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
                                          meridional_scale=meridional_scale)
     return divergence(grad_u, grad_y, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
                       parallel_scale=parallel_scale, meridional_scale=meridional_scale)
+
+
+@exporter.export
+@parse_grid_arguments
+def rotational_wind_from_inversion(umask, vmask, vortmask, dx, dy, o_bb_indices, i_bb_indices):
+    r"""Calculate reconstructed rotational wind field from vorticity.
+
+    Parameters
+    ----------
+    vortmask : 'xarray DataArray'  subset of the original vorticity for the entire globe
+    dx : `pint.Quantity`,required
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    dy : `pint.Quantity`, required
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    o_bb_indices : contains the x and y lower left and upper right indices
+    i_bb_indices : contains the x and y lower left and upper right indices
+    """
+    upsi = xa.zeros_like(umask)
+    vpsi = xa.zeros_like(vmask)
+    dx1 = dx.magnitude
+    dy1 = dy.magnitude
+    [xindex, yindex] = get_vectorized_array_indices(i_bb_indices)
+    iindex = np.zeros_like(yindex)
+    jindex = np.zeros_like(yindex)
+    o_x_ll = o_bb_indices.x_ll
+    o_x_ur = o_bb_indices.x_ur
+    o_y_ll = o_bb_indices.y_ll
+    o_y_ur = o_bb_indices.y_ur
+    x_ll = i_bb_indices.x_ll
+    x_ur = i_bb_indices.x_ur
+    y_ll = i_bb_indices.y_ll
+    y_ur = i_bb_indices.y_ur
+    vortmask1 = vortmask.values
+    for i in range(o_x_ll, o_x_ur):
+        for j in range(o_y_ur, o_y_ll):
+            iindex[:, :] = i
+            jindex[:, :] = j
+            xdiff = (iindex - xindex) * dx1[y_ur:y_ll, x_ll:x_ur]
+            ydiff = (jindex - yindex) * dy1[y_ur:y_ll, x_ll:x_ur]
+            rsq = xdiff * xdiff + ydiff * ydiff
+            upsi[j, i] = np.where(rsq > 0., vortmask1[y_ur:y_ll, x_ll:x_ur] * -1.0 * (
+                ydiff / rsq) * dx1[y_ur:y_ll, x_ll:x_ur] * dy1[y_ur:y_ll,
+                                                               x_ll:x_ur], 0.0).sum()
+            vpsi[j, i] = np.where(rsq > 0., vortmask1[y_ur:y_ll, x_ll:x_ur] * (
+                xdiff / rsq) * dx1[y_ur:y_ll, x_ll:x_ur] * dy1[y_ur:y_ll,
+                                                               x_ll:x_ur], 0.0).sum()
+    upsi[:, :] = (1 / (2 * np.pi)) * upsi[:, :]
+    vpsi[:, :] = (1 / (2 * np.pi)) * vpsi[:, :]
+
+    return upsi, vpsi
+
+
+@exporter.export
+def divergent_wind_from_inversion(umask, vmask, divmask, dx, dy, o_bb_indices, i_bb_indices):
+    r"""Calculate reconstructed divergent wind field from divergence.
+
+    Parameters
+    ----------
+    divmask : 'xarray DataArray'  subset of the original vorticity for the entire globe
+    dx : `pint.Quantity`,required
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    dy : `pint.Quantity`, required
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.
+        Keyword-only argument.
+    o_bb_indices : contains the x and y lower left and upper right indices
+    i_bb_indices : contains the x and y lower left and upper right indices
+    """
+    uchi = xa.zeros_like(umask)
+    vchi = xa.zeros_like(vmask)
+    dx1 = dx.magnitude
+    dy1 = dy.magnitude
+    divmask1 = divmask.values
+    [xindex, yindex] = get_vectorized_array_indices(i_bb_indices)
+    iindex = np.zeros_like(yindex)
+    jindex = np.zeros_like(yindex)
+    o_x_ll = o_bb_indices.x_ll
+    o_x_ur = o_bb_indices.x_ur
+    o_y_ll = o_bb_indices.y_ll
+    o_y_ur = o_bb_indices.y_ur
+    x_ll = i_bb_indices.x_ll
+    x_ur = i_bb_indices.x_ur
+    y_ll = i_bb_indices.y_ll
+    y_ur = i_bb_indices.y_ur
+    for i in range(o_x_ll, o_x_ur):
+        for j in range(o_y_ur, o_y_ll):
+            iindex[:, :] = i
+            jindex[:, :] = j
+            xdiff = (iindex - xindex) * dx1[y_ur:y_ll, x_ll:x_ur]
+            ydiff = (jindex - yindex) * dy1[y_ur:y_ll, x_ll:x_ur]
+            rsq = xdiff * xdiff + ydiff * ydiff
+            uchi[j, i] = np.where(rsq > 0., divmask1[y_ur:y_ll, x_ll:x_ur] * (
+                xdiff / rsq) * dx1[y_ur:y_ll, x_ll:x_ur] * dy1[y_ur:y_ll,
+                                                               x_ll:x_ur], 0.0).sum()
+            vchi[j, i] = np.where(rsq > 0., divmask1[y_ur:y_ll, x_ll:x_ur] * (
+                ydiff / rsq) * dx1[y_ur:y_ll, x_ll:x_ur] * dy1[y_ur:y_ll,
+                                                               x_ll:x_ur], 0.0).sum()
+
+    uchi[:, :] = (1 / (2 * np.pi)) * uchi[:, :]
+    vchi[:, :] = (1 / (2 * np.pi)) * vchi[:, :]
+
+    return uchi, vchi
