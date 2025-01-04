@@ -114,6 +114,11 @@ References
 .. [Holton2004] Holton, J. R., 2004: *An Introduction to Dynamic Meteorology*. 4th ed.
            Academic Press, 535 pp.
 
+.. [Huber2021] Huber, S., 2020: Persistent Homology in Data Science.
+           *Proc. Int. Data Sci. Conf.*, doi:`10.1007/978-3-658-32182-6_13
+           <https://doi.org/10.1007/978-3-658-32182-6_13>`_.
+           `[PDF] <https://www.sthu.org/research/publications/files/Hub20.pdf>`_
+
 .. [IAPWS1995] The International Association for the Properties of Water and Steam, 1995:
            `Revised Release on the IAPWS Formulation 1995 for the Thermodynamic Properties
            of Ordinary Water Substance for General and Scientific Use (updated

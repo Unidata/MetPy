@@ -5,6 +5,7 @@
 import contextlib
 import functools
 from inspect import Parameter, signature
+import itertools
 from operator import itemgetter
 import textwrap
 
@@ -1946,3 +1947,114 @@ def _remove_nans(*variables):
     for v in variables:
         ret.append(v[~mask])
     return ret
+
+
+def _neighbor_inds(y, x):
+    """Generate index (row, col) pairs for each neighbor of (x, y)."""
+    incs = (-1, 0, 1)
+    for dx, dy in itertools.product(incs, incs):
+        yield y + dy, x + dx
+
+
+def _find_uf(uf, item):
+    """Find the root item for ``item`` in the union find structure ``uf``."""
+    # uf is a dictionary mapping item->parent. Loop until we find parent=parent.
+    while (next_item := uf[item]) != item:
+        uf[item] = uf[next_item]
+        item = next_item
+    return item
+
+
+@exporter.export
+def peak_persistence(arr, *, maxima=True):
+    """Return all local extrema points ordered by their persistence.
+
+    This uses the concept of persistent homology to find peaks ordered by their persistence.
+    [Huber2021]_ This essentially works akin to a falling water level and seeing how long a
+    peak persists until the falling level allows connection to a larger, neighboring peak.
+    NaN points are ignored.
+
+    Parameters
+    ----------
+    arr : array-like
+        2-dimensional array of numeric values to search
+    maxima : bool, optional
+        Whether to find local maxima, defaults to True. If False, local minima will be found
+        instead.
+
+    Returns
+    -------
+    list[((int, int), float)]
+        Point indices and persistence values in descending order of persistence
+
+    See Also
+    --------
+    find_peaks
+
+    """
+    # Get the collection of points and values in descending strength of peak.
+    points = sorted((item for item in np.ndenumerate(arr) if not np.isnan(item[1])),
+                    key=lambda i: i[1], reverse=maxima)
+
+    # The global max will never be merged and thus should be added to the final list
+    # of persisted points
+    per = {points[0][0]: np.inf}
+
+    # Loop over all points and add them to the set (a dict storing as a union-find data
+    # structure) one-by-one
+    peaks = {}
+    for pt, val in points:
+        # Look to see if any neighbors of this point are attached to any existing peaks
+        if already_done := {_find_uf(peaks, n) for n in _neighbor_inds(*pt) if n in peaks}:
+
+            # Get these peaks in order of value
+            biggest, *others = sorted(already_done, key=lambda i: arr[i], reverse=maxima)
+
+            # Connect our point to the biggest peak
+            peaks[pt] = biggest
+
+            # Any other existing peaks will join to this biggest and will end their
+            # persistence, denoted as the difference between their original level and the
+            # current level
+            for neighbor in others:
+                peaks[neighbor] = biggest
+                if arr[neighbor] != val:
+                    per[neighbor] = abs(arr[neighbor] - val)
+        else:
+            peaks[pt] = pt
+
+    # Return the points in descending order of persistence
+    return sorted(per.items(), key=lambda i: i[1], reverse=True)
+
+
+@exporter.export
+def find_peaks(arr, *, maxima=True, iqr_ratio=2):
+    """Search array for significant peaks (or valleys).
+
+    Parameters
+    ----------
+    arr: array-like
+        2-dimensional array of numeric values to search
+    maxima: bool, optional
+        Whether to find local maxima, defaults to True. If False, local minima will be found
+        instead.
+    iqr_ratio: float, optional
+        Ratio of interquantile range (Q1 - Q3) of peak persistence values to use as a
+        threshold (when added to Q3) for significance of peaks. Defaults to 2.
+
+    Returns
+    -------
+    row indices, column indices
+        Locations of significant peaks
+
+    See Also
+    --------
+    peak_persistence
+
+    """
+    peaks = peak_persistence(arr, maxima=maxima)
+    q1, q3 = np.percentile([p[-1] for p in peaks], (25, 75))
+    thresh = q3 + iqr_ratio * (q3 - q1)
+    return map(list,
+               zip(*(it[0] for it in itertools.takewhile(lambda i: i[1] > thresh, peaks)),
+                   strict=True))

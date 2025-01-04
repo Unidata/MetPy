@@ -215,6 +215,7 @@ Other
       azimuth_range_to_lat_lon
       find_bounding_indices
       find_intersections
+      find_peaks
       get_layer
       get_layer_heights
       get_perturbation
@@ -222,5 +223,6 @@ Other
       isentropic_interpolation_as_dataset
       nearest_intersection_idx
       parse_angle
+      peak_persistence
       reduce_point_density
       resample_nn_1d
