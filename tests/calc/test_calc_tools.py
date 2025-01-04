@@ -12,15 +12,16 @@ from pyproj import CRS, Geod
 import pytest
 import xarray as xr
 
-from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersections,
-                        first_derivative, geospatial_gradient, get_layer, get_layer_heights,
-                        gradient, laplacian, lat_lon_grid_deltas, nearest_intersection_idx,
-                        parse_angle, pressure_to_height_std, reduce_point_density,
-                        resample_nn_1d, second_derivative, vector_derivative)
+from metpy.calc import (angle_to_direction, azimuth_range_to_lat_lon, find_bounding_indices,
+                        find_intersections, find_peaks, first_derivative, geospatial_gradient,
+                        get_layer, get_layer_heights, gradient, laplacian, lat_lon_grid_deltas,
+                        nearest_intersection_idx, parse_angle, peak_persistence,
+                        pressure_to_height_std, reduce_point_density, resample_nn_1d,
+                        second_derivative, vector_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
-                              _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
-                              DIR_STRS, nominal_lat_lon_grid_deltas, parse_grid_arguments, UND)
+                              _remove_nans, BASE_DEGREE_MULTIPLIER, DIR_STRS,
+                              nominal_lat_lon_grid_deltas, parse_grid_arguments, UND)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data)
 from metpy.units import units
@@ -1557,3 +1558,48 @@ def test_vector_derivative_return_subset(return_only, length):
         u, v, longitude=lons, latitude=lats, crs=crs, return_only=return_only)
 
     assert len(ddx) == length
+
+
+@pytest.fixture
+def peak_data():
+    """Return data for testing peak finding."""
+    arr = np.zeros((4, 4), dtype=np.int64)
+    arr[1, 1] = 4
+    arr[2, 3] = -4
+    arr[3, 2] = 2
+    arr[3, 0] = -2
+    return arr
+
+
+def test_peak_persistence(peak_data):
+    """Test that peak_persistence correctly orders peaks."""
+    per = peak_persistence(peak_data)
+    assert per == [((1, 1), np.inf), ((3, 2), 2)]
+
+
+def test_peak_persistence_minima(peak_data):
+    """Test that peak_persistence correctly orders peaks when looking for minima."""
+    per = peak_persistence(peak_data, maxima=False)
+    assert per == [((2, 3), np.inf), ((3, 0), 2)]
+
+
+def test_find_peaks(peak_data):
+    """Test find_peaks correctly identifies peaks."""
+    data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
+    hgt = data.Geopotential_height_isobaric.metpy.sel(vertical=850 * units.hPa).squeeze()
+    yind, xind = find_peaks(hgt, iqr_ratio=3)
+    assert_array_equal(yind, [34, 29])
+    assert_array_equal(xind, [0, 90])
+
+    # Ensure that indexes are returned in a way suitable for array indexing
+    assert_array_almost_equal(hgt.metpy.y[yind], [0.541052, 0.628319], 6)
+    assert_array_almost_equal(hgt.metpy.x[xind], [3.665191, 5.235988], 6)
+
+
+def test_find_peaks_minima(peak_data):
+    """Test find_peaks correctly identifies peaks."""
+    data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
+    hgt = data.Geopotential_height_isobaric.metpy.sel(vertical=850 * units.hPa).squeeze()
+    yind, xind = find_peaks(hgt, maxima=False, iqr_ratio=1)
+    assert_array_equal(yind, [19, 5, 0, 45])
+    assert_array_equal(xind, [55, 100, 0, 100])
