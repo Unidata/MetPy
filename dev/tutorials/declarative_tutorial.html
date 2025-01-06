@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../" data-theme="light">
+<html lang="en" data-content_root="../" data-theme="auto">
 
   <head>
     <meta charset="utf-8" />
@@ -13,11 +13,11 @@
   
   
   <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "auto";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "auto";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
+  <!--
+    this give us a css class that will be invisible only if js is disabled
   -->
   <noscript>
     <style>
@@ -27,23 +27,23 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css?v=3aab54e7" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css?v=452fc297" />
   
   <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../_static/documentation_options.js?v=452006c5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
@@ -64,10 +64,11 @@
             </script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/declarative_tutorial';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.16.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.6';
-        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
         </script>
     <script src="../_static/doc_shared.js?v=fe4a670c"></script>
     <link rel="icon" href="../_static/metpy_32x32.ico"/>
@@ -79,13 +80,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Dec 18, 2024 at 00:42:10"/>
+    <meta name="docbuild:last-update" content="Jan 06, 2025 at 22:28:16"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/tutorials/declarative_tutorial.html" />
 
   </head>
   
   
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="auto">
 
   
   
@@ -144,6 +145,8 @@
   
   
     
+    
+      
     
     
     <img src="../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6dev - Home"/>
@@ -490,9 +493,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -557,16 +565,16 @@ syntax to allow a lower barrier to investigating your data.</p>
 <p>You’ll note that the number of imports is smaller due to using the declarative syntax.
 There is no need to import Matplotlib or Cartopy to your code as all of that is done
 behind the scenes.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">datetime</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="datetime.timedelta" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">timedelta</span></a>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">datetime</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="datetime.timedelta" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">timedelta</span></a>
 
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
-<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
-<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.io</span> <span class="kn">import</span> <span class="n">metar</span>
-<span class="kn">from</span> <span class="nn">metpy.plots.declarative</span> <span class="kn">import</span> <span class="p">(</span><a href="../api/generated/metpy.plots.BarbPlot.html#metpy.plots.BarbPlot" title="metpy.plots.BarbPlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">BarbPlot</span></a><span class="p">,</span> <a href="../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">ContourPlot</span></a><span class="p">,</span> <a href="../api/generated/metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot" title="metpy.plots.FilledContourPlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">FilledContourPlot</span></a><span class="p">,</span> <a href="../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">,</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">metpy.calc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpcalc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.cbook</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">metar</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.plots.declarative</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><a href="../api/generated/metpy.plots.BarbPlot.html#metpy.plots.BarbPlot" title="metpy.plots.BarbPlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">BarbPlot</span></a><span class="p">,</span> <a href="../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">ContourPlot</span></a><span class="p">,</span> <a href="../api/generated/metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot" title="metpy.plots.FilledContourPlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">FilledContourPlot</span></a><span class="p">,</span> <a href="../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">,</span>
                                      <a href="../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PanelContainer</span></a><span class="p">,</span> <a href="../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="metpy.plots.PlotObs" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PlotObs</span></a><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span>
 </pre></div>
 </div>
 </section>
@@ -1040,7 +1048,7 @@ Acceptable colors are those available through Matplotlib:
 <p><code class="docutils literal notranslate"><span class="pre">reduce_points</span></code></p>
 <p>This attribute can be set to a real number to reduce the number of stations that are plotted.
 Default value is zero (e.g., no points are removed from the plot).</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 11.110 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 11.211 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-declarative-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/ebb1d490725ed27549701eaf2c36b8b4/declarative_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">declarative_tutorial.ipynb</span></code></a></p>
@@ -1134,8 +1142,8 @@ Default value is zero (e.g., no points are removed from the plot).</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1146,7 +1154,7 @@ Default value is zero (e.g., no points are removed from the plot).</p>
 
   <p class="copyright">
     
-      © Copyright 2008–2024, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
+      © Copyright 2008–2025, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
       <br/>
     
   </p>
@@ -1168,7 +1176,8 @@ Default value is zero (e.g., no points are removed from the plot).</p>
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

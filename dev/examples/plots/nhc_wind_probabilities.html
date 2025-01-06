@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" data-theme="light">
+<html lang="en" data-content_root="../../" data-theme="auto">
 
   <head>
     <meta charset="utf-8" />
@@ -13,11 +13,11 @@
   
   
   <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "auto";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "auto";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
+  <!--
+    this give us a css class that will be invisible only if js is disabled
   -->
   <noscript>
     <style>
@@ -27,23 +27,23 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css?v=3aab54e7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css?v=452fc297" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../_static/documentation_options.js?v=452006c5"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
@@ -64,10 +64,11 @@
             </script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/plots/nhc_wind_probabilities';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.16.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.6';
-        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
         </script>
     <script src="../../_static/doc_shared.js?v=fe4a670c"></script>
     <link rel="icon" href="../../_static/metpy_32x32.ico"/>
@@ -79,13 +80,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Dec 18, 2024 at 00:42:10"/>
+    <meta name="docbuild:last-update" content="Jan 06, 2025 at 22:28:16"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/plots/nhc_wind_probabilities.html" />
 
   </head>
   
   
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="auto">
 
   
   
@@ -144,6 +145,8 @@
   
   
     
+    
+      
     
     
     <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6dev - Home"/>
@@ -539,9 +542,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -601,17 +609,17 @@ to download the full example code.</p>
 plotting interface. This example walks through plotting cities, along with 5-day
 tropical-storm-force wind speed probabilities from NOAA National Hurricane Center.</p>
 <p>The wind probabilities shapefile was retrieved from the <a class="reference external" href="https://www.nhc.noaa.gov/gis/">National Hurricane Center’s GIS page</a>. The cities shapefile was retrieved from <a class="reference external" href="https://earthworks.stanford.edu/catalog/stanford-bx729wr3020">Stanford Libraries</a>.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">geopandas</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span>
 
-<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PanelContainer</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PlotGeometry</span></a>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.cbook</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.plots</span><span class="w"> </span><span class="kn">import</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PanelContainer</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PlotGeometry</span></a>
 </pre></div>
 </div>
 <p>Read in the shapefile file containing the wind probabilities.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">wind_data</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;nhc_wind_prob_2021082012.zip&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.13.1/x64/lib/python3.13/site-packages/pyogrio/geopandas.py:265: UserWarning: More than one layer found in &#39;pyogrio_c4fd0578d63c4344ac440185ff566987.zip&#39;: &#39;2021082012_wsp34knt120hr_5km&#39; (default), &#39;2021082012_wsp50knt120hr_5km&#39;, &#39;2021082012_wsp64knt120hr_5km&#39;. Specify layer parameter to avoid this warning.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.13.1/x64/lib/python3.13/site-packages/pyogrio/geopandas.py:265: UserWarning: More than one layer found in &#39;pyogrio_2cc7105b65ad40c1a9109fbc4655906c.zip&#39;: &#39;2021082012_wsp34knt120hr_5km&#39; (default), &#39;2021082012_wsp50knt120hr_5km&#39;, &#39;2021082012_wsp64knt120hr_5km&#39;. Specify layer parameter to avoid this warning.
   result = read_func(
 </pre></div>
 </div>
@@ -1131,7 +1139,7 @@ wind speed probabilities, along with some select cities and their specific proba
 <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_nhc_wind_probabilities_001.png" srcset="../../_images/sphx_glr_nhc_wind_probabilities_001.png" alt="NHC 5-Day Tropical-Storm-Force Wind Probabilities (Valid 12z Aug 20 2021)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.790 seconds)</p>
+<img src="../../_images/sphx_glr_nhc_wind_probabilities_001.png" srcset="../../_images/sphx_glr_nhc_wind_probabilities_001.png" alt="NHC 5-Day Tropical-Storm-Force Wind Probabilities (Valid 12z Aug 20 2021)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.939 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-nhc-wind-probabilities-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/6942e8beca3b4515ffd0e6d7988f8561/nhc_wind_probabilities.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">nhc_wind_probabilities.ipynb</span></code></a></p>
@@ -1192,8 +1200,8 @@ wind speed probabilities, along with some select cities and their specific proba
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1204,7 +1212,7 @@ wind speed probabilities, along with some select cities and their specific proba
 
   <p class="copyright">
     
-      © Copyright 2008–2024, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
+      © Copyright 2008–2025, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
       <br/>
     
   </p>
@@ -1226,7 +1234,8 @@ wind speed probabilities, along with some select cities and their specific proba
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

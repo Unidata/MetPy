@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../" data-theme="light">
+<html lang="en" data-content_root="../" data-theme="auto">
 
   <head>
     <meta charset="utf-8" />
@@ -13,11 +13,11 @@
   
   
   <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "auto";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "auto";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
+  <!--
+    this give us a css class that will be invisible only if js is disabled
   -->
   <noscript>
     <style>
@@ -27,23 +27,23 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css?v=3aab54e7" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css?v=452fc297" />
   
   <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../_static/documentation_options.js?v=452006c5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
@@ -64,10 +64,11 @@
             </script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/meteogram_metpy';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.16.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.6';
-        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
         </script>
     <script src="../_static/doc_shared.js?v=fe4a670c"></script>
     <link rel="icon" href="../_static/metpy_32x32.ico"/>
@@ -79,13 +80,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Dec 18, 2024 at 00:42:10"/>
+    <meta name="docbuild:last-update" content="Jan 06, 2025 at 22:28:16"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/meteogram_metpy.html" />
 
   </head>
   
   
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="auto">
 
   
   
@@ -144,6 +145,8 @@
   
   
     
+    
+      
     
     
     <img src="../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.6dev - Home"/>
@@ -539,9 +542,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -595,25 +603,25 @@ to download the full example code.</p>
 <section class="sphx-glr-example-title" id="meteogram">
 <span id="sphx-glr-examples-meteogram-metpy-py"></span><h1>Meteogram<a class="headerlink" href="#meteogram" title="Link to this heading">#</a></h1>
 <p>Plots time series data as a meteogram.</p>
-<img src="../_images/sphx_glr_meteogram_metpy_001.png" srcset="../_images/sphx_glr_meteogram_metpy_001.png" alt="meteogram metpy" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<img src="../_images/sphx_glr_meteogram_metpy_001.png" srcset="../_images/sphx_glr_meteogram_metpy_001.png" alt="meteogram metpy" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dt</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="kn">import</span> <a href="https://matplotlib.org/stable/api/ticker_api.html#matplotlib.ticker.MultipleLocator" title="matplotlib.ticker.MultipleLocator" class="sphx-glr-backref-module-matplotlib-ticker sphx-glr-backref-type-py-class"><span class="n">MultipleLocator</span></a>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.ticker</span><span class="w"> </span><span class="kn">import</span> <a href="https://matplotlib.org/stable/api/ticker_api.html#matplotlib.ticker.MultipleLocator" title="matplotlib.ticker.MultipleLocator" class="sphx-glr-backref-module-matplotlib-ticker sphx-glr-backref-type-py-class"><span class="n">MultipleLocator</span></a>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <a href="../api/generated/metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">dewpoint_from_relative_humidity</span></a>
-<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_metpy_logo</span></a>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.calc</span><span class="w"> </span><span class="kn">import</span> <a href="../api/generated/metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">dewpoint_from_relative_humidity</span></a>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.cbook</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.plots</span><span class="w"> </span><span class="kn">import</span> <a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_metpy_logo</span></a>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.units</span><span class="w"> </span><span class="kn">import</span> <a href="https://pint.readthedocs.io/en/stable/api/specific.html#pint.registry.ApplicationRegistry" title="pint.registry.ApplicationRegistry" class="sphx-glr-backref-module-pint-registry sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a>
 
 
-<span class="k">def</span> <span class="nf">calc_mslp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_mslp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.0065</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mf">0.0065</span> <span class="o">*</span> <span class="n">h</span> <span class="o">+</span> <span class="mf">273.15</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mf">5.257</span><span class="p">)</span>
 
 
 <span class="c1"># Make meteogram plot</span>
-<span class="k">class</span> <span class="nc">Meteogram</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Meteogram</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Plot a time series of meteorological data from a particular station as a</span>
 <span class="sd">    meteogram with standard variables to visualize, including thermodynamic,</span>
 <span class="sd">    kinematic, and pressure. The functions below control the plotting of each</span>
@@ -621,7 +629,7 @@ to download the full example code.</p>
 <span class="sd">    TO DO: Make the subplot creation dynamic so the number of rows is not</span>
 <span class="sd">    static as it is currently. &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">probeid</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">probeid</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Required input:</span>
 <span class="sd">            fig: figure object</span>
@@ -641,7 +649,7 @@ to download the full example code.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M UTC&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Latest Ob Time: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="si">}</span><span class="se">\n</span><span class="s1">Probe ID: </span><span class="si">{</span><span class="n">probeid</span><span class="si">}</span><span class="s1">&#39;</span>
 
-    <span class="k">def</span> <span class="nf">plot_winds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ws</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wd</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wsmax</span></a><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_winds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ws</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wd</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wsmax</span></a><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Required input:</span>
 <span class="sd">            ws: Wind speeds (knots)</span>
@@ -674,7 +682,7 @@ to download the full example code.</p>
         <span class="n">ax7</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">labs</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span>
                    <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
 
-    <span class="k">def</span> <span class="nf">plot_thermo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_thermo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Required input:</span>
 <span class="sd">            T: Temperature (deg F)</span>
@@ -706,7 +714,7 @@ to download the full example code.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">labs</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span>
                         <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
 
-    <span class="k">def</span> <span class="nf">plot_rh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh</span></a><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_rh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh</span></a><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Required input:</span>
 <span class="sd">            RH: Relative humidity (%)</span>
@@ -729,7 +737,7 @@ to download the full example code.</p>
         <span class="n">axtwin</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">)</span>
         <span class="n">axtwin</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><a href="https://matplotlib.org/stable/api/ticker_api.html#matplotlib.ticker.MultipleLocator" title="matplotlib.ticker.MultipleLocator" class="sphx-glr-backref-module-matplotlib-ticker sphx-glr-backref-type-py-class"><span class="n">MultipleLocator</span></a><span class="p">(</span><span class="n">ystep</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">plot_pressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_pressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Required input:</span>
 <span class="sd">            P: Mean Sea Level Pressure (hPa)</span>
@@ -766,7 +774,7 @@ to download the full example code.</p>
 
 
 <span class="c1"># Parse dates from .csv file, knowing their format as a string and convert to datetime</span>
-<span class="k">def</span> <span class="nf">parse_date</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">date</span></a><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_date</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">date</span></a><span class="p">):</span>
     <span class="k">return</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime.strptime" title="datetime.datetime.strptime" class="sphx-glr-backref-module-datetime-datetime sphx-glr-backref-type-py-method"><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">date</span></a><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span>
 
 
@@ -806,7 +814,7 @@ to download the full example code.</p>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.559 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.571 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-meteogram-metpy-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/4ffa5cd26bc6bf5eedb6ebf217b5c874/meteogram_metpy.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">meteogram_metpy.ipynb</span></code></a></p>
@@ -867,8 +875,8 @@ to download the full example code.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -879,7 +887,7 @@ to download the full example code.</p>
 
   <p class="copyright">
     
-      © Copyright 2008–2024, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
+      © Copyright 2008–2025, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
       <br/>
     
   </p>
@@ -901,7 +909,8 @@ to download the full example code.</p>
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>
