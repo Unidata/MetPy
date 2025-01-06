@@ -1,6 +1,17 @@
 /* Define "Unidata Blue" RGB values */
 html {
-    --unidata-blue-rgb: 6, 119, 143;
+    --unidata-blue-rgb: rgb(6, 119, 143);
+    --unidata-teal-rgb: rgb(69, 166, 169);
+}
+
+html[data-theme="light"] {
+    --pst-color-primary: var(--unidata-blue-rgb);
+    --pst-color-secondary: var(--unidata-teal-rgb);
+}
+
+html[data-theme="dark"] {
+    --pst-color-primary: var(--unidata-blue-rgb);
+    --pst-color-secondary: var(--unidata-teal-rgb);
 }
 
 /* Header and heading font style */
@@ -10,30 +21,18 @@ html {
 
 /* Header colors */
 .bd-header {
-    background: rgb(var(--unidata-blue-rgb)) !important;
+    background: var(--unidata-blue-rgb) !important;
 }
 
-.theme-switch-button {
-    border-color: rgb(var(--unidata-blue-rgb)) !important;
-}
-
-.bd-header .navbar-nav>.nav-item>.nav-link, 
+.bd-header .navbar-nav>.nav-item>.nav-link,
 .bd-header .dropdown-toggle,
 .bd-header .pst-navbar-icon,
 .bd-header .btn {
     color: #fff !important;
- }
-
-.version-switcher__button {
-    border-color: #fff !important;
 }
 
 .search-button {
     padding: 0 0 0;
-}
-
-.navbar-nav .dropdown-menu {
-    background-color: var(--pst-color-background);
 }
 
 /* Increase contrast of links in code snippets */
