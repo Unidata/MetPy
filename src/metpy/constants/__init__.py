@@ -22,20 +22,22 @@ earth_mass               :math:`m_e`     me          :math:`\text{kg}`          
 
 Water
 -----
-======================= ================ ========== ============================ ====================================================
-Name                    Symbol           Short Name Units                        Description
------------------------ ---------------- ---------- ---------------------------- ----------------------------------------------------
-water_molecular_weight  :math:`M_w`      Mw         :math:`\text{g mol}^{-1}`    Molecular weight of water [5]_
-water_gas_constant      :math:`R_v`      Rv         :math:`\text{J (K kg)}^{-1}` Gas constant for water vapor [2]_ [5]_
-density_water           :math:`\rho_l`   rho_l      :math:`\text{kg m}^{-3}`     Maximum recommended density of liquid water, 0-40C [5]_
-wv_specific_heat_press  :math:`C_{pv}`   Cp_v       :math:`\text{J (K kg)}^{-1}` Specific heat at constant pressure for water vapor
-wv_specific_heat_vol    :math:`C_{vv}`   Cv_v       :math:`\text{J (K kg)}^{-1}` Specific heat at constant volume for water vapor
-water_specific_heat     :math:`Cp_l`     Cp_l       :math:`\text{J (K kg)}^{-1}` Specific heat of liquid water at 0C [6]_
-water_heat_vaporization :math:`L_v`      Lv         :math:`\text{J kg}^{-1}`     Latent heat of vaporization for liquid water at 0C [7]_
-water_heat_fusion       :math:`L_f`      Lf         :math:`\text{J kg}^{-1}`     Latent heat of fusion for liquid water at 0C [7]_
-ice_specific_heat       :math:`C_{pi}`   Cp_i       :math:`\text{J (K kg)}^{-1}` Specific heat of ice at 0C [7]_
-density_ice             :math:`\rho_i`   rho_i      :math:`\text{kg m}^{-3}`     Density of ice at 0C
-======================= ================ ========== ============================ ====================================================
+============================== ================ ========== ============================== ==========================================================
+Name                           Symbol           Short Name Units                          Description
+------------------------------ ---------------- ---------- ------------------------------ ----------------------------------------------------------
+water_molecular_weight         :math:`M_w`      Mw         :math:`\text{g mol}^{-1}`      Molecular weight of water [5]_
+water_gas_constant             :math:`R_v`      Rv         :math:`\text{J (K kg)}^{-1}`   Gas constant for water vapor [2]_ [5]_
+density_water                  :math:`\rho_l`   rho_l      :math:`\text{kg m}^{-3}`       Maximum recommended density of liquid water, 0-40C [5]_
+wv_specific_heat_press         :math:`C_{pv}`   Cp_v       :math:`\text{J (K kg)}^{-1}`   Specific heat at constant pressure for water vapor
+wv_specific_heat_vol           :math:`C_{vv}`   Cv_v       :math:`\text{J (K kg)}^{-1}`   Specific heat at constant volume for water vapor
+water_specific_heat            :math:`C_{pl}`   Cp_l       :math:`\text{J (K kg)}^{-1}`   Specific heat of liquid water at 0C [6]_
+water_heat_vaporization        :math:`L_v`      Lv         :math:`\text{J kg}^{-1}`       Latent heat of vaporization for liquid water at 0C [7]_
+water_heat_fusion              :math:`L_f`      Lf         :math:`\text{J kg}^{-1}`       Latent heat of fusion for liquid water at 0C [7]_
+water_heat_sublimation         :math:`L_s`      Ls         :math:`\text{J kg}^{-1}`       Latent heat of sublimation for water, Lv + Lf
+ice_specific_heat              :math:`C_{pi}`   Cp_i       :math:`\text{J (K kg)}^{-1}`   Specific heat of ice at 0C [7]_
+density_ice                    :math:`\rho_i`   rho_i      :math:`\text{kg m}^{-3}`       Density of ice at 0C
+water_triple_point_temperature :math:`T_0`      T0         :math:`\text{K}`               Triple-point temperature of water [2]_
+============================== ================ ========== ============================== ==========================================================
 
 Dry Air
 -------

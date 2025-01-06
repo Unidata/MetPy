@@ -39,7 +39,9 @@ _base_unit_of_dimensionality = {
     '[temperature]': 'K',
     '[dimensionless]': '',
     '[length]': 'm',
-    '[speed]': 'm s**-1'
+    '[speed]': 'm s**-1',
+    '[specific_enthalpy]': 'm**2 s**-2',
+    '[specific_heat_capacity]': 'm**2 s**-2 K-1'
 }
 
 
@@ -83,6 +85,8 @@ def setup_registry(reg):
     reg.define('degrees_east = degree = degrees_E = degreesE = degree_east = degree_E '
                '= degreeE')
     reg.define('dBz = 1e-18 m^3; logbase: 10; logfactor: 10 = dBZ')
+    reg.define('[specific_enthalpy] = [energy] / [mass]')
+    reg.define('[specific_heat_capacity] = [specific_enthalpy] / [temperature]')
 
     # Alias geopotential meters (gpm) to just meters
     reg.define('@alias meter = gpm')

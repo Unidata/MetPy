@@ -2,6 +2,10 @@
 References
 ==========
 
+.. [Ambaum2020] Ambaum MHP, 2020: Accurate, simple equation for saturated vapour pressure over water and ice.
+           *QJR Meteorol Soc.*; **146**: 4252–4258,
+           doi: `10.1002/qj.3899 <https://doi.org/10.1002/qj.3899>`_.
+
 .. [Anderson2013] Anderson, G. B., M. L. Bell, and R. D. Peng, 2013: Methods to
            Calculate the Heat Index as an Exposure Metric in Environmental Health
            Research. *Environmental Health Perspectives*, **121**, 1111-1119,
@@ -175,6 +179,10 @@ References
 
 .. [Rochette2006] Rochette, Scott M., and Patrick S. Market. "A primer on the
                   ageostrophic wind." Natl. Weather Dig. 30 (2006): 17-28.
+
+.. [Romps2017] Romps, D. M., 2017: Exact Expression for the Lifting Condensation Level.
+            *J. Atmos. Sci.*, **74**, 3891–3900,
+            doi: `10.1175/JAS-D-17-0102.1. <https://doi.org/10.1175/JAS-D-17-0102.1.>`_.
 
 .. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific
            Services Division, NWS Southern Region Headquarters, 1990.

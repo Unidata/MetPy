@@ -39,6 +39,9 @@ Moist Thermodynamics
       mixing_ratio
       mixing_ratio_from_relative_humidity
       mixing_ratio_from_specific_humidity
+      moist_air_gas_constant
+      moist_air_poisson_exponent
+      moist_air_specific_heat_pressure
       moist_lapse
       moist_static_energy
       precipitable_water
@@ -60,6 +63,9 @@ Moist Thermodynamics
       virtual_potential_temperature
       virtual_temperature
       virtual_temperature_from_dewpoint
+      water_latent_heat_melting
+      water_latent_heat_sublimation
+      water_latent_heat_vaporization
       wet_bulb_temperature
       wet_bulb_potential_temperature
 
