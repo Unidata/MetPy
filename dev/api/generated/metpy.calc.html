@@ -81,7 +81,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Jan 06, 2025 at 22:28:16"/>
+    <meta name="docbuild:last-update" content="Jan 06, 2025 at 22:48:05"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.html" />
 
   </head>
@@ -515,6 +515,9 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio.html">mixing_ratio</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio_from_relative_humidity.html">mixing_ratio_from_relative_humidity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio_from_specific_humidity.html">mixing_ratio_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_air_gas_constant.html">moist_air_gas_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_air_poisson_exponent.html">moist_air_poisson_exponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_air_specific_heat_pressure.html">moist_air_specific_heat_pressure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_lapse.html">moist_lapse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_static_energy.html">moist_static_energy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.precipitable_water.html">precipitable_water</a></li>
@@ -536,6 +539,9 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_potential_temperature.html">virtual_potential_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature.html">virtual_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html">virtual_temperature_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.water_latent_heat_melting.html">water_latent_heat_melting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.water_latent_heat_sublimation.html">water_latent_heat_sublimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.water_latent_heat_vaporization.html">water_latent_heat_vaporization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_potential_temperature.html">wet_bulb_potential_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.bulk_shear.html">bulk_shear</a></li>
@@ -856,68 +862,86 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.mixing_ratio_from_specific_humidity.html#metpy.calc.mixing_ratio_from_specific_humidity" title="metpy.calc.mixing_ratio_from_specific_humidity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixing_ratio_from_specific_humidity</span></code></a>(...)</p></td>
 <td><p>Calculate the mixing ratio from specific humidity.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.moist_lapse.html#metpy.calc.moist_lapse" title="metpy.calc.moist_lapse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moist_lapse</span></code></a>(pressure, temperature[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.moist_air_gas_constant.html#metpy.calc.moist_air_gas_constant" title="metpy.calc.moist_air_gas_constant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moist_air_gas_constant</span></code></a>(specific_humidity)</p></td>
+<td><p>Calculate R_m, the specific gas constant for a parcel of moist air.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.moist_air_poisson_exponent.html#metpy.calc.moist_air_poisson_exponent" title="metpy.calc.moist_air_poisson_exponent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moist_air_poisson_exponent</span></code></a>(specific_humidity)</p></td>
+<td><p>Calculate kappa_m, the Poisson exponent for a moist air parcel.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.moist_air_specific_heat_pressure.html#metpy.calc.moist_air_specific_heat_pressure" title="metpy.calc.moist_air_specific_heat_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moist_air_specific_heat_pressure</span></code></a>(...)</p></td>
+<td><p>Calculate C_pm, the specific heat at constant pressure for a moist air parcel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.moist_lapse.html#metpy.calc.moist_lapse" title="metpy.calc.moist_lapse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moist_lapse</span></code></a>(pressure, temperature[, ...])</p></td>
 <td><p>Calculate the temperature at a level assuming liquid saturation processes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.moist_static_energy.html#metpy.calc.moist_static_energy" title="metpy.calc.moist_static_energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moist_static_energy</span></code></a>(height, temperature, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.moist_static_energy.html#metpy.calc.moist_static_energy" title="metpy.calc.moist_static_energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moist_static_energy</span></code></a>(height, temperature, ...)</p></td>
 <td><p>Calculate the moist static energy of parcels.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.precipitable_water.html#metpy.calc.precipitable_water" title="metpy.calc.precipitable_water"><code class="xref py py-obj docutils literal notranslate"><span class="pre">precipitable_water</span></code></a>(pressure, dewpoint, *[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.precipitable_water.html#metpy.calc.precipitable_water" title="metpy.calc.precipitable_water"><code class="xref py py-obj docutils literal notranslate"><span class="pre">precipitable_water</span></code></a>(pressure, dewpoint, *[, ...])</p></td>
 <td><p>Calculate precipitable water through the depth of a sounding.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.psychrometric_vapor_pressure_wet.html#metpy.calc.psychrometric_vapor_pressure_wet" title="metpy.calc.psychrometric_vapor_pressure_wet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">psychrometric_vapor_pressure_wet</span></code></a>(pressure, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.psychrometric_vapor_pressure_wet.html#metpy.calc.psychrometric_vapor_pressure_wet" title="metpy.calc.psychrometric_vapor_pressure_wet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">psychrometric_vapor_pressure_wet</span></code></a>(pressure, ...)</p></td>
 <td><p>Calculate the vapor pressure with wet bulb and dry bulb temperatures.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.relative_humidity_from_dewpoint.html#metpy.calc.relative_humidity_from_dewpoint" title="metpy.calc.relative_humidity_from_dewpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_from_dewpoint</span></code></a>(temperature, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.relative_humidity_from_dewpoint.html#metpy.calc.relative_humidity_from_dewpoint" title="metpy.calc.relative_humidity_from_dewpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_from_dewpoint</span></code></a>(temperature, ...)</p></td>
 <td><p>Calculate the relative humidity.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio" title="metpy.calc.relative_humidity_from_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_from_mixing_ratio</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio" title="metpy.calc.relative_humidity_from_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_from_mixing_ratio</span></code></a>(...)</p></td>
 <td><p>Calculate the relative humidity from mixing ratio, temperature, and pressure.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.relative_humidity_from_specific_humidity.html#metpy.calc.relative_humidity_from_specific_humidity" title="metpy.calc.relative_humidity_from_specific_humidity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_from_specific_humidity</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.relative_humidity_from_specific_humidity.html#metpy.calc.relative_humidity_from_specific_humidity" title="metpy.calc.relative_humidity_from_specific_humidity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_from_specific_humidity</span></code></a>(...)</p></td>
 <td><p>Calculate the relative humidity from specific humidity, temperature, and pressure.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.relative_humidity_wet_psychrometric.html#metpy.calc.relative_humidity_wet_psychrometric" title="metpy.calc.relative_humidity_wet_psychrometric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_wet_psychrometric</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.relative_humidity_wet_psychrometric.html#metpy.calc.relative_humidity_wet_psychrometric" title="metpy.calc.relative_humidity_wet_psychrometric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_humidity_wet_psychrometric</span></code></a>(...)</p></td>
 <td><p>Calculate the relative humidity with wet bulb and dry bulb temperatures.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.saturation_equivalent_potential_temperature.html#metpy.calc.saturation_equivalent_potential_temperature" title="metpy.calc.saturation_equivalent_potential_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">saturation_equivalent_potential_temperature</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.saturation_equivalent_potential_temperature.html#metpy.calc.saturation_equivalent_potential_temperature" title="metpy.calc.saturation_equivalent_potential_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">saturation_equivalent_potential_temperature</span></code></a>(...)</p></td>
 <td><p>Calculate saturation equivalent potential temperature.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.saturation_mixing_ratio.html#metpy.calc.saturation_mixing_ratio" title="metpy.calc.saturation_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">saturation_mixing_ratio</span></code></a>(total_press, temperature)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.saturation_mixing_ratio.html#metpy.calc.saturation_mixing_ratio" title="metpy.calc.saturation_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">saturation_mixing_ratio</span></code></a>(total_press, temperature)</p></td>
 <td><p>Calculate the saturation mixing ratio of water vapor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure" title="metpy.calc.saturation_vapor_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">saturation_vapor_pressure</span></code></a>(temperature)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure" title="metpy.calc.saturation_vapor_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">saturation_vapor_pressure</span></code></a>(temperature)</p></td>
 <td><p>Calculate the saturation water vapor (partial) pressure.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.scale_height.html#metpy.calc.scale_height" title="metpy.calc.scale_height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_height</span></code></a>(temperature_bottom, temperature_top)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.scale_height.html#metpy.calc.scale_height" title="metpy.calc.scale_height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_height</span></code></a>(temperature_bottom, temperature_top)</p></td>
 <td><p>Calculate the scale height of a layer.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.specific_humidity_from_dewpoint.html#metpy.calc.specific_humidity_from_dewpoint" title="metpy.calc.specific_humidity_from_dewpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specific_humidity_from_dewpoint</span></code></a>(pressure, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.specific_humidity_from_dewpoint.html#metpy.calc.specific_humidity_from_dewpoint" title="metpy.calc.specific_humidity_from_dewpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specific_humidity_from_dewpoint</span></code></a>(pressure, ...)</p></td>
 <td><p>Calculate the specific humidity from the dewpoint temperature and pressure.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.specific_humidity_from_mixing_ratio.html#metpy.calc.specific_humidity_from_mixing_ratio" title="metpy.calc.specific_humidity_from_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specific_humidity_from_mixing_ratio</span></code></a>(mixing_ratio)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.specific_humidity_from_mixing_ratio.html#metpy.calc.specific_humidity_from_mixing_ratio" title="metpy.calc.specific_humidity_from_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specific_humidity_from_mixing_ratio</span></code></a>(mixing_ratio)</p></td>
 <td><p>Calculate the specific humidity from the mixing ratio.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.thickness_hydrostatic_from_relative_humidity.html#metpy.calc.thickness_hydrostatic_from_relative_humidity" title="metpy.calc.thickness_hydrostatic_from_relative_humidity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thickness_hydrostatic_from_relative_humidity</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.thickness_hydrostatic_from_relative_humidity.html#metpy.calc.thickness_hydrostatic_from_relative_humidity" title="metpy.calc.thickness_hydrostatic_from_relative_humidity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thickness_hydrostatic_from_relative_humidity</span></code></a>(...)</p></td>
 <td><p>Calculate the thickness of a layer given pressure, temperature and relative humidity.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="metpy.calc.vapor_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vapor_pressure</span></code></a>(pressure, mixing_ratio)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="metpy.calc.vapor_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vapor_pressure</span></code></a>(pressure, mixing_ratio)</p></td>
 <td><p>Calculate water vapor (partial) pressure.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.vertical_velocity.html#metpy.calc.vertical_velocity" title="metpy.calc.vertical_velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertical_velocity</span></code></a>(omega, pressure, temperature)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.vertical_velocity.html#metpy.calc.vertical_velocity" title="metpy.calc.vertical_velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertical_velocity</span></code></a>(omega, pressure, temperature)</p></td>
 <td><p>Calculate w from omega assuming hydrostatic conditions.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.vertical_velocity_pressure.html#metpy.calc.vertical_velocity_pressure" title="metpy.calc.vertical_velocity_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertical_velocity_pressure</span></code></a>(w, pressure, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.vertical_velocity_pressure.html#metpy.calc.vertical_velocity_pressure" title="metpy.calc.vertical_velocity_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertical_velocity_pressure</span></code></a>(w, pressure, ...)</p></td>
 <td><p>Calculate omega from w assuming hydrostatic conditions.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.virtual_potential_temperature.html#metpy.calc.virtual_potential_temperature" title="metpy.calc.virtual_potential_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">virtual_potential_temperature</span></code></a>(pressure, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.virtual_potential_temperature.html#metpy.calc.virtual_potential_temperature" title="metpy.calc.virtual_potential_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">virtual_potential_temperature</span></code></a>(pressure, ...)</p></td>
 <td><p>Calculate virtual potential temperature.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.virtual_temperature.html#metpy.calc.virtual_temperature" title="metpy.calc.virtual_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">virtual_temperature</span></code></a>(temperature, mixing_ratio)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.virtual_temperature.html#metpy.calc.virtual_temperature" title="metpy.calc.virtual_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">virtual_temperature</span></code></a>(temperature, mixing_ratio)</p></td>
 <td><p>Calculate virtual temperature.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html#metpy.calc.virtual_temperature_from_dewpoint" title="metpy.calc.virtual_temperature_from_dewpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">virtual_temperature_from_dewpoint</span></code></a>(pressure, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html#metpy.calc.virtual_temperature_from_dewpoint" title="metpy.calc.virtual_temperature_from_dewpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">virtual_temperature_from_dewpoint</span></code></a>(pressure, ...)</p></td>
 <td><p>Calculate virtual temperature.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.water_latent_heat_melting.html#metpy.calc.water_latent_heat_melting" title="metpy.calc.water_latent_heat_melting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">water_latent_heat_melting</span></code></a>(temperature)</p></td>
+<td><p>Calculate the latent heat of melting for water.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.water_latent_heat_sublimation.html#metpy.calc.water_latent_heat_sublimation" title="metpy.calc.water_latent_heat_sublimation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">water_latent_heat_sublimation</span></code></a>(temperature)</p></td>
+<td><p>Calculate the latent heat of sublimation for water.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.water_latent_heat_vaporization.html#metpy.calc.water_latent_heat_vaporization" title="metpy.calc.water_latent_heat_vaporization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">water_latent_heat_vaporization</span></code></a>(temperature)</p></td>
+<td><p>Calculate the latent heat of vaporization for water.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.wet_bulb_temperature.html#metpy.calc.wet_bulb_temperature" title="metpy.calc.wet_bulb_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wet_bulb_temperature</span></code></a>(pressure, temperature, ...)</p></td>
 <td><p>Calculate the wet-bulb temperature using Normand's rule.</p></td>

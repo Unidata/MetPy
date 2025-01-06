@@ -1,0 +1,12 @@
+water_latent_heat_vaporization
+=========================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: water_latent_heat_vaporization
+
+.. include:: metpy.calc.water_latent_heat_vaporization.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

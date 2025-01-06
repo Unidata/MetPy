@@ -1,0 +1,12 @@
+moist_air_gas_constant
+=================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: moist_air_gas_constant
+
+.. include:: metpy.calc.moist_air_gas_constant.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

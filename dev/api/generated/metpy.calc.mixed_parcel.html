@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Jan 06, 2025 at 22:28:16"/>
+    <meta name="docbuild:last-update" content="Jan 06, 2025 at 22:48:05"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.mixed_parcel.html" />
 
   </head>
@@ -514,6 +514,9 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio.html">mixing_ratio</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio_from_relative_humidity.html">mixing_ratio_from_relative_humidity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio_from_specific_humidity.html">mixing_ratio_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_air_gas_constant.html">moist_air_gas_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_air_poisson_exponent.html">moist_air_poisson_exponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_air_specific_heat_pressure.html">moist_air_specific_heat_pressure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_lapse.html">moist_lapse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_static_energy.html">moist_static_energy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.precipitable_water.html">precipitable_water</a></li>
@@ -535,6 +538,9 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_potential_temperature.html">virtual_potential_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature.html">virtual_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html">virtual_temperature_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.water_latent_heat_melting.html">water_latent_heat_melting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.water_latent_heat_sublimation.html">water_latent_heat_sublimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.water_latent_heat_vaporization.html">water_latent_heat_vaporization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_potential_temperature.html">wet_bulb_potential_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.bulk_shear.html">bulk_shear</a></li>
@@ -781,7 +787,7 @@
 <h1>mixed_parcel<a class="headerlink" href="#mixed-parcel" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.mixed_parcel">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">mixed_parcel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parcel_start_pressure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L3256-L3366"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.mixed_parcel" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">mixed_parcel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parcel_start_pressure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L3501-L3611"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.mixed_parcel" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the properties of a parcel mixed from a layer.</p>
 <p>Determines the properties of an air parcel that is the result of complete mixing of a
 given atmospheric layer.</p>

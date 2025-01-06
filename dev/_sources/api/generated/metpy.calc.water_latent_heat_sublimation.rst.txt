@@ -1,0 +1,12 @@
+water_latent_heat_sublimation
+========================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: water_latent_heat_sublimation
+
+.. include:: metpy.calc.water_latent_heat_sublimation.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

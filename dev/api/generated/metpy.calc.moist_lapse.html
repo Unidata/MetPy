@@ -76,12 +76,12 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="moist_static_energy" href="metpy.calc.moist_static_energy.html" />
-    <link rel="prev" title="mixing_ratio_from_specific_humidity" href="metpy.calc.mixing_ratio_from_specific_humidity.html" />
+    <link rel="prev" title="moist_air_specific_heat_pressure" href="metpy.calc.moist_air_specific_heat_pressure.html" />
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Jan 06, 2025 at 22:28:16"/>
+    <meta name="docbuild:last-update" content="Jan 06, 2025 at 22:48:05"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.moist_lapse.html" />
 
   </head>
@@ -515,6 +515,9 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio.html">mixing_ratio</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio_from_relative_humidity.html">mixing_ratio_from_relative_humidity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio_from_specific_humidity.html">mixing_ratio_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_air_gas_constant.html">moist_air_gas_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_air_poisson_exponent.html">moist_air_poisson_exponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_air_specific_heat_pressure.html">moist_air_specific_heat_pressure</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">moist_lapse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_static_energy.html">moist_static_energy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.precipitable_water.html">precipitable_water</a></li>
@@ -536,6 +539,9 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_potential_temperature.html">virtual_potential_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature.html">virtual_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html">virtual_temperature_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.water_latent_heat_melting.html">water_latent_heat_melting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.water_latent_heat_sublimation.html">water_latent_heat_sublimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.water_latent_heat_vaporization.html">water_latent_heat_vaporization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_potential_temperature.html">wet_bulb_potential_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.bulk_shear.html">bulk_shear</a></li>
@@ -782,7 +788,7 @@
 <h1>moist_lapse<a class="headerlink" href="#moist-lapse" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.moist_lapse">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">moist_lapse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_pressure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L265-L400"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.moist_lapse" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">moist_lapse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_pressure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L510-L645"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.moist_lapse" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the temperature at a level assuming liquid saturation processes.</p>
 <p>This function lifts a parcel starting at <em class="xref py py-obj">temperature</em>. The starting pressure can
 be given by <em class="xref py py-obj">reference_pressure</em>. Essentially, this function is calculating moist
@@ -851,12 +857,12 @@ grids).</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="metpy.calc.mixing_ratio_from_specific_humidity.html"
+       href="metpy.calc.moist_air_specific_heat_pressure.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">mixing_ratio_from_specific_humidity</p>
+        <p class="prev-next-title">moist_air_specific_heat_pressure</p>
       </div>
     </a>
     <a class="right-next"

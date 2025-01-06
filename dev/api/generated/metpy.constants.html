@@ -81,7 +81,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Jan 06, 2025 at 22:28:16"/>
+    <meta name="docbuild:last-update" content="Jan 06, 2025 at 22:48:05"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.constants.html" />
 
   </head>
@@ -515,6 +515,9 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio.html">mixing_ratio</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio_from_relative_humidity.html">mixing_ratio_from_relative_humidity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.mixing_ratio_from_specific_humidity.html">mixing_ratio_from_specific_humidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_air_gas_constant.html">moist_air_gas_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_air_poisson_exponent.html">moist_air_poisson_exponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_air_specific_heat_pressure.html">moist_air_specific_heat_pressure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_lapse.html">moist_lapse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.moist_static_energy.html">moist_static_energy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.precipitable_water.html">precipitable_water</a></li>
@@ -536,6 +539,9 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_potential_temperature.html">virtual_potential_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature.html">virtual_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.virtual_temperature_from_dewpoint.html">virtual_temperature_from_dewpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.water_latent_heat_melting.html">water_latent_heat_melting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.water_latent_heat_sublimation.html">water_latent_heat_sublimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.water_latent_heat_vaporization.html">water_latent_heat_vaporization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.wet_bulb_potential_temperature.html">wet_bulb_potential_temperature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.bulk_shear.html">bulk_shear</a></li>
@@ -792,37 +798,37 @@
 <td><p><span class="math notranslate nohighlight">\(R_e\)</span></p></td>
 <td><p>Re</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{m}\)</span></p></td>
-<td><p>Avg. radius of the Earth <a class="footnote-reference brackets" href="#id18" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
+<td><p>Avg. radius of the Earth <a class="footnote-reference brackets" href="#id19" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>earth_gravity</p></td>
 <td><p><span class="math notranslate nohighlight">\(g\)</span></p></td>
 <td><p>g</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{m s}^{-2}\)</span></p></td>
-<td><p>Avg. gravity acceleration on Earth <a class="footnote-reference brackets" href="#id20" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+<td><p>Avg. gravity acceleration on Earth <a class="footnote-reference brackets" href="#id21" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p>gravitational_constant</p></td>
 <td><p><span class="math notranslate nohighlight">\(G\)</span></p></td>
 <td><p>G</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{m}^{3} {kg}^{-1} {s}^{-2}\)</span></p></td>
-<td><p>Gravitational constant <a class="footnote-reference brackets" href="#id20" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+<td><p>Gravitational constant <a class="footnote-reference brackets" href="#id21" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>earth_avg_angular_vel</p></td>
 <td><p><span class="math notranslate nohighlight">\(\Omega\)</span></p></td>
 <td><p>omega</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{rad s}^{-1}\)</span></p></td>
-<td><p>Avg. angular velocity of Earth <a class="footnote-reference brackets" href="#id18" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
+<td><p>Avg. angular velocity of Earth <a class="footnote-reference brackets" href="#id19" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p>earth_sfc_avg_dist_sun</p></td>
 <td><p><span class="math notranslate nohighlight">\(d\)</span></p></td>
 <td><p>d</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{m}\)</span></p></td>
-<td><p>Avg. distance of the Earth from the Sun <a class="footnote-reference brackets" href="#id22" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
+<td><p>Avg. distance of the Earth from the Sun <a class="footnote-reference brackets" href="#id23" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>earth_solar_irradiance</p></td>
 <td><p><span class="math notranslate nohighlight">\(S\)</span></p></td>
 <td><p>S</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{W m}^{-2}\)</span></p></td>
-<td><p>Avg. solar irradiance of Earth <a class="footnote-reference brackets" href="#id24" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></p></td>
+<td><p>Avg. solar irradiance of Earth <a class="footnote-reference brackets" href="#id25" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p>earth_max_declination</p></td>
 <td><p><span class="math notranslate nohighlight">\(\delta\)</span></p></td>
@@ -840,7 +846,7 @@
 <td><p><span class="math notranslate nohighlight">\(m_e\)</span></p></td>
 <td><p>me</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{kg}\)</span></p></td>
-<td><p>Total mass of the Earth (approx) <a class="footnote-reference brackets" href="#id18" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#id20" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+<td><p>Total mass of the Earth (approx) <a class="footnote-reference brackets" href="#id19" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#id21" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
 </tr>
 </tbody>
 </table>
@@ -860,19 +866,19 @@
 <td><p><span class="math notranslate nohighlight">\(M_w\)</span></p></td>
 <td><p>Mw</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{g mol}^{-1}\)</span></p></td>
-<td><p>Molecular weight of water <a class="footnote-reference brackets" href="#id26" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
+<td><p>Molecular weight of water <a class="footnote-reference brackets" href="#id27" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>water_gas_constant</p></td>
 <td><p><span class="math notranslate nohighlight">\(R_v\)</span></p></td>
 <td><p>Rv</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
-<td><p>Gas constant for water vapor <a class="footnote-reference brackets" href="#id20" id="id10" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#id26" id="id11" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
+<td><p>Gas constant for water vapor <a class="footnote-reference brackets" href="#id21" id="id10" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#id27" id="id11" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p>density_water</p></td>
 <td><p><span class="math notranslate nohighlight">\(\rho_l\)</span></p></td>
 <td><p>rho_l</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{kg m}^{-3}\)</span></p></td>
-<td><p>Maximum recommended density of liquid water, 0-40C <a class="footnote-reference brackets" href="#id26" id="id12" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
+<td><p>Maximum recommended density of liquid water, 0-40C <a class="footnote-reference brackets" href="#id27" id="id12" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>wv_specific_heat_press</p></td>
 <td><p><span class="math notranslate nohighlight">\(C_{pv}\)</span></p></td>
@@ -887,34 +893,46 @@
 <td><p>Specific heat at constant volume for water vapor</p></td>
 </tr>
 <tr class="row-odd"><td><p>water_specific_heat</p></td>
-<td><p><span class="math notranslate nohighlight">\(Cp_l\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(C_{pl}\)</span></p></td>
 <td><p>Cp_l</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
-<td><p>Specific heat of liquid water at 0C <a class="footnote-reference brackets" href="#id28" id="id13" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a></p></td>
+<td><p>Specific heat of liquid water at 0C <a class="footnote-reference brackets" href="#id29" id="id13" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p>water_heat_vaporization</p></td>
 <td><p><span class="math notranslate nohighlight">\(L_v\)</span></p></td>
 <td><p>Lv</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{J kg}^{-1}\)</span></p></td>
-<td><p>Latent heat of vaporization for liquid water at 0C <a class="footnote-reference brackets" href="#id30" id="id14" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p></td>
+<td><p>Latent heat of vaporization for liquid water at 0C <a class="footnote-reference brackets" href="#id31" id="id14" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>water_heat_fusion</p></td>
 <td><p><span class="math notranslate nohighlight">\(L_f\)</span></p></td>
 <td><p>Lf</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{J kg}^{-1}\)</span></p></td>
-<td><p>Latent heat of fusion for liquid water at 0C <a class="footnote-reference brackets" href="#id30" id="id15" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p></td>
+<td><p>Latent heat of fusion for liquid water at 0C <a class="footnote-reference brackets" href="#id31" id="id15" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p>ice_specific_heat</p></td>
+<tr class="row-even"><td><p>water_heat_sublimation</p></td>
+<td><p><span class="math notranslate nohighlight">\(L_s\)</span></p></td>
+<td><p>Ls</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{J kg}^{-1}\)</span></p></td>
+<td><p>Latent heat of sublimation for water, Lv + Lf</p></td>
+</tr>
+<tr class="row-odd"><td><p>ice_specific_heat</p></td>
 <td><p><span class="math notranslate nohighlight">\(C_{pi}\)</span></p></td>
 <td><p>Cp_i</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
-<td><p>Specific heat of ice at 0C <a class="footnote-reference brackets" href="#id30" id="id16" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p></td>
+<td><p>Specific heat of ice at 0C <a class="footnote-reference brackets" href="#id31" id="id16" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p>density_ice</p></td>
+<tr class="row-even"><td><p>density_ice</p></td>
 <td><p><span class="math notranslate nohighlight">\(\rho_i\)</span></p></td>
 <td><p>rho_i</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{kg m}^{-3}\)</span></p></td>
 <td><p>Density of ice at 0C</p></td>
+</tr>
+<tr class="row-odd"><td><p>water_triple_point_temperature</p></td>
+<td><p><span class="math notranslate nohighlight">\(T_0\)</span></p></td>
+<td><p>T0</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{K}\)</span></p></td>
+<td><p>Triple-point temperature of water <a class="footnote-reference brackets" href="#id21" id="id17" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
 </tr>
 </tbody>
 </table>
@@ -934,7 +952,7 @@
 <td><p><span class="math notranslate nohighlight">\(M_d\)</span></p></td>
 <td><p>Md</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{g / mol}\)</span></p></td>
-<td><p>Nominal molecular weight of dry air at the surface of th Earth <a class="footnote-reference brackets" href="#id32" id="id17" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a></p></td>
+<td><p>Nominal molecular weight of dry air at the surface of th Earth <a class="footnote-reference brackets" href="#id33" id="id18" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>dry_air_gas_constant</p></td>
 <td><p><span class="math notranslate nohighlight">\(R_d\)</span></p></td>
@@ -1002,41 +1020,41 @@
 </table>
 </div>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id18" role="doc-footnote">
+<aside class="footnote brackets" id="id19" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id4">2</a>,<a role="doc-backlink" href="#id7">3</a>)</span>
-<p><a class="reference internal" href="../references.html#moritz2000" id="id19"><span>[Moritz2000]</span></a></p>
+<p><a class="reference internal" href="../references.html#moritz2000" id="id20"><span>[Moritz2000]</span></a></p>
 </aside>
-<aside class="footnote brackets" id="id20" role="doc-footnote">
+<aside class="footnote brackets" id="id21" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id8">3</a>,<a role="doc-backlink" href="#id10">4</a>)</span>
-<p><a class="reference internal" href="../references.html#codata2018" id="id21"><span>[CODATA2018]</span></a></p>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id8">3</a>,<a role="doc-backlink" href="#id10">4</a>,<a role="doc-backlink" href="#id17">5</a>)</span>
+<p><a class="reference internal" href="../references.html#codata2018" id="id22"><span>[CODATA2018]</span></a></p>
 </aside>
-<aside class="footnote brackets" id="id22" role="doc-footnote">
+<aside class="footnote brackets" id="id23" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">3</a><span class="fn-bracket">]</span></span>
-<p><a class="reference internal" href="../references.html#iau2012" id="id23"><span>[IAU2012]</span></a></p>
+<p><a class="reference internal" href="../references.html#iau2012" id="id24"><span>[IAU2012]</span></a></p>
 </aside>
-<aside class="footnote brackets" id="id24" role="doc-footnote">
+<aside class="footnote brackets" id="id25" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">4</a><span class="fn-bracket">]</span></span>
-<p><a class="reference internal" href="../references.html#kopp2011" id="id25"><span>[Kopp2011]</span></a></p>
+<p><a class="reference internal" href="../references.html#kopp2011" id="id26"><span>[Kopp2011]</span></a></p>
 </aside>
-<aside class="footnote brackets" id="id26" role="doc-footnote">
+<aside class="footnote brackets" id="id27" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id9">1</a>,<a role="doc-backlink" href="#id11">2</a>,<a role="doc-backlink" href="#id12">3</a>)</span>
-<p><a class="reference internal" href="../references.html#iapws2001" id="id27"><span>[IAPWS2001]</span></a></p>
+<p><a class="reference internal" href="../references.html#iapws2001" id="id28"><span>[IAPWS2001]</span></a></p>
 </aside>
-<aside class="footnote brackets" id="id28" role="doc-footnote">
+<aside class="footnote brackets" id="id29" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">6</a><span class="fn-bracket">]</span></span>
-<p><a class="reference internal" href="../references.html#iapws1995" id="id29"><span>[IAPWS1995]</span></a></p>
+<p><a class="reference internal" href="../references.html#iapws1995" id="id30"><span>[IAPWS1995]</span></a></p>
 </aside>
-<aside class="footnote brackets" id="id30" role="doc-footnote">
+<aside class="footnote brackets" id="id31" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id14">1</a>,<a role="doc-backlink" href="#id15">2</a>,<a role="doc-backlink" href="#id16">3</a>)</span>
-<p><a class="reference internal" href="../references.html#wmo1966" id="id31"><span>[WMO1966]</span></a></p>
+<p><a class="reference internal" href="../references.html#wmo1966" id="id32"><span>[WMO1966]</span></a></p>
 </aside>
-<aside class="footnote brackets" id="id32" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id17">8</a><span class="fn-bracket">]</span></span>
-<p><a class="reference internal" href="../references.html#picard2008" id="id33"><span>[Picard2008]</span></a></p>
+<aside class="footnote brackets" id="id33" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id18">8</a><span class="fn-bracket">]</span></span>
+<p><a class="reference internal" href="../references.html#picard2008" id="id34"><span>[Picard2008]</span></a></p>
 </aside>
 </aside>
 </section>
