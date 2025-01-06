@@ -1275,7 +1275,8 @@ def inertial_advective_wind(
     broadcast=('u', 'v', 'temperature', 'pressure', 'static_stability', 'parallel_scale',
                'meridional_scale')
 )
-@check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]')
+@check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]',
+             '[energy] / [mass] / [pressure]**2')
 def q_vector(
     u,
     v,
@@ -1306,6 +1307,12 @@ def q_vector(
                   \right) \omega =
               - 2 \nabla_p \cdot \vec{Q} -
                   \frac{R}{\sigma p} \beta \frac{\partial T}{\partial x}
+
+    By default, this function uses a unitless value of 1 for ``static_stability``, which
+    replicates the functionality of the GEMPAK ``QVEC`` function. If a value is given for
+    ``static_stability``, it should have dimensionality of ``energy / mass / pressure^2``, and
+    will result in behavior that matches that of GEMPAK's ``QVCL`` function;
+    `static_stability` can be used to calculate this value if desired.
 
     Parameters
     ----------
