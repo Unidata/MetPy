@@ -23,8 +23,10 @@ ds = example_data()
 # Calculate the temperature advection of the flow
 tadv = mpcalc.advection(ds.temperature, ds.uwind, ds.vwind)
 
-# Calculate the q-vectors
-u_qvect, v_qvect = mpcalc.q_vector(ds.uwind, ds.vwind, ds.temperature, 850 * units.hPa)
+# Calculate the q-vectors. Passing in a fixed value of static stability, but could also
+# use `mpcalc.static_stability()`.
+u_qvect, v_qvect = mpcalc.q_vector(ds.uwind, ds.vwind, ds.temperature, 850 * units.hPa,
+                                   static_stability=0.02 * units('J / kg / Pa^2'))
 
 # start figure and set axis
 fig, ax = plt.subplots(figsize=(5, 5))
