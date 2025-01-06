@@ -14,6 +14,7 @@ except ImportError:
 
 import scipy.integrate as si
 import scipy.optimize as so
+from scipy.special import lambertw
 import xarray as xr
 
 from .exceptions import InvalidSoundingError
@@ -30,8 +31,251 @@ exporter = Exporter(globals())
 
 
 @exporter.export
+@preprocess_and_wrap(wrap_like='specific_humidity')
+@process_units(input_dimensionalities={'specific_humidity': 'dimensionless'},
+               output_dimensionalities='[specific_heat_capacity]',
+               output_to='J K**-1 kg**-1 ')
+def moist_air_gas_constant(specific_humidity):
+    r"""Calculate R_m, the specific gas constant for a parcel of moist air.
+
+    Parameters
+    ----------
+    specific_humidity : `pint.Quantity`
+
+    Returns
+    -------
+    `pint.Quantity`
+        Specific gas constant
+
+    Examples
+    --------
+    >>> from metpy.calc import moist_air_gas_constant
+    >>> from metpy.units import units
+    >>> moist_air_gas_constant(11 * units('g/kg'))
+    <Quantity(288.966723, 'joule / kelvin / kilogram')>
+
+    See Also
+    --------
+    moist_air_specific_heat_pressure, moist_air_poisson_exponent
+
+    Notes
+    -----
+    .. math:: R_m = (1 - q_v) R_a + q_v R_v
+
+    Eq 16, [Romps2017]_ using MetPy-defined constants in place of cited values.
+
+    """
+    return ((1 - specific_humidity) * mpconsts.nounit.Rd
+            + specific_humidity * mpconsts.nounit.Rv)
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='specific_humidity')
+@process_units(input_dimensionalities={'specific_humidity': 'dimensionless'},
+               output_dimensionalities='[specific_heat_capacity]',
+               output_to='J K**-1 kg**-1 ')
+def moist_air_specific_heat_pressure(specific_humidity):
+    r"""Calculate C_pm, the specific heat at constant pressure for a moist air parcel.
+
+    Parameters
+    ----------
+    specific_humidity : `pint.Quantity`
+
+    Returns
+    -------
+    `pint.Quantity`
+        Specific heat capacity of air at constant pressure
+
+    Examples
+    --------
+    >>> from metpy.calc import moist_air_specific_heat_pressure
+    >>> from metpy.units import units
+    >>> moist_air_specific_heat_pressure(11 * units('g/kg'))
+    <Quantity(1014.07575, 'joule / kelvin / kilogram')>
+
+    See Also
+    --------
+    moist_air_gas_constant, moist_air_poisson_exponent
+
+    Notes
+    -----
+    .. math:: c_{pm} = (1 - q_v) c_{pa} + q_v c_{pv}
+
+    Eq 17, [Romps2017]_ using MetPy-defined constants in place of cited values.
+
+    """
+    return ((1 - specific_humidity) * mpconsts.nounit.Cp_d
+            + specific_humidity * mpconsts.nounit.Cp_v)
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='specific_humidity')
+@process_units(
+    input_dimensionalities={'specific_humidity': 'dimensionless'},
+    output_dimensionalities='[dimensionless]'
+)
+def moist_air_poisson_exponent(specific_humidity):
+    r"""Calculate kappa_m, the Poisson exponent for a moist air parcel.
+
+    Parameters
+    ----------
+    specific_humidity : `pint.Quantity`
+
+    Returns
+    -------
+    `pint.Quantity`
+        Poisson exponent of moist air parcel
+
+    Examples
+    --------
+    >>> from metpy.calc import moist_air_poisson_exponent
+    >>> from metpy.units import units
+    >>> moist_air_poisson_exponent(11 * units('g/kg'))
+    <Quantity(0.284955757, 'dimensionless')>
+
+    See Also
+    --------
+    moist_air_gas_constant, moist_air_specific_heat_pressure
+
+    """
+    return (moist_air_gas_constant._nounit(specific_humidity)
+            / moist_air_specific_heat_pressure._nounit(specific_humidity))
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='temperature')
+@process_units(input_dimensionalities={'temperature': '[temperature]'},
+               output_dimensionalities='[specific_enthalpy]',
+               output_to='J kg**-1')
+def water_latent_heat_vaporization(temperature):
+    r"""Calculate the latent heat of vaporization for water.
+
+    Accounts for variations in latent heat across valid temperature range.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+
+    Returns
+    -------
+    `pint.Quantity`
+        Latent heat of vaporization
+
+    Examples
+    --------
+    >>> from metpy.calc import water_latent_heat_vaporization
+    >>> from metpy.units import units
+    >>> water_latent_heat_vaporization(20 * units.degC)
+    <Quantity(2453677.15, 'joule / kilogram')>
+
+    See Also
+    --------
+    water_latent_heat_sublimation, water_latent_heat_melting
+
+    Notes
+    -----
+    Assumption of constant :math:`C_pv` limits validity to :math:`0 \deg \en 100 \deg C` range.
+
+    .. math:: L = L_0 - (c_{pl} - c_{pv}) (T - T_0)
+
+    Eq 15, [Ambaum2020]_, using MetPy-defined constants in place of cited values.
+
+    """
+    return (mpconsts.nounit.Lv
+            - (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v)
+            * (temperature - mpconsts.nounit.T0))
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='temperature')
+@process_units(input_dimensionalities={'temperature': '[temperature]'},
+               output_dimensionalities='[specific_enthalpy]',
+               output_to='J kg**-1')
+def water_latent_heat_sublimation(temperature):
+    r"""Calculate the latent heat of sublimation for water.
+
+    Accounts for variations in latent heat across valid temperature range.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+
+    Returns
+    -------
+    `pint.Quantity`
+        Latent heat of vaporization
+
+    Examples
+    --------
+    >>> from metpy.calc import water_latent_heat_sublimation
+    >>> from metpy.units import units
+    >>> water_latent_heat_sublimation(-15 * units.degC)
+    <Quantity(2837991.13, 'joule / kilogram')>
+
+    See Also
+    --------
+    water_latent_heat_vaporization, water_latent_heat_melting
+
+    Notes
+    -----
+    .. math:: L_s = L_{s0} - (c_{pl} - c_{pv}) (T - T_0)
+
+    Eq 18, [Ambaum2020]_, using MetPy-defined constants in place of cited values.
+
+    """
+    return (mpconsts.nounit.Ls
+            - (mpconsts.nounit.Cp_i - mpconsts.nounit.Cp_v)
+            * (temperature - mpconsts.nounit.T0))
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='temperature')
+@process_units(input_dimensionalities={'temperature': '[temperature]'},
+               output_dimensionalities='[specific_enthalpy]',
+               output_to='J kg**-1')
+def water_latent_heat_melting(temperature):
+    r"""Calculate the latent heat of melting for water.
+
+    Accounts for variations in latent heat across valid temperature range.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+
+    Returns
+    -------
+    `pint.Quantity`
+        Latent heat of vaporization
+
+    Examples
+    --------
+    >>> from metpy.calc import water_latent_heat_melting
+    >>> from metpy.units import units
+    >>> water_latent_heat_melting(-15 * units.degC)
+    <Quantity(365662.294, 'joule / kilogram')>
+
+    See Also
+    --------
+    water_latent_heat_vaporization, water_latent_heat_sublimation
+
+    Notes
+    -----
+    .. math:: L_m = L_{m0} + (c_{pl} - c_{pi}) (T - T_0)
+
+    Body text below Eq 20, [Ambaum2020]_, derived from Eq 15, Eq 18.
+    Uses MetPy-defined constants in place of cited values.
+
+    """
+    return (mpconsts.nounit.Lf
+            - (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_i)
+            * (temperature - mpconsts.nounit.T0))
+
+
+@exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'dewpoint'))
-@check_units('[temperature]', '[temperature]')
+@process_units(input_dimensionalities={'temperature': '[temperature]',
+                                       'dewpoint': '[temperature]'},
+               output_dimensionalities='[dimensionless]')
 def relative_humidity_from_dewpoint(temperature, dewpoint):
     r"""Calculate the relative humidity.
 
@@ -70,8 +314,8 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
        Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
-    e = saturation_vapor_pressure(dewpoint)
-    e_s = saturation_vapor_pressure(temperature)
+    e = saturation_vapor_pressure._nounit(dewpoint)
+    e_s = saturation_vapor_pressure._nounit(temperature)
     return e / e_s
 
 
@@ -406,7 +650,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     {'pressure': '[pressure]', 'temperature': '[temperature]', 'dewpoint': '[temperature]'},
     ('[pressure]', '[temperature]')
 )
-def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
+def lcl(pressure, temperature, dewpoint, max_iters=None, eps=None):
     r"""Calculate the lifted condensation level (LCL) from the starting point.
 
     The starting state for the parcel is defined by `temperature`, `dewpoint`,
@@ -432,20 +676,12 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     `pint.Quantity`
         LCL temperature
 
-    Other Parameters
-    ----------------
-    max_iters : int, optional
-        The maximum number of iterations to use in calculation, defaults to 50.
-
-    eps : float, optional
-        The desired relative error in the calculated value, defaults to 1e-5.
-
     Examples
     --------
     >>> from metpy.calc import lcl
     >>> from metpy.units import units
     >>> lcl(943 * units.hPa, 33 * units.degC, 28 * units.degC)
-    (<Quantity(877.563323, 'hectopascal')>, <Quantity(26.7734921, 'degree_Celsius')>)
+    (<Quantity(892.867405, 'hectopascal')>, <Quantity(28.287039, 'degree_Celsius')>)
 
     See Also
     --------
@@ -453,39 +689,41 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 
     Notes
     -----
-    This function is implemented using an iterative approach to solve for the
-    LCL. The basic algorithm is:
-
-    1. Find the dewpoint from the LCL pressure and starting mixing ratio
-    2. Find the LCL pressure from the starting temperature and dewpoint
-    3. Iterate until convergence
-
-    The function is guaranteed to finish by virtue of the `max_iters` counter.
+    From [Romps2017]_, this directly solves for the temperature at the LCL, Eq 22a,
+    .. math:: T_{LCL} = c [W_{-1}(RH_l^{1/a} c \exp{c})]^{-1} T
+    and similarly for pressure at the LCL, Eq 22b,
+    .. math:: p_{LCL} = p \left( \frac{T_{LCL}}{T} \right)^{c_{pm} / R_m}
+    where :math:`a` (Eq 22d), :math:`b` (Eq 22e), and :math:`c` (Eq 22f) are derived constants,
+    and :math:`W_{-1}` is the :math:`k=-1` branch of the Lambert :math:`W` function.
 
     .. versionchanged:: 1.0
        Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
-    def _lcl_iter(p, p0, w, t):
-        nonlocal nan_mask
-        td = globals()['dewpoint']._nounit(vapor_pressure._nounit(p, w))
-        p_new = (p0 * (td / t) ** (1. / mpconsts.nounit.kappa))
-        nan_mask = nan_mask | np.isnan(p_new)
-        return np.where(np.isnan(p_new), p, p_new)
+    if max_iters or eps:
+        _warnings.warn(
+            'max_iters, eps arguments unused and will be deprecated in a future version.',
+            PendingDeprecationWarning)
 
-    # Handle nans by creating a mask that gets set by our _lcl_iter function if it
-    # ever encounters a nan, at which point pressure is set to p, stopping iteration.
-    nan_mask = False
-    w = mixing_ratio._nounit(saturation_vapor_pressure._nounit(dewpoint), pressure)
-    lcl_p = so.fixed_point(_lcl_iter, pressure, args=(pressure, w, temperature),
-                           xtol=eps, maxiter=max_iters)
-    lcl_p = np.where(nan_mask, np.nan, lcl_p)
+    q = specific_humidity_from_dewpoint._nounit(pressure, dewpoint)
+    moist_heat_ratio = (moist_air_specific_heat_pressure._nounit(q)
+                        / moist_air_gas_constant._nounit(q))
+    spec_heat_diff = mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v
 
-    # np.isclose needed if surface is LCL due to precision error with np.log in dewpoint.
-    # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
-    lcl_p = np.where(np.isclose(lcl_p, pressure), pressure, lcl_p)
+    a = moist_heat_ratio + spec_heat_diff / mpconsts.nounit.Rv
+    b = (-(mpconsts.nounit.Lv + spec_heat_diff * mpconsts.nounit.T0)
+         / (mpconsts.nounit.Rv * temperature))
+    c = b / a
 
-    return lcl_p, globals()['dewpoint']._nounit(vapor_pressure._nounit(lcl_p, w))
+    w_minus1 = lambertw(
+        (relative_humidity_from_dewpoint._nounit(temperature, dewpoint)**(1 / a)
+         * c * np.exp(c)),
+        k=-1).real
+
+    t_lcl = c / w_minus1 * temperature
+    p_lcl = pressure * (t_lcl / temperature) ** moist_heat_ratio
+
+    return p_lcl, t_lcl
 
 
 @exporter.export
@@ -1300,7 +1538,7 @@ def saturation_vapor_pressure(temperature):
     >>> from metpy.calc import saturation_vapor_pressure
     >>> from metpy.units import units
     >>> saturation_vapor_pressure(25 * units.degC).to('hPa')
-    <Quantity(31.6742944, 'hectopascal')>
+    <Quantity(31.623456, 'hectopascal')>
 
     See Also
     --------
@@ -1311,14 +1549,21 @@ def saturation_vapor_pressure(temperature):
     Instead of temperature, dewpoint may be used in order to calculate
     the actual (ambient) water vapor (partial) pressure.
 
-    The formula used is that from [Bolton1980]_ for T in degrees Celsius:
-
-    .. math:: 6.112 e^\frac{17.67T}{T + 243.5}
+    Implemented solution from [Ambaum2020]_, Eq. 13,
+    .. math:: e = e_{s0} \frac{T_0}{T}^{(c_{pl} - c_{pv}) / R_v} \exp{
+    \frac{L_0}{R_v T_0} - \frac{L}{R_v T}}
 
     """
-    # Converted from original in terms of C to use kelvin.
-    return mpconsts.nounit.sat_pressure_0c * np.exp(
-        17.67 * (temperature - 273.15) / (temperature - 29.65)
+    latent_heat = water_latent_heat_vaporization._nounit(temperature)
+    temp_ratio = mpconsts.nounit.T0 / temperature
+    heat_power = (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
+    exp_term = ((mpconsts.nounit.Lv / mpconsts.nounit.T0 - latent_heat / temperature)
+                / mpconsts.nounit.Rv)
+
+    return (
+        mpconsts.nounit.sat_pressure_0c
+        * temp_ratio ** heat_power
+        * np.exp(exp_term)
     )
 
 
