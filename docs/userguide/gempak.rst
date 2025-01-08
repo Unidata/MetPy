@@ -486,11 +486,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td>HIGH(S, RADIUS)</td>
-        <td>Relative maxima over a grid</td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td class="tg-implemented">HIGH(S, RADIUS)</td>
+        <td class="tg-implemented">Relative maxima over a grid</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.find_peaks.html#metpy.calc.find_peaks">metpy.calc.find_peaks</a></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -534,11 +534,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td>LOWS(S, RADIUS)</td>
-        <td>Relative minima over a grid</td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td class="tg-implemented">LOWS(S, RADIUS)</td>
+        <td class="tg-implemented">Relative minima over a grid</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.find_peaks.html#metpy.calc.find_peaks">metpy.calc.find_peaks</a></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
