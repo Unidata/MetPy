@@ -18,7 +18,7 @@ exporter = Exporter(globals())
 
 
 @exporter.export
-def scattertext(ax, x, y, texts, loc=(0, 0), **kw):
+def scattertext(ax, x, y, texts, loc=(0, 0), formatter=None, **kw):
     """Add text to the axes.
 
     Add text in string `s` to axis at location `x`, `y`, data
@@ -38,6 +38,12 @@ def scattertext(ax, x, y, texts, loc=(0, 0), **kw):
     loc : tuple[int, int], optional
         Offset (in screen coordinates) from x,y position. Allows positioning text relative
         to original point. Default is (0, 0), which is no offset.
+
+    formatter : str or Callable, optional
+        How to format the each entry in `texts` for plotting. If a string, it should be
+        compatible with the :func:`format` builtin. If a callable, this should take a
+        value and return a string. Default is ``None``, which performs no formatting and
+        requires every object in `texts` to be a `str`.
 
     Other Parameters
     ----------------
@@ -74,6 +80,15 @@ def scattertext(ax, x, y, texts, loc=(0, 0), **kw):
 
     # Handle masked arrays
     x, y, texts = cbook.delete_masked_points(x, y, texts)
+
+    if formatter is not None:
+        if not callable(formatter):
+            fmt = formatter
+
+            def formatter(s):
+                """Turn a format string into a callable."""
+                return format(s, fmt)
+        texts = [formatter(v) for v in texts]
 
     # If there is nothing left after deleting the masked points, return None
     if x.size == 0:
