@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Functionality for doing text-based plotting."""
 
+import itertools
+
 from matplotlib import rcParams
 from matplotlib.artist import allow_rasterization
 import matplotlib.cbook as cbook
@@ -202,7 +204,8 @@ class TextCollection(Text):
 
         angle = self.get_rotation()
 
-        for (posx, posy), t in zip(pts, self.text):
+        # cycle() makes text repeat to match the points given
+        for (posx, posy), t in zip(pts, itertools.cycle(self.text)):
             # Skip empty strings--not only is this a performance gain, but it fixes
             # rendering with path effects below.
             if not t:

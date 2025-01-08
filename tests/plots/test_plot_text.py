@@ -6,7 +6,9 @@
 from tempfile import TemporaryFile
 
 import matplotlib.patheffects as mpatheffects
+import matplotlib.pyplot as plt
 import numpy as np
+import pytest
 
 from metpy.plots import scattertext
 from metpy.testing import autoclose_figure
@@ -26,3 +28,12 @@ def test_scattertext_patheffect_empty():
         # Need to trigger a render
         with TemporaryFile('wb') as fobj:
             fig.savefig(fobj)
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.069)
+def test_scattertext_scalar_text():
+    """Test that scattertext can work properly with multiple points but single text."""
+    x, y = np.arange(6).reshape(2, 3)
+    fig, ax = plt.subplots()
+    scattertext(ax, x, y, 'H')
+    return fig
