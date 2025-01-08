@@ -37,3 +37,13 @@ def test_scattertext_scalar_text():
     fig, ax = plt.subplots()
     scattertext(ax, x, y, 'H')
     return fig
+
+
+def test_scattertext_formatter():
+    """Test that scattertext supports formatting arguments."""
+    x, y = np.arange(6).reshape(2, 3)
+    vals = [1, 2, 3]
+    with autoclose_figure() as fig:
+        ax = fig.add_subplot(1, 1, 1)
+        tc = scattertext(ax, x, y, vals, formatter='02d')
+        assert tc.text == ['01', '02', '03']
