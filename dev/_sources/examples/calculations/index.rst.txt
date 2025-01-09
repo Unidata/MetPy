@@ -359,6 +359,23 @@ Examples using various calculation functions from MetPy.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This uses MetPy&#x27;s find_peaks function to automatically identify locations of high and low centers, and then plots them on a map.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_High_Low_Analysis_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_High_Low_Analysis.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">High/Low Analysis</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc to perform a number of calculations using sounding data.">
 
 .. only:: html
@@ -404,5 +421,6 @@ Examples using various calculation functions from MetPy.
    /examples/calculations/Gradient
    /examples/calculations/QVector
    /examples/calculations/Smoothing
+   /examples/calculations/High_Low_Analysis
    /examples/calculations/Sounding_Calculations
 

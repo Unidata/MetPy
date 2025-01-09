@@ -1,0 +1,12 @@
+peak_persistence
+===========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: peak_persistence
+
+.. include:: metpy.calc.peak_persistence.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -20,6 +20,7 @@ Plots ``(metpy.plots)``
       :toctree: ./
    
       read_colortable
+      scattertext
       wx_code_to_numeric
       add_metpy_logo
       add_timestamp

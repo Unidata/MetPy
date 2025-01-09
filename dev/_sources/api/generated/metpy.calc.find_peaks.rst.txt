@@ -1,0 +1,12 @@
+find_peaks
+=====================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: find_peaks
+
+.. include:: metpy.calc.find_peaks.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

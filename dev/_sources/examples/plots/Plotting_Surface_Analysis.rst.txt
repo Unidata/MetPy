@@ -37,8 +37,8 @@ path effects for matplotlib than can be used to represent a line as a traditiona
 
     from metpy.cbook import get_test_data
     from metpy.io import parse_wpc_surface_bulletin
-    from metpy.plots import (add_metpy_logo, ColdFront, OccludedFront, StationaryFront,
-                             StationPlot, WarmFront)
+    from metpy.plots import (add_metpy_logo, ColdFront, OccludedFront, scattertext,
+                             StationaryFront, WarmFront)
 
 
 
@@ -54,7 +54,7 @@ pandas `DataFrame`. This essentially encapsulates some appropriate plotting meth
 as the necessary keyword arguments for giving the expected visual appearance for the
 features.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-59
+.. GENERATED FROM PYTHON SOURCE LINES 28-60
 
 .. code-block:: Python
 
@@ -78,9 +78,10 @@ features.
         for field in ('HIGH', 'LOW'):
             rows = data[data.feature == field]
             x, y = zip(*((pt.x, pt.y) for pt in rows.geometry), strict=False)
-            sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree(), clip_on=True)
-            sp.plot_text('C', [field[0]] * len(x), **complete_style[field])
-            sp.plot_parameter('S', rows.strength, **complete_style[field])
+            scattertext(ax, x, y, field[0],
+                        **complete_style[field], transform=ccrs.PlateCarree(), clip_on=True)
+            scattertext(ax, x, y, rows.strength, formatter='.0f', loc=(0, -10),
+                        **complete_style[field], transform=ccrs.PlateCarree(), clip_on=True)
 
         # Handle all the boundary types
         for field in ('WARM', 'COLD', 'STNRY', 'OCFNT', 'TROF'):
@@ -96,11 +97,11 @@ features.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-61
+.. GENERATED FROM PYTHON SOURCE LINES 61-62
 
 Set up the map for plotting, parse the bulletin, and plot it
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-79
+.. GENERATED FROM PYTHON SOURCE LINES 62-80
 
 .. code-block:: Python
 
@@ -137,7 +138,7 @@ Set up the map for plotting, parse the bulletin, and plot it
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.625 seconds)
+   **Total running time of the script:** (0 minutes 5.600 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Plotting_Surface_Analysis.py:

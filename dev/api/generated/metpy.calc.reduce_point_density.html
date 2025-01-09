@@ -75,12 +75,12 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="resample_nn_1d" href="metpy.calc.resample_nn_1d.html" />
-    <link rel="prev" title="parse_angle" href="metpy.calc.parse_angle.html" />
+    <link rel="prev" title="peak_persistence" href="metpy.calc.peak_persistence.html" />
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Jan 09, 2025 at 21:25:32"/>
+    <meta name="docbuild:last-update" content="Jan 09, 2025 at 22:59:51"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.reduce_point_density.html" />
 
   </head>
@@ -630,6 +630,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.azimuth_range_to_lat_lon.html">azimuth_range_to_lat_lon</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.find_bounding_indices.html">find_bounding_indices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.find_intersections.html">find_intersections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.find_peaks.html">find_peaks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.get_layer.html">get_layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.get_layer_heights.html">get_layer_heights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.get_perturbation.html">get_perturbation</a></li>
@@ -637,12 +638,14 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.isentropic_interpolation_as_dataset.html">isentropic_interpolation_as_dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.nearest_intersection_idx.html">nearest_intersection_idx</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.parse_angle.html">parse_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.peak_persistence.html">peak_persistence</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">reduce_point_density</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.resample_nn_1d.html">resample_nn_1d</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="metpy.plots.html">Plots <code class="docutils literal notranslate"><span class="pre">(metpy.plots)</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.scattertext.html">scattertext</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.wx_code_to_numeric.html">wx_code_to_numeric</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.add_timestamp.html">add_timestamp</a></li>
@@ -789,7 +792,7 @@
 <h1>reduce_point_density<a class="headerlink" href="#reduce-point-density" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.reduce_point_density">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">reduce_point_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/tools.py#L248-L324"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.reduce_point_density" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">reduce_point_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/tools.py#L249-L325"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.reduce_point_density" title="Link to this definition">#</a></dt>
 <dd><p>Return a mask to reduce the density of points in irregularly-spaced data.</p>
 <p>This function is used to down-sample a collection of scattered points (e.g. surface
 data), returning a mask that can be used to select the points from one or more arrays
@@ -848,12 +851,12 @@ be used to control selection priority for points.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="metpy.calc.parse_angle.html"
+       href="metpy.calc.peak_persistence.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">parse_angle</p>
+        <p class="prev-next-title">peak_persistence</p>
       </div>
     </a>
     <a class="right-next"
