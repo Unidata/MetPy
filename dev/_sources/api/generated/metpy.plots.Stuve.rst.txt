@@ -1,0 +1,59 @@
+Stuve
+=================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: Stuve
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~Stuve.__init__
+      ~Stuve.plot
+      ~Stuve.plot_barbs
+      ~Stuve.plot_dry_adiabats
+      ~Stuve.plot_mixing_lines
+      ~Stuve.plot_moist_adiabats
+      ~Stuve.shade_area
+      ~Stuve.shade_cape
+      ~Stuve.shade_cin
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: plot
+   .. automethod:: plot_barbs
+   .. automethod:: plot_dry_adiabats
+   .. automethod:: plot_mixing_lines
+   .. automethod:: plot_moist_adiabats
+   .. automethod:: shade_area
+   .. automethod:: shade_cape
+   .. automethod:: shade_cin
+
+   
+   
+
+.. include:: metpy.plots.Stuve.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

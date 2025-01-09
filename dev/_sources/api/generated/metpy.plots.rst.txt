@@ -66,6 +66,8 @@ Plots ``(metpy.plots)``
       StationaryFrontogenesis
       StationaryFrontolysis
       SkewT
+      Stuve
+      Emagram
       Hodograph
       StationPlot
       StationPlotLayout
