@@ -1,10 +1,10 @@
 # Copyright (c) 2014,2015,2016,2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Make Skew-T Log-P based plots.
+"""Make thermodynamic diagrams.
 
-Contain tools for making Skew-T Log-P plots, including the base plotting class,
-`SkewT`, as well as a class for making a `Hodograph`.
+Contain tools for making thermodynamic diagrams, including the base plotting class,
+`SkewT`, derived `Stuve` and `Emagram` classes, and a class for making a `Hodograph`.
 """
 
 from contextlib import ExitStack
@@ -742,6 +742,104 @@ class SkewT:
             idx = np.arange(0, len(pressure))
         return self.shade_area(pressure[idx], t_parcel[idx], t[idx], which='negative',
                                **kwargs)
+
+
+@exporter.export
+class Stuve(SkewT):
+    r"""Make Stüve plots of data.
+
+    Stüve plots are are a thermodynamic diagram with temperature on the x-axis and
+    pressure scaled by p^(R/cp)=p^0.286 on the y-axis. This class is derived from the
+    SkewT class and has the same capabilities for plotting data, wind barbs,
+    dry and saturated adiabats, and mixing ratio lines.
+
+    Attributes
+    ----------
+    ax : `matplotlib.axes.Axes`
+        The underlying Axes instance, which can be used for calling additional
+        plot functions (e.g. `axvline`)
+
+    """
+
+    def __init__(self, fig=None, subplot=None, rect=None, aspect='auto'):
+        r"""Create Stüve plots.
+
+        Parameters
+        ----------
+        fig : matplotlib.figure.Figure, optional
+            Source figure to use for plotting. If none is given, a new
+            :class:`matplotlib.figure.Figure` instance will be created.
+        subplot : tuple[int, int, int] or `matplotlib.gridspec.SubplotSpec` instance, optional
+            Controls the size/position of the created subplot. This allows creating
+            the skewT as part of a collection of subplots. If subplot is a tuple, it
+            should conform to the specification used for
+            :meth:`matplotlib.figure.Figure.add_subplot`. The
+            :class:`matplotlib.gridspec.SubplotSpec`
+            can be created by using :class:`matplotlib.gridspec.GridSpec`.
+        rect : tuple[float, float, float, float], optional
+            Rectangle (left, bottom, width, height) in which to place the axes. This
+            allows the user to place the axes at an arbitrary point on the figure.
+        aspect : float, int, or Literal['auto'], optional
+            Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
+            Defaults to ``'auto'`` which tells matplotlib to handle
+            the aspect ratio automatically.
+
+        """
+        super().__init__(fig=fig, rotation=0, subplot=subplot, rect=rect, aspect=aspect)
+
+        # Forward (f) and inverse (g) functions for Stuve pressure coordinate scaling
+        def f(p):
+            return p**0.286
+
+        def g(p):
+            return p**(1 / 0.286)
+
+        # Set the yaxis as Stuve
+        self.ax.set_yscale('function', functions=(f, g))
+
+
+@exporter.export
+class Emagram(SkewT):
+    r"""Make Emagram plots of data.
+
+    Emagram plots are T log-P thermodynamic diagrams. They differ from SkewT
+    in that the T axis is not skewed. This class is derived from the SkewT class and
+    has the same capabilities for plotting data, wind barbs, dry and saturated
+    adiabats, and mixing ratio lines.
+
+    Attributes
+    ----------
+    ax : `matplotlib.axes.Axes`
+        The underlying Axes instance, which can be used for calling additional
+        plot functions (e.g. `axvline`)
+
+    """
+
+    def __init__(self, fig=None, subplot=None, rect=None, aspect='auto'):
+        r"""Create Emagram plots.
+
+        Parameters
+        ----------
+        fig : matplotlib.figure.Figure, optional
+            Source figure to use for plotting. If none is given, a new
+            :class:`matplotlib.figure.Figure` instance will be created.
+        subplot : tuple[int, int, int] or `matplotlib.gridspec.SubplotSpec` instance, optional
+            Controls the size/position of the created subplot. This allows creating
+            the skewT as part of a collection of subplots. If subplot is a tuple, it
+            should conform to the specification used for
+            :meth:`matplotlib.figure.Figure.add_subplot`. The
+            :class:`matplotlib.gridspec.SubplotSpec`
+            can be created by using :class:`matplotlib.gridspec.GridSpec`.
+        rect : tuple[float, float, float, float], optional
+            Rectangle (left, bottom, width, height) in which to place the axes. This
+            allows the user to place the axes at an arbitrary point on the figure.
+        aspect : float, int, or Literal['auto'], optional
+            Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
+            Defaults to ``'auto'`` which tells matplotlib to handle
+            the aspect ratio automatically.
+
+        """
+        super().__init__(fig=fig, rotation=0, subplot=subplot, rect=rect, aspect=aspect)
 
 
 @exporter.export
