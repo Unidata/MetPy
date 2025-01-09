@@ -1574,6 +1574,52 @@ def saturation_vapor_pressure(temperature):
 
 
 @exporter.export
+@preprocess_and_wrap(wrap_like='temperature')
+@process_units({'temperature': '[temperature]'}, '[pressure]')
+def saturation_vapor_pressure_ice(temperature):
+    r"""Calculate the saturation water vapor (partial) pressure over ice.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+        Air temperature
+
+    Returns
+    -------
+    `pint.Quantity`
+        Saturation water vapor (partial) pressure
+
+    Examples
+    --------
+    >>> from metpy.calc import saturation_vapor_pressure_ice
+    >>> from metpy.units import units
+    >>> saturation_vapor_pressure_ice(-25 * units.degC).to('hPa')
+    <Quantity(0.632434749, 'hectopascal')>
+
+    See Also
+    --------
+    saturation_vapor_pressure, vapor_pressure
+
+    Notes
+    -----
+    Implemented solution from [Ambaum2020]_, Eq. 17,
+    .. math:: e = e_{i0} \frac{T_0}{T}^{(c_{pi} - c_{pv}) / R_v} \exp{
+    \frac{L_{s0}}{R_v T_0} - \frac{L_s}{R_v T}}
+
+    """
+    latent_heat = water_latent_heat_sublimation._nounit(temperature)
+    heat_power = (mpconsts.nounit.Cp_i - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
+    exp_term = ((mpconsts.nounit.Ls / mpconsts.nounit.T0 - latent_heat / temperature)
+                / mpconsts.nounit.Rv)
+
+    return (
+        mpconsts.nounit.sat_pressure_0c
+        * (mpconsts.nounit.T0 / temperature) ** heat_power
+        * np.exp(exp_term)
+    )
+
+
+@exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'relative_humidity'))
 @check_units('[temperature]', '[dimensionless]')
 def dewpoint_from_relative_humidity(temperature, relative_humidity):
