@@ -7,3 +7,6 @@ staticdata/*.tbl text eol=lf
 talks/* linguist-documentation
 src/metpy/io/_metar_parser/metar_parser.py linguist-generated=true
 src/metpy/_vendor/* linguist-vendored
+
+# Mark the vcrpy cassettes as generated
+tests/remote/fixtures/* linguist-generated=true
