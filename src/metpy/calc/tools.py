@@ -1815,7 +1815,7 @@ def _abbreviate_direction(ext_dir_str):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='input_angle')
 def angle_to_direction(input_angle, full=False, level=3):
     """Convert the meteorological angle to directional text.
 
@@ -1848,6 +1848,8 @@ def angle_to_direction(input_angle, full=False, level=3):
         origin_units = input_angle.units
         input_angle = input_angle.m
     except AttributeError:  # no units associated
+        origin_units = units.degree
+    if origin_units == units.dimensionless:  # assume if dimensionless is degree
         origin_units = units.degree
 
     if not hasattr(input_angle, '__len__') or isinstance(input_angle, str):
