@@ -1,3 +1,4 @@
 cartopy==0.24.0
 dask==2024.12.1
 shapely==2.0.6
+boto3==1.35.88

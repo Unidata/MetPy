@@ -1,0 +1,771 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        MzQ0ZDA1OWQtZWRiNy00MzRlLTg4MDktMGFlMTQ4Yjc5YzJi
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://unidata-nexrad-level3.s3.amazonaws.com/?list-type=2&prefix=FTG_N0Q_&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>unidata-nexrad-level3</Name><Prefix>FTG_N0Q_</Prefix><KeyCount>4</KeyCount><MaxKeys>1000</MaxKeys><Delimiter>_</Delimiter><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><CommonPrefixes><Prefix>FTG_N0Q_2020_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2021_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2022_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2023_</Prefix></CommonPrefixes></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 00:46:37 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - PPGphrfZsS2QBdvnwZOOrtn2TSJQiuIlDMTbjlRP+2LGzynLCiIgoN6L9sBvVHw9JDSPpvsoNug=
+      x-amz-request-id:
+      - W44ZC7Y8726X0Y9Z
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        Mzg1MWZhNjQtYTNhNS00MmYzLThkMjUtOWQ2MDRkZDA0NGNh
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://unidata-nexrad-level3.s3.amazonaws.com/?list-type=2&prefix=FTG_N0Q_2020_&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>unidata-nexrad-level3</Name><Prefix>FTG_N0Q_2020_</Prefix><KeyCount>10</KeyCount><MaxKeys>1000</MaxKeys><Delimiter>_</Delimiter><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><CommonPrefixes><Prefix>FTG_N0Q_2020_03_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_05_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_06_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_07_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_08_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_09_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_10_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_11_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_12_</Prefix></CommonPrefixes></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 00:46:37 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - QaRfFy9OcA0VPgxFskIUU5nYQh9p0VtALs92yUZJw9QE4+DKaMwJx4wKk0FDFDYJ/fk2JkYhmwQ=
+      x-amz-request-id:
+      - W44K5YJM7F2WQK7S
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        MWMyMDhiZWQtMWMyYS00MTMxLWE0M2UtMTE0Y2Y4ZGFkNWEx
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://unidata-nexrad-level3.s3.amazonaws.com/?list-type=2&prefix=FTG_N0Q_2020_03_&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>unidata-nexrad-level3</Name><Prefix>FTG_N0Q_2020_03_</Prefix><KeyCount>2</KeyCount><MaxKeys>1000</MaxKeys><Delimiter>_</Delimiter><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><CommonPrefixes><Prefix>FTG_N0Q_2020_03_30_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_</Prefix></CommonPrefixes></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 00:46:38 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - hAby52pb0XoXYBD+BSWKzmIWpClCnB2fzZgsAQYRc7wYMXk1sRh9gLjhgcVZYGuF0MIZjt+lAgg=
+      x-amz-request-id:
+      - WDSNY00MXHX5GRF2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        Nzg2NjA2MGMtNWU3ZS00ZmRkLThhNjgtMGNiODI5NjBmOGM5
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://unidata-nexrad-level3.s3.amazonaws.com/?list-type=2&prefix=FTG_N0Q_2020_04_&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>unidata-nexrad-level3</Name><Prefix>FTG_N0Q_2020_04_</Prefix><KeyCount>30</KeyCount><MaxKeys>1000</MaxKeys><Delimiter>_</Delimiter><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_02_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_03_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_04_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_05_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_06_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_07_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_08_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_09_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_10_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_11_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_12_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_13_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_14_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_15_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_16_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_17_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_18_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_19_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_20_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_21_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_22_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_23_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_24_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_25_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_26_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_27_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_28_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_29_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_30_</Prefix></CommonPrefixes></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 00:46:38 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - aoxOSBdnV8jZbZwpIwj/b2yegqoykB/SfJp/w608H7WS0ih8XbGPJZwgEcxGbOZtzxqdQl0r2Kg=
+      x-amz-request-id:
+      - WDSY67MZW1Q077HG
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        NzMyNzQ4N2QtY2RiMS00ODgwLTllOTAtNDY5NTQ4YmUxOWZm
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://unidata-nexrad-level3.s3.amazonaws.com/?list-type=2&prefix=FTG_N0Q_2020_03_31_&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>unidata-nexrad-level3</Name><Prefix>FTG_N0Q_2020_03_31_</Prefix><KeyCount>24</KeyCount><MaxKeys>1000</MaxKeys><Delimiter>_</Delimiter><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_00_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_01_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_02_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_03_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_04_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_05_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_06_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_07_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_08_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_09_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_10_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_11_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_12_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_13_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_14_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_15_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_16_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_17_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_18_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_19_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_20_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_21_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_22_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_03_31_23_</Prefix></CommonPrefixes></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 00:46:38 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - Xbwbg4Y/GImaJUgEajQ0NN5OdNVotAhGvMJb5zHXXv+KO+RiIR2DceZ68p6uAT+A5X0BDRZoEnE=
+      x-amz-request-id:
+      - WDSY6ZXN65XE3XR9
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        MmU0NzA1YjUtNTk4Yi00ODU1LTlmOGItOTc5ZjU2NmNiNWRl
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://unidata-nexrad-level3.s3.amazonaws.com/?list-type=2&prefix=FTG_N0Q_2020_04_01_&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>unidata-nexrad-level3</Name><Prefix>FTG_N0Q_2020_04_01_</Prefix><KeyCount>24</KeyCount><MaxKeys>1000</MaxKeys><Delimiter>_</Delimiter><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_00_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_01_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_02_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_03_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_04_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_05_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_06_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_07_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_08_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_09_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_10_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_11_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_12_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_13_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_14_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_15_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_16_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_17_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_18_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_19_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_20_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_21_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_22_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_23_</Prefix></CommonPrefixes></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 00:46:38 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - cvQvJaHg+Cwe5DO9NV+A2bFafzkR8NEqC0UuQ71PIu9UqYwo677Cd2eBYXmIcC1HJBt91cgUBXY=
+      x-amz-request-id:
+      - WDSX0RFV2280ZEH0
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        MTQyYzI0NTgtZTlkMy00ZWVkLTg0ZDYtMWMwYzQ2YjU1OGY4
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://unidata-nexrad-level3.s3.amazonaws.com/?list-type=2&prefix=FTG_N0Q_2020_04_01_11_&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>unidata-nexrad-level3</Name><Prefix>FTG_N0Q_2020_04_01_11_</Prefix><KeyCount>8</KeyCount><MaxKeys>1000</MaxKeys><Delimiter>_</Delimiter><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_11_04_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_11_11_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_11_18_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_11_26_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_11_33_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_11_40_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_11_47_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_11_54_</Prefix></CommonPrefixes></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 00:46:38 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - vMKsqyuet8UBABd5D9C6uxksHX7Sfoc7DwJ4S07pGrgd6RNM/eyQ5lMmCVkLi98lOobhmqs/gWM=
+      x-amz-request-id:
+      - WDSM8YBM2S40T0EA
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        YWFiNTgxMjYtNTRhMS00Mzk2LWE0MDYtYmNlYjU2OGNlN2Uw
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://unidata-nexrad-level3.s3.amazonaws.com/?list-type=2&prefix=FTG_N0Q_2020_04_01_12_&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>unidata-nexrad-level3</Name><Prefix>FTG_N0Q_2020_04_01_12_</Prefix><KeyCount>9</KeyCount><MaxKeys>1000</MaxKeys><Delimiter>_</Delimiter><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_12_01_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_12_08_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_12_15_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_12_23_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_12_30_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_12_37_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_12_44_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_12_51_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FTG_N0Q_2020_04_01_12_58_</Prefix></CommonPrefixes></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 00:46:39 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - 1rx3lBH3DR/n4Ad5cxxu7wgfc1bQZyP4Iwu/Qp0fo0pxsOsCoipH66+q9973I2d4t8LlTrDlPAM=
+      x-amz-request-id:
+      - PRE4JHPECQRNX6RZ
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        NmUzNGE0ZWMtNTJhNS00ODgwLThkM2EtYmRhY2NjZDY1NjNk
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://unidata-nexrad-level3.s3.amazonaws.com/?prefix=FTG_N0Q_2020_04_01_12_23_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>unidata-nexrad-level3</Name><Prefix>FTG_N0Q_2020_04_01_12_23_</Prefix><Marker></Marker><MaxKeys>1000</MaxKeys><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><Contents><Key>FTG_N0Q_2020_04_01_12_23_04</Key><LastModified>2020-05-05T20:14:03.000Z</LastModified><ETag>&quot;2a1088bf6b74c92daec9d82ba139ac05&quot;</ETag><Size>17454</Size><Owner><ID>915cc2376a44edb3144fafd19e9fedae19c98fd75e588fe79aff4d801420d6c9</ID><DisplayName>jweber</DisplayName></Owner><StorageClass>STANDARD</StorageClass></Contents></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 00:46:39 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - BrMfiBd4lmOrvMfShLFBdx/WGI83imyhjSYDyr2h+oqGb3NMhMt5wEmDqcRGFCPAZ2hPJqolCv4=
+      x-amz-request-id:
+      - PRE1QBJ724Q779JY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        OTIwOWMxOTQtNzBhMi00MGU4LTk3ZjUtNjA0N2E2ZjZkNDA2
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://unidata-nexrad-level3.s3.amazonaws.com/?prefix=FTG_N0Q_2020_04_01_12_30_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>unidata-nexrad-level3</Name><Prefix>FTG_N0Q_2020_04_01_12_30_</Prefix><Marker></Marker><MaxKeys>1000</MaxKeys><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><Contents><Key>FTG_N0Q_2020_04_01_12_30_12</Key><LastModified>2020-05-05T20:14:04.000Z</LastModified><ETag>&quot;e1476b0a661d801df5c67dca4ed4a565&quot;</ETag><Size>19215</Size><Owner><ID>915cc2376a44edb3144fafd19e9fedae19c98fd75e588fe79aff4d801420d6c9</ID><DisplayName>jweber</DisplayName></Owner><StorageClass>STANDARD</StorageClass></Contents></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 00:46:39 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - 7fqKbvICBr7iG68Gwq+ArfrH/iSjmj9b6u3ItV5cZZozADmOHBg2tgJ4nNlpudUAzVQ5CX990H0=
+      x-amz-request-id:
+      - PRE02VBRV1KSCW8P
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        YjY4MTZjZDUtMjg5ZS00ZGVmLWJkYmEtMDcyZDZiMDBhZTU2
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://unidata-nexrad-level3.s3.amazonaws.com/FTG_N0Q_2020_04_01_12_30_12
+  response:
+    body:
+      string: !!binary |
+        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
+        ykANDQoD
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - '19215'
+      Content-Type:
+      - binary/octet-stream
+      Date:
+      - Fri, 10 Jan 2025 00:46:39 GMT
+      ETag:
+      - '"e1476b0a661d801df5c67dca4ed4a565"'
+      Last-Modified:
+      - Tue, 05 May 2020 20:14:04 GMT
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - bPYOKpyf87DpG2pim0xJ5OI5qzMi19mTzbGIv1M5X9IpXFNEIWvmiOif9rlaauYb0D3mQeifNG0=
+      x-amz-request-id:
+      - PRE3YBBXC39N58Y1
+    status:
+      code: 200
+      message: OK
+version: 1
