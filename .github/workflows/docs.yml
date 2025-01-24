@@ -82,7 +82,7 @@ jobs:
     - name: Upload to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
-        deploy_key: ${{ secrets.GHPAGES_DEPLOY_KEY }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/build/html
         exclude_assets: '.buildinfo,_static/jquery-*.js,_static/underscore-*.js'
         destination_dir: ./${{ env.DOC_VERSION }}
