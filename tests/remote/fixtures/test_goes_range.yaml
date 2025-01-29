@@ -1,0 +1,158 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        OGJhOGU3NmUtOWFkNC00NjQ1LWJkM2EtMGU3NDY2MGNjMTY0
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://noaa-goes16.s3.amazonaws.com/?list-type=2&prefix=ABI-L1b-RadC%2F2024%2F345%2F01%2FOR_ABI-L1b-RadC-&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>noaa-goes16</Name><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-</Prefix><KeyCount>16</KeyCount><MaxKeys>1000</MaxKeys><Delimiter>_</Delimiter><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C02_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C03_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C04_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C05_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C06_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C07_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C08_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C09_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C10_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C11_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C12_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C13_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C14_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C15_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C16_</Prefix></CommonPrefixes></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 02:09:09 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - f2SLO60WyihXD/REdoHXhu++F4YjkDNmyN6viuJblxa1UlTUD4z6VfVbGhg5NRBw0IADG/3vQjou1JOuyGxYpQ==
+      x-amz-request-id:
+      - EJ045912YFMVHY92
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        NjFhZDIzYmMtNGM1Yy00OTY2LWI3ZDgtYzczMTI5OGVkMzFl
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://noaa-goes16.s3.amazonaws.com/?prefix=ABI-L1b-RadC%2F2024%2F345%2F01%2FOR_ABI-L1b-RadC-M6C01&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>noaa-goes16</Name><Prefix>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01</Prefix><Marker></Marker><MaxKeys>1000</MaxKeys><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><Contents><Key>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_G16_s20243450101170_e20243450103543_c20243450103590.nc</Key><LastModified>2024-12-10T01:04:04.000Z</LastModified><ETag>&quot;ae35e63527d66472bb134f9d8b2b5b7c&quot;</ETag><Size>680544</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_G16_s20243450106170_e20243450108543_c20243450108594.nc</Key><LastModified>2024-12-10T01:09:07.000Z</LastModified><ETag>&quot;fc6c5215135e284f668dff74675ba6eb&quot;</ETag><Size>643147</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_G16_s20243450111170_e20243450113543_c20243450113586.nc</Key><LastModified>2024-12-10T01:14:15.000Z</LastModified><ETag>&quot;976c211e9c1170abb3283c05e4703c47&quot;</ETag><Size>612138</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_G16_s20243450116170_e20243450118543_c20243450118589.nc</Key><LastModified>2024-12-10T01:19:18.000Z</LastModified><ETag>&quot;12490e316f8204d88867a0bf9112a3e7&quot;</ETag><Size>552104</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_G16_s20243450121170_e20243450123543_c20243450123594.nc</Key><LastModified>2024-12-10T01:24:07.000Z</LastModified><ETag>&quot;b413e7077c2a6482aa5b0b22ab9ee06a&quot;</ETag><Size>543292</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_G16_s20243450126170_e20243450128543_c20243450129025.nc</Key><LastModified>2024-12-10T01:29:09.000Z</LastModified><ETag>&quot;03a3628cf17d81e4e0b096ee807e3694&quot;</ETag><Size>525971</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_G16_s20243450131170_e20243450133543_c20243450133590.nc</Key><LastModified>2024-12-10T01:34:18.000Z</LastModified><ETag>&quot;ee79c8f36e4f39689345c68f19053b98&quot;</ETag><Size>523884</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_G16_s20243450136170_e20243450138543_c20243450138585.nc</Key><LastModified>2024-12-10T01:39:07.000Z</LastModified><ETag>&quot;4133b9f19c240b8163ef152a5a84c347&quot;</ETag><Size>498644</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_G16_s20243450141170_e20243450143543_c20243450143595.nc</Key><LastModified>2024-12-10T01:44:20.000Z</LastModified><ETag>&quot;0aa136544ba4659e6c52c50c979405de&quot;</ETag><Size>501755</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_G16_s20243450146170_e20243450148543_c20243450148579.nc</Key><LastModified>2024-12-10T01:49:03.000Z</LastModified><ETag>&quot;d3e7fc9eda1dd993bdf4f5b840d0bc58&quot;</ETag><Size>493979</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_G16_s20243450151170_e20243450153543_c20243450154026.nc</Key><LastModified>2024-12-10T01:54:16.000Z</LastModified><ETag>&quot;82fed349fee5428b3e5711f4aade4470&quot;</ETag><Size>471313</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/01/OR_ABI-L1b-RadC-M6C01_G16_s20243450156170_e20243450158543_c20243450158585.nc</Key><LastModified>2024-12-10T01:59:19.000Z</LastModified><ETag>&quot;0bbb0f7d0d952afcf92d6e887a779f45&quot;</ETag><Size>472785</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 02:09:09 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - 7mufcJlqux7+INRgofp1gQvd8Vl6shpIjUuhOQec5yuYJu+EMWniJBXMCi+G4pXjXJYJk3/3WLh4eZ2WKo7sxw==
+      x-amz-request-id:
+      - EJ0AWGMVW48967NV
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        YzZhNDc4ZjEtNmY4Ny00NDRlLWIyMjItNGEwOGIzMWZiYzNk
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://noaa-goes16.s3.amazonaws.com/?list-type=2&prefix=ABI-L1b-RadC%2F2024%2F345%2F02%2FOR_ABI-L1b-RadC-&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>noaa-goes16</Name><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-</Prefix><KeyCount>16</KeyCount><MaxKeys>1000</MaxKeys><Delimiter>_</Delimiter><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C02_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C03_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C04_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C05_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C06_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C07_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C08_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C09_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C10_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C11_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C12_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C13_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C14_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C15_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C16_</Prefix></CommonPrefixes></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 02:09:09 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - tAqoJiBkXJdHKrtpWWZb4Yt8DphggjAKI8OJC2MiGKmNJWBLk5VHaHwZEtUMt+BSZWiwddKw97WJmjiBthZe0Q==
+      x-amz-request-id:
+      - EJ03B4YM36WGMTTA
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        NGNhZmJhNmMtNTM2YS00NWM0LThjNGYtNDRjZjliMWQ3NTcz
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://noaa-goes16.s3.amazonaws.com/?prefix=ABI-L1b-RadC%2F2024%2F345%2F02%2FOR_ABI-L1b-RadC-M6C01&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>noaa-goes16</Name><Prefix>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01</Prefix><Marker></Marker><MaxKeys>1000</MaxKeys><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><Contents><Key>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_G16_s20243450201170_e20243450203543_c20243450204022.nc</Key><LastModified>2024-12-10T02:04:11.000Z</LastModified><ETag>&quot;5fbb33cffdc88b67f7d3888361fdbc2f&quot;</ETag><Size>470117</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_G16_s20243450206170_e20243450208543_c20243450208597.nc</Key><LastModified>2024-12-10T02:09:19.000Z</LastModified><ETag>&quot;cb6c45c09f27b96be48fe911cc6596c7&quot;</ETag><Size>475640</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_G16_s20243450211170_e20243450213543_c20243450214031.nc</Key><LastModified>2024-12-10T02:14:13.000Z</LastModified><ETag>&quot;66e378ff4879533b9dafc641b8e36ed4&quot;</ETag><Size>483749</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_G16_s20243450216170_e20243450218543_c20243450219000.nc</Key><LastModified>2024-12-10T02:19:17.000Z</LastModified><ETag>&quot;6215bcc05c9bc10886420061b7de0e5c&quot;</ETag><Size>483981</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_G16_s20243450221170_e20243450223543_c20243450223584.nc</Key><LastModified>2024-12-10T02:24:07.000Z</LastModified><ETag>&quot;67ac8eb1e532d0958f91febc0652b63e&quot;</ETag><Size>478618</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_G16_s20243450226170_e20243450228543_c20243450228595.nc</Key><LastModified>2024-12-10T02:29:10.000Z</LastModified><ETag>&quot;4004bd97353b7dba443e294acfb7b46e&quot;</ETag><Size>478584</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_G16_s20243450231170_e20243450233543_c20243450234021.nc</Key><LastModified>2024-12-10T02:34:17.000Z</LastModified><ETag>&quot;8a8aab4bf3cf72651cbc9da4aedd595f&quot;</ETag><Size>484593</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_G16_s20243450236170_e20243450238543_c20243450238583.nc</Key><LastModified>2024-12-10T02:39:18.000Z</LastModified><ETag>&quot;bbccbafa6cc0cc0bfa99c25b635e9499&quot;</ETag><Size>485621</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_G16_s20243450241170_e20243450243543_c20243450244013.nc</Key><LastModified>2024-12-10T02:44:10.000Z</LastModified><ETag>&quot;5afa33ae45ae2bb15112ef444418f901&quot;</ETag><Size>494962</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_G16_s20243450246170_e20243450248543_c20243450248579.nc</Key><LastModified>2024-12-10T02:49:10.000Z</LastModified><ETag>&quot;052af315e65c1de64e1c7e7f24240273&quot;</ETag><Size>470780</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_G16_s20243450251170_e20243450253543_c20243450254026.nc</Key><LastModified>2024-12-10T02:54:24.000Z</LastModified><ETag>&quot;7c0e7f0b2c4803e91a8ce4349ad29b70&quot;</ETag><Size>470467</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents><Contents><Key>ABI-L1b-RadC/2024/345/02/OR_ABI-L1b-RadC-M6C01_G16_s20243450256170_e20243450258543_c20243450259007.nc</Key><LastModified>2024-12-10T02:59:08.000Z</LastModified><ETag>&quot;2b0133dae1e4975a13aeee979a5fe078&quot;</ETag><Size>487131</Size><Owner><ID>07cd0b2bd0f30623096b9275946be8ed8f210ec3ec83f15b416f8296c4e7e947</ID><DisplayName>sandbox</DisplayName></Owner><StorageClass>INTELLIGENT_TIERING</StorageClass></Contents></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 10 Jan 2025 02:09:09 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - sfOGqkBfxVw7mfxv9HJ7bu241qditGmUbHrHkg7ZBNx+2L+8sPyYmd17d3xLQ+DN2hkUdLQ7WHxt38dd8ytfKg==
+      x-amz-request-id:
+      - EJ01RYXSA2KSGN1R
+    status:
+      code: 200
+      message: OK
+version: 1
