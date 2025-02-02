@@ -1439,7 +1439,7 @@ def gradient(f, axes=None, coordinates=None, deltas=None):
 
 @exporter.export
 def laplacian(f, axes=None, coordinates=None, deltas=None):
-    """Calculate the laplacian of a grid of values.
+    """Calculate the laplacian of a grid of values using finite difference technique (centered finite difference in the middle and forward/backward at the boundaries, see metpy.calc.second_derivative for more information).
 
     Works for both regularly-spaced data, and grids with varying spacing.
 
