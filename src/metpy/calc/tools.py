@@ -1443,6 +1443,10 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
 
     Works for both regularly-spaced data, and grids with varying spacing.
 
+    Calculation is done using finite difference technique (centered finite difference in the
+    middle and forward/backward at the boundaries, see metpy.calc.second_derivative for more
+    information).
+
     Either `coordinates` or `deltas` must be specified, or `f` must be given as an
     `xarray.DataArray` with  attached coordinate and projection information. If `f` is an
     `xarray.DataArray`, and `coordinates` or `deltas` are given, `f` will be converted to a
