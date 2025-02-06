@@ -152,7 +152,7 @@ def shear_vorticity(
 
     Notes
     -----
-    This implements a numerical version of the vertical shear vorticity:
+    This implements a numerical version of the vertical shear vorticity as in [Majumdar2024]_:
 
     .. math:: \zeta_s = \frac{1}{u^2 + v^2}(v u \frac{\partial u}{\partial x} +
                          v v \frac{\partial v}{\partial x} -
@@ -230,7 +230,8 @@ def curvature_vorticity(
 
     Notes
     -----
-    This implements a numerical version of the vertical curvature vorticity:
+    This implements a numerical version of the vertical curvature vorticity as in
+    [Majumdar2024]_:
 
     .. math:: \zeta_c = \frac{1}{u^2 + v^2}(u u \frac{\partial v}{\partial x} -
                          v v \frac{\partial u}{\partial y} -
