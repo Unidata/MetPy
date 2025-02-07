@@ -166,6 +166,9 @@ References
            *Journal of Geodesy* **74**, 128-133, doi:`10.1007/s001900050278
            <https://doi.org/10.1007/s001900050278>`_.
 
+.. [Majumdar2024] Majumdar, Sharan, 2024: `Curvature and Shear Vorticity in Cartesian
+           Coordinates <../_static/Majumdar-2024-curvature-vorticity.pdf>`_, 2pp.
+
 .. [NOAA1976] National Oceanic and Atmospheric Administration, National Aeronautics and
            Space Administration, and U. S. Air Force, 1976: `U. S. Standard Atmosphere 1976
            <https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19770009539.pdf>`_,
