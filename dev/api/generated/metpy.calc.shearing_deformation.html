@@ -75,12 +75,12 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="stretching_deformation" href="metpy.calc.stretching_deformation.html" />
-    <link rel="prev" title="q_vector" href="metpy.calc.q_vector.html" />
+    <link rel="prev" title="shear_vorticity" href="metpy.calc.shear_vorticity.html" />
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.0dev" />
-    <meta name="docbuild:last-update" content="Feb 04, 2025 at 20:22:47"/>
+    <meta name="docbuild:last-update" content="Feb 07, 2025 at 18:45:10"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.shearing_deformation.html" />
 
   </head>
@@ -578,6 +578,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.advection.html">advection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.ageostrophic_wind.html">ageostrophic_wind</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.coriolis_parameter.html">coriolis_parameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.curvature_vorticity.html">curvature_vorticity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.divergence.html">divergence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.exner_function.html">exner_function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.frontogenesis.html">frontogenesis</a></li>
@@ -588,6 +589,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.potential_vorticity_baroclinic.html">potential_vorticity_baroclinic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.potential_vorticity_barotropic.html">potential_vorticity_barotropic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.q_vector.html">q_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.shear_vorticity.html">shear_vorticity</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">shearing_deformation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.stretching_deformation.html">stretching_deformation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.total_deformation.html">total_deformation</a></li>
@@ -792,7 +794,7 @@
 <h1>shearing_deformation<a class="headerlink" href="#shearing-deformation" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.shearing_deformation">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">shearing_deformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meridional_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/kinematics.py#L166-L226"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.shearing_deformation" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">shearing_deformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meridional_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/kinematics.py#L323-L383"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.shearing_deformation" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the shearing deformation of the horizontal wind.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -863,12 +865,12 @@ geospatial, grid. Keyword-only argument.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="metpy.calc.q_vector.html"
+       href="metpy.calc.shear_vorticity.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">q_vector</p>
+        <p class="prev-next-title">shear_vorticity</p>
       </div>
     </a>
     <a class="right-next"

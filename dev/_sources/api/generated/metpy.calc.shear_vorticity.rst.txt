@@ -1,0 +1,12 @@
+shear_vorticity
+==========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: shear_vorticity
+
+.. include:: metpy.calc.shear_vorticity.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
