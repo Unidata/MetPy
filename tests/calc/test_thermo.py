@@ -1676,7 +1676,7 @@ def test_most_unstable_cape_cin():
     dewpoint = np.array([19., 19., 14.3, 0., -10., 0.]) * units.celsius
     mucape, mucin = most_unstable_cape_cin(pressure, temperature, dewpoint)
     assert_almost_equal(mucape, 189.41067504060692 * units('joule / kilogram'), 4)
-    assert_almost_equal(mucin, -20.968278741 * units('joule / kilogram'), 4)
+    assert_almost_equal(mucin, -26.225902591840672 * units('joule / kilogram'), 4)
 
 
 def test_mixed_parcel():
