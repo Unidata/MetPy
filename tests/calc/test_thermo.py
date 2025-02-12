@@ -2311,7 +2311,7 @@ def test_cape_cin_value_error():
                          -35.9, -26.7, -37.7, -43.1, -33.9, -40.9, -46.1, -34.9, -33.9,
                          -33.7, -33.3, -42.5, -50.3, -49.7, -49.5, -58.3, -61.3]) * units.degC
     cape, cin = surface_based_cape_cin(pressure, temperature, dewpoint)
-    expected_cape, expected_cin = 2182.603533802558 * units('joules/kg'), 0.0 * units('joules/kg')
+    expected_cape, expected_cin = 2182.6035338 * units('joules/kg'), 0.0 * units('joules/kg')
     assert_almost_equal(cape, expected_cape, 3)
     assert_almost_equal(cin, expected_cin, 3)
 
