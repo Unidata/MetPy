@@ -16,11 +16,17 @@ from metpy.calc.turbulence import friction_velocity, get_perturbation, kinematic
 @pytest.fixture()
 def uvw_and_known_tke():
     """Provide a set of u,v,w with a known tke value."""
-    u = np.array([-2, -1, 0, 1, 2])
+    u = np.array([-7, -1, 0, 1, 2])
     v = -u
     w = 2 * u
-    #  0.5 * sqrt(2 + 2 + 8)
-    e_true = np.sqrt(12) / 2.
+    # average u: -1
+    # average v: 1
+    # average w: -2
+    # average(u'^2): 10
+    # average(v'^2): 10
+    # average(w'^2): 40
+    #  0.5 * (10 + 10 + 40) = 30
+    e_true = 30
     return u, v, w, e_true
 
 
@@ -65,6 +71,13 @@ def test_known_tke(uvw_and_known_tke):
     assert_array_equal(e_true, tke(u, v, w))
 
 
+def test_known_tke_using_perturbation_velocities(uvw_and_known_tke):
+    """Test basic behavior of tke with known values."""
+    u, v, w, e_true = uvw_and_known_tke
+    assert_array_equal(e_true, tke(u - u.mean(), v - v.mean(), w - w.mean(),
+                                   perturbation=True))
+
+
 def test_known_tke_2d_axis_last(uvw_and_known_tke):
     """Test array with shape (3, 5) [pretend time axis is -1]."""
     u, v, w, e_true = uvw_and_known_tke
@@ -83,7 +96,6 @@ def test_known_tke_2d_axis_first(uvw_and_known_tke):
     w = np.array([w, w, w]).transpose()
     e_true = e_true * np.ones(3).transpose()
     assert_array_equal(e_true, tke(u, v, w, axis=0))
-    assert_array_equal(e_true, tke(u, v, w, axis=0, perturbation=True))
 
 
 #
