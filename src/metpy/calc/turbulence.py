@@ -86,9 +86,9 @@ def tke(u, v, w, perturbation=False, axis=-1):
     -----
     Turbulence Kinetic Energy is computed as:
 
-    .. math:: e = 0.5 \sqrt{\overline{u^{\prime2}} +
-                            \overline{v^{\prime2}} +
-                            \overline{w^{\prime2}}},
+    .. math:: e = \frac{1}{2} \left(\overline{u^{\prime2}} +
+                      \overline{v^{\prime2}} +
+                      \overline{w^{\prime2}} \right),
 
     where the velocity components
 
@@ -107,7 +107,7 @@ def tke(u, v, w, perturbation=False, axis=-1):
     v_cont = np.mean(v**2, axis=axis)
     w_cont = np.mean(w**2, axis=axis)
 
-    return 0.5 * np.sqrt(u_cont + v_cont + w_cont)
+    return 0.5 * (u_cont + v_cont + w_cont)
 
 
 @exporter.export
