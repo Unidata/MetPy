@@ -16,3 +16,4 @@
     components that are earth-relative. The primary exception is NAM output with wind
                                     col_head.SELV,
                                     row_head.SELV,
+            by the archive (currently FOUR, PANG, GRAP, AURO), or the known names (

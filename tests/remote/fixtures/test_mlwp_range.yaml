@@ -1,0 +1,158 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNy4xIG1kL0JvdG9jb3JlIzEuMzcuMSB1YS8yLjAgb3MvbWFjb3MjMjQuNC4wIG1k
+        L2FyY2gjYXJtNjQgbGFuZy9weXRob24jMy4xMy4zIG1kL3B5aW1wbCNDUHl0aG9uIGNmZy9yZXRy
+        eS1tb2RlI2xlZ2FjeSBCb3RvY29yZS8xLjM3LjEgUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        NjQ5NTU0MjMtOTM5ZS00MThmLTgwZDItMTk5ZDY1NzMzODI0
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://noaa-oar-mlwp-data.s3.amazonaws.com/?list-type=2&prefix=FOUR_&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>noaa-oar-mlwp-data</Name><Prefix>FOUR_</Prefix><KeyCount>2</KeyCount><MaxKeys>1000</MaxKeys><Delimiter>_</Delimiter><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><CommonPrefixes><Prefix>FOUR_v100_</Prefix></CommonPrefixes><CommonPrefixes><Prefix>FOUR_v200_</Prefix></CommonPrefixes></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 30 Apr 2025 18:27:59 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - FfImUZo3a/+0htIYo+626wl4lQt8i/xPXs6JeW21QTL5ZOcRAhPRp+KfEHZP7gyeZphTReTihGc=
+      x-amz-request-id:
+      - SMMYKY3BN11V7CJV
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNy4xIG1kL0JvdG9jb3JlIzEuMzcuMSB1YS8yLjAgb3MvbWFjb3MjMjQuNC4wIG1k
+        L2FyY2gjYXJtNjQgbGFuZy9weXRob24jMy4xMy4zIG1kL3B5aW1wbCNDUHl0aG9uIGNmZy9yZXRy
+        eS1tb2RlI2xlZ2FjeSBCb3RvY29yZS8xLjM3LjEgUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        ZTQ3NTQ4NzktZjgwMC00NTg4LWIwMDMtYzI1ZjQ4ZmEzYmNm
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://noaa-oar-mlwp-data.s3.amazonaws.com/?prefix=FOUR_v200_GFS%2F2025%2F0203&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>noaa-oar-mlwp-data</Name><Prefix>FOUR_v200_GFS/2025/0203</Prefix><Marker></Marker><MaxKeys>1000</MaxKeys><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><Contents><Key>FOUR_v200_GFS/2025/0203/FOUR_v200_GFS_2025020300_f000_f240_06.nc</Key><LastModified>2025-02-03T04:11:52.000Z</LastModified><ETag>&quot;0114c9602beb9f67a8a1316a9f979847-875&quot;</ETag><Size>7336804379</Size><Owner><ID>2804704e53c01e2a6281a0e905de37df634ec18b3c5816683548dda374531cde</ID><DisplayName>noaasandbox</DisplayName></Owner><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>FOUR_v200_GFS/2025/0203/FOUR_v200_GFS_2025020312_f000_f240_06.nc</Key><LastModified>2025-02-03T16:09:37.000Z</LastModified><ETag>&quot;80903a779991991242fdb68af76e8f77-874&quot;</ETag><Size>7329259627</Size><Owner><ID>2804704e53c01e2a6281a0e905de37df634ec18b3c5816683548dda374531cde</ID><DisplayName>noaasandbox</DisplayName></Owner><StorageClass>STANDARD</StorageClass></Contents></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 30 Apr 2025 18:27:59 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - SaAkocXjZ4NhvqKMOOBi2xV/UTugOgVP79U7dV6LfaJi0BGTjjA0dAKfXQ/U5BEc+K8amtJYXpk=
+      x-amz-request-id:
+      - SMMXVRP61NS10HS6
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNy4xIG1kL0JvdG9jb3JlIzEuMzcuMSB1YS8yLjAgb3MvbWFjb3MjMjQuNC4wIG1k
+        L2FyY2gjYXJtNjQgbGFuZy9weXRob24jMy4xMy4zIG1kL3B5aW1wbCNDUHl0aG9uIGNmZy9yZXRy
+        eS1tb2RlI2xlZ2FjeSBCb3RvY29yZS8xLjM3LjEgUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        ZGY1N2I0YjctYjhjNy00NzUwLWJiNjYtMTVhNTZhMDgzNTI2
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://noaa-oar-mlwp-data.s3.amazonaws.com/?prefix=FOUR_v200_GFS%2F2025%2F0204&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>noaa-oar-mlwp-data</Name><Prefix>FOUR_v200_GFS/2025/0204</Prefix><Marker></Marker><MaxKeys>1000</MaxKeys><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><Contents><Key>FOUR_v200_GFS/2025/0204/FOUR_v200_GFS_2025020400_f000_f240_06.nc</Key><LastModified>2025-02-04T04:54:58.000Z</LastModified><ETag>&quot;aef738d3b726b3b3925cae06e6579878-874&quot;</ETag><Size>7331174636</Size><Owner><ID>2804704e53c01e2a6281a0e905de37df634ec18b3c5816683548dda374531cde</ID><DisplayName>noaasandbox</DisplayName></Owner><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>FOUR_v200_GFS/2025/0204/FOUR_v200_GFS_2025020412_f000_f240_06.nc</Key><LastModified>2025-02-04T16:08:23.000Z</LastModified><ETag>&quot;ba5e28ee280b5732685f0f8162fd6c64-874&quot;</ETag><Size>7328258584</Size><Owner><ID>2804704e53c01e2a6281a0e905de37df634ec18b3c5816683548dda374531cde</ID><DisplayName>noaasandbox</DisplayName></Owner><StorageClass>STANDARD</StorageClass></Contents></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 30 Apr 2025 18:27:59 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - FsWKLAehyXcfLg8giyPO15N/klbRnJh1NkKLXn5fWkBcLQyeZPDA3T3FCGWW/kmUdoJH27olpSw=
+      x-amz-request-id:
+      - SMMGREVVWVXJVCN4
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNy4xIG1kL0JvdG9jb3JlIzEuMzcuMSB1YS8yLjAgb3MvbWFjb3MjMjQuNC4wIG1k
+        L2FyY2gjYXJtNjQgbGFuZy9weXRob24jMy4xMy4zIG1kL3B5aW1wbCNDUHl0aG9uIGNmZy9yZXRy
+        eS1tb2RlI2xlZ2FjeSBCb3RvY29yZS8xLjM3LjEgUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        ZmU0MWE0ZTMtY2RkYS00YTk1LTlkZGQtOTIwNGIzZWQ1MDJl
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://noaa-oar-mlwp-data.s3.amazonaws.com/?prefix=FOUR_v200_GFS%2F2025%2F0205&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>noaa-oar-mlwp-data</Name><Prefix>FOUR_v200_GFS/2025/0205</Prefix><Marker></Marker><MaxKeys>1000</MaxKeys><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><Contents><Key>FOUR_v200_GFS/2025/0205/FOUR_v200_GFS_2025020500_f000_f240_06.nc</Key><LastModified>2025-02-05T04:11:34.000Z</LastModified><ETag>&quot;e8e8789b5a638b99f687340db896b5ff-874&quot;</ETag><Size>7330581721</Size><Owner><ID>2804704e53c01e2a6281a0e905de37df634ec18b3c5816683548dda374531cde</ID><DisplayName>noaasandbox</DisplayName></Owner><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>FOUR_v200_GFS/2025/0205/FOUR_v200_GFS_2025020512_f000_f240_06.nc</Key><LastModified>2025-02-05T16:09:36.000Z</LastModified><ETag>&quot;d9856506b257bb08c767f98ea357b06e-874&quot;</ETag><Size>7327642422</Size><Owner><ID>2804704e53c01e2a6281a0e905de37df634ec18b3c5816683548dda374531cde</ID><DisplayName>noaasandbox</DisplayName></Owner><StorageClass>STANDARD</StorageClass></Contents></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 30 Apr 2025 18:27:59 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - vYjxvqDSC9k9wsMx/5jBajvGS/QeynvpQLCa7/J9NXQ+ywXIuGooitBBrcSH6XVUiWNeDKnXc2M=
+      x-amz-request-id:
+      - SMMY99P1QJYA05BQ
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -600,3 +600,123 @@ class GOESArchive(S3DataStore):
         """Build a product that opens the data using `xarray.open_dataset`."""
         return AWSProduct(obj,
                           lambda s: xr.open_dataset(s.url + '#mode=bytes', engine='netcdf4'))
+
+
+@exporter.export
+class MLWPArchive(S3DataStore):
+    """Access data from the NOAA/CIRA Machine-Learning Weather Prediction archive in AWS.
+
+    This consists of individual model runs stored in netCDF format, across a variety
+    a collection of models (Aurora, FourCastNet, GraphCast, Pangu) and initial conditions
+    (GFS or IFS).
+
+    """
+
+    _model_map = {'aurora': 'AURO', 'fourcastnet': 'FOUR',
+                  'graphcast': 'GRAP', 'pangu': 'PANG'}
+
+    def __init__(self):
+        super().__init__('noaa-oar-mlwp-data')
+
+    def _model_id(self, model, version, init):
+        """Build a model id from the model name, version, and initial conditions."""
+        init = init or 'GFS'
+        model = self._model_map.get(model.lower(), model)
+        if version is None:
+            model_id = sorted(self.common_prefixes(model + '_', '_'))[-1]
+        else:
+            version = str(version)
+            if len(version) < 3:
+                version = version + '00'
+            model_id = f'{model}_v{version}_'
+        return f'{model_id}{init}'
+
+    def _build_key(self, model_id, dt, depth=None):
+        """Build a key for the bucket up to the desired point."""
+        first_hour = 0
+        last_hour = 240
+        step_hours = 6
+        parts = [model_id, f'{dt:%Y}', f'{dt:%m%d}',
+                 f'{model_id}_{dt:%Y%m%d%H}_'
+                 f'f{first_hour:03d}_f{last_hour:03d}_{step_hours:02d}.nc']
+        return self.delimiter.join(parts[slice(0, depth)])
+
+    def dt_from_key(self, key):  # noqa: D102
+        # Docstring inherited
+        # GRAP_v100_GFS_2025021212_f000_f240_06.nc
+        dt = key.split('/')[-1].split('_')[3]
+        return datetime.strptime(dt, '%Y%m%d%H').replace(tzinfo=timezone.utc)
+
+    def get_product(self, model, dt=None, version=None, init=None):
+        """Get a product from the archive.
+
+        Parameters
+        ----------
+        model : str
+            The selected model to get data for. Can be any of the four-letter codes supported
+            by the archive (currently FOUR, PANG, GRAP, AURO), or the known names (
+            case-insensitive): ``'Aurora'``, ``'FourCastNet'``, ``'graphcast'``, or
+            ``'pangu'``.
+        dt : `datetime.datetime`, optional
+            The desired date/time for the model run; the one closest matching in time will
+            be returned. This should have the proper timezone included; if not specified, UTC
+            will be assumed. If ``None``, defaults to the current UTC date/time.
+        version : str or int, optional
+            The particular version of the model to select. If not given, the query will try
+            to select the most recent version of the model.
+        init : str, optional
+            Selects the model run initialized with a particular set of initial conditions.
+            Should be one of ``'GFS'`` or ``'IFS'``, defaults to ``'GFS'``.
+
+        See Also
+        --------
+        get_range
+
+        """
+        dt = datetime.now(timezone.utc) if dt is None else ensure_timezone(dt)
+        model_id = self._model_id(model, version, init)
+        search_key = self._build_key(model_id, dt)
+        prefix = search_key.rsplit('_', maxsplit=4)[0]
+        return self._closest_result(self.objects(prefix), dt)
+
+    def get_range(self, model, start, end, version=None, init=None):
+        """Yield products within a particular date/time range.
+
+        Parameters
+        ----------
+        model : str
+            The selected model to get data for. Can be any of the four-letter codes supported
+            by the archive (currently FOUR, PANG, GRAP, AURO), or the known names (
+            case-insensitive): ``'Aurora'``, ``'FourCastNet'``, ``'graphcast'``, or
+            ``'pangu'``.
+        start : `datetime.datetime`
+            The start of the date/time range. This should have the proper timezone included;
+            if not specified, UTC will be assumed.
+        end : `datetime.datetime`
+            The end of the date/time range. This should have the proper timezone included;
+            if not specified, UTC will be assumed.
+        version : str or int, optional
+            The particular version of the model to select. If not given, the query will try
+            to select the most recent version of the model.
+        init : str, optional
+            Selects the model run initialized with a particular set of initial conditions.
+            Should be one of ``'GFS'`` or ``'IFS'``, defaults to ``'GFS'``.
+
+        See Also
+        --------
+        get_product
+
+        """
+        start = ensure_timezone(start)
+        end = ensure_timezone(end)
+        model_id = self._model_id(model, version, init)
+        for dt in date_iterator(start, end, days=1):
+            prefix = self._build_key(model_id, dt, depth=3)
+            for obj in self.objects(prefix):
+                if start <= self.dt_from_key(obj.key) < end:
+                    yield self._build_result(obj)
+
+    def _build_result(self, obj):
+        """Build a product that opens the data using `xarray.open_dataset`."""
+        return AWSProduct(obj,
+                          lambda s: xr.open_dataset(s.url + '#mode=bytes', engine='netcdf4'))
