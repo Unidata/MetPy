@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=65840b17"></script>
+    <script src="../../_static/documentation_options.js?v=f6040564"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
@@ -81,7 +81,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.0dev" />
-    <meta name="docbuild:last-update" content="Feb 12, 2025 at 23:08:01"/>
+    <meta name="docbuild:last-update" content="Feb 14, 2025 at 20:40:07"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.saturation_mixing_ratio.html" />
 
   </head>
@@ -795,7 +795,7 @@
 <h1>saturation_mixing_ratio<a class="headerlink" href="#saturation-mixing-ratio" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.saturation_mixing_ratio">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">saturation_mixing_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_press</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L1713-L1755"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.saturation_mixing_ratio" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">saturation_mixing_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_press</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L1713-L1768"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.saturation_mixing_ratio" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the saturation mixing ratio of water vapor.</p>
 <p>This calculation is given total atmospheric pressure and air temperature.</p>
 <dl class="field-list simple">
@@ -821,6 +821,11 @@
 such as <a class="reference internal" href="../references.html#hobbs1977" id="id1"><span>[Hobbs1977]</span></a> pg.73:</p>
 <div class="math notranslate nohighlight">
 \[r_s = \epsilon \frac{e_s}{p - e_s}\]</div>
+<p>By definition, this value is only defined for conditions where the saturation vapor
+pressure (<span class="math notranslate nohighlight">\(e_s\)</span>) for the given temperature is less than the given total pressure
+(<span class="math notranslate nohighlight">\(p\)</span>). Otherwise, liquid phase water cannot exist in equilibrium and there is only
+water vapor present. For any value pairs that fall under this condition, the function will
+warn and return NaN.</p>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.0: </span>Renamed <code class="docutils literal notranslate"><span class="pre">tot_press</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">total_press</span></code></p>
 </div>
