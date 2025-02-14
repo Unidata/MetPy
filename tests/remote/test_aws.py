@@ -6,7 +6,7 @@ from datetime import datetime
 from pathlib import Path
 import tempfile
 
-from metpy.remote import GOESArchive, NEXRADLevel2Archive, NEXRADLevel3Archive
+from metpy.remote import GOESArchive, MLWPArchive, NEXRADLevel2Archive, NEXRADLevel3Archive
 from metpy.testing import needs_aws
 
 
@@ -91,4 +91,26 @@ def test_goes_range():
              'OR_ABI-L1b-RadC-M6C01_G16_s20243450201170_e20243450203543_c20243450204022.nc',
              'OR_ABI-L1b-RadC-M6C01_G16_s20243450206170_e20243450208543_c20243450208597.nc',
              'OR_ABI-L1b-RadC-M6C01_G16_s20243450211170_e20243450213543_c20243450214031.nc']
+    assert names == truth
+
+
+@needs_aws
+def test_mlwp_single():
+    """Test getting a single product from the MLWP archive."""
+    prod = MLWPArchive().get_product('graphcast', datetime(2025, 1, 30, 10))
+    assert prod.url == ('https://noaa-oar-mlwp-data.s3.amazonaws.com/GRAP_v100_GFS/'
+                        '2025/0130/GRAP_v100_GFS_2025013012_f000_f240_06.nc')
+
+
+@needs_aws
+def test_mlwp_range():
+    """Test getting a single product from the MLWP archive."""
+    prods = MLWPArchive().get_range('fourcastnet', datetime(2025, 2, 3), datetime(2025, 2, 6))
+    names = [p.name for p in prods]
+    truth = ['FOUR_v200_GFS_2025020300_f000_f240_06.nc',
+             'FOUR_v200_GFS_2025020312_f000_f240_06.nc',
+             'FOUR_v200_GFS_2025020400_f000_f240_06.nc',
+             'FOUR_v200_GFS_2025020412_f000_f240_06.nc',
+             'FOUR_v200_GFS_2025020500_f000_f240_06.nc',
+             'FOUR_v200_GFS_2025020512_f000_f240_06.nc']
     assert names == truth

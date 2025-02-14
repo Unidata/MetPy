@@ -1,0 +1,80 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNy4xIG1kL0JvdG9jb3JlIzEuMzcuMSB1YS8yLjAgb3MvbWFjb3MjMjQuNC4wIG1k
+        L2FyY2gjYXJtNjQgbGFuZy9weXRob24jMy4xMy4zIG1kL3B5aW1wbCNDUHl0aG9uIGNmZy9yZXRy
+        eS1tb2RlI2xlZ2FjeSBCb3RvY29yZS8xLjM3LjEgUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        M2Y3NWJmMzQtOTFmNC00YWZiLWE4YjEtY2M2YTQ2MjcwN2Qy
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://noaa-oar-mlwp-data.s3.amazonaws.com/?list-type=2&prefix=GRAP_&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>noaa-oar-mlwp-data</Name><Prefix>GRAP_</Prefix><KeyCount>1</KeyCount><MaxKeys>1000</MaxKeys><Delimiter>_</Delimiter><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><CommonPrefixes><Prefix>GRAP_v100_</Prefix></CommonPrefixes></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 30 Apr 2025 18:28:20 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - q1zavqvffouefnEXg5s+lgQTktQ5ZZe65o4MaRFGvWVskMQRRRwjsmQqi47LrPnk6ArZLyvJRh6lH5LR/RntQXhCwDl9Uk1s
+      x-amz-request-id:
+      - 2XPBMH3CN292NYBQ
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zNy4xIG1kL0JvdG9jb3JlIzEuMzcuMSB1YS8yLjAgb3MvbWFjb3MjMjQuNC4wIG1k
+        L2FyY2gjYXJtNjQgbGFuZy9weXRob24jMy4xMy4zIG1kL3B5aW1wbCNDUHl0aG9uIGNmZy9yZXRy
+        eS1tb2RlI2xlZ2FjeSBCb3RvY29yZS8xLjM3LjEgUmVzb3VyY2U=
+      amz-sdk-invocation-id:
+      - !!binary |
+        MDg3NGU0OGYtNWMyNi00M2Y0LWE2ZDMtYmQ3MzcwMGY5ZDYx
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://noaa-oar-mlwp-data.s3.amazonaws.com/?prefix=GRAP_v100_GFS%2F2025%2F0130%2FGRAP_v100_GFS&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Name>noaa-oar-mlwp-data</Name><Prefix>GRAP_v100_GFS/2025/0130/GRAP_v100_GFS</Prefix><Marker></Marker><MaxKeys>1000</MaxKeys><EncodingType>url</EncodingType><IsTruncated>false</IsTruncated><Contents><Key>GRAP_v100_GFS/2025/0130/GRAP_v100_GFS_2025013000_f000_f240_06.nc</Key><LastModified>2025-02-28T05:54:40.000Z</LastModified><ETag>&quot;7890c4d13a389a669cd92a4bff15b9fd-1107&quot;</ETag><ChecksumAlgorithm>CRC32</ChecksumAlgorithm><ChecksumType>COMPOSITE</ChecksumType><Size>9282914098</Size><Owner><ID>2804704e53c01e2a6281a0e905de37df634ec18b3c5816683548dda374531cde</ID><DisplayName>noaasandbox</DisplayName></Owner><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>GRAP_v100_GFS/2025/0130/GRAP_v100_GFS_2025013012_f000_f240_06.nc</Key><LastModified>2025-02-28T06:03:16.000Z</LastModified><ETag>&quot;3f2d4b8a2d731a4402051c54c6485113-1107&quot;</ETag><ChecksumAlgorithm>CRC32</ChecksumAlgorithm><ChecksumType>COMPOSITE</ChecksumType><Size>9285544320</Size><Owner><ID>2804704e53c01e2a6281a0e905de37df634ec18b3c5816683548dda374531cde</ID><DisplayName>noaasandbox</DisplayName></Owner><StorageClass>STANDARD</StorageClass></Contents></ListBucketResult>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 30 Apr 2025 18:28:20 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - T9z3zls0ow7iB2ZyxOX98isVF4RS2FoJbf+XiFsl7XfNg7tAiZrxMtyhYPn9OeE8YSYKGtTdPj1ktupmjnvb5Bh8MYJ9Forp
+      x-amz-request-id:
+      - 2XP475EQTR5KWK47
+    status:
+      code: 200
+      message: OK
+version: 1
