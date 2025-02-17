@@ -26,7 +26,6 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "matplotlib>=3.5.0",
     "numpy>=1.22.0",
     "pandas>=1.4.0",
     "pint>=0.17",
@@ -63,7 +62,11 @@ test = [
 extras = [
     "cartopy>=0.21.0",
     "dask>=2020.12.0",
-    "shapely>=1.6.4"
+    "shapely>=1.6.4",
+    "metpy[plot]"
+]
+plot = [
+    "matplotlib>=3.5.0"
 ]
 
 [project.urls]
