@@ -10,7 +10,7 @@ years. For Python itself, that generally means supporting the last two minor rel
 currently supports Python >= 3.10.
 
 .. literalinclude:: ../../pyproject.toml
-   :start-at: numpy 
+   :start-at: numpy
    :end-at: xarray
 
 ------------
