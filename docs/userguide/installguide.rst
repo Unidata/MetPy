@@ -10,7 +10,7 @@ years. For Python itself, that generally means supporting the last two minor rel
 currently supports Python >= 3.10.
 
 .. literalinclude:: ../../pyproject.toml
-   :start-at: matplotlib
+   :start-at: numpy 
    :end-at: xarray
 
 ------------
@@ -36,6 +36,11 @@ the base of the source directory, run:
     pip install .
 
 This will build and install MetPy into your current Python installation.
+
+To include the plotting features run:
+
+.. parsed-literal::
+   pip install .[plot]
 
 ------------------
 Working With Conda
