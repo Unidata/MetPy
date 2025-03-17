@@ -259,6 +259,7 @@ def test_moist_lapse_starting_points(start, direction):
 @pytest.mark.filterwarnings('ignore:overflow encountered in exp:RuntimeWarning')
 @pytest.mark.filterwarnings(r'ignore:invalid value encountered in \w*divide:RuntimeWarning')
 @pytest.mark.filterwarnings(r'ignore:.*Excess accuracy requested.*:UserWarning')
+@pytest.mark.filterwarnings(r'ignore:Saturation mixing ratio is undefined.*:UserWarning')
 def test_moist_lapse_failure():
     """Test moist_lapse under conditions that cause the ODE solver to fail."""
     p = np.logspace(3, -1, 10) * units.hPa
@@ -827,6 +828,14 @@ def test_saturation_mixing_ratio_with_xarray():
     xr.testing.assert_identical(result['isobaric'], temperature['isobaric'])
     xr.testing.assert_identical(result['y'], temperature['y'])
     xr.testing.assert_identical(result['x'], temperature['x'])
+
+
+def test_saturation_mixing_ratio_bad_value_handling():
+    """Test that saturation mixing ratio issues a warning and returns nan with bad values."""
+    with pytest.warns(UserWarning, match='undefined'):
+        e_s = saturation_mixing_ratio(10 * units.hPa, 295 * units.kelvin)
+
+    assert np.isnan(e_s)
 
 
 def test_equivalent_potential_temperature():

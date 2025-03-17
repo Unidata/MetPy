@@ -1748,11 +1748,24 @@ def saturation_mixing_ratio(total_press, temperature):
 
     .. math:: r_s = \epsilon \frac{e_s}{p - e_s}
 
+    By definition, this value is only defined for conditions where the saturation vapor
+    pressure (:math:`e_s`) for the given temperature is less than the given total pressure
+    (:math:`p`). Otherwise, liquid phase water cannot exist in equilibrium and there is only
+    water vapor present. For any value pairs that fall under this condition, the function will
+    warn and return NaN.
+
     .. versionchanged:: 1.0
        Renamed ``tot_press`` parameter to ``total_press``
 
     """
-    return mixing_ratio._nounit(saturation_vapor_pressure._nounit(temperature), total_press)
+    e_s = saturation_vapor_pressure._nounit(temperature)
+    undefined = e_s >= total_press
+    if np.any(undefined):
+        _warnings.warn('Saturation mixing ratio is undefined for some requested pressure/'
+                       'temperature combinations. Total pressure must be greater than the '
+                       'water vapor saturation pressure for liquid water to be in '
+                       'equilibrium.')
+    return np.where(undefined, np.nan, mixing_ratio._nounit(e_s, total_press))
 
 
 @exporter.export
