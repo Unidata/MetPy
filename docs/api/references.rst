@@ -130,7 +130,7 @@ References
 
 .. [IAU2012] IAU Division I Working Group Numerical Standards, 2012: `RESOLUTION B2 on
            the re-definition of the astronomical unit of length
-           <https://www.iau.org/static/resolutions/IAU2012_English.pdf>`_.
+           <../_static/Res_IAU2012_B2.pdf>`_.
 
 .. [Knox2017] Knox, John A., David S. Nevius, and Pamela N. Knox., 2017: Two Simple and
               Accurate Approximations for Wet-Bulb Temperature in Moist Conditions, with
