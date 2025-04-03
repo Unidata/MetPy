@@ -143,7 +143,7 @@ Create a new figure. The dimensions here give a good aspect ratio
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7f778bc9a210>]
+    [<matplotlib.lines.Line2D object at 0x7f600f862210>]
 
 
 
