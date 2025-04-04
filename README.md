@@ -28,8 +28,8 @@ that any MetPy ``1.x`` release will be backwards compatible with an earlier ``1.
 "backward compatible", we mean that **correct** code that works on a ``1.y`` version will work
 on a future ``1.x`` version.
 
-For additional MetPy examples not included in this repository, please see the [Unidata Python
-Gallery](https://unidata.github.io/python-gallery/).
+For additional MetPy examples not included in this repository, please see the
+[MetPy Cookbook on Project Pythia](https://projectpythia.org/metpy-cookbook/README.html).
 
 We support Python >= 3.10.
 
@@ -43,7 +43,7 @@ Important Links
 ---------------
 
 - [HTML Documentation](http://unidata.github.io/MetPy)
-- [Unidata Python Gallery](https://unidata.github.io/python-gallery/)
+- [MetPy Cookbook on Project Pythia](https://projectpythia.org/metpy-cookbook/README.html)
 - "metpy" tagged questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/metpy)
 - [Gitter chat room](https://gitter.im/Unidata/MetPy)
 
