@@ -1748,8 +1748,6 @@ class GempakSounding(GempakFile):
                 ]:
                     merged['DRCT'][ilev - 1] = drct
                     merged['SPED'][ilev - 1] = sped
-            elif hght <= zold:
-                    skip = True
             elif hght >= znxt:
                 while more and hght > znxt:
                     zold = znxt
