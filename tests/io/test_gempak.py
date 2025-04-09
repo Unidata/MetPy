@@ -428,6 +428,7 @@ def test_multi_time_grid():
     assert dattim1 == datetime(1991, 8, 19, 0, 0)
     assert dattim2 == datetime(1991, 8, 20, 0, 0)
 
+
 def test_unmerged_no_ttcc():
     """Test loading an unmerged sounding.
 
