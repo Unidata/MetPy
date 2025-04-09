@@ -1652,18 +1652,6 @@ class GempakSounding(GempakFile):
                 if merged['DRCT'][loc] == self.prod_desc.missing_float:
                     merged['DRCT'][loc] = parts[section]['DRCT'][iwind]
                     merged['SPED'][loc] = parts[section]['SPED'][iwind]
-            else:
-                if press not in qcman:
-                    size = len(merged['PRES'])
-                    loc = size - bisect.bisect_left(merged['PRES'][1:][::-1], press)
-                    if loc >= size + 1:
-                        loc = -1
-                    merged['PRES'].insert(loc, press)
-                    merged['TEMP'].insert(loc, self.prod_desc.missing_float)
-                    merged['DWPT'].insert(loc, self.prod_desc.missing_float)
-                    merged['DRCT'].insert(loc, parts[section]['DRCT'][iwind])
-                    merged['SPED'].insert(loc, parts[section]['SPED'][iwind])
-                    merged['HGHT'].insert(loc, self.prod_desc.missing_float)
 
     def _merge_winds_pressure(self, merged, parts, section, pbot):
         """Process and merge wind sections on pressure surfaces."""
@@ -1760,6 +1748,8 @@ class GempakSounding(GempakFile):
                 ]:
                     merged['DRCT'][ilev - 1] = drct
                     merged['SPED'][ilev - 1] = sped
+            elif hght <= zold:
+                    skip = True
             elif hght >= znxt:
                 while more and hght > znxt:
                     zold = znxt
