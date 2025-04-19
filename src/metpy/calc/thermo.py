@@ -973,10 +973,12 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
             el_pressure, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
                                                 temperature[1:], direction='decreasing',
                                                 log_x=True)
-            if np.min(el_pressure) > this_lcl[0]:
+            if el_pressure.size and np.min(el_pressure) > this_lcl[0]:
+                # EL exists and it is below the LCL
                 x = units.Quantity(np.nan, pressure.units)
                 y = units.Quantity(np.nan, temperature.units)
             else:
+                # EL exists and it is above the LCL or the EL does not exist
                 x, y = this_lcl
             return x, y
         # Otherwise, find all LFCs that exist above the LCL
