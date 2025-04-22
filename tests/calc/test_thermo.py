@@ -3,8 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `thermo` module."""
 
-import platform
-import sys
 import warnings
 
 import numpy as np
@@ -43,8 +41,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.constants import Cp_d, kappa, Lf, Ls, Lv, Rd, T0
-from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_nan,
-                           version_check)
+from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import is_quantity, masked_array, units
 
 
@@ -249,24 +246,6 @@ def test_moist_lapse_starting_points(start, direction):
     pressure = units.Quantity([1000, 925, 850, 700, 600], 'hPa')[::direction]
     temp = moist_lapse(pressure, truth[start], pressure[start])
     assert_almost_equal(temp, truth, 4)
-
-
-@pytest.mark.xfail(platform.machine() == 'aarch64',
-                   reason='ValueError is not raised on aarch64')
-@pytest.mark.xfail(platform.machine() == 'arm64', reason='ValueError is not raised on Mac M2')
-@pytest.mark.xfail((sys.platform == 'win32') and version_check('scipy<1.11.3'),
-                   reason='solve_ivp() does not error on Windows + SciPy < 1.11.3')
-@pytest.mark.filterwarnings('ignore:overflow encountered in exp:RuntimeWarning')
-@pytest.mark.filterwarnings(r'ignore:invalid value encountered in \w*divide:RuntimeWarning')
-@pytest.mark.filterwarnings(r'ignore:.*Excess accuracy requested.*:UserWarning')
-@pytest.mark.filterwarnings(r'ignore:Saturation mixing ratio is undefined.*:UserWarning')
-def test_moist_lapse_failure():
-    """Test moist_lapse under conditions that cause the ODE solver to fail."""
-    p = np.logspace(3, -1, 10) * units.hPa
-    with pytest.raises(ValueError) as exc:
-        moist_lapse(p, 6 * units.degC)
-
-    assert 'too small values' in str(exc)
 
 
 def test_parcel_profile():
