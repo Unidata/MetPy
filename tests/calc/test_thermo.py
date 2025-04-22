@@ -377,6 +377,37 @@ def test_sat_vapor_pressure_scalar():
     assert_almost_equal(es, 6.112 * units.mbar, 3)
 
 
+def test_sat_vapor_pressure_ice():
+    """Test saturation_vapor_pressure calculates in solid ice regime."""
+    temp = np.array([-25., -18., -10., -5.]) * units.degC
+    real_es = np.array([0.6324, 1.2486, 2.5977, 4.0152]) * units.mbar
+    assert_array_almost_equal(saturation_vapor_pressure(temp, phase='solid'), real_es, 2)
+
+
+def test_sat_vapor_pressure_phase_handling():
+    """Test saturation_vapor_pressure phase handling calculates distinct values."""
+    temp = np.array([-25, -15, -5, T0.m_as('degC'), 5, 15, 25]) * units.degC
+    frozen = temp <= T0
+
+    # Test calculated values differ
+    # and that ice values less than water in frozen regime
+    # and vice versa in liquid regime
+    liquid = saturation_vapor_pressure(temp, phase='liquid')
+    solid = saturation_vapor_pressure(temp, phase='solid')
+    assert not np.allclose(solid, liquid)
+    assert np.all(solid[frozen] <= liquid[frozen])
+    assert np.all(solid[~frozen] > liquid[~frozen])
+
+    # test that 'auto' matches liquid and solid regimes where appropriate
+    auto = saturation_vapor_pressure(temp, phase='auto')
+    assert np.allclose(auto[frozen], solid[frozen])
+    assert np.allclose(auto[~frozen], liquid[~frozen])
+
+    # test that all paths converge at T0
+    zero = temp == T0
+    assert solid[zero] == auto[zero] == liquid[zero]
+
+
 def test_sat_vapor_pressure_fahrenheit():
     """Test saturation_vapor_pressure handles temperature in Fahrenheit."""
     temp = np.array([50., 68.]) * units.degF
@@ -1169,6 +1200,31 @@ def test_rh_specific_humidity():
     q = 0.012 * units.dimensionless
     rh = relative_humidity_from_specific_humidity(p, temperature, q)
     assert_almost_equal(rh, 83.0486264 * units.percent, 3)
+
+
+def test_rh_specific_humidity_phase_handling():
+    """Test dependent saturation vapor pressure phase handling in rh_from_specific_humidity."""
+    p = 1013.25 * units.mbar
+    t = np.array([-25, -15, -5, T0.m_as('degC'), 5, 15, 25]) * units.degC
+    q = np.array([0.00031289, 0.00091428, 0.0017596, 0.00376027, 0.00466234,
+                  0.00756412, 0.01274911]) * units.dimensionless
+    frozen = t <= T0
+
+    # Test calculated values differ appropriately in separate regimes
+    liquid = relative_humidity_from_specific_humidity(p, t, q, phase='liquid')
+    solid = relative_humidity_from_specific_humidity(p, t, q, phase='solid')
+    assert not np.allclose(solid, liquid)
+    assert np.all(solid[frozen] >= liquid[frozen])
+    assert np.all(solid[~frozen] < liquid[~frozen])
+
+    # test that 'auto' matches liquid and solid regimes where appropriate
+    auto = relative_humidity_from_specific_humidity(p, t, q, phase='auto')
+    assert np.allclose(auto[frozen], solid[frozen])
+    assert np.allclose(auto[~frozen], liquid[~frozen])
+
+    # test that all paths converge at T0
+    zero = t == T0
+    assert solid[zero] == auto[zero] == liquid[zero]
 
 
 def test_cape_cin():

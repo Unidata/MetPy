@@ -20,7 +20,7 @@ from .exceptions import InvalidSoundingError
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
 from .. import _warnings, constants as mpconsts
-from ..cbook import broadcast_indices
+from ..cbook import broadcast_indices, validate_choice
 from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
 from ..units import check_units, concatenate, process_units, units
@@ -277,7 +277,7 @@ def water_latent_heat_melting(temperature):
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'dewpoint'))
 @check_units('[temperature]', '[temperature]')
-def relative_humidity_from_dewpoint(temperature, dewpoint, phase='liquid'):
+def relative_humidity_from_dewpoint(temperature, dewpoint, *, phase='liquid'):
     r"""Calculate the relative humidity.
 
     Uses temperature and dewpoint to calculate relative humidity as the ratio of vapor
@@ -290,6 +290,11 @@ def relative_humidity_from_dewpoint(temperature, dewpoint, phase='liquid'):
 
     dewpoint : `pint.Quantity`
         Dewpoint temperature
+
+    phase : {'liquid', 'solid', 'auto'}
+        Where applicable, adjust assumptions and constants to make calculation valid in
+        ``'liquid'`` water (default) or ``'solid'`` ice regimes. ``'auto'`` will change regime
+        based on determination of phase boundaries, eg `temperature` relative to freezing.
 
     Returns
     -------
@@ -315,8 +320,9 @@ def relative_humidity_from_dewpoint(temperature, dewpoint, phase='liquid'):
        Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
-    e = saturation_vapor_pressure(dewpoint, phase)
-    e_s = saturation_vapor_pressure(temperature, phase)
+    validate_choice({'liquid', 'solid', 'auto'}, phase=phase)
+    e = saturation_vapor_pressure(dewpoint, phase=phase)
+    e_s = saturation_vapor_pressure(temperature, phase=phase)
     return e / e_s
 
 
@@ -1529,13 +1535,18 @@ def vapor_pressure(pressure, mixing_ratio):
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature')
 @process_units({'temperature': '[temperature]'}, '[pressure]')
-def saturation_vapor_pressure(temperature, phase='liquid'):
+def saturation_vapor_pressure(temperature, *, phase='liquid'):
     r"""Calculate the saturation (equilibrium) water vapor (partial) pressure.
 
     Parameters
     ----------
     temperature : `pint.Quantity`
         Air temperature
+
+    phase : {'liquid', 'solid', 'auto'}
+        Where applicable, adjust assumptions and constants to make calculation valid in
+        ``'liquid'`` water (default) or ``'solid'`` ice regimes. ``'auto'`` will change regime
+        based on determination of phase boundaries, eg `temperature` relative to freezing.
 
     Returns
     -------
@@ -1561,55 +1572,110 @@ def saturation_vapor_pressure(temperature, phase='liquid'):
     Implements separate solutions from [Ambaum2020]_ for
 
     ``phase='liquid'``, Eq. 13,
-    .. math:: e = e_{s0} \frac{T_0}{T}^{(c_{pl} - c_{pv}) / R_v} \exp{
-    \frac{L_0}{R_v T_0} - \frac{L}{R_v T}}
+
+    .. math::
+        e = e_{s0} \frac{T_0}{T}^{(c_{pl} - c_{pv}) / R_v} \exp \left(
+        \frac{L_0}{R_v T_0} - \frac{L}{R_v T} \right)
 
     and ``phase='solid'``, Eq. 17,
+
+    .. math::
+        e_i = e_{i0} \frac{T_0}{T}^{(c_{pi} - c_{pv}) / R_v} \exp \left(
+        \frac{L_{s0}}{R_v T_0} - \frac{L_s}{R_v T} \right)
+    """
+    match phase:
+        case 'liquid':
+            return _saturation_vapor_pressure_liquid._nounit(temperature)
+        case 'solid':
+            return _saturation_vapor_pressure_solid._nounit(temperature)
+        case 'auto':
+            return np.where(temperature > mpconsts.nounit.T0,
+                            _saturation_vapor_pressure_liquid._nounit(temperature),
+                            _saturation_vapor_pressure_solid._nounit(temperature))
+        case _:
+            raise ValueError(
+                f'{phase!r} is not a valid option for phase. '
+                f"Valid options are {'liquid', 'solid', 'auto'}.")
+
+
+@preprocess_and_wrap(wrap_like='temperature')
+@process_units({'temperature': '[temperature]'}, '[pressure]')
+def _saturation_vapor_pressure_liquid(temperature):
+    r"""Calculate saturation (equilibrium) water vapor (partial) pressure over liquid water.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+        Air temperature
+
+    Returns
+    -------
+    `pint.Quantity`
+        Saturation water vapor (partial) pressure over liquid water
+
+    See Also
+    --------
+    saturation_vapor_pressure, vapor_pressure
+
+    Notes
+    -----
+    Implemented solution from [Ambaum2020]_, Eq. 13,
+    .. math:: e = e_{s0} \frac{T_0}{T}^{(c_{pl} - c_{pv}) / R_v} \exp{
+    \frac{L_0}{R_v T_0} - \frac{L}{R_v T}}
+    """
+    latent_heat = water_latent_heat_vaporization._nounit(temperature)
+    heat_power = (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
+    exp_term = ((mpconsts.nounit.Lv / mpconsts.nounit.T0 - latent_heat / temperature)
+                / mpconsts.nounit.Rv)
+
+    return (
+        mpconsts.nounit.sat_pressure_0c
+        * (mpconsts.nounit.T0 / temperature) ** heat_power
+        * np.exp(exp_term)
+    )
+
+
+@preprocess_and_wrap(wrap_like='temperature')
+@process_units({'temperature': '[temperature]'}, '[pressure]')
+def _saturation_vapor_pressure_solid(temperature):
+    r"""Calculate the saturation water vapor (partial) pressure over solid water (ice).
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+        Air temperature
+
+    Returns
+    -------
+    `pint.Quantity`
+        Saturation water vapor (partial) pressure over solid water (ice)
+
+    See Also
+    --------
+    saturation_vapor_pressure, vapor_pressure
+
+    Notes
+    -----
+    Implemented solution from [Ambaum2020]_, Eq. 17,
     .. math:: e_i = e_{i0} \frac{T_0}{T}^{(c_{pi} - c_{pv}) / R_v} \exp{
     \frac{L_{s0}}{R_v T_0} - \frac{L_s}{R_v T}}
     """
+    latent_heat = water_latent_heat_sublimation._nounit(temperature)
+    heat_power = (mpconsts.nounit.Cp_i - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
+    exp_term = ((mpconsts.nounit.Ls / mpconsts.nounit.T0 - latent_heat / temperature)
+                / mpconsts.nounit.Rv)
 
-    def liquid(temperature):
-        latent_heat = water_latent_heat_vaporization._nounit(temperature)
-        heat_power = (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
-        exp_term = ((mpconsts.nounit.Lv / mpconsts.nounit.T0 - latent_heat / temperature)
-                    / mpconsts.nounit.Rv)
-
-        return (
-            mpconsts.nounit.sat_pressure_0c
-            * (mpconsts.nounit.T0 / temperature) ** heat_power
-            * np.exp(exp_term)
-        )
-
-    def ice(temperature):
-        latent_heat = water_latent_heat_sublimation._nounit(temperature)
-        heat_power = (mpconsts.nounit.Cp_i - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
-        exp_term = ((mpconsts.nounit.Ls / mpconsts.nounit.T0 - latent_heat / temperature)
-                    / mpconsts.nounit.Rv)
-
-        return (
-            mpconsts.nounit.sat_pressure_0c
-            * (mpconsts.nounit.T0 / temperature) ** heat_power
-            * np.exp(exp_term)
-        )
-
-    if phase == 'liquid':
-        return liquid(temperature)
-    elif phase == 'ice':
-        return ice(temperature)
-    else:
-        assert phase == 'temperature-dependent'
-        alpha = np.zeros_like(temperature, dtype=float)
-        t_sel = (temperature > 250.16) & (temperature < 273.16)
-        alpha[t_sel] = ((temperature[t_sel] - 250.16) / (273.16 - 250.16)) ** 2
-        alpha[temperature >= 273.16] = 1
-        return alpha * liquid(temperature) + (1 - alpha) * ice(temperature)
+    return (
+        mpconsts.nounit.sat_pressure_0c
+        * (mpconsts.nounit.T0 / temperature) ** heat_power
+        * np.exp(exp_term)
+    )
 
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'relative_humidity'))
 @check_units('[temperature]', '[dimensionless]')
-def dewpoint_from_relative_humidity(temperature, relative_humidity, phase='liquid'):
+def dewpoint_from_relative_humidity(temperature, relative_humidity):
     r"""Calculate the ambient dewpoint given air temperature and relative humidity.
 
     Parameters
@@ -1642,7 +1708,7 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity, phase='liqui
     """
     if np.any(relative_humidity > 1.2):
         _warnings.warn('Relative humidity >120%, ensure proper units.')
-    return dewpoint(relative_humidity * saturation_vapor_pressure(temperature, phase))
+    return dewpoint(relative_humidity * saturation_vapor_pressure(temperature))
 
 
 @exporter.export
@@ -1755,7 +1821,7 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.nou
     {'total_press': '[pressure]', 'temperature': '[temperature]'},
     '[dimensionless]'
 )
-def saturation_mixing_ratio(total_press, temperature, phase='liquid'):
+def saturation_mixing_ratio(total_press, temperature, *, phase='liquid'):
     r"""Calculate the saturation mixing ratio of water vapor.
 
     This calculation is given total atmospheric pressure and air temperature.
@@ -1767,6 +1833,11 @@ def saturation_mixing_ratio(total_press, temperature, phase='liquid'):
 
     temperature: `pint.Quantity`
         Air temperature
+
+    phase : {'liquid', 'solid', 'auto'}
+        Where applicable, adjust assumptions and constants to make calculation valid in
+        ``'liquid'`` water (default) or ``'solid'`` ice regimes. ``'auto'`` will change regime
+        based on determination of phase boundaries, eg `temperature` relative to freezing.
 
     Returns
     -------
@@ -1797,7 +1868,8 @@ def saturation_mixing_ratio(total_press, temperature, phase='liquid'):
        Renamed ``tot_press`` parameter to ``total_press``
 
     """
-    e_s = saturation_vapor_pressure._nounit(temperature, phase)
+    validate_choice({'liquid', 'solid', 'auto'}, phase=phase)
+    e_s = saturation_vapor_pressure._nounit(temperature, phase=phase)
     undefined = e_s >= total_press
     if np.any(undefined):
         _warnings.warn('Saturation mixing ratio is undefined for some requested pressure/'
@@ -2061,7 +2133,12 @@ def virtual_temperature(
                                                          'dewpoint'))
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def virtual_temperature_from_dewpoint(
-    pressure, temperature, dewpoint, molecular_weight_ratio=mpconsts.nounit.epsilon
+        pressure,
+        temperature,
+        dewpoint,
+        molecular_weight_ratio=mpconsts.nounit.epsilon,
+        *,
+        phase='liquid'
 ):
     r"""Calculate virtual temperature.
 
@@ -2084,6 +2161,11 @@ def virtual_temperature_from_dewpoint(
         for air. Defaults to the ratio for water vapor to dry air.
         (:math:`\epsilon\approx0.622`)
 
+    phase : {'liquid', 'solid', 'auto'}
+        Where applicable, adjust assumptions and constants to make calculation valid in
+        ``'liquid'`` water (default) or ``'solid'`` ice regimes. ``'auto'`` will change regime
+        based on determination of phase boundaries, eg `temperature` relative to freezing.
+
     Returns
     -------
     `pint.Quantity`
@@ -2104,8 +2186,10 @@ def virtual_temperature_from_dewpoint(
        Renamed ``mixing`` parameter to ``mixing_ratio``
 
     """
+    validate_choice({'liquid', 'solid', 'auto'}, phase=phase)
+
     # Convert dewpoint to mixing ratio
-    mixing_ratio = saturation_mixing_ratio(pressure, dewpoint)
+    mixing_ratio = saturation_mixing_ratio(pressure, dewpoint, phase=phase)
 
     # Calculate virtual temperature with given parameters
     return virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio)
@@ -2356,7 +2440,7 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
 )
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
 def mixing_ratio_from_relative_humidity(
-        pressure, temperature, relative_humidity, phase='liquid'):
+        pressure, temperature, relative_humidity, *, phase='liquid'):
     r"""Calculate the mixing ratio from relative humidity, temperature, and pressure.
 
     Parameters
@@ -2370,6 +2454,11 @@ def mixing_ratio_from_relative_humidity(
     relative_humidity: array-like
         The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass
         a percentage if proper units are attached.
+
+    phase : {'liquid', 'solid', 'auto'}
+        Where applicable, adjust assumptions and constants to make calculation valid in
+        ``'liquid'`` water (default) or ``'solid'`` ice regimes. ``'auto'`` will change regime
+        based on determination of phase boundaries, eg `temperature` relative to freezing.
 
     Returns
     -------
@@ -2408,7 +2497,8 @@ def mixing_ratio_from_relative_humidity(
        Changed signature from ``(relative_humidity, temperature, pressure)``
 
     """
-    w_s = saturation_mixing_ratio(pressure, temperature, phase)
+    validate_choice({'liquid', 'solid', 'auto'}, phase=phase)
+    w_s = saturation_mixing_ratio(pressure, temperature, phase=phase)
     return (mpconsts.nounit.epsilon * w_s * relative_humidity
             / (mpconsts.nounit.epsilon + w_s * (1 - relative_humidity))).to('dimensionless')
 
@@ -2419,7 +2509,8 @@ def mixing_ratio_from_relative_humidity(
     broadcast=('pressure', 'temperature', 'mixing_ratio')
 )
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
-def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio, phase='liquid'):
+def relative_humidity_from_mixing_ratio(
+        pressure, temperature, mixing_ratio, *, phase='liquid'):
     r"""Calculate the relative humidity from mixing ratio, temperature, and pressure.
 
     Parameters
@@ -2432,6 +2523,11 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio, pha
 
     mixing_ratio: `pint.Quantity`
         Dimensionless mass mixing ratio
+
+    phase : {'liquid', 'solid', 'auto'}
+        Where applicable, adjust assumptions and constants to make calculation valid in
+        ``'liquid'`` water (default) or ``'solid'`` ice regimes. ``'auto'`` will change regime
+        based on determination of phase boundaries, eg `temperature` relative to freezing.
 
     Returns
     -------
@@ -2466,7 +2562,8 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio, pha
        Changed signature from ``(mixing_ratio, temperature, pressure)``
 
     """
-    w_s = saturation_mixing_ratio(pressure, temperature, phase)
+    validate_choice({'liquid', 'solid', 'auto'}, phase=phase)
+    w_s = saturation_mixing_ratio(pressure, temperature, phase=phase)
     return (mixing_ratio / (mpconsts.nounit.epsilon + mixing_ratio)
             * (mpconsts.nounit.epsilon + w_s) / w_s)
 
@@ -2560,7 +2657,7 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
 )
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
 def relative_humidity_from_specific_humidity(
-        pressure, temperature, specific_humidity, phase='liquid'):
+        pressure, temperature, specific_humidity, *, phase='liquid'):
     r"""Calculate the relative humidity from specific humidity, temperature, and pressure.
 
     Parameters
@@ -2573,6 +2670,11 @@ def relative_humidity_from_specific_humidity(
 
     specific_humidity: `pint.Quantity`
         Specific humidity of air
+
+    phase : {'liquid', 'solid', 'auto'}
+        Where applicable, adjust assumptions and constants to make calculation valid in
+        ``'liquid'`` water (default) or ``'solid'`` ice regimes. ``'auto'`` will change regime
+        based on determination of phase boundaries, eg `temperature` relative to freezing.
 
     Returns
     -------
@@ -2611,7 +2713,10 @@ def relative_humidity_from_specific_humidity(
 
     """
     return relative_humidity_from_mixing_ratio(
-        pressure, temperature, mixing_ratio_from_specific_humidity(specific_humidity), phase)
+        pressure,
+        temperature,
+        mixing_ratio_from_specific_humidity(specific_humidity),
+        phase=phase)
 
 
 @exporter.export
@@ -4606,7 +4711,7 @@ def vertical_velocity(omega, pressure, temperature, mixing_ratio=0):
 @exporter.export
 @preprocess_and_wrap(wrap_like='dewpoint', broadcast=('dewpoint', 'pressure'))
 @process_units({'pressure': '[pressure]', 'dewpoint': '[temperature]'}, '[dimensionless]')
-def specific_humidity_from_dewpoint(pressure, dewpoint):
+def specific_humidity_from_dewpoint(pressure, dewpoint, *, phase='liquid'):
     r"""Calculate the specific humidity from the dewpoint temperature and pressure.
 
     Parameters
@@ -4616,6 +4721,11 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
 
     dewpoint: `pint.Quantity`
         Dewpoint temperature
+
+    phase : {'liquid', 'solid', 'auto'}
+        Where applicable, adjust assumptions and constants to make calculation valid in
+        ``'liquid'`` water (default) or ``'solid'`` ice regimes. ``'auto'`` will change regime
+        based on determination of phase boundaries, eg `temperature` relative to freezing.
 
     Returns
     -------
@@ -4637,7 +4747,9 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
     mixing_ratio, saturation_mixing_ratio
 
     """
-    mixing_ratio = saturation_mixing_ratio._nounit(pressure, dewpoint)
+    validate_choice({'liquid', 'solid', 'auto'}, phase=phase)
+
+    mixing_ratio = saturation_mixing_ratio._nounit(pressure, dewpoint, phase=phase)
     return specific_humidity_from_mixing_ratio._nounit(mixing_ratio)
 
 
