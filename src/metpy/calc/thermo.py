@@ -306,7 +306,7 @@ def relative_humidity_from_dewpoint(temperature, dewpoint, *, phase='liquid'):
     >>> from metpy.calc import relative_humidity_from_dewpoint
     >>> from metpy.units import units
     >>> relative_humidity_from_dewpoint(25 * units.degC, 12 * units.degC).to('percent')
-    <Quantity(44.2484765, 'percent')>
+    <Quantity(44.2998365, 'percent')>
 
     See Also
     --------
@@ -556,8 +556,8 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     >>> from metpy.units import units
     >>> plevs = [925, 850, 700, 500, 300, 200] * units.hPa
     >>> moist_lapse(plevs, 5 * units.degC).to('degC')
-    <Quantity([  5.           0.99716773  -8.88545598 -28.37637988 -60.11086751
-    -83.33806983], 'degree_Celsius')>
+    <Quantity([  5.           0.99635104  -8.88958079 -28.38862857 -60.12003999
+    -83.34321585], 'degree_Celsius')>
 
     See Also
     --------
@@ -696,7 +696,7 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     >>> from metpy.calc import lcl
     >>> from metpy.units import units
     >>> lcl(943 * units.hPa, 33 * units.degC, 28 * units.degC)
-    (<Quantity(877.563323, 'hectopascal')>, <Quantity(26.7734921, 'degree_Celsius')>)
+    (<Quantity(877.097306, 'hectopascal')>, <Quantity(26.7279778, 'degree_Celsius')>)
 
     See Also
     --------
@@ -805,7 +805,7 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
     >>> dewpoint = [19.6, 18.7, 17.8, 16.3, 12.4, -0.4, -3.8, -6, -13.2, -11] * units.degC
     >>> ccl_p, ccl_t, t_c = mpcalc.ccl(pressure, temperature, dewpoint)
     >>> ccl_p, t_c
-    (<Quantity(758.348093, 'millibar')>, <Quantity(38.4336274, 'degree_Celsius')>)
+    (<Quantity(758.137299, 'millibar')>, <Quantity(38.4385502, 'degree_Celsius')>)
     """
     pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
     _check_pressure_error(pressure)
@@ -912,7 +912,7 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # calculate LFC
     >>> lfc(p, T, Td)
-    (<Quantity(968.171757, 'hectopascal')>, <Quantity(25.8362857, 'degree_Celsius')>)
+    (<Quantity(967.153333, 'hectopascal')>, <Quantity(25.7463935, 'degree_Celsius')>)
 
     See Also
     --------
@@ -1128,7 +1128,7 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
     >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
     >>> # calculate EL
     >>> el(p, T, Td, prof)
-    (<Quantity(111.739463, 'hectopascal')>, <Quantity(-76.3112792, 'degree_Celsius')>)
+    (<Quantity(112.330791, 'hectopascal')>, <Quantity(-76.2072049, 'degree_Celsius')>)
 
     See Also
     --------
@@ -1223,12 +1223,12 @@ def parcel_profile(pressure, temperature, dewpoint):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # computer parcel temperature
     >>> parcel_profile(p, T[0], Td[0]).to('degC')
-    <Quantity([  29.3          28.61221952   25.22214738   23.46097684   21.5835928
-    19.57260398   17.40636185   15.05748615   12.49064866    9.6592539
-        6.50023491    2.92560365   -1.19172846   -6.04257884  -11.92497517
-    -19.3176536   -28.97672464  -41.94444385  -50.01173076  -59.30936248
-    -70.02760604  -82.53084923  -94.2966713  -100.99074331 -108.40829933
-    -116.77024489 -126.42910222 -138.00649584 -144.86615886 -152.78967029], 'degree_Celsius')>
+    <Quantity([  29.3          28.61221952   25.16541995   23.4015316    21.52129482
+    19.50726582   17.33772233   14.98517962   12.41415852    9.57784164
+        6.41283006    2.83063069   -1.29662004   -6.16091134  -12.0618903
+    -19.47976398  -29.16872218  -42.15825511  -50.22699729  -59.51873404
+    -70.22585491  -82.71535699  -94.46901701 -101.15645164 -108.5667789
+    -116.92064777 -126.57020709 -138.13646516 -144.98953102 -152.90542218], 'degree_Celsius')>
 
     See Also
     --------
@@ -1557,8 +1557,8 @@ def saturation_vapor_pressure(temperature, *, phase='liquid'):
     --------
     >>> from metpy.calc import saturation_vapor_pressure
     >>> from metpy.units import units
-    >>> saturation_vapor_pressure(25 * units.degC).to('hPa')
-    <Quantity(31.6742944, 'hectopascal')>
+    >>> saturation_vapor_pressure(25 * units.degC, phase='liquid').to('hPa')
+    <Quantity(31.623456, 'hectopascal')>
 
     See Also
     --------
@@ -1696,7 +1696,7 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity):
     >>> from metpy.calc import dewpoint_from_relative_humidity
     >>> from metpy.units import units
     >>> dewpoint_from_relative_humidity(10 * units.degC, 50 * units.percent)
-    <Quantity(0.0536760815, 'degree_Celsius')>
+    <Quantity(0.047900916, 'degree_Celsius')>
 
     .. versionchanged:: 1.0
        Renamed ``rh`` parameter to ``relative_humidity``
@@ -1849,7 +1849,7 @@ def saturation_mixing_ratio(total_press, temperature, *, phase='liquid'):
     >>> from metpy.calc import saturation_mixing_ratio
     >>> from metpy.units import units
     >>> saturation_mixing_ratio(983 * units.hPa, 25 * units.degC).to('g/kg')
-    <Quantity(20.7079932, 'gram / kilogram')>
+    <Quantity(20.6736514, 'gram / kilogram')>
 
     Notes
     -----
@@ -1926,7 +1926,7 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
     >>> from metpy.calc import equivalent_potential_temperature
     >>> from metpy.units import units
     >>> equivalent_potential_temperature(850*units.hPa, 20*units.degC, 18*units.degC)
-    <Quantity(353.937994, 'kelvin')>
+    <Quantity(353.898874, 'kelvin')>
 
     Notes
     -----
@@ -2000,7 +2000,7 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
     >>> from metpy.calc import saturation_equivalent_potential_temperature
     >>> from metpy.units import units
     >>> saturation_equivalent_potential_temperature(500 * units.hPa, -20 * units.degC)
-    <Quantity(313.804174, 'kelvin')>
+    <Quantity(313.793845, 'kelvin')>
 
     Notes
     -----
@@ -2176,7 +2176,7 @@ def virtual_temperature_from_dewpoint(
     >>> from metpy.calc import virtual_temperature_from_dewpoint
     >>> from metpy.units import units
     >>> virtual_temperature_from_dewpoint(1000 * units.hPa, 30 * units.degC, 25 * units.degC)
-    <Quantity(33.6739865, 'degree_Celsius')>
+    <Quantity(33.6680183, 'degree_Celsius')>
 
     Notes
     -----
@@ -2335,7 +2335,7 @@ def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, wet_bulb
     >>> from metpy.units import units
     >>> relative_humidity_wet_psychrometric(1000 * units.hPa, 19 * units.degC,
     ...                                     10 * units.degC).to('percent')
-    <Quantity(30.4311332, 'percent')>
+    <Quantity(30.4333697, 'percent')>
 
     See Also
     --------
@@ -2398,10 +2398,10 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
     >>> vp = psychrometric_vapor_pressure_wet(958 * units.hPa, 25 * units.degC,
     ...                                       12 * units.degC)
     >>> print(f'Vapor Pressure: {vp:.2f}')
-    Vapor Pressure: 628.15 pascal
+    Vapor Pressure: 627.52 pascal
     >>> rh = (vp / saturation_vapor_pressure(25 * units.degC)).to('percent')
     >>> print(f'RH: {rh:.2f}')
-    RH: 19.83 percent
+    RH: 19.84 percent
 
     See Also
     --------
@@ -2473,7 +2473,7 @@ def mixing_ratio_from_relative_humidity(
     >>> T = 28.1 * units.degC
     >>> rh = .65
     >>> mixing_ratio_from_relative_humidity(p, T, rh).to('g/kg')
-    <Quantity(15.7646969, 'gram / kilogram')>
+    <Quantity(15.7296568, 'gram / kilogram')>
 
     See Also
     --------
@@ -2540,7 +2540,7 @@ def relative_humidity_from_mixing_ratio(
     >>> from metpy.units import units
     >>> relative_humidity_from_mixing_ratio(1013.25 * units.hPa,
     ...                                     30 * units.degC, 18/1000).to('percent')
-    <Quantity(67.1277085, 'percent')>
+    <Quantity(67.3008484, 'percent')>
 
     See Also
     --------
@@ -2687,7 +2687,7 @@ def relative_humidity_from_specific_humidity(
     >>> from metpy.units import units
     >>> relative_humidity_from_specific_humidity(1013.25 * units.hPa,
     ...                                          30 * units.degC, 18/1000).to('percent')
-    <Quantity(68.3229304, 'percent')>
+    <Quantity(68.4991531, 'percent')>
 
     See Also
     --------
@@ -2786,7 +2786,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
     >>> # calculate surface based CAPE/CIN
     >>> cape_cin(p, T, Td, prof)
-    (<Quantity(4910.59044, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4818.6911, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -2995,7 +2995,7 @@ def most_unstable_parcel(pressure, temperature, dewpoint, height=None, bottom=No
     >>> # find most unstable parcel of depth 50 hPa
     >>> most_unstable_parcel(p, T, Td, depth=50*units.hPa)
     (<Quantity(1008.0, 'hectopascal')>, <Quantity(29.3, 'degree_Celsius')>,
-    <Quantity(26.5176931, 'degree_Celsius')>, np.int64(0))
+    <Quantity(26.4766738, 'degree_Celsius')>, np.int64(0))
 
     See Also
     --------
@@ -3427,7 +3427,7 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # calculate most unstbale CAPE/CIN
     >>> most_unstable_cape_cin(p, T, Td)
-    (<Quantity(4910.59044, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4818.6911, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -3503,7 +3503,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> mixed_layer_cape_cin(p, T, Td, depth=50 * units.hPa)
-    (<Quantity(740.140593, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(691.939088, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -3586,10 +3586,10 @@ def downdraft_cape(pressure, temperature, dewpoint):
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> downdraft_cape(p, T, Td)
-    (<Quantity(1222.67967, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
-    900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity([17.50959548
-    17.20643425 15.237249 13.12607097 10.85045704 8.38243809 5.68671014 2.71808368
-    -0.58203825 -4.29053485], 'degree_Celsius')>)
+    (<Quantity(1222.00699, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
+    900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity([17.51354413
+    17.21031876 15.24077208 13.12928933 10.85340448  8.38511286 5.6890572   2.71997016
+    -0.58085433 -4.29043969], 'degree_Celsius')>)
 
     See Also
     --------
@@ -3730,7 +3730,7 @@ def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
     >>> # find the mixed parcel of depth 50 hPa
     >>> mixed_parcel(p, T, Td, depth=50 * units.hPa)
     (<Quantity(1008.0, 'hectopascal')>, <Quantity(28.750033, 'degree_Celsius')>,
-    <Quantity(18.1998736, 'degree_Celsius')>)
+    <Quantity(18.1504239, 'degree_Celsius')>)
 
     Notes
     -----
@@ -3831,7 +3831,7 @@ def mixed_layer(pressure, *args, height=None, bottom=None, depth=None, interpola
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # find mixed layer T and Td of depth 50 hPa
     >>> mixed_layer(p, T, Td, depth=50 * units.hPa)
-    [<Quantity(26.5798571, 'degree_Celsius')>, <Quantity(16.675935, 'degree_Celsius')>]
+    [<Quantity(26.5798571, 'degree_Celsius')>, <Quantity(16.6455209, 'degree_Celsius')>]
 
     Notes
     -----
@@ -4177,7 +4177,7 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
     >>> thickness_hydrostatic_from_relative_humidity(p[ip1000_500],
     ...                                              T[ip1000_500],
     ...                                              rh[ip1000_500])
-    <Quantity(5781.16001, 'meter')>
+    <Quantity(5781.13913, 'meter')>
 
     See Also
     --------
@@ -4387,7 +4387,7 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     >>> from metpy.calc import wet_bulb_temperature
     >>> from metpy.units import units
     >>> wet_bulb_temperature(993 * units.hPa, 32 * units.degC, 15 * units.degC)
-    <Quantity(20.3770228, 'degree_Celsius')>
+    <Quantity(20.3746466, 'degree_Celsius')>
 
     See Also
     --------
@@ -4737,7 +4737,7 @@ def specific_humidity_from_dewpoint(pressure, dewpoint, *, phase='liquid'):
     >>> from metpy.calc import specific_humidity_from_dewpoint
     >>> from metpy.units import units
     >>> specific_humidity_from_dewpoint(988 * units.hPa, 15 * units.degC).to('g/kg')
-    <Quantity(10.7975828, 'gram / kilogram')>
+    <Quantity(10.791541, 'gram / kilogram')>
 
     .. versionchanged:: 1.0
        Changed signature from ``(dewpoint, pressure)``
@@ -4824,7 +4824,7 @@ def lifted_index(pressure, temperature, parcel_profile, vertical_dim=0):
     >>>
     >>> # Calculate lifted index using our mixed profile
     >>> lifted_index(press, temp, mixed_prof)
-    <Quantity([2.4930656], 'delta_degree_Celsius')>
+    <Quantity([2.51432431], 'delta_degree_Celsius')>
 
     See Also
     --------
@@ -4903,7 +4903,7 @@ def k_index(pressure, temperature, dewpoint, vertical_dim=0):
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> k_index(p, T, Td)
-    <Quantity(35.9395759, 'degree_Celsius')>
+    <Quantity(35.9211365, 'degree_Celsius')>
 
     """
     # Find temperature and dewpoint at 850, 700, and 500 hPa
@@ -5002,7 +5002,7 @@ def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
     >>> # calculate mixing ratio
     >>> mixrat = mixing_ratio_from_relative_humidity(p, T, rh)
     >>> galvez_davison_index(p, T, mixrat, p[0])
-    <Quantity(-8.78797532, 'dimensionless')>
+    <Quantity(-8.84827883, 'dimensionless')>
     """
     if np.any(np.max(pressure, axis=vertical_dim) < 950 * units.hectopascal):
         raise ValueError(
@@ -5227,7 +5227,7 @@ def showalter_index(pressure, temperature, dewpoint):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # compute the showalter index
     >>> showalter_index(p, T, Td)
-    <Quantity([0.48421285], 'delta_degree_Celsius')>
+    <Quantity([0.5107429], 'delta_degree_Celsius')>
 
     """
     # find the measured temperature and dew point temperature at 850 hPa.
@@ -5306,7 +5306,7 @@ def total_totals_index(pressure, temperature, dewpoint, vertical_dim=0):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # compute the TT index
     >>> total_totals_index(p, T, Td)
-    <Quantity(42.6741081, 'delta_degree_Celsius')>
+    <Quantity(42.6618283, 'delta_degree_Celsius')>
 
     """
     # Find temperature and dewpoint at 850 and 500 hPa.
@@ -5442,7 +5442,7 @@ def cross_totals(pressure, temperature, dewpoint, vertical_dim=0):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # compute the cross totals index
     >>> cross_totals(p, T, Td)
-    <Quantity(19.7741081, 'delta_degree_Celsius')>
+    <Quantity(19.7618283, 'delta_degree_Celsius')>
 
     """
     # Find temperature and dewpoint at 850 and 500 hPa
