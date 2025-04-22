@@ -1558,28 +1558,39 @@ def saturation_vapor_pressure(temperature, phase='liquid'):
     Instead of temperature, dewpoint may be used in order to calculate
     the actual (ambient) water vapor (partial) pressure.
 
-    The formula used is from eq. 10 in [MurphyKoop2005]_ for T in degrees Kelvin:
+    Implements separate solutions from [Ambaum2020]_ for
 
-    .. math:: e^[54.842763 - \frac{6763.22}{T} - 4.210\:ln(T) + 0.000367T
-                 + tanh(0.0415(T - 218.8))(53.878 - \frac{1331.22}{T}
-                 - 9.44523\:ln(T) + 0.014025T)]
+    ``phase='liquid'``, Eq. 13,
+    .. math:: e = e_{s0} \frac{T_0}{T}^{(c_{pl} - c_{pv}) / R_v} \exp{
+    \frac{L_0}{R_v T_0} - \frac{L}{R_v T}}
 
+    and ``phase='solid'``, Eq. 17,
+    .. math:: e_i = e_{i0} \frac{T_0}{T}^{(c_{pi} - c_{pv}) / R_v} \exp{
+    \frac{L_{s0}}{R_v T_0} - \frac{L_s}{R_v T}}
     """
 
     def liquid(temperature):
-        # valid for 123 < T < 332
-        return np.exp(
-            54.842763 - 6763.22 / temperature - 4.210 * np.log(temperature)
-            + 0.000367 * temperature + np.tanh(0.0415 * (temperature - 218.8))
-            * (53.878 - 1331.22 / temperature - 9.44523 * np.log(temperature)
-               + 0.014025 * temperature)
+        latent_heat = water_latent_heat_vaporization._nounit(temperature)
+        heat_power = (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
+        exp_term = ((mpconsts.nounit.Lv / mpconsts.nounit.T0 - latent_heat / temperature)
+                    / mpconsts.nounit.Rv)
+
+        return (
+            mpconsts.nounit.sat_pressure_0c
+            * (mpconsts.nounit.T0 / temperature) ** heat_power
+            * np.exp(exp_term)
         )
 
     def ice(temperature):
-        # valid for T > 110 K
-        return np.exp(
-            9.550426 - 5723.265 / temperature + 3.53068 * np.log(temperature)
-            - 0.00728332 * temperature
+        latent_heat = water_latent_heat_sublimation._nounit(temperature)
+        heat_power = (mpconsts.nounit.Cp_i - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
+        exp_term = ((mpconsts.nounit.Ls / mpconsts.nounit.T0 - latent_heat / temperature)
+                    / mpconsts.nounit.Rv)
+
+        return (
+            mpconsts.nounit.sat_pressure_0c
+            * (mpconsts.nounit.T0 / temperature) ** heat_power
+            * np.exp(exp_term)
         )
 
     if phase == 'liquid':
