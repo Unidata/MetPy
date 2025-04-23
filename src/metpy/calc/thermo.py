@@ -2686,8 +2686,11 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
 
     # The mixing ratio of the parcel comes from the dewpoint below the LCL, is saturated
     # based on the temperature above the LCL
-    parcel_mixing_ratio = np.where(below_lcl, saturation_mixing_ratio(pressure, dewpoint),
-                                   saturation_mixing_ratio(pressure, temperature))
+    parcel_mixing_ratio = np.where(
+        below_lcl,
+        saturation_mixing_ratio(pressure[0], dewpoint[0]),
+        saturation_mixing_ratio(pressure, parcel_profile)
+    )
 
     # Convert the temperature/parcel profile to virtual temperature
     temperature = virtual_temperature_from_dewpoint(pressure, temperature, dewpoint)
