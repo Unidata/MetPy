@@ -744,29 +744,6 @@ def test_lfc_profile_nan_with_parcel_profile():
     assert_almost_equal(lfc_temperature, 9.6977 * units.degC, 3)
 
 
-@pytest.mark.skip(reason="Skipping because of difficulty constructing a sounding sensitive to inclusion of LCL after bug fix (#3751)")
-def test_sensitive_sounding():
-    """Test quantities for a sensitive sounding (#902)."""
-    # This sounding has a very small positive area in the low level. It's only captured
-    # properly if the parcel profile includes the LCL, otherwise it breaks LFC and CAPE
-    p = units.Quantity([1004., 1000., 943., 928., 925., 850., 839., 749., 700., 699.,
-                        603., 500., 404., 400., 363., 306., 300., 250., 213., 200.,
-                        176., 150.], 'hectopascal')
-    t = units.Quantity([25.1, 24.5, 20.2, 21.6, 21.4, 20.4, 20.2, 14.4, 13.2, 13., 6.8, -3.3,
-                        -13.1, -13.7, -17.9, -25.5, -26.9, -37.9, -46.7, -48.7, -52.1, -58.9],
-                       'degC')
-    td = units.Quantity([21.9, 22.1, 19.2, 20.5, 20.4, 18.4, 17.4, 8.4, -2.8, -3.0, -15.2,
-                         -20.3, -29.1, -27.7, -24.9, -39.5, -41.9, -51.9, -60.7, -62.7, -65.1,
-                         -71.9], 'degC')
-    lfc_pressure, lfc_temp = lfc(p, t, td)
-    assert_almost_equal(lfc_pressure, 952.8445 * units.mbar, 2)
-    assert_almost_equal(lfc_temp, 20.94469 * units.degC, 2)
-
-    pos, neg = surface_based_cape_cin(p, t, td)
-    assert_almost_equal(pos, 0.106791 * units('J/kg'), 3)
-    assert_almost_equal(neg, -282.620677 * units('J/kg'), 3)
-
-
 def test_lfc_sfc_precision():
     """Test LFC when there are precision issues with the parcel path."""
     levels = np.array([839., 819.4, 816., 807., 790.7, 763., 736.2,
