@@ -575,28 +575,31 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
     lapse_type : `string`, optional
         Definition of moist adiabat to use; if not given, it defaults to standard
         Options:
-        'standard' for simplified pseudoadiabatic process
-        'pseudoadiabatic' for pseudoadiabatic moist process
-        'reversible' for reversible moist process
-        'r24' for Risi et al. (2024);
-        'so13' for Singh and O'Gorman (2013);  doi.org/10.1002/grl.50796
-        'r14' for Romps (2014); doi.org/10.1175/JCLI-D-14-00255.1
-        More info: glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
+            'standard' for simplified pseudoadiabatic process
+            'pseudoadiabatic' for pseudoadiabatic moist process
+            'reversible' for reversible moist process
+            'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
+            'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
+            'r16' for Romps (2016); https://doi.org/10.1175/JAS-D-15-0327.1
+
+        More info: https://glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
 
     params : `dict` or None, optional
         External parameters used for the some lapse_types
         Required parameters:
-        For 'r24':
-        'ep0': scalar, entrainment rate [m**-1],
-        'rh0': scalar, ambient relative humidity [unitless],}
-        For 'so13':
-        'ep0': scalar, entrainment constant [unitless],
-        'rh0': scalar, ambient relative humidity [unitless],}
-        For 'r14':
-        'de': scalar or 1-d array, detrainment rate [m**-1],
-        'ep': scalar or 1-d array, entrainment rate [m**-1],
-        'pa': 1-d array, optional, pressure levels
-        defining detrainment and entrainment profile [Pa]
+            For 'so13': {
+                'ep0': scalar, entrainment constant [unitless],
+                'rh0': scalar, ambient relative humidity [unitless],
+                }
+            For 'r14': {
+                'de': scalar or 1-d array, detrainment rate [m**-1],
+                'ep': scalar or 1-d array, entrainment rate [m**-1],
+                'pa': 1-d array, optional, pressure levels defining detrainment and entrainment profile [Pa]
+                }
+            For 'r16': {
+                'a': scalar, Romps 2016 entrainment coefficient [unitless],
+                'pe': scalar, optional, precipitation efficiency [unitless], defaults to 1.0
+                 }
 
     Returns
     -------
@@ -634,6 +637,101 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
        Renamed ``ref_pressure`` parameter to ``reference_pressure``
 
     """
+    def dt_standard(p, t, params):
+        rs = saturation_mixing_ratio._nounit(p, t)
+        frac = (
+            (mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
+            / (mpconsts.nounit.Cp_d + (
+                mpconsts.nounit.Lv**2 * rs * mpconsts.nounit.epsilon
+                / (mpconsts.nounit.Rd * t**2)
+            ))
+        )
+        return frac / p
+
+    def dt_pseudoadiabatic(p, t, params):
+        rs = saturation_mixing_ratio._nounit(p, t)
+        frac = ( (1 + rs)*(mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
+                / (mpconsts.nounit.Cp_d + rs*mpconsts.nounit.Cv_d +  (mpconsts.nounit.Lv**2 * rs * (mpconsts.nounit.epsilon + rs)
+                                    / (mpconsts.nounit.Rd * t**2))))
+        return frac / p
+
+    def dt_reversible(p, t, params):
+        rs = saturation_mixing_ratio._nounit(p, t)
+        rl = params['rt'] - rs  ## assuming no ice content
+        frac = ( (1 + params['rt'])*(mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
+                / (mpconsts.nounit.Cp_d + rs*mpconsts.nounit.Cv_d + rl*mpconsts.nounit.Cp_l + (mpconsts.nounit.Lv**2 * rs * (mpconsts.nounit.epsilon + rs)
+                                    / (mpconsts.nounit.Rd * t**2))))
+        return frac / p
+
+    def dt_so13(p, t, params):
+        zp = -params['h0']*np.log(p/params['p0']) # pseudoheight
+        if np.abs(zp)==0: # entrainment rate undefined at z=0, assume dry adiabat
+            frac = mpconsts.nounit.Rd * t / mpconsts.nounit.Cp_d
+        else:
+            ep = params['ep0']/zp # entrainment rate
+            rs = saturation_mixing_ratio._nounit(p, t)
+            qs = specific_humidity_from_mixing_ratio(rs)
+            frac = (
+                (mpconsts.nounit.Rd*t + mpconsts.nounit.Lv*qs + ep*qs*mpconsts.nounit.Lv*(1-params['rh0'])*mpconsts.nounit.Rd*t/mpconsts.nounit.g)
+                / (mpconsts.nounit.Cp_d + (
+                    mpconsts.nounit.Lv**2 * qs * mpconsts.nounit.epsilon
+                    / (mpconsts.nounit.Rd * t**2)
+                ))
+            )
+            frac = np.min([frac, mpconsts.nounit.Rd * t / mpconsts.nounit.Cp_d]) # cap lapse rate at dry adiabat
+        return frac / p
+
+    def dt_r14(p, t, params):
+        ep = np.interp(p,params['pa'],params['ep']) if hasattr(params['ep'],'__len__') else params['ep'] # entrainment rate at p
+        de = np.interp(p,params['pa'],params['de']) if hasattr(params['de'],'__len__') else params['de'] # detrainment rate at p
+        rs = saturation_mixing_ratio._nounit(p, t)
+        qs = specific_humidity_from_mixing_ratio(rs)
+        a1 = mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t**2/mpconsts.nounit.Lv + qs*mpconsts.nounit.Lv
+        a2 = mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t**2/mpconsts.nounit.Lv*(de+mpconsts.nounit.g/(mpconsts.nounit.Rd*t)) + qs*mpconsts.nounit.Lv*(de-ep) - mpconsts.nounit.g
+        a3 = (mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t/(mpconsts.nounit.Rd*mpconsts.nounit.Lv) - 1)*mpconsts.nounit.g*de
+        frac = mpconsts.nounit.Rd*t/(mpconsts.nounit.g) * mpconsts.nounit.Rv*t**2/mpconsts.nounit.Lv * ((-a2+np.sqrt(a2**2-4*a1*a3))/(2*a1) + mpconsts.nounit.g/(mpconsts.nounit.Rd*t))
+        return frac / p
+
+    def dt_r16(p, t, params):
+        """Calculate the temperature tendency with pressure for Romps (2016)."""
+        # Get parameters, default PE=1 as per Miyawaki et al. (2020)
+        a = params['a']
+        pe = params.get('pe', 1.0) # Precipitation efficiency defaults to 1
+    
+        # Ensure p and t are unit quantities within the function scope if needed
+        # Note: the solver passes unitless magnitudes, need to re-apply if
+        # MetPy calculation functions require units internally. Assuming base units (Pa, K).
+        t_kelvin = t * units.kelvin
+        p_pascal = p * units.pascal
+    
+        # Calculate saturation specific humidity and latent heat
+        # Use MetPy's functions, ensure consistency
+        rs = saturation_mixing_ratio(p_pascal, t_kelvin).m_as('') # Unitless mixing ratio
+        qs = rs / (1 + rs) # Specific humidity (unitless)
+        L = latent_heat_vaporization(t_kelvin).m_as('J/kg') # J/kg
+    
+        # Calculate dry adiabatic lapse rate in K/m
+        gamma_dry = mpconsts.g.m / mpconsts.Cp_d.m # K/m (using magnitudes in base units)
+    
+        # Calculate Romps 2016 lapse rate gamma (dT/dz) in K/m
+        # Translating the formula from sat_romps_simple_z.m
+        numerator = 1 + a + (L * qs) / (mpconsts.Rd.m * t)
+        denominator = 1 + a + (L**2 * qs) / (mpconsts.Rv.m * t**2 * mpconsts.Cp_d.m)
+        gamma_r16 = gamma_dry * numerator / denominator # K/m
+    
+        # Calculate dT/dp using hydrostatic relation: dT/dp = (dT/dz) / (dp/dz)
+        # where dp/dz = -rho * g = - (p / (Rd * T)) * g
+        dp_dz = - (p * mpconsts.g.m) / (mpconsts.Rd.m * t) # Pa/m
+    
+        # Avoid division by zero if dp_dz is zero (shouldn't happen in realistic scenarios)
+        if dp_dz == 0:
+            # Return dry lapse rate in pressure coords as fallback - should investigate if this occurs
+            return (mpconsts.Rd.m * t) / (mpconsts.Cp_d.m * p)
+    
+        dt_dp = gamma_r16 / dp_dz # (K/m) / (Pa/m) = K/Pa
+    
+        return dt_dp
+
     temperature = np.atleast_1d(temperature)
     pressure = np.atleast_1d(pressure)
     if reference_pressure is None:
@@ -643,6 +741,31 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
 
     # Define or update params where needed
     params = update_params(params, lapse_type, pressure[0], temperature[0])
+    
+    if lapse_type == 'standard':
+        dt=dt_standard
+    elif lapse_type == 'pseudoadiabatic':
+        dt=dt_pseudoadiabatic
+    elif lapse_type == 'reversible':
+        dt=dt_reversible
+        params={'rt':saturation_mixing_ratio._nounit(reference_pressure,temperature)} # total water at LCL = rs
+    elif lapse_type == 'so13':
+        dt=dt_so13
+        params.update({'h0':mpconsts.nounit.Rd * temperature[0] / mpconsts.nounit.g, 'p0':pressure[0]})
+    elif lapse_type == 'r14':
+        dt=dt_r14
+    elif lapse_type == 'r16':
+        # Check for required parameters for r16
+        if 'a' not in params:
+            raise ValueError("Missing required parameter 'a' for lapse_type='r16'")
+        # Set default pe=1.0 if not provided
+        params.setdefault('pe', 1.0)
+        dt=dt_r16
+    else:
+        # Update the error message to include r16
+        raise ValueError('Specified lapse_type is not supported. '
+                         'Choose from standard, pseudoadiabatic, reversible, '
+                         'so13, r14, or r16.')
 
     if np.isnan(reference_pressure) or np.all(np.isnan(temperature)):
         return np.full((temperature.size, pressure.size), np.nan)
@@ -1244,28 +1367,30 @@ def parcel_profile(pressure, temperature, dewpoint, lapse_type='standard', param
     lapse_type : `string`, optional
         Definition of moist adiabat to use; if not given, it defaults to moist_lapse
         Options:
-        'standard' for simplified pseudoadiabatic process
-        'pseudoadiabatic' for pseudoadiabatic moist process
-        'reversible' for reversible moist process
-        'r24' for Risi et al. (2024);
-        'so13' for Singh and O'Gorman (2013);  doi.org/10.1002/grl.50796
-        'r14' for Romps (2014); doi.org/10.1175/JCLI-D-14-00255.1
-        More info: glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
+            'standard' for simplified pseudoadiabatic process
+            'pseudoadiabatic' for pseudoadiabatic moist process
+            'reversible' for reversible moist process
+            'so13' for Singh and O'Gorman (2013);  https://doi.org/10.1002/grl.50796
+            'r14' for Romps (2014); https://doi.org/10.1175/JCLI-D-14-00255.1
+            'r16' for Romps (2016); https://doi.org/10.1175/JAS-D-15-0327.1
+        More info: https://glossary.ametsoc.org/wiki/Adiabatic_lapse_rate
 
     params : `dict` or None, optional
         External parameters used for the some lapse_types
         Required parameters:
-        For 'r24':
-        'ep0': entrainment rate [m**-1],
-        'rh0': ambient relative humidity [unitless],
-        For 'so13':
-        'ep0': entrainment constant [unitless],
-        'rh0': ambient relative humidity [unitless],
-        For 'r14':
-        'de': scalar or 1-d array, detrainment rate [m**-1],
-        'ep': scalar or 1-d array, entrainment rate [m**-1],
-        'pa': 1-d array, optional, pressure levels
-        defining detrainment and entrainment profile [Pa]
+            For 'so13': {
+                'ep0': entrainment constant [unitless],
+                'rh0': ambient relative humidity [unitless],
+                }
+            For 'r14': {
+                'de': scalar or 1-d array, detrainment rate [m**-1],
+                'ep': scalar or 1-d array, entrainment rate [m**-1],
+                'pa': 1-d array, optional, pressure levels defining detrainment and entrainment profile [Pa]
+                }
+            For 'r16': {
+                'a': scalar, Romps 2016 entrainment coefficient [unitless],
+                'pe': scalar, optional, precipitation efficiency [unitless], defaults to 1.0
+                 }
 
     Returns
     -------
