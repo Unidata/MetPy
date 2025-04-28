@@ -441,6 +441,7 @@ def lapse_r14(p, t, params=None):
         'ep': scalar or 1-d array, entrainment rate [m**-1],
         'pa': 1-d array, optional, pressure levels
         defining detrainment and entrainment profile [Pa]
+        'al': scalar or 1-d array, ratio of gross evaporation to gross condensation [unitless],
 
     Returns
     -------
@@ -452,19 +453,41 @@ def lapse_r14(p, t, params=None):
         ep = np.interp(p, params['pa'], params['ep'])
     else:
         ep = params['ep']
-    if hasattr(params['de'], '__len__'):  # same as above for detrainment
-        de = np.interp(p, params['pa'], params['de'])
+    if isinstance(params['de'], np.ndarray):
+        # If it's an array, use .any() (or .all() if that's the correct logic)
+        use_default_settings = (params['de'] == 'default').any()
     else:
-        de = params['de']
+        # If it's a scalar (like a string), perform a direct comparison
+        use_default_settings = (params['de'] == 'default')
+    if hasattr(params['al'], '__len__'):  # evaluate entrainment rate at p if not constant
+        al = np.interp(p, params['pa'], params['al'])
+    else:
+        al = params['al']
+    if use_default_settings:
+        dh = 7000 # depth of detrainment layer [m]
+        zp = -params['h0']*np.log(p/params['p0']) # pseudoheight
+
+        if t >= 240:
+            de = ep
+            params['h1'] = zp
+            params['h2'] = params['h1'] + dh
+        elif zp < params['h2']:
+            de = ep  + np.pi / dh * ( np.sin(np.pi*(zp-params['h1'])/dh) ) / ( 1 + np.cos( np.pi*(zp - params['h1'])/dh ) )
+        else:
+            de = 0
+
+        print(f"Debug R14 default: de = {de}", flush=True) # <--- Add flush=True
+    else:
+        if hasattr(params['de'], '__len__'):  # same as above for detrainment
+            de = np.interp(p, params['pa'], params['de'])
+        else:
+            de = params['de']
     rs = saturation_mixing_ratio._nounit(p, t)
     qs = specific_humidity_from_mixing_ratio(rs)
     a1 = (mpconsts.nounit.Rv * mpconsts.nounit.Cp_d * t**2 / mpconsts.nounit.Lv
           + qs * mpconsts.nounit.Lv)
-    a2 = (mpconsts.nounit.Rv * mpconsts.nounit.Cp_d * t**2 / mpconsts.nounit.Lv
-          * (de + mpconsts.nounit.g / (mpconsts.nounit.Rd * t))
-          + qs * mpconsts.nounit.Lv * (de - ep) - mpconsts.nounit.g)
-    a3 = ((mpconsts.nounit.Rv * mpconsts.nounit.Cp_d * t
-           / (mpconsts.nounit.Rd * mpconsts.nounit.Lv) - 1) * mpconsts.nounit.g * de)
+    a2 = mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t**2/mpconsts.nounit.Lv*(de-al*ep+mpconsts.nounit.g/(mpconsts.nounit.Rd*t)) + qs*mpconsts.nounit.Lv*(de-ep) - mpconsts.nounit.g
+    a3 = (mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t/(mpconsts.nounit.Rd*mpconsts.nounit.Lv) - 1)*mpconsts.nounit.g*(de-al*ep)
     frac = (mpconsts.nounit.Rd * t / (mpconsts.nounit.g)
             * mpconsts.nounit.Rv * t**2 / mpconsts.nounit.Lv
             * ((-a2 + np.sqrt(a2**2 - 4 * a1 * a3)) / (2 * a1)
@@ -571,6 +594,9 @@ def update_params(params, lapse_type, p0, t0):
     elif lapse_type == 'so13':
         params.update({'h0': mpconsts.nounit.Rd * t0 / mpconsts.nounit.g,
                        'p0': p0})
+    elif lapse_type == 'r14':
+        params.update({'h0': mpconsts.nounit.Rd * t0 / mpconsts.nounit.g,
+                       'p0': p0})
     return params
 
 
@@ -630,10 +656,10 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
                 'de': scalar or 1-d array, detrainment rate [m**-1],
                 'ep': scalar or 1-d array, entrainment rate [m**-1],
                 'pa': 1-d array, optional, pressure levels defining detrainment and entrainment profile [Pa]
+                'al': scalar or 1-d array, ratio of gross evaporation to gross condensation [unitless],
                 }
             For 'r16': {
                 'a': scalar, Romps 2016 entrainment coefficient [unitless],
-                'pe': scalar, optional, precipitation efficiency [unitless], defaults to 1.0
                  }
 
     Returns
@@ -718,12 +744,36 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
 
     def dt_r14(p, t, params):
         ep = np.interp(p,params['pa'],params['ep']) if hasattr(params['ep'],'__len__') else params['ep'] # entrainment rate at p
-        de = np.interp(p,params['pa'],params['de']) if hasattr(params['de'],'__len__') else params['de'] # detrainment rate at p
+        if isinstance(params['de'], np.ndarray):
+            # If it's an array, use .any() (or .all() if that's the correct logic)
+            use_default_settings = (params['de'] == 'default').any()
+        else:
+            # If it's a scalar (like a string), perform a direct comparison
+            use_default_settings = (params['de'] == 'default')
+        if hasattr(params['al'], '__len__'):  # evaluate entrainment rate at p if not constant
+            al = np.interp(p, params['pa'], params['al'])
+        else:
+            al = params['al']
+        if use_default_settings:
+            dh = 7000 # depth of detrainment layer [m]
+            zp = -params['h0']*np.log(p/params['p0']) # pseudoheight
+
+            if t >= 240:
+                de = ep
+                params['h1'] = zp
+                params['h2'] = params['h1'] + dh
+            elif zp < params['h2']:
+                de = ep  + np.pi / dh * ( np.sin(np.pi*(zp-params['h1'])/dh) ) / ( 1 + np.cos( np.pi*(zp - params['h1'])/dh ) )
+            else:
+                de = 0
+            print(f"Debug R14 default: de = {de}", flush=True) # <--- Add flush=True
+        else:
+            de = np.interp(p,params['pa'],params['de']) if hasattr(params['de'],'__len__') else params['de'] # detrainment rate at p
         rs = saturation_mixing_ratio._nounit(p, t)
         qs = specific_humidity_from_mixing_ratio(rs)
         a1 = mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t**2/mpconsts.nounit.Lv + qs*mpconsts.nounit.Lv
-        a2 = mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t**2/mpconsts.nounit.Lv*(de+mpconsts.nounit.g/(mpconsts.nounit.Rd*t)) + qs*mpconsts.nounit.Lv*(de-ep) - mpconsts.nounit.g
-        a3 = (mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t/(mpconsts.nounit.Rd*mpconsts.nounit.Lv) - 1)*mpconsts.nounit.g*de
+        a2 = mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t**2/mpconsts.nounit.Lv*(de-al*ep+mpconsts.nounit.g/(mpconsts.nounit.Rd*t)) + qs*mpconsts.nounit.Lv*(de-ep) - mpconsts.nounit.g
+        a3 = (mpconsts.nounit.Rv*mpconsts.nounit.Cp_d*t/(mpconsts.nounit.Rd*mpconsts.nounit.Lv) - 1)*mpconsts.nounit.g*(de-al*ep)
         frac = mpconsts.nounit.Rd*t/(mpconsts.nounit.g) * mpconsts.nounit.Rv*t**2/mpconsts.nounit.Lv * ((-a2+np.sqrt(a2**2-4*a1*a3))/(2*a1) + mpconsts.nounit.g/(mpconsts.nounit.Rd*t))
         return frac / p
 
@@ -756,6 +806,11 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
         params.update({'h0':mpconsts.nounit.Rd * temperature[0] / mpconsts.nounit.g, 'p0':pressure[0]})
     elif lapse_type == 'r14':
         dt=dt_r14
+        params.update({'h0':mpconsts.nounit.Rd * temperature[0] / mpconsts.nounit.g,
+                       'p0':pressure[0],
+                       'h1': 0.0,
+                       'h2': 0.0,
+                      })
     elif lapse_type == 'r16':
         # Check for required parameters for r16
         if 'a' not in params:
@@ -1388,10 +1443,10 @@ def parcel_profile(pressure, temperature, dewpoint, lapse_type='standard', param
                 'de': scalar or 1-d array, detrainment rate [m**-1],
                 'ep': scalar or 1-d array, entrainment rate [m**-1],
                 'pa': 1-d array, optional, pressure levels defining detrainment and entrainment profile [Pa]
+                'al': scalar or 1-d array, ratio of gross evaporation to gross condensation [unitless],
                 }
             For 'r16': {
                 'a': scalar, Romps 2016 entrainment coefficient [unitless],
-                'pe': scalar, optional, precipitation efficiency [unitless], defaults to 1.0
                  }
 
     Returns
@@ -1502,6 +1557,7 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint,
         'ep': scalar or 1-d array, entrainment rate [m**-1],
         'pa': 1-d array, optional, pressure levels
         defining detrainment and entrainment profile [Pa]
+        'al': scalar or 1-d array, ratio of gross evaporation to gross condensation [unitless],
 
     Returns
     -------
