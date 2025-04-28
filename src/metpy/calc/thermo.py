@@ -476,7 +476,6 @@ def lapse_r14(p, t, params=None):
         else:
             de = 0
 
-        print(f"Debug R14 default: de = {de}", flush=True) # <--- Add flush=True
     else:
         if hasattr(params['de'], '__len__'):  # same as above for detrainment
             de = np.interp(p, params['pa'], params['de'])
@@ -766,7 +765,6 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
                 de = ep  + np.pi / dh * ( np.sin(np.pi*(zp-params['h1'])/dh) ) / ( 1 + np.cos( np.pi*(zp - params['h1'])/dh ) )
             else:
                 de = 0
-            print(f"Debug R14 default: de = {de}", flush=True) # <--- Add flush=True
         else:
             de = np.interp(p,params['pa'],params['de']) if hasattr(params['de'],'__len__') else params['de'] # detrainment rate at p
         rs = saturation_mixing_ratio._nounit(p, t)
