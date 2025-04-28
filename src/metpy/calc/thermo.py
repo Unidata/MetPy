@@ -471,6 +471,39 @@ def lapse_r14(p, t, params=None):
                + mpconsts.nounit.g / (mpconsts.nounit.Rd * t)))
     return frac / p
 
+@exporter.export
+def lapse_r16(p, t, params=None):
+    r"""
+    Compute the Romps (2016) entraining lapse rate in pressure coordinates.
+
+    Parameters
+    ----------
+    p : `float`
+        pressure [Pa]
+
+    t : `float`
+        temperature [K]
+
+    params : `dict`
+        'a': scalar, Romps 2016 entrainment coefficient [unitless],
+
+    Returns
+    -------
+    dT/dp : `float`
+        lapse rate in pressure coordinates [K/Pa]
+
+    Notes
+    -----
+    Requires 'a' parameter in params dict.
+    Based on Romps (2016), J. Atmos. Sci.
+    from height to pressure coordinates via hydrostatic relation.
+
+    """
+    a = params['a']
+    rs = saturation_mixing_ratio._nounit(p, t)
+    qs = specific_humidity_from_mixing_ratio(rs)
+    frac = mpconsts.nounit.Rd*t * ( 1 + a + qs * mpconsts.nounit.Lv / mpconsts.nounit.Rd / t ) / ( (1 + a)*mpconsts.nounit.Cp_d + qs * mpconsts.nounit.Lv**2 / mpconsts.nounit.Rv / t**2 )
+    return frac / p
 
 def select_dt(lapse_type):
     r"""
@@ -499,6 +532,8 @@ def select_dt(lapse_type):
         dt = lapse_so13
     elif lapse_type == 'r14':
         dt = lapse_r14
+    elif lapse_type == 'r16':
+        dt = lapse_r16
     else:
         raise ValueError('Specified lapse_type is not supported. '
                          'Choose from standard, pseudoadiabatic, reversible, '
@@ -693,44 +728,11 @@ def moist_lapse(pressure, temperature, reference_pressure=None,
         return frac / p
 
     def dt_r16(p, t, params):
-        """Calculate the temperature tendency with pressure for Romps (2016)."""
-        # Get parameters, default PE=1 as per Miyawaki et al. (2020)
         a = params['a']
-        pe = params.get('pe', 1.0) # Precipitation efficiency defaults to 1
-    
-        # Ensure p and t are unit quantities within the function scope if needed
-        # Note: the solver passes unitless magnitudes, need to re-apply if
-        # MetPy calculation functions require units internally. Assuming base units (Pa, K).
-        t_kelvin = t * units.kelvin
-        p_pascal = p * units.pascal
-    
-        # Calculate saturation specific humidity and latent heat
-        # Use MetPy's functions, ensure consistency
-        rs = saturation_mixing_ratio(p_pascal, t_kelvin).m_as('') # Unitless mixing ratio
-        qs = rs / (1 + rs) # Specific humidity (unitless)
-        L = latent_heat_vaporization(t_kelvin).m_as('J/kg') # J/kg
-    
-        # Calculate dry adiabatic lapse rate in K/m
-        gamma_dry = mpconsts.g.m / mpconsts.Cp_d.m # K/m (using magnitudes in base units)
-    
-        # Calculate Romps 2016 lapse rate gamma (dT/dz) in K/m
-        # Translating the formula from sat_romps_simple_z.m
-        numerator = 1 + a + (L * qs) / (mpconsts.Rd.m * t)
-        denominator = 1 + a + (L**2 * qs) / (mpconsts.Rv.m * t**2 * mpconsts.Cp_d.m)
-        gamma_r16 = gamma_dry * numerator / denominator # K/m
-    
-        # Calculate dT/dp using hydrostatic relation: dT/dp = (dT/dz) / (dp/dz)
-        # where dp/dz = -rho * g = - (p / (Rd * T)) * g
-        dp_dz = - (p * mpconsts.g.m) / (mpconsts.Rd.m * t) # Pa/m
-    
-        # Avoid division by zero if dp_dz is zero (shouldn't happen in realistic scenarios)
-        if dp_dz == 0:
-            # Return dry lapse rate in pressure coords as fallback - should investigate if this occurs
-            return (mpconsts.Rd.m * t) / (mpconsts.Cp_d.m * p)
-    
-        dt_dp = gamma_r16 / dp_dz # (K/m) / (Pa/m) = K/Pa
-    
-        return dt_dp
+        rs = saturation_mixing_ratio._nounit(p, t)
+        qs = specific_humidity_from_mixing_ratio(rs)
+        frac = mpconsts.nounit.Rd*t * ( 1 + a + qs * mpconsts.nounit.Lv / mpconsts.nounit.Rd / t ) / ( (1 + a)*mpconsts.nounit.Cp_d + qs * mpconsts.nounit.Lv**2 / mpconsts.nounit.Rv / t**2 )
+        return frac / p
 
     temperature = np.atleast_1d(temperature)
     pressure = np.atleast_1d(pressure)
