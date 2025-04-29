@@ -700,9 +700,13 @@ def lcl(pressure, temperature, dewpoint, max_iters=None, eps=None):
     Notes
     -----
     From [Romps2017]_, this directly solves for the temperature at the LCL, Eq 22a,
+
     .. math:: T_{LCL} = c [W_{-1}(RH_l^{1/a} c \exp{c})]^{-1} T
-    and similarly for pressure at the LCL, Eq 22b,
+
+    and the pressure at the LCL, Eq 22b,
+
     .. math:: p_{LCL} = p \left( \frac{T_{LCL}}{T} \right)^{c_{pm} / R_m}
+
     where :math:`a` (Eq 22d), :math:`b` (Eq 22e), and :math:`c` (Eq 22f) are derived constants,
     and :math:`W_{-1}` is the :math:`k=-1` branch of the Lambert :math:`W` function.
 
