@@ -691,7 +691,7 @@ def lcl(pressure, temperature, dewpoint, max_iters=None, eps=None):
     >>> from metpy.calc import lcl
     >>> from metpy.units import units
     >>> lcl(943 * units.hPa, 33 * units.degC, 28 * units.degC)
-    (<Quantity(877.097306, 'hectopascal')>, <Quantity(26.7279778, 'degree_Celsius')>)
+    (<Quantity(877.033549, 'hectopascal')>, <Quantity(26.7591908, 'degree_Celsius')>)
 
     See Also
     --------
@@ -908,7 +908,7 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # calculate LFC
     >>> lfc(p, T, Td)
-    (<Quantity(967.153333, 'hectopascal')>, <Quantity(25.7463935, 'degree_Celsius')>)
+    (<Quantity(967.309996, 'hectopascal')>, <Quantity(25.778387, 'degree_Celsius')>)
 
     See Also
     --------
@@ -1124,7 +1124,7 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
     >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
     >>> # calculate EL
     >>> el(p, T, Td, prof)
-    (<Quantity(112.330791, 'hectopascal')>, <Quantity(-76.2072049, 'degree_Celsius')>)
+    (<Quantity(112.252054, 'hectopascal')>, <Quantity(-76.2210312, 'degree_Celsius')>)
 
     See Also
     --------
@@ -1219,12 +1219,12 @@ def parcel_profile(pressure, temperature, dewpoint):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # computer parcel temperature
     >>> parcel_profile(p, T[0], Td[0]).to('degC')
-    <Quantity([  29.3          28.61221952   25.16541995   23.4015316    21.52129482
-    19.50726582   17.33772233   14.98517962   12.41415852    9.57784164
-        6.41283006    2.83063069   -1.29662004   -6.16091134  -12.0618903
-    -19.47976398  -29.16872218  -42.15825511  -50.22699729  -59.51873404
-    -70.22585491  -82.71535699  -94.46901701 -101.15645164 -108.5667789
-    -116.92064777 -126.57020709 -138.13646516 -144.98953102 -152.90542218], 'degree_Celsius')>
+    <Quantity([  29.3          28.61221952   25.17408111   23.41044641   21.53049669
+    19.51679547   17.34763012   14.99552875   12.4250297     9.58933992
+        6.4250951     2.84385238   -1.28217807   -6.14487817  -12.0437512
+    -19.45887455  -29.14459155  -42.13147376  -50.19971377  -59.49169312
+    -70.19973455  -82.69068969  -94.44583924 -101.13413664 -108.54542355
+    -116.90037584 -126.55118719 -138.11894611 -144.97290122 -152.88981956], 'degree_Celsius')>
 
     See Also
     --------
@@ -2782,7 +2782,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
     >>> # calculate surface based CAPE/CIN
     >>> cape_cin(p, T, Td, prof)
-    (<Quantity(4818.6911, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4830.74608, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -3423,7 +3423,7 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # calculate most unstbale CAPE/CIN
     >>> most_unstable_cape_cin(p, T, Td)
-    (<Quantity(4818.6911, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4830.74608, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -3499,7 +3499,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> mixed_layer_cape_cin(p, T, Td, depth=50 * units.hPa)
-    (<Quantity(691.939088, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(678.967843, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -3582,10 +3582,10 @@ def downdraft_cape(pressure, temperature, dewpoint):
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> downdraft_cape(p, T, Td)
-    (<Quantity(1222.00699, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
-    900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity([17.51354413
-    17.21031876 15.24077208 13.12928933 10.85340448  8.38511286 5.6890572   2.71997016
-    -0.58085433 -4.29043969], 'degree_Celsius')>)
+    (<Quantity(1220.67097, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
+    900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity([17.52017969
+    17.21699119 15.24769167 13.13648889 10.86092343  8.39299889 5.69736825  2.72877681
+    -0.57146657 -4.28036902], 'degree_Celsius')>)
 
     See Also
     --------
@@ -4383,7 +4383,7 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     >>> from metpy.calc import wet_bulb_temperature
     >>> from metpy.units import units
     >>> wet_bulb_temperature(993 * units.hPa, 32 * units.degC, 15 * units.degC)
-    <Quantity(20.3746466, 'degree_Celsius')>
+    <Quantity(20.3937601, 'degree_Celsius')>
 
     See Also
     --------
@@ -4820,7 +4820,7 @@ def lifted_index(pressure, temperature, parcel_profile, vertical_dim=0):
     >>>
     >>> # Calculate lifted index using our mixed profile
     >>> lifted_index(press, temp, mixed_prof)
-    <Quantity([2.51432431], 'delta_degree_Celsius')>
+    <Quantity([2.54198585], 'delta_degree_Celsius')>
 
     See Also
     --------
@@ -5223,7 +5223,7 @@ def showalter_index(pressure, temperature, dewpoint):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # compute the showalter index
     >>> showalter_index(p, T, Td)
-    <Quantity([0.5107429], 'delta_degree_Celsius')>
+    <Quantity([0.51436699], 'delta_degree_Celsius')>
 
     """
     # find the measured temperature and dew point temperature at 850 hPa.
