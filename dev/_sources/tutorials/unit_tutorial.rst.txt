@@ -599,7 +599,7 @@ under the hood. Below we calculate dewpoint from the temperature and relative hu
 
  .. code-block:: none
 
-    15.726236381245258 degree_Celsius
+    15.706094895523165 degree_Celsius
 
 
 
@@ -622,7 +622,7 @@ or back to Fahrenheit:
 
  .. code-block:: none
 
-    60.3072254862414 degree_Fahrenheit
+    60.27097081194163 degree_Fahrenheit
 
 
 
@@ -675,7 +675,7 @@ an average is by dropping the units attached to the values via ``.magnitude``:
 
  .. code-block:: none
 
-    11.445590005179099
+    11.428407943235129
 
 
 
@@ -695,7 +695,7 @@ an average is by dropping the units attached to the values via ``.magnitude``:
 
  .. code-block:: none
 
-    13.585913193212178
+    13.567251419379147
 
 
 

@@ -142,7 +142,7 @@ for the layer from the surface pressure to 500-hPa
 
  .. code-block:: none
 
-    5332.443290591299 meter
+    5332.4331211279705 meter
 
 
 

@@ -439,15 +439,15 @@ Print Important Sounding Parameters
 
     Important Sounding Parameters for KOUN on 22 Mary 2011 12 UTC
 
-            CAPE: 3307.45 joule / kilogram
-             CIN: -127.83 joule / kilogram
-    LCL Pressure: 949.09 hectopascal
-    LFC Pressure: 735.99 hectopascal
-     EL Pressure: 194.72 hectopascal
+            CAPE: 3290.81 joule / kilogram
+             CIN: -128.89 joule / kilogram
+    LCL Pressure: 948.85 hectopascal
+    LFC Pressure: 735.67 hectopascal
+     EL Pressure: 194.90 hectopascal
 
-       Lifted Index: [-6.96] delta_degree_Celsius
+       Lifted Index: [-6.93] delta_degree_Celsius
             K-Index: 22.10 degree_Celsius
-    Showalter Index: [-0.08] delta_degree_Celsius
+    Showalter Index: [-0.07] delta_degree_Celsius
        Cross Totals: 17.10 delta_degree_Celsius
        Total Totals: 50.20 delta_degree_Celsius
     Vertical Totals: 33.10 delta_degree_Celsius
@@ -455,15 +455,15 @@ Print Important Sounding Parameters
     Mixed Layer - Lowest 50-hPa
          ML Temp: 20.99 degree_Celsius
          ML Dewp: 20.55 degree_Celsius
-         ML CAPE: 3347.72 joule / kilogram
-          ML CIN: -168.76 joule / kilogram
+         ML CAPE: 3317.97 joule / kilogram
+          ML CIN: -171.16 joule / kilogram
 
     Most Unstable - Lowest 50-hPa
          MU Temp: 20.40 degree_Celsius
          MU Dewp: 20.40 degree_Celsius
      MU Pressure: 925.00 hectopascal
-         MU CAPE: 3794.21 joule / kilogram
-          MU CIN: -84.88 joule / kilogram
+         MU CAPE: 3777.93 joule / kilogram
+          MU CIN: -85.67 joule / kilogram
 
     Bunkers Storm Motion Vector
       u_storm: 21.85 knot
@@ -471,8 +471,8 @@ Print Important Sounding Parameters
     Critical Angle: 67.33 degree
 
     Storm Relative Helicity: 279.49 meter ** 2 / second ** 2
-    Significant Tornado Parameter: [4.71] dimensionless
-    Supercell Composite Parameter: [9.31] dimensionless
+    Significant Tornado Parameter: [4.69] dimensionless
+    Supercell Composite Parameter: [9.27] dimensionless
 
 
 
@@ -480,7 +480,7 @@ Print Important Sounding Parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.276 seconds)
+   **Total running time of the script:** (0 minutes 0.294 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Sounding_Calculations.py:

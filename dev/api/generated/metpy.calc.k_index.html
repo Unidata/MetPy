@@ -81,7 +81,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Apr 28, 2025 at 16:26:51"/>
+    <meta name="docbuild:last-update" content="Apr 29, 2025 at 21:17:49"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.k_index.html" />
 
   </head>
@@ -795,7 +795,7 @@
 <h1>k_index<a class="headerlink" href="#k-index" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.k_index">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">k_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertical_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L4691-L4764"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.k_index" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">k_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertical_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L4842-L4915"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.k_index" title="Link to this definition">#</a></dt>
 <dd><p>Calculate K Index from the pressure temperature and dewpoint.</p>
 <p>K Index formula derived from <a class="reference internal" href="../references.html#george1960" id="id1"><span>[George1960]</span></a>:</p>
 <div class="math notranslate nohighlight">
@@ -845,7 +845,7 @@ xarray DataArray arguments.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># calculate dewpoint</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Td</span> <span class="o">=</span> <span class="n">dewpoint_from_relative_humidity</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">rh</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">k_index</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">Td</span><span class="p">)</span>
-<span class="go">&lt;Quantity(35.9395759, &#39;degree_Celsius&#39;)&gt;</span>
+<span class="go">&lt;Quantity(35.9211365, &#39;degree_Celsius&#39;)&gt;</span>
 </pre></div>
 </div>
 </dd></dl>

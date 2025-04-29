@@ -81,7 +81,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Apr 28, 2025 at 16:26:51"/>
+    <meta name="docbuild:last-update" content="Apr 29, 2025 at 21:17:49"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.cape_cin.html" />
 
   </head>
@@ -795,7 +795,7 @@
 <h1>cape_cin<a class="headerlink" href="#cape-cin" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.cape_cin">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">cape_cin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parcel_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which_lfc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bottom'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which_el</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'top'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L2578-L2741"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.cape_cin" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">cape_cin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parcel_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which_lfc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bottom'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which_el</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'top'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L2722-L2885"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.cape_cin" title="Link to this definition">#</a></dt>
 <dd><p>Calculate CAPE and CIN.</p>
 <p>Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
 of a given upper air profile and parcel path. CIN is integrated between the surface and
@@ -846,7 +846,7 @@ and ‘most_cape’. Default is ‘top’.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">prof</span> <span class="o">=</span> <span class="n">parcel_profile</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Td</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># calculate surface based CAPE/CIN</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cape_cin</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">Td</span><span class="p">,</span> <span class="n">prof</span><span class="p">)</span>
-<span class="go">(&lt;Quantity(4910.59044, &#39;joule / kilogram&#39;)&gt;, &lt;Quantity(0, &#39;joule / kilogram&#39;)&gt;)</span>
+<span class="go">(&lt;Quantity(4818.6911, &#39;joule / kilogram&#39;)&gt;, &lt;Quantity(0, &#39;joule / kilogram&#39;)&gt;)</span>
 </pre></div>
 </div>
 <div class="admonition seealso">

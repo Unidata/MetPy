@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Apr 28, 2025 at 16:26:51"/>
+    <meta name="docbuild:last-update" content="Apr 29, 2025 at 21:17:49"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/tutorials/unit_tutorial.html" />
 
   </head>
@@ -784,14 +784,14 @@ under the hood. Below we calculate dewpoint from the temperature and relative hu
 <span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dewpoint</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>15.726236381245258 degree_Celsius
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>15.706094895523165 degree_Celsius
 </pre></div>
 </div>
 <p>or back to Fahrenheit:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.to" title="pint.Quantity.to" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">dewpoint</span><span class="o">.</span><span class="n">to</span></a><span class="p">(</span><span class="s1">&#39;degF&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>60.3072254862414 degree_Fahrenheit
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>60.27097081194163 degree_Fahrenheit
 </pre></div>
 </div>
 </section>
@@ -816,14 +816,14 @@ an average is by dropping the units attached to the values via <code class="docu
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.magnitude" title="pint.Quantity.magnitude" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-property"><span class="n">dewpoint_b</span><span class="o">.</span><span class="n">magnitude</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>11.445590005179099
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>11.428407943235129
 </pre></div>
 </div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">dewpoint_mean</span></a> <span class="o">=</span> <span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.magnitude" title="pint.Quantity.magnitude" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-property"><span class="n">dewpoint_a</span><span class="o">.</span><span class="n">magnitude</span></a> <span class="o">+</span> <a href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity.magnitude" title="pint.Quantity.magnitude" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-property"><span class="n">dewpoint_b</span><span class="o">.</span><span class="n">magnitude</span></a><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
 <span class="nb">print</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">dewpoint_mean</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>13.585913193212178
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>13.567251419379147
 </pre></div>
 </div>
 </section>

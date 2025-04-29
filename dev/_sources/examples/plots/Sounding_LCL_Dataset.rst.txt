@@ -160,6 +160,8 @@ assign units.
 
     /opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/site-packages/scipy/integrate/_ivp/base.py:23: UserWarning: Saturation mixing ratio is undefined for some requested pressure/temperature combinations. Total pressure must be greater than the water vapor saturation pressure for liquid water to be in equilibrium.
       return np.asarray(fun(t, y), dtype=dtype)
+    /opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/site-packages/metpy/calc/thermo.py:1633: RuntimeWarning: invalid value encountered in power
+      * (mpconsts.nounit.T0 / temperature) ** heat_power
 
 
 
