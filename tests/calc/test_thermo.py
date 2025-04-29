@@ -40,7 +40,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         water_latent_heat_vaporization, wet_bulb_potential_temperature,
                         wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
-from metpy.constants import Cp_d, kappa, Lf, Ls, Lv, Rd, T0
+from metpy.constants import Cp_d, g, kappa, Lf, Ls, Lv, Rd, T0
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import is_quantity, masked_array, units
 
@@ -454,6 +454,27 @@ def test_lcl():
     lcl_pressure, lcl_temperature = lcl(1000. * units.mbar, 30. * units.degC, 20. * units.degC)
     assert_almost_equal(lcl_pressure, 864.213 * units.mbar, 2)
     assert_almost_equal(lcl_temperature, 17.662 * units.degC, 2)
+
+
+def test_lcl_romps_value():
+    """Test LCL calculation against cited Romps test values.
+
+    See https://romps.berkeley.edu/papers/pubdata/2016/lcl/test.py
+    and https://romps.berkeley.edu/papers/pubdata/2020/dewpoint/test.py
+    """
+    # dewpoint from Romps 2021 test data: 288.7153070587 K
+    p = 1e5 * units.Pa
+    t = 300 * units.K
+    td = 288.7153070587 * units.K
+
+    _, lcl_temperature = lcl(p, t, td)
+
+    cpm = moist_air_specific_heat_pressure(specific_humidity_from_dewpoint(p, td))
+    lcl_height = cpm / g * (t - lcl_temperature)
+
+    reference_lcl_height = 1433.844139279 * units.m
+    margin_error = 5 * units.m  # from Romps 2017
+    assert abs(lcl_height - reference_lcl_height) <= margin_error
 
 
 def test_lcl_kelvin():
