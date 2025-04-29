@@ -129,4 +129,37 @@ def broadcast_indices(indices, shape, axis):
     return tuple(ret)
 
 
+def validate_choice(options, /, **kwargs):
+    r"""Confirm that a choice is contained within a set of options.
+
+    Parameters
+    ----------
+    options : iterable
+
+    \*\*kwargs
+        Function kwarg names (keys) and their passed-in values (values) for validation
+
+    Raises
+    ------
+    ValueError
+        If the choice is not contained within any of these options, present valid options
+
+    Examples
+    --------
+    >>> from metpy.cbook import validate_choice
+    >>> def try_wrong_choice(color=None):
+    ...    validate_choice({'blue', 'green', 'yellow'}, color=color)
+    >>> try_wrong_choice(color='red') # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ValueError: 'red' is not a valid option for color.
+    Valid options are 'yellow', 'green', 'blue'.
+    """
+    for kw, choice in kwargs.items():
+        if choice not in options:
+            raise ValueError(
+                f'{choice!r} is not a valid option for {kw}. '
+                f'Valid options are {", ".join(map(repr, options))}.'
+            )
+
+
 __all__ = ('Registry', 'broadcast_indices', 'get_test_data')

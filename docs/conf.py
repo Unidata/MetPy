@@ -108,7 +108,8 @@ nitpick_ignore_regex = [
     ('py:class', r'.*TraitType'),
     ('py:class', r'.*object providing a view on.*'),  # Python dict docstring
     ('py:class', r'None.  .*'),  # Python dict docstring
-    ('py:class', r'.*D\[k\].*'),  # Python dict docstring
+    ('py:class', r'.*D\[k\].*'),  # Python dict docstring,
+    ('py:class', r"({'liquid'|'solid'|'auto'})")
 ]
 
 show_warning_types = True

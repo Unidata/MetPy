@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test functionality of MetPy's utility code."""
 
-from metpy.cbook import example_data, Registry
+import pytest
+
+from metpy.cbook import example_data, Registry, validate_choice
 
 
 def test_registry():
@@ -22,3 +24,9 @@ def test_example_data():
     var_names = list(ds.variables)
 
     assert 'temperature' in var_names
+
+
+def test_validate_choice():
+    """Test that validation is functioning and error is useful."""
+    with pytest.raises(ValueError, match='is not a valid option'):
+        validate_choice({'red', 'yellow', 'green'}, color='blue')
