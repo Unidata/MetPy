@@ -14,6 +14,7 @@ except ImportError:
 
 import scipy.integrate as si
 import scipy.optimize as so
+from scipy.special import lambertw
 import xarray as xr
 
 from .exceptions import InvalidSoundingError
@@ -276,7 +277,9 @@ def water_latent_heat_melting(temperature):
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'dewpoint'))
-@check_units('[temperature]', '[temperature]')
+@process_units(input_dimensionalities={'temperature': '[temperature]',
+                                       'dewpoint': '[temperature]'},
+               output_dimensionalities='[dimensionless]')
 def relative_humidity_from_dewpoint(temperature, dewpoint, *, phase='liquid'):
     r"""Calculate the relative humidity.
 
@@ -321,8 +324,8 @@ def relative_humidity_from_dewpoint(temperature, dewpoint, *, phase='liquid'):
 
     """
     validate_choice({'liquid', 'solid', 'auto'}, phase=phase)
-    e = saturation_vapor_pressure(dewpoint, phase=phase)
-    e_s = saturation_vapor_pressure(temperature, phase=phase)
+    e = saturation_vapor_pressure._nounit(dewpoint, phase=phase)
+    e_s = saturation_vapor_pressure._nounit(temperature, phase=phase)
     return e / e_s
 
 
@@ -657,7 +660,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     {'pressure': '[pressure]', 'temperature': '[temperature]', 'dewpoint': '[temperature]'},
     ('[pressure]', '[temperature]')
 )
-def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
+def lcl(pressure, temperature, dewpoint, max_iters=None, eps=None):
     r"""Calculate the lifted condensation level (LCL) from the starting point.
 
     The starting state for the parcel is defined by `temperature`, `dewpoint`,
@@ -683,20 +686,12 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     `pint.Quantity`
         LCL temperature
 
-    Other Parameters
-    ----------------
-    max_iters : int, optional
-        The maximum number of iterations to use in calculation, defaults to 50.
-
-    eps : float, optional
-        The desired relative error in the calculated value, defaults to 1e-5.
-
     Examples
     --------
     >>> from metpy.calc import lcl
     >>> from metpy.units import units
     >>> lcl(943 * units.hPa, 33 * units.degC, 28 * units.degC)
-    (<Quantity(877.097306, 'hectopascal')>, <Quantity(26.7279778, 'degree_Celsius')>)
+    (<Quantity(877.033549, 'hectopascal')>, <Quantity(26.7591908, 'degree_Celsius')>)
 
     See Also
     --------
@@ -704,39 +699,44 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 
     Notes
     -----
-    This function is implemented using an iterative approach to solve for the
-    LCL. The basic algorithm is:
+    From [Romps2017]_, this directly solves for the temperature at the LCL, Eq 22a,
 
-    1. Find the dewpoint from the LCL pressure and starting mixing ratio
-    2. Find the LCL pressure from the starting temperature and dewpoint
-    3. Iterate until convergence
+    .. math:: T_{LCL} = c [W_{-1}(RH_l^{1/a} c \exp{c})]^{-1} T
 
-    The function is guaranteed to finish by virtue of the `max_iters` counter.
+    and the pressure at the LCL, Eq 22b,
+
+    .. math:: p_{LCL} = p \left( \frac{T_{LCL}}{T} \right)^{c_{pm} / R_m}
+
+    where :math:`a` (Eq 22d), :math:`b` (Eq 22e), and :math:`c` (Eq 22f) are derived constants,
+    and :math:`W_{-1}` is the :math:`k=-1` branch of the Lambert :math:`W` function.
 
     .. versionchanged:: 1.0
        Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
-    def _lcl_iter(p, p0, w, t):
-        nonlocal nan_mask
-        td = globals()['dewpoint']._nounit(vapor_pressure._nounit(p, w))
-        p_new = (p0 * (td / t) ** (1. / mpconsts.nounit.kappa))
-        nan_mask = nan_mask | np.isnan(p_new)
-        return np.where(np.isnan(p_new), p, p_new)
+    if max_iters or eps:
+        _warnings.warn(
+            'max_iters, eps arguments unused and will be deprecated in a future version.',
+            PendingDeprecationWarning)
 
-    # Handle nans by creating a mask that gets set by our _lcl_iter function if it
-    # ever encounters a nan, at which point pressure is set to p, stopping iteration.
-    nan_mask = False
-    w = mixing_ratio._nounit(saturation_vapor_pressure._nounit(dewpoint), pressure)
-    lcl_p = so.fixed_point(_lcl_iter, pressure, args=(pressure, w, temperature),
-                           xtol=eps, maxiter=max_iters)
-    lcl_p = np.where(nan_mask, np.nan, lcl_p)
+    q = specific_humidity_from_dewpoint._nounit(pressure, dewpoint, phase='liquid')
+    moist_heat_ratio = (moist_air_specific_heat_pressure._nounit(q)
+                        / moist_air_gas_constant._nounit(q))
+    spec_heat_diff = mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v
 
-    # np.isclose needed if surface is LCL due to precision error with np.log in dewpoint.
-    # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
-    lcl_p = np.where(np.isclose(lcl_p, pressure), pressure, lcl_p)
+    a = moist_heat_ratio + spec_heat_diff / mpconsts.nounit.Rv
+    b = (-(mpconsts.nounit.Lv + spec_heat_diff * mpconsts.nounit.T0)
+         / (mpconsts.nounit.Rv * temperature))
+    c = b / a
 
-    return lcl_p, globals()['dewpoint']._nounit(vapor_pressure._nounit(lcl_p, w))
+    w_minus1 = lambertw(
+        (relative_humidity_from_dewpoint._nounit(temperature, dewpoint, phase='liquid')
+         ** (1 / a) * c * np.exp(c)), k=-1).real
+
+    t_lcl = c / w_minus1 * temperature
+    p_lcl = pressure * (t_lcl / temperature) ** moist_heat_ratio
+
+    return p_lcl, t_lcl
 
 
 @exporter.export
@@ -912,7 +912,7 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # calculate LFC
     >>> lfc(p, T, Td)
-    (<Quantity(967.153333, 'hectopascal')>, <Quantity(25.7463935, 'degree_Celsius')>)
+    (<Quantity(967.309996, 'hectopascal')>, <Quantity(25.778387, 'degree_Celsius')>)
 
     See Also
     --------
@@ -1128,7 +1128,7 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
     >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
     >>> # calculate EL
     >>> el(p, T, Td, prof)
-    (<Quantity(112.330791, 'hectopascal')>, <Quantity(-76.2072049, 'degree_Celsius')>)
+    (<Quantity(112.252054, 'hectopascal')>, <Quantity(-76.2210312, 'degree_Celsius')>)
 
     See Also
     --------
@@ -1223,12 +1223,12 @@ def parcel_profile(pressure, temperature, dewpoint):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # computer parcel temperature
     >>> parcel_profile(p, T[0], Td[0]).to('degC')
-    <Quantity([  29.3          28.61221952   25.16541995   23.4015316    21.52129482
-    19.50726582   17.33772233   14.98517962   12.41415852    9.57784164
-        6.41283006    2.83063069   -1.29662004   -6.16091134  -12.0618903
-    -19.47976398  -29.16872218  -42.15825511  -50.22699729  -59.51873404
-    -70.22585491  -82.71535699  -94.46901701 -101.15645164 -108.5667789
-    -116.92064777 -126.57020709 -138.13646516 -144.98953102 -152.90542218], 'degree_Celsius')>
+    <Quantity([  29.3          28.61221952   25.17408111   23.41044641   21.53049669
+    19.51679547   17.34763012   14.99552875   12.4250297     9.58933992
+        6.4250951     2.84385238   -1.28217807   -6.14487817  -12.0437512
+    -19.45887455  -29.14459155  -42.13147376  -50.19971377  -59.49169312
+    -70.19973455  -82.69068969  -94.44583924 -101.13413664 -108.54542355
+    -116.90037584 -126.55118719 -138.11894611 -144.97290122 -152.88981956], 'degree_Celsius')>
 
     See Also
     --------
@@ -2786,7 +2786,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
     >>> # calculate surface based CAPE/CIN
     >>> cape_cin(p, T, Td, prof)
-    (<Quantity(4818.6911, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4830.74608, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -3427,7 +3427,7 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # calculate most unstbale CAPE/CIN
     >>> most_unstable_cape_cin(p, T, Td)
-    (<Quantity(4818.6911, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(4830.74608, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -3503,7 +3503,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> mixed_layer_cape_cin(p, T, Td, depth=50 * units.hPa)
-    (<Quantity(691.939088, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    (<Quantity(678.967843, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
 
     See Also
     --------
@@ -3586,10 +3586,10 @@ def downdraft_cape(pressure, temperature, dewpoint):
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> downdraft_cape(p, T, Td)
-    (<Quantity(1222.00699, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
-    900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity([17.51354413
-    17.21031876 15.24077208 13.12928933 10.85340448  8.38511286 5.6890572   2.71997016
-    -0.58085433 -4.29043969], 'degree_Celsius')>)
+    (<Quantity(1220.67097, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
+    900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity([17.52017969
+    17.21699119 15.24769167 13.13648889 10.86092343  8.39299889 5.69736825  2.72877681
+    -0.57146657 -4.28036902], 'degree_Celsius')>)
 
     See Also
     --------
@@ -4387,7 +4387,7 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     >>> from metpy.calc import wet_bulb_temperature
     >>> from metpy.units import units
     >>> wet_bulb_temperature(993 * units.hPa, 32 * units.degC, 15 * units.degC)
-    <Quantity(20.3746466, 'degree_Celsius')>
+    <Quantity(20.3937601, 'degree_Celsius')>
 
     See Also
     --------
@@ -4824,7 +4824,7 @@ def lifted_index(pressure, temperature, parcel_profile, vertical_dim=0):
     >>>
     >>> # Calculate lifted index using our mixed profile
     >>> lifted_index(press, temp, mixed_prof)
-    <Quantity([2.51432431], 'delta_degree_Celsius')>
+    <Quantity([2.54198585], 'delta_degree_Celsius')>
 
     See Also
     --------
@@ -5227,7 +5227,7 @@ def showalter_index(pressure, temperature, dewpoint):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # compute the showalter index
     >>> showalter_index(p, T, Td)
-    <Quantity([0.5107429], 'delta_degree_Celsius')>
+    <Quantity([0.51436699], 'delta_degree_Celsius')>
 
     """
     # find the measured temperature and dew point temperature at 850 hPa.
