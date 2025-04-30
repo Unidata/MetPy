@@ -62,6 +62,7 @@
                 gtag('js', new Date());
                 gtag('config', 'G-J48T2BG3J7');
             </script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/metpy.calc.lcl';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
@@ -80,7 +81,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.6dev" />
-    <meta name="docbuild:last-update" content="Apr 29, 2025 at 21:17:49"/>
+    <meta name="docbuild:last-update" content="Apr 30, 2025 at 19:12:29"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.lcl.html" />
 
   </head>
@@ -794,7 +795,7 @@
 <h1>lcl<a class="headerlink" href="#lcl" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.lcl">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">lcl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L654-L739"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.lcl" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">lcl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/calc/thermo.py#L657-L739"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.lcl" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the lifted condensation level (LCL) from the starting point.</p>
 <p>The starting state for the parcel is defined by <em class="xref py py-obj">temperature</em>, <a class="reference internal" href="metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="metpy.calc.dewpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dewpoint</span></code></a>,
 and <em class="xref py py-obj">pressure</em>. If these are arrays, this function will return a LCL
@@ -805,8 +806,6 @@ for every index. This function does work with surface grids as a result.</p>
 <li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Starting atmospheric pressure</p></li>
 <li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Starting temperature</p></li>
 <li><p><strong>dewpoint</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Starting dewpoint</p></li>
-<li><p><strong>max_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – The maximum number of iterations to use in calculation, defaults to 50.</p></li>
-<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a><em>, </em><em>optional</em>) – The desired relative error in the calculated value, defaults to 1e-5.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -821,7 +820,7 @@ for every index. This function does work with surface grids as a result.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">metpy.calc</span><span class="w"> </span><span class="kn">import</span> <span class="n">lcl</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">metpy.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lcl</span><span class="p">(</span><span class="mi">943</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span> <span class="mi">33</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">28</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
-<span class="go">(&lt;Quantity(877.097306, &#39;hectopascal&#39;)&gt;, &lt;Quantity(26.7279778, &#39;degree_Celsius&#39;)&gt;)</span>
+<span class="go">(&lt;Quantity(877.033549, &#39;hectopascal&#39;)&gt;, &lt;Quantity(26.7591908, &#39;degree_Celsius&#39;)&gt;)</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
@@ -829,14 +828,14 @@ for every index. This function does work with surface grids as a result.</p>
 <p><a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile</span></code></a></p>
 </div>
 <p class="rubric">Notes</p>
-<p>This function is implemented using an iterative approach to solve for the
-LCL. The basic algorithm is:</p>
-<ol class="arabic simple">
-<li><p>Find the dewpoint from the LCL pressure and starting mixing ratio</p></li>
-<li><p>Find the LCL pressure from the starting temperature and dewpoint</p></li>
-<li><p>Iterate until convergence</p></li>
-</ol>
-<p>The function is guaranteed to finish by virtue of the <em class="xref py py-obj">max_iters</em> counter.</p>
+<p>From <a class="reference internal" href="../references.html#romps2017" id="id1"><span>[Romps2017]</span></a>, this directly solves for the temperature at the LCL, Eq 22a,</p>
+<div class="math notranslate nohighlight">
+\[T_{LCL} = c [W_{-1}(RH_l^{1/a} c \exp{c})]^{-1} T\]</div>
+<p>and the pressure at the LCL, Eq 22b,</p>
+<div class="math notranslate nohighlight">
+\[p_{LCL} = p \left( \frac{T_{LCL}}{T} \right)^{c_{pm} / R_m}\]</div>
+<p>where <span class="math notranslate nohighlight">\(a\)</span> (Eq 22d), <span class="math notranslate nohighlight">\(b\)</span> (Eq 22e), and <span class="math notranslate nohighlight">\(c\)</span> (Eq 22f) are derived constants,
+and <span class="math notranslate nohighlight">\(W_{-1}\)</span> is the <span class="math notranslate nohighlight">\(k=-1\)</span> branch of the Lambert <span class="math notranslate nohighlight">\(W\)</span> function.</p>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.0: </span>Renamed <code class="docutils literal notranslate"><span class="pre">dewpt</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">dewpoint</span></code></p>
 </div>
