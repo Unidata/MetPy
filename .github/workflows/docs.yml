@@ -37,8 +37,11 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 150
-        fetch-tags: true
         persist-credentials: false
+
+    # Can't use fetch-tags on a tag apparently. See actions/checkout#1467.
+    - name: Get tags
+      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
     - name: Install using PyPI
       uses: ./.github/actions/install-pypi
