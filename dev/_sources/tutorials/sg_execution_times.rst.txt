@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:26.446** total execution time for 5 files **from tutorials**:
+**00:26.602** total execution time for 5 files **from tutorials**:
 
 .. container::
 
@@ -33,16 +33,16 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_tutorials_declarative_tutorial.py` (``declarative_tutorial.py``)
-     - 00:11.311
+     - 00:11.359
      - 0.0
    * - :ref:`sphx_glr_tutorials_area_tutorial.py` (``area_tutorial.py``)
-     - 00:11.156
+     - 00:11.259
      - 0.0
    * - :ref:`sphx_glr_tutorials_xarray_tutorial.py` (``xarray_tutorial.py``)
-     - 00:02.849
+     - 00:02.843
      - 0.0
    * - :ref:`sphx_glr_tutorials_upperair_soundings.py` (``upperair_soundings.py``)
-     - 00:01.118
+     - 00:01.127
      - 0.0
    * - :ref:`sphx_glr_tutorials_unit_tutorial.py` (``unit_tutorial.py``)
      - 00:00.013
