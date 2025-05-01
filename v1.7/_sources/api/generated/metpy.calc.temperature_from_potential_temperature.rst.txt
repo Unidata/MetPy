@@ -1,0 +1,12 @@
+temperature_from_potential_temperature
+=================================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: temperature_from_potential_temperature
+
+.. include:: metpy.calc.temperature_from_potential_temperature.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

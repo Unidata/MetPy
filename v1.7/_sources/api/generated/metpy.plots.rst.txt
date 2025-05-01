@@ -1,0 +1,81 @@
+﻿
+   
+      
+   
+
+Plots ``(metpy.plots)``
+=======================
+
+.. automodule:: metpy.plots
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree: ./
+   
+      read_colortable
+      scattertext
+      wx_code_to_numeric
+      add_metpy_logo
+      add_timestamp
+      add_unidata_logo
+      convert_gempak_color
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: ./
+   
+      PanelContainer
+      MapPanel
+      Plots2D
+      PlotScalar
+      ImagePlot
+      ContourPlot
+      FilledContourPlot
+      RasterPlot
+      PlotVector
+      BarbPlot
+      ArrowPlot
+      PlotObs
+      PlotGeometry
+      PlotSurfaceAnalysis
+      ScallopedStroke
+      ColdFront
+      ColdFrontogenesis
+      ColdFrontolysis
+      Dryline
+      WarmFront
+      WarmFrontogenesis
+      WarmFrontolysis
+      OccludedFront
+      OccludedFrontogenesis
+      OccludedFrontolysis
+      RidgeAxis
+      Squall
+      StationaryFront
+      StationaryFrontogenesis
+      StationaryFrontolysis
+      SkewT
+      Stuve
+      Emagram
+      Hodograph
+      StationPlot
+      StationPlotLayout
+   
+   
+
+   
+   
+   
+

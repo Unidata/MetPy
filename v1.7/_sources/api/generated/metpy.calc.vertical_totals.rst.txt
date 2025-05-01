@@ -1,0 +1,12 @@
+vertical_totals
+==========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: vertical_totals
+
+.. include:: metpy.calc.vertical_totals.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+reduce_point_density
+===============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: reduce_point_density
+
+.. include:: metpy.calc.reduce_point_density.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

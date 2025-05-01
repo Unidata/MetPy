@@ -1,0 +1,12 @@
+scattertext
+=======================
+
+.. currentmodule:: metpy.plots
+
+.. autofunction:: scattertext
+
+.. include:: metpy.plots.scattertext.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,59 @@
+Emagram
+===================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: Emagram
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~Emagram.__init__
+      ~Emagram.plot
+      ~Emagram.plot_barbs
+      ~Emagram.plot_dry_adiabats
+      ~Emagram.plot_mixing_lines
+      ~Emagram.plot_moist_adiabats
+      ~Emagram.shade_area
+      ~Emagram.shade_cape
+      ~Emagram.shade_cin
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: plot
+   .. automethod:: plot_barbs
+   .. automethod:: plot_dry_adiabats
+   .. automethod:: plot_mixing_lines
+   .. automethod:: plot_moist_adiabats
+   .. automethod:: shade_area
+   .. automethod:: shade_cape
+   .. automethod:: shade_cin
+
+   
+   
+
+.. include:: metpy.plots.Emagram.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

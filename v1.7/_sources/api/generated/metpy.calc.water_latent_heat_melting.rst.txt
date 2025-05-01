@@ -1,0 +1,12 @@
+water_latent_heat_melting
+====================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: water_latent_heat_melting
+
+.. include:: metpy.calc.water_latent_heat_melting.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

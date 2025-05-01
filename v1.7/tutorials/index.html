@@ -1,0 +1,687 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="auto">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>&lt;no title&gt; &#8212; MetPy 1.7dev</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "auto";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "auto";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css?v=452fc297" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=030dc6f6"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.7';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="../_static/doc_shared.js?v=fe4a670c"></script>
+    <link rel="icon" href="../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Working With Units" href="unit_tutorial.html" />
+    <link rel="prev" title="Getting Started with MetPy" href="../userguide/startingguide.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.7dev" />
+    <meta name="docbuild:last-update" content="May 01, 2025 at 00:25:28"/>
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/tutorials/index.html" />
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="auto">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.7dev - Home"/>
+    <img src="../_static/metpy_horizontal.png" class="logo__image only-dark pst-js-only" alt="MetPy 1.7dev - Home"/>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../userguide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    Reference Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../devel/index.html">
+    Developer’s Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://bsky.app/profile/metpy.bsky.social" title="Bluesky" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-bluesky fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Bluesky</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://calendar.google.com/calendar/embed?src=c_596cc34cd7196caec223786795c8730786aead6e2dbffe03403186f203075973%40group.calendar.google.com&ctz=America%2FDenver" title="Calendar" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-calendar fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Calendar</span></a>
+        </li>
+</ul></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+    
+    <div class="container-fluid" id="banner"></div>
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../userguide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    Reference Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../devel/index.html">
+    Developer’s Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://bsky.app/profile/metpy.bsky.social" title="Bluesky" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-bluesky fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Bluesky</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://calendar.google.com/calendar/embed?src=c_596cc34cd7196caec223786795c8730786aead6e2dbffe03403186f203075973%40group.calendar.google.com&ctz=America%2FDenver" title="Calendar" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-calendar fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Calendar</span></a>
+        </li>
+</ul></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../userguide/installguide.html">Install Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/startingguide.html">Getting Started with MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unit_tutorial.html">Working With Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="area_tutorial.html">Using Predefined Areas with MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upperair_soundings.html">Upper Air Sounding Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xarray_tutorial.html">xarray with MetPy Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="declarative_tutorial.html">MetPy Declarative Syntax Tutorial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../userguide/upgradeguide.html">MetPy 1.0 Upgrade Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../userguide/apichange.html">MetPy 1.0 API Changes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/gempak.html">GEMPAK Comparison Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/SUPPORT.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/media.html">Talks and Other Media</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../userguide/index.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">&lt;no title&gt;</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p># MetPy Tutorials</p>
+<p>Welcome to the MetPy tutorials! These tutorials are designed to help you get started with using MetPy for meteorological data analysis and visualization. Whether you’re a beginner looking to explore the basics or an experienced user seeking advanced techniques, these tutorials will guide you through various aspects of MetPy.</p>
+<p>## Purpose</p>
+<p>The purpose of these tutorials is to provide hands-on examples and explanations to help you learn how to use MetPy effectively for your meteorological data analysis tasks. Each tutorial focuses on a specific aspect of MetPy, gradually building your understanding and skills as you progress through them.</p>
+<p>## Getting Started</p>
+<p>If this is your first time using MetPy head over to the [installation guide](<a class="reference external" href="https://unidata.github.io/MetPy/latest/userguide/installguide.html">https://unidata.github.io/MetPy/latest/userguide/installguide.html</a>) to make sure the required dependencies have been installed.</p>
+<p>## Tutorials by Difficulty Level</p>
+<p>### Beginner Level</p>
+<ol class="arabic simple">
+<li><p><strong>Area Tutorial</strong>: Learn how to use predefined areas with MetPy.</p></li>
+<li><p><strong>Declarative Tutorial</strong>: MetPy’s declarative syntax simplifies data exploration and analysis by streamlining plotting in Python, hiding complexity to make data investigation more accessible.</p></li>
+<li><p><strong>Unit Tutorial</strong>: Learn how to work with units within Metpy!</p></li>
+</ol>
+<p>### Intermediate Level</p>
+<ol class="arabic simple">
+<li><p><strong>Upper Air Soundings</strong>: Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutorial we will gather weather balloon data, plot it, perform a series of thermodynamic calculations, and summarize the results.</p></li>
+</ol>
+<p>2. <strong>xarray with MetPy Tutorial</strong>: This tutorial demonstrates how to work with xarray, a powerful Python package for labeled arrays and datasets. MetPy seamlessly integrates with xarray’s data model, offering convenient methods and properties for coordinate, coordinate reference system, and unit operations.
+### Advanced Level</p>
+<ol class="arabic simple">
+<li><p><strong>Advanced Tutorials Coming Soon</strong></p></li>
+</ol>
+<p>The [Examples Gallery](<a class="reference external" href="https://unidata.github.io/MetPy/latest/examples/index.html">https://unidata.github.io/MetPy/latest/examples/index.html</a>) has more examples of what else you can create with MetPy!</p>
+<p>## Contribution</p>
+<p>We welcome contributions to these tutorials! If you have any suggestions for improvements or would like to add new tutorials feel free to submit an issue or make a pull request. More information on how to contribute can be found by checking out the [Contributors Guide](<a class="github reference external" href="https://github.com/Unidata/MetPy/blob/main/CONTRIBUTING.md">Unidata/MetPy</a>)</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Early in our scientific careers we all learn about the importance of paying attention to units in our calculations. Unit conversions can still get the best of us and have caused more than one major technical disaster, including the crash and complete loss of the $327 million Mars Climate Orbiter."><img alt="" src="../_images/sphx_glr_unit_tutorial_thumb.png" />
+<p><a class="reference internal" href="unit_tutorial.html#sphx-glr-tutorials-unit-tutorial-py"><span class="std std-ref">Working With Units</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Working With Units</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="When plotting your data on a map you want to be able to plot the data in a useful area and with a projection that would match the areal extent well. Within MetPy we have generated more than 400 pre-defined areas that also have associated projections, which you can use to make quick plots over regions of interest with minimal effort on your part. While these were intended to be used with the MetPy declarative syntax, these areas and projections are now accessible for any use of plotting data on a map using Cartopy."><img alt="" src="../_images/sphx_glr_area_tutorial_thumb.png" />
+<p><a class="reference internal" href="area_tutorial.html#sphx-glr-tutorials-area-tutorial-py"><span class="std std-ref">Using Predefined Areas with MetPy</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Using Predefined Areas with MetPy</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutorial we will gather weather balloon data, plot it, perform a series of thermodynamic calculations, and summarize the results. To learn more about the Skew-T diagram and its use in weather analysis and forecasting, checkout this air weather service guide."><img alt="" src="../_images/sphx_glr_upperair_soundings_thumb.png" />
+<p><a class="reference internal" href="upperair_soundings.html#sphx-glr-tutorials-upperair-soundings-py"><span class="std std-ref">Upper Air Sounding Tutorial</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Upper Air Sounding Tutorial</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="xarray is a powerful Python package that provides N-dimensional labeled arrays and datasets following the Common Data Model. MetPy&#x27;s suite of meteorological calculations are designed to integrate with xarray DataArrays as one of its two primary data models (the other being Pint Quantities). MetPy also provides DataArray and Dataset accessors (collections of methods and properties attached to the .metpy property) for coordinate/CRS and unit operations."><img alt="" src="../_images/sphx_glr_xarray_tutorial_thumb.png" />
+<p><a class="reference internal" href="xarray_tutorial.html#sphx-glr-tutorials-xarray-tutorial-py"><span class="std std-ref">xarray with MetPy Tutorial</span></a></p>
+  <div class="sphx-glr-thumbnail-title">xarray with MetPy Tutorial</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The declarative syntax that is a part of the MetPy packaged is designed to aid in simple data exploration and analysis needs by simplifying the plotting context from typical verbose Python code. The complexity of data wrangling and plotting are hidden behind the simplified syntax to allow a lower barrier to investigating your data."><img alt="" src="../_images/sphx_glr_declarative_tutorial_thumb.png" />
+<p><a class="reference internal" href="declarative_tutorial.html#sphx-glr-tutorials-declarative-tutorial-py"><span class="std std-ref">MetPy Declarative Syntax Tutorial</span></a></p>
+  <div class="sphx-glr-thumbnail-title">MetPy Declarative Syntax Tutorial</div>
+</div></div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-footer sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/315c4c52fb68082a731b192d944e2ede/tutorials_python.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">tutorials_python.zip</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/a5659940aa3f8f568547d47752a43172/tutorials_jupyter.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">tutorials_jupyter.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../userguide/startingguide.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Getting Started with MetPy</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="unit_tutorial.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Working With Units</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2008–2025, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+parse_metar_file
+=========================
+
+.. currentmodule:: metpy.io
+
+.. autofunction:: parse_metar_file
+
+.. include:: metpy.io.parse_metar_file.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

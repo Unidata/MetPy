@@ -1,0 +1,60 @@
+StationaryFrontolysis
+=================================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: StationaryFrontolysis
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~StationaryFrontolysis.symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~StationaryFrontolysis.__init__
+      ~StationaryFrontolysis.draw_path
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: draw_path
+
+   
+   
+
+.. include:: metpy.plots.StationaryFrontolysis.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

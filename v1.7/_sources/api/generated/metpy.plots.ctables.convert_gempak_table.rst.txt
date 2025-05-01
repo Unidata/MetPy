@@ -1,0 +1,12 @@
+convert_gempak_table
+========================================
+
+.. currentmodule:: metpy.plots.ctables
+
+.. autofunction:: convert_gempak_table
+
+.. include:: metpy.plots.ctables.convert_gempak_table.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

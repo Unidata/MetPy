@@ -1,0 +1,12 @@
+curvature_vorticity
+==============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: curvature_vorticity
+
+.. include:: metpy.calc.curvature_vorticity.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

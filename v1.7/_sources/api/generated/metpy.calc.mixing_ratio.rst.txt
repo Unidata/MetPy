@@ -1,0 +1,12 @@
+mixing_ratio
+=======================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: mixing_ratio
+
+.. include:: metpy.calc.mixing_ratio.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

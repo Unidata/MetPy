@@ -1,0 +1,12 @@
+setup_registry
+==========================
+
+.. currentmodule:: metpy.units
+
+.. autofunction:: setup_registry
+
+.. include:: metpy.units.setup_registry.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,60 @@
+OccludedFrontolysis
+===============================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: OccludedFrontolysis
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~OccludedFrontolysis.symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~OccludedFrontolysis.__init__
+      ~OccludedFrontolysis.draw_path
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: draw_path
+
+   
+   
+
+.. include:: metpy.plots.OccludedFrontolysis.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

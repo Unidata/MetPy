@@ -1,0 +1,797 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="auto">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>MetPy Roadmap &#8212; MetPy 1.7dev</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "auto";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "auto";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css?v=452fc297" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=030dc6f6"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'devel/roadmap';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.7';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="../_static/doc_shared.js?v=fe4a670c"></script>
+    <link rel="icon" href="../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Infrastructure Guide" href="infrastructureguide.html" />
+    <link rel="prev" title="Contributors Guide" href="CONTRIBUTING.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.7dev" />
+    <meta name="docbuild:last-update" content="May 01, 2025 at 00:25:28"/>
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/devel/roadmap.html" />
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="auto">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.7dev - Home"/>
+    <img src="../_static/metpy_horizontal.png" class="logo__image only-dark pst-js-only" alt="MetPy 1.7dev - Home"/>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../userguide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    Reference Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Developer’s Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://bsky.app/profile/metpy.bsky.social" title="Bluesky" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-bluesky fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Bluesky</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://calendar.google.com/calendar/embed?src=c_596cc34cd7196caec223786795c8730786aead6e2dbffe03403186f203075973%40group.calendar.google.com&ctz=America%2FDenver" title="Calendar" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-calendar fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Calendar</span></a>
+        </li>
+</ul></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+    
+    <div class="container-fluid" id="banner"></div>
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../userguide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    Reference Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Developer’s Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://bsky.app/profile/metpy.bsky.social" title="Bluesky" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-bluesky fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Bluesky</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://calendar.google.com/calendar/embed?src=c_596cc34cd7196caec223786795c8730786aead6e2dbffe03403186f203075973%40group.calendar.google.com&ctz=America%2FDenver" title="Calendar" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-calendar fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Calendar</span></a>
+        </li>
+</ul></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">MetPy Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructureguide.html">Infrastructure Guide</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Developer’s Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">MetPy Roadmap</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="metpy-roadmap">
+<h1>MetPy Roadmap<a class="headerlink" href="#metpy-roadmap" title="Link to this heading">#</a></h1>
+<section id="goal">
+<h2>Goal<a class="headerlink" href="#goal" title="Link to this heading">#</a></h2>
+<p>MetPy’s goal is to provide the domain-specific tools for building meteorological and
+atmospheric science applications in Python. This means supporting scripted workflows, like
+those done previously using GEMPAK, NCL, etc. MetPy’s functionality is not limited to
+supporting only static views, we also envision being used as the calculation core for graphical
+applications as well. Our focus on providing the domain-specific tools means that general
+functionality is moved upstream (to e.g. matplotlib, xarray) whenever sensible and possible.</p>
+</section>
+<section id="plans">
+<h2>Plans<a class="headerlink" href="#plans" title="Link to this heading">#</a></h2>
+<p>We enumerate here general plans for how we plan to advance MetPy over the next couple of years.
+We have intentionally avoided assigning dates to any of these, acknowledging our complete
+inability to estimate time and level of effort, as well as because our priorities are flexible
+and are informed by community feedback. The order of the following items reflects a rough
+prioritized order, but is by no means a strict ordering.</p>
+<p>Our plan is also to release MetPy 1.0 in 2020. Items in the roadmap relevant to the 1.0 release
+are specifically called out below.</p>
+<p>We welcome input and discussion about these items over on MetPy’s
+<a class="reference external" href="https://github.com/Unidata/MetPy/issues">issue tracker</a>.</p>
+<p>For a more detailed view of plans of specific issues and pull requests for upcoming versions
+of MetPy, visit the <a class="reference external" href="https://github.com/Unidata/MetPy/milestones">GitHub milestones page</a>.
+These represent our best idea of what’s planned for a specific upcoming version, though are
+subject to rapid change as release dates approach.</p>
+<section id="declarative-plotting">
+<h3>Declarative Plotting<a class="headerlink" href="#declarative-plotting" title="Link to this heading">#</a></h3>
+<p>One of GEMPAK’s successes is the simplicity with which plots can be created. Part of this
+simplicity is enforced by the interface to GEMPAK: setting variables. MetPy 0.10 introduced the
+simplified plotting interface to begin to replicate this, with initial support for image and
+contour plots. We plan to continue to advance this interface with additional plot types and
+other features:</p>
+<ul class="simple">
+<li><p>Vector plots</p></li>
+<li><p>Streamlines</p></li>
+<li><p>Filled contours</p></li>
+<li><p>Polar Radar Data</p></li>
+<li><p>Cross-sections</p></li>
+<li><p>Skew-T</p></li>
+<li><p>Plot decorations: logos, timestamp, colorbars, labelling contours, figure title</p></li>
+</ul>
+<p>Replicating all of matplotlib’s features is beyond the scope of this interface. We intend,
+instead, to aim for simplicity of the interface while replicating GEMPAK’s capabilities and
+being able to do what is needed for most common use cases.</p>
+</section>
+<section id="xarray-integration-and-unit-handling">
+<h3>Xarray Integration and Unit Handling<a class="headerlink" href="#xarray-integration-and-unit-handling" title="Link to this heading">#</a></h3>
+<p>This item is the most important to having stable interfaces in advance of a 1.0 release of
+MetPy. Xarray has quickly proven to be a capable data model on which to base MetPy’s handling
+of gridded data (tabular/point data will likely use pandas). MetPy’s unit-handling based on
+pint has been a cornerstone for providing robust calculations that are difficult to use (from a
+dimensionality perspective) incorrectly. It is unfortunate, then, that the unit handling has
+also proven to be MetPy’s most significant learning hurdle for new users, as well as the
+biggest technical challenge to broader adoption of xarray within MetPy’s code base. We have
+identified a few tasks that need to be done in this area to improve things:</p>
+<ul class="simple">
+<li><p>Use xarray natively for all calculation interfaces; unit information can be pulled from
+metadata. This allows calculations to be coordinate-aware, which is a huge benefit for so
+many calculations (e.g. vorticity, isentropic interpolation)</p></li>
+<li><p>Continue to accept numpy array + pint, but convert to xarray internally</p></li>
+<li><p>Add helper functions to simplify xarray creation and manipulation for common use cases</p></li>
+<li><p>Simplify manipulation and display of dates from xarray (may go upstream)</p></li>
+<li><p>Investigate other unit library solutions (e.g. unyt) for better xarray integration</p></li>
+</ul>
+<p>The first two items reverse the current state of MetPy’s calculations, which is to take xarray,
+but convert to numpy + pint; the benefit is that unit information can be reconstructed as
+necessary from xarray, but all calculations will then have access to coordinate information.
+This is a 1.0 item because many calculations involving coordinate information will likely
+change to simplify their interfaces.</p>
+</section>
+<section id="calculations">
+<h3>Calculations<a class="headerlink" href="#calculations" title="Link to this heading">#</a></h3>
+<p>In addition to the work at the calculation infrastructure level, we have identified some
+specific calculations that are necessary to consider MetPy a solution to the majority of the
+problems users previously solved with GEMPAK:</p>
+<ul class="simple">
+<li><p>Indices (e.g. SWEAT, K-Index); these require the improved xarray integration to simplify
+access across (usually vertical) coordinates</p></li>
+<li><p>Dynamic tropopause</p></li>
+<li><p>Elliptic PDE solver (leveraging SciPy)</p></li>
+<li><p>Richardson number</p></li>
+<li><p>Rossby number</p></li>
+<li><p>Flux divergence (leading to e.g. Ageopotential flux)</p></li>
+</ul>
+<p>We also recognize a need to continue to improve the robustness of many of the sounding-based
+calculations. These calculations tend to fail in many challenging real-world data cases.</p>
+<p>One major area of development for the calculations is what we refer to as the “automated
+solver.” The goal of the solver is to automate calculation of quantities of interest from
+datasets. This reduces the need for variations on calculation functions that only change based
+on the type of input data available. For example, this eliminates the need for different ways
+to calculate relative humidity based on the available moisture parameters. This solver would
+also eliminate the need to identify complicated sequences of function calls to go from standard
+model output to fields of interest. This solver is enabled by xarray’s concept of Datasets as
+well as by leveraging the netCDF Climate and Forecasting metadata standard’s concept of
+“standard names” for identifying the types of variables. The standard function interface will
+still exist for challenging cases. The solver will also enable the plotting of derived
+quantities through the simplified plotting interface.</p>
+</section>
+<section id="file-format-support">
+<h3>File Format Support<a class="headerlink" href="#file-format-support" title="Link to this heading">#</a></h3>
+<p>MetPy’s file format support is an important part of its feature set, and we want to continue to
+expand the set of formats to which MetPy facilitates access. This also fits with filling
+GEMPAK’s feature set, since its support for a variety of data formats was important to its
+utility. Unlike GEMPAK, MetPy will never rely on a set of “decoders” to translate datafiles to
+a new format. This goes against the spirit of fitting within the rest of the scientific Python
+ecosystem. Instead, MetPy will provide tools that read data files and provide the data in one
+of two data structures: Xarray Dataset or Pandas DataFrame. These two data structures are
+widely used within the broader ecosystem.</p>
+<p>We currently have identified the following formats as priority for support (in rough
+prioritized order):</p>
+<ul class="simple">
+<li><p>BUFR</p></li>
+<li><p>METAR</p></li>
+<li><p>MCIDAS Area Files</p></li>
+<li><p>GRIB</p></li>
+</ul>
+<p>We feel these formats are important to have Python support in order to ensure that Python users
+have ready support for common, real-time data sources. GRIB currently is down on this list not
+due to a lack of importance, but because the cfgrib and eccodes projects currently cover this,
+in terms of access to data through xarray. In the future, though, the MetPy developers would
+like to explore providing a pure-python solution for GRIB.</p>
+<p>We would also like to support a wide variety of information and observations that the U.S.
+National Weather Service distributes through text bulletins (e.g. hurricane dropsondes,
+aircraft reconnaissance, frontal positions). Support is planned, but considered secondary to
+those formats above.</p>
+</section>
+<section id="other-items">
+<h3>Other Items<a class="headerlink" href="#other-items" title="Link to this heading">#</a></h3>
+<p>Here are a few more items that did not fit above:</p>
+<ul class="simple">
+<li><p>Performance optimization</p>
+<ul>
+<li><p>Moving calculations to Numba, Cython, etc. Numba would be the preferred solution, because
+it would not incur packaging challenges. Past experiments with Numba and MetPy have not
+been promising, though.</p></li>
+<li><p>Make more calculations (e.g. CAPE) work on grids of data</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="CONTRIBUTING.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Contributors Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="infrastructureguide.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Infrastructure Guide</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goal">Goal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plans">Plans</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#declarative-plotting">Declarative Plotting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xarray-integration-and-unit-handling">Xarray Integration and Unit Handling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculations">Calculations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-format-support">File Format Support</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-items">Other Items</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2008–2025, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

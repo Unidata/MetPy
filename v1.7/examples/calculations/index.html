@@ -1,0 +1,762 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="auto">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Calculations &#8212; MetPy 1.7dev</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "auto";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "auto";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css?v=452fc297" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=030dc6f6"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J48T2BG3J7');
+            </script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/calculations/index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.7';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="../../_static/doc_shared.js?v=fe4a670c"></script>
+    <link rel="icon" href="../../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Parse angles" href="Parse_Angles.html" />
+    <link rel="prev" title="Advanced Sounding Plot with Complex Layout" href="../Advanced_Sounding_With_Complex_Layout.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.7dev" />
+    <meta name="docbuild:last-update" content="May 01, 2025 at 00:25:28"/>
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/calculations/index.html" />
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="auto">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/metpy_horizontal.png" class="logo__image only-light" alt="MetPy 1.7dev - Home"/>
+    <img src="../../_static/metpy_horizontal.png" class="logo__image only-dark pst-js-only" alt="MetPy 1.7dev - Home"/>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../userguide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    Reference Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../devel/index.html">
+    Developer’s Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../userguide/SUPPORT.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://bsky.app/profile/metpy.bsky.social" title="Bluesky" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-bluesky fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Bluesky</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://calendar.google.com/calendar/embed?src=c_596cc34cd7196caec223786795c8730786aead6e2dbffe03403186f203075973%40group.calendar.google.com&ctz=America%2FDenver" title="Calendar" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-calendar fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Calendar</span></a>
+        </li>
+</ul></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+    
+    <div class="container-fluid" id="banner"></div>
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../userguide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    Reference Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../devel/index.html">
+    Developer’s Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../userguide/SUPPORT.html">
+    Support
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Unidata/MetPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://bsky.app/profile/metpy.bsky.social" title="Bluesky" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-bluesky fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Bluesky</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/MetPy" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://calendar.google.com/calendar/embed?src=c_596cc34cd7196caec223786795c8730786aead6e2dbffe03403186f203075973%40group.calendar.google.com&ctz=America%2FDenver" title="Calendar" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-calendar fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Calendar</span></a>
+        </li>
+</ul></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../XArray_Projections.html">XArray Projection Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Advanced_Sounding.html">Advanced Sounding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cross_section.html">Cross Section Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Four_Panel_Map.html">Four Panel Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../isentropic_example.html">Isentropic Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meteogram_metpy.html">Meteogram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Advanced_Sounding_With_Complex_Layout.html">Advanced Sounding Plot with Complex Layout</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Calculations</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Parse_Angles.html">Parse angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dewpoint_and_Mixing_Ratio.html">Dewpoint and Mixing Ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Angle_to_Direction.html">Angle to Direction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Wind_Speed.html">Wind Speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Divergence.html">Divergence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Vorticity.html">Vorticity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Absolute_Vorticity.html">Absolute Vorticity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Total_Deformation.html">Total Deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Shearing_Deformation.html">Shearing Deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Stretching_Deformation.html">Stretching Deformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Static_Stability.html">Static Stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Mean_Pressure_Weighted.html">Mean Pressure Weighted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Mountain_Problem.html">Mountain Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bulk_Shear.html">Bulk Shear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Thickness_Hydrostatic.html">Hydrostatic Thickness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Equivalent_Potential_Temperature.html">Equivalent Potential Temperature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Advection.html">Advection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Gradient.html">Gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QVector.html">Q-Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Smoothing.html">Smoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="High_Low_Analysis.html">High/Low Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Sounding_Calculations.html">Sounding Calculation Examples</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../formats/index.html">File Formats</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../formats/GINI_Water_Vapor.html">GINI Water Vapor Imagery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../formats/NEXRAD_Level_3_File.html">NEXRAD Level 3 File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../formats/NEXRAD_Level_2_File.html">NEXRAD Level 2 File</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gridding/index.html">Gridding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gridding/Find_Natural_Neighbors_Verification.html">Find Natural Neighbors Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridding/Wind_SLP_Interpolation.html">Wind and Sea Level Pressure Interpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridding/Point_Interpolation.html">Point Interpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridding/Inverse_Distance_Verification.html">Inverse Distance Verification: Cressman and Barnes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridding/Natural_Neighbor_Verification.html">Natural Neighbor Verification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../plots/index.html">Plotting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Simplified_Image_Plot.html">Simple Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/raster_declarative.html">Raster Plots using Declarative Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/US_Counties.html">US Counties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Simple_Fronts_Plot.html">Simple Plotting of Fronts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/spc_convective_outlook.html">NOAA SPC Convective Outlook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Combined_plotting.html">Combined Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/surface_declarative.html">Surface Analysis using Declarative Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/upperair_declarative.html">Upper Air Analysis using Declarative Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/nhc_wind_probabilities.html">NOAA NHC Wind Speed Probabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Skew-T_Layout.html">Skew-T with Complex Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Hodograph_Inset.html">Hodograph Inset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Sounding_LCL_Dataset.html">Sounding as Dataset Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Plotting_Surface_Analysis.html">Plotting Fronts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Simple_Sounding.html">Simple Sounding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Mesonet_Stationplot.html">Mesonet Station Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Station_Plot.html">Station Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plots/Station_Plot_with_Layout.html">Station Plot with Layout</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Example Gallery</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Calculations</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="calculations">
+<span id="calc-examples"></span><span id="sphx-glr-examples-calculations"></span><h1>Calculations<a class="headerlink" href="#calculations" title="Link to this heading">#</a></h1>
+<p>Examples using various calculation functions from MetPy.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to convert direction strings to angles."><img alt="" src="../../_images/sphx_glr_Parse_Angles_thumb.png" />
+<p><a class="reference internal" href="Parse_Angles.html#sphx-glr-examples-calculations-parse-angles-py"><span class="std std-ref">Parse angles</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Parse angles</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations."><img alt="" src="../../_images/sphx_glr_Dewpoint_and_Mixing_Ratio_thumb.png" />
+<p><a class="reference internal" href="Dewpoint_and_Mixing_Ratio.html#sphx-glr-examples-calculations-dewpoint-and-mixing-ratio-py"><span class="std std-ref">Dewpoint and Mixing Ratio</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Dewpoint and Mixing Ratio</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to convert angles to direction strings."><img alt="" src="../../_images/sphx_glr_Angle_to_Direction_thumb.png" />
+<p><a class="reference internal" href="Angle_to_Direction.html#sphx-glr-examples-calculations-angle-to-direction-py"><span class="std std-ref">Angle to Direction</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Angle to Direction</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.wind_speed."><img alt="" src="../../_images/sphx_glr_Wind_Speed_thumb.png" />
+<p><a class="reference internal" href="Wind_Speed.html#sphx-glr-examples-calculations-wind-speed-py"><span class="std std-ref">Wind Speed</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Wind Speed</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.divergence."><img alt="" src="../../_images/sphx_glr_Divergence_thumb.png" />
+<p><a class="reference internal" href="Divergence.html#sphx-glr-examples-calculations-divergence-py"><span class="std std-ref">Divergence</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Divergence</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.vorticity."><img alt="" src="../../_images/sphx_glr_Vorticity_thumb.png" />
+<p><a class="reference internal" href="Vorticity.html#sphx-glr-examples-calculations-vorticity-py"><span class="std std-ref">Vorticity</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Vorticity</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.absolute_vorticity."><img alt="" src="../../_images/sphx_glr_Absolute_Vorticity_thumb.png" />
+<p><a class="reference internal" href="Absolute_Vorticity.html#sphx-glr-examples-calculations-absolute-vorticity-py"><span class="std std-ref">Absolute Vorticity</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Absolute Vorticity</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.total_deformation."><img alt="" src="../../_images/sphx_glr_Total_Deformation_thumb.png" />
+<p><a class="reference internal" href="Total_Deformation.html#sphx-glr-examples-calculations-total-deformation-py"><span class="std std-ref">Total Deformation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Total Deformation</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.shearing_deformation."><img alt="" src="../../_images/sphx_glr_Shearing_Deformation_thumb.png" />
+<p><a class="reference internal" href="Shearing_Deformation.html#sphx-glr-examples-calculations-shearing-deformation-py"><span class="std std-ref">Shearing Deformation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Shearing Deformation</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.stretching_deformation."><img alt="" src="../../_images/sphx_glr_Stretching_Deformation_thumb.png" />
+<p><a class="reference internal" href="Stretching_Deformation.html#sphx-glr-examples-calculations-stretching-deformation-py"><span class="std std-ref">Stretching Deformation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Stretching Deformation</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.static_stability as well as pint&#x27;s unit support to perform calculations."><img alt="" src="../../_images/sphx_glr_Static_Stability_thumb.png" />
+<p><a class="reference internal" href="Static_Stability.html#sphx-glr-examples-calculations-static-stability-py"><span class="std std-ref">Static Stability</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Static Stability</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.mean_pressure_weighted as well as pint&#x27;s unit support to perform calculations."><img alt="" src="../../_images/sphx_glr_Mean_Pressure_Weighted_thumb.png" />
+<p><a class="reference internal" href="Mean_Pressure_Weighted.html#sphx-glr-examples-calculations-mean-pressure-weighted-py"><span class="std std-ref">Mean Pressure Weighted</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Mean Pressure Weighted</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc to perform calculations for a rising and sinking parcel."><img alt="" src="../../_images/sphx_glr_Mountain_Problem_thumb.png" />
+<p><a class="reference internal" href="Mountain_Problem.html#sphx-glr-examples-calculations-mountain-problem-py"><span class="std std-ref">Mountain Problem</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Mountain Problem</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations."><img alt="" src="../../_images/sphx_glr_Bulk_Shear_thumb.png" />
+<p><a class="reference internal" href="Bulk_Shear.html#sphx-glr-examples-calculations-bulk-shear-py"><span class="std std-ref">Bulk Shear</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Bulk Shear</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations."><img alt="" src="../../_images/sphx_glr_Thickness_Hydrostatic_thumb.png" />
+<p><a class="reference internal" href="Thickness_Hydrostatic.html#sphx-glr-examples-calculations-thickness-hydrostatic-py"><span class="std std-ref">Hydrostatic Thickness</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Hydrostatic Thickness</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations."><img alt="" src="../../_images/sphx_glr_Equivalent_Potential_Temperature_thumb.png" />
+<p><a class="reference internal" href="Equivalent_Potential_Temperature.html#sphx-glr-examples-calculations-equivalent-potential-temperature-py"><span class="std std-ref">Equivalent Potential Temperature</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Equivalent Potential Temperature</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.advection."><img alt="" src="../../_images/sphx_glr_Advection_thumb.png" />
+<p><a class="reference internal" href="Advection.html#sphx-glr-examples-calculations-advection-py"><span class="std std-ref">Advection</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Advection</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.gradient."><img alt="" src="../../_images/sphx_glr_Gradient_thumb.png" />
+<p><a class="reference internal" href="Gradient.html#sphx-glr-examples-calculations-gradient-py"><span class="std std-ref">Gradient</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Gradient</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.q_vector."><img alt="" src="../../_images/sphx_glr_QVector_thumb.png" />
+<p><a class="reference internal" href="QVector.html#sphx-glr-examples-calculations-qvector-py"><span class="std std-ref">Q-Vector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Q-Vector</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Using MetPy&#x27;s smoothing functions."><img alt="" src="../../_images/sphx_glr_Smoothing_thumb.png" />
+<p><a class="reference internal" href="Smoothing.html#sphx-glr-examples-calculations-smoothing-py"><span class="std std-ref">Smoothing</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Smoothing</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This uses MetPy&#x27;s find_peaks function to automatically identify locations of high and low centers, and then plots them on a map."><img alt="" src="../../_images/sphx_glr_High_Low_Analysis_thumb.png" />
+<p><a class="reference internal" href="High_Low_Analysis.html#sphx-glr-examples-calculations-high-low-analysis-py"><span class="std std-ref">High/Low Analysis</span></a></p>
+  <div class="sphx-glr-thumbnail-title">High/Low Analysis</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc to perform a number of calculations using sounding data."><img alt="" src="../../_images/sphx_glr_Sounding_Calculations_thumb.png" />
+<p><a class="reference internal" href="Sounding_Calculations.html#sphx-glr-examples-calculations-sounding-calculations-py"><span class="std std-ref">Sounding Calculation Examples</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Sounding Calculation Examples</div>
+</div></div><div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../Advanced_Sounding_With_Complex_Layout.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Advanced Sounding Plot with Complex Layout</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Parse_Angles.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Parse angles</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2008–2025, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

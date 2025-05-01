@@ -1,0 +1,12 @@
+corfidi_storm_motion
+===============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: corfidi_storm_motion
+
+.. include:: metpy.calc.corfidi_storm_motion.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

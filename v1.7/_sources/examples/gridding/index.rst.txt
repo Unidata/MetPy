@@ -1,0 +1,120 @@
+
+
+.. _sphx_glr_examples_gridding:
+
+.. _gridding_examples:
+
+Gridding
+--------
+
+Examples generating a grid of data from scattered point observations.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Finding natural neighbors in a triangulation">
+
+.. only:: html
+
+  .. image:: /examples/gridding/images/thumb/sphx_glr_Find_Natural_Neighbors_Verification_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_gridding_Find_Natural_Neighbors_Verification.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Find Natural Neighbors Verification</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking analysis, featuring contours of pressure and wind barbs.">
+
+.. only:: html
+
+  .. image:: /examples/gridding/images/thumb/sphx_glr_Wind_SLP_Interpolation_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_gridding_Wind_SLP_Interpolation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Wind and Sea Level Pressure Interpolation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Compares different point interpolation approaches.">
+
+.. only:: html
+
+  .. image:: /examples/gridding/images/thumb/sphx_glr_Point_Interpolation_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_gridding_Point_Interpolation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Point Interpolation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Compare inverse distance interpolation methods">
+
+.. only:: html
+
+  .. image:: /examples/gridding/images/thumb/sphx_glr_Inverse_Distance_Verification_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_gridding_Inverse_Distance_Verification.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Inverse Distance Verification: Cressman and Barnes</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Walks through the steps of Natural Neighbor interpolation to validate that the algorithmic approach taken in MetPy is correct.">
+
+.. only:: html
+
+  .. image:: /examples/gridding/images/thumb/sphx_glr_Natural_Neighbor_Verification_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_gridding_Natural_Neighbor_Verification.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Natural Neighbor Verification</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/gridding/Find_Natural_Neighbors_Verification
+   /examples/gridding/Wind_SLP_Interpolation
+   /examples/gridding/Point_Interpolation
+   /examples/gridding/Inverse_Distance_Verification
+   /examples/gridding/Natural_Neighbor_Verification
+

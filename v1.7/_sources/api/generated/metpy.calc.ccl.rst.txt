@@ -1,0 +1,12 @@
+ccl
+==============
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: ccl
+
+.. include:: metpy.calc.ccl.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

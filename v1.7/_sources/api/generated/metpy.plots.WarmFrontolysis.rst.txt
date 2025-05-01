@@ -1,0 +1,60 @@
+WarmFrontolysis
+===========================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: WarmFrontolysis
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~WarmFrontolysis.symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~WarmFrontolysis.__init__
+      ~WarmFrontolysis.draw_path
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: symbol_width
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: draw_path
+
+   
+   
+
+.. include:: metpy.plots.WarmFrontolysis.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

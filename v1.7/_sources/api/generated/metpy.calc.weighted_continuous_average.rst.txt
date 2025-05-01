@@ -1,0 +1,12 @@
+weighted_continuous_average
+======================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: weighted_continuous_average
+
+.. include:: metpy.calc.weighted_continuous_average.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

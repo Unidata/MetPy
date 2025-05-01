@@ -1,0 +1,12 @@
+moist_air_specific_heat_pressure
+===========================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: moist_air_specific_heat_pressure
+
+.. include:: metpy.calc.moist_air_specific_heat_pressure.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

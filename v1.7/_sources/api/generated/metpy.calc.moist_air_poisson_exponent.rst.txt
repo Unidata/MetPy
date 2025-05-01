@@ -1,0 +1,12 @@
+moist_air_poisson_exponent
+=====================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: moist_air_poisson_exponent
+
+.. include:: metpy.calc.moist_air_poisson_exponent.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

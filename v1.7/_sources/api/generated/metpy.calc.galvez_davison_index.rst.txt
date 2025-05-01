@@ -1,0 +1,12 @@
+galvez_davison_index
+===============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: galvez_davison_index
+
+.. include:: metpy.calc.galvez_davison_index.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

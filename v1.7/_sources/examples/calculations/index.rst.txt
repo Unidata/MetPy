@@ -1,0 +1,426 @@
+
+
+.. _sphx_glr_examples_calculations:
+
+.. _calc_examples:
+
+Calculations
+------------
+
+Examples using various calculation functions from MetPy.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to convert direction strings to angles.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Parse_Angles_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Parse_Angles.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Parse angles</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Dewpoint_and_Mixing_Ratio_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Dewpoint and Mixing Ratio</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to convert angles to direction strings.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Angle_to_Direction_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Angle_to_Direction.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Angle to Direction</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.wind_speed.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Wind_Speed_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Wind_Speed.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Wind Speed</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.divergence.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Divergence_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Divergence.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Divergence</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.vorticity.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Vorticity_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Vorticity.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Vorticity</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.absolute_vorticity.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Absolute_Vorticity_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Absolute_Vorticity.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Absolute Vorticity</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.total_deformation.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Total_Deformation_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Total_Deformation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Total Deformation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.shearing_deformation.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Shearing_Deformation_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Shearing_Deformation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Shearing Deformation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.stretching_deformation.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Stretching_Deformation_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Stretching_Deformation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Stretching Deformation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.static_stability as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Static_Stability_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Static_Stability.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Static Stability</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.mean_pressure_weighted as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Mean_Pressure_Weighted_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Mean_Pressure_Weighted.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Mean Pressure Weighted</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc to perform calculations for a rising and sinking parcel.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Mountain_Problem_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Mountain_Problem.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Mountain Problem</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Bulk_Shear_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Bulk_Shear.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Bulk Shear</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Thickness_Hydrostatic_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Thickness_Hydrostatic.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Hydrostatic Thickness</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Equivalent_Potential_Temperature_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Equivalent_Potential_Temperature.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Equivalent Potential Temperature</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.advection.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Advection_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Advection.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Advection</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.gradient.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Gradient_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Gradient.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Gradient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.q_vector.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_QVector_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_QVector.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Q-Vector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Using MetPy&#x27;s smoothing functions.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Smoothing_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Smoothing.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Smoothing</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This uses MetPy&#x27;s find_peaks function to automatically identify locations of high and low centers, and then plots them on a map.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_High_Low_Analysis_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_High_Low_Analysis.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">High/Low Analysis</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc to perform a number of calculations using sounding data.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Sounding_Calculations_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_calculations_Sounding_Calculations.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sounding Calculation Examples</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/calculations/Parse_Angles
+   /examples/calculations/Dewpoint_and_Mixing_Ratio
+   /examples/calculations/Angle_to_Direction
+   /examples/calculations/Wind_Speed
+   /examples/calculations/Divergence
+   /examples/calculations/Vorticity
+   /examples/calculations/Absolute_Vorticity
+   /examples/calculations/Total_Deformation
+   /examples/calculations/Shearing_Deformation
+   /examples/calculations/Stretching_Deformation
+   /examples/calculations/Static_Stability
+   /examples/calculations/Mean_Pressure_Weighted
+   /examples/calculations/Mountain_Problem
+   /examples/calculations/Bulk_Shear
+   /examples/calculations/Thickness_Hydrostatic
+   /examples/calculations/Equivalent_Potential_Temperature
+   /examples/calculations/Advection
+   /examples/calculations/Gradient
+   /examples/calculations/QVector
+   /examples/calculations/Smoothing
+   /examples/calculations/High_Low_Analysis
+   /examples/calculations/Sounding_Calculations
+

@@ -1,0 +1,12 @@
+mean_pressure_weighted
+=================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: mean_pressure_weighted
+
+.. include:: metpy.calc.mean_pressure_weighted.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,84 @@
+
+
+.. _sphx_glr_examples_formats:
+
+.. _formats_examples:
+
+File Formats
+------------
+
+Examples using MetPy's support for reading various file formats.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s support for GINI files to read in a water vapor satellite image and plot the data using CartoPy.">
+
+.. only:: html
+
+  .. image:: /examples/formats/images/thumb/sphx_glr_GINI_Water_Vapor_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_formats_GINI_Water_Vapor.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">GINI Water Vapor Imagery</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot">
+
+.. only:: html
+
+  .. image:: /examples/formats/images/thumb/sphx_glr_NEXRAD_Level_3_File_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_formats_NEXRAD_Level_3_File.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">NEXRAD Level 3 File</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot">
+
+.. only:: html
+
+  .. image:: /examples/formats/images/thumb/sphx_glr_NEXRAD_Level_2_File_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_formats_NEXRAD_Level_2_File.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">NEXRAD Level 2 File</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/formats/GINI_Water_Vapor
+   /examples/formats/NEXRAD_Level_3_File
+   /examples/formats/NEXRAD_Level_2_File
+
