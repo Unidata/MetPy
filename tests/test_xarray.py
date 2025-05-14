@@ -253,6 +253,25 @@ def test_radian_projection_coords():
     assert data_var.coords['y'].metpy.unit_array[1] == 3 * units.meter
 
 
+def test_rotated_lat_lon():
+    """Test fallback code for radian units in projection coordinate variables."""
+    proj = xr.DataArray(0, attrs={'grid_mapping_name': 'rotated_latitude_longitude',
+                                  'grid_north_pole_latitude': 42.5,
+                                  'grid_north_pole_longitude': -277})
+    rlon = xr.DataArray(np.linspace(-33, 33, 3),
+                        attrs={'standard_name': 'grid_longitude', 'units': 'degrees'})
+    rlat = xr.DataArray(np.linspace(-27, 27, 2),
+                        attrs={'standard_name': 'grid_latitude', 'units': 'degrees'})
+    data = xr.DataArray(np.arange(6).reshape(3, 2), coords=(rlon, rlat), dims=('rlon', 'rlat'),
+                        attrs={'grid_mapping': 'rotated_pole'})
+    ds = xr.Dataset({'data': data, 'rotated_pole': proj})
+
+    # Check that the coordinates in this case are left alone
+    data_var = ds.metpy.parse_cf('data')
+    assert_array_equal(data_var.coords['rlon'], rlon)
+    assert_array_equal(data_var.coords['rlat'], rlat)
+
+
 def test_missing_grid_mapping_valid():
     """Test falling back to implicit lat/lon projection when valid."""
     lon = xr.DataArray(-np.arange(3),
