@@ -106,6 +106,10 @@ class CFProjection:
         """Return a given attribute."""
         return self._attrs[item]
 
+    def __contains__(self, item):
+        """Return whether a given attribute is present."""
+        return item in self._attrs
+
     def __eq__(self, other):
         """Test equality (CFProjection with matching attrs)."""
         return self.__class__ == other.__class__ and self.to_dict() == other.to_dict()
