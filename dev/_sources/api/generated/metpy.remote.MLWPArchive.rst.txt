@@ -1,0 +1,53 @@
+MLWPArchive
+========================
+
+.. currentmodule:: metpy.remote
+
+.. autoclass:: MLWPArchive
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~MLWPArchive.__init__
+      ~MLWPArchive.common_prefixes
+      ~MLWPArchive.dt_from_key
+      ~MLWPArchive.get_product
+      ~MLWPArchive.get_range
+      ~MLWPArchive.objects
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: common_prefixes
+   .. automethod:: dt_from_key
+   .. automethod:: get_product
+   .. automethod:: get_range
+   .. automethod:: objects
+
+   
+   
+
+.. include:: metpy.remote.MLWPArchive.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

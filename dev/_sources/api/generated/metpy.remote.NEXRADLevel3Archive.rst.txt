@@ -1,0 +1,57 @@
+NEXRADLevel3Archive
+================================
+
+.. currentmodule:: metpy.remote
+
+.. autoclass:: NEXRADLevel3Archive
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~NEXRADLevel3Archive.__init__
+      ~NEXRADLevel3Archive.common_prefixes
+      ~NEXRADLevel3Archive.dt_from_key
+      ~NEXRADLevel3Archive.get_product
+      ~NEXRADLevel3Archive.get_range
+      ~NEXRADLevel3Archive.objects
+      ~NEXRADLevel3Archive.product_ids
+      ~NEXRADLevel3Archive.sites
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: common_prefixes
+   .. automethod:: dt_from_key
+   .. automethod:: get_product
+   .. automethod:: get_range
+   .. automethod:: objects
+   .. automethod:: product_ids
+   .. automethod:: sites
+
+   
+   
+
+.. include:: metpy.remote.NEXRADLevel3Archive.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

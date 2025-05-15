@@ -1,0 +1,67 @@
+
+
+.. _sphx_glr_examples_remote:
+
+.. _remote_sources_examples:
+
+Remote Data
+-----------
+
+Examples using MetPy's clients for accessing data from remote data sources, like
+public AWS S3 buckets.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to access machine learning weather prediction (MLWP) data in AWS S3 and plot using the simplified plotting interface.">
+
+.. only:: html
+
+  .. image:: /examples/remote/images/thumb/sphx_glr_ml_forecast_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_remote_ml_forecast.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">ML Weather Prediction Access and Plotting</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to access data hosted in known AWS S3 buckets">
+
+.. only:: html
+
+  .. image:: /examples/remote/images/thumb/sphx_glr_basic_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_remote_basic.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Remote Data Access</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/remote/ml_forecast
+   /examples/remote/basic
+
