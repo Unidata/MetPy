@@ -5,6 +5,8 @@
 {% else %}
    {% if name == 'io' %}
       {% set nice_name = 'Reading Data' %}
+   {% elif name == 'remote' %}
+      {% set nice_name = 'Remote Data Sources' %}
    {% else %}
       {% set nice_name = name | title | escape %}
    {% endif %}
