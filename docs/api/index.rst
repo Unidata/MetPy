@@ -12,6 +12,7 @@ Reference Guide
    constants
    units
    io
+   remote
    calc
    plots
    plots.ctables
