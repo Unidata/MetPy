@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="May 01, 2025 at 00:25:28"/>
+    <meta name="docbuild:last-update" content="May 16, 2025 at 14:30:41"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.MapPanel.html" />
 
   </head>
@@ -492,6 +492,13 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.StationLookup.html">StationLookup</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="metpy.remote.html">Remote Data Sources <code class="docutils literal notranslate"><span class="pre">(metpy.remote)</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="metpy.remote.NEXRADLevel3Archive.html">NEXRADLevel3Archive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.remote.NEXRADLevel2Archive.html">NEXRADLevel2Archive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.remote.GOESArchive.html">GOESArchive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.remote.MLWPArchive.html">MLWPArchive</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="metpy.calc.html">Calculations <code class="docutils literal notranslate"><span class="pre">(metpy.calc)</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.add_pressure_to_height.html">add_pressure_to_height</a></li>
@@ -807,7 +814,7 @@ projection, graphics area, and title.</p>
 <td><p>A tuple or string value that indicates the graphical area of the plot.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.ax" title="metpy.plots.MapPanel.ax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ax</span></code></a></p></td>
-<td><p>Get the <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a> to draw on.</p></td>
+<td><p>Get the <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a> to draw on.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.cross_validation_lock" title="metpy.plots.MapPanel.cross_validation_lock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_validation_lock</span></code></a></p></td>
 <td><p>A contextmanager for running a block with our cross validation lock set to True.</p></td>
@@ -961,7 +968,7 @@ respectively. Providing multiple ‘+’ or ‘-’ characters will zoom in or o
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.MapPanel.ax">
 <span class="sig-name descname"><span class="pre">ax</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/plots/declarative.py#L469-L481"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.MapPanel.ax" title="Link to this definition">#</a></dt>
-<dd><p>Get the <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a> to draw on.</p>
+<dd><p>Get the <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a> to draw on.</p>
 <p>Creates a new instance if necessary.</p>
 </dd></dl>
 
@@ -1043,7 +1050,7 @@ panel position; default value is (1, 1, 1).</p>
 example, a four-panel plot will have two rows and two columns with the tuple setting for
 the upper-left panel as (2, 2, 1), upper-right as (2, 2, 2), lower-left as (2, 2, 3), and
 lower-right as (2, 2, 4). For more details see the documentation for
-<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.add_subplot.html#matplotlib.figure.Figure.add_subplot" title="(in Matplotlib v3.10.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.figure.Figure.add_subplot</span></code></a>.</p>
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.add_subplot.html#matplotlib.figure.Figure.add_subplot" title="(in Matplotlib v3.10.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.figure.Figure.add_subplot</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1423,6 +1430,9 @@ If name is not specified, removes all trait notifiers.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy&#x27;s simplified plotting interface. This example walks through plotting cities, along with 5-day tropical-storm-force wind speed probabilities from NOAA National Hurricane Center."><img alt="" src="../../_images/sphx_glr_nhc_wind_probabilities_thumb.png" />
 <p><a class="reference internal" href="../../examples/plots/nhc_wind_probabilities.html#sphx-glr-examples-plots-nhc-wind-probabilities-py"><span class="std std-ref">NOAA NHC Wind Speed Probabilities</span></a></p>
   <div class="sphx-glr-thumbnail-title">NOAA NHC Wind Speed Probabilities</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to access machine learning weather prediction (MLWP) data in AWS S3 and plot using the simplified plotting interface."><img alt="" src="../../_images/sphx_glr_ml_forecast_thumb.png" />
+<p><a class="reference internal" href="../../examples/remote/ml_forecast.html#sphx-glr-examples-remote-ml-forecast-py"><span class="std std-ref">ML Weather Prediction Access and Plotting</span></a></p>
+  <div class="sphx-glr-thumbnail-title">ML Weather Prediction Access and Plotting</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="When plotting your data on a map you want to be able to plot the data in a useful area and with a projection that would match the areal extent well. Within MetPy we have generated more than 400 pre-defined areas that also have associated projections, which you can use to make quick plots over regions of interest with minimal effort on your part. While these were intended to be used with the MetPy declarative syntax, these areas and projections are now accessible for any use of plotting data on a map using Cartopy."><img alt="" src="../../_images/sphx_glr_area_tutorial_thumb.png" />
 <p><a class="reference internal" href="../../tutorials/area_tutorial.html#sphx-glr-tutorials-area-tutorial-py"><span class="std std-ref">Using Predefined Areas with MetPy</span></a></p>
   <div class="sphx-glr-thumbnail-title">Using Predefined Areas with MetPy</div>

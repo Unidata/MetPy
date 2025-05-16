@@ -1,0 +1,55 @@
+GOESArchive
+========================
+
+.. currentmodule:: metpy.remote
+
+.. autoclass:: GOESArchive
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~GOESArchive.__init__
+      ~GOESArchive.common_prefixes
+      ~GOESArchive.dt_from_key
+      ~GOESArchive.get_product
+      ~GOESArchive.get_range
+      ~GOESArchive.objects
+      ~GOESArchive.product_ids
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: common_prefixes
+   .. automethod:: dt_from_key
+   .. automethod:: get_product
+   .. automethod:: get_range
+   .. automethod:: objects
+   .. automethod:: product_ids
+
+   
+   
+
+.. include:: metpy.remote.GOESArchive.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>
