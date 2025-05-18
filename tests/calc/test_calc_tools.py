@@ -222,39 +222,39 @@ def get_bounds_data():
 
 @pytest.mark.parametrize('pressure, bound, hgts, interp, expected', [
     (get_bounds_data()[0], 900 * units.hPa, None, True,
-     (900 * units.hPa, 0.9880028 * units.kilometer)),
+     (900 * units.hPa, 0.9885 * units.kilometer)),
     (get_bounds_data()[0], 900 * units.hPa, None, False,
-     (900 * units.hPa, 0.9880028 * units.kilometer)),
+     (900 * units.hPa, 0.9885 * units.kilometer)),
     (get_bounds_data()[0], 870 * units.hPa, None, True,
-     (870 * units.hPa, 1.2665298 * units.kilometer)),
+     (870 * units.hPa, 1.2671 * units.kilometer)),
     (get_bounds_data()[0], 870 * units.hPa, None, False,
-     (900 * units.hPa, 0.9880028 * units.kilometer)),
-    (get_bounds_data()[0], 0.9880028 * units.kilometer, None, True,
-     (900 * units.hPa, 0.9880028 * units.kilometer)),
-    (get_bounds_data()[0], 0.9880028 * units.kilometer, None, False,
-     (900 * units.hPa, 0.9880028 * units.kilometer)),
-    (get_bounds_data()[0], 1.2665298 * units.kilometer, None, True,
-     (870 * units.hPa, 1.2665298 * units.kilometer)),
-    (get_bounds_data()[0], 1.2665298 * units.kilometer, None, False,
-     (900 * units.hPa, 0.9880028 * units.kilometer)),
+     (900 * units.hPa, 0.9885 * units.kilometer)),
+    (get_bounds_data()[0], 0.9885 * units.kilometer, None, True,
+     (900 * units.hPa, 0.9885 * units.kilometer)),
+    (get_bounds_data()[0], 0.9885 * units.kilometer, None, False,
+     (900 * units.hPa, 0.9885 * units.kilometer)),
+    (get_bounds_data()[0], 1.2671 * units.kilometer, None, True,
+     (870 * units.hPa, 1.2671 * units.kilometer)),
+    (get_bounds_data()[0], 1.2671 * units.kilometer, None, False,
+     (900 * units.hPa, 0.9885 * units.kilometer)),
     (get_bounds_data()[0], 900 * units.hPa, get_bounds_data()[1], True,
-     (900 * units.hPa, 0.9880028 * units.kilometer)),
+     (900 * units.hPa, 0.9885 * units.kilometer)),
     (get_bounds_data()[0], 900 * units.hPa, get_bounds_data()[1], False,
-     (900 * units.hPa, 0.9880028 * units.kilometer)),
+     (900 * units.hPa, 0.9885 * units.kilometer)),
     (get_bounds_data()[0], 870 * units.hPa, get_bounds_data()[1], True,
-     (870 * units.hPa, 1.2643214 * units.kilometer)),
+     (870 * units.hPa, 1.2649 * units.kilometer)),
     (get_bounds_data()[0], 870 * units.hPa, get_bounds_data()[1], False,
-     (900 * units.hPa, 0.9880028 * units.kilometer)),
-    (get_bounds_data()[0], 0.9880028 * units.kilometer, get_bounds_data()[1], True,
-     (900 * units.hPa, 0.9880028 * units.kilometer)),
-    (get_bounds_data()[0], 0.9880028 * units.kilometer, get_bounds_data()[1], False,
-     (900 * units.hPa, 0.9880028 * units.kilometer)),
-    (get_bounds_data()[0], 1.2665298 * units.kilometer, get_bounds_data()[1], True,
-     (870.9869087 * units.hPa, 1.2665298 * units.kilometer)),
-    (get_bounds_data()[0], 1.2665298 * units.kilometer, get_bounds_data()[1], False,
-     (900 * units.hPa, 0.9880028 * units.kilometer)),
-    (get_bounds_data()[0], 0.98800289 * units.kilometer, get_bounds_data()[1], True,
-     (900 * units.hPa, 0.9880028 * units.kilometer))
+     (900 * units.hPa, 0.9885 * units.kilometer)),
+    (get_bounds_data()[0], 0.9885 * units.kilometer, get_bounds_data()[1], True,
+     (900 * units.hPa, 0.9885 * units.kilometer)),
+    (get_bounds_data()[0], 0.9885 * units.kilometer, get_bounds_data()[1], False,
+     (900 * units.hPa, 0.9885 * units.kilometer)),
+    (get_bounds_data()[0], 1.2671 * units.kilometer, get_bounds_data()[1], True,
+     (870.9869087 * units.hPa, 1.2671 * units.kilometer)),
+    (get_bounds_data()[0], 1.2671 * units.kilometer, get_bounds_data()[1], False,
+     (900 * units.hPa, 0.9885 * units.kilometer)),
+    (get_bounds_data()[0], 0.98859 * units.kilometer, get_bounds_data()[1], True,
+     (900 * units.hPa, 0.9885 * units.kilometer))
 ])
 def test_get_bound_pressure_height(pressure, bound, hgts, interp, expected):
     """Test getting bounds in layers with various parameter combinations."""
@@ -322,9 +322,9 @@ def test_get_layer_float32_no_heights():
     p_l, u_l, v_l = get_layer(p, u, v, depth=1000 * units.meter)
     assert_array_equal(p_l[:-1], p[:-1])
     assert_array_almost_equal(u_l[:-1], u[:-1], 7)
-    assert_almost_equal(u_l[-1], 3.0455916 * units('m/s'), 4)
+    assert_almost_equal(u_l[-1], 3.03666 * units('m/s'), 4)
     assert_array_almost_equal(v_l[:-1], v[:-1], 7)
-    assert_almost_equal(v_l[-1], 20.2149378 * units('m/s'), 4)
+    assert_almost_equal(v_l[-1], 20.21832 * units('m/s'), 4)
     assert p_l.dtype == p.dtype
     assert u_l.dtype == u.dtype
     assert v_l.dtype == v.dtype
@@ -360,8 +360,8 @@ def layer_test_data():
     (layer_test_data()[0], layer_test_data()[1], None, None, 150 * units.hPa, False,
      (np.array([1000, 900]) * units.hPa, np.array([25.0, 16.666666]) * units.degC)),
     (layer_test_data()[0], layer_test_data()[1], None, 2 * units.km, 3 * units.km, True,
-     (np.array([794.85264282, 700., 600., 540.01696548]) * units.hPa,
-      np.array([7.93049516, 0., -8.33333333, -13.14758845]) * units.degC))
+     (np.array([794.9484, 700., 600., 540.1925]) * units.hPa,
+      np.array([7.938, 0., -8.33333333, -13.133]) * units.degC))
 ])
 def test_get_layer(pressure, variable, heights, bottom, depth, interp, expected):
     """Test get_layer functionality."""
@@ -390,8 +390,8 @@ def test_get_layer_masked():
     p = units.Quantity(np.ma.array([1000, 500, 400]), 'hPa')
     u = units.Quantity(np.arange(3), 'm/s')
     p_layer, u_layer = get_layer(p, u, depth=units.Quantity(6000, 'm'))
-    true_p_layer = units.Quantity([1000., 500., 464.4742], 'hPa')
-    true_u_layer = units.Quantity([0., 1., 1.3303], 'm/s')
+    true_p_layer = units.Quantity([1000., 500., 464.6738], 'hPa')
+    true_u_layer = units.Quantity([0., 1., 1.3284], 'm/s')
     assert_array_almost_equal(p_layer, true_p_layer, 4)
     assert_array_almost_equal(u_layer, true_u_layer, 4)
 
