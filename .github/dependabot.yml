@@ -1,11 +1,33 @@
 version: 2
 
 updates:
-  # Handle PyPI updates
+  # PyPI updates for core dependencies
   - package-ecosystem: pip
     directory: "/ci"
     schedule:
       interval: weekly
+    # Boto3 makes patch releases daily, so ignore those to reduce the noise
+    ignore:
+      dependency-name: "boto3"
+      update-types: version-update:semver-patch
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
+    labels:
+      - "Type: Maintenance"
+      - "Area: Infrastructure"
+    commit-message:
+      prefix: "CI: "
+      include: "scope"
+
+  # PyPI updates for dev tools
+  - package-ecosystem: pip
+    directory: "/ci/dev"
+    schedule:
+      interval: weekly
+    # We don't need to worry about updating to every patch release of dev tools
+    ignore:
+        update-types: version-update:semver-patch
     open-pull-requests-limit: 10
     pull-request-branch-name:
       separator: "-"
