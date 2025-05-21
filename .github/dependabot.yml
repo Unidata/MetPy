@@ -6,8 +6,6 @@ updates:
     directory: "/ci"
     schedule:
       interval: weekly
-    allow:
-      - dependency-type: all
     open-pull-requests-limit: 10
     pull-request-branch-name:
       separator: "-"
@@ -31,8 +29,6 @@ updates:
       - "/.github/actions/*"
     schedule:
       interval: weekly
-    allow:
-      - dependency-type: all
     open-pull-requests-limit: 10
     pull-request-branch-name:
       separator: "-"
