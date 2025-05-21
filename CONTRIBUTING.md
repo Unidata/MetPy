@@ -130,7 +130,7 @@ Install the necessary dependency packages from conda-forge.
 Remember that these must be executed within the ``metpy`` directory.
 
 ```sh
-conda install --file ci/requirements.txt --file ci/extra_requirements.txt --file ci/test_requirements.txt
+conda install --file ci/requirements.txt --file ci/extra_requirements.txt --file ci/dev/test_requirements.txt
 ```
 
 Finally, create an editable install of MetPy that will update with your development!
@@ -204,7 +204,7 @@ your feature is more complex, consider adding to the examples or tutorials for M
 You can build the documentation locally to see how your changes will look.
 After setting up your [development environment](#setting-up-your-development-environment) above,
 from within the ``metpy`` directory with your ``devel`` environment active,
-use ``conda install --file ci/doc_requirements.txt``
+use ``conda install --file ci/dev/doc_requirements.txt``
 to install required packages to build our documentation.
 Then, still from within your ``devel`` environment,
 
@@ -342,9 +342,9 @@ locally within the source directory you can use the [ruff](https://docs.astral.s
 [flake8](https://flake8.pycqa.org/en/latest/) tools.
 After setting up your [development environment](#setting-up-your-development-environment) above,
 from within the ``metpy`` directory with your ``devel`` environment active,
-install the code style tools we use with ``conda install --file ci/linting_requirements.txt``.
-Checking your code style is then as easy as running ``ruff check . ; flake8 .``
-in the base of the repository.
+install the code style tools we use with
+``conda install --file ci/dev/linting_requirements.txt``. Checking your code style is then as
+easy as running ``ruff check . ; flake8 .`` in the base of the repository.
 
 You can also just submit your PR and the kind robots will comment on all style violations as
 well. It can be a pain to make sure you have the right number of spaces around things, imports

@@ -60,7 +60,8 @@ jobs:
 
         # Generate a Minimum dependency file
         for src, fname in [(config['dependencies'], 'requirements.txt'),
-                           (opt_deps['test'], 'test_requirements.txt'), (opt_deps['extras'], 'extra_requirements.txt')]:
+                           (opt_deps['test'], 'dev/test_requirements.txt'),
+                           (opt_deps['extras'], 'extra_requirements.txt')]:
           with (Path('ci') / fname).open('wt') as out:
             for dep in src:
               dep = dep.split(';')[0]

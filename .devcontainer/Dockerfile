@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/vscode/devcontainers/miniconda:latest
 
-COPY ci/*.txt /tmp/conda-tmp/
+COPY ci/*.txt ci/dev/*.txt /tmp/conda-tmp/
 RUN sed -i -e "s/scipy==.*/scipy==1.5.3/" /tmp/conda-tmp/requirements.txt
 RUN /opt/conda/bin/conda config --add channels conda-forge
 RUN /opt/conda/bin/conda config --set channel_priority strict

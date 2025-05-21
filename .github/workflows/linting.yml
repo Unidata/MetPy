@@ -23,10 +23,10 @@ jobs:
         with:
           python-version: 3.x
           cache: 'pip'
-          cache-dependency-path: 'ci/linting_requirements.txt'
+          cache-dependency-path: 'ci/dev/linting_requirements.txt'
 
       - name: Install linting tools
-        run: python -m pip install -r ci/linting_requirements.txt
+        run: python -m pip install -r ci/dev/linting_requirements.txt
 
       - name: Set up reviewdog
         uses: reviewdog/action-setup@v1
