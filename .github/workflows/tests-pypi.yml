@@ -65,9 +65,6 @@ jobs:
             for dep in src:
               dep = dep.split(';')[0]
               out.write(dep.replace('>=', '==') + '\n')
-            # Needed until minium vcrpy is >=7.0.0 for urllib3>=2.3
-            if fname == 'requirements.txt':
-              out.write('urllib3==2.2.3\n')
         EOF
 
     - name: Install from PyPI
