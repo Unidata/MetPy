@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="May 20, 2025 at 18:07:35"/>
+    <meta name="docbuild:last-update" content="May 22, 2025 at 20:31:57"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/devel/CONTRIBUTING.html" />
 
   </head>
@@ -652,7 +652,7 @@ Configure this environment so that we can reach
 </div>
 <p>Install the necessary dependency packages from conda-forge.
 Remember that these must be executed within the <code class="docutils literal notranslate"><span class="pre">metpy</span></code> directory.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>--file<span class="w"> </span>ci/requirements.txt<span class="w"> </span>--file<span class="w"> </span>ci/extra_requirements.txt<span class="w"> </span>--file<span class="w"> </span>ci/test_requirements.txt
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>--file<span class="w"> </span>ci/requirements.txt<span class="w"> </span>--file<span class="w"> </span>ci/extra_requirements.txt<span class="w"> </span>--file<span class="w"> </span>ci/dev/test_requirements.txt
 </pre></div>
 </div>
 <p>Finally, create an editable install of MetPy that will update with your development!</p>
@@ -718,7 +718,7 @@ your feature is more complex, consider adding to the examples or tutorials for M
 <p>You can build the documentation locally to see how your changes will look.
 After setting up your <a class="reference internal" href="#setting-up-your-development-environment">development environment</a> above,
 from within the <code class="docutils literal notranslate"><span class="pre">metpy</span></code> directory with your <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment active,
-use <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">--file</span> <span class="pre">ci/doc_requirements.txt</span></code>
+use <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">--file</span> <span class="pre">ci/dev/doc_requirements.txt</span></code>
 to install required packages to build our documentation.
 Then, still from within your <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment,</p>
 <ul class="simple">
@@ -843,9 +843,9 @@ locally within the source directory you can use the <a class="reference external
 <a class="reference external" href="https://flake8.pycqa.org/en/latest/">flake8</a> tools.
 After setting up your <a class="reference internal" href="#setting-up-your-development-environment">development environment</a> above,
 from within the <code class="docutils literal notranslate"><span class="pre">metpy</span></code> directory with your <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment active,
-install the code style tools we use with <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">--file</span> <span class="pre">ci/linting_requirements.txt</span></code>.
-Checking your code style is then as easy as running <code class="docutils literal notranslate"><span class="pre">ruff</span> <span class="pre">check</span> <span class="pre">.</span> <span class="pre">;</span> <span class="pre">flake8</span> <span class="pre">.</span></code>
-in the base of the repository.</p>
+install the code style tools we use with
+<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">--file</span> <span class="pre">ci/dev/linting_requirements.txt</span></code>. Checking your code style is then as
+easy as running <code class="docutils literal notranslate"><span class="pre">ruff</span> <span class="pre">check</span> <span class="pre">.</span> <span class="pre">;</span> <span class="pre">flake8</span> <span class="pre">.</span></code> in the base of the repository.</p>
 <p>You can also just submit your PR and the kind robots will comment on all style violations as
 well. It can be a pain to make sure you have the right number of spaces around things, imports
 in order, and all of the other nits that the bots will find. It is very important though as
