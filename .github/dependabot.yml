@@ -8,8 +8,8 @@ updates:
       interval: weekly
     # Boto3 makes patch releases daily, so ignore those to reduce the noise
     ignore:
-      dependency-name: "boto3"
-      update-types: version-update:semver-patch
+      - dependency-name: "boto3"
+        update-types: ["version-update:semver-patch"]
     open-pull-requests-limit: 10
     pull-request-branch-name:
       separator: "-"
@@ -19,6 +19,11 @@ updates:
     commit-message:
       prefix: "CI: "
       include: "scope"
+    groups:
+      coredeps:
+        applies-to: version-updates
+        update-types:
+          - "patch"
 
   # PyPI updates for dev tools
   - package-ecosystem: pip
@@ -27,7 +32,7 @@ updates:
       interval: weekly
     # We don't need to worry about updating to every patch release of dev tools
     ignore:
-        update-types: version-update:semver-patch
+      - update-types: ["version-update:semver-patch"]
     open-pull-requests-limit: 10
     pull-request-branch-name:
       separator: "-"
