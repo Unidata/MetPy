@@ -27,7 +27,7 @@ updates:
 
   # PyPI updates for dev tools
   - package-ecosystem: pip
-    directory: "/ci/dev"
+    directory: "/ci-dev"
     schedule:
       interval: weekly
     # We don't need to worry about updating to every patch release of dev tools

@@ -31,7 +31,7 @@ runs:
 
     - name: Install dependencies
       shell: bash -l {0}
-      run: micromamba install --yes --file ci/dev/${{ inputs.type }}_requirements.txt --file ci/extra_requirements.txt --file ci/requirements.txt
+      run: micromamba install --yes --file ci-dev/${{ inputs.type }}_requirements.txt --file ci/extra_requirements.txt --file ci/requirements.txt
 
     - name: Download Cartopy Maps
       if: ${{ inputs.need-cartopy == 'true' }}
