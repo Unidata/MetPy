@@ -33,7 +33,7 @@ runs:
         python-version: ${{ inputs.python-version }}
         cache: 'pip'
         cache-dependency-path: |
-          ci/dev/${{ inputs.type }}_requirements.txt
+          ci-dev/${{ inputs.type }}_requirements.txt
           ci/${{ inputs.version-file }}
           ci/extra_requirements.txt
 
@@ -68,14 +68,14 @@ runs:
       shell: bash
       run: >
         python -m pip install .[${{ env.DEP_GROUPS }}]
-        -c ci/${{ inputs.version-file }} -c ci/dev/${{ inputs.type }}_requirements.txt -c ci/extra_requirements.txt
+        -c ci/${{ inputs.version-file }} -c ci-dev/${{ inputs.type }}_requirements.txt -c ci/extra_requirements.txt
 
     - name: Install additional test tools
       if: ${{ inputs.type == 'test' }}
       shell: bash
       run: >
         python -m pip install coverage
-        -c ci/${{ inputs.version-file }} -c ci/dev/${{ inputs.type }}_requirements.txt -c ci/extra_requirements.txt
+        -c ci/${{ inputs.version-file }} -c ci-dev/${{ inputs.type }}_requirements.txt -c ci/extra_requirements.txt
 
     - name: Download Cartopy Maps
       if: ${{ inputs.need-cartopy == 'true' }}

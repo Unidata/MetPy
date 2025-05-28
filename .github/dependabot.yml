@@ -10,6 +10,8 @@ updates:
     ignore:
       - dependency-name: "boto3"
         update-types: ["version-update:semver-patch"]
+      - dependency-name: "cartopy"
+        versions: ["0.24.1"]
     open-pull-requests-limit: 10
     pull-request-branch-name:
       separator: "-"
@@ -27,7 +29,7 @@ updates:
 
   # PyPI updates for dev tools
   - package-ecosystem: pip
-    directory: "/ci/dev"
+    directory: "/ci-dev"
     schedule:
       interval: weekly
     # We don't need to worry about updating to every patch release of dev tools
