@@ -1,19 +1,29 @@
+#include <cmath>
+#include "constants.hpp"
 #include "virtual_temperature.hpp"
 //#include <stdexcept>
 
-std::vector<double> VirtualTemperature(
-    const std::vector<double>& temperature,
-    const std::vector<double>& mixing_ratio,
-    double epsilon
-) {
+double water_latent_heat_vaporization(double temperature) {
+    // Calculate the latent heat of vaporization of water in J/kg at a given temperature.
+    using namespace metpy_constants;
+    return Lv - (Cp_l - Cp_v) * (temperature - T0);
+}
 
-    std::vector<double> result(temperature.size());
-    double T, w;
-    for (size_t i = 0; i < temperature.size(); ++i) {
-        T = temperature[i];
-        w = mixing_ratio[i];
-        result[i] = T * (w + epsilon) / (epsilon * (1 + w));
-    }
+double _saturation_vapor_pressure(double temperature) {
+    // Calculate saturation (equilibrium) water vapor (partial) pressure over liquid water.
+    // Constants for the Magnus-Tetens approximation
+    //const double a = 17.67;
+    //const double b = 243.5;
 
-    return result;
+    // Calculate saturation vapor pressure using the Magnus-Tetens formula
+    //return 6.112 * exp((a * temperature) / (b + temperature));
+}
+
+double DewPoint(double vapor_pressure) {
+    double val = log(vapor_pressure / 6.112);
+    return 243.5 * val / (17.67 - val);
+}
+
+double VirtualTemperature(double temperature, double mixing_ratio, double epsilon) {
+    return temperature * (mixing_ratio + epsilon) / (epsilon * (1. + mixing_ratio));
 }
