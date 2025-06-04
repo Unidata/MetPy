@@ -1,3 +1,4 @@
+#include "constants.hpp"
 #include "virtual_temperature.hpp"
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
@@ -11,6 +12,8 @@ int add(int i, int j) {
 
 PYBIND11_MODULE(_calc_mod, m) {
     m.doc() = "accelerator module docstring";
+
+    metpy_constants::load_constants_from_python();
 
     m.def("add", &add, "Add two numbers");
 
