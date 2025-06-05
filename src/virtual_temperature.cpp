@@ -22,7 +22,7 @@ double _SaturationVaporPressureLiquid(double temperature) {
 double DewPoint(double vapor_pressure) {
 
     double val = log(vapor_pressure / mc::sat_pressure_0c);
-    return 243.5 * val / (17.67 - val);
+    return 243.5 * val / (17.67 - val);  // use SI units instead
 }
 
 double VirtualTemperature(double temperature, double mixing_ratio, double epsilon) {

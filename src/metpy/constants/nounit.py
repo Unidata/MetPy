@@ -6,6 +6,7 @@
 from . import default
 from ..units import units
 
+Mw = default.Mw.m_as('kg / mol')
 Rd = default.Rd.m_as('m**2 / K / s**2')
 Rv = default.Rv.m_as('m**2 / K / s**2')
 Lv = default.Lv.m_as('m**2 / s**2')

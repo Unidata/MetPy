@@ -14,14 +14,23 @@ namespace metpy_constants {
     double T0;
 
     void load_constants_from_python() {
-        py::object mod = py::module_::import("metpy.constants.default");
+        py::object mod = py::module_::import("metpy.constants.nounit");
 
-        Mw = mod.attr("Mw").attr("to")("kg / mol").attr("magnitude").cast<double>();
-        Rv = mod.attr("Rv").attr("magnitude").cast<double>();
-        Cp_v = mod.attr("Cp_v").attr("magnitude").cast<double>();
-        Cp_l = mod.attr("Cp_l").attr("magnitude").cast<double>();
-        Lv = mod.attr("Lv").attr("magnitude").cast<double>(); 
-        sat_pressure_0c = mod.attr("sat_pressure_0c").attr("magnitude").cast<double>();
-        T0 = mod.attr("T0").attr("magnitude").cast<double>();
+//        Mw = mod.attr("Mw").attr("magnitude").cast<double>();
+//        Rv = mod.attr("Rv").attr("magnitude").cast<double>();
+//        Cp_v = mod.attr("Cp_v").attr("magnitude").cast<double>();
+//        Cp_l = mod.attr("Cp_l").attr("magnitude").cast<double>();
+//        Lv = mod.attr("Lv").attr("magnitude").cast<double>(); 
+//        sat_pressure_0c = mod.attr("sat_pressure_0c").cast<double>();
+//        T0 = mod.attr("T0").attr("magnitude").cast<double>();
+
+
+        Mw = mod.attr("Mw").cast<double>();
+        Rv = mod.attr("Rv").cast<double>();
+        Cp_v = mod.attr("Cp_v").cast<double>();
+        Cp_l = mod.attr("Cp_l").cast<double>();
+        Lv = mod.attr("Lv").cast<double>(); 
+        sat_pressure_0c = mod.attr("sat_pressure_0c").cast<double>();
+        T0 = mod.attr("T0").cast<double>();
     }
 }
