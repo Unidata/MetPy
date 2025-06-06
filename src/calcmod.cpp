@@ -40,5 +40,5 @@ PYBIND11_MODULE(_calc_mod, m) {
 
     m.def("virtual_temperature", py::vectorize(VirtualTemperature),
             "Calculate virtual temperature from temperature and mixing ratio.",
-            py::arg("temperature"), py::arg("mixing_ratio"), py::arg("epsilon") = 0.622);
+            py::arg("temperature"), py::arg("mixing_ratio"), py::arg("epsilon"));
 }

@@ -16,6 +16,7 @@ import scipy.integrate as si
 import scipy.optimize as so
 from scipy.special import lambertw
 import xarray as xr
+import metpy._calc_mod as _calc_mod
 
 from .exceptions import InvalidSoundingError
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
@@ -2123,9 +2124,14 @@ def virtual_temperature(
        Renamed ``mixing`` parameter to ``mixing_ratio``
 
     """
-    return temperature * ((mixing_ratio + molecular_weight_ratio)
-                          / (molecular_weight_ratio * (1 + mixing_ratio)))
+    print(temperature)
+    print(type(temperature))
+    exit()
+    T_mag = temperature.to('K').magnitude
+    w_mag = mixing_ratio.to('').magnitude
 
+    return _calc_mod.virtual_temperature(
+            T_mag, w_mag, molecular_weight_ratio) * temperature.units
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure',
