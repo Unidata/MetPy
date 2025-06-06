@@ -186,10 +186,8 @@ def water_latent_heat_vaporization(temperature):
     Eq 15, [Ambaum2020]_, using MetPy-defined constants in place of cited values.
 
     """
-    return (mpconsts.nounit.Lv
-            - (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v)
-            * (temperature - mpconsts.nounit.T0))
-
+    # Calling c++ calculation module
+    return _calc_mod.water_latent_heat_vaporization(temperature)
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature')
@@ -228,10 +226,8 @@ def water_latent_heat_sublimation(temperature):
     Eq 18, [Ambaum2020]_, using MetPy-defined constants in place of cited values.
 
     """
-    return (mpconsts.nounit.Ls
-            - (mpconsts.nounit.Cp_i - mpconsts.nounit.Cp_v)
-            * (temperature - mpconsts.nounit.T0))
-
+    # Calling c++ calculation module
+    return _calc_mod.water_latent_heat_sublimation(temperature)
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature')
@@ -1624,17 +1620,8 @@ def _saturation_vapor_pressure_liquid(temperature):
     .. math:: e = e_{s0} \frac{T_0}{T}^{(c_{pl} - c_{pv}) / R_v} \exp{
     \frac{L_0}{R_v T_0} - \frac{L}{R_v T}}
     """
-    latent_heat = water_latent_heat_vaporization._nounit(temperature)
-    heat_power = (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
-    exp_term = ((mpconsts.nounit.Lv / mpconsts.nounit.T0 - latent_heat / temperature)
-                / mpconsts.nounit.Rv)
-
-    return (
-        mpconsts.nounit.sat_pressure_0c
-        * (mpconsts.nounit.T0 / temperature) ** heat_power
-        * np.exp(exp_term)
-    )
-
+    # Calling c++ calculation module
+    return _calc_mod._saturation_vapor_pressure_liquid(temperature)
 
 @preprocess_and_wrap(wrap_like='temperature')
 @process_units({'temperature': '[temperature]'}, '[pressure]')
@@ -1661,17 +1648,8 @@ def _saturation_vapor_pressure_solid(temperature):
     .. math:: e_i = e_{i0} \frac{T_0}{T}^{(c_{pi} - c_{pv}) / R_v} \exp{
     \frac{L_{s0}}{R_v T_0} - \frac{L_s}{R_v T}}
     """
-    latent_heat = water_latent_heat_sublimation._nounit(temperature)
-    heat_power = (mpconsts.nounit.Cp_i - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
-    exp_term = ((mpconsts.nounit.Ls / mpconsts.nounit.T0 - latent_heat / temperature)
-                / mpconsts.nounit.Rv)
-
-    return (
-        mpconsts.nounit.sat_pressure_0c
-        * (mpconsts.nounit.T0 / temperature) ** heat_power
-        * np.exp(exp_term)
-    )
-
+    # Calling c++ calculation module
+    return _calc_mod._saturation_vapor_pressure_solid(temperature)
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'relative_humidity'))
@@ -2124,14 +2102,9 @@ def virtual_temperature(
        Renamed ``mixing`` parameter to ``mixing_ratio``
 
     """
-    print(temperature)
-    print(type(temperature))
-    exit()
-    T_mag = temperature.to('K').magnitude
-    w_mag = mixing_ratio.to('').magnitude
-
+    # Calling c++ calculation module
     return _calc_mod.virtual_temperature(
-            T_mag, w_mag, molecular_weight_ratio) * temperature.units
+            temperature, mixing_ratio, molecular_weight_ratio)
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure',

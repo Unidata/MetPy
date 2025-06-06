@@ -29,9 +29,9 @@ PYBIND11_MODULE(_calc_mod, m) {
             "Calculate saturation vapor pressure from temperature.",
             py::arg("temperature"));
     
-    m.def("saturation_vapor_pressure", py::vectorize(SaturationVaporPressure),
+    m.def("_saturation_vapor_pressure_solid", py::vectorize(_SaturationVaporPressureSolid),
             "Calculate saturation vapor pressure from temperature.",
-            py::arg("temperature"), py::arg("phase") = "liquid");
+            py::arg("temperature"));
     
     // Unified binding with default epsilon
     m.def("dewpoint", py::vectorize(DewPoint),
