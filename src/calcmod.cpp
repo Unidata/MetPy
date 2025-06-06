@@ -20,10 +20,18 @@ PYBIND11_MODULE(_calc_mod, m) {
     m.def("water_latent_heat_vaporization", py::vectorize(WaterLatentHeatVaporization),
             "Calculate water latent heat vaporization from temperature.",
             py::arg("temperature"));
-    
+
+    m.def("water_latent_heat_sublimation", py::vectorize(WaterLatentHeatSublimation),
+            "Calculate water latent heat sublimation from temperature.",
+            py::arg("temperature"));
+
     m.def("_saturation_vapor_pressure_liquid", py::vectorize(_SaturationVaporPressureLiquid),
             "Calculate saturation vapor pressure from temperature.",
             py::arg("temperature"));
+    
+    m.def("saturation_vapor_pressure", py::vectorize(SaturationVaporPressure),
+            "Calculate saturation vapor pressure from temperature.",
+            py::arg("temperature"), py::arg("phase") = "liquid");
     
     // Unified binding with default epsilon
     m.def("dewpoint", py::vectorize(DewPoint),

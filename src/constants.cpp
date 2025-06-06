@@ -12,6 +12,8 @@ namespace metpy_constants {
     double Lv;
     double sat_pressure_0c;
     double T0;
+    double Ls;
+    double Cp_i;
 
     void load_constants_from_python() {
         py::object mod = py::module_::import("metpy.constants.nounit");
@@ -32,5 +34,7 @@ namespace metpy_constants {
         Lv = mod.attr("Lv").cast<double>(); 
         sat_pressure_0c = mod.attr("sat_pressure_0c").cast<double>();
         T0 = mod.attr("T0").cast<double>();
+        Ls = mod.attr("Ls").cast<double>();
+        Cp_i = mod.attr("Cp_i").cast<double>();
     }
 }

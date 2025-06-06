@@ -23,6 +23,8 @@ namespace metpy_constants {
     extern double Lv;
     extern double sat_pressure_0c;
     extern double T0;
+    extern double Ls;
+    extern double Cp_i;
 
     // General Meteorological constants
 //    extern double epsilon = Mw / Md; // ≈ 0.622
