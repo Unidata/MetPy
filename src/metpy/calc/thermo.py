@@ -1729,9 +1729,8 @@ def dewpoint(vapor_pressure):
        Renamed ``e`` parameter to ``vapor_pressure``
 
     """
-    val = np.log(vapor_pressure / mpconsts.nounit.sat_pressure_0c)
-    return mpconsts.nounit.zero_degc + 243.5 * val / (17.67 - val)
 
+    return _calc_mod.dewpoint(vapor_pressure)
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='partial_press', broadcast=('partial_press', 'total_press'))
