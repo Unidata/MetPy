@@ -50,7 +50,7 @@ PYBIND11_MODULE(_calc_mod, m) {
             py::arg("temperature"));
 
     m.def("dewpoint", py::vectorize(DewPoint),
-            "Calculate dew point from water vapor partial pressure.",
+            "Calculate dewpoint from water vapor partial pressure.",
             py::arg("vapor_pressure"));
 
     m.def("mixing_ratio", py::vectorize(MixingRatio),
