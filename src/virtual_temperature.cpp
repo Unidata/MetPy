@@ -4,6 +4,8 @@
 #include "constants.hpp"
 #include "virtual_temperature.hpp"
 #include <stdexcept>
+#include <iostream>   // for std::cerr
+#include <limits>     // for std::numeric_limits
 
 namespace py = pybind11;
 namespace mc = metpy_constants;
@@ -53,6 +55,29 @@ double DewPoint(double vapor_pressure) {
 
     double val = log(vapor_pressure / mc::sat_pressure_0c);
     return mc::zero_degc + 243.5 * val / (17.67 - val);
+}
+
+double MixingRatio(double partial_press, double total_press, double epsilon) {
+    return epsilon * partial_press / (total_press - partial_press);
+}
+
+double SaturationMixingRatio(double total_press, double temperature, std::string phase) {
+    double e_s = SaturationVaporPressure(temperature, phase);
+    if (e_s >= total_press) {
+        std::cerr << "Total pressure must be greater than the saturation vapor pressure "
+                  << "for liquid water to be in equilibrium.\n";
+        return std::numeric_limits<double>::quiet_NaN();
+    }
+    return MixingRatio(e_s, total_press);
+}
+
+double SpecificHumidityFromMixingRatio(double mixing_ratio) {
+    return mixing_ratio / (mixing_ratio + 1.0);
+}
+
+double SpecificHumidityFromDewPoint(double pressure, double dew_point, std::string phase) {
+    double mixing_ratio = SaturationMixingRatio(pressure, dew_point, phase);
+    return SpecificHumidityFromMixingRatio(mixing_ratio);
 }
 
 double VirtualTemperature(double temperature, double mixing_ratio, double epsilon) {

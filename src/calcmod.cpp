@@ -41,6 +41,23 @@ PYBIND11_MODULE(_calc_mod, m) {
             "Calculate dew point from water vapor partial pressure.",
             py::arg("vapor_pressure"));
 
+    m.def("mixing_ratio", py::vectorize(MixingRatio),
+            "Calculate the mixing ratio of a gas.",
+            py::arg("partial_press"), py::arg("total_press"), py::arg("epsilon"));
+
+    m.def("saturation_mixing_ratio", py::vectorize(SaturationMixingRatio),
+            "Calculate the saturation mixing ratio of water vapor given total atmospheric pressure and temperature.",
+            py::arg("total_press"), py::arg("temperature"), py::arg("phase"));
+
+    m.def("specific_humidity_from_mixing_ratio", py::vectorize(SpecificHumidityFromMixingRatio),
+            "Calculate the specific humidity from the mixing ratio.",
+            py::arg("mixing_ratio"));
+
+    m.def("specific_humidity_from_dewpoint", py::vectorize(SpecificHumidityFromDewPoint),
+            "Calculate the specific humidity from the dewpoint temperature and pressure.",
+            py::arg("pressure"), py::arg("dewpoint"), py::arg("phase"));
+
+    
     m.def("virtual_temperature", py::vectorize(VirtualTemperature),
             "Calculate virtual temperature from temperature and mixing ratio.",
             py::arg("temperature"), py::arg("mixing_ratio"), py::arg("epsilon"));

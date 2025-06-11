@@ -1729,7 +1729,7 @@ def dewpoint(vapor_pressure):
        Renamed ``e`` parameter to ``vapor_pressure``
 
     """
-
+    # Calling c++ calculation module
     return _calc_mod.dewpoint(vapor_pressure)
 
 @exporter.export
@@ -1790,7 +1790,8 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.nou
        Renamed ``part_press``, ``tot_press`` parameters to ``partial_press``, ``total_press``
 
     """
-    return molecular_weight_ratio * partial_press / (total_press - partial_press)
+    # Calling c++ calculation module
+    return _calc_mod.mixing_ratio(partial_press, total_press, molecular_weight_ratio)
 
 
 @exporter.export
