@@ -16,6 +16,14 @@ PYBIND11_MODULE(_calc_mod, m) {
     metpy_constants::load_constants_from_python();
 
     m.def("add", &add, "Add two numbers");
+    
+    m.def("moist_air_gas_constant", py::vectorize(MoistAirGasConstant),
+            "Calculate R_m, the gas constant for moist air.",
+            py::arg("specific_humidity"));
+
+    m.def("moist_air_specific_heat_pressure", py::vectorize(MoistAirSpecificHeatPressure),
+            "Calculate C_pm, the specific heat of moist air at constant pressure.",
+            py::arg("specific_humidity"));
 
     m.def("water_latent_heat_vaporization", py::vectorize(WaterLatentHeatVaporization),
             "Calculate water latent heat vaporization from temperature.",
@@ -24,6 +32,10 @@ PYBIND11_MODULE(_calc_mod, m) {
     m.def("water_latent_heat_sublimation", py::vectorize(WaterLatentHeatSublimation),
             "Calculate water latent heat sublimation from temperature.",
             py::arg("temperature"));
+    
+    m.def("lcl", py::vectorize(LCL),
+            "Calculate the lifting condensation level (LCL) from pressure, temperature and dewpoint.",
+            py::arg("pressure"), py::arg("temperature"), py::arg("dewpoint"));
 
     m.def("saturation_vapor_pressure", py::vectorize(SaturationVaporPressure),
             "Calculate saturation vapor pressure from temperature.",

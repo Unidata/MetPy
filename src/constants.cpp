@@ -6,7 +6,9 @@ namespace py = pybind11;
 
 namespace metpy_constants {
     double Mw;
+    double Rd;
     double Rv;
+    double Cp_d;
     double Cp_v;
     double Cp_l;
     double Lv;
@@ -30,7 +32,9 @@ namespace metpy_constants {
 
 
         Mw = mod.attr("Mw").cast<double>();
+        Rd = mod.attr("Rd").cast<double>();
         Rv = mod.attr("Rv").cast<double>();
+        Cp_d = mod.attr("Cp_d").cast<double>();
         Cp_v = mod.attr("Cp_v").cast<double>();
         Cp_l = mod.attr("Cp_l").cast<double>();
         Lv = mod.attr("Lv").cast<double>(); 

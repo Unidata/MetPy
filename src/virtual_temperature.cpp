@@ -10,12 +10,35 @@
 namespace py = pybind11;
 namespace mc = metpy_constants;
 
+double MoistAirGasConstant(double specific_humidity) {
+    return (1.0 - specific_humidity) * mc::Rd + specific_humidity * mc::Rv;
+}
+
+double MoistAirSpecificHeatPressure(double specific_humidity) {
+    return (1.0 - specific_humidity) * mc::Cp_d + specific_humidity * mc::Cp_v;
+}
+
 double WaterLatentHeatVaporization(double temperature) {
     return mc::Lv - (mc::Cp_l - mc::Cp_v) * (temperature - mc::T0);
 }
 
 double WaterLatentHeatSublimation(double temperature) {
     return mc::Ls - (mc::Cp_i - mc::Cp_v) * (temperature - mc::T0);
+}
+
+double LCL(double pressure, double temperature, double dewpoint) {
+    if (temperature <= dewpoint) {
+        std::cerr << "Temperature must be greater than dew point for LCL calculation.\n";
+        return std::numeric_limits<double>::quiet_NaN();
+    }
+
+    double q = SpecificHumidityFromDewPoint(pressure, dewpoint, "liquid");
+    double moist_heat_ratio = MoistAirSpecificHeatPressure(q) / MoistAirGasConstant(q);
+    double spec_heat_diff = mc::Cp_l - mc::Cp_v;
+    
+    double a = moist_heat_ratio + spec_heat_diff / mc::Rv; 
+
+    return ;
 }
 
 double _SaturationVaporPressureLiquid(double temperature) {
@@ -52,7 +75,6 @@ double SaturationVaporPressure(double temperature, std::string phase) {
 }
 
 double DewPoint(double vapor_pressure) {
-
     double val = log(vapor_pressure / mc::sat_pressure_0c);
     return mc::zero_degc + 243.5 * val / (17.67 - val);
 }
@@ -75,8 +97,8 @@ double SpecificHumidityFromMixingRatio(double mixing_ratio) {
     return mixing_ratio / (mixing_ratio + 1.0);
 }
 
-double SpecificHumidityFromDewPoint(double pressure, double dew_point, std::string phase) {
-    double mixing_ratio = SaturationMixingRatio(pressure, dew_point, phase);
+double SpecificHumidityFromDewPoint(double pressure, double dewpoint, std::string phase) {
+    double mixing_ratio = SaturationMixingRatio(pressure, dewpoint, phase);
     return SpecificHumidityFromMixingRatio(mixing_ratio);
 }
 

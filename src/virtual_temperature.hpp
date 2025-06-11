@@ -7,8 +7,13 @@
 
 namespace mc = metpy_constants;
 
+double MoistAirGasConstant(double specific_humidity);
+double MoistAirSpecificHeatPressure(double specific_humidity);
+
 double WaterLatentHeatVaporization(double temperature);
 double WaterLatentHeatSublimation(double temperature);
+
+double LCL(double pressure, double temperature, double dewpoint);
 
 double _SaturationVaporPressureLiquid(double temperature);
 double _SaturationVaporPressureSolid(double temperature);

@@ -15,8 +15,10 @@ namespace metpy_constants {
 
     // Water
     extern double Mw;
+    extern double Rd;
     extern double Rv;
 //    extern double wv_spec_heat_ratio = 1.33;
+    extern double Cp_d;
     extern double Cp_v;
 //    extern double Cv_v = Cp_v / wv_spec_heat_ratio; // (J / kg / K)
     extern double Cp_l;
