@@ -32,7 +32,11 @@ PYBIND11_MODULE(_calc_mod, m) {
     m.def("water_latent_heat_sublimation", py::vectorize(WaterLatentHeatSublimation),
             "Calculate water latent heat sublimation from temperature.",
             py::arg("temperature"));
-    
+
+    m.def("relative_humidity_from_dewpoint", py::vectorize(RelativeHumidityFromDewPoint),
+            "Calculate relative humidity from temperature and dewpoint.",
+            py::arg("temperature"), py::arg("dewpoint"), py::arg("phase"));
+
     m.def("lcl", py::vectorize(LCL),
             "Calculate the lifting condensation level (LCL) from pressure, temperature and dewpoint.",
             py::arg("pressure"), py::arg("temperature"), py::arg("dewpoint"));

@@ -1,6 +1,7 @@
 #include <cmath>
 #include <string>
 #include <pybind11/pybind11.h>
+#include "math.hpp"
 #include "constants.hpp"
 #include "virtual_temperature.hpp"
 #include <stdexcept>
@@ -26,6 +27,12 @@ double WaterLatentHeatSublimation(double temperature) {
     return mc::Ls - (mc::Cp_i - mc::Cp_v) * (temperature - mc::T0);
 }
 
+double RelativeHumidityFromDewPoint(double temperature, double dewpoint, std::string phase) {
+    double e_s = SaturationVaporPressure(temperature, phase);
+    double e = SaturationVaporPressure(dewpoint, phase);
+    return e / e_s;
+}
+
 double LCL(double pressure, double temperature, double dewpoint) {
     if (temperature <= dewpoint) {
         std::cerr << "Temperature must be greater than dew point for LCL calculation.\n";
@@ -37,8 +44,15 @@ double LCL(double pressure, double temperature, double dewpoint) {
     double spec_heat_diff = mc::Cp_l - mc::Cp_v;
     
     double a = moist_heat_ratio + spec_heat_diff / mc::Rv; 
+    double b = -(mc::Lv + spec_heat_diff * mc::T0) / (mc::Rv * temperature);
+    double c = b / a;
 
-    return ;
+    double rh = RelativeHumidityFromDewPoint(temperature, dewpoint, "liquid");
+    double w_minus1 = lambert_wm1(pow(rh, 1.0 / a) * c * exp(c));
+    double t_lcl = c / w_minus1 * temperature;
+    double p_lcl = pressure * pow(t_lcl / temperature, moist_heat_ratio);
+
+    return t_lcl; // returning t_lcl and p_lcl together is needed
 }
 
 double _SaturationVaporPressureLiquid(double temperature) {

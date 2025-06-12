@@ -14,6 +14,7 @@ find_package(pybind11 CONFIG REQUIRED)
 pybind11_add_module(_calc_mod MODULE
   calcmod.cpp
   constants.cpp
+  math.cpp
   virtual_temperature.cpp
 )
 

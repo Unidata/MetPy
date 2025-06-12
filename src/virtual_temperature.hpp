@@ -13,6 +13,8 @@ double MoistAirSpecificHeatPressure(double specific_humidity);
 double WaterLatentHeatVaporization(double temperature);
 double WaterLatentHeatSublimation(double temperature);
 
+double RelativeHumidityFromDewPoint(double temperature, double dewpoint, std::string phase="liquid");
+
 double LCL(double pressure, double temperature, double dewpoint);
 
 double _SaturationVaporPressureLiquid(double temperature);
