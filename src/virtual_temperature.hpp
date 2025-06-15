@@ -1,8 +1,8 @@
 #ifndef VIRTUAL_TEMPERATURE_HPP // if not defined
 #define VIRTUAL_TEMPERATURE_HPP // define the header file
 
-//#include <vector>
 #include <string>
+#include <utility> // For std::pair
 #include "constants.hpp"
 
 namespace mc = metpy_constants;
@@ -15,7 +15,7 @@ double WaterLatentHeatSublimation(double temperature);
 
 double RelativeHumidityFromDewPoint(double temperature, double dewpoint, std::string phase="liquid");
 
-double LCL(double pressure, double temperature, double dewpoint);
+std::pair<double, double> LCL(double pressure, double temperature, double dewpoint);
 
 double _SaturationVaporPressureLiquid(double temperature);
 double _SaturationVaporPressureSolid(double temperature);

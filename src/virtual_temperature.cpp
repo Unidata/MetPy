@@ -1,5 +1,6 @@
 #include <cmath>
 #include <string>
+#include <utility> // For std::pair
 #include <pybind11/pybind11.h>
 #include "math.hpp"
 #include "constants.hpp"
@@ -33,10 +34,10 @@ double RelativeHumidityFromDewPoint(double temperature, double dewpoint, std::st
     return e / e_s;
 }
 
-double LCL(double pressure, double temperature, double dewpoint) {
+std::pair<double, double> LCL(double pressure, double temperature, double dewpoint) {
     if (temperature <= dewpoint) {
         std::cerr << "Temperature must be greater than dew point for LCL calculation.\n";
-        return std::numeric_limits<double>::quiet_NaN();
+        return {std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN()};
     }
 
     double q = SpecificHumidityFromDewPoint(pressure, dewpoint, "liquid");
@@ -52,7 +53,7 @@ double LCL(double pressure, double temperature, double dewpoint) {
     double t_lcl = c / w_minus1 * temperature;
     double p_lcl = pressure * pow(t_lcl / temperature, moist_heat_ratio);
 
-    return t_lcl; // returning t_lcl and p_lcl together is needed
+    return {p_lcl, t_lcl}; // returning t_lcl and p_lcl together is needed
 }
 
 double _SaturationVaporPressureLiquid(double temperature) {
