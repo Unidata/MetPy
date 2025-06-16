@@ -11,7 +11,7 @@ flake8-requirements==2.2.1
 
 flake8-rst-docstrings==0.3.1
 
-doc8==1.1.2
+doc8==2.0.0
 restructuredtext_lint==1.4.0
 
 codespell==2.4.1
