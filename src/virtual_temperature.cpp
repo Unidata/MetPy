@@ -36,7 +36,8 @@ double RelativeHumidityFromDewPoint(double temperature, double dewpoint, std::st
 
 std::pair<double, double> LCL(double pressure, double temperature, double dewpoint) {
     if (temperature <= dewpoint) {
-        std::cerr << "Temperature must be greater than dew point for LCL calculation.\n";
+        std::cerr << "Warning in function '" << __func__
+            << "': Temperature must be greater than dew point for LCL calculation.\n";
         return {std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN()};
     }
 
@@ -101,8 +102,9 @@ double MixingRatio(double partial_press, double total_press, double epsilon) {
 double SaturationMixingRatio(double total_press, double temperature, std::string phase) {
     double e_s = SaturationVaporPressure(temperature, phase);
     if (e_s >= total_press) {
-        std::cerr << "Total pressure must be greater than the saturation vapor pressure "
-                  << "for liquid water to be in equilibrium.\n";
+        std::cerr << "Warning in function '" << __func__
+            << "': Total pressure must be greater than the saturation vapor pressure "
+            << "for liquid water to be in equilibrium.\n";
         return std::numeric_limits<double>::quiet_NaN();
     }
     return MixingRatio(e_s, total_press);
