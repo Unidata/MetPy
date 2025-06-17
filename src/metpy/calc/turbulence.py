@@ -245,5 +245,4 @@ def friction_velocity(u, w, v=None, perturbation=False, axis=-1):
     # the friction velocity is the 4th root of the kinematic momentum flux
     # As an optimization, first do inplace square root, then return the
     # square root of that. This is faster than np.power(..., 0.25)
-    np.sqrt(kf, out=kf)
-    return np.sqrt(kf)
+    return np.sqrt(np.sqrt(kf))
