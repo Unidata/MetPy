@@ -631,7 +631,7 @@ def coriolis_parameter(latitude):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='pressure')
+@preprocess_and_wrap()
 @check_units('[pressure]', '[length]')
 def add_height_to_pressure(pressure, height):
     r"""Calculate the pressure at a certain height above another pressure level.
@@ -1224,7 +1224,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='altimeter_value')
+@preprocess_and_wrap()
 @check_units('[pressure]', '[length]', '[temperature]')
 def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     r"""Convert the altimeter setting to sea-level pressure.
