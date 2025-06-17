@@ -517,10 +517,7 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
 
 
 @exporter.export
-@preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'reference_pressure')
-)
+@preprocess_and_wrap()
 @process_units(
     {
         'pressure': '[pressure]',
