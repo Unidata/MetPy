@@ -17,12 +17,12 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
-from matplotlib.ticker import MultipleLocator, NullFormatter, ScalarFormatter
+from matplotlib.ticker import MultipleLocator, NullFormatter, ScalarFormatter, LinearLocator, NullLocator
 import matplotlib.transforms as transforms
 import numpy as np
 
 from ._util import colored_line
-from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure, pressure_to_height_std
+from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure, pressure_to_height_std, height_to_pressure_std
 from ..calc.tools import _delete_masked_points
 from ..interpolate import interpolate_1d
 from ..package_tools import Exporter
@@ -328,16 +328,8 @@ class SkewT:
         self.ax.set_ylim(1050, 100)
         self.ax.yaxis.set_units(units.hPa)
         
-        if (show_heights):
-            #Converts the pressures given to heights 
-            heights = pressure_to_height_std(np.linspace(1050, 100, 50) * units.hPa);
-            self.ax2 = self.ax.twinx()
-            self.ax2.set_ylim(0, 17); 
-            self.ax2.yaxis.set_units(units.km); 
+        
             
-            #Dummy plot - activates labeling for heights units
-            self.ax2.plot(heights, alpha=0.0)
-
         # Try to make sane default temperature plotting ticks
         self.ax.xaxis.set_major_locator(MultipleLocator(10))
         self.ax.xaxis.set_units(units.degC)
@@ -347,8 +339,29 @@ class SkewT:
         self.mixing_lines = None
         self.dry_adiabats = None
         self.moist_adiabats = None
-
-        self.ax.set_box_aspect()
+        
+        if (show_heights):
+            #Set a secondary axis with height from pressure_to_height_standard
+            def pressure_axis(p): 
+                return pressure_to_height_std(units.Quantity(p, 'hPa')).m_as('km')
+            def height_axis(h):
+                return height_to_pressure_std(units.Quantity(h, 'km')).m
+            #Positions the axis .12 normalized units to the left of the pressure axis
+            self.secax = self.ax.secondary_yaxis(-0.12,
+                 functions=(pressure_axis, height_axis))
+            #Set ylim based on pressure limits
+            self.secax.set_ylim(pressure_to_height_std(units.Quantity(self.ax.get_ylim(), 'hPa'))); 
+            self.secax.yaxis.set_units(units.km);
+            self.secax.yaxis.set_minor_locator(NullLocator())
+            self.secax.yaxis.set_major_formatter(ScalarFormatter())
+            #Create ticks on the height axis counting by 2 from min to max
+            ymin, ymax = self.secax.get_ylim(); 
+            yticks = np.arange(ymin, ymax + 1, 2)
+            self.secax.set_yticks(yticks); 
+            
+        # Maintain a reasonable ratio of data limits.
+        self.ax.set_aspect(aspect, adjustable='box')
+        
 
     def plot(self, pressure, t, *args, **kwargs):
         r"""Plot data.
