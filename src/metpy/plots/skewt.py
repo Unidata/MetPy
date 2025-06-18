@@ -348,8 +348,7 @@ class SkewT:
         self.dry_adiabats = None
         self.moist_adiabats = None
 
-        # Maintain a reasonable ratio of data limits.
-        #self.ax.set_aspect(aspect, adjustable='box')
+        self.ax.set_box_aspect()
 
     def plot(self, pressure, t, *args, **kwargs):
         r"""Plot data.
