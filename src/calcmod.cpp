@@ -39,9 +39,9 @@ PYBIND11_MODULE(_calc_mod, m) {
             "Calculate relative humidity from temperature and dewpoint.",
             py::arg("temperature"), py::arg("dewpoint"), py::arg("phase"));
 
-//    m.def("lcl", py::vectorize(LCL),
-//            "Calculate the lifting condensation level (LCL) from pressure, temperature and dewpoint.",
-//            py::arg("pressure"), py::arg("temperature"), py::arg("dewpoint"));
+    m.def("dry_lapse", py::vectorize(DryLapse),
+            "Calculate the temperature at a level assuming only dry adiabatic process.",
+            py::arg("pressure"), py::arg("ref_temperature"), py::arg("ref_pressure"));
 
     m.def("lcl", [](py::array_t<double> pressure,
                     py::array_t<double> temperature,

@@ -29,6 +29,7 @@ namespace metpy_constants {
     extern double Cp_i;
     extern double zero_degc;
     extern double epsilon;
+    extern double kappa;
 
     // General Meteorological constants
 //    extern double epsilon = Mw / Md; // ≈ 0.622

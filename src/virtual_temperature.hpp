@@ -2,6 +2,7 @@
 #define VIRTUAL_TEMPERATURE_HPP // define the header file
 
 #include <string>
+#include <vector>
 #include <utility> // For std::pair
 #include "constants.hpp"
 
@@ -14,8 +15,11 @@ double WaterLatentHeatVaporization(double temperature);
 double WaterLatentHeatSublimation(double temperature);
 
 double RelativeHumidityFromDewPoint(double temperature, double dewpoint, std::string phase="liquid");
+double DryLapse(double pressure, double ref_temperature, double ref_pressure);
 
 std::pair<double, double> LCL(double pressure, double temperature, double dewpoint);
+
+bool _CheckPressure(const std::vector<double>& pressure);
 
 double _SaturationVaporPressureLiquid(double temperature);
 double _SaturationVaporPressureSolid(double temperature);

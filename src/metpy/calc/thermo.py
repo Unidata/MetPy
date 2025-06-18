@@ -513,6 +513,30 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
     return temperature * (pressure / reference_pressure)**mpconsts.kappa
 
 
+
+@exporter.export
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'reference_pressure')
+)
+@process_units(
+    {
+        'pressure': '[pressure]',
+        'temperature': '[temperature]',
+        'reference_pressure': '[pressure]'
+    },
+    '[temperature]'
+)
+def dry_lapse_linfel(pressure, temperature, reference_pressure=None, vertical_dim=0):
+    """
+    Linfeng's version of 'dry_lapse'.  Added on Jun18 2025
+    """
+    if reference_pressure is None:
+        reference_pressure = pressure[0]
+    return _calc_mod.dry_lapse(pressure, temperature, reference_pressure)
+
+
+
 @exporter.export
 @preprocess_and_wrap(
     wrap_like='temperature',

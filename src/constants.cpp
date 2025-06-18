@@ -18,6 +18,7 @@ namespace metpy_constants {
     double Cp_i;
     double zero_degc;
     double epsilon;
+    double kappa;
 
     void load_constants_from_python() {
         py::object mod = py::module_::import("metpy.constants.nounit");
@@ -44,5 +45,6 @@ namespace metpy_constants {
         Cp_i = mod.attr("Cp_i").cast<double>();
         zero_degc = mod.attr("zero_degc").cast<double>();
         epsilon = mod.attr("epsilon").cast<double>();
+        kappa = mod.attr("kappa").cast<double>();
     }
 }

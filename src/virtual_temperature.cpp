@@ -1,13 +1,14 @@
 #include <cmath>
 #include <string>
+#include <vector>
 #include <utility> // For std::pair
 #include <pybind11/pybind11.h>
-#include "math.hpp"
-#include "constants.hpp"
-#include "virtual_temperature.hpp"
 #include <stdexcept>
 #include <iostream>   // for std::cerr
 #include <limits>     // for std::numeric_limits
+#include "math.hpp"
+#include "constants.hpp"
+#include "virtual_temperature.hpp"
 
 namespace py = pybind11;
 namespace mc = metpy_constants;
@@ -34,6 +35,12 @@ double RelativeHumidityFromDewPoint(double temperature, double dewpoint, std::st
     return e / e_s;
 }
 
+double DryLapse(double pressure, double ref_temperature, double ref_pressure) {
+    // calculate temperature at pressure given reference temperature and pressure
+    // assuming dry adiabatic process
+    return ref_temperature * pow(pressure / ref_pressure, mc::kappa);
+}
+
 std::pair<double, double> LCL(double pressure, double temperature, double dewpoint) {
     if (temperature <= dewpoint) {
         std::cerr << "Warning in function '" << __func__
@@ -55,6 +62,28 @@ std::pair<double, double> LCL(double pressure, double temperature, double dewpoi
     double p_lcl = pressure * pow(t_lcl / temperature, moist_heat_ratio);
 
     return {p_lcl, t_lcl}; // returning t_lcl and p_lcl together is needed
+}
+
+bool _CheckPressure(const std::vector<double>& pressure) {
+    for (size_t i = 0; i + 1 < pressure.size(); ++i) {
+        if (pressure[i] < pressure[i + 1]) {
+            return false;  // pressure increases (invalid)
+        }
+    }
+    return true;  // strictly non-increasing
+}
+
+void _ParcelProfileHelper(const std::vector<double>& pressure, double temperature, double dewpoint) {
+    // Check that pressure does not increase.
+    if (!_CheckPressure(pressure)) {
+        throw std::runtime_error(
+            "Pressure increases between at least two points in your sounding. "
+            "Using a smoothing filter (e.g., scipy.signal.medfilt) may fix this.");
+    }
+    
+    // Find the LCL
+    //press_lcl, temp_lcl = LCL(pressure[0], temperature, dewpoint);
+
 }
 
 double _SaturationVaporPressureLiquid(double temperature) {
