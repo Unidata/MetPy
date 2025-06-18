@@ -22,7 +22,7 @@ import matplotlib.transforms as transforms
 import numpy as np
 
 from ._util import colored_line
-from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure
+from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure, pressure_to_height_std
 from ..calc.tools import _delete_masked_points
 from ..interpolate import interpolate_1d
 from ..package_tools import Exporter
@@ -261,7 +261,7 @@ class SkewT:
 
     """
 
-    def __init__(self, fig=None, rotation=30, subplot=None, rect=None, aspect=80.5):
+    def __init__(self, fig=None, rotation=30, subplot=None, rect=None, aspect=80.5, show_heights = False):
         r"""Create SkewT - logP plots.
 
         Parameters
@@ -286,6 +286,9 @@ class SkewT:
             Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
             Defaults to 80.5. Passing the string ``'auto'`` tells matplotlib to handle
             the aspect ratio automatically (this is not recommended for SkewT).
+        show_heights : boolean, optional
+            Flag for showing heights as a secondary y axis from standard atmosphere
+            (defaults to false)
 
         """
         if fig is None:
@@ -324,6 +327,16 @@ class SkewT:
         # Also takes care of inverting the y-axis
         self.ax.set_ylim(1050, 100)
         self.ax.yaxis.set_units(units.hPa)
+        
+        if (show_heights):
+            #Converts the pressures given to heights 
+            heights = pressure_to_height_std(np.linspace(1050, 100, 50) * units.hPa);
+            self.ax2 = self.ax.twinx()
+            self.ax2.set_ylim(0, 17); 
+            self.ax2.yaxis.set_units(units.km); 
+            
+            #Dummy plot - activates labeling for heights units
+            self.ax2.plot(heights, alpha=0.0)
 
         # Try to make sane default temperature plotting ticks
         self.ax.xaxis.set_major_locator(MultipleLocator(10))
@@ -336,7 +349,7 @@ class SkewT:
         self.moist_adiabats = None
 
         # Maintain a reasonable ratio of data limits.
-        self.ax.set_aspect(aspect, adjustable='box')
+        #self.ax.set_aspect(aspect, adjustable='box')
 
     def plot(self, pressure, t, *args, **kwargs):
         r"""Plot data.
