@@ -8,6 +8,7 @@ import numpy as np
 from .tools import make_take
 from ..package_tools import Exporter
 from ..xarray import preprocess_and_wrap
+from ..units import process_units
 
 exporter = Exporter(globals())
 
