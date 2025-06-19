@@ -191,8 +191,8 @@ def add_station_lat_lon(df, stn_var=None):
         raise KeyError('Second argument not provided to add_station_lat_lon, but none of '
                        f'{names_to_try} were found.')
 
-    df['latitude'] = np.nan
-    df['longitude'] = np.nan
+    df.insert(len(df.columns), 'latitude', np.nan)
+    df.insert(len(df.columns), 'longitude', np.nan)
 
     if stn_var is None:
         stn_var = key_finder(df)
