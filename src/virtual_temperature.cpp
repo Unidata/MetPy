@@ -41,6 +41,22 @@ double DryLapse(double pressure, double ref_temperature, double ref_pressure) {
     return ref_temperature * pow(pressure / ref_pressure, mc::kappa);
 }
 
+std::vector<double> DryLapseProfile(const std::vector<double>& pressure_profile,
+                                    double ref_temperature,
+                                    double ref_pressure) {
+    // Vectorized version of DryLapse for a pressure profile. C++ internally use.
+
+    // calculate temperature profile of an air parcel lifting dry adiabatically
+    // through the given pressure profile.
+    std::vector<double> temperature_profile;
+    temperature_profile.reserve(pressure_profile.size());
+
+    for (double p : pressure_profile) {
+        temperature_profile.push_back(DryLapse(p, ref_temperature, ref_pressure));
+    }
+    return temperature_profile;
+}
+
 std::pair<double, double> LCL(double pressure, double temperature, double dewpoint) {
     if (temperature <= dewpoint) {
         std::cerr << "Warning in function '" << __func__
@@ -61,7 +77,7 @@ std::pair<double, double> LCL(double pressure, double temperature, double dewpoi
     double t_lcl = c / w_minus1 * temperature;
     double p_lcl = pressure * pow(t_lcl / temperature, moist_heat_ratio);
 
-    return {p_lcl, t_lcl}; // returning t_lcl and p_lcl together is needed
+    return {p_lcl, t_lcl};
 }
 
 bool _CheckPressure(const std::vector<double>& pressure) {
@@ -82,7 +98,12 @@ void _ParcelProfileHelper(const std::vector<double>& pressure, double temperatur
     }
     
     // Find the LCL
-    //press_lcl, temp_lcl = LCL(pressure[0], temperature, dewpoint);
+    std::pair<double, double> result = LCL(pressure[0], temperature, dewpoint);
+    double press_lcl = result.first;
+    double temp_lcl  = result.second;
+    
+    std::vector<double> press_lower;
+    std::vector<double> temp_lower = DryLapseProfile(press_lower, temperature, press_lower[0]);
 
 }
 

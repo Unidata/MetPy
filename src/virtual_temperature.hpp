@@ -15,7 +15,11 @@ double WaterLatentHeatVaporization(double temperature);
 double WaterLatentHeatSublimation(double temperature);
 
 double RelativeHumidityFromDewPoint(double temperature, double dewpoint, std::string phase="liquid");
+
 double DryLapse(double pressure, double ref_temperature, double ref_pressure);
+std::vector<double> DryLapseProfile(const std::vector<double>& pressure_profile,
+                                    double ref_temperature,
+                                    double ref_pressure);
 
 std::pair<double, double> LCL(double pressure, double temperature, double dewpoint);
 
