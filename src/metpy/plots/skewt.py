@@ -261,7 +261,7 @@ class SkewT:
 
     """
 
-    def __init__(self, fig=None, rotation=30, subplot=None, rect=None, aspect=80.5, show_heights = False):
+    def __init__(self, fig=None, rotation=30, subplot=None, rect=None, aspect=80.5, show_heights=False):
         r"""Create SkewT - logP plots.
 
         Parameters
@@ -327,9 +327,7 @@ class SkewT:
         # Also takes care of inverting the y-axis
         self.ax.set_ylim(1050, 100)
         self.ax.yaxis.set_units(units.hPa)
-        
-        
-            
+
         # Try to make sane default temperature plotting ticks
         self.ax.xaxis.set_major_locator(MultipleLocator(10))
         self.ax.xaxis.set_units(units.degC)
@@ -339,30 +337,30 @@ class SkewT:
         self.mixing_lines = None
         self.dry_adiabats = None
         self.moist_adiabats = None
-        
+
         if (show_heights):
-            #Set a secondary axis with height from pressure_to_height_standard
-            #Requires direct and inverse fctns - pressure axis and height axis
-            def pressure_axis(p): 
+            # Set a secondary axis with height from pressure_to_height_standard
+            # Requires direct and inverse fctns - pressure axis and height axis
+            def pressure_axis(p):
                 return pressure_to_height_std(units.Quantity(p, 'hPa')).m_as('km')
+            
             def height_axis(h):
                 return height_to_pressure_std(units.Quantity(h, 'km')).m
-            #Positions the axis .12 normalized units to the left of the pressure axis
+            # Positions the axis .12 normalized units to the left of the pressure axis
             self.heightax = self.ax.secondary_yaxis(-0.12,
-                 functions=(pressure_axis, height_axis))
-            #Set ylim based on pressure limits
-            self.heightax.set_ylim(pressure_to_height_std(units.Quantity(self.ax.get_ylim(), 'hPa'))); 
-            self.heightax.yaxis.set_units(units.km);
+                                                    functions=(pressure_axis, height_axis))
+            # Set ylim based on pressure limits
+            self.heightax.set_ylim(pressure_to_height_std(units.Quantity(self.ax.get_ylim(), 'hPa')))
+            self.heightax.yaxis.set_units(units.km)
             self.heightax.yaxis.set_minor_locator(NullLocator())
             self.heightax.yaxis.set_major_formatter(ScalarFormatter())
-            #Create ticks on the height axis counting by 1 from min to max
-            ymin, ymax = self.heightax.get_ylim(); 
+            # Create ticks on the height axis counting by 1 from min to max
+            ymin, ymax = self.heightax.get_ylim()
             yticks = np.arange(ymin, ymax + 1, 1)
             self.heightax.yaxis.set_major_locator(FixedLocator(yticks))
             
         # Maintain a reasonable ratio of data limits.
         self.ax.set_aspect(aspect, adjustable='box')
-        
 
     def plot(self, pressure, t, *args, **kwargs):
         r"""Plot data.
