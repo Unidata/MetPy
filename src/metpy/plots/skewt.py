@@ -17,7 +17,7 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
-from matplotlib.ticker import MultipleLocator, NullFormatter, ScalarFormatter, NullLocator, FixedLocator
+from matplotlib.ticker import MultipleLocator, FixedLocator, NullFormatter, ScalarFormatter, NullLocator
 import matplotlib.transforms as transforms
 import numpy as np
 
@@ -287,7 +287,7 @@ class SkewT:
             Defaults to 80.5. Passing the string ``'auto'`` tells matplotlib to handle
             the aspect ratio automatically (this is not recommended for SkewT).
         show_heights : boolean, optional
-            Flag for showing heights as a secondary y axis from standard atmosphere
+            Flag for showing heights as a secondary y axis. Calculated from pressure_to_height_std.
             (defaults to false)
 
         """
@@ -348,17 +348,17 @@ class SkewT:
             def height_axis(h):
                 return height_to_pressure_std(units.Quantity(h, 'km')).m
             #Positions the axis .12 normalized units to the left of the pressure axis
-            self.secax = self.ax.secondary_yaxis(-0.12,
+            self.heightax = self.ax.secondary_yaxis(-0.12,
                  functions=(pressure_axis, height_axis))
             #Set ylim based on pressure limits
-            self.secax.set_ylim(pressure_to_height_std(units.Quantity(self.ax.get_ylim(), 'hPa'))); 
-            self.secax.yaxis.set_units(units.km);
-            self.secax.yaxis.set_minor_locator(NullLocator())
-            self.secax.yaxis.set_major_formatter(ScalarFormatter())
+            self.heightax.set_ylim(pressure_to_height_std(units.Quantity(self.ax.get_ylim(), 'hPa'))); 
+            self.heightax.yaxis.set_units(units.km);
+            self.heightax.yaxis.set_minor_locator(NullLocator())
+            self.heightax.yaxis.set_major_formatter(ScalarFormatter())
             #Create ticks on the height axis counting by 1 from min to max
-            ymin, ymax = self.secax.get_ylim(); 
+            ymin, ymax = self.heightax.get_ylim(); 
             yticks = np.arange(ymin, ymax + 1, 1)
-            self.secax.yaxis.set_major_locator(FixedLocator(yticks))
+            self.heightax.yaxis.set_major_locator(FixedLocator(yticks))
             
         # Maintain a reasonable ratio of data limits.
         self.ax.set_aspect(aspect, adjustable='box')
