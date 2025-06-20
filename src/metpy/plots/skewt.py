@@ -17,7 +17,7 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
-from matplotlib.ticker import MultipleLocator, NullFormatter, ScalarFormatter, LinearLocator, NullLocator
+from matplotlib.ticker import MultipleLocator, NullFormatter, ScalarFormatter, NullLocator, FixedLocator
 import matplotlib.transforms as transforms
 import numpy as np
 
@@ -342,6 +342,7 @@ class SkewT:
         
         if (show_heights):
             #Set a secondary axis with height from pressure_to_height_standard
+            #Requires direct and inverse fctns - pressure axis and height axis
             def pressure_axis(p): 
                 return pressure_to_height_std(units.Quantity(p, 'hPa')).m_as('km')
             def height_axis(h):
@@ -354,10 +355,10 @@ class SkewT:
             self.secax.yaxis.set_units(units.km);
             self.secax.yaxis.set_minor_locator(NullLocator())
             self.secax.yaxis.set_major_formatter(ScalarFormatter())
-            #Create ticks on the height axis counting by 2 from min to max
+            #Create ticks on the height axis counting by 1 from min to max
             ymin, ymax = self.secax.get_ylim(); 
-            yticks = np.arange(ymin, ymax + 1, 2)
-            self.secax.set_yticks(yticks); 
+            yticks = np.arange(ymin, ymax + 1, 1)
+            self.secax.yaxis.set_major_locator(FixedLocator(yticks))
             
         # Maintain a reasonable ratio of data limits.
         self.ax.set_aspect(aspect, adjustable='box')
