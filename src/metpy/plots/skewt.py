@@ -17,12 +17,14 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
-from matplotlib.ticker import MultipleLocator, FixedLocator, NullFormatter, ScalarFormatter, NullLocator
+from matplotlib.ticker import (MultipleLocator, FixedLocator, NullFormatter, 
+                               ScalarFormatter, NullLocator)
 import matplotlib.transforms as transforms
 import numpy as np
 
 from ._util import colored_line
-from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure, pressure_to_height_std, height_to_pressure_std
+from ..calc import (dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure, 
+                    pressure_to_height_std, height_to_pressure_std)
 from ..calc.tools import _delete_masked_points
 from ..interpolate import interpolate_1d
 from ..package_tools import Exporter
@@ -261,7 +263,8 @@ class SkewT:
 
     """
 
-    def __init__(self, fig=None, rotation=30, subplot=None, rect=None, aspect=80.5, show_heights=False):
+    def __init__(self, fig=None, rotation=30, subplot=None, rect=None, 
+                 aspect=80.5, show_heights=False):
         r"""Create SkewT - logP plots.
 
         Parameters
@@ -287,7 +290,8 @@ class SkewT:
             Defaults to 80.5. Passing the string ``'auto'`` tells matplotlib to handle
             the aspect ratio automatically (this is not recommended for SkewT).
         show_heights : boolean, optional
-            Flag for showing heights as a secondary y axis. Calculated from pressure_to_height_std.
+            Flag for showing heights as a secondary y axis. 
+            Calculated from pressure_to_height_std.
             (defaults to false)
 
         """
@@ -343,14 +347,15 @@ class SkewT:
             # Requires direct and inverse fctns - pressure axis and height axis
             def pressure_axis(p):
                 return pressure_to_height_std(units.Quantity(p, 'hPa')).m_as('km')
-            
+
             def height_axis(h):
                 return height_to_pressure_std(units.Quantity(h, 'km')).m
             # Positions the axis .12 normalized units to the left of the pressure axis
             self.heightax = self.ax.secondary_yaxis(-0.12,
                                                     functions=(pressure_axis, height_axis))
             # Set ylim based on pressure limits
-            self.heightax.set_ylim(pressure_to_height_std(units.Quantity(self.ax.get_ylim(), 'hPa')))
+            self.heightax.set_ylim(pressure_to_height_std(units.Quantity
+                                                          (self.ax.get_ylim(), 'hPa')))
             self.heightax.yaxis.set_units(units.km)
             self.heightax.yaxis.set_minor_locator(NullLocator())
             self.heightax.yaxis.set_major_formatter(ScalarFormatter())
@@ -358,7 +363,7 @@ class SkewT:
             ymin, ymax = self.heightax.get_ylim()
             yticks = np.arange(ymin, ymax + 1, 1)
             self.heightax.yaxis.set_major_locator(FixedLocator(yticks))
-            
+
         # Maintain a reasonable ratio of data limits.
         self.ax.set_aspect(aspect, adjustable='box')
 

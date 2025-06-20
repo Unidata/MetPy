@@ -48,7 +48,7 @@ def test_skewt_api():
 
 @pytest.mark.mpl_image_compare(style='default', tolerance=0.069)
 def test_skewt_api_with_heights():
-    """Test the SkewT API with height axis"""
+    """Test the SkewT API with height axis."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
         skew = SkewT(fig, aspect='auto', show_heights=True)
@@ -75,11 +75,11 @@ def test_skewt_api_with_heights():
         skew.plot_mixing_lines()
 
         # You can't remove text from a secax with remove_text so do it manually
-        skew.heightax.set_ylabel("")
+        skew.heightax.set_ylabel('')
         skew.heightax.set_yticklabels([])
-        skew.ax.set_title("")
-        skew.ax.set_xlabel("")
-        skew.ax.set_ylabel("")
+        skew.ax.set_title('')
+        skew.ax.set_xlabel('')
+        skew.ax.set_ylabel('')
         skew.ax.set_xticklabels([])
         skew.ax.set_yticklabels([])
 
@@ -115,7 +115,7 @@ def test_skewt_api_units():
 
 @pytest.mark.mpl_image_compare(style='default', tolerance=.32)
 def test_skewt_api_units_heights():
-    """Test the SkewT API when units are provided and show_heights is true"""
+    """Test the SkewT API when units are provided and show_heights is true."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
         skew = SkewT(fig, show_heights=True)
@@ -135,11 +135,11 @@ def test_skewt_api_units_heights():
         skew.ax.set_xlabel('degC')
 
         # You can't remove text from a secax with remove_text so do it manually
-        skew.heightax.set_ylabel("")
+        skew.heightax.set_ylabel('')
         skew.heightax.set_yticklabels([])
-        skew.ax.set_title("")
-        skew.ax.set_xlabel("")
-        skew.ax.set_ylabel("")
+        skew.ax.set_title('')
+        skew.ax.set_xlabel('')
+        skew.ax.set_ylabel('')
         skew.ax.set_xticklabels([])
         skew.ax.set_yticklabels([])
 
@@ -199,11 +199,11 @@ def test_skewt_subplot_heights():
     skew = SkewT(fig, subplot=(2, 2, 1), aspect='auto', show_heights=True)
 
     # You can't remove text from a secax with remove_text so do it manually
-    skew.heightax.set_ylabel("")
+    skew.heightax.set_ylabel('')
     skew.heightax.set_yticklabels([])
-    skew.ax.set_title("")
-    skew.ax.set_xlabel("")
-    skew.ax.set_ylabel("")
+    skew.ax.set_title('')
+    skew.ax.set_xlabel('')
+    skew.ax.set_ylabel('')
     skew.ax.set_xticklabels([])
     skew.ax.set_yticklabels([])
 
@@ -235,11 +235,11 @@ def test_skewt_gridspec_heights():
     skew = SkewT(fig, subplot=gs[0, 1], aspect='auto', show_heights=True)
 
     # You can't remove text from a secax with remove_text so do it manually
-    skew.heightax.set_ylabel("")
+    skew.heightax.set_ylabel('')
     skew.heightax.set_yticklabels([])
-    skew.ax.set_title("")
-    skew.ax.set_xlabel("")
-    skew.ax.set_ylabel("")
+    skew.ax.set_title('')
+    skew.ax.set_xlabel('')
+    skew.ax.set_ylabel('')
     skew.ax.set_xticklabels([])
     skew.ax.set_yticklabels([])
     return fig
@@ -261,16 +261,16 @@ def test_skewt_subplot_rect_conflict():
 
 @pytest.mark.mpl_image_compare(tolerance=0., style='default')
 def test_skewt_arbitrary_rect_heights():
-    """Test placing the SkewT in an arbitrary rectangle with height axis"""
+    """Test placing the SkewT in an arbitrary rectangle with height axis."""
     fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig, rect=(0.15, 0.35, 0.8, 0.3), aspect='auto', show_heights=True)
 
     # You can't remove text from a secax with remove_text so do it manually
-    skew.heightax.set_ylabel("")
+    skew.heightax.set_ylabel('')
     skew.heightax.set_yticklabels([])
-    skew.ax.set_title("")
-    skew.ax.set_xlabel("")
-    skew.ax.set_ylabel("")
+    skew.ax.set_title('')
+    skew.ax.set_xlabel('')
+    skew.ax.set_ylabel('')
     skew.ax.set_xticklabels([])
     skew.ax.set_yticklabels([])
     return fig
@@ -442,7 +442,7 @@ def test_skewt_wide_aspect_ratio(test_profile):
 
 @pytest.mark.mpl_image_compare(tolerance=0.039, style='default')
 def test_skewt_wide_aspect_ratio_heights(test_profile):
-    """Test plotting a skewT with a wide aspect ratio with height axis"""
+    """Test plotting a skewT with a wide aspect ratio with height axis."""
     p, t, _, tp = test_profile
 
     fig = plt.figure(figsize=(12.5, 3))
@@ -453,10 +453,10 @@ def test_skewt_wide_aspect_ratio_heights(test_profile):
     skew.ax.set_ylim(1050, 700)
 
     # You can't remove text from a secax with remove_text so do it manually
-    skew.heightax.set_ylabel("")
+    skew.heightax.set_ylabel('')
     skew.heightax.set_yticklabels([])
-    skew.ax.set_title("")
-    skew.ax.set_xlabel("")
+    skew.ax.set_title('')
+    skew.ax.set_xlabel('')
     skew.ax.set_xticklabels([])
     skew.ax.set_yticklabels([])
 
