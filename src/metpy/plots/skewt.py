@@ -17,13 +17,13 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
-from matplotlib.ticker import (MultipleLocator, FixedLocator, NullFormatter, 
+from matplotlib.ticker import (MultipleLocator, FixedLocator, NullFormatter,
                                ScalarFormatter, NullLocator)
 import matplotlib.transforms as transforms
 import numpy as np
 
 from ._util import colored_line
-from ..calc import (dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure, 
+from ..calc import (dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure,
                     pressure_to_height_std, height_to_pressure_std)
 from ..calc.tools import _delete_masked_points
 from ..interpolate import interpolate_1d
@@ -263,7 +263,7 @@ class SkewT:
 
     """
 
-    def __init__(self, fig=None, rotation=30, subplot=None, rect=None, 
+    def __init__(self, fig=None, rotation=30, subplot=None, rect=None,
                  aspect=80.5, show_heights=False):
         r"""Create SkewT - logP plots.
 
@@ -290,7 +290,7 @@ class SkewT:
             Defaults to 80.5. Passing the string ``'auto'`` tells matplotlib to handle
             the aspect ratio automatically (this is not recommended for SkewT).
         show_heights : boolean, optional
-            Flag for showing heights as a secondary y axis. 
+            Flag for showing heights as a secondary y axis.
             Calculated from pressure_to_height_std.
             (defaults to false)
 

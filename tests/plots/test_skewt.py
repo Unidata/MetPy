@@ -194,7 +194,7 @@ def test_skewt_subplot():
 
 @pytest.mark.mpl_image_compare(tolerance=.811, style='default')
 def test_skewt_subplot_heights():
-    """Test using skewT on a sub-plot with height axis"""
+    """Test using skewT on a sub-plot with height axis."""
     fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig, subplot=(2, 2, 1), aspect='auto', show_heights=True)
 
