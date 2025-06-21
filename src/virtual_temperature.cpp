@@ -57,6 +57,61 @@ std::vector<double> DryLapseProfile(const std::vector<double>& pressure_profile,
     return temperature_profile;
 }
 
+double CaldlnTdlnP(double temperature, double pressure) {
+    // Calculate dlnT/dlnP for a moist (saturated) adiabatic process.
+    double rs = SaturationMixingRatio(pressure, temperature, "liquid");
+    double dlnT_dlnP_linfel = (mc::Rd + rs * mc::Rv) / (mc::Cp_d + rs * mc::Cp_v + 
+            (mc::Lv * mc::Lv * rs * mc::epsilon) / (mc::Rd * temperature * temperature));
+
+    double dlnT_dlnP_Bakhshaii2013 = (mc::Rd + mc::Lv * rs / temperature) / (mc::Cp_d + 
+            (mc::Lv * mc::Lv * rs * mc::epsilon) / (mc::Rd * temperature * temperature));
+    
+    return dlnT_dlnP_Bakhshaii2013;
+}
+
+double MoistLapse(double pressure, double ref_temperature, double ref_pressure, int nstep) {
+    // calculate temperature at pressure given reference temperature and pressure
+    // assuming moist adiabatic expansion (vapor condenses and removed from the air
+    // parcel)
+    
+    double dlnP = log(pressure / ref_pressure) / (double)nstep;
+    double T1 = ref_temperature;
+    double P1 = ref_pressure;
+    double k[4];
+
+    for (int i = 0; i < nstep; ++i) {
+        k[0] = CaldlnTdlnP(T1, P1); 
+        k[1] = CaldlnTdlnP(T1 * exp(k[0] * dlnP/2.), P1 * exp(dlnP/2.));
+        k[2] = CaldlnTdlnP(T1 * exp(k[1] * dlnP/2.), P1 * exp(dlnP/2.));
+        k[3] = CaldlnTdlnP(T1 * exp(k[2] * dlnP), P1 * exp(dlnP));
+
+        T1 = T1 * exp((k[0] + 2.0 * k[1] + 2.0 * k[2] + k[3]) * dlnP / 6.0);
+        P1 = P1 * exp(dlnP);
+    }
+
+    return T1; // check final T1 P1
+}
+
+std::vector<double> MoistLapseProfile(const std::vector<double>& pressure_profile,
+                                    double ref_temperature,
+                                    double ref_pressure) {
+    // Vectorized version of MoistLapse for a pressure profile. C++ internally use.
+
+    // calculate temperature profile of an air parcel lifting saturated adiabatically
+    // through the given pressure profile.
+    std::vector<double> temperature_profile;
+    temperature_profile.reserve(pressure_profile.size());
+
+    //double T1 = ref_temperature;
+    //double P1 = ref_pressure;
+    double T;
+    for (size_t i = 0; i < pressure_profile.size(); ++i) {
+        T = MoistLapse(pressure_profile[i], ref_temperature, ref_pressure, 50);
+        temperature_profile.push_back(T);
+    }
+    return temperature_profile;
+}
+
 std::pair<double, double> LCL(double pressure, double temperature, double dewpoint) {
     if (temperature <= dewpoint) {
         std::cerr << "Warning in function '" << __func__
@@ -98,12 +153,34 @@ void _ParcelProfileHelper(const std::vector<double>& pressure, double temperatur
     }
     
     // Find the LCL
-    std::pair<double, double> result = LCL(pressure[0], temperature, dewpoint);
-    double press_lcl = result.first;
-    double temp_lcl  = result.second;
+    auto [press_lcl, temp_lcl] = LCL(pressure[0], temperature, dewpoint);
     
+    // Establish profile below LCL
     std::vector<double> press_lower;
+    for (double p : pressure) {
+        if (p >= press_lcl) {
+            press_lower.push_back(p);
+        }
+    }
+    press_lower.push_back(press_lcl);
     std::vector<double> temp_lower = DryLapseProfile(press_lower, temperature, press_lower[0]);
+
+    // Early return if profile ends before reaching above LCL
+    if (pressure.back() >= press_lcl) {
+        press_lower.pop_back();
+        temp_lower.pop_back();
+//        return {press_lower, {}, press_lcl, temp_lower, {}, temp_lcl};
+    }
+
+    // Establish profile above LCL
+    std::vector<double> press_upper;
+    press_upper.push_back(press_lcl);
+    for (double p : pressure) {
+        if (p < press_lcl) {
+            press_upper.push_back(p);
+        }
+    }
+
 
 }
 

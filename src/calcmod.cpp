@@ -40,8 +40,12 @@ PYBIND11_MODULE(_calc_mod, m) {
             py::arg("temperature"), py::arg("dewpoint"), py::arg("phase"));
 
     m.def("dry_lapse", py::vectorize(DryLapse),
-            "Calculate the temperature at a level assuming only dry adiabatic process.",
+            "Calculate the temperature at pressure levels assuming dry adiabatic process.",
             py::arg("pressure"), py::arg("ref_temperature"), py::arg("ref_pressure"));
+
+    m.def("moist_lapse", py::vectorize(MoistLapse),
+            "Calculate the temperature at pressure levels assuming saturated adiabatic process.",
+            py::arg("pressure"), py::arg("ref_temperature"), py::arg("ref_pressure"), py::arg("rk_nstep"));
 
     m.def("lcl", [](py::array_t<double> pressure,
                     py::array_t<double> temperature,

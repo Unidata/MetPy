@@ -21,6 +21,13 @@ std::vector<double> DryLapseProfile(const std::vector<double>& pressure_profile,
                                     double ref_temperature,
                                     double ref_pressure);
 
+double CaldlnTdlnP(double temperature, double pressure);
+double MoistLapse(double pressure, double ref_temperature, double ref_pressure, int nstep);
+std::vector<double> MoistLapseProfile(const std::vector<double>& pressure_profile,
+                                    double ref_temperature,
+                                    double ref_pressure);
+
+
 std::pair<double, double> LCL(double pressure, double temperature, double dewpoint);
 
 bool _CheckPressure(const std::vector<double>& pressure);
