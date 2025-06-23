@@ -316,9 +316,23 @@ def test_skewt_height_change_coords():
     
     skew.ax.set_xticklabels([])
     skew.ax.set_yticklabels([])
-
     
-    # NOTE: leaving heightaxis ticks in because I want to compare the labels
+    expected_ylim = np.array([15, 5])
+    
+    # This updates the plot so get_ylim is accurate
+    fig.canvas.draw()
+    
+    # Asserts that the ylims on height ax are as expected 
+    assert np.array_equal(np.int64(skew.heightax.get_ylim()), expected_ylim)
+
+    # You can't remove text from a secax with remove_text so do it manually
+    skew.heightax.set_ylabel('')
+    skew.heightax.set_yticklabels([])
+    skew.ax.set_title('')
+    skew.ax.set_xlabel('')
+    skew.ax.set_ylabel('')
+    skew.ax.set_xticklabels([])
+    skew.ax.set_yticklabels([])
     
     return fig 
     
