@@ -308,7 +308,6 @@ def test_skewt_units():
 @pytest.mark.mpl_image_compare(tolerance=.069, style='default')
 def test_skewt_height_change_coords():
     """Test plotting a skewt with a height axis then changing the pressure axis."""
-
     fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig, aspect='auto')
     skew.add_heightax()
