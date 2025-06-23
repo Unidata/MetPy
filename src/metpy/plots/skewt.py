@@ -263,8 +263,7 @@ class SkewT:
 
     """
 
-    def __init__(self, fig=None, rotation=30, subplot=None, rect=None,
-                 aspect=80.5, show_heights=False):
+    def __init__(self, fig=None, rotation=30, subplot=None, rect=None, aspect=80.5):
         r"""Create SkewT - logP plots.
 
         Parameters
@@ -289,11 +288,6 @@ class SkewT:
             Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
             Defaults to 80.5. Passing the string ``'auto'`` tells matplotlib to handle
             the aspect ratio automatically (this is not recommended for SkewT).
-        show_heights : boolean, optional
-            Flag for showing heights as a secondary y axis.
-            Calculated from pressure_to_height_std.
-            (defaults to false)
-
         """
         if fig is None:
             import matplotlib.pyplot as plt
@@ -341,28 +335,6 @@ class SkewT:
         self.mixing_lines = None
         self.dry_adiabats = None
         self.moist_adiabats = None
-
-        if (show_heights):
-            # Set a secondary axis with height from pressure_to_height_standard
-            # Requires direct and inverse fctns - pressure axis and height axis
-            def pressure_axis(p):
-                return pressure_to_height_std(units.Quantity(p, 'hPa')).m_as('km')
-
-            def height_axis(h):
-                return height_to_pressure_std(units.Quantity(h, 'km')).m
-            # Positions the axis .12 normalized units to the left of the pressure axis
-            self.heightax = self.ax.secondary_yaxis(-0.12,
-                                                    functions=(pressure_axis, height_axis))
-            # Set ylim based on pressure limits
-            self.heightax.set_ylim(pressure_to_height_std(units.Quantity
-                                                          (self.ax.get_ylim(), 'hPa')))
-            self.heightax.yaxis.set_units(units.km)
-            self.heightax.yaxis.set_minor_locator(NullLocator())
-            self.heightax.yaxis.set_major_formatter(ScalarFormatter())
-            # Create ticks on the height axis counting by 1 from min to max
-            ymin, ymax = self.heightax.get_ylim()
-            yticks = np.arange(ymin, ymax + 1, 1)
-            self.heightax.yaxis.set_major_locator(FixedLocator(yticks))
 
         # Maintain a reasonable ratio of data limits.
         self.ax.set_aspect(aspect, adjustable='box')
@@ -771,6 +743,46 @@ class SkewT:
             idx = np.arange(0, len(pressure))
         return self.shade_area(pressure[idx], t_parcel[idx], t[idx], which='negative',
                                **kwargs)
+    
+    def add_heightax(self): 
+        r"""Add a secondary y axis with height values calculated from pressure_to_height_std.
+        
+        Axis is created to .12 normalized units to the left of the pressure axis and can be accessed
+        with the name "heightax". 
+        
+        Parameters
+        ----------
+        
+        Returns
+        -------
+        
+        See Also
+        -------
+        :class:`metpy.calc.basic`
+        :meth:`metpy.calc.basic.pressure_to_height_std`
+        
+        """
+        # Set a secondary axis with height from pressure_to_height_standard
+        # Requires direct and inverse fctns - pressure axis and height axis
+        def pressure_axis(p):
+            return pressure_to_height_std(units.Quantity(p, 'hPa')).m_as('km')
+
+        def height_axis(h):
+            return height_to_pressure_std(units.Quantity(h, 'km')).m
+        # Positions the axis .12 normalized units to the left of the pressure axis
+        self.heightax = self.ax.secondary_yaxis(-0.12,
+                                                functions=(pressure_axis, height_axis))
+        # Set ylim based on pressure limits
+        self.heightax.set_ylim(pressure_to_height_std(units.Quantity
+                                                      (self.ax.get_ylim(), 'hPa')))
+        self.heightax.yaxis.set_units(units.km)
+        self.heightax.yaxis.set_minor_locator(NullLocator())
+        self.heightax.yaxis.set_major_formatter(ScalarFormatter())
+        # Create ticks on the height axis counting by 1 from min to max
+        ymin, ymax = self.heightax.get_ylim()
+        yticks = np.arange(ymin, ymax + 1, 1)
+        self.heightax.yaxis.set_major_locator(FixedLocator(yticks))
+
 
 
 @exporter.export

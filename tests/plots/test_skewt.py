@@ -51,8 +51,9 @@ def test_skewt_api_with_heights():
     """Test the SkewT API with height axis."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
-        skew = SkewT(fig, aspect='auto', show_heights=True)
-
+        skew = SkewT(fig, aspect='auto')
+        skew.add_heightax()
+        
         # Plot the data using normal plotting functions, in this case using
         # log scaling in Y, as dictated by the typical meteorological plot
         p = np.linspace(1000, 100, 10)
@@ -115,10 +116,11 @@ def test_skewt_api_units():
 
 @pytest.mark.mpl_image_compare(style='default', tolerance=.32)
 def test_skewt_api_units_heights():
-    """Test the SkewT API when units are provided and show_heights is true."""
+    """Test the SkewT API when units are provided and a secondary height axis is added."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
-        skew = SkewT(fig, show_heights=True)
+        skew = SkewT(fig)
+        skew.add_heightax()
         p = (np.linspace(950, 100, 10) * units.hPa).to(units.Pa)
         t = (np.linspace(18, -20, 10) * units.degC).to(units.kelvin)
         u = np.linspace(-20, 20, 10) * units.knots
@@ -196,7 +198,8 @@ def test_skewt_subplot():
 def test_skewt_subplot_heights():
     """Test using skewT on a sub-plot with height axis."""
     fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig, subplot=(2, 2, 1), aspect='auto', show_heights=True)
+    skew = SkewT(fig, subplot=(2, 2, 1), aspect='auto')
+    skew.add_heightax()
 
     # You can't remove text from a secax with remove_text so do it manually
     skew.heightax.set_ylabel('')
@@ -229,10 +232,11 @@ def test_skewt_with_grid_enabled():
 
 @pytest.mark.mpl_image_compare(tolerance=0, style='default')
 def test_skewt_gridspec_heights():
-    """Test using SkewT on a GridSpec sub-plot."""
+    """Test using SkewT on a GridSpec sub-plot with a height axis."""
     fig = plt.figure(figsize=(9, 9))
     gs = GridSpec(1, 2)
-    skew = SkewT(fig, subplot=gs[0, 1], aspect='auto', show_heights=True)
+    skew = SkewT(fig, subplot=gs[0, 1], aspect='auto')
+    skew.add_heightax()
 
     # You can't remove text from a secax with remove_text so do it manually
     skew.heightax.set_ylabel('')
@@ -263,7 +267,8 @@ def test_skewt_subplot_rect_conflict():
 def test_skewt_arbitrary_rect_heights():
     """Test placing the SkewT in an arbitrary rectangle with height axis."""
     fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig, rect=(0.15, 0.35, 0.8, 0.3), aspect='auto', show_heights=True)
+    skew = SkewT(fig, rect=(0.15, 0.35, 0.8, 0.3), aspect='auto')
+    skew.add_heightax()
 
     # You can't remove text from a secax with remove_text so do it manually
     skew.heightax.set_ylabel('')
@@ -298,6 +303,25 @@ def test_skewt_units():
     skew.ax.set_ylabel('')
 
     return fig
+
+@pytest.mark.mpl_image_compare(tolerance=.069, style='default')
+def test_skewt_height_change_coords():
+    """Test plotting a skewt with a height axis then changing the pressure axis."""
+    
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig, aspect='auto')
+    skew.add_heightax()
+    
+    skew.ax.set_ylim(500, 100)
+    
+    skew.ax.set_xticklabels([])
+    skew.ax.set_yticklabels([])
+
+    
+    # NOTE: leaving heightaxis ticks in because I want to compare the labels
+    
+    return fig 
+    
 
 
 @pytest.fixture()
@@ -446,7 +470,8 @@ def test_skewt_wide_aspect_ratio_heights(test_profile):
     p, t, _, tp = test_profile
 
     fig = plt.figure(figsize=(12.5, 3))
-    skew = SkewT(fig, aspect='auto', show_heights=True)
+    skew = SkewT(fig, aspect='auto')
+    skew.add_heightax()
     skew.plot(p, t, 'r')
     skew.plot(p, tp, 'k')
     skew.ax.set_xlim(-30, 50)
