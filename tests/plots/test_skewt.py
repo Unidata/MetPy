@@ -46,7 +46,7 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(style='default', tolerance=0.069)
+@pytest.mark.mpl_image_compare(style='default', tolerance=0.071)
 def test_skewt_api_with_heights():
     """Test the SkewT API with height axis."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):

@@ -17,7 +17,7 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
-from matplotlib.ticker import (MultipleLocator, FixedLocator, NullFormatter,
+from matplotlib.ticker import (MultipleLocator, FixedLocator, NullFormatter, 
                                ScalarFormatter, NullLocator)
 import matplotlib.transforms as transforms
 import numpy as np
