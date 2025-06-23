@@ -180,6 +180,9 @@ void _ParcelProfileHelper(const std::vector<double>& pressure, double temperatur
             press_upper.push_back(p);
         }
     }
+    std::vector<double> temp_lower = MoistLapseProfile(press_upper, temp_lcl, press_lcl);
+
+    return  //return type
 
 
 }
