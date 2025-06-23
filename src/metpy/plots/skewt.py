@@ -747,8 +747,8 @@ class SkewT:
     def add_heightax(self):
         r"""Add a secondary y axis with height values calculated from pressure_to_height_std.
 
-        Axis is created to .12 normalized units to the left of the pressure axis and can 
-        be accessedwith the name "heightax".
+        Axis is created to .12 normalized units to the left of the pressure axis and can
+        be accessed with the name "heightax".
 
         See Also
         --------
