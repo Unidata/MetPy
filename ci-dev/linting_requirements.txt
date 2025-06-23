@@ -1,8 +1,8 @@
 ruff==0.11.11
 
-flake8==7.2.0
-pycodestyle==2.13.0
-pyflakes==3.3.2
+flake8==7.3.0
+pycodestyle==2.14.0
+pyflakes==3.4.0
 
 flake8-continuation==1.0.5
 flake8-isort==6.1.2
