@@ -8,7 +8,7 @@
 #include <limits>     // for std::numeric_limits
 #include "math.hpp"
 #include "constants.hpp"
-#include "virtual_temperature.hpp"
+#include "thermo.hpp"
 
 namespace py = pybind11;
 namespace mc = metpy_constants;

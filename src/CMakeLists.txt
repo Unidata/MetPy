@@ -15,7 +15,7 @@ pybind11_add_module(_calc_mod MODULE
   calcmod.cpp
   constants.cpp
   math.cpp
-  virtual_temperature.cpp
+  thermo.cpp
 )
 
 target_compile_definitions(_calc_mod

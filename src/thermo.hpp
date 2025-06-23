@@ -1,5 +1,5 @@
-#ifndef VIRTUAL_TEMPERATURE_HPP // if not defined
-#define VIRTUAL_TEMPERATURE_HPP // define the header file
+#ifndef THERMO_HPP // if not defined
+#define THERMO_HPP // define the header file
 
 #include <string>
 #include <vector>
@@ -44,4 +44,4 @@ double SpecificHumidityFromDewPoint(double pressure, double dew_point, std::stri
 
 double VirtualTemperature(double temperature, double mixing_ratio, double epsilon);
 
-#endif // VIRTUAL_TEMPERATURE_HPP
+#endif // THERMO_HPP
