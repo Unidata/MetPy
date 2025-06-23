@@ -786,6 +786,21 @@ def lcl(pressure, temperature, dewpoint, max_iters=None, eps=None):
 
 @exporter.export
 @preprocess_and_wrap()
+@process_units(
+    {'pressure': '[pressure]', 'temperature': '[temperature]', 'dewpoint': '[temperature]'},
+    ('[pressure]', '[temperature]')
+)
+def lcl_linfel(pressure, temperature, dewpoint, max_iters=None, eps=None):
+    """
+    Linfeng's version of 'lcl'. Added on Jun23 2025
+    """
+    p_lcl, t_lcl = _calc_mod.lcl(pressure, temperature, dewpoint)
+    return p_lcl, t_lcl
+
+
+
+@exporter.export
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, which='top'):
     r"""Calculate the convective condensation level (CCL) and convective temperature.
