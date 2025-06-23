@@ -60,9 +60,9 @@ std::vector<double> DryLapseProfile(const std::vector<double>& pressure_profile,
 double CaldlnTdlnP(double temperature, double pressure) {
     // Calculate dlnT/dlnP for a moist (saturated) adiabatic process.
     double rs = SaturationMixingRatio(pressure, temperature, "liquid");
-    double dlnT_dlnP_linfel = (mc::Rd + rs * mc::Rv) / (mc::Cp_d + rs * mc::Cp_v + 
-            (mc::Lv * mc::Lv * rs * mc::epsilon) / (mc::Rd * temperature * temperature));
-
+    
+    //double dlnT_dlnP_linfel = (mc::Rd + rs * mc::Rv) / (mc::Cp_d + rs * mc::Cp_v + 
+    //        (mc::Lv * mc::Lv * rs * mc::epsilon) / (mc::Rd * temperature * temperature));
     double dlnT_dlnP_Bakhshaii2013 = (mc::Rd + mc::Lv * rs / temperature) / (mc::Cp_d + 
             (mc::Lv * mc::Lv * rs * mc::epsilon) / (mc::Rd * temperature * temperature));
     

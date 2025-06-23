@@ -676,6 +676,30 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
 
 @exporter.export
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'reference_pressure')
+)
+@process_units(
+    {
+        'pressure': '[pressure]',
+        'temperature': '[temperature]',
+        'reference_pressure': '[pressure]'
+    },
+    '[temperature]'
+)
+def moist_lapse_linfel(pressure, temperature, reference_pressure=None):
+    """
+    Linfeng's version of 'moist_lapse'.  Added on Jun23 2025
+    """
+    if reference_pressure is None:
+        reference_pressure = pressure[0]
+    # nstep for RK4 is set to 30
+    return _calc_mod.moist_lapse(pressure, temperature, reference_pressure, 30)
+
+
+
+@exporter.export
 @preprocess_and_wrap()
 @process_units(
     {'pressure': '[pressure]', 'temperature': '[temperature]', 'dewpoint': '[temperature]'},
