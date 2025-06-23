@@ -53,7 +53,7 @@ def test_skewt_api_with_heights():
         fig = plt.figure(figsize=(9, 9))
         skew = SkewT(fig, aspect='auto')
         skew.add_heightax()
-        
+
         # Plot the data using normal plotting functions, in this case using
         # log scaling in Y, as dictated by the typical meteorological plot
         p = np.linspace(1000, 100, 10)
@@ -304,25 +304,26 @@ def test_skewt_units():
 
     return fig
 
+
 @pytest.mark.mpl_image_compare(tolerance=.069, style='default')
 def test_skewt_height_change_coords():
     """Test plotting a skewt with a height axis then changing the pressure axis."""
-    
+
     fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig, aspect='auto')
     skew.add_heightax()
-    
+
     skew.ax.set_ylim(500, 100)
-    
+
     skew.ax.set_xticklabels([])
     skew.ax.set_yticklabels([])
-    
+
     expected_ylim = np.array([15, 5])
-    
+
     # This updates the plot so get_ylim is accurate
     fig.canvas.draw()
-    
-    # Asserts that the ylims on height ax are as expected 
+
+    # Asserts that the ylims on height ax are as expected
     assert np.array_equal(np.int64(skew.heightax.get_ylim()), expected_ylim)
 
     # You can't remove text from a secax with remove_text so do it manually
@@ -333,9 +334,8 @@ def test_skewt_height_change_coords():
     skew.ax.set_ylabel('')
     skew.ax.set_xticklabels([])
     skew.ax.set_yticklabels([])
-    
-    return fig 
-    
+
+    return fig
 
 
 @pytest.fixture()

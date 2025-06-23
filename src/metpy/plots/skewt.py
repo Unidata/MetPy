@@ -743,24 +743,18 @@ class SkewT:
             idx = np.arange(0, len(pressure))
         return self.shade_area(pressure[idx], t_parcel[idx], t[idx], which='negative',
                                **kwargs)
-    
-    def add_heightax(self): 
+
+    def add_heightax(self):
         r"""Add a secondary y axis with height values calculated from pressure_to_height_std.
-        
+
         Axis is created to .12 normalized units to the left of the pressure axis and can be accessed
-        with the name "heightax". 
-        
-        Parameters
-        ----------
-        
-        Returns
-        -------
-        
+        with the name "heightax".
+
         See Also
         -------
         :class:`metpy.calc.basic`
         :meth:`metpy.calc.basic.pressure_to_height_std`
-        
+
         """
         # Set a secondary axis with height from pressure_to_height_standard
         # Requires direct and inverse fctns - pressure axis and height axis
@@ -782,7 +776,6 @@ class SkewT:
         ymin, ymax = self.heightax.get_ylim()
         yticks = np.arange(ymin, ymax + 1, 1)
         self.heightax.yaxis.set_major_locator(FixedLocator(yticks))
-
 
 
 @exporter.export
