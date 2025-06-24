@@ -750,6 +750,7 @@ class SkewT:
         be accessed with the name "heightax".
 
         See Also
+        --------
         :meth:`metpy.calc.pressure_to_height_std`
 
         """
