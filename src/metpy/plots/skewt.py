@@ -336,7 +336,7 @@ class SkewT:
         self.moist_adiabats = None
 
         # Maintain a reasonable ratio of data limits.
-        self.ax.set_aspect(aspect, adjustable='box')
+        self.ax.set_aspect(aspect, adjustable='datalim')
 
     def plot(self, pressure, t, *args, **kwargs):
         r"""Plot data.
@@ -743,6 +743,10 @@ class SkewT:
         return self.shade_area(pressure[idx], t_parcel[idx], t[idx], which='negative',
                                **kwargs)
 
+    def update_heightax_limits(self, ax):
+        self.heightax.set_ylim(pressure_to_height_std(units.Quantity
+                                                      (self.ax.get_ylim(), 'hPa')))
+    
     def add_heightax(self):
         r"""Add a secondary y axis with height values calculated from pressure_to_height_std.
 
@@ -762,18 +766,25 @@ class SkewT:
         def pressure_axis(h):
             return height_to_pressure_std(units.Quantity(h, 'km')).m
         # Positions the axis .12 normalized units to the left of the pressure axis
-        self.heightax = self.ax.secondary_yaxis(-0.12,
-                                                functions=(height_axis, pressure_axis))
+        self.heightax = self.ax.twinx()
+        self.heightax.set_ylim(pressure_to_height_std(units.Quantity
+                                                      (self.ax.get_ylim(), 'hPa')))
+        self.heightax.spines["left"].set_position(("axes", -.12))
+        self.heightax.spines["left"].set_visible(True)
+        self.heightax.yaxis.set_label_position('left')
+        self.heightax.yaxis.set_ticks_position('left')
         # Set height axis ylims based on pressure ylims
         # This doesn't really seem to do anything except make it so that the unit is shown
         # on the axis
-        self.heightax.set_ylim(pressure_to_height_std(units.Quantity
-                                                      (self.ax.get_ylim(), 'hPa')))
+        self.heightax.set_yscale('linear')
         self.heightax.yaxis.set_units(units.km)
         self.heightax.yaxis.set_minor_locator(NullLocator())
         self.heightax.yaxis.set_major_formatter(ScalarFormatter())
-        # Create ticks on the height axis counting by 1 from min to max
         self.heightax.yaxis.set_major_locator(MultipleLocator(1))
+        self.ax.callbacks.connect('ylim_changed', self.update_heightax_limits)
+        
+
+        
 
 
 @exporter.export
