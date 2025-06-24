@@ -144,7 +144,8 @@ bool _CheckPressure(const std::vector<double>& pressure) {
     return true;  // strictly non-increasing
 }
 
-void _ParcelProfileHelper(const std::vector<double>& pressure, double temperature, double dewpoint) {
+
+ParcelProfile _ParcelProfileHelper(const std::vector<double>& pressure, double temperature, double dewpoint) {
     // Check that pressure does not increase.
     if (!_CheckPressure(pressure)) {
         throw std::runtime_error(
@@ -169,7 +170,7 @@ void _ParcelProfileHelper(const std::vector<double>& pressure, double temperatur
     if (pressure.back() >= press_lcl) {
         press_lower.pop_back();
         temp_lower.pop_back();
-//        return {press_lower, {}, press_lcl, temp_lower, {}, temp_lcl};
+        return {press_lower, {}, press_lcl, temp_lower, {}, temp_lcl};
     }
 
     // Establish profile above LCL
@@ -180,11 +181,14 @@ void _ParcelProfileHelper(const std::vector<double>& pressure, double temperatur
             press_upper.push_back(p);
         }
     }
-    std::vector<double> temp_lower = MoistLapseProfile(press_upper, temp_lcl, press_lcl);
+    std::vector<double> temp_upper = MoistLapseProfile(press_upper, temp_lower.back(), press_lcl);
 
-    return  //return type
+    press_lower.pop_back();
+    temp_lower.pop_back();
+    press_upper.erase(press_upper.begin());
+    temp_upper.erase(temp_upper.begin());
 
-
+    return {press_lower, press_upper, press_lcl, temp_lower, temp_upper, temp_lcl};
 }
 
 double _SaturationVaporPressureLiquid(double temperature) {
