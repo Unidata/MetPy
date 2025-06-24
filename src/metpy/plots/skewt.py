@@ -752,18 +752,19 @@ class SkewT:
         See Also
         :meth:`metpy.calc.pressure_to_height_std`
 
-        """        
+        """
         # Set a secondary axis with height from pressure_to_height_standard
         # Requires direct and inverse fctns - pressure axis and height axis
         def height_axis(p):
             return pressure_to_height_std(units.Quantity(p, 'hPa')).m_as('km')
+        
         def pressure_axis(h):
             return height_to_pressure_std(units.Quantity(h, 'km')).m
         # Positions the axis .12 normalized units to the left of the pressure axis
         self.heightax = self.ax.secondary_yaxis(-0.12,
                                                 functions=(height_axis, pressure_axis))
-        # Set height axis ylims based on pressure ylims 
-        # This doesn't really seem to do anything except make it so that the unit is shown 
+        # Set height axis ylims based on pressure ylims
+        # This doesn't really seem to do anything except make it so that the unit is shown
         # on the axis
         self.heightax.set_ylim(pressure_to_height_std(units.Quantity
                                                       (self.ax.get_ylim(), 'hPa')))
