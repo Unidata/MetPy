@@ -17,8 +17,7 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
-from matplotlib.ticker import (MultipleLocator, FixedLocator, NullFormatter,
-                               ScalarFormatter, NullLocator)
+from matplotlib.ticker import MultipleLocator, ScalarFormatter, NullLocator, NullFormatter
 import matplotlib.transforms as transforms
 import numpy as np
 
@@ -753,27 +752,26 @@ class SkewT:
         See Also
         :meth:`metpy.calc.pressure_to_height_std`
 
-        """
+        """        
         # Set a secondary axis with height from pressure_to_height_standard
         # Requires direct and inverse fctns - pressure axis and height axis
-        def pressure_axis(p):
+        def height_axis(p):
             return pressure_to_height_std(units.Quantity(p, 'hPa')).m_as('km')
-
-        def height_axis(h):
+        def pressure_axis(h):
             return height_to_pressure_std(units.Quantity(h, 'km')).m
         # Positions the axis .12 normalized units to the left of the pressure axis
         self.heightax = self.ax.secondary_yaxis(-0.12,
-                                                functions=(pressure_axis, height_axis))
-        # Set ylim based on pressure limits
+                                                functions=(height_axis, pressure_axis))
+        # Set height axis ylims based on pressure ylims 
+        # This doesn't really seem to do anything except make it so that the unit is shown 
+        # on the axis
         self.heightax.set_ylim(pressure_to_height_std(units.Quantity
                                                       (self.ax.get_ylim(), 'hPa')))
         self.heightax.yaxis.set_units(units.km)
         self.heightax.yaxis.set_minor_locator(NullLocator())
         self.heightax.yaxis.set_major_formatter(ScalarFormatter())
         # Create ticks on the height axis counting by 1 from min to max
-        ymin, ymax = self.heightax.get_ylim()
-        yticks = np.arange(ymin, ymax + 1, 1)
-        self.heightax.yaxis.set_major_locator(FixedLocator(yticks))
+        self.heightax.yaxis.set_major_locator(MultipleLocator(1))
 
 
 @exporter.export
