@@ -99,8 +99,15 @@ PYBIND11_MODULE(_calc_mod, m) {
            py::arg("pressure"), py::arg("temperature"), py::arg("dewpoint"));
 
 
-
-
+    m.def("parcel_profile",
+            [](py::array_t<double> pressure, double temperature, double dewpoint) {
+                // pressure.data() gives the beginning pointer of the data buffer
+                std::vector<double> pressure_vec(pressure.data(), pressure.data() + pressure.size());
+                std::vector<double> temp_prof = ParcelProfile(pressure_vec, temperature, dewpoint);
+                return py::array_t<double>(temp_prof.size(), temp_prof.data());
+            },
+            "Compute the parcel temperature profile as it rises from a given pressure and temperature.",
+            py::arg("pressure"), py::arg("temperature"), py::arg("dewpoint"));
 
 
     m.def("saturation_vapor_pressure", py::vectorize(SaturationVaporPressure),

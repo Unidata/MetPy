@@ -145,7 +145,24 @@ bool _CheckPressure(const std::vector<double>& pressure) {
 }
 
 
-ParcelProfile _ParcelProfileHelper(const std::vector<double>& pressure, double temperature, double dewpoint) {
+std::vector<double> ParcelProfile(const std::vector<double>& pressure,
+                                  double temperature,
+                                  double dewpoint) {
+    // Returns a vector of temperatures corresponding to the input pressure levels.
+
+    ParProStruct profile = _ParcelProfileHelper(pressure, temperature, dewpoint);
+
+    // Combine lower and upper temperature profiles
+    std::vector<double> combined_temp;
+    combined_temp.reserve(pressure.size());
+
+    combined_temp.insert(combined_temp.end(), profile.temp_lower.begin(), profile.temp_lower.end());
+    combined_temp.insert(combined_temp.end(), profile.temp_upper.begin(), profile.temp_upper.end());
+
+    return combined_temp;
+}
+
+ParProStruct _ParcelProfileHelper(const std::vector<double>& pressure, double temperature, double dewpoint) {
     // Check that pressure does not increase.
     if (!_CheckPressure(pressure)) {
         throw std::runtime_error(

@@ -33,14 +33,18 @@ std::pair<double, double> LCL(double pressure, double temperature, double dewpoi
 bool _CheckPressure(const std::vector<double>& pressure);
 
 // Return struct for _ParcelProfileHelper
-struct ParcelProfile {
+struct ParProStruct {
     std::vector<double> press_lower, press_upper;
     double press_lcl;
     std::vector<double> temp_lower, temp_upper;
     double temp_lcl;
 };
 
-ParcelProfile _ParcelProfileHelper(const std::vector<double>& pressure, double temperature, double dewpoint);
+std::vector<double> ParcelProfile(const std::vector<double>& pressure,
+                                  double temperature,
+                                  double dewpoint);
+
+ParProStruct _ParcelProfileHelper(const std::vector<double>& pressure, double temperature, double dewpoint);
 
 double _SaturationVaporPressureLiquid(double temperature);
 double _SaturationVaporPressureSolid(double temperature);

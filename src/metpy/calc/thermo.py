@@ -1313,6 +1313,23 @@ def parcel_profile(pressure, temperature, dewpoint):
 
 
 @exporter.export
+@preprocess_and_wrap(wrap_like='pressure')
+@process_units(
+    {
+        'pressure': '[pressure]',
+        'temperature': '[temperature]',
+        'dewpoint': '[temperature]'
+    },
+    '[temperature]'
+) # process units because no unit should be passed to c++ function
+def parcel_profile_linfel(pressure, temperature, dewpoint):
+    """
+    Linfeng's version of 'parcel_profile'. Added on Jun 24 2025
+    """
+    return _calc_mod.parcel_profile(pressure, temperature, dewpoint)
+
+
+@exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def parcel_profile_with_lcl(pressure, temperature, dewpoint):
