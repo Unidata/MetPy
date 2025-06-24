@@ -757,7 +757,7 @@ class SkewT:
         # Requires direct and inverse fctns - pressure axis and height axis
         def height_axis(p):
             return pressure_to_height_std(units.Quantity(p, 'hPa')).m_as('km')
-        
+
         def pressure_axis(h):
             return height_to_pressure_std(units.Quantity(h, 'km')).m
         # Positions the axis .12 normalized units to the left of the pressure axis
