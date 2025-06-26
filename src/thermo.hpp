@@ -23,6 +23,9 @@ double DryLapse(double pressure, double ref_temperature, double ref_pressure);
 std::vector<double> DryLapseProfile(const std::vector<double>& pressure_profile,
                                     double ref_temperature,
                                     double ref_pressure);
+py::array_t<double> DryLapseVectorized(py::array_t<double> pressure,
+                                         py::array_t<double> ref_temperature,
+                                         double ref_pressure);
 
 double CaldlnTdlnP(double temperature, double pressure);
 double MoistLapse(double pressure, double ref_temperature, double ref_pressure, int rk_nstep);

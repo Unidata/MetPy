@@ -58,6 +58,47 @@ std::vector<double> DryLapseProfile(const std::vector<double>& pressure_profile,
     return temperature_profile;
 }
 
+
+py::array_t<double> DryLapseVectorized(py::array_t<double> pressure,
+                                         py::array_t<double> ref_temperature,
+                                         double ref_pressure) {
+    // This function calculates the dry adiabatic profile for multiple starting
+    // temperatures (2D surface) and a single communal starting pressure, along a 
+    // 1D pressure profile.
+    // --- Step 1: Prepare the C++ vector for pressure levels ---
+    if (pressure.ndim() > 1) {
+        throw std::runtime_error("Input 'pressure' must be 1D array or a single value.");
+    }
+    std::vector<double> pressure_vec(pressure.data(), pressure.data() + pressure.size());
+
+    // --- Step 2: Ensure the reference temperature array is contiguous ---
+    auto ref_temp_contig = py::array::ensure(ref_temperature, py::array::c_style);
+    
+    // --- Step 3: Define the shape of the output array: (N+1) dimension---
+    std::vector<ssize_t> out_shape;
+    for(int i = 0; i < ref_temp_contig.ndim(); ++i) {
+        out_shape.push_back(ref_temp_contig.shape(i));
+    }
+    ssize_t profile_len = pressure_vec.size();
+    out_shape.push_back(profile_len);
+    
+    auto out_array = py::array_t<double>(out_shape);
+
+    // --- Step 4: Get direct pointers to data buffers for fast access ---
+    const double* ref_temp_ptr = static_cast<const double*>(ref_temp_contig.request().ptr);
+    double* out_array_ptr = out_array.mutable_data();
+    ssize_t num_profiles = ref_temp_contig.size();
+
+    // --- Step 5: Loop through each reference temperature ---
+    for (ssize_t i = 0; i < num_profiles; ++i) {
+        for (ssize_t j = 0; j < profile_len; ++j) {
+            out_array_ptr[i * profile_len + j] = DryLapse(pressure_vec[j], ref_temp_ptr[i], ref_pressure);
+        }
+    }
+
+    return out_array;
+}
+
 double CaldlnTdlnP(double temperature, double pressure) {
     // Calculate dlnT/dlnP for a moist (saturated) adiabatic process.
     double rs = SaturationMixingRatio(pressure, temperature, "liquid");
