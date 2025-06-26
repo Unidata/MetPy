@@ -92,24 +92,21 @@ double MoistLapse(double pressure, double ref_temperature, double ref_pressure, 
     return T1; // check final T1 P1
 }
 
-std::vector<double> MoistLapseProfile(const std::vector<double>& pressure_profile,
+std::vector<double> MoistLapseProfile(const std::vector<double>& press_profile,
                                     double ref_temperature,
-                                    double ref_pressure) {
-    // Vectorized version of MoistLapse for a pressure profile. C++ internally use.
+                                    double ref_pressure,
+                                    int nstep) {
+    // MoistLapse for one full pressure profile given one ref_temperature. C++ internally use.
 
     // calculate temperature profile of an air parcel lifting saturated adiabatically
     // through the given pressure profile.
-    std::vector<double> temperature_profile;
-    temperature_profile.reserve(pressure_profile.size());
+    std::vector<double> temp_profile;
+    temp_profile.reserve(press_profile.size());
 
-    //double T1 = ref_temperature;
-    //double P1 = ref_pressure;
-    double T;
-    for (size_t i = 0; i < pressure_profile.size(); ++i) {
-        T = MoistLapse(pressure_profile[i], ref_temperature, ref_pressure, 50);
-        temperature_profile.push_back(T);
+    for (double p : press_profile) {
+        temp_profile.push_back(MoistLapse(p, ref_temperature, ref_pressure, nstep));
     }
-    return temperature_profile;
+    return temp_profile;
 }
 
 std::pair<double, double> LCL(double pressure, double temperature, double dewpoint) {
@@ -198,7 +195,7 @@ ParProStruct _ParcelProfileHelper(const std::vector<double>& pressure, double te
             press_upper.push_back(p);
         }
     }
-    std::vector<double> temp_upper = MoistLapseProfile(press_upper, temp_lower.back(), press_lcl);
+    std::vector<double> temp_upper = MoistLapseProfile(press_upper, temp_lower.back(), press_lcl, 30);
 
     press_lower.pop_back();
     temp_lower.pop_back();

@@ -690,7 +690,10 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 )
 def moist_lapse_linfel(pressure, temperature, reference_pressure=None):
     """
-    Linfeng's version of 'moist_lapse'.  Added on Jun23 2025
+    Linfeng's version of 'moist_lapse'.  Added on Jun 25 2025
+    This function calculates the moist adiabatic profile for multiple starting
+    temperatures (2D surface) and a single communal starting pressure, along a 
+    1D pressure profile.
     """
     if reference_pressure is None:
         reference_pressure = pressure[0]
