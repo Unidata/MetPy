@@ -4,8 +4,11 @@
 #include <string>
 #include <vector>
 #include <utility> // For std::pair
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 #include "constants.hpp"
 
+namespace py = pybind11;
 namespace mc = metpy_constants;
 
 double MoistAirGasConstant(double specific_humidity);
@@ -22,11 +25,15 @@ std::vector<double> DryLapseProfile(const std::vector<double>& pressure_profile,
                                     double ref_pressure);
 
 double CaldlnTdlnP(double temperature, double pressure);
-double MoistLapse(double pressure, double ref_temperature, double ref_pressure, int nstep);
+double MoistLapse(double pressure, double ref_temperature, double ref_pressure, int rk_nstep);
 std::vector<double> MoistLapseProfile(const std::vector<double>& press_profile,
                                     double ref_temperature,
                                     double ref_pressure,
-                                    int nstep);
+                                    int rk_nstep);
+py::array_t<double> MoistLapseVectorized(py::array_t<double> pressure,
+                                         py::array_t<double> ref_temperature,
+                                         double ref_pressure,
+                                         int rk_nstep);
 
 std::pair<double, double> LCL(double pressure, double temperature, double dewpoint);
 

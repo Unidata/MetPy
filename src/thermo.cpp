@@ -3,6 +3,7 @@
 #include <vector>
 #include <utility> // For std::pair
 #include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 #include <stdexcept>
 #include <iostream>   // for std::cerr
 #include <limits>     // for std::numeric_limits
@@ -69,17 +70,17 @@ double CaldlnTdlnP(double temperature, double pressure) {
     return dlnT_dlnP_Bakhshaii2013;
 }
 
-double MoistLapse(double pressure, double ref_temperature, double ref_pressure, int nstep) {
+double MoistLapse(double pressure, double ref_temperature, double ref_pressure, int rk_nstep) {
     // calculate temperature at pressure given reference temperature and pressure
     // assuming moist adiabatic expansion (vapor condenses and removed from the air
     // parcel)
     
-    double dlnP = log(pressure / ref_pressure) / (double)nstep;
+    double dlnP = log(pressure / ref_pressure) / (double)rk_nstep;
     double T1 = ref_temperature;
     double P1 = ref_pressure;
     double k[4];
 
-    for (int i = 0; i < nstep; ++i) {
+    for (int i = 0; i < rk_nstep; ++i) {
         k[0] = CaldlnTdlnP(T1, P1); 
         k[1] = CaldlnTdlnP(T1 * exp(k[0] * dlnP/2.), P1 * exp(dlnP/2.));
         k[2] = CaldlnTdlnP(T1 * exp(k[1] * dlnP/2.), P1 * exp(dlnP/2.));
@@ -95,7 +96,7 @@ double MoistLapse(double pressure, double ref_temperature, double ref_pressure, 
 std::vector<double> MoistLapseProfile(const std::vector<double>& press_profile,
                                     double ref_temperature,
                                     double ref_pressure,
-                                    int nstep) {
+                                    int rk_nstep) {
     // MoistLapse for one full pressure profile given one ref_temperature. C++ internally use.
 
     // calculate temperature profile of an air parcel lifting saturated adiabatically
@@ -104,10 +105,52 @@ std::vector<double> MoistLapseProfile(const std::vector<double>& press_profile,
     temp_profile.reserve(press_profile.size());
 
     for (double p : press_profile) {
-        temp_profile.push_back(MoistLapse(p, ref_temperature, ref_pressure, nstep));
+        temp_profile.push_back(MoistLapse(p, ref_temperature, ref_pressure, rk_nstep));
     }
     return temp_profile;
 }
+
+py::array_t<double> MoistLapseVectorized(py::array_t<double> pressure,
+                                         py::array_t<double> ref_temperature,
+                                         double ref_pressure,
+                                         int rk_nstep) {
+    // This function calculates the moist adiabatic profile for multiple starting
+    // temperatures (2D surface) and a single communal starting pressure, along a 
+    // 1D pressure profile.
+    // --- Step 1: Prepare the C++ vector for pressure levels ---
+    if (pressure.ndim() > 1) {
+        throw std::runtime_error("Input 'pressure' must be 1D array or a single value.");
+    }
+    std::vector<double> pressure_vec(pressure.data(), pressure.data() + pressure.size());
+
+    // --- Step 2: Ensure the reference temperature array is contiguous ---
+    auto ref_temp_contig = py::array::ensure(ref_temperature, py::array::c_style);
+    
+    // --- Step 3: Define the shape of the output array: (N+1) dimension---
+    std::vector<ssize_t> out_shape;
+    for(int i = 0; i < ref_temp_contig.ndim(); ++i) {
+        out_shape.push_back(ref_temp_contig.shape(i));
+    }
+    ssize_t profile_len = pressure_vec.size();
+    out_shape.push_back(profile_len);
+    
+    auto out_array = py::array_t<double>(out_shape);
+
+    // --- Step 4: Get direct pointers to data buffers for fast access ---
+    const double* ref_temp_ptr = static_cast<const double*>(ref_temp_contig.request().ptr);
+    double* out_array_ptr = out_array.mutable_data();
+    ssize_t num_profiles = ref_temp_contig.size();
+
+    // --- Step 5: Loop through each reference temperature ---
+    for (ssize_t i = 0; i < num_profiles; ++i) {
+        for (ssize_t j = 0; j < profile_len; ++j) {
+            out_array_ptr[i * profile_len + j] = MoistLapse(pressure_vec[j], ref_temp_ptr[i], ref_pressure, rk_nstep);
+        }
+    }
+
+    return out_array;
+}
+
 
 std::pair<double, double> LCL(double pressure, double temperature, double dewpoint) {
     if (temperature <= dewpoint) {
