@@ -194,7 +194,7 @@ py::array_t<double> MoistLapseVectorized(py::array_t<double> pressure,
 
 
 std::pair<double, double> LCL(double pressure, double temperature, double dewpoint) {
-    if (temperature <= dewpoint) {
+    if (temperature < dewpoint) {
         std::cerr << "Warning in function '" << __func__
             << "': Temperature must be greater than dew point for LCL calculation.\n";
         return {std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN()};
