@@ -143,9 +143,13 @@ PYBIND11_MODULE(_calc_mod, m) {
     m.def("specific_humidity_from_dewpoint", py::vectorize(SpecificHumidityFromDewPoint),
             "Calculate the specific humidity from the dewpoint temperature and pressure.",
             py::arg("pressure"), py::arg("dewpoint"), py::arg("phase"));
-
     
     m.def("virtual_temperature", py::vectorize(VirtualTemperature),
             "Calculate virtual temperature from temperature and mixing ratio.",
             py::arg("temperature"), py::arg("mixing_ratio"), py::arg("epsilon"));
+
+    m.def("virtual_temperature_from_dewpoint", py::vectorize(VirtualTemperatureFromDewpoint),
+            "Calculate virtual temperature from dewpoint.",
+            py::arg("pressure"), py::arg("temperature"), py::arg("dewpoint"), py::arg("epsilon"), py::arg("phase"));
+
 }

@@ -2185,9 +2185,28 @@ def virtual_temperature(
        Renamed ``mixing`` parameter to ``mixing_ratio``
 
     """
-    # Calling c++ calculation module
+    return temperature * ((mixing_ratio + molecular_weight_ratio)
+                          / (molecular_weight_ratio * (1 + mixing_ratio)))
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'mixing_ratio'))
+@process_units(
+    {
+        'temperature': '[temperature]',
+        'mixing_ratio': '[dimensionless]',
+        'molecular_weight_ratio': '[dimensionless]'
+    },
+    '[temperature]',
+    ignore_inputs_for_output=('molecular_weight_ratio',)
+)
+def virtual_temperature_linfel(
+    temperature, mixing_ratio, molecular_weight_ratio=mpconsts.nounit.epsilon):
+    """
+    Linfeng's version of 'virtual_temperature'.  Added on Jun 30 2025
+    """
     return _calc_mod.virtual_temperature(
             temperature, mixing_ratio, molecular_weight_ratio)
+
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure',
@@ -2255,6 +2274,38 @@ def virtual_temperature_from_dewpoint(
 
     # Calculate virtual temperature with given parameters
     return virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio)
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure',
+                                                         'temperature',
+                                                         'dewpoint'))
+@process_units(
+    {
+        'pressure': '[pressure]',
+        'temperature': '[temperature]',
+        'dewpoint': '[temperature]',
+        'molecular_weight_ratio': '[dimensionless]'
+    },
+    '[temperature]',
+    ignore_inputs_for_output=('molecular_weight_ratio',)
+)
+def virtual_temperature_from_dewpoint_linfel(
+        pressure,
+        temperature,
+        dewpoint,
+        molecular_weight_ratio=mpconsts.nounit.epsilon,
+        *,
+        phase='liquid'
+):
+    """
+    Linfeng's version of 'virtual_temperature_from_dewpoint'.  Added on Jun 30 2025
+    """
+    return _calc_mod.virtual_temperature_from_dewpoint(pressure,
+                                                       temperature,
+                                                       dewpoint,
+                                                       molecular_weight_ratio,
+                                                       phase)
 
 
 @exporter.export

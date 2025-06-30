@@ -354,3 +354,10 @@ double SpecificHumidityFromDewPoint(double pressure, double dewpoint, std::strin
 double VirtualTemperature(double temperature, double mixing_ratio, double epsilon) {
     return temperature * (mixing_ratio + epsilon) / (epsilon * (1. + mixing_ratio));
 }
+
+double VirtualTemperatureFromDewpoint(double pressure, double temperature,
+                                      double dewpoint, double epsilon,
+                                      std::string phase) {
+    double mixing_ratio = SaturationMixingRatio(pressure, dewpoint, phase);
+    return VirtualTemperature(temperature, mixing_ratio, epsilon);
+}

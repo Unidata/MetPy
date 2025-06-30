@@ -67,5 +67,7 @@ double SpecificHumidityFromMixingRatio(double mixing_ratio);
 double SpecificHumidityFromDewPoint(double pressure, double dew_point, std::string phase);
 
 double VirtualTemperature(double temperature, double mixing_ratio, double epsilon);
-
+double VirtualTemperatureFromDewpoint(double pressure, double temperature,
+                                      double dewpoint, double epsilon,
+                                      std::string phase);
 #endif // THERMO_HPP
