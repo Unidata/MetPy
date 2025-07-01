@@ -1059,6 +1059,161 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
                                             dewpoint, intersect_type='LFC')
 
 
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
+def lfc_linfel(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoint_start=None,
+        which='top'):
+    """
+    Linfeng's version of 'lfc'. Added on Jul 1 2025
+    """
+    r"""Calculate the level of free convection (LFC).
+
+    This works by finding the first intersection of the ideal parcel path and
+    the measured parcel temperature. If this intersection occurs below the LCL,
+    the LFC is determined to be the same as the LCL, based upon the conditions
+    set forth in [USAF1990]_, pg 4-14, where a parcel must be lifted dry adiabatically
+    to saturation before it can freely rise.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure profile. This array must be from high to low pressure.
+
+    temperature : `pint.Quantity`
+        Temperature at the levels given by `pressure`
+
+    dewpoint : `pint.Quantity`
+        Dewpoint at the levels given by `pressure`
+
+    parcel_temperature_profile: `pint.Quantity`, optional
+        The parcel's temperature profile from which to calculate the LFC. Defaults to the
+        surface parcel profile.
+
+    dewpoint_start: `pint.Quantity`, optional
+        Dewpoint of the parcel for which to calculate the LFC. Defaults to the surface
+        dewpoint.
+
+    which: str, optional
+        Pick which LFC to return. Options are 'top', 'bottom', 'wide', 'most_cape', and 'all';
+        'top' returns the lowest-pressure LFC (default),
+        'bottom' returns the highest-pressure LFC,
+        'wide' returns the LFC whose corresponding EL is farthest away,
+        'most_cape' returns the LFC that results in the most CAPE in the profile.
+
+    Returns
+    -------
+    `pint.Quantity`
+        LFC pressure, or array of same if which='all'
+
+    `pint.Quantity`
+        LFC temperature, or array of same if which='all'
+
+    Examples
+    --------
+    >>> from metpy.calc import dewpoint_from_relative_humidity, lfc
+    >>> from metpy.units import units
+    >>> # pressure
+    >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
+    ...      550., 500., 450., 400., 350., 300., 250., 200.,
+    ...      175., 150., 125., 100., 80., 70., 60., 50.,
+    ...      40., 30., 25., 20.] * units.hPa
+    >>> # temperature
+    >>> T = [29.3, 28.1, 23.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
+    ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
+    ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
+    ...      -56.3, -51.7, -50.7, -47.5] * units.degC
+    >>> # relative humidity
+    >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
+    ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
+    ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
+    >>> # calculate dewpoint
+    >>> Td = dewpoint_from_relative_humidity(T, rh)
+    >>> # calculate LFC
+    >>> lfc(p, T, Td)
+    (<Quantity(967.309996, 'hectopascal')>, <Quantity(25.778387, 'degree_Celsius')>)
+
+    See Also
+    --------
+    parcel_profile
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
+    .. versionchanged:: 1.0
+       Renamed ``dewpt``,``dewpoint_start`` parameters to ``dewpoint``, ``dewpoint_start``
+
+    """
+    # Default to surface parcel if no profile or starting pressure level is given
+    if parcel_temperature_profile is None:
+        pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
+        new_profile = parcel_profile_with_lcl_linfel(pressure, temperature, dewpoint)
+        pressure, temperature, dewpoint, parcel_temperature_profile = new_profile
+        parcel_temperature_profile = parcel_temperature_profile.to(temperature.units)
+    else:
+        new_profile = _remove_nans(pressure, temperature, dewpoint, parcel_temperature_profile)
+        pressure, temperature, dewpoint, parcel_temperature_profile = new_profile
+
+    if dewpoint_start is None:
+        dewpoint_start = dewpoint[0]
+
+    # The parcel profile and data may have the same first data point.
+    # If that is the case, ignore that point to get the real first
+    # intersection for the LFC calculation. Use logarithmic interpolation.
+    if np.isclose(parcel_temperature_profile[0].to(temperature.units).m, temperature[0].m):
+        x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
+                                  temperature[1:], direction='increasing', log_x=True)
+    else:
+        x, y = find_intersections(pressure, parcel_temperature_profile,
+                                  temperature, direction='increasing', log_x=True)
+
+    # Compute LCL for this parcel for future comparisons
+    this_lcl = lcl_linfel(pressure[0], parcel_temperature_profile[0], dewpoint_start)
+
+    # The LFC could:
+    # 1) Not exist
+    # 2) Exist but be equal to the LCL
+    # 3) Exist and be above the LCL
+
+    # LFC does not exist or is LCL
+    if len(x) == 0:
+        # Is there any positive area above the LCL?
+        mask = pressure < this_lcl[0]
+        if np.all(_less_or_close(parcel_temperature_profile[mask], temperature[mask])):
+            # LFC doesn't exist
+            x = units.Quantity(np.nan, pressure.units)
+            y = units.Quantity(np.nan, temperature.units)
+        else:  # LFC = LCL
+            x, y = this_lcl
+        return x, y
+
+    # LFC exists. Make sure it is no lower than the LCL
+    else:
+        idx = x < this_lcl[0]
+        # LFC height < LCL height, so set LFC = LCL
+        if not any(idx):
+            el_pressure, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
+                                                temperature[1:], direction='decreasing',
+                                                log_x=True)
+            if el_pressure.size and np.min(el_pressure) > this_lcl[0]:
+                # EL exists and it is below the LCL
+                x = units.Quantity(np.nan, pressure.units)
+                y = units.Quantity(np.nan, temperature.units)
+            else:
+                # EL exists and it is above the LCL or the EL does not exist
+                x, y = this_lcl
+            return x, y
+        # Otherwise, find all LFCs that exist above the LCL
+        # What is returned depends on which flag as described in the docstring
+        else:
+            return _multiple_el_lfc_options(x, y, idx, which, pressure,
+                                            parcel_temperature_profile, temperature,
+                                            dewpoint, intersect_type='LFC')
+
+
 def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_x,
                              which, pressure, parcel_temperature_profile, temperature,
                              dewpoint, intersect_type):
@@ -1228,6 +1383,119 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
     x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:],
                               direction='decreasing', log_x=True)
     lcl_p, _ = lcl(pressure[0], temperature[0], dewpoint[0])
+    if len(x) > 0 and x[-1] < lcl_p:
+        idx = x < lcl_p
+        return _multiple_el_lfc_options(x, y, idx, which, pressure,
+                                        parcel_temperature_profile, temperature, dewpoint,
+                                        intersect_type='EL')
+    else:
+        return (units.Quantity(np.nan, pressure.units),
+                units.Quantity(np.nan, temperature.units))
+
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
+def el_linfel(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='top'):
+    """
+    Linfeng's version of 'el'. Added on Jul 1 2025
+    """
+    r"""Calculate the equilibrium level.
+
+    This works by finding the last intersection of the ideal parcel path and
+    the measured environmental temperature. If there is one or fewer intersections, there is
+    no equilibrium level.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure profile. This array must be from high to low pressure.
+
+    temperature : `pint.Quantity`
+        Temperature at the levels given by `pressure`
+
+    dewpoint : `pint.Quantity`
+        Dewpoint at the levels given by `pressure`
+
+    parcel_temperature_profile: `pint.Quantity`, optional
+        The parcel's temperature profile from which to calculate the EL. Defaults to the
+        surface parcel profile.
+
+    which: str, optional
+        Pick which EL to return. Options are 'top', 'bottom', 'wide', 'most_cape', and 'all'.
+        'top' returns the lowest-pressure EL, default.
+        'bottom' returns the highest-pressure EL.
+        'wide' returns the EL whose corresponding LFC is farthest away.
+        'most_cape' returns the EL that results in the most CAPE in the profile.
+
+    Returns
+    -------
+    `pint.Quantity`
+        EL pressure, or array of same if which='all'
+
+    `pint.Quantity`
+        EL temperature, or array of same if which='all'
+
+    Examples
+    --------
+    >>> from metpy.calc import el, dewpoint_from_relative_humidity, parcel_profile
+    >>> from metpy.units import units
+    >>> # pressure
+    >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
+    ...      550., 500., 450., 400., 350., 300., 250., 200.,
+    ...      175., 150., 125., 100., 80., 70., 60., 50.,
+    ...      40., 30., 25., 20.] * units.hPa
+    >>> # temperature
+    >>> T = [29.3, 28.1, 23.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
+    ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
+    ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
+    ...      -56.3, -51.7, -50.7, -47.5] * units.degC
+    >>> # relative humidity
+    >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
+    ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
+    ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
+    >>> # calculate dewpoint
+    >>> Td = dewpoint_from_relative_humidity(T, rh)
+    >>> # compute parcel profile temperature
+    >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
+    >>> # calculate EL
+    >>> el(p, T, Td, prof)
+    (<Quantity(112.252054, 'hectopascal')>, <Quantity(-76.2210312, 'degree_Celsius')>)
+
+    See Also
+    --------
+    parcel_profile
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
+    .. versionchanged:: 1.0
+       Renamed ``dewpt`` parameter to ``dewpoint``
+
+    """
+    # Default to surface parcel if no profile or starting pressure level is given
+    if parcel_temperature_profile is None:
+        pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
+        new_profile = parcel_profile_with_lcl_linfel(pressure, temperature, dewpoint)
+        pressure, temperature, dewpoint, parcel_temperature_profile = new_profile
+        parcel_temperature_profile = parcel_temperature_profile.to(temperature.units)
+    else:
+        new_profile = _remove_nans(pressure, temperature, dewpoint, parcel_temperature_profile)
+        pressure, temperature, dewpoint, parcel_temperature_profile = new_profile
+
+    # If the top of the sounding parcel is warmer than the environment, there is no EL
+    if parcel_temperature_profile[-1] > temperature[-1]:
+        return (units.Quantity(np.nan, pressure.units),
+                units.Quantity(np.nan, temperature.units))
+
+    # Interpolate in log space to find the appropriate pressure - units have to be stripped
+    # and reassigned to allow np.log() to function properly.
+    x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:],
+                              direction='decreasing', log_x=True)
+    lcl_p, _ = lcl_linfel(pressure[0], temperature[0], dewpoint[0])
     if len(x) > 0 and x[-1] < lcl_p:
         idx = x < lcl_p
         return _multiple_el_lfc_options(x, y, idx, which, pressure,
