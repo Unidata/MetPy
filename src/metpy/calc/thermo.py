@@ -1318,19 +1318,14 @@ def parcel_profile(pressure, temperature, dewpoint):
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='pressure')
-@process_units(
-    {
-        'pressure': '[pressure]',
-        'temperature': '[temperature]',
-        'dewpoint': '[temperature]'
-    },
-    '[temperature]'
-) # process units because no unit should be passed to c++ function
+@check_units('[pressure]', '[temperature]', '[temperature]')
 def parcel_profile_linfel(pressure, temperature, dewpoint):
     """
-    Linfeng's version of 'parcel_profile'. Added on Jun 24 2025
+    Linfeng's version of 'parcel_profile'. Added on Jul 1 2025
     """
-    return _calc_mod.parcel_profile(pressure, temperature, dewpoint)
+
+    _, _, _, t_l, _, t_u = _parcel_profile_helper_linfel(pressure, temperature, dewpoint)
+    return concatenate((t_l, t_u))
 
 
 @exporter.export
@@ -1416,6 +1411,100 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint):
 
     """
     p_l, p_lcl, p_u, t_l, t_lcl, t_u = _parcel_profile_helper(pressure, temperature[0],
+                                                              dewpoint[0])
+    new_press = concatenate((p_l, p_lcl, p_u))
+    prof_temp = concatenate((t_l, t_lcl, t_u))
+    new_temp = _insert_lcl_level(pressure, temperature, p_lcl)
+    new_dewp = _insert_lcl_level(pressure, dewpoint, p_lcl)
+    return new_press, new_temp, new_dewp, prof_temp
+
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def parcel_profile_with_lcl_linfel(pressure, temperature, dewpoint):
+    """
+    Linfeng's version of 'parcel_profile_with_lcl'. Added on Jul 1 2025
+    """
+    r"""Calculate the profile a parcel takes through the atmosphere.
+
+    The parcel starts at `temperature`, and `dewpoint`, lifted up
+    dry adiabatically to the LCL, and then moist adiabatically from there.
+    `pressure` specifies the pressure levels for the profile. This function returns
+    a profile that includes the LCL.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure level(s) of interest. This array must be from
+        high to low pressure.
+
+    temperature : `pint.Quantity`
+        Atmospheric temperature at the levels in `pressure`. The first entry should be at
+        the same level as the first `pressure` data point.
+
+    dewpoint : `pint.Quantity`
+        Atmospheric dewpoint at the levels in `pressure`. The first entry should be at
+        the same level as the first `pressure` data point.
+
+    Returns
+    -------
+    pressure : `pint.Quantity`
+        The parcel profile pressures, which includes the specified levels and the LCL
+
+    ambient_temperature : `pint.Quantity`
+        Atmospheric temperature values, including the value interpolated to the LCL level
+
+    ambient_dew_point : `pint.Quantity`
+        Atmospheric dewpoint values, including the value interpolated to the LCL level
+
+    profile_temperature : `pint.Quantity`
+        The parcel profile temperatures at all of the levels in the returned pressures array,
+        including the LCL
+
+    Examples
+    --------
+    >>> from metpy.calc import dewpoint_from_relative_humidity, parcel_profile_with_lcl
+    >>> from metpy.units import units
+    >>> # pressure
+    >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
+    ...      550., 500., 450., 400., 350., 300., 250., 200.,
+    ...      175., 150., 125., 100., 80., 70., 60., 50.,
+    ...      40., 30., 25., 20.] * units.hPa
+    >>> # temperature
+    >>> T = [29.3, 28.1, 23.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
+    ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
+    ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
+    ...      -56.3, -51.7, -50.7, -47.5] * units.degC
+    >>> # relative humidity
+    >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
+    ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
+    ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
+    >>> # calculate dewpoint
+    >>> Td = dewpoint_from_relative_humidity(T, rh)
+    >>> # compute parcel temperature
+    >>> Td = dewpoint_from_relative_humidity(T, rh)
+    >>> p_wLCL, T_wLCL, Td_wLCL, prof_wLCL = parcel_profile_with_lcl(p, T, Td)
+
+    See Also
+    --------
+    lcl, moist_lapse, dry_lapse, parcel_profile, parcel_profile_with_lcl_as_dataset
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Duplicate pressure levels return duplicate parcel temperatures. Consider preprocessing
+    low-precision, high frequency profiles with tools like `scipy.medfilt`,
+    `pandas.drop_duplicates`, or `numpy.unique`.
+
+    Will only return Pint Quantities, even when given xarray DataArray profiles. To
+    obtain a xarray Dataset instead, use `parcel_profile_with_lcl_as_dataset` instead.
+
+    .. versionchanged:: 1.0
+       Renamed ``dewpt`` parameter to ``dewpoint``
+
+    """
+    p_l, p_lcl, p_u, t_l, t_lcl, t_u = _parcel_profile_helper_linfel(pressure, temperature[0],
                                                               dewpoint[0])
     new_press = concatenate((p_l, p_lcl, p_u))
     prof_temp = concatenate((t_l, t_lcl, t_u))
@@ -1555,6 +1644,51 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
     return (press_lower[:-1], press_lcl, press_upper[1:],
             temp_lower[:-1], temp_lcl, temp_upper[1:])
 
+
+def _parcel_profile_helper_linfel(pressure, temperature, dewpoint):
+    """ Linfeng's version of _parcel_profile_helper. Added on Jul 1 2025
+    """
+    """Help calculate parcel profiles.
+
+    Returns the temperature and pressure, above, below, and including the LCL. The
+    other calculation functions decide what to do with the pieces.
+
+    """
+    # Check that pressure does not increase.
+    _check_pressure_error(pressure)
+
+    # Find the LCL
+    press_lcl, temp_lcl = lcl_linfel(pressure[0], temperature, dewpoint)
+    press_lcl = press_lcl.to(pressure.units)
+
+    # Find the dry adiabatic profile, *including* the LCL. We need >= the LCL in case the
+    # LCL is included in the levels. It's slightly redundant in that case, but simplifies
+    # the logic for removing it later.
+    press_lower = concatenate((pressure[pressure >= press_lcl], press_lcl))
+    temp_lower = dry_lapse_linfel(press_lower, temperature)
+
+    # If the pressure profile doesn't make it to the lcl, we can stop here
+    if _greater_or_close(np.nanmin(pressure), press_lcl):
+        return (press_lower[:-1], press_lcl, units.Quantity(np.array([]), press_lower.units),
+                temp_lower[:-1], temp_lcl, units.Quantity(np.array([]), temp_lower.units))
+
+    # Establish profile above LCL
+    press_upper = concatenate((press_lcl, pressure[pressure < press_lcl]))
+
+    # Check duplicate pressure values from remaining profile.
+    # unique will return remaining values sorted ascending.
+    unique, indices, counts = np.unique(press_upper.m, return_inverse=True, return_counts=True)
+    unique = units.Quantity(unique, press_upper.units)
+    if np.any(counts > 1):
+        _warnings.warn(f'Duplicate pressure(s) {unique[counts > 1]:~P} provided. '
+                       'Output profile includes duplicate temperatures as a result.')
+
+    # Find moist pseudo-adiabatic profile starting at the LCL
+    temp_upper = moist_lapse_linfel(press_upper, temp_lower[-1]).to(temp_lower.units)
+    
+    # Return profile pieces
+    return (press_lower[:-1], press_lcl, press_upper[1:],
+            temp_lower[:-1], temp_lcl, temp_upper[1:])
 
 def _insert_lcl_level(pressure, temperature, lcl_pressure):
     """Insert the LCL pressure into the profile."""
