@@ -2343,6 +2343,65 @@ def saturation_mixing_ratio(total_press, temperature, *, phase='liquid'):
                        'equilibrium.')
     return np.where(undefined, np.nan, mixing_ratio._nounit(e_s, total_press))
 
+@exporter.export
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('total_press', 'temperature'))
+@process_units(
+    {'total_press': '[pressure]', 'temperature': '[temperature]'},
+    '[dimensionless]'
+)
+def saturation_mixing_ratio_linfel(total_press, temperature, *, phase='liquid'):
+    """
+    Linfeng's version of 'saturation_mixing_ratio'. Added on Jul 2 2025
+    """
+    r"""Calculate the saturation mixing ratio of water vapor.
+
+    This calculation is given total atmospheric pressure and air temperature.
+
+    Parameters
+    ----------
+    total_press: `pint.Quantity`
+        Total atmospheric pressure
+
+    temperature: `pint.Quantity`
+        Air temperature
+
+    phase : {'liquid', 'solid', 'auto'}
+        Where applicable, adjust assumptions and constants to make calculation valid in
+        ``'liquid'`` water (default) or ``'solid'`` ice regimes. ``'auto'`` will change regime
+        based on determination of phase boundaries, eg `temperature` relative to freezing.
+
+    Returns
+    -------
+    `pint.Quantity`
+        Saturation mixing ratio, dimensionless
+
+    Examples
+    --------
+    >>> from metpy.calc import saturation_mixing_ratio
+    >>> from metpy.units import units
+    >>> saturation_mixing_ratio(983 * units.hPa, 25 * units.degC).to('g/kg')
+    <Quantity(20.6736514, 'gram / kilogram')>
+
+    Notes
+    -----
+    This function is a straightforward implementation of the equation given in many places,
+    such as [Hobbs1977]_ pg.73:
+
+    .. math:: r_s = \epsilon \frac{e_s}{p - e_s}
+
+    By definition, this value is only defined for conditions where the saturation vapor
+    pressure (:math:`e_s`) for the given temperature is less than the given total pressure
+    (:math:`p`). Otherwise, liquid phase water cannot exist in equilibrium and there is only
+    water vapor present. For any value pairs that fall under this condition, the function will
+    warn and return NaN.
+
+    .. versionchanged:: 1.0
+       Renamed ``tot_press`` parameter to ``total_press``
+
+    """
+    validate_choice({'liquid', 'solid', 'auto'}, phase=phase)
+    return _calc_mod.saturation_mixing_ratio(total_press, temperature, phase)
+
 
 @exporter.export
 @preprocess_and_wrap(
@@ -3234,7 +3293,6 @@ def relative_humidity_from_specific_humidity(
         mixing_ratio_from_specific_humidity(specific_humidity),
         phase=phase)
 
-
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
@@ -3341,7 +3399,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
                                                                    dewpoint, parcel_profile)
 
-    pressure_lcl, _ = lcl(pressure[0], temperature[0], dewpoint[0])
+    pressure_lcl, _ = lcl_linfel(pressure[0], temperature[0], dewpoint[0])
     below_lcl = pressure > pressure_lcl
 
     # The mixing ratio of the parcel comes from the dewpoint below the LCL, is saturated
@@ -3368,6 +3426,171 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
 
     # Calculate the EL limit of integration
     el_pressure, _ = el(pressure, temperature, dewpoint,
+                        parcel_temperature_profile=parcel_profile, which=which_el)
+
+    # No EL and we use the top reading of the sounding.
+    el_pressure = pressure[-1].magnitude if np.isnan(el_pressure) else el_pressure.magnitude
+
+    # Difference between the parcel path and measured temperature profiles
+    y = (parcel_profile - temperature).to(units.degK)
+
+    # Estimate zero crossings
+    x, y = _find_append_zero_crossings(np.copy(pressure), y)
+
+    # CAPE
+    # Only use data between the LFC and EL for calculation
+    p_mask = _less_or_close(x.m, lfc_pressure) & _greater_or_close(x.m, el_pressure)
+    x_clipped = x[p_mask].magnitude
+    y_clipped = y[p_mask].magnitude
+    cape = (mpconsts.Rd
+            * units.Quantity(trapezoid(y_clipped, np.log(x_clipped)), 'K')).to(units('J/kg'))
+
+    # CIN
+    # Only use data between the surface and LFC for calculation
+    p_mask = _greater_or_close(x.m, lfc_pressure)
+    x_clipped = x[p_mask].magnitude
+    y_clipped = y[p_mask].magnitude
+    cin = (mpconsts.Rd
+           * units.Quantity(trapezoid(y_clipped, np.log(x_clipped)), 'K')).to(units('J/kg'))
+
+    # Set CIN to 0 if it's returned as a positive value (#1190)
+    if cin > units.Quantity(0, 'J/kg'):
+        cin = units.Quantity(0, 'J/kg')
+    return cape, cin
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
+def cape_cin_linfel(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom',
+             which_el='top'):
+    r"""Calculate CAPE and CIN.
+
+    Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
+    of a given upper air profile and parcel path. CIN is integrated between the surface and
+    LFC, CAPE is integrated between the LFC and EL (or top of sounding). Intersection points
+    of the measured temperature profile and parcel profile are logarithmically interpolated.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure level(s) of interest, in order from highest to
+        lowest pressure
+
+    temperature : `pint.Quantity`
+        Atmospheric temperature corresponding to pressure
+
+    dewpoint : `pint.Quantity`
+        Atmospheric dewpoint corresponding to pressure
+
+    parcel_profile : `pint.Quantity`
+        Temperature profile of the parcel
+
+    which_lfc : str
+        Choose which LFC to integrate from. Valid options are 'top', 'bottom', 'wide',
+        and 'most_cape'. Default is 'bottom'.
+
+    which_el : str
+        Choose which EL to integrate to. Valid options are 'top', 'bottom', 'wide',
+        and 'most_cape'. Default is 'top'.
+
+    Returns
+    -------
+    `pint.Quantity`
+        Convective Available Potential Energy (CAPE)
+
+    `pint.Quantity`
+        Convective Inhibition (CIN)
+
+    Examples
+    --------
+    >>> from metpy.calc import cape_cin, dewpoint_from_relative_humidity, parcel_profile
+    >>> from metpy.units import units
+    >>> # pressure
+    >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
+    ...      550., 500., 450., 400., 350., 300., 250., 200.,
+    ...      175., 150., 125., 100., 80., 70., 60., 50.,
+    ...      40., 30., 25., 20.] * units.hPa
+    >>> # temperature
+    >>> T = [29.3, 28.1, 23.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
+    ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
+    ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
+    ...      -56.3, -51.7, -50.7, -47.5] * units.degC
+    >>> # relative humidity
+    >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
+    ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
+    ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
+    >>> # calculate dewpoint
+    >>> Td = dewpoint_from_relative_humidity(T, rh)
+    >>> # compture parcel temperature
+    >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
+    >>> # calculate surface based CAPE/CIN
+    >>> cape_cin(p, T, Td, prof)
+    (<Quantity(4830.74608, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+
+    See Also
+    --------
+    lfc, el
+
+    Notes
+    -----
+    Formula adopted from [Hobbs1977]_.
+
+    .. math:: \text{CAPE} = -R_d \int_{LFC}^{EL}
+            (T_{{v}_{parcel}} - T_{{v}_{env}}) d\text{ln}(p)
+
+    .. math:: \text{CIN} = -R_d \int_{SFC}^{LFC}
+            (T_{{v}_{parcel}} - T_{{v}_{env}}) d\text{ln}(p)
+
+
+    * :math:`CAPE` is convective available potential energy
+    * :math:`CIN` is convective inhibition
+    * :math:`LFC` is pressure of the level of free convection
+    * :math:`EL` is pressure of the equilibrium level
+    * :math:`SFC` is the level of the surface or beginning of parcel path
+    * :math:`R_d` is the gas constant
+    * :math:`g` is gravitational acceleration
+    * :math:`T_{{v}_{parcel}}` is the parcel virtual temperature
+    * :math:`T_{{v}_{env}}` is environment virtual temperature
+    * :math:`p` is atmospheric pressure
+
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
+    .. versionchanged:: 1.0
+       Renamed ``dewpt`` parameter to ``dewpoint``
+
+    """
+    pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
+                                                                   dewpoint, parcel_profile)
+
+    pressure_lcl, _ = lcl_linfel(pressure[0], temperature[0], dewpoint[0])
+    below_lcl = pressure > pressure_lcl
+
+    # The mixing ratio of the parcel comes from the dewpoint below the LCL, is saturated
+    # based on the temperature above the LCL
+    parcel_mixing_ratio = np.where(
+        below_lcl,
+        saturation_mixing_ratio_linfel(pressure[0], dewpoint[0]),
+        saturation_mixing_ratio_linfel(pressure, parcel_profile)
+    )
+
+    # Convert the temperature/parcel profile to virtual temperature
+    temperature = virtual_temperature_from_dewpoint_linfel(pressure, temperature, dewpoint)
+    parcel_profile = virtual_temperature_linfel(parcel_profile, parcel_mixing_ratio)
+
+    # Calculate LFC limit of integration
+    lfc_pressure, _ = lfc_linfel(pressure, temperature, dewpoint,
+                          parcel_temperature_profile=parcel_profile, which=which_lfc)
+
+    # If there is no LFC, no need to proceed.
+    if np.isnan(lfc_pressure):
+        return units.Quantity(0, 'J/kg'), units.Quantity(0, 'J/kg')
+    else:
+        lfc_pressure = lfc_pressure.magnitude
+
+    # Calculate the EL limit of integration
+    el_pressure, _ = el_linfel(pressure, temperature, dewpoint,
                         parcel_temperature_profile=parcel_profile, which=which_el)
 
     # No EL and we use the top reading of the sounding.
