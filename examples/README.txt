@@ -4,7 +4,7 @@ Example Gallery
 ===============
 
 For more MetPy examples, please visit the `MetPy Cookbook on Project Pythia
-<https://projectpythia.org/metpy-cookbook/README.html>`_.
+<https://projectpythia.org/metpy-cookbook/index.html>`_.
 
 .. _general-examples:
 

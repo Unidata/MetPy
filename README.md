@@ -29,7 +29,7 @@ that any MetPy ``1.x`` release will be backwards compatible with an earlier ``1.
 on a future ``1.x`` version.
 
 For additional MetPy examples not included in this repository, please see the
-[MetPy Cookbook on Project Pythia](https://projectpythia.org/metpy-cookbook/README.html).
+[MetPy Cookbook on Project Pythia](https://projectpythia.org/metpy-cookbook/index.html).
 
 We support Python >= 3.10.
 
@@ -43,7 +43,7 @@ Important Links
 ---------------
 
 - [HTML Documentation](http://unidata.github.io/MetPy)
-- [MetPy Cookbook on Project Pythia](https://projectpythia.org/metpy-cookbook/README.html)
+- [MetPy Cookbook on Project Pythia](https://projectpythia.org/metpy-cookbook/index.html)
 - "metpy" tagged questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/metpy)
 - [Gitter chat room](https://gitter.im/Unidata/MetPy)
 
