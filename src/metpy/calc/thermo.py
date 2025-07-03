@@ -3399,7 +3399,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
                                                                    dewpoint, parcel_profile)
 
-    pressure_lcl, _ = lcl_linfel(pressure[0], temperature[0], dewpoint[0])
+    pressure_lcl, _ = lcl(pressure[0], temperature[0], dewpoint[0])
     below_lcl = pressure > pressure_lcl
 
     # The mixing ratio of the parcel comes from the dewpoint below the LCL, is saturated
