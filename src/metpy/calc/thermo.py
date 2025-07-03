@@ -455,14 +455,23 @@ def temperature_from_potential_temperature(pressure, potential_temperature):
     """
     return potential_temperature * exner_function(pressure)
 
-
 @exporter.export
 @preprocess_and_wrap(
     wrap_like='temperature',
     broadcast=('pressure', 'temperature', 'reference_pressure')
 )
-@check_units('[pressure]', '[temperature]', '[pressure]')
+@process_units(
+    {
+        'pressure': '[pressure]',
+        'temperature': '[temperature]',
+        'reference_pressure': '[pressure]'
+    },
+    '[temperature]'
+)
 def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
+    """
+    Linfeng's version of 'dry_lapse'.  Added on Jun18 2025
+    """
     r"""Calculate the temperature at a level assuming only dry processes.
 
     This function lifts a parcel starting at ``temperature``, conserving
@@ -510,32 +519,7 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
     """
     if reference_pressure is None:
         reference_pressure = pressure[0]
-    return temperature * (pressure / reference_pressure)**mpconsts.kappa
-
-
-
-@exporter.export
-@preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'reference_pressure')
-)
-@process_units(
-    {
-        'pressure': '[pressure]',
-        'temperature': '[temperature]',
-        'reference_pressure': '[pressure]'
-    },
-    '[temperature]'
-)
-def dry_lapse_linfel(pressure, temperature, reference_pressure=None, vertical_dim=0):
-    """
-    Linfeng's version of 'dry_lapse'.  Added on Jun18 2025
-    """
-    if reference_pressure is None:
-        reference_pressure = pressure[0]
     return _calc_mod.dry_lapse(pressure, temperature, reference_pressure)
-
-
 
 @exporter.export
 @preprocess_and_wrap(
@@ -551,6 +535,12 @@ def dry_lapse_linfel(pressure, temperature, reference_pressure=None, vertical_di
     '[temperature]'
 )
 def moist_lapse(pressure, temperature, reference_pressure=None):
+    """
+    Linfeng's version of 'moist_lapse'.  Added on Jun 25 2025
+    This function calculates the moist adiabatic profile for multiple starting
+    temperatures (2D surface) and a single communal starting pressure, along a 
+    1D pressure profile.
+    """
     r"""Calculate the temperature at a level assuming liquid saturation processes.
 
     This function lifts a parcel starting at `temperature`. The starting pressure can
@@ -605,102 +595,10 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
        Renamed ``ref_pressure`` parameter to ``reference_pressure``
 
     """
-    def dt(p, t):
-        rs = saturation_mixing_ratio._nounit(p, t)
-        frac = (
-            (mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
-            / (mpconsts.nounit.Cp_d + (
-                mpconsts.nounit.Lv * mpconsts.nounit.Lv * rs * mpconsts.nounit.epsilon
-                / (mpconsts.nounit.Rd * t**2)
-            ))
-        )
-        return frac / p
-
-    temperature = np.atleast_1d(temperature)
-    pressure = np.atleast_1d(pressure)
-    if reference_pressure is None:
-        reference_pressure = pressure[0]
-
-    if np.isnan(reference_pressure) or np.all(np.isnan(temperature)):
-        return np.full((temperature.size, pressure.size), np.nan)
-
-    pres_decreasing = (pressure[0] > pressure[-1])
-    if pres_decreasing:
-        # Everything is easier if pressures are in increasing order
-        pressure = pressure[::-1]
-
-    # It would be preferable to use a regular solver like RK45, but as of scipy 1.8.0
-    # anything other than LSODA goes into an infinite loop when given NaNs for y0.
-    solver_args = {'fun': dt, 'y0': temperature,
-                   'method': 'LSODA', 'atol': 1e-7, 'rtol': 1.5e-8}
-
-    # Need to handle close points to avoid an error in the solver
-    close = np.isclose(pressure, reference_pressure)
-    if np.any(close):
-        ret = np.broadcast_to(temperature[:, np.newaxis], (temperature.size, np.sum(close)))
-    else:
-        ret = np.empty((temperature.size, 0), dtype=temperature.dtype)
-
-    # Do we have any points above the reference pressure
-    points_above = (pressure < reference_pressure) & ~close
-    if np.any(points_above):
-        # Integrate upward--need to flip so values are properly ordered from ref to min
-        press_side = pressure[points_above][::-1]
-
-        # Flip on exit so t values correspond to increasing pressure
-        result = si.solve_ivp(t_span=(reference_pressure, press_side[-1]),
-                              t_eval=press_side, **solver_args)
-        if result.success:
-            ret = np.concatenate((result.y[..., ::-1], ret), axis=-1)
-        else:
-            raise ValueError('ODE Integration failed. This is likely due to trying to '
-                             'calculate at too small values of pressure.')
-
-    # Do we have any points below the reference pressure
-    points_below = ~points_above & ~close
-    if np.any(points_below):
-        # Integrate downward
-        press_side = pressure[points_below]
-        result = si.solve_ivp(t_span=(reference_pressure, press_side[-1]),
-                              t_eval=press_side, **solver_args)
-        if result.success:
-            ret = np.concatenate((ret, result.y), axis=-1)
-        else:
-            raise ValueError('ODE Integration failed. This is likely due to trying to '
-                             'calculate at too small values of pressure.')
-
-    if pres_decreasing:
-        ret = ret[..., ::-1]
-
-    return ret.squeeze()
-
-
-@exporter.export
-@preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'reference_pressure')
-)
-@process_units(
-    {
-        'pressure': '[pressure]',
-        'temperature': '[temperature]',
-        'reference_pressure': '[pressure]'
-    },
-    '[temperature]'
-)
-def moist_lapse_linfel(pressure, temperature, reference_pressure=None):
-    """
-    Linfeng's version of 'moist_lapse'.  Added on Jun 25 2025
-    This function calculates the moist adiabatic profile for multiple starting
-    temperatures (2D surface) and a single communal starting pressure, along a 
-    1D pressure profile.
-    """
     if reference_pressure is None:
         reference_pressure = pressure[0]
     # nstep for RK4 is set to 30
     return _calc_mod.moist_lapse(pressure, temperature, reference_pressure, 30)
-
-
 
 @exporter.export
 @preprocess_and_wrap()
@@ -709,6 +607,9 @@ def moist_lapse_linfel(pressure, temperature, reference_pressure=None):
     ('[pressure]', '[temperature]')
 )
 def lcl(pressure, temperature, dewpoint, max_iters=None, eps=None):
+    """
+    Linfeng's version of 'lcl'. Added on Jun23 2025
+    """
     r"""Calculate the lifted condensation level (LCL) from the starting point.
 
     The starting state for the parcel is defined by `temperature`, `dewpoint`,
@@ -761,41 +662,6 @@ def lcl(pressure, temperature, dewpoint, max_iters=None, eps=None):
     .. versionchanged:: 1.0
        Renamed ``dewpt`` parameter to ``dewpoint``
 
-    """
-    if max_iters or eps:
-        _warnings.warn(
-            'max_iters, eps arguments unused and will be deprecated in a future version.',
-            PendingDeprecationWarning)
-
-    q = specific_humidity_from_dewpoint._nounit(pressure, dewpoint, phase='liquid')
-    moist_heat_ratio = (moist_air_specific_heat_pressure._nounit(q)
-                        / moist_air_gas_constant._nounit(q))
-    spec_heat_diff = mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v
-
-    a = moist_heat_ratio + spec_heat_diff / mpconsts.nounit.Rv
-    b = (-(mpconsts.nounit.Lv + spec_heat_diff * mpconsts.nounit.T0)
-         / (mpconsts.nounit.Rv * temperature))
-    c = b / a
-
-    w_minus1 = lambertw(
-        (relative_humidity_from_dewpoint._nounit(temperature, dewpoint, phase='liquid')
-         ** (1 / a) * c * np.exp(c)), k=-1).real
-
-    t_lcl = c / w_minus1 * temperature
-    p_lcl = pressure * (t_lcl / temperature) ** moist_heat_ratio
-
-    return p_lcl, t_lcl
-
-
-@exporter.export
-@preprocess_and_wrap()
-@process_units(
-    {'pressure': '[pressure]', 'temperature': '[temperature]', 'dewpoint': '[temperature]'},
-    ('[pressure]', '[temperature]')
-)
-def lcl_linfel(pressure, temperature, dewpoint, max_iters=None, eps=None):
-    """
-    Linfeng's version of 'lcl'. Added on Jun23 2025
     """
     pressure, temperature, dewpoint = np.atleast_1d(pressure, temperature, dewpoint)
     p_lcl, t_lcl = _calc_mod.lcl(pressure, temperature, dewpoint)
@@ -906,12 +772,14 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
     x, y = x.to(pressure.units), y.to(temperature.units)
     return x, y, dry_lapse(pressure[0], y, x).to(temperature.units)
 
-
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
 def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoint_start=None,
         which='top'):
+    """
+    Linfeng's version of 'lfc'. Added on Jul 1 2025
+    """
     r"""Calculate the level of free convection (LFC).
 
     This works by finding the first intersection of the ideal parcel path and
@@ -1059,161 +927,6 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
                                             dewpoint, intersect_type='LFC')
 
 
-@exporter.export
-@preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def lfc_linfel(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoint_start=None,
-        which='top'):
-    """
-    Linfeng's version of 'lfc'. Added on Jul 1 2025
-    """
-    r"""Calculate the level of free convection (LFC).
-
-    This works by finding the first intersection of the ideal parcel path and
-    the measured parcel temperature. If this intersection occurs below the LCL,
-    the LFC is determined to be the same as the LCL, based upon the conditions
-    set forth in [USAF1990]_, pg 4-14, where a parcel must be lifted dry adiabatically
-    to saturation before it can freely rise.
-
-    Parameters
-    ----------
-    pressure : `pint.Quantity`
-        Atmospheric pressure profile. This array must be from high to low pressure.
-
-    temperature : `pint.Quantity`
-        Temperature at the levels given by `pressure`
-
-    dewpoint : `pint.Quantity`
-        Dewpoint at the levels given by `pressure`
-
-    parcel_temperature_profile: `pint.Quantity`, optional
-        The parcel's temperature profile from which to calculate the LFC. Defaults to the
-        surface parcel profile.
-
-    dewpoint_start: `pint.Quantity`, optional
-        Dewpoint of the parcel for which to calculate the LFC. Defaults to the surface
-        dewpoint.
-
-    which: str, optional
-        Pick which LFC to return. Options are 'top', 'bottom', 'wide', 'most_cape', and 'all';
-        'top' returns the lowest-pressure LFC (default),
-        'bottom' returns the highest-pressure LFC,
-        'wide' returns the LFC whose corresponding EL is farthest away,
-        'most_cape' returns the LFC that results in the most CAPE in the profile.
-
-    Returns
-    -------
-    `pint.Quantity`
-        LFC pressure, or array of same if which='all'
-
-    `pint.Quantity`
-        LFC temperature, or array of same if which='all'
-
-    Examples
-    --------
-    >>> from metpy.calc import dewpoint_from_relative_humidity, lfc
-    >>> from metpy.units import units
-    >>> # pressure
-    >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
-    ...      550., 500., 450., 400., 350., 300., 250., 200.,
-    ...      175., 150., 125., 100., 80., 70., 60., 50.,
-    ...      40., 30., 25., 20.] * units.hPa
-    >>> # temperature
-    >>> T = [29.3, 28.1, 23.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
-    ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
-    ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
-    ...      -56.3, -51.7, -50.7, -47.5] * units.degC
-    >>> # relative humidity
-    >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
-    ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
-    ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
-    >>> # calculate dewpoint
-    >>> Td = dewpoint_from_relative_humidity(T, rh)
-    >>> # calculate LFC
-    >>> lfc(p, T, Td)
-    (<Quantity(967.309996, 'hectopascal')>, <Quantity(25.778387, 'degree_Celsius')>)
-
-    See Also
-    --------
-    parcel_profile
-
-    Notes
-    -----
-    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
-    Since this function returns scalar values when given a profile, this will return Pint
-    Quantities even when given xarray DataArray profiles.
-
-    .. versionchanged:: 1.0
-       Renamed ``dewpt``,``dewpoint_start`` parameters to ``dewpoint``, ``dewpoint_start``
-
-    """
-    # Default to surface parcel if no profile or starting pressure level is given
-    if parcel_temperature_profile is None:
-        pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
-        new_profile = parcel_profile_with_lcl_linfel(pressure, temperature, dewpoint)
-        pressure, temperature, dewpoint, parcel_temperature_profile = new_profile
-        parcel_temperature_profile = parcel_temperature_profile.to(temperature.units)
-    else:
-        new_profile = _remove_nans(pressure, temperature, dewpoint, parcel_temperature_profile)
-        pressure, temperature, dewpoint, parcel_temperature_profile = new_profile
-
-    if dewpoint_start is None:
-        dewpoint_start = dewpoint[0]
-
-    # The parcel profile and data may have the same first data point.
-    # If that is the case, ignore that point to get the real first
-    # intersection for the LFC calculation. Use logarithmic interpolation.
-    if np.isclose(parcel_temperature_profile[0].to(temperature.units).m, temperature[0].m):
-        x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
-                                  temperature[1:], direction='increasing', log_x=True)
-    else:
-        x, y = find_intersections(pressure, parcel_temperature_profile,
-                                  temperature, direction='increasing', log_x=True)
-
-    # Compute LCL for this parcel for future comparisons
-    this_lcl = lcl_linfel(pressure[0], parcel_temperature_profile[0], dewpoint_start)
-
-    # The LFC could:
-    # 1) Not exist
-    # 2) Exist but be equal to the LCL
-    # 3) Exist and be above the LCL
-
-    # LFC does not exist or is LCL
-    if len(x) == 0:
-        # Is there any positive area above the LCL?
-        mask = pressure < this_lcl[0]
-        if np.all(_less_or_close(parcel_temperature_profile[mask], temperature[mask])):
-            # LFC doesn't exist
-            x = units.Quantity(np.nan, pressure.units)
-            y = units.Quantity(np.nan, temperature.units)
-        else:  # LFC = LCL
-            x, y = this_lcl
-        return x, y
-
-    # LFC exists. Make sure it is no lower than the LCL
-    else:
-        idx = x < this_lcl[0]
-        # LFC height < LCL height, so set LFC = LCL
-        if not any(idx):
-            el_pressure, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
-                                                temperature[1:], direction='decreasing',
-                                                log_x=True)
-            if el_pressure.size and np.min(el_pressure) > this_lcl[0]:
-                # EL exists and it is below the LCL
-                x = units.Quantity(np.nan, pressure.units)
-                y = units.Quantity(np.nan, temperature.units)
-            else:
-                # EL exists and it is above the LCL or the EL does not exist
-                x, y = this_lcl
-            return x, y
-        # Otherwise, find all LFCs that exist above the LCL
-        # What is returned depends on which flag as described in the docstring
-        else:
-            return _multiple_el_lfc_options(x, y, idx, which, pressure,
-                                            parcel_temperature_profile, temperature,
-                                            dewpoint, intersect_type='LFC')
-
-
 def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_x,
                              which, pressure, parcel_temperature_profile, temperature,
                              dewpoint, intersect_type):
@@ -1283,10 +996,15 @@ def _most_cape_option(intersect_type, p_list, t_list, pressure, temperature, dew
     return x, y
 
 
+
+
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
 def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='top'):
+    """
+    Linfeng's version of 'el'. Added on Jul 1 2025
+    """
     r"""Calculate the equilibrium level.
 
     This works by finding the last intersection of the ideal parcel path and
@@ -1393,123 +1111,15 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
                 units.Quantity(np.nan, temperature.units))
 
 
-@exporter.export
-@preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def el_linfel(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='top'):
-    """
-    Linfeng's version of 'el'. Added on Jul 1 2025
-    """
-    r"""Calculate the equilibrium level.
-
-    This works by finding the last intersection of the ideal parcel path and
-    the measured environmental temperature. If there is one or fewer intersections, there is
-    no equilibrium level.
-
-    Parameters
-    ----------
-    pressure : `pint.Quantity`
-        Atmospheric pressure profile. This array must be from high to low pressure.
-
-    temperature : `pint.Quantity`
-        Temperature at the levels given by `pressure`
-
-    dewpoint : `pint.Quantity`
-        Dewpoint at the levels given by `pressure`
-
-    parcel_temperature_profile: `pint.Quantity`, optional
-        The parcel's temperature profile from which to calculate the EL. Defaults to the
-        surface parcel profile.
-
-    which: str, optional
-        Pick which EL to return. Options are 'top', 'bottom', 'wide', 'most_cape', and 'all'.
-        'top' returns the lowest-pressure EL, default.
-        'bottom' returns the highest-pressure EL.
-        'wide' returns the EL whose corresponding LFC is farthest away.
-        'most_cape' returns the EL that results in the most CAPE in the profile.
-
-    Returns
-    -------
-    `pint.Quantity`
-        EL pressure, or array of same if which='all'
-
-    `pint.Quantity`
-        EL temperature, or array of same if which='all'
-
-    Examples
-    --------
-    >>> from metpy.calc import el, dewpoint_from_relative_humidity, parcel_profile
-    >>> from metpy.units import units
-    >>> # pressure
-    >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
-    ...      550., 500., 450., 400., 350., 300., 250., 200.,
-    ...      175., 150., 125., 100., 80., 70., 60., 50.,
-    ...      40., 30., 25., 20.] * units.hPa
-    >>> # temperature
-    >>> T = [29.3, 28.1, 23.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
-    ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
-    ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
-    ...      -56.3, -51.7, -50.7, -47.5] * units.degC
-    >>> # relative humidity
-    >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
-    ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
-    ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
-    >>> # calculate dewpoint
-    >>> Td = dewpoint_from_relative_humidity(T, rh)
-    >>> # compute parcel profile temperature
-    >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
-    >>> # calculate EL
-    >>> el(p, T, Td, prof)
-    (<Quantity(112.252054, 'hectopascal')>, <Quantity(-76.2210312, 'degree_Celsius')>)
-
-    See Also
-    --------
-    parcel_profile
-
-    Notes
-    -----
-    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
-    Since this function returns scalar values when given a profile, this will return Pint
-    Quantities even when given xarray DataArray profiles.
-
-    .. versionchanged:: 1.0
-       Renamed ``dewpt`` parameter to ``dewpoint``
-
-    """
-    # Default to surface parcel if no profile or starting pressure level is given
-    if parcel_temperature_profile is None:
-        pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
-        new_profile = parcel_profile_with_lcl_linfel(pressure, temperature, dewpoint)
-        pressure, temperature, dewpoint, parcel_temperature_profile = new_profile
-        parcel_temperature_profile = parcel_temperature_profile.to(temperature.units)
-    else:
-        new_profile = _remove_nans(pressure, temperature, dewpoint, parcel_temperature_profile)
-        pressure, temperature, dewpoint, parcel_temperature_profile = new_profile
-
-    # If the top of the sounding parcel is warmer than the environment, there is no EL
-    if parcel_temperature_profile[-1] > temperature[-1]:
-        return (units.Quantity(np.nan, pressure.units),
-                units.Quantity(np.nan, temperature.units))
-
-    # Interpolate in log space to find the appropriate pressure - units have to be stripped
-    # and reassigned to allow np.log() to function properly.
-    x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:],
-                              direction='decreasing', log_x=True)
-    lcl_p, _ = lcl_linfel(pressure[0], temperature[0], dewpoint[0])
-    if len(x) > 0 and x[-1] < lcl_p:
-        idx = x < lcl_p
-        return _multiple_el_lfc_options(x, y, idx, which, pressure,
-                                        parcel_temperature_profile, temperature, dewpoint,
-                                        intersect_type='EL')
-    else:
-        return (units.Quantity(np.nan, pressure.units),
-                units.Quantity(np.nan, temperature.units))
 
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='pressure')
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def parcel_profile(pressure, temperature, dewpoint):
+    """
+    Linfeng's version of 'parcel_profile'. Added on Jul 1 2025
+    """
     r"""Calculate the profile a parcel takes through the atmosphere.
 
     The parcel starts at `temperature`, and `dewpoint`, lifted up
@@ -1580,117 +1190,14 @@ def parcel_profile(pressure, temperature, dewpoint):
        Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
+
     _, _, _, t_l, _, t_u = _parcel_profile_helper(pressure, temperature, dewpoint)
     return concatenate((t_l, t_u))
-
-
-@exporter.export
-@preprocess_and_wrap(wrap_like='pressure')
-@check_units('[pressure]', '[temperature]', '[temperature]')
-def parcel_profile_linfel(pressure, temperature, dewpoint):
-    """
-    Linfeng's version of 'parcel_profile'. Added on Jul 1 2025
-    """
-
-    _, _, _, t_l, _, t_u = _parcel_profile_helper_linfel(pressure, temperature, dewpoint)
-    return concatenate((t_l, t_u))
-
 
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def parcel_profile_with_lcl(pressure, temperature, dewpoint):
-    r"""Calculate the profile a parcel takes through the atmosphere.
-
-    The parcel starts at `temperature`, and `dewpoint`, lifted up
-    dry adiabatically to the LCL, and then moist adiabatically from there.
-    `pressure` specifies the pressure levels for the profile. This function returns
-    a profile that includes the LCL.
-
-    Parameters
-    ----------
-    pressure : `pint.Quantity`
-        Atmospheric pressure level(s) of interest. This array must be from
-        high to low pressure.
-
-    temperature : `pint.Quantity`
-        Atmospheric temperature at the levels in `pressure`. The first entry should be at
-        the same level as the first `pressure` data point.
-
-    dewpoint : `pint.Quantity`
-        Atmospheric dewpoint at the levels in `pressure`. The first entry should be at
-        the same level as the first `pressure` data point.
-
-    Returns
-    -------
-    pressure : `pint.Quantity`
-        The parcel profile pressures, which includes the specified levels and the LCL
-
-    ambient_temperature : `pint.Quantity`
-        Atmospheric temperature values, including the value interpolated to the LCL level
-
-    ambient_dew_point : `pint.Quantity`
-        Atmospheric dewpoint values, including the value interpolated to the LCL level
-
-    profile_temperature : `pint.Quantity`
-        The parcel profile temperatures at all of the levels in the returned pressures array,
-        including the LCL
-
-    Examples
-    --------
-    >>> from metpy.calc import dewpoint_from_relative_humidity, parcel_profile_with_lcl
-    >>> from metpy.units import units
-    >>> # pressure
-    >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
-    ...      550., 500., 450., 400., 350., 300., 250., 200.,
-    ...      175., 150., 125., 100., 80., 70., 60., 50.,
-    ...      40., 30., 25., 20.] * units.hPa
-    >>> # temperature
-    >>> T = [29.3, 28.1, 23.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
-    ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
-    ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
-    ...      -56.3, -51.7, -50.7, -47.5] * units.degC
-    >>> # relative humidity
-    >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
-    ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
-    ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
-    >>> # calculate dewpoint
-    >>> Td = dewpoint_from_relative_humidity(T, rh)
-    >>> # compute parcel temperature
-    >>> Td = dewpoint_from_relative_humidity(T, rh)
-    >>> p_wLCL, T_wLCL, Td_wLCL, prof_wLCL = parcel_profile_with_lcl(p, T, Td)
-
-    See Also
-    --------
-    lcl, moist_lapse, dry_lapse, parcel_profile, parcel_profile_with_lcl_as_dataset
-
-    Notes
-    -----
-    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
-    Duplicate pressure levels return duplicate parcel temperatures. Consider preprocessing
-    low-precision, high frequency profiles with tools like `scipy.medfilt`,
-    `pandas.drop_duplicates`, or `numpy.unique`.
-
-    Will only return Pint Quantities, even when given xarray DataArray profiles. To
-    obtain a xarray Dataset instead, use `parcel_profile_with_lcl_as_dataset` instead.
-
-    .. versionchanged:: 1.0
-       Renamed ``dewpt`` parameter to ``dewpoint``
-
-    """
-    p_l, p_lcl, p_u, t_l, t_lcl, t_u = _parcel_profile_helper(pressure, temperature[0],
-                                                              dewpoint[0])
-    new_press = concatenate((p_l, p_lcl, p_u))
-    prof_temp = concatenate((t_l, t_lcl, t_u))
-    new_temp = _insert_lcl_level(pressure, temperature, p_lcl)
-    new_dewp = _insert_lcl_level(pressure, dewpoint, p_lcl)
-    return new_press, new_temp, new_dewp, prof_temp
-
-
-@exporter.export
-@preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]')
-def parcel_profile_with_lcl_linfel(pressure, temperature, dewpoint):
     """
     Linfeng's version of 'parcel_profile_with_lcl'. Added on Jul 1 2025
     """
@@ -1772,7 +1279,7 @@ def parcel_profile_with_lcl_linfel(pressure, temperature, dewpoint):
        Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
-    p_l, p_lcl, p_u, t_l, t_lcl, t_u = _parcel_profile_helper_linfel(pressure, temperature[0],
+    p_l, p_lcl, p_u, t_l, t_lcl, t_u = _parcel_profile_helper(pressure, temperature[0],
                                                               dewpoint[0])
     new_press = concatenate((p_l, p_lcl, p_u))
     prof_temp = concatenate((t_l, t_lcl, t_u))
@@ -1868,7 +1375,11 @@ def _check_pressure_error(pressure):
                                    'your sounding. Using scipy.signal.medfilt may fix this.')
 
 
+
+
 def _parcel_profile_helper(pressure, temperature, dewpoint):
+    """ Linfeng's version of _parcel_profile_helper. Added on Jul 1 2025
+    """
     """Help calculate parcel profiles.
 
     Returns the temperature and pressure, above, below, and including the LCL. The
@@ -1896,53 +1407,6 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
     # Establish profile above LCL
     press_upper = concatenate((press_lcl, pressure[pressure < press_lcl]))
 
-    # Remove duplicate pressure values from remaining profile. Needed for solve_ivp in
-    # moist_lapse. unique will return remaining values sorted ascending.
-    unique, indices, counts = np.unique(press_upper.m, return_inverse=True, return_counts=True)
-    unique = units.Quantity(unique, press_upper.units)
-    if np.any(counts > 1):
-        _warnings.warn(f'Duplicate pressure(s) {unique[counts > 1]:~P} provided. '
-                       'Output profile includes duplicate temperatures as a result.')
-
-    # Find moist pseudo-adiabatic profile starting at the LCL, reversing above sorting
-    temp_upper = moist_lapse(unique[::-1], temp_lower[-1]).to(temp_lower.units)
-    temp_upper = temp_upper[::-1][indices]
-
-    # Return profile pieces
-    return (press_lower[:-1], press_lcl, press_upper[1:],
-            temp_lower[:-1], temp_lcl, temp_upper[1:])
-
-
-def _parcel_profile_helper_linfel(pressure, temperature, dewpoint):
-    """ Linfeng's version of _parcel_profile_helper. Added on Jul 1 2025
-    """
-    """Help calculate parcel profiles.
-
-    Returns the temperature and pressure, above, below, and including the LCL. The
-    other calculation functions decide what to do with the pieces.
-
-    """
-    # Check that pressure does not increase.
-    _check_pressure_error(pressure)
-
-    # Find the LCL
-    press_lcl, temp_lcl = lcl_linfel(pressure[0], temperature, dewpoint)
-    press_lcl = press_lcl.to(pressure.units)
-
-    # Find the dry adiabatic profile, *including* the LCL. We need >= the LCL in case the
-    # LCL is included in the levels. It's slightly redundant in that case, but simplifies
-    # the logic for removing it later.
-    press_lower = concatenate((pressure[pressure >= press_lcl], press_lcl))
-    temp_lower = dry_lapse_linfel(press_lower, temperature)
-
-    # If the pressure profile doesn't make it to the lcl, we can stop here
-    if _greater_or_close(np.nanmin(pressure), press_lcl):
-        return (press_lower[:-1], press_lcl, units.Quantity(np.array([]), press_lower.units),
-                temp_lower[:-1], temp_lcl, units.Quantity(np.array([]), temp_lower.units))
-
-    # Establish profile above LCL
-    press_upper = concatenate((press_lcl, pressure[pressure < press_lcl]))
-
     # Check duplicate pressure values from remaining profile.
     # unique will return remaining values sorted ascending.
     unique, indices, counts = np.unique(press_upper.m, return_inverse=True, return_counts=True)
@@ -1952,7 +1416,7 @@ def _parcel_profile_helper_linfel(pressure, temperature, dewpoint):
                        'Output profile includes duplicate temperatures as a result.')
 
     # Find moist pseudo-adiabatic profile starting at the LCL
-    temp_upper = moist_lapse_linfel(press_upper, temp_lower[-1]).to(temp_lower.units)
+    temp_upper = moist_lapse(press_upper, temp_lower[-1]).to(temp_lower.units)
     
     # Return profile pieces
     return (press_lower[:-1], press_lcl, press_upper[1:],
@@ -2279,7 +1743,6 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.nou
     # Calling c++ calculation module
     return _calc_mod.mixing_ratio(partial_press, total_press, molecular_weight_ratio)
 
-
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('total_press', 'temperature'))
 @process_units(
@@ -2287,69 +1750,6 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.nou
     '[dimensionless]'
 )
 def saturation_mixing_ratio(total_press, temperature, *, phase='liquid'):
-    r"""Calculate the saturation mixing ratio of water vapor.
-
-    This calculation is given total atmospheric pressure and air temperature.
-
-    Parameters
-    ----------
-    total_press: `pint.Quantity`
-        Total atmospheric pressure
-
-    temperature: `pint.Quantity`
-        Air temperature
-
-    phase : {'liquid', 'solid', 'auto'}
-        Where applicable, adjust assumptions and constants to make calculation valid in
-        ``'liquid'`` water (default) or ``'solid'`` ice regimes. ``'auto'`` will change regime
-        based on determination of phase boundaries, eg `temperature` relative to freezing.
-
-    Returns
-    -------
-    `pint.Quantity`
-        Saturation mixing ratio, dimensionless
-
-    Examples
-    --------
-    >>> from metpy.calc import saturation_mixing_ratio
-    >>> from metpy.units import units
-    >>> saturation_mixing_ratio(983 * units.hPa, 25 * units.degC).to('g/kg')
-    <Quantity(20.6736514, 'gram / kilogram')>
-
-    Notes
-    -----
-    This function is a straightforward implementation of the equation given in many places,
-    such as [Hobbs1977]_ pg.73:
-
-    .. math:: r_s = \epsilon \frac{e_s}{p - e_s}
-
-    By definition, this value is only defined for conditions where the saturation vapor
-    pressure (:math:`e_s`) for the given temperature is less than the given total pressure
-    (:math:`p`). Otherwise, liquid phase water cannot exist in equilibrium and there is only
-    water vapor present. For any value pairs that fall under this condition, the function will
-    warn and return NaN.
-
-    .. versionchanged:: 1.0
-       Renamed ``tot_press`` parameter to ``total_press``
-
-    """
-    validate_choice({'liquid', 'solid', 'auto'}, phase=phase)
-    e_s = saturation_vapor_pressure._nounit(temperature, phase=phase)
-    undefined = e_s >= total_press
-    if np.any(undefined):
-        _warnings.warn('Saturation mixing ratio is undefined for some requested pressure/'
-                       'temperature combinations. Total pressure must be greater than the '
-                       'water vapor saturation pressure for liquid water to be in '
-                       'equilibrium.')
-    return np.where(undefined, np.nan, mixing_ratio._nounit(e_s, total_press))
-
-@exporter.export
-@preprocess_and_wrap(wrap_like='temperature', broadcast=('total_press', 'temperature'))
-@process_units(
-    {'total_press': '[pressure]', 'temperature': '[temperature]'},
-    '[dimensionless]'
-)
-def saturation_mixing_ratio_linfel(total_press, temperature, *, phase='liquid'):
     """
     Linfeng's version of 'saturation_mixing_ratio'. Added on Jul 2 2025
     """
@@ -2594,7 +1994,6 @@ def wet_bulb_potential_temperature(pressure, temperature, dewpoint):
     theta_w = units.Quantity(theta_e.m_as('kelvin') - np.exp(a / b), 'kelvin')
     return np.where(theta_e <= units.Quantity(173.15, 'kelvin'), theta_e, theta_w)
 
-
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'mixing_ratio'))
 @process_units(
@@ -2607,8 +2006,10 @@ def wet_bulb_potential_temperature(pressure, temperature, dewpoint):
     ignore_inputs_for_output=('molecular_weight_ratio',)
 )
 def virtual_temperature(
-    temperature, mixing_ratio, molecular_weight_ratio=mpconsts.nounit.epsilon
-):
+    temperature, mixing_ratio, molecular_weight_ratio=mpconsts.nounit.epsilon):
+    """
+    Linfeng's version of 'virtual_temperature'.  Added on Jun 30 2025
+    """
     r"""Calculate virtual temperature.
 
     This calculation must be given an air parcel's temperature and mixing ratio.
@@ -2647,34 +2048,23 @@ def virtual_temperature(
        Renamed ``mixing`` parameter to ``mixing_ratio``
 
     """
-    return temperature * ((mixing_ratio + molecular_weight_ratio)
-                          / (molecular_weight_ratio * (1 + mixing_ratio)))
-
-@exporter.export
-@preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'mixing_ratio'))
-@process_units(
-    {
-        'temperature': '[temperature]',
-        'mixing_ratio': '[dimensionless]',
-        'molecular_weight_ratio': '[dimensionless]'
-    },
-    '[temperature]',
-    ignore_inputs_for_output=('molecular_weight_ratio',)
-)
-def virtual_temperature_linfel(
-    temperature, mixing_ratio, molecular_weight_ratio=mpconsts.nounit.epsilon):
-    """
-    Linfeng's version of 'virtual_temperature'.  Added on Jun 30 2025
-    """
     return _calc_mod.virtual_temperature(
             temperature, mixing_ratio, molecular_weight_ratio)
-
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure',
                                                          'temperature',
                                                          'dewpoint'))
-@check_units('[pressure]', '[temperature]', '[temperature]')
+@process_units(
+    {
+        'pressure': '[pressure]',
+        'temperature': '[temperature]',
+        'dewpoint': '[temperature]',
+        'molecular_weight_ratio': '[dimensionless]'
+    },
+    '[temperature]',
+    ignore_inputs_for_output=('molecular_weight_ratio',)
+)
 def virtual_temperature_from_dewpoint(
         pressure,
         temperature,
@@ -2683,6 +2073,9 @@ def virtual_temperature_from_dewpoint(
         *,
         phase='liquid'
 ):
+    """
+    Linfeng's version of 'virtual_temperature_from_dewpoint'.  Added on Jun 30 2025
+    """
     r"""Calculate virtual temperature.
 
     This calculation must be given an air parcel's temperature and mixing ratio.
@@ -2730,45 +2123,11 @@ def virtual_temperature_from_dewpoint(
 
     """
     validate_choice({'liquid', 'solid', 'auto'}, phase=phase)
-
-    # Convert dewpoint to mixing ratio
-    mixing_ratio = saturation_mixing_ratio(pressure, dewpoint, phase=phase)
-
-    # Calculate virtual temperature with given parameters
-    return virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio)
-
-
-@exporter.export
-@preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure',
-                                                         'temperature',
-                                                         'dewpoint'))
-@process_units(
-    {
-        'pressure': '[pressure]',
-        'temperature': '[temperature]',
-        'dewpoint': '[temperature]',
-        'molecular_weight_ratio': '[dimensionless]'
-    },
-    '[temperature]',
-    ignore_inputs_for_output=('molecular_weight_ratio',)
-)
-def virtual_temperature_from_dewpoint_linfel(
-        pressure,
-        temperature,
-        dewpoint,
-        molecular_weight_ratio=mpconsts.nounit.epsilon,
-        *,
-        phase='liquid'
-):
-    """
-    Linfeng's version of 'virtual_temperature_from_dewpoint'.  Added on Jun 30 2025
-    """
     return _calc_mod.virtual_temperature_from_dewpoint(pressure,
                                                        temperature,
                                                        dewpoint,
                                                        molecular_weight_ratio,
                                                        phase)
-
 
 @exporter.export
 @preprocess_and_wrap(
@@ -3426,171 +2785,6 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
 
     # Calculate the EL limit of integration
     el_pressure, _ = el(pressure, temperature, dewpoint,
-                        parcel_temperature_profile=parcel_profile, which=which_el)
-
-    # No EL and we use the top reading of the sounding.
-    el_pressure = pressure[-1].magnitude if np.isnan(el_pressure) else el_pressure.magnitude
-
-    # Difference between the parcel path and measured temperature profiles
-    y = (parcel_profile - temperature).to(units.degK)
-
-    # Estimate zero crossings
-    x, y = _find_append_zero_crossings(np.copy(pressure), y)
-
-    # CAPE
-    # Only use data between the LFC and EL for calculation
-    p_mask = _less_or_close(x.m, lfc_pressure) & _greater_or_close(x.m, el_pressure)
-    x_clipped = x[p_mask].magnitude
-    y_clipped = y[p_mask].magnitude
-    cape = (mpconsts.Rd
-            * units.Quantity(trapezoid(y_clipped, np.log(x_clipped)), 'K')).to(units('J/kg'))
-
-    # CIN
-    # Only use data between the surface and LFC for calculation
-    p_mask = _greater_or_close(x.m, lfc_pressure)
-    x_clipped = x[p_mask].magnitude
-    y_clipped = y[p_mask].magnitude
-    cin = (mpconsts.Rd
-           * units.Quantity(trapezoid(y_clipped, np.log(x_clipped)), 'K')).to(units('J/kg'))
-
-    # Set CIN to 0 if it's returned as a positive value (#1190)
-    if cin > units.Quantity(0, 'J/kg'):
-        cin = units.Quantity(0, 'J/kg')
-    return cape, cin
-
-@exporter.export
-@preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def cape_cin_linfel(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom',
-             which_el='top'):
-    r"""Calculate CAPE and CIN.
-
-    Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
-    of a given upper air profile and parcel path. CIN is integrated between the surface and
-    LFC, CAPE is integrated between the LFC and EL (or top of sounding). Intersection points
-    of the measured temperature profile and parcel profile are logarithmically interpolated.
-
-    Parameters
-    ----------
-    pressure : `pint.Quantity`
-        Atmospheric pressure level(s) of interest, in order from highest to
-        lowest pressure
-
-    temperature : `pint.Quantity`
-        Atmospheric temperature corresponding to pressure
-
-    dewpoint : `pint.Quantity`
-        Atmospheric dewpoint corresponding to pressure
-
-    parcel_profile : `pint.Quantity`
-        Temperature profile of the parcel
-
-    which_lfc : str
-        Choose which LFC to integrate from. Valid options are 'top', 'bottom', 'wide',
-        and 'most_cape'. Default is 'bottom'.
-
-    which_el : str
-        Choose which EL to integrate to. Valid options are 'top', 'bottom', 'wide',
-        and 'most_cape'. Default is 'top'.
-
-    Returns
-    -------
-    `pint.Quantity`
-        Convective Available Potential Energy (CAPE)
-
-    `pint.Quantity`
-        Convective Inhibition (CIN)
-
-    Examples
-    --------
-    >>> from metpy.calc import cape_cin, dewpoint_from_relative_humidity, parcel_profile
-    >>> from metpy.units import units
-    >>> # pressure
-    >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
-    ...      550., 500., 450., 400., 350., 300., 250., 200.,
-    ...      175., 150., 125., 100., 80., 70., 60., 50.,
-    ...      40., 30., 25., 20.] * units.hPa
-    >>> # temperature
-    >>> T = [29.3, 28.1, 23.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
-    ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
-    ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
-    ...      -56.3, -51.7, -50.7, -47.5] * units.degC
-    >>> # relative humidity
-    >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
-    ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
-    ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
-    >>> # calculate dewpoint
-    >>> Td = dewpoint_from_relative_humidity(T, rh)
-    >>> # compture parcel temperature
-    >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
-    >>> # calculate surface based CAPE/CIN
-    >>> cape_cin(p, T, Td, prof)
-    (<Quantity(4830.74608, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
-
-    See Also
-    --------
-    lfc, el
-
-    Notes
-    -----
-    Formula adopted from [Hobbs1977]_.
-
-    .. math:: \text{CAPE} = -R_d \int_{LFC}^{EL}
-            (T_{{v}_{parcel}} - T_{{v}_{env}}) d\text{ln}(p)
-
-    .. math:: \text{CIN} = -R_d \int_{SFC}^{LFC}
-            (T_{{v}_{parcel}} - T_{{v}_{env}}) d\text{ln}(p)
-
-
-    * :math:`CAPE` is convective available potential energy
-    * :math:`CIN` is convective inhibition
-    * :math:`LFC` is pressure of the level of free convection
-    * :math:`EL` is pressure of the equilibrium level
-    * :math:`SFC` is the level of the surface or beginning of parcel path
-    * :math:`R_d` is the gas constant
-    * :math:`g` is gravitational acceleration
-    * :math:`T_{{v}_{parcel}}` is the parcel virtual temperature
-    * :math:`T_{{v}_{env}}` is environment virtual temperature
-    * :math:`p` is atmospheric pressure
-
-    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
-    Since this function returns scalar values when given a profile, this will return Pint
-    Quantities even when given xarray DataArray profiles.
-
-    .. versionchanged:: 1.0
-       Renamed ``dewpt`` parameter to ``dewpoint``
-
-    """
-    pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
-                                                                   dewpoint, parcel_profile)
-
-    pressure_lcl, _ = lcl_linfel(pressure[0], temperature[0], dewpoint[0])
-    below_lcl = pressure > pressure_lcl
-
-    # The mixing ratio of the parcel comes from the dewpoint below the LCL, is saturated
-    # based on the temperature above the LCL
-    parcel_mixing_ratio = np.where(
-        below_lcl,
-        saturation_mixing_ratio_linfel(pressure[0], dewpoint[0]),
-        saturation_mixing_ratio_linfel(pressure, parcel_profile)
-    )
-
-    # Convert the temperature/parcel profile to virtual temperature
-    temperature = virtual_temperature_from_dewpoint_linfel(pressure, temperature, dewpoint)
-    parcel_profile = virtual_temperature_linfel(parcel_profile, parcel_mixing_ratio)
-
-    # Calculate LFC limit of integration
-    lfc_pressure, _ = lfc_linfel(pressure, temperature, dewpoint,
-                          parcel_temperature_profile=parcel_profile, which=which_lfc)
-
-    # If there is no LFC, no need to proceed.
-    if np.isnan(lfc_pressure):
-        return units.Quantity(0, 'J/kg'), units.Quantity(0, 'J/kg')
-    else:
-        lfc_pressure = lfc_pressure.magnitude
-
-    # Calculate the EL limit of integration
-    el_pressure, _ = el_linfel(pressure, temperature, dewpoint,
                         parcel_temperature_profile=parcel_profile, which=which_el)
 
     # No EL and we use the top reading of the sounding.
