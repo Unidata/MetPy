@@ -1,0 +1,32 @@
+name: Benchmark PR
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: ${{ github.workflow}}-${{ github.head_ref }}
+  cancel-in-progress: false
+  
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest  
+    timeout-minutes: 20  #times out after 20 minutes
+    defaults: 
+      run: 
+        working-directory: ./benchmarks #sets the default working directory to ./benchmarks 
+    steps:
+          - uses: actions/setup-python@v5  #sets up python with version 3.12
+            with:
+              python-version: "3.12"
+          - name: Checkout repo
+            uses: actions/checkout@v4  #checks out repository
+            with:
+              fetch-depth: 0  # Fetch full history
+          - run: pip install asv virtualenv  #install asv
+          - run: python -m asv machine --yes  #setup the asv machine settings with device-given defaults
+          - name: Run ASV
+            # runs asv on the PR's base sha (should always be main) and the PR branch's sha
+            run: python -m asv continuous ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
