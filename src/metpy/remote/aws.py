@@ -495,7 +495,7 @@ class GOESArchive(S3DataStore):
 
     def _build_time_prefix(self, product, dt, depth=None):
         """Build the initial prefix for time and product up to a particular depth.
-        
+
         Parameters
         ----------
         product : str
@@ -574,40 +574,40 @@ class GOESArchive(S3DataStore):
 
         """
         dt = datetime.now(timezone.utc) if dt is None else ensure_timezone(dt)
-        
+
         # We work with a list of keys/prefixes that we iteratively find that bound our target
         # key. To start, this only contains the product.
         bounding_keys = [self._build_time_prefix(product, dt, 1) + self.delimiter]
-        
+
         # Iteratively search with more specific keys, finding where our key fits within the
         # list by using the common prefixes that exist for the current bounding keys
         for depth in range(2, 5):  # Year, day of year, hour
             # Get a key for the product/dt that we're looking for, constrained by how deep
             # we are in the search i.e. product->year->day_of_year->hour->OR_product
             search_key = self._build_time_prefix(product, dt, depth)
-            
+
             # Get the next collection of partial keys using the common prefixes for our
             # candidates
             prefixes = list(itertools.chain(*(self.common_prefixes(b) for b in bounding_keys)))
-            
+
             if not prefixes:  # No prefixes found, can't continue
                 raise ValueError(f'No data found for {product} at {dt}')
-            
+
             # Find where our target would be in the list and grab the ones on either side
             # if possible. This also handles if we're off the end.
             loc = bisect.bisect_left(prefixes, search_key)
-            
+
             # loc gives where our target *would* be in the list. Therefore slicing from loc - 1
             # to loc + 1 gives the items to the left and right of our target. If we get 0,
             # then there is nothing to the left and we only need the first item.
             rng = slice(loc - 1, loc + 1) if loc else slice(0, 1)
-            
+
             # Make sure we don't go out of bounds
             if loc >= len(prefixes):
                 rng = slice(len(prefixes) - 1, len(prefixes))
-                
+
             bounding_keys = prefixes[rng]
-        
+
         # Now that we have the bounding hour directories, we need to find the closest product
         # Get all objects from the bounding keys with the appropriate mode and band
         all_objects = []
@@ -615,7 +615,7 @@ class GOESArchive(S3DataStore):
             time_prefix = key.rstrip(self.delimiter)
             prod_prefix = self._subprod_prefix(time_prefix, mode, band)
             all_objects.extend(list(self.objects(prod_prefix)))
-        
+
         # Find the closest product to the requested time
         return self._closest_result(all_objects, dt)
 
