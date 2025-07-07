@@ -87,9 +87,8 @@ t_sfc = (np.linspace(15, 5, 50) * np.ones((50, 50)))
 t_sfc = (t_sfc + 273.15)
 
 t_3d = np.zeros((len(pressure), 50, 50))  # (pressure, lat, lon)
-for i, p in enumerate(pressure):
+for i, _p in enumerate(pressure):
     t_3d[i, :, :] = (t_sfc * units.K) - (lapse_rate * height[i, :, :])
-    p
 
 
 # Make t colder in the winter, warmer in the summer
