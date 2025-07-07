@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <utility> // For std::pair
+#include <tuple>   // For std::tuple
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include "constants.hpp"
@@ -39,6 +40,9 @@ py::array_t<double> MoistLapseVectorized(py::array_t<double> pressure,
                                          int rk_nstep);
 
 std::pair<double, double> LCL(double pressure, double temperature, double dewpoint);
+std::tuple<py::array_t<double>, py::array_t<double>> LCLVectorized(py::array_t<double> pressure,
+                                                                   py::array_t<double> temperature,
+                                                                   py::array_t<double> dewpoint);
 
 bool _CheckPressure(const std::vector<double>& pressure);
 

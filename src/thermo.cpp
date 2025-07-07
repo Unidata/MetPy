@@ -1,6 +1,7 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <tuple>   // For std::make_tuple
 #include <utility> // For std::pair
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
@@ -212,8 +213,57 @@ std::pair<double, double> LCL(double pressure, double temperature, double dewpoi
     double w_minus1 = lambert_wm1(pow(rh, 1.0 / a) * c * exp(c));
     double t_lcl = c / w_minus1 * temperature;
     double p_lcl = pressure * pow(t_lcl / temperature, moist_heat_ratio);
-
+    
     return {p_lcl, t_lcl};
+}
+
+
+std::tuple<py::array_t<double>, py::array_t<double>> LCLVectorized(py::array_t<double> pressure,
+                                                                   py::array_t<double> temperature,
+                                                                   py::array_t<double> dewpoint) {
+            
+    // This helper ensures the arrays are in C-style contiguous memory.
+    // If an input array is already contiguous, it's a zero-cost operation.
+    // If it's a slice or has a different memory layout, it creates a copy.
+    // This makes the subsequent looping simple and safe.
+    auto p_contig = py::array::ensure(pressure, py::array::c_style);
+    auto t_contig = py::array::ensure(temperature, py::array::c_style);
+    auto d_contig = py::array::ensure(dewpoint, py::array::c_style);
+
+    // --- Step 1: Check that all input arrays have the same shape ---
+    if (p_contig.ndim() != t_contig.ndim() || p_contig.ndim() != d_contig.ndim()) {
+        throw std::runtime_error("Input arrays must have the same number of dimensions.");
+    }
+    for (int i = 0; i < p_contig.ndim(); ++i) {
+        if (p_contig.shape(i) != t_contig.shape(i) || p_contig.shape(i) != d_contig.shape(i)) {
+            throw std::runtime_error("Input arrays must have the same shape.");
+        }
+    }
+
+    // --- Step 2: Create output arrays with the exact same N-D shape as the inputs ---
+    auto p_lcl = py::array_t<double>(p_contig.request().shape);
+    auto t_lcl = py::array_t<double>(p_contig.request().shape);
+
+    // --- Step 3: Get the total number of elements to loop over ---
+    size_t size = p_contig.size();
+
+    // --- Step 4: Get direct pointers to the (now contiguous) data buffers ---
+    const double* p_ptr = static_cast<const double*>(p_contig.request().ptr);
+    const double* t_ptr = static_cast<const double*>(t_contig.request().ptr);
+    const double* d_ptr = static_cast<const double*>(d_contig.request().ptr);
+    double* p_lcl_ptr = p_lcl.mutable_data();
+    double* t_lcl_ptr = t_lcl.mutable_data();
+    
+    // --- Step 5: Loop through the data as if it were a single flat 1D array ---
+    for (size_t i = 0; i < size; i++) {
+        // Call the scalar c++ function for each element
+        std::pair<double, double> result = LCL(p_ptr[i], t_ptr[i], d_ptr[i]);
+        p_lcl_ptr[i] = result.first;
+        t_lcl_ptr[i] = result.second;
+    }
+
+    // --- Step 6: Return a tuple of the two new, N-dimensional arrays ---
+    return std::make_tuple(p_lcl, t_lcl);
 }
 
 bool _CheckPressure(const std::vector<double>& pressure) {
@@ -252,7 +302,9 @@ ParProStruct _ParcelProfileHelper(const std::vector<double>& pressure, double te
     }
     
     // Find the LCL
-    auto [press_lcl, temp_lcl] = LCL(pressure[0], temperature, dewpoint);
+    std::pair<double, double> lcl_result = LCL(pressure[0], temperature, dewpoint);
+    double press_lcl = lcl_result.first;
+    double temp_lcl = lcl_result.second;
     
     // Establish profile below LCL
     std::vector<double> press_lower;
