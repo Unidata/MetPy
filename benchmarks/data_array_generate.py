@@ -52,23 +52,21 @@ for i, p in enumerate(pressure):
     v_3d[i, :, :] = v * (1002 - p.magnitude)**.3
 
 w_3d = np.zeros((len(pressure), 50, 50))
-for i, p in enumerate(pressure):
-    w_3d[i, :, :] = w * (p.magnitude / p.magnitude) * rng.random()
+for i, _p in enumerate(pressure):
+    w_3d[i, :, :] = w * rng.random()
 
 # Then make them 4D
 u_4d = np.zeros((50, 50, 50, len(times)))
-for i, tm in enumerate(times):
-    if (tm == tm):
-        u_4d[:, :, :, i] = u_3d * rng.uniform(-2, 2)
+for i, _tm in enumerate(times):
+    u_4d[:, :, :, i] = u_3d * rng.uniform(-2, 2)
+
 v_4d = np.zeros((50, 50, 50, len(times)))
-for i, tm in enumerate(times):
-    if (tm == tm):
-        v_4d[:, :, :, i] = v_3d * rng.uniform(-2, 2)
+for i, _tm in enumerate(times):
+    v_4d[:, :, :, i] = v_3d * rng.uniform(-2, 2)
 
 w_4d = np.zeros((50, 50, 50, len(times)))
-for i, tm in enumerate(times):
-    if (tm == tm):
-        w_4d[:, :, :, i] = w_3d * rng.uniform(-2, 2)
+for i, _tm in enumerate(times):
+    w_4d[:, :, :, i] = w_3d * rng.uniform(-2, 2)
 
 
 windspeed = mpcalc.wind_speed(u_4d * units('m/s'), v_4d * units('m/s'))
@@ -96,9 +94,8 @@ for i, p in enumerate(pressure):
 
 # Make t colder in the winter, warmer in the summer
 t_4d = np.zeros((50, 50, 50, len(times)))
-for i, tm in enumerate(times):
+for i, _tm in enumerate(times):
     t_4d[:, :, :, i] = t_3d + seasonal_variation[i]
-    tm
 
 t_4d = t_4d * units.K
 
@@ -118,17 +115,13 @@ w_profile = a * pressure + b
 
 
 mixingratio_3d = np.zeros((50, len(lats), len(lons)))
-for i, lat in enumerate(lats):
-    for j, lon in enumerate(lons):
-        lat
-        lon
+for i, _lat in enumerate(lats):
+    for j, _lon in enumerate(lons):
         mixingratio_3d[:, i, j] = w_profile
 
 mixingratio_4d = np.zeros((50, 50, 50, len(times)))
-for i, tm in enumerate(times):
+for i, _tm in enumerate(times):
     mixingratio_4d[:, :, :, i] = mixingratio_3d
-    tm
-
 
 # Generate vapor pressure
 vapor_pressure_4d = mpcalc.vapor_pressure(p, mixingratio_4d)
@@ -143,8 +136,7 @@ for i, p in enumerate(pressure):
 
 
 td_4d = np.zeros((50, 50, 50, len(times)))
-for i, tm in enumerate(times):
-    tm
+for i, _tm in enumerate(times):
     td_4d[:, :, :, i] = t_3d + seasonal_variation[i] + rng.uniform(-6, 3, size=(50, 50, 50))
 
 td_4d = td_4d * units.K
@@ -157,16 +149,14 @@ rh = mpcalc.relative_humidity_from_dewpoint(t_4d, td_4d)
 sigma_3d = (p_3d - (250 * units.hPa)) / ((1000 * units.hPa) - (250 * units.hPa))
 
 sigma_4d = np.zeros((50, 50, 50, len(times)))
-for i, tm in enumerate(times):
-    tm
+for i, _tm in enumerate(times):
     sigma_4d[:, :, :, i] = sigma_3d[:, :, :]
 
 # Generate geopotential values
 geopotential_3d = mpcalc.height_to_geopotential(height)
 
 geopotential_4d = np.zeros((50, 50, 50, len(times)))
-for i, tm in enumerate(times):
-    tm
+for i, _tm in enumerate(times):
     geopotential_4d[:, :, :, i] = geopotential_3d[:, :, :]
 
 # generate specific humidity values
@@ -174,8 +164,7 @@ q = mpcalc.specific_humidity_from_mixing_ratio(mixingratio_4d)
 
 # generate wet bulb temperature
 wet_bulb_4d = np.zeros((50, 50, 50, len(times)))
-for i, tm in enumerate(times):
-    tm
+for i, _tm in enumerate(times):
     wet_bulb_4d[:, :, :, i] = mpcalc.wet_bulb_temperature(p_3d[:, :, :], t_4d[:, :, :, i],
                                                           td_4d[:, :, :, i])
 
