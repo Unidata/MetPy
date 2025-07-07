@@ -76,7 +76,7 @@ PYBIND11_MODULE(_calc_mod, m) {
             auto t_lcl = py::array_t<double>(p_contig.request().shape);
 
             // --- Step 3: Get the total number of elements to loop over ---
-            ssize_t size = p_contig.size();
+            size_t size = p_contig.size();
 
             // --- Step 4: Get direct pointers to the (now contiguous) data buffers ---
             const double* p_ptr = static_cast<const double*>(p_contig.request().ptr);
@@ -86,7 +86,7 @@ PYBIND11_MODULE(_calc_mod, m) {
             double* t_lcl_ptr = t_lcl.mutable_data();
             
             // --- Step 5: Loop through the data as if it were a single flat 1D array ---
-            for (ssize_t i = 0; i < size; i++) {
+            for (size_t i = 0; i < size; i++) {
                 // Call the scalar c++ function for each element
                 std::pair<double, double> result = LCL(p_ptr[i], t_ptr[i], d_ptr[i]);
                 
