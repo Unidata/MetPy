@@ -64,10 +64,14 @@ follow these steps:
 3. Navigate to the ``benchmarks`` directory: ``cd benchmarks``
 4. Now it depends on exactly which benchmarks you want to run:
 
-    a. To benchmark your code as is currently is, use ``python -m asv run``
-    b. To compare a working branch with *your version* of MetPy's main branch, use
-    ``python -m av continuous main branch_name`` where ``branch name`` is the name of your
-    branch. You can also simply use two commit hashes in the place of the branch names.
-    c. To run the history of MetPy as mentioned above, you can use
-    ``python -m asv run HASHFILE:no_bot_merge_commits.txt``.
-    **Note that this is somewhat computationally taxing and often takes several hours, depending on the specs of your machine**
+   a. To benchmark your code as is currently is,
+   use ``python -m asv run``
+
+   b. To compare a working branch with *your version* of MetPy's main branch, use
+   ``python -m av continuous main branch_name`` where ``branch name`` is the name of your
+   branch. You can also simply use two commit hashes in the place of the branch names
+
+   c. To run the history of MetPy as mentioned above, you can use
+   ``python -m asv run HASHFILE:no_bot_merge_commits.txt``.
+   **Note that this is somewhat computationally taxing and often takes several hours,
+   depending on the specs of your machine**
