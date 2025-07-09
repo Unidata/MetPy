@@ -10,9 +10,7 @@ This includes:
 import contextlib
 import functools
 from importlib.metadata import PackageNotFoundError, requires, version
-import inspect
 import operator as op
-from pathlib import Path
 import re
 
 import matplotlib.pyplot as plt
@@ -132,33 +130,6 @@ def needs_module(module):
 
 
 needs_cartopy = needs_module('cartopy')
-
-
-def needs_aws(test_func):
-    """Decorate a test function that needs AWS functionality.
-
-    This both sets up recording using VCRPy as well as ensures that the the appropriate
-    AWS libraries are installed, otherwise the test is skipped.
-    """
-    # Get the vcr module this way so we can skip tests if it's not present
-    vcr = pytest.importorskip('vcr')
-
-    # Set up the fixtures relative to the test file
-    func_path = inspect.getfile(test_func)
-    fixture_path = Path(func_path).with_name('fixtures') / f'{test_func.__name__}.yaml'
-
-    # Set the cassette to use
-    # also wrap to skip the test if no boto3
-    # and filter s3 resource unclosed SSL warnings
-    return (
-        vcr.use_cassette(fixture_path)(
-            needs_module('boto3')(
-                pytest.mark.filterwarnings('default:unclosed:ResourceWarning')(
-                    test_func
-                )
-            )
-        )
-    )
 
 
 @contextlib.contextmanager

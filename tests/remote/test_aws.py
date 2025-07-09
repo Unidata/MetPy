@@ -6,11 +6,21 @@ from datetime import datetime
 from pathlib import Path
 import tempfile
 
+import pytest
+
 from metpy.remote import GOESArchive, MLWPArchive, NEXRADLevel2Archive, NEXRADLevel3Archive
-from metpy.testing import needs_aws
+from metpy.testing import needs_module
+
+# Add pytest marks for all tests in module
+pytestmark = [
+    # Reset warning filter to default ignore for all
+    # ResourceWarning: unclosed SSL from boto3 resource
+    pytest.mark.filterwarnings('default:unclosed:ResourceWarning')
+]
 
 
-@needs_aws
+@pytest.mark.vcr
+@needs_module('boto3')
 def test_nexrad3_single():
     """Test getting a single product from the NEXRAD level 3 archive."""
     l3 = NEXRADLevel3Archive().get_product('FTG', 'N0Q', datetime(2020, 4, 1, 12, 30))
@@ -18,7 +28,8 @@ def test_nexrad3_single():
     assert l3.access()
 
 
-@needs_aws
+@pytest.mark.vcr
+@needs_module('boto3')
 def test_nexrad3_range():
     """Test getting a range of products from the NEXRAD level 3 archive."""
     prods = list(NEXRADLevel3Archive().get_range('FTG', 'N0B', datetime(2024, 12, 31, 23, 45),
@@ -40,14 +51,16 @@ def test_nexrad3_range():
         assert (Path(tmpdir) / 'tempprod').exists()
 
 
-@needs_aws
+@pytest.mark.vcr
+@needs_module('boto3')
 def test_nexrad2_single():
     """Test getting a single volume from the NEXRAD level 2 archive."""
     l2 = NEXRADLevel2Archive().get_product('KTLX', datetime(2013, 5, 20, 20, 15))
     assert l2.name == 'KTLX20130520_201643_V06.gz'
 
 
-@needs_aws
+@pytest.mark.vcr
+@needs_module('boto3')
 def test_nexrad2_range():
     """Test getting a range of products from the NEXRAD level 2 archive."""
     vols = list(NEXRADLevel2Archive().get_range('KFTG', datetime(2024, 12, 14, 15, 15),
@@ -59,7 +72,8 @@ def test_nexrad2_range():
                      'KFTG20241214_161349_V06', 'KFTG20241214_162248_V06']
 
 
-@needs_aws
+@pytest.mark.vcr
+@needs_module('boto3')
 def test_goes_single():
     """Test getting a single product from the GOES archive."""
     prod = GOESArchive(18).get_product('ABI-L1b-RadM1', datetime(2025, 1, 9, 23, 56), band=2)
@@ -70,7 +84,8 @@ def test_goes_single():
                                                    '_e20250092356311_c20250092356338.nc')
 
 
-@needs_aws
+@pytest.mark.vcr
+@needs_module('boto3')
 def test_goes_range():
     """Test getting a range of products from the GOES archive."""
     prods = list(GOESArchive(16).get_range('ABI-L1b-RadC', datetime(2024, 12, 10, 1, 0),
@@ -94,7 +109,8 @@ def test_goes_range():
     assert names == truth
 
 
-@needs_aws
+@pytest.mark.vcr
+@needs_module('boto3')
 def test_mlwp_single():
     """Test getting a single product from the MLWP archive."""
     prod = MLWPArchive().get_product('graphcast', datetime(2025, 1, 30, 10))
@@ -102,7 +118,8 @@ def test_mlwp_single():
                         '2025/0130/GRAP_v100_GFS_2025013012_f000_f240_06.nc')
 
 
-@needs_aws
+@pytest.mark.vcr
+@needs_module('boto3')
 def test_mlwp_range():
     """Test getting a single product from the MLWP archive."""
     prods = MLWPArchive().get_range('fourcastnet', datetime(2025, 2, 3), datetime(2025, 2, 6))

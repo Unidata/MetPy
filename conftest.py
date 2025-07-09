@@ -183,3 +183,20 @@ def geog_data(request):
                                            geod=crs.get_geod())[0][0],
             metpy.calc.lat_lon_grid_deltas(numpy.zeros_like(lats.m), lats.m,
                                            geod=crs.get_geod())[1][:, 0])
+
+
+@pytest.fixture(scope='module')
+def vcr_cassette_dir(request):
+    """Modify default cassette path for vcr mark."""
+    return str(request.path.parent / 'fixtures')
+
+
+@pytest.fixture(scope='package')
+def vcr_config():
+    """Pass default config to vcr mark."""
+    return {
+        # Record new cassettes if empty and replay existing cassettes by default;
+        # we can use 'none' in CI to refuse new recordings and replay old only.
+        # Use pytest --record-mode=rewrite to delete existing cassettes and re-record.
+        'record_mode': 'once'
+    }
