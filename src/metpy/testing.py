@@ -147,8 +147,18 @@ def needs_aws(test_func):
     func_path = inspect.getfile(test_func)
     fixture_path = Path(func_path).with_name('fixtures') / f'{test_func.__name__}.yaml'
 
-    # Set the cassette to use and also a wrapper function that skips the test if no boto3
-    return vcr.use_cassette(fixture_path)(needs_module('boto3')(test_func))
+    # Set the cassette to use
+    # also wrap to skip the test if no boto3
+    # and filter s3 resource unclosed SSL warnings
+    return (
+        vcr.use_cassette(fixture_path)(
+            needs_module('boto3')(
+                pytest.mark.filterwarnings('default:unclosed:ResourceWarning')(
+                    test_func
+                )
+            )
+        )
+    )
 
 
 @contextlib.contextmanager
