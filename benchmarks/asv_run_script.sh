@@ -1,6 +1,9 @@
 #!/bin/bash
 #Run asv
 
+# Generate artificial data file for benchmarks
+python3 data_array_generate.py
+
 #Set up asv machine
 asv machine --yes
 
