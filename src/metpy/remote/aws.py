@@ -176,12 +176,86 @@ class S3DataStore:
 
     def _closest_result(self, it, dt):
         """Iterate over a sequence and return a result built from the closest match."""
-        try:
-            min_obj = min(it,
-                          key=lambda o: abs((self.dt_from_key(o.key) - dt).total_seconds()))
-        except ValueError as e:
-            raise ValueError(f'No result found for {dt}') from e
-        return self._build_result(min_obj)
+        best_obj = None
+        best_diff = None
+        for obj in it:
+            try:
+                obj_dt = self.dt_from_key(obj.key)
+                diff = abs(obj_dt - dt)
+                if best_diff is None or diff < best_diff:
+                    best_obj = obj
+                    best_diff = diff
+            except (ValueError, IndexError):
+                pass
+        if best_obj is None:
+            raise ValueError('No matching products found.')
+        return self._build_result(best_obj)
+
+    def _find_best_product(self, objects_iter, dt, filters=None):
+        """Find the best product from a sequence based on time and optional filters.
+
+        Parameters
+        ----------
+        objects_iter : iterable
+            Iterable of S3 objects to search through
+        dt : datetime.datetime
+            Target datetime to match
+        filters : dict, optional
+            Dictionary of attribute names and values to filter objects by.
+            For example, {'sector': 'M1', 'band': '02'}
+
+        Returns
+        -------
+        object
+            The best matching S3 object
+
+        Raises
+        ------
+        ValueError
+            If no matching products are found
+        """
+        best_obj = None
+        best_diff = None
+
+        for obj in objects_iter:
+            try:
+                # Skip if it doesn't match our filters
+                if filters and not self._matches_filters(obj.key, filters):
+                    continue
+
+                obj_dt = self.dt_from_key(obj.key)
+                diff = abs(obj_dt - dt)
+                if best_diff is None or diff < best_diff:
+                    best_obj = obj
+                    best_diff = diff
+            except (ValueError, IndexError):
+                pass
+
+        if best_obj is None:
+            filter_desc = '' if not filters else f" matching filters {filters}"
+            raise ValueError(f'No matching products found{filter_desc}.')
+
+        return self._build_result(best_obj)
+
+    def _matches_filters(self, key, filters):
+        """Check if a key matches all specified filters.
+
+        This is a generic method that should be overridden by subclasses
+        that need specific filtering logic.
+
+        Parameters
+        ----------
+        key : str
+            The S3 object key to check
+        filters : dict
+            Dictionary of attribute names and values to filter by
+
+        Returns
+        -------
+        bool
+            True if the key matches all filters, False otherwise
+        """
+        return True
 
     def _build_result(self, obj):
         """Build a basic product with no reader."""
@@ -470,6 +544,14 @@ class GOESArchive(S3DataStore):
     This consists of individual GOES image files stored in netCDF format, across a variety
     of sectors, bands, and modes.
 
+    GOES filenames follow the pattern:
+    OR_ABI-L1b-RadX-MYC##_G##_s########_e########_c########.nc
+
+    Where:
+    - X is the sector (F=Full Disk, C=CONUS, M1=Mesoscale 1, M2=Mesoscale 2)
+    - Y is the mode (3, 4, 6)
+    - ## is the channel/band (01-16)
+
     """
 
     def __init__(self, satellite):
@@ -493,28 +575,11 @@ class GOESArchive(S3DataStore):
         """
         return [item.rstrip(self.delimiter) for item in self.common_prefixes('')]
 
-    def _build_time_prefix(self, product, dt, depth=None):
-        """Build the initial prefix for time and product up to a particular depth.
-
-        Parameters
-        ----------
-        product : str
-            The product to search for
-        dt : datetime.datetime
-            The datetime to search for
-        depth : int, optional
-            The depth of the prefix to build. If None, builds the full prefix.
-            1: product
-            2: product/year
-            3: product/year/day_of_year
-            4: product/year/day_of_year/hour
-            5: product/year/day_of_year/hour/OR_product
-        """
+    def _build_time_prefix(self, product, dt):
+        """Build the initial prefix for time and product."""
         # Handle that the meso sector products are grouped in the same subdir
         reduced_product = product[:-1] if product.endswith(('M1', 'M2')) else product
         parts = [reduced_product, f'{dt:%Y}', f'{dt:%j}', f'{dt:%H}', f'OR_{product}']
-        if depth is not None:
-            return self.delimiter.join(parts[:depth])
         return self.delimiter.join(parts)
 
     def _subprod_prefix(self, prefix, mode, band):
@@ -574,50 +639,24 @@ class GOESArchive(S3DataStore):
 
         """
         dt = datetime.now(timezone.utc) if dt is None else ensure_timezone(dt)
+        time_prefix = self._build_time_prefix(product, dt)
+        prod_prefix = self._subprod_prefix(time_prefix, mode, band)
 
-        # We work with a list of keys/prefixes that we iteratively find that bound our target
-        # key. To start, this only contains the product.
-        bounding_keys = [self._build_time_prefix(product, dt, 1) + self.delimiter]
+        # Extract sector from product name (e.g., 'M1' from 'ABI-L1b-RadM1')
+        sector = None
+        if product.endswith(('M1', 'M2')):
+            sector = product[-2:]
 
-        # Iteratively search with more specific keys, finding where our key fits within the
-        # list by using the common prefixes that exist for the current bounding keys
-        for depth in range(2, 5):  # Year, day of year, hour
-            # Get a key for the product/dt that we're looking for, constrained by how deep
-            # we are in the search i.e. product->year->day_of_year->hour->OR_product
-            search_key = self._build_time_prefix(product, dt, depth)
+        # Build filters dictionary for precise matching
+        filters = {}
+        if sector:
+            filters['sector'] = sector
+        if band is not None:
+            filters['band'] = f'{int(band):02d}' if isinstance(band, int) else band
+        if mode is not None:
+            filters['mode'] = str(mode)
 
-            # Get the next collection of partial keys using the common prefixes for our
-            # candidates
-            prefixes = list(itertools.chain(*(self.common_prefixes(b) for b in bounding_keys)))
-
-            if not prefixes:  # No prefixes found, can't continue
-                raise ValueError(f'No data found for {product} at {dt}')
-
-            # Find where our target would be in the list and grab the ones on either side
-            # if possible. This also handles if we're off the end.
-            loc = bisect.bisect_left(prefixes, search_key)
-
-            # loc gives where our target *would* be in the list. Therefore slicing from loc - 1
-            # to loc + 1 gives the items to the left and right of our target. If we get 0,
-            # then there is nothing to the left and we only need the first item.
-            rng = slice(loc - 1, loc + 1) if loc else slice(0, 1)
-
-            # Make sure we don't go out of bounds
-            if loc >= len(prefixes):
-                rng = slice(len(prefixes) - 1, len(prefixes))
-
-            bounding_keys = prefixes[rng]
-
-        # Now that we have the bounding hour directories, we need to find the closest product
-        # Get all objects from the bounding keys with the appropriate mode and band
-        all_objects = []
-        for key in bounding_keys:
-            time_prefix = key.rstrip(self.delimiter)
-            prod_prefix = self._subprod_prefix(time_prefix, mode, band)
-            all_objects.extend(list(self.objects(prod_prefix)))
-
-        # Find the closest product to the requested time
-        return self._closest_result(all_objects, dt)
+        return self._find_best_product(self.objects(prod_prefix), dt, filters)
 
     def get_range(self, product, start, end, mode=None, band=None):
         """Yield products within a particular date/time range.
@@ -647,12 +686,76 @@ class GOESArchive(S3DataStore):
         """
         start = ensure_timezone(start)
         end = ensure_timezone(end)
+
+        # Extract sector from product name (e.g., 'M1' from 'ABI-L1b-RadM1')
+        sector = None
+        if product.endswith(('M1', 'M2')):
+            sector = product[-2:]
+
+        # Build filters dictionary for precise matching
+        filters = {}
+        if sector:
+            filters['sector'] = sector
+        if band is not None:
+            filters['band'] = f'{int(band):02d}' if isinstance(band, int) else band
+        if mode is not None:
+            filters['mode'] = str(mode)
+
         for dt in date_iterator(start, end, hours=1):
             time_prefix = self._build_time_prefix(product, dt)
             prod_prefix = self._subprod_prefix(time_prefix, mode, band)
             for obj in self.objects(prod_prefix):
                 if start <= self.dt_from_key(obj.key) < end:
-                    yield self._build_result(obj)
+                    # Only yield if it matches our filters
+                    if not filters or self._matches_filters(obj.key, filters):
+                        yield self._build_result(obj)
+
+    def _matches_filters(self, key, filters):
+        """Check if a GOES product key matches all specified filters.
+
+        Parameters
+        ----------
+        key : str
+            The S3 object key to check
+        filters : dict
+            Dictionary of attribute names and values to filter by
+
+        Returns
+        -------
+        bool
+            True if the key matches all filters, False otherwise
+        """
+        # Parse the filename from the key
+        filename = key.split('/')[-1]
+        parts = filename.split('_')
+        if len(parts) < 2:
+            return False
+
+        # Parse product info from filename (e.g., 'OR_ABI-L1b-RadM1-M6C02_G18_s...')
+        product_info = parts[1]
+
+        # Check sector filter (M1, M2, C, F)
+        if 'sector' in filters:
+            sector = filters['sector']
+            # For mesoscale sectors, check if the product has the right sector
+            if sector in ('M1', 'M2'):
+                if not product_info.endswith(sector + '-'):
+                    if not ('-Rad' + sector + '-') in product_info:
+                        return False
+
+        # Check band filter
+        if 'band' in filters:
+            band = filters['band']
+            if not f'C{band}' in product_info:
+                return False
+
+        # Check mode filter
+        if 'mode' in filters:
+            mode = filters['mode']
+            if not f'-M{mode}' in product_info:
+                return False
+
+        return True
 
     def _build_result(self, obj):
         """Build a product that opens the data using `xarray.open_dataset`."""
