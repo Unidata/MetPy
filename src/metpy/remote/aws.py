@@ -232,7 +232,7 @@ class S3DataStore:
                 pass
 
         if best_obj is None:
-            filter_desc = '' if not filters else f" matching filters {filters}"
+            filter_desc = '' if not filters else f' matching filters {filters}'
             raise ValueError(f'No matching products found{filter_desc}.')
 
         return self._build_result(best_obj)
@@ -705,9 +705,12 @@ class GOESArchive(S3DataStore):
             time_prefix = self._build_time_prefix(product, dt)
             prod_prefix = self._subprod_prefix(time_prefix, mode, band)
             for obj in self.objects(prod_prefix):
-                if start <= self.dt_from_key(obj.key) < end:
+                obj_dt = self.dt_from_key(obj.key)
+                # Check if object is within time range and matches filters
+                matches_time = start <= obj_dt < end
+                matches_filters = not filters or self._matches_filters(obj.key, filters)
+                if matches_time and matches_filters:
                     # Only yield if it matches our filters
-                    if not filters or self._matches_filters(obj.key, filters):
                         yield self._build_result(obj)
 
     def _matches_filters(self, key, filters):
@@ -738,21 +741,22 @@ class GOESArchive(S3DataStore):
         if 'sector' in filters:
             sector = filters['sector']
             # For mesoscale sectors, check if the product has the right sector
-            if sector in ('M1', 'M2'):
-                if not product_info.endswith(sector + '-'):
-                    if not ('-Rad' + sector + '-') in product_info:
+            # Check for mesoscale sectors (M1, M2)
+            if (sector in ('M1', 'M2') and
+                not product_info.endswith(sector + '-') and
+                ('-Rad' + sector + '-') not in product_info):
                         return False
 
         # Check band filter
         if 'band' in filters:
             band = filters['band']
-            if not f'C{band}' in product_info:
+            if f'C{band}' not in product_info:
                 return False
 
         # Check mode filter
         if 'mode' in filters:
             mode = filters['mode']
-            if not f'-M{mode}' in product_info:
+            if f'-M{mode}' not in product_info:
                 return False
 
         return True
