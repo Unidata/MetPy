@@ -62,7 +62,7 @@ follow these steps:
 1. Install asv in your ``devel`` environment using ``conda install asv``
 2. Ensure that you have the ``benchmarks`` directory at the root of your MetPy repository
 3. Navigate to the ``benchmarks`` directory: ``cd benchmarks``
-4. Generate the data array by running the ``data_array_generate.py`` file 
+4. Generate the data array by running the ``data_array_generate.py`` file
 5. Now it depends on exactly which benchmarks you want to run:
 
    a. To benchmark your code as is currently is,
