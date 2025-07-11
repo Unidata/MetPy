@@ -19,6 +19,7 @@ MetPy
 [![Code Coverage Status](https://codecov.io/github/Unidata/MetPy/coverage.svg?branch=main)](https://codecov.io/github/Unidata/MetPy?branch=main)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/2e64843f595c42e991457cb76fcfa769)](https://www.codacy.com/gh/Unidata/MetPy/dashboard)
 [![Code Climate](https://codeclimate.com/github/Unidata/MetPy/badges/gpa.svg)](https://codeclimate.com/github/Unidata/MetPy)
+[![asv](https://img.shields.io/badge/benchmarked%20by-asv-blue.svg?style=flat)](https://unidata.github.io/MetPy-benchmark)
 
 MetPy is a collection of tools in Python for reading, visualizing and
 performing calculations with weather data.
