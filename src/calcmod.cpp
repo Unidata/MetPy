@@ -44,6 +44,10 @@ PYBIND11_MODULE(_calc_mod, m) {
             "Calculate the temperature along a pressure profile assuming dry adiabatic process.",
             py::arg("pressure"), py::arg("ref_temperature"), py::arg("ref_pressure"));
 
+    m.def("dry_lapse_3d", &DryLapseVectorized_3D,
+            "Calculate the temperature along multiple pressure profiles assuming dry adiabatic process.",
+            py::arg("pressure"), py::arg("ref_temperature"), py::arg("ref_pressure"));
+
     m.def("moist_lapse", &MoistLapseVectorized,
           "Calculate the temperature along a pressure profile assuming saturated adiabatic process.",
           py::arg("pressure"), py::arg("ref_temperature"), py::arg("ref_pressure"), py::arg("rk_nstep"));

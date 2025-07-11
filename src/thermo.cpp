@@ -100,6 +100,55 @@ py::array_t<double> DryLapseVectorized(py::array_t<double> pressure,
     return out_array;
 }
 
+py::array_t<double> DryLapseVectorized_3D(py::array_t<double> pressure,
+                                         py::array_t<double> ref_temperature,
+                                         py::array_t<double> ref_pressure) {
+    // --- Step 1: Ensure all input arrays are using a contiguous memory layout ---
+    auto p_contig = py::array::ensure(pressure, py::array::c_style);
+    auto ref_temp_contig = py::array::ensure(ref_temperature, py::array::c_style);
+    auto ref_press_contig = py::array::ensure(ref_pressure, py::array::c_style);
+
+    // --- Step 2: Perform comprehensive shape validation ---
+    if (ref_temp_contig.ndim() != ref_press_contig.ndim()) {
+        throw std::runtime_error("Input 'ref_temperature' and 'ref_pressure' must have the same number of dimensions.");
+    }
+    if (p_contig.ndim() != ref_temp_contig.ndim() + 1) {
+        throw std::runtime_error("Input 'pressure' must have one more dimension than 'ref_temperature'.");
+    }
+    for (int i = 0; i < ref_temp_contig.ndim(); ++i) {
+        if (ref_temp_contig.shape(i) != ref_press_contig.shape(i) ||
+            p_contig.shape(i+1) != ref_temp_contig.shape(i)) {
+            throw std::runtime_error("The horizontal dimensions of all input arrays must match.");
+        }
+    }
+
+    // --- Step 3: Define the shape of the output array ---
+    // The output shape will be identical to the input pressure array's shape.
+    auto out_array = py::array_t<double>(p_contig.request().shape);
+
+    // --- Step 4: Get direct pointers to data buffers for fast access ---
+    const double* pressure_ptr = static_cast<const double*>(p_contig.request().ptr);
+    const double* ref_temp_ptr = static_cast<const double*>(ref_temp_contig.request().ptr);
+    const double* ref_press_ptr = static_cast<const double*>(ref_press_contig.request().ptr);
+    double* out_array_ptr = out_array.mutable_data();
+
+    // --- Step 5: Define loop boundaries ---
+    size_t num_profiles = ref_temp_contig.size(); // Total number of horizontal points
+    size_t profile_len = p_contig.shape(0); // Length of the vertical dimension
+    
+    // --- Step 6: Loop through each horizontal point and its vertical profile ---
+    for (int j = 0; j < profile_len; ++j) {
+        for (int i = 0; i < num_profiles; ++i) {
+            // Calculate the index for the current point in the flattened arrays.
+            out_array_ptr[i+j*num_profiles] = DryLapse(pressure_ptr[i+j*num_profiles], 
+                                                    ref_temp_ptr[i], 
+                                                    ref_press_ptr[i]);
+        }
+    }
+
+    return out_array;
+}
+
 double CaldlnTdlnP(double temperature, double pressure) {
     // Calculate dlnT/dlnP for a moist (saturated) adiabatic process.
     double rs = SaturationMixingRatio(pressure, temperature, "liquid");
