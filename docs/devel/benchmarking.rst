@@ -69,8 +69,10 @@ follow these steps:
    use ``python -m asv run``
 
    b. To compare a working branch with *your version* of MetPy's main branch, use
-   ``python -m av continuous main branch_name`` where ``branch name`` is the name of your
-   branch. You can also simply use two commit hashes in the place of the branch names
+   ``python -m asv continuous main <branch_name>`` where ``<branch_name>`` is the name of your
+   branch. You can also simply use two commit hashes in the place of the branch names. To view
+   a text-based table for the functions and comparisons, use ``python -m asv compare main 
+   <branch_name>``
 
    c. To run the history of MetPy as mentioned above, you can use
    ``python -m asv run HASHFILE:no_bot_merge_commits.txt``.
