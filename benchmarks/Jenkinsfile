@@ -1,0 +1,86 @@
+pipeline {
+	agent  { label 'main' }
+	environment {
+		CLONE_DIR = "temp_repo_results"
+	}
+	stages {
+        // checks out the results repo using secret stored in Jenkins
+		stage('Checkout results repo') {
+			steps {
+				sh 'git config --global credential.helper cache'
+				sh 'git config --global push.default simple'
+				checkout scmGit(branches: [[name: '*/main']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'temp_repo_results'], cloneOption(depth: 1, noTags: false, reference: '', shallow: true)], userRemoteConfigs: [[credentialsId: 'GH_DEPLOY_KEY_METPY_BENCH_RESULTS', url: 'https://github.com/unidata/metpy-benchmark.git']])
+			}
+		}
+        // copies past results into the asv/results folder on the main repo
+		stage('Copy past results') {
+			steps {
+				sh '''
+    				if [ -d ${CLONE_DIR}/results ]; then 
+					echo "-------Copying results--------"
+    					cp -r ${CLONE_DIR}/results/* benchmarks/asv/results
+    				fi
+				'''
+			}
+		}
+        // generates the hashes to run and stores them in a text file
+        stage('Setup for ASV run') {
+            steps {
+                sh '''
+                    cd benchmarks
+                    bash generate_hashes.sh
+                    cd ..
+                '''
+            }
+        }
+        // Runs ASV in the docker container
+        // The catch error ensures that the build works even if some ASV fail
+		stage('Run ASV') {
+			steps {
+                catchError(buildResult: 'SUCCESS') {
+                    sh '''
+                    cd benchmarks
+                    docker build -t metpy-benchmarks:latest .
+                    cd ..
+                    docker run --rm -v .:/container-benchmarks --hostname Docker_Container -e DUID=$(id -u) -e DGID=$(id -g) metpy-benchmarks:latest benchmark
+                    '''
+                }
+   			}
+		}
+        // Copies results from the asv/results into the results repo
+		stage('Copy results') {
+			steps{
+				sh '''
+    				if [ -d "${CLONE_DIR}/results" ]; then 
+					echo "--------results repo exist-------"
+				else 
+    					mkdir ${CLONE_DIR}/results
+	 			fi
+    				cp -r benchmarks/asv/results/* ${CLONE_DIR}/results
+				'''
+			}
+		}
+        // Pushes to the git repo if there have been changes
+		stage('Update results repo') {
+			steps {
+				withCredentials([gitUsernamePassword(credentialsId: 'ASV_RESULTS_REPO_PAT', gitToolName: 'Default')]) {
+                    sh '''
+				   	if [ -n "$(git status --porcelain)" ]; then 
+						cd ${CLONE_DIR} 
+						git add --all
+						git commit -m "Jenkins Updating Benchmark Results BUILD-NUMBER:${BUILD_NUMBER}" || echo "-----no changes to commit-----"
+						git push origin HEAD:main --force
+					fi
+					'''
+				}
+			}
+		}
+	}
+	post {
+        // always removes the temporary repo regardless of build status
+		always {
+			echo "---Cleaning up temporary repo---"
+			sh 'rm -rf "${CLONE_DIR}"'
+		}
+	}
+}
