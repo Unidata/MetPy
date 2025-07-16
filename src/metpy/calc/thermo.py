@@ -797,6 +797,7 @@ def lcl_linfel(pressure, temperature, dewpoint, max_iters=None, eps=None):
     """
     Linfeng's version of 'lcl'. Added on Jun23 2025
     """
+    pressure, temperature, dewpoint = np.atleast_1d(pressure, temperature, dewpoint)
     p_lcl, t_lcl = _calc_mod.lcl(pressure, temperature, dewpoint)
     return p_lcl, t_lcl
 
