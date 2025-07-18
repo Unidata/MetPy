@@ -460,7 +460,9 @@ linkcheck_ignore = [
     # Currently giving certificate errors on GitHub
     r'https://library.wmo.int/.*',
     # For some reason GHA gets a 403 from Stack Overflow
-    r'https://stackoverflow.com/questions/tagged/metpy'
+    r'https://stackoverflow.com/questions/tagged/metpy',
+    # Needs a login, but want the link in the infrastructure guide
+    r'https://qlty\.sh/gh/Unidata/projects/MetPy'
     ]
 
 # Dictionary of URL redirects allowed
