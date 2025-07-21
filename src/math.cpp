@@ -18,8 +18,8 @@ double lambert_wm1(double x, double tol, int max_iter) {
 
     for (int i = 0; i < max_iter; ++i) {
         double ew = std::exp(w);
-        double wew = w * ew;
-        double diff = (wew - x) / (ew * (w + 1) - ((w + 2) * (wew - x)) / (2 * w + 2));
+        double w_ew = w * ew;
+        double diff = (w_ew - x) / (ew * (w + 1) - ((w + 2) * (w_ew - x)) / (2 * w + 2));
         w -= diff;
         if (std::abs(diff) < tol) {
             return w;

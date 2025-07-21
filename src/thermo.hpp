@@ -1,12 +1,12 @@
 #ifndef THERMO_HPP // if not defined
 #define THERMO_HPP // define the header file
 
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 #include <string>
 #include <vector>
 #include <utility> // For std::pair
 #include <tuple>   // For std::tuple
-#include <pybind11/pybind11.h>
-#include <pybind11/numpy.h>
 #include "constants.hpp"
 
 namespace py = pybind11;
