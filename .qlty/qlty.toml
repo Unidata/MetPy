@@ -1,0 +1,17 @@
+config_version = "0"
+
+exclude_patterns = [
+    "src/metpy/io/_nexrad_msgs/msg*.py",
+    "src/metpy/io/_metar_parser/*"
+]
+test_patterns = ["tests/**/*.py"]
+
+[[source]]
+name = "default"
+default = true
+
+[smells.function_parameters]
+threshold = 10
+
+[smells.similar_code]
+enabled = false
