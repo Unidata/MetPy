@@ -79,11 +79,11 @@ follow these steps:
    ``generate_hashes.sh`` script
    **Note that this is computationally taxing and often takes several hours,
    depending on the specs of your machine**
-   
+
    d. If you have a running ``Docker Engine``, you can build the Docker image from the
    Dockerfile in the benchmarks directory using the command
-   ``docker build -t metpy-benchmarks:latest .`` 
-   
+   ``docker build -t metpy-benchmarks:latest .``
+
    After this is built, you can run the
    benchmarks from the root of the repository in the container using
    ``docker run --rm -v .:/container-benchmarks --hostname Docker_Container
