@@ -62,7 +62,7 @@ follow these steps:
 1. Install asv in your ``devel`` environment using ``conda install asv``
 2. Ensure that you have the ``benchmarks`` directory at the root of your MetPy repository
 3. Navigate to the ``benchmarks`` directory: ``cd benchmarks``
-4. Generate the data array by running the ``data_array_generate.py`` file
+4. Generate the benchmarking data array by running the ``data_array_generate.py`` file
 5. Now it depends on exactly which benchmarks you want to run:
 
    a. To benchmark your code as is currently is,
@@ -75,6 +75,22 @@ follow these steps:
    <branch_name>``
 
    c. To run the history of MetPy as mentioned above, you can use
-   ``python -m asv run HASHFILE:no_bot_merge_commits.txt``.
-   **Note that this is somewhat computationally taxing and often takes several hours,
+   ``python -m asv run HASHFILE:no_bot_merge_commits.txt`` after running the
+   ``generate_hashes.sh`` script
+   **Note that this is computationally taxing and often takes several hours,
    depending on the specs of your machine**
+   
+   d. If you have a running ``Docker Engine``, you can build the Docker image from the
+   Dockerfile in the benchmarks directory using the command
+   ``docker build -t metpy-benchmarks:latest .`` 
+   
+   After this is built, you can run the
+   benchmarks from the root of the repository in the container using
+   ``docker run --rm -v .:/container-benchmarks --hostname Docker_Container
+   metpy-benchmarks:latest benchmark`` on Windows or
+   ``docker run --rm -v .:/container-benchmarks --hostname Docker_Container -e DUID=$(id -u)
+   -e DGID=$(id -g) metpy-benchmarks:latest benchmark`` on Mac/Linux **Note that as above,
+   this runs all the benchmarks in no_bot_merge_commits.txt and can be taxing**
+
+   If you want to just enter the container, you can use the same command as above, but
+   replace the end ``benchmark`` with ``peek``
