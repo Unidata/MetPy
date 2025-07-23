@@ -21,7 +21,7 @@ time efficiency.
 Historical Performance
 ----------------------
 
-Results of Metpy's performance throughout versions is available at `this page <https://unidata.github.io/metpy-benchmark/#>`_.
+Results of Metpy's performance throughout versions is available at `this page <https://unidata.github.io/MetPy-benchmark/#>`_.
 Currently, the history is benchmarked starting with MetPy version ``1.4.0`` and benchmarks the
 first commit hash associated with each minor version until present. Additionally, starting with
 the most recent minor release, every merged pull request made by a human contributor is
