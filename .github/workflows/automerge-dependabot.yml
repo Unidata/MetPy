@@ -9,10 +9,11 @@ jobs:
   # Automatically review dependabot PRs and set them to automerge (on successful checks)
   #
   Automerge:
+    environment:
+      name: PR Backport
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
     env:
-      GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
       GH_PR: ${{ github.event.pull_request.number }}
 
@@ -21,7 +22,19 @@ jobs:
       pull-requests: write
 
     steps:
+    - name: Create App Token
+      uses: actions/create-github-app-token@v2
+      id: app-token
+      with:
+        app-id: ${{ vars.APP_ID }}
+        private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
     - name: Set auto-merge
+      env:
+        GH_TOKEN: ${{ steps.app-token.outputs.token }}
       run: gh pr merge -R "$GH_REPO" --merge --auto "$GH_PR"
+
     - name: Review PR
+      env:
+        GH_TOKEN: ${{ steps.app-token.outputs.token }}
       run: gh pr review -R "$GH_REPO" --approve "$GH_PR"
