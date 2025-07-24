@@ -452,7 +452,7 @@ def test_u_star_1d_nonzero_mean(uvw_and_known_u_star_nonzero_mean):
 
 
 def test_friction_velocity_nonzero_xarray(uvw_and_known_friction_velocity_xarray):
-    """Test friction velocity in 1d with an xarray"""
+    """Test friction velocity in 1d with an xarray."""
     data, expected = uvw_and_known_friction_velocity_xarray
     assert_array_almost_equal(friction_velocity(data.uwind, data.wwind, data.vwind), expected)
 
