@@ -1,6 +1,0 @@
-default: true
-
-extends: null
-
-MD013:
-  line_length: 95
