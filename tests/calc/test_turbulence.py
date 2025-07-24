@@ -4,10 +4,12 @@
 """Test the `turbulence` module."""
 
 import numpy as np
-from numpy.testing import assert_almost_equal, assert_array_equal
 import pytest
+import xarray as xr
 
 from metpy.calc.turbulence import friction_velocity, get_perturbation, kinematic_flux, tke
+from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
+from metpy.units import units
 
 
 #
@@ -28,6 +30,47 @@ def uvw_and_known_tke():
     #  0.5 * (10 + 10 + 40) = 30
     e_true = 30
     return u, v, w, e_true
+
+
+@pytest.fixture()
+def uvw_and_known_tke_xarray():
+    """Provide a set of u, v, w with a known tke value as an xarray."""
+    # Define coordinate values
+    pressure = [1000, 850]  # hPa
+    lat = [10, 20]          # degrees North
+    lon = [30, 40]          # degrees East
+    time = np.array(['2025-01-01T00:00', '2025-01-01T06:00'], dtype='datetime64')
+
+    # Define dimensions
+    dims = ('pressure', 'lat', 'lon', 'time')
+
+    # Generate 16 linearly spaced values between -30 and 30
+    uwind_values = np.linspace(0, 30, num=16).reshape(2, 2, 2, 2)
+    vwind_values = np.linspace(-30, 0, num=16).reshape(2, 2, 2, 2)
+    wwind_values = np.linspace(-1, 2, num=16).reshape(2, 2, 2, 2)
+
+    # Apply units
+    u = uwind_values * units('m/s')
+    v = vwind_values * units('m/s')
+    w = wwind_values * units('m/s')
+
+    # Create the Dataset
+    ds = xr.Dataset(
+        {
+            'uwind': (dims, u),
+            'vwind': (dims, v),
+            'wwind': (dims, w),
+        },
+        coords={
+            'pressure': pressure,
+            'lat': lat,
+            'lon': lon,
+            'time': time
+        }
+    )
+
+    e_true = np.full((2, 2, 2), 1.005) * units('m^2/s^2')
+    return ds, e_true
 
 
 def test_no_tke_1d():
@@ -69,6 +112,12 @@ def test_known_tke(uvw_and_known_tke):
     """Test basic behavior of tke with known values."""
     u, v, w, e_true = uvw_and_known_tke
     assert_array_equal(e_true, tke(u, v, w))
+
+
+def test_known_tke_xarray(uvw_and_known_tke_xarray):
+    """Test basic behavior of tke with known xarray values."""
+    data, e_true = uvw_and_known_tke_xarray
+    assert_array_almost_equal(tke(data.uwind, data.vwind, data.wwind), e_true)
 
 
 def test_known_tke_using_perturbation_velocities(uvw_and_known_tke):
@@ -335,6 +384,46 @@ def uvw_and_known_u_star_zero_mean():
 
 
 @pytest.fixture()
+def uvw_and_known_friction_velocity_xarray():
+    """Provide a set of u, v, w with a known tke value as an xarray."""
+    # Define coordinate values
+    pressure = [1000, 850]  # hPa
+    lat = [10, 20]          # degrees North
+    lon = [30, 40]          # degrees East
+    time = np.array(['2025-01-01T00:00', '2025-01-01T06:00'], dtype='datetime64')
+
+    # Define dimensions
+    dims = ('pressure', 'lat', 'lon', 'time')
+
+    # Generate 16 linearly spaced values between -30 and 30
+    uwind_values = np.linspace(0, 30, num=16).reshape(2, 2, 2, 2)
+    vwind_values = np.linspace(-30, 0, num=16).reshape(2, 2, 2, 2)
+    wwind_values = np.linspace(-1, 2, num=16).reshape(2, 2, 2, 2)
+
+    # Apply units
+    u = uwind_values * units('m/s')
+    v = vwind_values * units('m/s')
+    w = wwind_values * units('m/s')
+
+    # Create the Dataset
+    ds = xr.Dataset(
+        {
+            'uwind': (dims, u),
+            'vwind': (dims, v),
+            'wwind': (dims, w),
+        },
+        coords={
+            'pressure': pressure,
+            'lat': lat,
+            'lon': lon,
+            'time': time
+        }
+    )
+    expected = np.full((2, 2, 2), .3760603) * units('meter / second')
+    return ds, expected
+
+
+@pytest.fixture()
 def uvw_and_known_u_star_nonzero_mean():
     """Return components and friction velocity for a non-zero-mean time series."""
     u = np.array([-2, -1, 0, 1, 5])
@@ -360,6 +449,12 @@ def test_u_star_1d_nonzero_mean(uvw_and_known_u_star_nonzero_mean):
                         u_star_true['uw'])
     assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False),
                         u_star_true['uwvw'])
+
+
+def test_friction_velocity_nonzero_xarray(uvw_and_known_friction_velocity_xarray):
+    """Test friction velocity in 1d with an xarray."""
+    data, expected = uvw_and_known_friction_velocity_xarray
+    assert_array_almost_equal(friction_velocity(data.uwind, data.wwind, data.vwind), expected)
 
 
 def test_u_star_2d_axis_last_zero_mean(uvw_and_known_u_star_zero_mean):

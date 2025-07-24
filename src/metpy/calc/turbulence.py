@@ -46,7 +46,7 @@ def get_perturbation(ts, axis=-1):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='u')
+@preprocess_and_wrap()
 def tke(u, v, w, perturbation=False, axis=-1):
     r"""Compute turbulence kinetic energy.
 
@@ -180,7 +180,7 @@ def kinematic_flux(vel, b, perturbation=False, axis=-1):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='u')
+@preprocess_and_wrap()
 def friction_velocity(u, w, v=None, perturbation=False, axis=-1):
     r"""Compute the friction velocity from the time series of velocity components.
 
@@ -245,5 +245,4 @@ def friction_velocity(u, w, v=None, perturbation=False, axis=-1):
     # the friction velocity is the 4th root of the kinematic momentum flux
     # As an optimization, first do inplace square root, then return the
     # square root of that. This is faster than np.power(..., 0.25)
-    np.sqrt(kf, out=kf)
-    return np.sqrt(kf)
+    return np.sqrt(np.sqrt(kf))
