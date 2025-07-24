@@ -4,12 +4,12 @@
 """Test the `turbulence` module."""
 
 import numpy as np
-from metpy.testing import assert_almost_equal, assert_array_equal, assert_array_almost_equal
 import pytest
 import xarray as xr
-from metpy.units import units
 
 from metpy.calc.turbulence import friction_velocity, get_perturbation, kinematic_flux, tke
+from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
+from metpy.units import units
 
 
 #
