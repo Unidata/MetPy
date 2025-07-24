@@ -34,7 +34,7 @@ def uvw_and_known_tke():
 
 @pytest.fixture()
 def uvw_and_known_tke_xarray():
-    """Provide a set of u, v, w with a known tke value as an xarray"""
+    """Provide a set of u, v, w with a known tke value as an xarray."""
     # Define coordinate values
     pressure = [1000, 850]  # hPa
     lat = [10, 20]          # degrees North
@@ -42,7 +42,7 @@ def uvw_and_known_tke_xarray():
     time = np.array(['2025-01-01T00:00', '2025-01-01T06:00'], dtype='datetime64')
 
     # Define dimensions
-    dims = ("pressure", "lat", "lon", "time")
+    dims = ('pressure', 'lat', 'lon', 'time')
 
     # Generate 16 linearly spaced values between -30 and 30
     uwind_values = np.linspace(0, 30, num=16).reshape(2, 2, 2, 2)
@@ -57,19 +57,19 @@ def uvw_and_known_tke_xarray():
     # Create the Dataset
     ds = xr.Dataset(
         {
-            "uwind": (dims, u),
-            "vwind": (dims, v),
-            "wwind": (dims, w),
+            'uwind': (dims, u),
+            'vwind': (dims, v),
+            'wwind': (dims, w),
         },
         coords={
-            "pressure": pressure,
-            "lat": lat,
-            "lon": lon,
-            "time": time
+            'pressure': pressure,
+            'lat': lat,
+            'lon': lon,
+            'time': time
         }
     )
 
-    e_true = np.full((2, 2, 2), 1.005) * units("m^2/s^2")
+    e_true = np.full((2, 2, 2), 1.005) * units('m^2/s^2')
     return ds, e_true
 
 
@@ -115,7 +115,7 @@ def test_known_tke(uvw_and_known_tke):
 
 
 def test_known_tke_xarray(uvw_and_known_tke_xarray):
-    """Test basic behavior of tke with known xarray values"""
+    """Test basic behavior of tke with known xarray values."""
     data, e_true = uvw_and_known_tke_xarray
     assert_array_almost_equal(tke(data.uwind, data.vwind, data.wwind), e_true)
 
@@ -385,7 +385,7 @@ def uvw_and_known_u_star_zero_mean():
 
 @pytest.fixture()
 def uvw_and_known_friction_velocity_xarray():
-    """Provide a set of u, v, w with a known tke value as an xarray"""
+    """Provide a set of u, v, w with a known tke value as an xarray."""
     # Define coordinate values
     pressure = [1000, 850]  # hPa
     lat = [10, 20]          # degrees North
@@ -393,7 +393,7 @@ def uvw_and_known_friction_velocity_xarray():
     time = np.array(['2025-01-01T00:00', '2025-01-01T06:00'], dtype='datetime64')
 
     # Define dimensions
-    dims = ("pressure", "lat", "lon", "time")
+    dims = ('pressure', 'lat', 'lon', 'time')
 
     # Generate 16 linearly spaced values between -30 and 30
     uwind_values = np.linspace(0, 30, num=16).reshape(2, 2, 2, 2)
@@ -408,15 +408,15 @@ def uvw_and_known_friction_velocity_xarray():
     # Create the Dataset
     ds = xr.Dataset(
         {
-            "uwind": (dims, u),
-            "vwind": (dims, v),
-            "wwind": (dims, w),
+            'uwind': (dims, u),
+            'vwind': (dims, v),
+            'wwind': (dims, w),
         },
         coords={
-            "pressure": pressure,
-            "lat": lat,
-            "lon": lon,
-            "time": time
+            'pressure': pressure,
+            'lat': lat,
+            'lon': lon,
+            'time': time
         }
     )
     expected = np.full((2, 2, 2), .3760603) * units('meter / second')
