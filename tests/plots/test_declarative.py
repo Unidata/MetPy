@@ -20,8 +20,8 @@ from metpy.cbook import get_test_data
 from metpy.io import GiniFile, parse_wpc_surface_bulletin
 from metpy.io.metar import parse_metar_file
 from metpy.plots import (ArrowPlot, BarbPlot, ContourPlot, FilledContourPlot, ImagePlot,
-                         MapPanel, PanelContainer, PlotGeometry, PlotObs, PlotSurfaceAnalysis,
-                         RasterPlot)
+                         MapPanel, PanelContainer, PlotExtrema, PlotGeometry, PlotObs,
+                         PlotSurfaceAnalysis, RasterPlot)
 from metpy.testing import needs_cartopy, version_check
 from metpy.units import units
 
@@ -1200,6 +1200,71 @@ def test_declarative_barb_gfs_knots():
     pc.size = (8, 8)
     pc.panels = [panel]
     pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.019)
+@needs_cartopy
+def test_declarative_extrema():
+    """Test plotting gridded extrema points."""
+    data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
+
+    extrema = PlotExtrema()
+    extrema.data = data
+    extrema.level = 850 * units.hPa
+    extrema.field = 'Geopotential_height_isobaric'
+    extrema.peaks = ['minima', 'maxima']
+    extrema.symbol = ['L', 'H']
+    extrema.symbol_color = ['tab:red', 'tab:blue']
+    extrema.symbol_size = ['30', '25']
+    extrema.plot_value = [True, False]
+    extrema.text_size = [14, 10]
+    extrema.text_location = ['baseline']
+
+    panel = MapPanel()
+    panel.area = 'uslcc-'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders']
+    panel.plots = [extrema]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.019)
+@needs_cartopy
+def test_declarative_nam_extrema():
+    """Test plotting gridded extrema points."""
+    data = xr.open_dataset(get_test_data('NAM_test.nc', as_file_obj=False))
+
+    extrema = PlotExtrema()
+    extrema.data = data
+    extrema.level = 850 * units.hPa
+    extrema.field = 'Geopotential_height_isobaric'
+    extrema.peaks = ['minima']
+    extrema.peak_ratio = [3]
+    extrema.symbol = ['L']
+    extrema.symbol_color = ['red']
+    extrema.plot_value = [False]
+    extrema.text_location = ['bottom', 'baseline']
+
+    panel = MapPanel()
+    panel.area = 'uslcc'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders']
+    panel.plots = [extrema]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    extrema.symbol_color = ['black']
 
     return pc.figure
 
