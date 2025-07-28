@@ -1,6 +1,7 @@
 name: Benchmark PR
 on:
   pull_request:
+    #we don't need pull requests on the gh-pages branch to be benchmarked
     branches: [main]
     types: [opened, synchronize, reopened, labeled] #defaults and when labeled
   workflow_dispatch:
@@ -13,6 +14,7 @@ concurrency:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
+    #sets only to run when the GitHub PR is labeled with 'benchmark'
     if: contains(github.event.pull_request.labels.*.name, 'benchmark')
     timeout-minutes: 20  #times out after 20 minutes
     defaults: 
