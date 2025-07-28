@@ -63,7 +63,7 @@ pipeline {
         // Pushes to the git repo if there have been changes
 		stage('Update results repo') {
 			steps {
-				withCredentials([gitUsernamePassword(credentialsId: 'GH_DEPLOY_KEY_METPY_BENCH_RESULTS', gitToolName: 'Default')]) {
+				withCredentials([sshUserPrivateKey(credentialsId: 'GH_DEPLOY_KEY_METPY_BENCH_RESULTS', gitToolName: 'Default')]) {
                     sh '''
 				   	if [ -n "$(git status --porcelain)" ]; then 
 						cd ${CLONE_DIR} 
