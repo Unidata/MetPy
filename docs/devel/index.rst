@@ -9,6 +9,7 @@ Developer's Guide
    CONTRIBUTING
    roadmap
    infrastructureguide
+   benchmarking
 
 This discusses information relevant to developing MetPy.
 
