@@ -2,7 +2,7 @@ name: Benchmark PR
 on:
   pull_request:
     #we don't need pull requests on the gh-pages branch to be benchmarked
-    branches: [main]
+    branches: [main, benchmark_pr_action]
     types: [opened, synchronize, reopened, labeled] #defaults and when labeled
   workflow_dispatch:
 
