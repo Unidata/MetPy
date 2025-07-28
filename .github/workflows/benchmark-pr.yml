@@ -1,0 +1,38 @@
+name: Benchmark PR
+on:
+  pull_request:
+    #we don't need pull requests on the gh-pages branch to be benchmarked
+    branches: [main]
+    types: [opened, synchronize, reopened, labeled] #defaults and when labeled
+  workflow_dispatch:
+
+
+concurrency:
+  group: ${{ github.workflow}}-${{ github.head_ref }}
+  cancel-in-progress: true
+  
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    #sets only to run when the GitHub PR is labeled with 'benchmark'
+    if: contains(github.event.pull_request.labels.*.name, 'benchmark')
+    timeout-minutes: 20  #times out after 20 minutes
+    defaults: 
+      run: 
+        working-directory: ./benchmarks #sets the default working directory to ./benchmarks 
+    steps:
+          - uses: actions/setup-python@v5  #sets up python with version 3.12
+            with:
+              python-version: "3.12"
+          - name: Checkout repo
+            uses: actions/checkout@v4  #checks out repository
+            with:
+              fetch-depth: 0  # Fetch full history
+          - run: python -m pip install numpy pandas xarray metpy netcdf4
+          - name: Create data array
+            run: python data_array_generate.py
+          - run: pip install asv virtualenv  #install asv
+          - run: python -m asv machine --yes  #setup the asv machine settings with device-given defaults
+          - name: Run ASV
+            # runs asv on the PR's base sha (should always be main) and the PR branch's sha
+            run: python -m asv continuous ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
