@@ -5,11 +5,11 @@ Performance Benchmarking
 This guide provides information on the implementation and management of benchmarking in MetPy.
 
 -----------------
-Airspeed Velocity
+airspeed velocity
 -----------------
 
-MetPy's source code is benchmarked using `Airspeed Velocity <https://github.com/airspeed-velocity/asv>`_.
-ASV is an open source software which builds environments based on historical and current
+MetPy's source code is benchmarked using `airspeed velocity <https://github.com/airspeed-velocity/asv>`_.
+asv is an open source software which builds environments based on historical and current
 iterations of software and runs benchmark functions before compiling the results into
 digestable html pages. MetPy's developers have used GitHub Actions and a Unidata Jenkins
 instance in order to automatically perform benchmarking as part of the continuous
@@ -32,11 +32,32 @@ This performance history is run using the Unidata Jenkins instance. Upon run, th
 ``benchmarks/Jenkinsfile`` instructs the Jenkins instance to create a custom
 ``Docker container`` using the ``benchmarks/Dockerfile`` and runs the benchmark
 functions within it. Jenkins uses the same Unidata machine for each run in order to ensure
-consistent benchmarking results. ASV is installed in this container and runs the benchmark
+consistent benchmarking results. asv is installed in this container and runs the benchmark
 functions for the historical commits of interest. In the event that successful results already
-exist for the requested commit hash, ASV will skip it and maintain the previous results.
+exist for the requested commit hash, asv will skip it and maintain the previous results.
 Finally, Jenkins pushes the results to a separate `results repository <https://github.com/unidata/metpy-benchmark>`_
-where a GitHub Action uses an ASV command to generate and deploy the html.
+where a GitHub Action uses an asv command to generate and deploy the html.
+
+
+-------------------------------------
+Pull Request Comparative Benchmarking
+-------------------------------------
+
+
+As part of the continuous integration workflow of MetPy, a GitHub Action has been implemented
+which uses the ``asv continous`` command to automatically use asv to benchmark the PR's SHA
+versus the current main branch. This comparative benchmark is only done when the pull request
+is labeled ``benchmark`` by a MetPy maintainer. This is because the check takes about 10
+minutes and is not necessary for every pull request, only those that change the calc
+module.
+
+Currently, the benchmark is set up to fail if any one benchmark takes 10% or more longer
+on the PR branch. But failing this check doesn't mean you can't contribute!
+Your PR might emphasize accuracy at the sacrifice of speed, and that might be ok in some cases.
+The maintainers will work with each pull request on a case-by-case basis and can help you
+if you're getting unexpected benchmarking failures. If you want to test out your performance
+before opening a pull request, look into :ref:`local comparative benchmarking <local-benchmarking-reference-label>`.
+
 
 -------------------
 Benchmark Functions
@@ -44,7 +65,7 @@ Benchmark Functions
 
 Located within the ``benchmarks/benchmarks`` directory are ``.py`` files each containing a
 class ``TimeSuite``, ``setup`` and ``setup_cache`` functions, and functions with the name
-scheme ``time_example_metpy_function``. This is ASV's required `syntax <https://asv.readthedocs.io/en/latest/writing_benchmarks.html>`_
+scheme ``time_example_metpy_function``. This is asv's required `syntax <https://asv.readthedocs.io/en/latest/writing_benchmarks.html>`_
 for writing benchmarks. The ``setup_cache`` function loads the artificial benchmarking dataset
 ``data_array_compressed.nc`` and prepares the dataset for use by the benchmarks. The ``setup``
 function "slices" the 4D dataset into the appropriate dimensions to create variables that can
@@ -68,6 +89,8 @@ follow these steps:
    a. To benchmark your code as is currently is,
    use ``python -m asv run``
 
+   .. _local-benchmarking-reference-label:
+   
    b. To compare a working branch with *your version* of MetPy's main branch, use
    ``python -m asv continuous main <branch_name>`` where ``<branch_name>`` is the name of your
    branch. You can also simply use two commit hashes in the place of the branch names. To view
