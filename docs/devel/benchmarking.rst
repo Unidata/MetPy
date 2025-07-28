@@ -45,7 +45,7 @@ Pull Request Comparative Benchmarking
 
 
 As part of the continuous integration workflow of MetPy, a GitHub Action has been implemented
-which uses the ``asv continous`` command to automatically use asv to benchmark the PR's SHA
+which uses the ``asv continuous`` command to automatically use asv to benchmark the PR's SHA
 versus the current main branch. This comparative benchmark is only done when the pull request
 is labeled ``benchmark`` by a MetPy maintainer. This is because the check takes about 10
 minutes and is not necessary for every pull request, only those that change the calc
@@ -56,7 +56,8 @@ on the PR branch. But failing this check doesn't mean you can't contribute!
 Your PR might emphasize accuracy at the sacrifice of speed, and that might be ok in some cases.
 The maintainers will work with each pull request on a case-by-case basis and can help you
 if you're getting unexpected benchmarking failures. If you want to test out your performance
-before opening a pull request, look into :ref:`local comparative benchmarking <local-benchmarking-reference-label>`.
+before opening a pull request, look into
+:ref:`local comparative benchmarking <local-benchmarking-reference-label>`.
 
 
 -------------------
@@ -90,7 +91,7 @@ follow these steps:
    use ``python -m asv run``
 
    .. _local-benchmarking-reference-label:
-   
+
    b. To compare a working branch with *your version* of MetPy's main branch, use
    ``python -m asv continuous main <branch_name>`` where ``<branch_name>`` is the name of your
    branch. You can also simply use two commit hashes in the place of the branch names. To view
