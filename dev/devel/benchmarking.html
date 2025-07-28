@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>User Guide &#8212; MetPy 1.7dev</title>
+    <title>Performance Benchmarking &#8212; MetPy 1.7dev</title>
   
   
   
@@ -62,7 +62,7 @@
                 gtag('js', new Date());
                 gtag('config', 'G-J48T2BG3J7');
             </script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'userguide/index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'devel/benchmarking';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://unidata.github.io/MetPy/pst-versions.json';
@@ -74,14 +74,14 @@
     <link rel="icon" href="../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Install Guide" href="installguide.html" />
-    <link rel="prev" title="MetPy" href="../index.html" />
+    <link rel="next" title="Example Gallery" href="../examples/index.html" />
+    <link rel="prev" title="Infrastructure Guide" href="infrastructureguide.html" />
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
     <meta name="docbuild:last-update" content="Jul 28, 2025 at 17:53:16"/>
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/userguide/index.html" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/devel/benchmarking.html" />
 
   </head>
   
@@ -185,8 +185,8 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../userguide/index.html">
     User Guide
   </a>
 </li>
@@ -199,8 +199,8 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../devel/index.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
     Developer’s Guide
   </a>
 </li>
@@ -214,7 +214,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="SUPPORT.html">
+  <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
     Support
   </a>
 </li>
@@ -317,6 +317,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -346,8 +350,8 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../userguide/index.html">
     User Guide
   </a>
 </li>
@@ -360,8 +364,8 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../devel/index.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
     Developer’s Guide
   </a>
 </li>
@@ -375,7 +379,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="SUPPORT.html">
+  <a class="nav-link nav-internal" href="../userguide/SUPPORT.html">
     Support
   </a>
 </li>
@@ -466,22 +470,11 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="installguide.html">Install Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="startingguide.html">Getting Started with MetPy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/unit_tutorial.html">Working With Units</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/area_tutorial.html">Using Predefined Areas with MetPy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/upperair_soundings.html">Upper Air Sounding Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/xarray_tutorial.html">xarray with MetPy Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/declarative_tutorial.html">MetPy Declarative Syntax Tutorial</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="upgradeguide.html">MetPy 1.0 Upgrade Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="apichange.html">MetPy 1.0 API Changes</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1"><a class="reference internal" href="gempak.html">GEMPAK Comparison Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SUPPORT.html">Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing MetPy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="media.html">Talks and Other Media</a></li>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">MetPy Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructureguide.html">Infrastructure Guide</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Performance Benchmarking</a></li>
 </ul>
 </div>
 </nav></div>
@@ -522,7 +515,10 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">User Guide</span></li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Developer’s Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Performance Benchmarking</span></li>
   </ul>
 </nav>
 </div>
@@ -539,31 +535,87 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="user-guide">
-<h1>User Guide<a class="headerlink" href="#user-guide" title="Link to this heading">#</a></h1>
-<div class="toctree-wrapper compound">
-</div>
-<figure class="align-left">
-<a class="plot-directive reference internal image-reference" href="../_images/index-1.png"><img alt="../_images/index-1.png" class="plot-directive" src="../_images/index-1.png" style="width: 300px;" />
-</a>
-</figure>
-<figure class="align-right">
-<a class="plot-directive reference internal image-reference" href="../_images/index-2.png"><img alt="../_images/index-2.png" class="plot-directive" src="../_images/index-2.png" style="width: 300px;" />
-</a>
-</figure>
-<div class="clearer"></div><p>MetPy’s User Guide can help show you how to use MetPy, walking through various parts of
-MetPy and show you to other resources. See the <a class="reference internal" href="../api/index.html"><span class="doc">Reference Guide</span></a> for more information on
-a particular function or feature in MetPy.</p>
-<p>New to MetPy? Try the <a class="reference internal" href="startingguide.html"><span class="doc">Getting Started Guide</span></a>.</p>
-<p>Need some more direct help? Check out our <a class="reference internal" href="SUPPORT.html"><span class="doc">support resources</span></a>.</p>
-<p>Used MetPy in your research? We’d love for you to <a class="reference internal" href="citing.html"><span class="doc">cite us</span></a> in your publication.</p>
-<p>For more information about MetPy, you can also read our
-<a class="reference external" href="https://doi.org/10.1175/BAMS-D-21-0125.1">article</a> in the October 2022 edition of the
-Bulletin of the American Meteorological Society.</p>
-<figure class="align-center">
-<a class="plot-directive reference internal image-reference" href="../_images/index-3.png"><img alt="../_images/index-3.png" class="plot-directive" src="../_images/index-3.png" style="width: 600px;" />
-</a>
-</figure>
+  <section id="performance-benchmarking">
+<h1>Performance Benchmarking<a class="headerlink" href="#performance-benchmarking" title="Link to this heading">#</a></h1>
+<p>This guide provides information on the implementation and management of benchmarking in MetPy.</p>
+<section id="airspeed-velocity">
+<h2>Airspeed Velocity<a class="headerlink" href="#airspeed-velocity" title="Link to this heading">#</a></h2>
+<p>MetPy’s source code is benchmarked using <a class="reference external" href="https://github.com/airspeed-velocity/asv">Airspeed Velocity</a>.
+ASV is an open source software which builds environments based on historical and current
+iterations of software and runs benchmark functions before compiling the results into
+digestable html pages. MetPy’s developers have used GitHub Actions and a Unidata Jenkins
+instance in order to automatically perform benchmarking as part of the continuous
+integration/continuous development workflow. These benchmarks allow us to identify bottlenecks
+in the code, determine performance changes from pull requests, and view a history of MetPy’s
+time efficiency.</p>
+</section>
+<section id="historical-performance">
+<h2>Historical Performance<a class="headerlink" href="#historical-performance" title="Link to this heading">#</a></h2>
+<p>Results of Metpy’s performance throughout versions is available at <a class="reference external" href="https://unidata.github.io/MetPy-benchmark/#">this page</a>.
+Currently, the history is benchmarked starting with MetPy version <code class="docutils literal notranslate"><span class="pre">1.4.0</span></code> and benchmarks the
+first commit hash associated with each minor version until present. Additionally, starting with
+the most recent minor release, every merged pull request made by a human contributor is
+benchmarked and added to the results. Note that these benchmarks run weekly, so it may take a
+few days for your merged commit to be updated into the results.</p>
+<p>This performance history is run using the Unidata Jenkins instance. Upon run, the
+<code class="docutils literal notranslate"><span class="pre">benchmarks/Jenkinsfile</span></code> instructs the Jenkins instance to create a custom
+<code class="docutils literal notranslate"><span class="pre">Docker</span> <span class="pre">container</span></code> using the <code class="docutils literal notranslate"><span class="pre">benchmarks/Dockerfile</span></code> and runs the benchmark
+functions within it. Jenkins uses the same Unidata machine for each run in order to ensure
+consistent benchmarking results. ASV is installed in this container and runs the benchmark
+functions for the historical commits of interest. In the event that successful results already
+exist for the requested commit hash, ASV will skip it and maintain the previous results.
+Finally, Jenkins pushes the results to a separate <a class="reference external" href="https://github.com/unidata/metpy-benchmark">results repository</a>
+where a GitHub Action uses an ASV command to generate and deploy the html.</p>
+</section>
+<section id="benchmark-functions">
+<h2>Benchmark Functions<a class="headerlink" href="#benchmark-functions" title="Link to this heading">#</a></h2>
+<p>Located within the <code class="docutils literal notranslate"><span class="pre">benchmarks/benchmarks</span></code> directory are <code class="docutils literal notranslate"><span class="pre">.py</span></code> files each containing a
+class <code class="docutils literal notranslate"><span class="pre">TimeSuite</span></code>, <code class="docutils literal notranslate"><span class="pre">setup</span></code> and <code class="docutils literal notranslate"><span class="pre">setup_cache</span></code> functions, and functions with the name
+scheme <code class="docutils literal notranslate"><span class="pre">time_example_metpy_function</span></code>. This is ASV’s required <a class="reference external" href="https://asv.readthedocs.io/en/latest/writing_benchmarks.html">syntax</a>
+for writing benchmarks. The <code class="docutils literal notranslate"><span class="pre">setup_cache</span></code> function loads the artificial benchmarking dataset
+<code class="docutils literal notranslate"><span class="pre">data_array_compressed.nc</span></code> and prepares the dataset for use by the benchmarks. The <code class="docutils literal notranslate"><span class="pre">setup</span></code>
+function “slices” the 4D dataset into the appropriate dimensions to create variables that can
+be passed to and used by the benchmark functions. Each benchmarking function then receives one
+of these slices (or the entire dataset) and runs the code inside the function as a benchmark,
+timing the performance and saving the results.</p>
+</section>
+<section id="local-benchmarking">
+<h2>Local Benchmarking<a class="headerlink" href="#local-benchmarking" title="Link to this heading">#</a></h2>
+<p>If you would like to run the benchmarking suite on your own development branch,
+follow these steps:</p>
+<ol class="arabic">
+<li><p>Install asv in your <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment using <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">asv</span></code></p></li>
+<li><p>Ensure that you have the <code class="docutils literal notranslate"><span class="pre">benchmarks</span></code> directory at the root of your MetPy repository</p></li>
+<li><p>Navigate to the <code class="docutils literal notranslate"><span class="pre">benchmarks</span></code> directory: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">benchmarks</span></code></p></li>
+<li><p>Generate the benchmarking data array by running the <code class="docutils literal notranslate"><span class="pre">data_array_generate.py</span></code> file</p></li>
+<li><p>Now it depends on exactly which benchmarks you want to run:</p>
+<p>a. To benchmark your code as is currently is,
+use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">asv</span> <span class="pre">run</span></code></p>
+<p>b. To compare a working branch with <em>your version</em> of MetPy’s main branch, use
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">asv</span> <span class="pre">continuous</span> <span class="pre">main</span> <span class="pre">&lt;branch_name&gt;</span></code> where <code class="docutils literal notranslate"><span class="pre">&lt;branch_name&gt;</span></code> is the name of your
+branch. You can also simply use two commit hashes in the place of the branch names. To view
+a text-based table for the functions and comparisons, use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">asv</span> <span class="pre">compare</span> <span class="pre">main</span>
+<span class="pre">&lt;branch_name&gt;</span></code></p>
+<p>c. To run the history of MetPy as mentioned above, you can use
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">asv</span> <span class="pre">run</span> <span class="pre">HASHFILE:no_bot_merge_commits.txt</span></code> after running the
+<code class="docutils literal notranslate"><span class="pre">generate_hashes.sh</span></code> script
+<strong>Note that this is computationally taxing and often takes several hours,
+depending on the specs of your machine</strong></p>
+<p>d. If you have a running <code class="docutils literal notranslate"><span class="pre">Docker</span> <span class="pre">Engine</span></code>, you can build the Docker image from the
+Dockerfile in the benchmarks directory using the command
+<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span> <span class="pre">-t</span> <span class="pre">metpy-benchmarks:latest</span> <span class="pre">.</span></code></p>
+<p>After this is built, you can run the
+benchmarks from the root of the repository in the container using
+<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--rm</span> <span class="pre">-v</span> <span class="pre">.:/container-benchmarks</span> <span class="pre">--hostname</span> <span class="pre">Docker_Container</span>
+<span class="pre">metpy-benchmarks:latest</span> <span class="pre">benchmark</span></code> on Windows or
+<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--rm</span> <span class="pre">-v</span> <span class="pre">.:/container-benchmarks</span> <span class="pre">--hostname</span> <span class="pre">Docker_Container</span> <span class="pre">-e</span> <span class="pre">DUID=$(id</span> <span class="pre">-u)</span>
+<span class="pre">-e</span> <span class="pre">DGID=$(id</span> <span class="pre">-g)</span> <span class="pre">metpy-benchmarks:latest</span> <span class="pre">benchmark</span></code> on Mac/Linux <strong>Note that as above,
+this runs all the benchmarks in no_bot_merge_commits.txt and can be taxing</strong></p>
+<p>If you want to just enter the container, you can use the same command as above, but
+replace the end <code class="docutils literal notranslate"><span class="pre">benchmark</span></code> with <code class="docutils literal notranslate"><span class="pre">peek</span></code></p>
+</li>
+</ol>
+</section>
 </section>
 
 
@@ -577,20 +629,20 @@ Bulletin of the American Meteorological Society.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../index.html"
+       href="infrastructureguide.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">MetPy</p>
+        <p class="prev-next-title">Infrastructure Guide</p>
       </div>
     </a>
     <a class="right-next"
-       href="installguide.html"
+       href="../examples/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Install Guide</p>
+        <p class="prev-next-title">Example Gallery</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -600,6 +652,27 @@ Bulletin of the American Meteorological Society.</p>
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#airspeed-velocity">Airspeed Velocity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#historical-performance">Historical Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-functions">Benchmark Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-benchmarking">Local Benchmarking</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
