@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Jul 28, 2025 at 18:10:59"/>
+    <meta name="docbuild:last-update" content="Jul 28, 2025 at 22:27:50"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/devel/benchmarking.html" />
 
   </head>
@@ -539,9 +539,9 @@
 <h1>Performance Benchmarking<a class="headerlink" href="#performance-benchmarking" title="Link to this heading">#</a></h1>
 <p>This guide provides information on the implementation and management of benchmarking in MetPy.</p>
 <section id="airspeed-velocity">
-<h2>Airspeed Velocity<a class="headerlink" href="#airspeed-velocity" title="Link to this heading">#</a></h2>
-<p>MetPy’s source code is benchmarked using <a class="reference external" href="https://github.com/airspeed-velocity/asv">Airspeed Velocity</a>.
-ASV is an open source software which builds environments based on historical and current
+<h2>airspeed velocity<a class="headerlink" href="#airspeed-velocity" title="Link to this heading">#</a></h2>
+<p>MetPy’s source code is benchmarked using <a class="reference external" href="https://github.com/airspeed-velocity/asv">airspeed velocity</a>.
+asv is an open source software which builds environments based on historical and current
 iterations of software and runs benchmark functions before compiling the results into
 digestable html pages. MetPy’s developers have used GitHub Actions and a Unidata Jenkins
 instance in order to automatically perform benchmarking as part of the continuous
@@ -561,17 +561,33 @@ few days for your merged commit to be updated into the results.</p>
 <code class="docutils literal notranslate"><span class="pre">benchmarks/Jenkinsfile</span></code> instructs the Jenkins instance to create a custom
 <code class="docutils literal notranslate"><span class="pre">Docker</span> <span class="pre">container</span></code> using the <code class="docutils literal notranslate"><span class="pre">benchmarks/Dockerfile</span></code> and runs the benchmark
 functions within it. Jenkins uses the same Unidata machine for each run in order to ensure
-consistent benchmarking results. ASV is installed in this container and runs the benchmark
+consistent benchmarking results. asv is installed in this container and runs the benchmark
 functions for the historical commits of interest. In the event that successful results already
-exist for the requested commit hash, ASV will skip it and maintain the previous results.
+exist for the requested commit hash, asv will skip it and maintain the previous results.
 Finally, Jenkins pushes the results to a separate <a class="reference external" href="https://github.com/unidata/metpy-benchmark">results repository</a>
-where a GitHub Action uses an ASV command to generate and deploy the html.</p>
+where a GitHub Action uses an asv command to generate and deploy the html.</p>
+</section>
+<section id="pull-request-comparative-benchmarking">
+<h2>Pull Request Comparative Benchmarking<a class="headerlink" href="#pull-request-comparative-benchmarking" title="Link to this heading">#</a></h2>
+<p>As part of the continuous integration workflow of MetPy, a GitHub Action has been implemented
+which uses the <code class="docutils literal notranslate"><span class="pre">asv</span> <span class="pre">continuous</span></code> command to automatically use asv to benchmark the PR’s SHA
+versus the current main branch. This comparative benchmark is only done when the pull request
+is labeled <code class="docutils literal notranslate"><span class="pre">benchmark</span></code> by a MetPy maintainer. This is because the check takes about 10
+minutes and is not necessary for every pull request, only those that change the calc
+module.</p>
+<p>Currently, the benchmark is set up to fail if any one benchmark takes 10% or more longer
+on the PR branch. But failing this check doesn’t mean you can’t contribute!
+Your PR might emphasize accuracy at the sacrifice of speed, and that might be ok in some cases.
+The maintainers will work with each pull request on a case-by-case basis and can help you
+if you’re getting unexpected benchmarking failures. If you want to test out your performance
+before opening a pull request, look into
+<a class="reference internal" href="#local-benchmarking-reference-label"><span class="std std-ref">local comparative benchmarking</span></a>.</p>
 </section>
 <section id="benchmark-functions">
 <h2>Benchmark Functions<a class="headerlink" href="#benchmark-functions" title="Link to this heading">#</a></h2>
 <p>Located within the <code class="docutils literal notranslate"><span class="pre">benchmarks/benchmarks</span></code> directory are <code class="docutils literal notranslate"><span class="pre">.py</span></code> files each containing a
 class <code class="docutils literal notranslate"><span class="pre">TimeSuite</span></code>, <code class="docutils literal notranslate"><span class="pre">setup</span></code> and <code class="docutils literal notranslate"><span class="pre">setup_cache</span></code> functions, and functions with the name
-scheme <code class="docutils literal notranslate"><span class="pre">time_example_metpy_function</span></code>. This is ASV’s required <a class="reference external" href="https://asv.readthedocs.io/en/latest/writing_benchmarks.html">syntax</a>
+scheme <code class="docutils literal notranslate"><span class="pre">time_example_metpy_function</span></code>. This is asv’s required <a class="reference external" href="https://asv.readthedocs.io/en/latest/writing_benchmarks.html">syntax</a>
 for writing benchmarks. The <code class="docutils literal notranslate"><span class="pre">setup_cache</span></code> function loads the artificial benchmarking dataset
 <code class="docutils literal notranslate"><span class="pre">data_array_compressed.nc</span></code> and prepares the dataset for use by the benchmarks. The <code class="docutils literal notranslate"><span class="pre">setup</span></code>
 function “slices” the 4D dataset into the appropriate dimensions to create variables that can
@@ -591,7 +607,7 @@ follow these steps:</p>
 <li><p>Now it depends on exactly which benchmarks you want to run:</p>
 <p>a. To benchmark your code as is currently is,
 use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">asv</span> <span class="pre">run</span></code></p>
-<p>b. To compare a working branch with <em>your version</em> of MetPy’s main branch, use
+<p id="local-benchmarking-reference-label">b. To compare a working branch with <em>your version</em> of MetPy’s main branch, use
 <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">asv</span> <span class="pre">continuous</span> <span class="pre">main</span> <span class="pre">&lt;branch_name&gt;</span></code> where <code class="docutils literal notranslate"><span class="pre">&lt;branch_name&gt;</span></code> is the name of your
 branch. You can also simply use two commit hashes in the place of the branch names. To view
 a text-based table for the functions and comparisons, use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">asv</span> <span class="pre">compare</span> <span class="pre">main</span>
@@ -665,8 +681,9 @@ replace the end <code class="docutils literal notranslate"><span class="pre">ben
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#airspeed-velocity">Airspeed Velocity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#airspeed-velocity">airspeed velocity</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#historical-performance">Historical Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pull-request-comparative-benchmarking">Pull Request Comparative Benchmarking</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-functions">Benchmark Functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-benchmarking">Local Benchmarking</a></li>
 </ul>
