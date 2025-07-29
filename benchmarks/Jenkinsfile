@@ -69,7 +69,8 @@ pipeline {
 						cd ${CLONE_DIR} 
 						git add --all
 						git commit -m "Jenkins Updating Benchmark Results BUILD-NUMBER:${BUILD_NUMBER}" || echo "-----no changes to commit-----"
-						git push origin HEAD:main --force
+						export GIT_SSH_COMMAND="ssh -i ${deploy_key}"
+                        			git push origin HEAD:main --force
 					fi
 					'''
 				}
