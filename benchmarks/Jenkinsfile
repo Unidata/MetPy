@@ -9,7 +9,7 @@ pipeline {
 			steps {
 				sh 'git config --global credential.helper cache'
 				sh 'git config --global push.default simple'
-				checkout scmGit(branches: [[name: '*/main']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'temp_repo_results'], cloneOption(depth: 1, noTags: false, reference: '', shallow: true)], userRemoteConfigs: [[credentialsId: 'GH_DEPLOY_KEY_METPY_BENCH_RESULTS', url: 'https://github.com/unidata/metpy-benchmark.git']])
+				checkout scmGit(branches: [[name: '*/main']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'temp_repo_results'], cloneOption(depth: 1, noTags: false, reference: '', shallow: true)], userRemoteConfigs: [[credentialsId: 'GH_DEPLOY_KEY_METPY_BENCH_RESULTS', url: 'git@github.com:Unidata/MetPy-benchmark.git']])
 			}
 		}
         // copies past results into the asv/results folder on the main repo
