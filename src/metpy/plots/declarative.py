@@ -23,7 +23,7 @@ from .cartopy_utils import import_cartopy
 from .patheffects import ColdFront, OccludedFront, StationaryFront, WarmFront
 from .station_plot import StationPlot
 from .text import scattertext, TextCollection
-from ..calc import reduce_point_density, smooth_n_point, zoom_xarray
+from ..calc import find_peaks, reduce_point_density, smooth_n_point, zoom_xarray
 from ..package_tools import Exporter
 from ..units import units
 
@@ -1032,7 +1032,7 @@ class ContourPlot(PlotScalar, ContourTraits, ValidationMixin):
     black.
 
     This trait can be set to any Matplotlib color
-    (https://matplotlib.org/3.1.0/gallery/color/named_colors.html)
+    (https://matplotlib.org/stable/gallery/color/named_colors.html)
     """
 
     linewidth = Int(2)
@@ -1170,7 +1170,7 @@ class PlotVector(Plots2D):
     black.
 
     This trait can be set to any named color from
-    `Matplotlibs Colors <https://matplotlib.org/3.1.0/gallery/color/named_colors.html>`
+    `Matplotlibs Colors <https://matplotlib.org/stable/gallery/color/named_colors.html>`
     """
 
     @observe('field')
@@ -1383,6 +1383,131 @@ class ArrowPlot(PlotVector, ValidationMixin):
                 if val is not None:
                     key_kwargs[name] = val
             self.parent.ax.quiverkey(self.handle, labelcolor=self.color, **key_kwargs)
+
+
+@exporter.export
+class PlotExtrema(PlotScalar, MetPyHasTraits, ValidationMixin):
+    """Plot maximum and/or minimum symbols and values of gridded datasets."""
+
+    peaks = List(default_value=['maxima'])
+    peaks.__doc__ = """A list of strings indicating which extrema to plot.
+    The default value is ['maxima'].
+
+    The only valid strings are 'maxima' and 'minima' for this attribute.
+
+    See Also
+    --------
+    metpy.calc.find_peaks
+    """
+
+    peak_ratio = List(default_value=[2.0])
+    peak_ratio.__doc__ = """A list of float values for the inerquartile range ratio.
+    The default value is [2.0].
+
+    This ratio value is an optional setting for the find_peaks function that uses the
+    inner-quartile range to create a threshold for persistence of local peaks.
+    """
+
+    symbol = List(default_value=['H'])
+    symbol.__doc__ = """A list of strings representing the extrema being plotted.
+    The default value is ['H'].
+
+    This can be set to any string you wish to plot at the extrema point. For example, use
+    'L' to signify a pressure minima.
+    """
+
+    symbol_size = List(default_value=[20.0])
+    symbol_size.__doc__ = """A list of float values setting the size of the extrema symbol.
+    The default value is [20.0].
+
+    The value of the float will set the size of the symbol with larger values generating
+    a larger symbol.
+    """
+
+    symbol_color = List(default_value=['black'])
+    symbol_color.__doc__ = """A list of strings representing the color of the symbol.
+    The default value is ['black'].
+
+    This trait can be set to any named color from
+    `Matplotlibs Colors <https://matplotlib.org/stable/gallery/color/named_colors.html>`
+    """
+
+    plot_value = List(default_value=[False])
+    plot_value.__doc__ = """A list of booleans representing whether to plot the numeric
+    extrema integer value. The default value is [False].
+
+    This parameter controls plotting the numeric local maxima or minima value in
+    addition to the extrema symbol.
+    """
+
+    text_size = List(default_value=[12])
+    text_size.__doc__ = """A list of float values setting the text size of the extrema value.
+    The default value is [12.0].
+    """
+
+    text_location = List(default_value=['bottom'])
+    text_location.__doc__ = """A list of strings representing the vertical alignment for
+    plotting the extrema value text. The default value is ['bottom'].
+
+    The available options are 'baseline', 'bottom', 'center', 'center_baseline', 'top'.
+    """
+
+    @observe('peak', 'peak_ratio', 'symbol', 'symbol_size', 'symbol_color', 'plot_value',
+             'text_size', 'text_location')
+    def _set_need_rebuild(self, _):
+        """Handle changes to attributes that need to regenerate everything."""
+        # Because matplotlib doesn't let you just change these properties, we need
+        # to trigger a clear and re-call of scattertext()
+        self.clear()
+
+    def _build(self):
+        """Build the raster plot by calling any plotting methods as necessary."""
+        x_like, y_like, imdata = self.plotdata
+
+        kwargs = plot_kwargs(imdata, self.mpl_args)
+
+        for i, extreme in enumerate(self.peaks):
+            peak_ratio = self.peak_ratio[i] if len(self.peak_ratio) > 1 else self.peak_ratio[0]
+
+            if extreme == 'minima':
+                extrema_y, extrema_x = find_peaks(imdata.values, maxima=False,
+                                                  iqr_ratio=peak_ratio)
+            elif extreme == 'maxima':
+                extrema_y, extrema_x = find_peaks(imdata.values, iqr_ratio=peak_ratio)
+
+            plot_value = self.plot_value[i] if len(self.plot_value) > 1 else self.plot_value[0]
+
+            location = 'top' if plot_value else 'center'
+
+            symbol = self.symbol[i] if len(self.symbol) > 1 else self.symbol[0]
+
+            if len(self.symbol_color) > 1:
+                color = self.symbol_color[i]
+            else:
+                color = self.symbol_color[0]
+
+            if len(self.symbol_size) > 1:
+                symbol_size = self.symbol_size[i]
+            else:
+                symbol_size = self.symbol_size[0]
+
+            text_size = self.text_size[i] if len(self.text_size) > 1 else self.text_size[0]
+
+            if len(self.text_location) > 1:
+                text_loc = self.text_location[i]
+            else:
+                text_loc = self.text_location[0]
+
+            scattertext(self.parent.ax, x_like[extrema_x], y_like[extrema_y], symbol,
+                        color=color, size=int(symbol_size),
+                        verticalalignment=location, clip_on=True, **kwargs)
+
+            if plot_value:
+                scattertext(self.parent.ax, x_like[extrema_x], y_like[extrema_y],
+                            imdata.values[extrema_y, extrema_x],
+                            color=color, size=int(text_size),
+                            verticalalignment=text_loc, formatter='.0f',
+                            clip_on=True, **kwargs)
 
 
 @exporter.export
