@@ -42,6 +42,15 @@ def test_add_lat_lon_station_data_not_found():
         add_station_lat_lon(df)
 
 
+def test_add_lat_lon_station_data_existing_col():
+    """Test will fail if one of these columns exists already."""
+    df = pd.DataFrame({'station': ['KOUN', 'KVPZ'],
+                       'latitude': [44, 42]})
+
+    with pytest.raises(ValueError, match='cannot insert'):
+        add_station_lat_lon(df)
+
+
 def test_station_lookup_get_station():
     """Test that you can get a station by ID from the lookup."""
     assert station_info['KOUN'].id == 'KOUN'
