@@ -336,7 +336,7 @@ class SkewT:
         self.moist_adiabats = None
 
         # Maintain a reasonable ratio of data limits.
-        self.ax.set_aspect(aspect, adjustable='datalim')
+        self.ax.set_aspect(aspect, adjustable='box')
 
     def plot(self, pressure, t, *args, **kwargs):
         r"""Plot data.
@@ -743,10 +743,6 @@ class SkewT:
         return self.shade_area(pressure[idx], t_parcel[idx], t[idx], which='negative',
                                **kwargs)
 
-    def update_heightax_limits(self, ax):
-        self.heightax.set_ylim(pressure_to_height_std(units.Quantity
-                                                      (self.ax.get_ylim(), 'hPa')))
-    
     def add_heightax(self):
         r"""Add a secondary y axis with height values calculated from pressure_to_height_std.
 
@@ -754,37 +750,28 @@ class SkewT:
         be accessed with the name "heightax".
 
         See Also
-        --------
         :meth:`metpy.calc.pressure_to_height_std`
 
-        """
+        """        
         # Set a secondary axis with height from pressure_to_height_standard
         # Requires direct and inverse fctns - pressure axis and height axis
         def height_axis(p):
             return pressure_to_height_std(units.Quantity(p, 'hPa')).m_as('km')
-
         def pressure_axis(h):
             return height_to_pressure_std(units.Quantity(h, 'km')).m
         # Positions the axis .12 normalized units to the left of the pressure axis
-        self.heightax = self.ax.twinx()
+        self.heightax = self.ax.secondary_yaxis(-0.16,
+                                                functions=(height_axis, pressure_axis))
+        # Set height axis ylims based on pressure ylims 
+        # This doesn't really seem to do anything except make it so that the unit is shown 
+        # on the axis
         self.heightax.set_ylim(pressure_to_height_std(units.Quantity
                                                       (self.ax.get_ylim(), 'hPa')))
-        self.heightax.spines["left"].set_position(("axes", -.12))
-        self.heightax.spines["left"].set_visible(True)
-        self.heightax.yaxis.set_label_position('left')
-        self.heightax.yaxis.set_ticks_position('left')
-        # Set height axis ylims based on pressure ylims
-        # This doesn't really seem to do anything except make it so that the unit is shown
-        # on the axis
-        self.heightax.set_yscale('linear')
         self.heightax.yaxis.set_units(units.km)
         self.heightax.yaxis.set_minor_locator(NullLocator())
         self.heightax.yaxis.set_major_formatter(ScalarFormatter())
+        # Create ticks on the height axis counting by 1 from min to max
         self.heightax.yaxis.set_major_locator(MultipleLocator(1))
-        self.ax.callbacks.connect('ylim_changed', self.update_heightax_limits)
-        
-
-        
 
 
 @exporter.export
