@@ -371,7 +371,7 @@ class NEXRADLevel2Archive(S3DataStore):
             Whether Model Data Messages (MDM) should be included in results. Defaults to False.
 
         """
-        super().__init__('noaa-nexrad-level2')
+        super().__init__('unidata-nexrad-level2')
         self.include_mdm = include_mdm
 
     def sites(self, dt=None):
