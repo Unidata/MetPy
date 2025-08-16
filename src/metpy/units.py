@@ -87,6 +87,7 @@ def setup_registry(reg):
     reg.define('dBz = 1e-18 m^3; logbase: 10; logfactor: 10 = dBZ')
     reg.define('[specific_enthalpy] = [energy] / [mass]')
     reg.define('[specific_heat_capacity] = [specific_enthalpy] / [temperature]')
+    reg.define('potential_vorticity_unit = 1e-6 m^2 s^-1 K kg^-1 = PVU = pvu')
 
     # Alias geopotential meters (gpm) to just meters
     reg.define('@alias meter = gpm')
