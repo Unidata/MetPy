@@ -355,7 +355,7 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
 .. _Pandas: https://pandas.pydata.org
 .. _NumPy: https://numpy.org/devdocs
 .. _Matplotlib: https://matplotlib.org
-.. _CartoPy: https://scitools.org.uk/cartopy/docs/latest/
+.. _CartoPy: https://cartopy.readthedocs.io/stable/
 .. _Pint: https://pint.readthedocs.io/en/stable/
 .. _SatPy: https://satpy.readthedocs.io/en/latest/
 .. _PyART: https://arm-doe.github.io/pyart/
