@@ -32,7 +32,7 @@ on a future ``1.x`` version.
 For additional MetPy examples not included in this repository, please see the
 [MetPy Cookbook on Project Pythia](https://projectpythia.org/metpy-cookbook/index.html).
 
-We support Python >= 3.10.
+We support Python >= 3.11.
 
 Need Help?
 ----------
