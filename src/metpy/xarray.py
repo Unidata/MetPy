@@ -810,7 +810,7 @@ class MetPyDatasetAccessor:
         if np.iterable(varname) and not isinstance(varname, str):
             # If non-string iterable is given, apply recursively across the varnames
             subset = xr.merge([self.parse_cf(single_varname, coordinates=coordinates)
-                               for single_varname in varname])
+                               for single_varname in varname], compat='no_conflicts')
             subset.attrs = self._dataset.attrs
             return subset
 
