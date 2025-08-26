@@ -1,6 +1,6 @@
 matplotlib==3.10.5
 numpy==2.2.6
-pandas==2.3.1
+pandas==2.3.2
 pooch==1.8.2
 pint==0.24.4
 pyproj==3.7.1
