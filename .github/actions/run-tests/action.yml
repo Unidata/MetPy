@@ -15,7 +15,7 @@ inputs:
   pytest-args:
     description: 'Additional arguments to pass to pytest'
     required: false
-    default: '--mpl -W error::metpy.deprecation.MetpyDeprecationWarning -n auto --cov --cov-report=xml'
+    default: '--mpl -W error::metpy.deprecation.MetpyDeprecationWarning -n auto --cov --cov-report=xml --cov-branch'
 runs:
   using: composite
   steps:
