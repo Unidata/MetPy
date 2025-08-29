@@ -4,7 +4,7 @@ flake8==7.3.0
 pycodestyle==2.14.0
 pyflakes==3.4.0
 
-flake8-continuation==1.0.5
+flake8-broken-line==1.0.0
 flake8-isort==6.1.2
 isort==6.0.1
 flake8-requirements==2.2.1
