@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:32.905** total execution time for 2 files **from examples/remote**:
+**00:11.203** total execution time for 2 files **from examples/remote**:
 
 .. container::
 
@@ -33,8 +33,8 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_examples_remote_basic.py` (``basic.py``)
-     - 00:20.290
+     - 00:06.223
      - 0.0
    * - :ref:`sphx_glr_examples_remote_ml_forecast.py` (``ml_forecast.py``)
-     - 00:12.615
+     - 00:04.980
      - 0.0
