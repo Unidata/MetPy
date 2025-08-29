@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Jul 23, 2025 at 18:23:45"/>
+    <meta name="docbuild:last-update" content="Aug 29, 2025 at 19:25:27"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.most_unstable_parcel.html" />
 
   </head>
@@ -808,21 +808,21 @@ potential temperature and finding its maximum in the specified layer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric pressure profile</p></li>
-<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric temperature profile</p></li>
-<li><p><strong>dewpoint</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric dewpoint profile</p></li>
-<li><p><strong>height</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Atmospheric height profile. Standard atmosphere assumed when None (the default).</p></li>
-<li><p><strong>bottom</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Bottom of the layer to consider for the calculation in pressure or height.
+<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.25rc3.dev1+g20e3dd3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric pressure profile</p></li>
+<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.25rc3.dev1+g20e3dd3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric temperature profile</p></li>
+<li><p><strong>dewpoint</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.25rc3.dev1+g20e3dd3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric dewpoint profile</p></li>
+<li><p><strong>height</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.25rc3.dev1+g20e3dd3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Atmospheric height profile. Standard atmosphere assumed when None (the default).</p></li>
+<li><p><strong>bottom</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.25rc3.dev1+g20e3dd3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Bottom of the layer to consider for the calculation in pressure or height.
 Defaults to using the bottom pressure or height.</p></li>
-<li><p><strong>depth</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Depth of the layer to consider for the calculation in pressure or height. Defaults
+<li><p><strong>depth</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.25rc3.dev1+g20e3dd3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Depth of the layer to consider for the calculation in pressure or height. Defaults
 to 300 hPa.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Pressure of the most unstable parcel in the profile</p></li>
-<li><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Temperature of the most unstable parcel in the profile</p></li>
-<li><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.24.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Dewpoint of the most unstable parcel in the profile</p></li>
+<li><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.25rc3.dev1+g20e3dd3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Pressure of the most unstable parcel in the profile</p></li>
+<li><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.25rc3.dev1+g20e3dd3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Temperature of the most unstable parcel in the profile</p></li>
+<li><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.25rc3.dev1+g20e3dd3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Dewpoint of the most unstable parcel in the profile</p></li>
 <li><p><em>int</em> – The index of the most unstable parcel within the original data</p></li>
 </ul>
 </p>
