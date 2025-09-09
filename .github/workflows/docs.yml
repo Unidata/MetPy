@@ -112,7 +112,7 @@ jobs:
         ref: "gh-pages"
 
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
 
     - name: Install packaging
       run: python -m pip install packaging
