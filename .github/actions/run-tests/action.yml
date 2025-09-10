@@ -15,7 +15,7 @@ inputs:
   pytest-args:
     description: 'Additional arguments to pass to pytest'
     required: false
-    default: '--mpl -W error::metpy.deprecation.MetpyDeprecationWarning'
+    default: '--mpl -W error::metpy.deprecation.MetpyDeprecationWarning -n auto --cov --cov-report=xml'
 runs:
   using: composite
   steps:
@@ -30,10 +30,8 @@ runs:
       # By running coverage in "parallel" mode and "combining", we can clean up the path names
       run: |
         set -e -o pipefail
-        python -m coverage run -p -m pytest ${{ inputs.pytest-args }} tests/ 2>&1 | tee tests-${{ inputs.key }}.log
-        python -m coverage combine
-        python -m coverage report
-        python -m coverage xml
+        python -m pytest ${{ inputs.pytest-args }} tests/ 2>&1 | tee tests-${{ inputs.key }}.log
+
 
     - name: Run doctests
       if: ${{ inputs.run-doctests == 'true' }}
