@@ -400,7 +400,7 @@ other ways, feel free to contact us:
 * [MetPy's Gitter Channel](https://gitter.im/Unidata/MetPy)
 * ["metpy" tag on Stack Overflow](https://stackoverflow.com/questions/tagged/metpy)
 * [Unidata's Python support address](mailto:support-python@unidata.ucar.edu)
-* [python-users](https://www.unidata.ucar.edu/support/#mailinglists) mailing list
+* [python-users](https://mailinglists.unidata.ucar.edu/?software) mailing list
 
 ## Further Reading
 
