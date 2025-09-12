@@ -52,7 +52,7 @@ Unit-aware calculations can then be done with these variables:
 
 In addition to the :doc:`Units Tutorial </tutorials/unit_tutorial>` page, checkout the MetPy
 Monday blog on
-`units <https://www.unidata.ucar.edu/blogs/developer/en/entry/metpy-mondays-4-units-in>`_ or
+`units <https://www.unidata.ucar.edu/blogs/developer/entry/metpy-mondays-4-units-in>`_ or
 watch our MetPy Monday video on
 `temperature units <https://www.youtube.com/watch?v=iveJCqxe3Z4>`_.
 
