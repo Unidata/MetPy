@@ -7,7 +7,7 @@ import contextlib
 from datetime import datetime
 from enum import Enum
 from io import BytesIO
-from itertools import repeat  # noqa: I202
+from itertools import repeat
 import logging
 from pathlib import Path
 import re
