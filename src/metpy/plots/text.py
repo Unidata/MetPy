@@ -242,8 +242,7 @@ class TextCollection(Text):
 
                 if self.get_path_effects():
                     from matplotlib.patheffects import PathEffectRenderer
-                    textrenderer = PathEffectRenderer(
-                                        self.get_path_effects(), renderer)  # noqa: E126
+                    textrenderer = PathEffectRenderer(self.get_path_effects(), renderer)
                 else:
                     textrenderer = renderer
 
