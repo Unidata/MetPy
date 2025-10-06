@@ -6,7 +6,7 @@ pyflakes==3.4.0
 
 flake8-broken-line==1.0.0
 flake8-isort==6.1.2
-isort==6.0.1
+isort==6.1.0
 flake8-requirements==2.3.0
 
 flake8-rst-docstrings==0.3.1
