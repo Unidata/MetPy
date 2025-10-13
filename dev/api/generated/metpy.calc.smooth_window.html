@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Oct 06, 2025 at 15:21:44"/>
+    <meta name="docbuild:last-update" content="Oct 13, 2025 at 15:31:05"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.smooth_window.html" />
 
   </head>
@@ -810,8 +810,8 @@
 <li><p><strong>window</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><em>numpy.ndarray</em></a>) – Window to use in smoothing. Can have dimension less than or equal to N. If
 dimension less than N, the scalar grid will be smoothed along its trailing dimensions.
 Shape along each dimension must be odd.</p></li>
-<li><p><strong>passes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – The number of times to apply the filter to the grid. Defaults to 1.</p></li>
-<li><p><strong>normalize_weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – If true, divide the values in window by the sum of all values in the window to obtain
+<li><p><strong>passes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – The number of times to apply the filter to the grid. Defaults to 1.</p></li>
+<li><p><strong>normalize_weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If true, divide the values in window by the sum of all values in the window to obtain
 the normalized smoothing weights. If false, use supplied values directly as the
 weights.</p></li>
 </ul>

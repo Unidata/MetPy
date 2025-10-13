@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Oct 06, 2025 at 15:21:44"/>
+    <meta name="docbuild:last-update" content="Oct 13, 2025 at 15:31:05"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.scattertext.html" />
 
   </head>
@@ -808,14 +808,14 @@ coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>) – Matplotlib Axes to draw on</p></li>
+<li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>) – Matplotlib Axes to draw on</p></li>
 <li><p><strong>x</strong> (<em>array-like</em><em>, </em><em>(</em><em>N</em><em>, </em><em>)</em>) – Input positions</p></li>
 <li><p><strong>y</strong> (<em>array-like</em><em>, </em><em>(</em><em>N</em><em>, </em><em>)</em>) – Input positions</p></li>
 <li><p><strong>texts</strong> (<em>array-like</em><em>, </em><em>(</em><em>N</em><em>, </em><em>)</em>) – Collection of text that will be plotted at each (x,y) location</p></li>
-<li><p><strong>loc</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Offset (in screen coordinates) from x,y position. Allows positioning text relative
+<li><p><strong>loc</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Offset (in screen coordinates) from x,y position. Allows positioning text relative
 to original point. Default is (0, 0), which is no offset.</p></li>
-<li><p><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em> or </em><em>Callable</em><em>, </em><em>optional</em>) – How to format the each entry in <em class="xref py py-obj">texts</em> for plotting. If a string, it should be
-compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.13)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
+<li><p><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>Callable</em><em>, </em><em>optional</em>) – How to format the each entry in <em class="xref py py-obj">texts</em> for plotting. If a string, it should be
+compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.14)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
 value and return a string. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, which performs no formatting and
 requires every object in <em class="xref py py-obj">texts</em> to be a <em class="xref py py-obj">str</em>.</p></li>
 <li><p><strong>kwargs</strong> (<em class="xref py py-obj">TextCollection</em> properties.) – Other miscellaneous text parameters.</p></li>
