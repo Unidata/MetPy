@@ -33,9 +33,9 @@ jobs:
         persist-credentials: false
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@v4
       with:
         config-file: ./.github/codeql/codeql-config.yml
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@v4
