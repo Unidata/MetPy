@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: Download logs
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           path: /tmp/workspace/logs
 
