@@ -5,6 +5,7 @@
 from inspect import Parameter, Signature, signature
 
 import numpy as np
+import time
 
 # Can drop fallback once we rely on numpy>=2
 try:
@@ -4399,6 +4400,7 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     caution on large arrays.
 
     """
+    time.sleep(1)
     if not getattr(pressure, 'shape', False):
         pressure = np.atleast_1d(pressure)
         temperature = np.atleast_1d(temperature)
