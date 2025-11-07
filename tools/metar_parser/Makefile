@@ -1,6 +1,6 @@
-DESTDIR := ../../src/metpy/io/_metar_parser
+DESTDIR := ../../src/metpy/io
 
-PYMOD := $(DESTDIR)/metar_parser.py
+PYMOD := $(DESTDIR)/_metar_parser.py
 
 all: $(PYMOD)
 
@@ -10,5 +10,5 @@ clean:
 canopy:
 	npm install -g canopy
 
-$(DESTDIR)/%.py: %.peg
+$(DESTDIR)/_%.py: %.peg
 	canopy $? --lang python --output $(basename $@)
