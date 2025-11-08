@@ -18,7 +18,8 @@ from metpy.plots import MapPanel, PanelContainer, PlotGeometry
 
 ###########################
 # Read in the geoJSON file containing the convective outlook.
-day1_outlook = geopandas.read_file(get_test_data('spc_day1otlk_20210317_1200_lyr.geojson'))
+day1_outlook = geopandas.read_file(get_test_data('spc_day1otlk_20210317_1200_lyr.geojson',
+                                                 as_file_obj=False))
 
 ###########################
 # Preview the data.

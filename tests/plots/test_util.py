@@ -54,8 +54,8 @@ def test_add_timestamp_xarray():
     """Test that add_timestamp can work with xarray datetime accessor."""
     with autoclose_figure() as fig:
         ax = fig.add_subplot(1, 1, 1)
-        ds = xr.open_dataset(get_test_data('AK-REGIONAL_8km_3.9_20160408_1445.gini'),
-                             engine='gini')
+        ds = xr.open_dataset(get_test_data('AK-REGIONAL_8km_3.9_20160408_1445.gini',
+                                           as_file_obj=False), engine='gini')
         txt = add_timestamp(ax, ds.time.dt, pretext='')
         assert txt.get_text() == '2016-04-08T14:45:20Z'
 
