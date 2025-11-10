@@ -984,7 +984,7 @@ class LegacyMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the values and labels from the product."""
-        # Don't worry about super() since we're using our own lut assembled sequentially
+        super().__init__()
         self.labels = []
         self.lut = []
         for t in prod.thresholds:
