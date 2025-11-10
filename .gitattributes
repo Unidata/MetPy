@@ -5,7 +5,7 @@ staticdata/*.tbl text eol=lf
 
 *.ipynb	diff=jupyternotebook
 talks/* linguist-documentation
-src/metpy/io/_metar_parser/metar_parser.py linguist-generated=true
+src/metpy/io/_metar_parser.py linguist-generated=true
 src/metpy/_vendor/* linguist-vendored
 
 # Mark the vcrpy cassettes as generated
