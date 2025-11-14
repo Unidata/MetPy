@@ -371,9 +371,7 @@ class StationPlot:
     def _to_string_list(vals, fmt):
         """Convert a sequence of values to a list of strings."""
         if fmt is None:
-            def fmt(s):
-                """Perform default formatting with no decimal places and no negative 0."""
-                return format(round(s, 0) + 0., '.0f')
+            fmt = 'z.0f'
         if not callable(fmt):
             def formatter(s):
                 """Turn a format string into a callable."""
