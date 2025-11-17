@@ -11,7 +11,7 @@ jobs:
   Automerge:
     environment:
       name: PR Backport
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'Unidata/MetPy'
     env:
       GH_REPO: ${{ github.repository }}
