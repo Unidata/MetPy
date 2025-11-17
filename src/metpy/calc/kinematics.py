@@ -515,6 +515,64 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
 
 @exporter.export
 @parse_grid_arguments
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'parallel_scale', 'meridional_scale'))
+@check_units('[speed]', '[speed]', '[length]', '[length]')
+def jacobian(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2, *,
+             parallel_scale=None, meridional_scale=None):
+    r"""Calculate the Jacobian determinant of scalar quantities u and v.
+
+    Parameters
+    ----------
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        first scalar quantity (often the x component of the wind)
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        second scalar quantity (often the y component of the wind)
+
+    Returns
+    -------
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        Jacobian Determinant
+
+    Other Parameters
+    ----------------
+    dx : `pint.Quantity`, optional
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+
+    See Also
+    --------
+    gradient
+
+    """
+    (dudx, dudy), (dvdx, dvdy) = vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale)
+    return dudx * dvdy - dudy * dvdx
+
+
+@exporter.export
+@parse_grid_arguments
 @preprocess_and_wrap(wrap_like='scalar',
                      broadcast=('scalar', 'u', 'v', 'w', 'parallel_scale', 'meridional_scale'))
 @check_units(dx='[length]', dy='[length]')
