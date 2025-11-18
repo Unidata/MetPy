@@ -11,8 +11,8 @@ jobs:
   Automerge:
     environment:
       name: PR Backport
-    runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-slim
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'Unidata/MetPy'
     env:
       GH_REPO: ${{ github.repository }}
       GH_PR: ${{ github.event.pull_request.number }}
@@ -22,6 +22,9 @@ jobs:
       pull-requests: write
 
     steps:
+    - name: Check Dependabot metadata
+      uses: dependabot/fetch-metadata@v2
+
     - name: Create App Token
       uses: actions/create-github-app-token@v2
       id: app-token
