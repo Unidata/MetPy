@@ -2,7 +2,7 @@ config_version = "0"
 
 exclude_patterns = [
     "src/metpy/io/_nexrad_msgs/msg*.py",
-    "src/metpy/io/_metar_parser/*"
+    "src/metpy/io/_metar_parser*"
 ]
 test_patterns = ["tests/**/*.py"]
 
