@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Utilities for use in making plots."""
 
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 
 from matplotlib.collections import LineCollection
 import matplotlib.patheffects as mpatheffects
@@ -52,7 +52,7 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=Fals
         text_args = {}
     text_args.update(**kwargs)
     if not time:
-        time = datetime.now(timezone.utc)
+        time = datetime.now(UTC)
     timestr = time.strftime(time_format)
     # If we don't have a time string after that, assume xarray/numpy and see if item
     if not isinstance(timestr, str):
