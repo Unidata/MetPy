@@ -98,3 +98,19 @@ HIGHS -351 -3985 -4046 -38117 -7510
  """)
     df = parse_wpc_surface_bulletin(sample)
     assert df.geometry[0] == sgeom.Point([-51, -3])
+
+
+@needs_module('shapely')
+def test_bad_line_continue(caplog):
+    """Test decoding of a file with some bad characters."""
+    from io import BytesIO
+
+    sample = BytesIO(b"""VALID 062818Z
+HIGHS 1022 3961069 1020 3851069 1026 3750773 1022 4430845 1019 5520728
+LOWS 1016 4510934 1002 3441145 1003 4271229 1002 4471230 1009 4631181
+TROF 2971023 2831018 2691008 I2531003
+TROF 2911100 2681082 2511055 2431024
+ """)
+    df = parse_wpc_surface_bulletin(sample)
+    assert len(df) == 11
+    assert 'Could not parse' in caplog.text
