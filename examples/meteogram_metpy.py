@@ -46,7 +46,7 @@ class Meteogram:
             axis: number that controls the new axis to be plotted (FOR FUTURE)
         """
         if not time:
-            time = dt.datetime.now(dt.timezone.utc)
+            time = dt.datetime.now(dt.UTC)
         self.start = dates[0]
         self.fig = fig
         self.end = dates[-1]
