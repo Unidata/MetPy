@@ -11,7 +11,7 @@ import warnings
 import numpy as np
 import pandas as pd
 
-from ._metar_parser.metar_parser import parse, ParseError, TreeNode
+from ._metar_parser import parse, ParseError, TreeNode
 from ._tools import open_as_needed
 from .station_data import station_info
 from ..package_tools import Exporter
