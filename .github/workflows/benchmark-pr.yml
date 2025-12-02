@@ -25,7 +25,7 @@ jobs:
             with:
               python-version: "3.12"
           - name: Checkout repo
-            uses: actions/checkout@v5  #checks out repository
+            uses: actions/checkout@v6  #checks out repository
             with:
               fetch-depth: 0  # Fetch full history
           - run: python -m pip install numpy pandas xarray metpy netcdf4
