@@ -33,43 +33,43 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_examples_calculations_High_Low_Analysis.py` (``High_Low_Analysis.py``)
-     - 00:01.136
+     - 00:01.134
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Smoothing.py` (``Smoothing.py``)
      - 00:00.543
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Sounding_Calculations.py` (``Sounding_Calculations.py``)
-     - 00:00.279
+     - 00:00.281
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_QVector.py` (``QVector.py``)
-     - 00:00.148
-     - 0.0
-   * - :ref:`sphx_glr_examples_calculations_Vorticity.py` (``Vorticity.py``)
-     - 00:00.140
+     - 00:00.147
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Absolute_Vorticity.py` (``Absolute_Vorticity.py``)
-     - 00:00.140
+     - 00:00.141
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Total_Deformation.py` (``Total_Deformation.py``)
      - 00:00.140
+     - 0.0
+   * - :ref:`sphx_glr_examples_calculations_Vorticity.py` (``Vorticity.py``)
+     - 00:00.139
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Shearing_Deformation.py` (``Shearing_Deformation.py``)
      - 00:00.139
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Stretching_Deformation.py` (``Stretching_Deformation.py``)
-     - 00:00.137
+     - 00:00.138
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Divergence.py` (``Divergence.py``)
-     - 00:00.122
+     - 00:00.124
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Advection.py` (``Advection.py``)
-     - 00:00.119
+     - 00:00.117
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Wind_Speed.py` (``Wind_Speed.py``)
      - 00:00.112
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Equivalent_Potential_Temperature.py` (``Equivalent_Potential_Temperature.py``)
-     - 00:00.073
+     - 00:00.074
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Gradient.py` (``Gradient.py``)
      - 00:00.014
@@ -96,5 +96,5 @@ Computation times
      - 00:00.004
      - 0.0
    * - :ref:`sphx_glr_examples_calculations_Parse_Angles.py` (``Parse_Angles.py``)
-     - 00:00.003
+     - 00:00.002
      - 0.0
