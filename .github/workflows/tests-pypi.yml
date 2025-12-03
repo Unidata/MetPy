@@ -86,7 +86,7 @@ jobs:
   codecov:
     needs: PyPITests
     name: CodeCov Upload
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     environment:
       name: CodeCov
     timeout-minutes: 2
