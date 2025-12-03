@@ -37,14 +37,11 @@ def effective_layer(p, t, td, h, height_layer=False):
       - pbot/hbot, ptop/htop: pressure/height of the bottom level,
                               pressure/height of the top level
     """
-    from metpy.calc import cape_cin, parcel_profile
-    from metpy.units import units
-
     pbot = None
 
     for i in range(p.shape[0]):
-        prof = parcel_profile(p[i:], t[i], td[i])
-        sbcape, sbcin = cape_cin(p[i:], t[i:], td[i:], prof)
+        prof = mpcalc.parcel_profile(p[i:], t[i], td[i])
+        sbcape, sbcin = mpcalc.cape_cin(p[i:], t[i:], td[i:], prof)
         if sbcape >= 100 * units('J/kg') and sbcin > -250 * units('J/kg'):
             pbot = p[i]
             hbot = h[i]
@@ -54,8 +51,8 @@ def effective_layer(p, t, td, h, height_layer=False):
         return None, None
 
     for i in range(bot_idx + 1, p.shape[0]):
-        prof = parcel_profile(p[i:], t[i], td[i])
-        sbcape, sbcin = cape_cin(p[i:], t[i:], td[i:], prof)
+        prof = mpcalc.parcel_profile(p[i:], t[i], td[i])
+        sbcape, sbcin = mpcalc.cape_cin(p[i:], t[i:], td[i:], prof)
         if sbcape < 100 * units('J/kg') or sbcin < -250 * units('J/kg'):
             ptop = p[i]
             htop = h[i]
