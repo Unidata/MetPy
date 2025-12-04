@@ -321,8 +321,7 @@ def test_hodograph_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(
-    remove_text=True, tolerance=0.6 if version_check('matplotlib==3.5') else 0.)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
 def test_hodograph_units():
     """Test passing quantities to Hodograph."""
     fig = plt.figure(figsize=(9, 9))
