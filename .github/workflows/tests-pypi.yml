@@ -25,16 +25,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.11, 3.12, 3.13]
+        python-version: [3.11, 3.12, 3.13, 3.14]
         dep-versions: [Latest]
         no-extras: ['']
         include:
-          - python-version: '3.11'
+          - python-version: 3.11
             dep-versions: Minimum
-          - python-version: '3.11'
+          - python-version: 3.11
             dep-versions: Minimum
             no-extras: 'No Extras'
-          - python-version: 3.13
+          - python-version: 3.14
             dep-versions: Latest
             no-extras: 'No Extras'
 

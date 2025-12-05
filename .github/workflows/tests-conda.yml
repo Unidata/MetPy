@@ -28,11 +28,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.11, 3.13]
+        python-version: [3.11, 3.14]
         os: [macOS, Windows]
         include:
           - python-version: 3.12
             os: macOS
+          - python-version: 3.13
+            os: Windows
 
     steps:
     - name: Checkout source
