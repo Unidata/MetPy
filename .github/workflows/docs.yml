@@ -24,10 +24,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.11, 3.12]
+        python-version: [3.11, 3.12, 3.13]
         check-links: [false]
         include:
-          - python-version: 3.13
+          - python-version: 3.14
             check-links: true
     outputs:
       doc-version: ${{ steps.build-docs.outputs.doc-version }}
