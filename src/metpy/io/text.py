@@ -4,7 +4,7 @@
 """Support reading information from various text file formats."""
 
 import contextlib
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 import re
 import string
 
@@ -102,7 +102,7 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
         text = file.read().decode('utf-8')
 
     parsed_text = []
-    valid_time = datetime.now(timezone.utc).replace(tzinfo=None)
+    valid_time = datetime.now(UTC).replace(tzinfo=None)
     for parts in _regroup_lines(text.splitlines()):
         # A single file may have multiple sets of data that are valid at different times. Set
         # the valid_time string that will correspond to all the following lines parsed, until
