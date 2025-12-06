@@ -10,7 +10,7 @@ import pytest
 
 from metpy.cbook import get_test_data
 from metpy.io import parse_metar_file, parse_metar_to_dataframe
-from metpy.io._metar_parser.metar_parser import parse
+from metpy.io._metar_parser import parse
 from metpy.io.metar import Metar, parse_metar
 from metpy.units import is_quantity, units
 
