@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Dec 05, 2025 at 00:28:05"/>
+    <meta name="docbuild:last-update" content="Dec 08, 2025 at 14:21:15"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.interpolate.cross_section.html" />
 
   </head>
@@ -805,12 +805,12 @@
 <dd><p>Obtain an interpolated cross-sectional slice through gridded data.</p>
 <p>Utilizing the interpolation functionality in xarray, this function takes a vertical
 cross-sectional slice along a geodesic through the given data on a regular grid, which is
-given as an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2025.11.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> so that we can utilize its coordinate and projection
+given as an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2025.12.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> so that we can utilize its coordinate and projection
 metadata.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2025.11.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.11.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – Three- (or higher) dimensional field(s) to interpolate. The DataArray (or each
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2025.12.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.12.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – Three- (or higher) dimensional field(s) to interpolate. The DataArray (or each
 DataArray in the Dataset) must have been parsed by MetPy and include both an x and
 y coordinate dimension and the added <em class="xref py py-obj">crs</em> coordinate.</p></li>
 <li><p><strong>start</strong> (<em>(</em><em>2</em><em>, </em><em>) </em><em>array-like</em>) – A latitude-longitude pair designating the start point of the cross section (units are
@@ -824,7 +824,7 @@ degrees north and degrees east).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2025.11.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.11.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – The interpolated cross section, with new index dimension along the cross-section.</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2025.12.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.12.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – The interpolated cross section, with new index dimension along the cross-section.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
