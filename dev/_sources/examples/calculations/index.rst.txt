@@ -26,7 +26,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Parse_Angles_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Parse_Angles.py`
+  :doc:`/examples/calculations/Parse_Angles`
 
 .. raw:: html
 
@@ -43,7 +43,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Dewpoint_and_Mixing_Ratio_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py`
+  :doc:`/examples/calculations/Dewpoint_and_Mixing_Ratio`
 
 .. raw:: html
 
@@ -60,7 +60,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Angle_to_Direction_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Angle_to_Direction.py`
+  :doc:`/examples/calculations/Angle_to_Direction`
 
 .. raw:: html
 
@@ -77,7 +77,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Wind_Speed_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Wind_Speed.py`
+  :doc:`/examples/calculations/Wind_Speed`
 
 .. raw:: html
 
@@ -94,7 +94,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Divergence_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Divergence.py`
+  :doc:`/examples/calculations/Divergence`
 
 .. raw:: html
 
@@ -111,7 +111,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Vorticity_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Vorticity.py`
+  :doc:`/examples/calculations/Vorticity`
 
 .. raw:: html
 
@@ -128,7 +128,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Absolute_Vorticity_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Absolute_Vorticity.py`
+  :doc:`/examples/calculations/Absolute_Vorticity`
 
 .. raw:: html
 
@@ -145,7 +145,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Total_Deformation_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Total_Deformation.py`
+  :doc:`/examples/calculations/Total_Deformation`
 
 .. raw:: html
 
@@ -162,7 +162,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Shearing_Deformation_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Shearing_Deformation.py`
+  :doc:`/examples/calculations/Shearing_Deformation`
 
 .. raw:: html
 
@@ -179,7 +179,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Stretching_Deformation_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Stretching_Deformation.py`
+  :doc:`/examples/calculations/Stretching_Deformation`
 
 .. raw:: html
 
@@ -196,7 +196,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Static_Stability_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Static_Stability.py`
+  :doc:`/examples/calculations/Static_Stability`
 
 .. raw:: html
 
@@ -213,7 +213,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Mean_Pressure_Weighted_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Mean_Pressure_Weighted.py`
+  :doc:`/examples/calculations/Mean_Pressure_Weighted`
 
 .. raw:: html
 
@@ -230,7 +230,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Mountain_Problem_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Mountain_Problem.py`
+  :doc:`/examples/calculations/Mountain_Problem`
 
 .. raw:: html
 
@@ -247,7 +247,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Bulk_Shear_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Bulk_Shear.py`
+  :doc:`/examples/calculations/Bulk_Shear`
 
 .. raw:: html
 
@@ -264,7 +264,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Thickness_Hydrostatic_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Thickness_Hydrostatic.py`
+  :doc:`/examples/calculations/Thickness_Hydrostatic`
 
 .. raw:: html
 
@@ -281,7 +281,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Equivalent_Potential_Temperature_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Equivalent_Potential_Temperature.py`
+  :doc:`/examples/calculations/Equivalent_Potential_Temperature`
 
 .. raw:: html
 
@@ -298,7 +298,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Advection_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Advection.py`
+  :doc:`/examples/calculations/Advection`
 
 .. raw:: html
 
@@ -315,7 +315,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Gradient_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Gradient.py`
+  :doc:`/examples/calculations/Gradient`
 
 .. raw:: html
 
@@ -332,7 +332,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_QVector_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_QVector.py`
+  :doc:`/examples/calculations/QVector`
 
 .. raw:: html
 
@@ -349,7 +349,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Smoothing_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Smoothing.py`
+  :doc:`/examples/calculations/Smoothing`
 
 .. raw:: html
 
@@ -366,7 +366,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_High_Low_Analysis_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_High_Low_Analysis.py`
+  :doc:`/examples/calculations/High_Low_Analysis`
 
 .. raw:: html
 
@@ -383,7 +383,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Sounding_Calculations_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Sounding_Calculations.py`
+  :doc:`/examples/calculations/Sounding_Calculations`
 
 .. raw:: html
 

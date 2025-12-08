@@ -32,7 +32,7 @@ Examples of using a variety of MetPy's functionality together.
   .. image:: /examples/images/thumb/sphx_glr_XArray_Projections_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_XArray_Projections.py`
+  :doc:`/examples/XArray_Projections`
 
 .. raw:: html
 
@@ -49,7 +49,7 @@ Examples of using a variety of MetPy's functionality together.
   .. image:: /examples/images/thumb/sphx_glr_sigma_to_pressure_interpolation_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_sigma_to_pressure_interpolation.py`
+  :doc:`/examples/sigma_to_pressure_interpolation`
 
 .. raw:: html
 
@@ -66,7 +66,7 @@ Examples of using a variety of MetPy's functionality together.
   .. image:: /examples/images/thumb/sphx_glr_Advanced_Sounding_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_Advanced_Sounding.py`
+  :doc:`/examples/Advanced_Sounding`
 
 .. raw:: html
 
@@ -83,7 +83,7 @@ Examples of using a variety of MetPy's functionality together.
   .. image:: /examples/images/thumb/sphx_glr_cross_section_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_cross_section.py`
+  :doc:`/examples/cross_section`
 
 .. raw:: html
 
@@ -100,7 +100,7 @@ Examples of using a variety of MetPy's functionality together.
   .. image:: /examples/images/thumb/sphx_glr_Four_Panel_Map_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_Four_Panel_Map.py`
+  :doc:`/examples/Four_Panel_Map`
 
 .. raw:: html
 
@@ -117,7 +117,7 @@ Examples of using a variety of MetPy's functionality together.
   .. image:: /examples/images/thumb/sphx_glr_isentropic_example_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_isentropic_example.py`
+  :doc:`/examples/isentropic_example`
 
 .. raw:: html
 
@@ -134,7 +134,7 @@ Examples of using a variety of MetPy's functionality together.
   .. image:: /examples/images/thumb/sphx_glr_meteogram_metpy_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_meteogram_metpy.py`
+  :doc:`/examples/meteogram_metpy`
 
 .. raw:: html
 
@@ -151,7 +151,7 @@ Examples of using a variety of MetPy's functionality together.
   .. image:: /examples/images/thumb/sphx_glr_Advanced_Sounding_With_Complex_Layout_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_Advanced_Sounding_With_Complex_Layout.py`
+  :doc:`/examples/Advanced_Sounding_With_Complex_Layout`
 
 .. raw:: html
 
@@ -201,7 +201,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Parse_Angles_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Parse_Angles.py`
+  :doc:`/examples/calculations/Parse_Angles`
 
 .. raw:: html
 
@@ -218,7 +218,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Dewpoint_and_Mixing_Ratio_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py`
+  :doc:`/examples/calculations/Dewpoint_and_Mixing_Ratio`
 
 .. raw:: html
 
@@ -235,7 +235,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Angle_to_Direction_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Angle_to_Direction.py`
+  :doc:`/examples/calculations/Angle_to_Direction`
 
 .. raw:: html
 
@@ -252,7 +252,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Wind_Speed_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Wind_Speed.py`
+  :doc:`/examples/calculations/Wind_Speed`
 
 .. raw:: html
 
@@ -269,7 +269,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Divergence_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Divergence.py`
+  :doc:`/examples/calculations/Divergence`
 
 .. raw:: html
 
@@ -286,7 +286,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Vorticity_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Vorticity.py`
+  :doc:`/examples/calculations/Vorticity`
 
 .. raw:: html
 
@@ -303,7 +303,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Absolute_Vorticity_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Absolute_Vorticity.py`
+  :doc:`/examples/calculations/Absolute_Vorticity`
 
 .. raw:: html
 
@@ -320,7 +320,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Total_Deformation_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Total_Deformation.py`
+  :doc:`/examples/calculations/Total_Deformation`
 
 .. raw:: html
 
@@ -337,7 +337,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Shearing_Deformation_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Shearing_Deformation.py`
+  :doc:`/examples/calculations/Shearing_Deformation`
 
 .. raw:: html
 
@@ -354,7 +354,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Stretching_Deformation_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Stretching_Deformation.py`
+  :doc:`/examples/calculations/Stretching_Deformation`
 
 .. raw:: html
 
@@ -371,7 +371,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Static_Stability_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Static_Stability.py`
+  :doc:`/examples/calculations/Static_Stability`
 
 .. raw:: html
 
@@ -388,7 +388,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Mean_Pressure_Weighted_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Mean_Pressure_Weighted.py`
+  :doc:`/examples/calculations/Mean_Pressure_Weighted`
 
 .. raw:: html
 
@@ -405,7 +405,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Mountain_Problem_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Mountain_Problem.py`
+  :doc:`/examples/calculations/Mountain_Problem`
 
 .. raw:: html
 
@@ -422,7 +422,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Bulk_Shear_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Bulk_Shear.py`
+  :doc:`/examples/calculations/Bulk_Shear`
 
 .. raw:: html
 
@@ -439,7 +439,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Thickness_Hydrostatic_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Thickness_Hydrostatic.py`
+  :doc:`/examples/calculations/Thickness_Hydrostatic`
 
 .. raw:: html
 
@@ -456,7 +456,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Equivalent_Potential_Temperature_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Equivalent_Potential_Temperature.py`
+  :doc:`/examples/calculations/Equivalent_Potential_Temperature`
 
 .. raw:: html
 
@@ -473,7 +473,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Advection_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Advection.py`
+  :doc:`/examples/calculations/Advection`
 
 .. raw:: html
 
@@ -490,7 +490,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Gradient_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Gradient.py`
+  :doc:`/examples/calculations/Gradient`
 
 .. raw:: html
 
@@ -507,7 +507,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_QVector_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_QVector.py`
+  :doc:`/examples/calculations/QVector`
 
 .. raw:: html
 
@@ -524,7 +524,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Smoothing_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Smoothing.py`
+  :doc:`/examples/calculations/Smoothing`
 
 .. raw:: html
 
@@ -541,7 +541,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_High_Low_Analysis_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_High_Low_Analysis.py`
+  :doc:`/examples/calculations/High_Low_Analysis`
 
 .. raw:: html
 
@@ -558,7 +558,7 @@ Examples using various calculation functions from MetPy.
   .. image:: /examples/calculations/images/thumb/sphx_glr_Sounding_Calculations_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_calculations_Sounding_Calculations.py`
+  :doc:`/examples/calculations/Sounding_Calculations`
 
 .. raw:: html
 
@@ -595,7 +595,7 @@ Examples using MetPy's support for reading various file formats.
   .. image:: /examples/formats/images/thumb/sphx_glr_GINI_Water_Vapor_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_formats_GINI_Water_Vapor.py`
+  :doc:`/examples/formats/GINI_Water_Vapor`
 
 .. raw:: html
 
@@ -612,7 +612,7 @@ Examples using MetPy's support for reading various file formats.
   .. image:: /examples/formats/images/thumb/sphx_glr_NEXRAD_Level_3_File_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_formats_NEXRAD_Level_3_File.py`
+  :doc:`/examples/formats/NEXRAD_Level_3_File`
 
 .. raw:: html
 
@@ -629,7 +629,7 @@ Examples using MetPy's support for reading various file formats.
   .. image:: /examples/formats/images/thumb/sphx_glr_NEXRAD_Level_2_File_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_formats_NEXRAD_Level_2_File.py`
+  :doc:`/examples/formats/NEXRAD_Level_2_File`
 
 .. raw:: html
 
@@ -666,7 +666,7 @@ Examples generating a grid of data from scattered point observations.
   .. image:: /examples/gridding/images/thumb/sphx_glr_Find_Natural_Neighbors_Verification_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_gridding_Find_Natural_Neighbors_Verification.py`
+  :doc:`/examples/gridding/Find_Natural_Neighbors_Verification`
 
 .. raw:: html
 
@@ -683,7 +683,7 @@ Examples generating a grid of data from scattered point observations.
   .. image:: /examples/gridding/images/thumb/sphx_glr_Wind_SLP_Interpolation_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_gridding_Wind_SLP_Interpolation.py`
+  :doc:`/examples/gridding/Wind_SLP_Interpolation`
 
 .. raw:: html
 
@@ -700,7 +700,7 @@ Examples generating a grid of data from scattered point observations.
   .. image:: /examples/gridding/images/thumb/sphx_glr_Point_Interpolation_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_gridding_Point_Interpolation.py`
+  :doc:`/examples/gridding/Point_Interpolation`
 
 .. raw:: html
 
@@ -717,7 +717,7 @@ Examples generating a grid of data from scattered point observations.
   .. image:: /examples/gridding/images/thumb/sphx_glr_Inverse_Distance_Verification_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_gridding_Inverse_Distance_Verification.py`
+  :doc:`/examples/gridding/Inverse_Distance_Verification`
 
 .. raw:: html
 
@@ -734,7 +734,7 @@ Examples generating a grid of data from scattered point observations.
   .. image:: /examples/gridding/images/thumb/sphx_glr_Natural_Neighbor_Verification_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_gridding_Natural_Neighbor_Verification.py`
+  :doc:`/examples/gridding/Natural_Neighbor_Verification`
 
 .. raw:: html
 
@@ -771,7 +771,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_Simplified_Image_Plot_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py`
+  :doc:`/examples/plots/Simplified_Image_Plot`
 
 .. raw:: html
 
@@ -788,7 +788,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_raster_declarative_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_raster_declarative.py`
+  :doc:`/examples/plots/raster_declarative`
 
 .. raw:: html
 
@@ -805,7 +805,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_US_Counties_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_US_Counties.py`
+  :doc:`/examples/plots/US_Counties`
 
 .. raw:: html
 
@@ -822,7 +822,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_Simple_Fronts_Plot_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_Simple_Fronts_Plot.py`
+  :doc:`/examples/plots/Simple_Fronts_Plot`
 
 .. raw:: html
 
@@ -839,7 +839,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_spc_convective_outlook_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_spc_convective_outlook.py`
+  :doc:`/examples/plots/spc_convective_outlook`
 
 .. raw:: html
 
@@ -856,7 +856,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_Combined_plotting_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_Combined_plotting.py`
+  :doc:`/examples/plots/Combined_plotting`
 
 .. raw:: html
 
@@ -873,7 +873,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_surface_declarative_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_surface_declarative.py`
+  :doc:`/examples/plots/surface_declarative`
 
 .. raw:: html
 
@@ -890,7 +890,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_upperair_declarative_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_upperair_declarative.py`
+  :doc:`/examples/plots/upperair_declarative`
 
 .. raw:: html
 
@@ -907,7 +907,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_nhc_wind_probabilities_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_nhc_wind_probabilities.py`
+  :doc:`/examples/plots/nhc_wind_probabilities`
 
 .. raw:: html
 
@@ -924,7 +924,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_Skew-T_Layout_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_Skew-T_Layout.py`
+  :doc:`/examples/plots/Skew-T_Layout`
 
 .. raw:: html
 
@@ -941,7 +941,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_Hodograph_Inset_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_Hodograph_Inset.py`
+  :doc:`/examples/plots/Hodograph_Inset`
 
 .. raw:: html
 
@@ -958,7 +958,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_Sounding_LCL_Dataset_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_Sounding_LCL_Dataset.py`
+  :doc:`/examples/plots/Sounding_LCL_Dataset`
 
 .. raw:: html
 
@@ -975,7 +975,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_Plotting_Surface_Analysis_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_Plotting_Surface_Analysis.py`
+  :doc:`/examples/plots/Plotting_Surface_Analysis`
 
 .. raw:: html
 
@@ -992,7 +992,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_Simple_Sounding_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_Simple_Sounding.py`
+  :doc:`/examples/plots/Simple_Sounding`
 
 .. raw:: html
 
@@ -1009,7 +1009,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_Mesonet_Stationplot_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py`
+  :doc:`/examples/plots/Mesonet_Stationplot`
 
 .. raw:: html
 
@@ -1026,7 +1026,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_Station_Plot_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_Station_Plot.py`
+  :doc:`/examples/plots/Station_Plot`
 
 .. raw:: html
 
@@ -1043,7 +1043,7 @@ Examples using MetPy's various specialty plotting routines.
   .. image:: /examples/plots/images/thumb/sphx_glr_Station_Plot_with_Layout_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py`
+  :doc:`/examples/plots/Station_Plot_with_Layout`
 
 .. raw:: html
 
@@ -1081,7 +1081,7 @@ public AWS S3 buckets.
   .. image:: /examples/remote/images/thumb/sphx_glr_ml_forecast_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_remote_ml_forecast.py`
+  :doc:`/examples/remote/ml_forecast`
 
 .. raw:: html
 
@@ -1098,7 +1098,7 @@ public AWS S3 buckets.
   .. image:: /examples/remote/images/thumb/sphx_glr_basic_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_remote_basic.py`
+  :doc:`/examples/remote/basic`
 
 .. raw:: html
 

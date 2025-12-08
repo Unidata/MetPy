@@ -245,7 +245,7 @@ Add the geometry plot to a panel and container.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.288 seconds)
+   **Total running time of the script:** (0 minutes 7.228 seconds)
 
 
 .. _sphx_glr_download_examples_plots_spc_convective_outlook.py:

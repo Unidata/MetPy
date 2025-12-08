@@ -26,7 +26,7 @@ Examples using MetPy's support for reading various file formats.
   .. image:: /examples/formats/images/thumb/sphx_glr_GINI_Water_Vapor_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_formats_GINI_Water_Vapor.py`
+  :doc:`/examples/formats/GINI_Water_Vapor`
 
 .. raw:: html
 
@@ -43,7 +43,7 @@ Examples using MetPy's support for reading various file formats.
   .. image:: /examples/formats/images/thumb/sphx_glr_NEXRAD_Level_3_File_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_formats_NEXRAD_Level_3_File.py`
+  :doc:`/examples/formats/NEXRAD_Level_3_File`
 
 .. raw:: html
 
@@ -60,7 +60,7 @@ Examples using MetPy's support for reading various file formats.
   .. image:: /examples/formats/images/thumb/sphx_glr_NEXRAD_Level_2_File_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_formats_NEXRAD_Level_2_File.py`
+  :doc:`/examples/formats/NEXRAD_Level_2_File`
 
 .. raw:: html
 

@@ -27,7 +27,7 @@ public AWS S3 buckets.
   .. image:: /examples/remote/images/thumb/sphx_glr_ml_forecast_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_remote_ml_forecast.py`
+  :doc:`/examples/remote/ml_forecast`
 
 .. raw:: html
 
@@ -44,7 +44,7 @@ public AWS S3 buckets.
   .. image:: /examples/remote/images/thumb/sphx_glr_basic_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_remote_basic.py`
+  :doc:`/examples/remote/basic`
 
 .. raw:: html
 

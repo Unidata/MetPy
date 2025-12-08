@@ -74,7 +74,7 @@ the [Contributors Guide](https://github.com/Unidata/MetPy/blob/main/CONTRIBUTING
   .. image:: /tutorials/images/thumb/sphx_glr_unit_tutorial_thumb.png
     :alt:
 
-  :ref:`sphx_glr_tutorials_unit_tutorial.py`
+  :doc:`/tutorials/unit_tutorial`
 
 .. raw:: html
 
@@ -91,7 +91,7 @@ the [Contributors Guide](https://github.com/Unidata/MetPy/blob/main/CONTRIBUTING
   .. image:: /tutorials/images/thumb/sphx_glr_area_tutorial_thumb.png
     :alt:
 
-  :ref:`sphx_glr_tutorials_area_tutorial.py`
+  :doc:`/tutorials/area_tutorial`
 
 .. raw:: html
 
@@ -108,7 +108,7 @@ the [Contributors Guide](https://github.com/Unidata/MetPy/blob/main/CONTRIBUTING
   .. image:: /tutorials/images/thumb/sphx_glr_upperair_soundings_thumb.png
     :alt:
 
-  :ref:`sphx_glr_tutorials_upperair_soundings.py`
+  :doc:`/tutorials/upperair_soundings`
 
 .. raw:: html
 
@@ -125,7 +125,7 @@ the [Contributors Guide](https://github.com/Unidata/MetPy/blob/main/CONTRIBUTING
   .. image:: /tutorials/images/thumb/sphx_glr_xarray_tutorial_thumb.png
     :alt:
 
-  :ref:`sphx_glr_tutorials_xarray_tutorial.py`
+  :doc:`/tutorials/xarray_tutorial`
 
 .. raw:: html
 
@@ -142,7 +142,7 @@ the [Contributors Guide](https://github.com/Unidata/MetPy/blob/main/CONTRIBUTING
   .. image:: /tutorials/images/thumb/sphx_glr_declarative_tutorial_thumb.png
     :alt:
 
-  :ref:`sphx_glr_tutorials_declarative_tutorial.py`
+  :doc:`/tutorials/declarative_tutorial`
 
 .. raw:: html
 
