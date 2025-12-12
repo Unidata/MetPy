@@ -158,9 +158,9 @@ assign units.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.13.9/x64/lib/python3.13/site-packages/scipy/integrate/_ivp/base.py:23: UserWarning: Saturation mixing ratio is undefined for some requested pressure/temperature combinations. Total pressure must be greater than the water vapor saturation pressure for liquid water to be in equilibrium.
+    /opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/site-packages/scipy/integrate/_ivp/base.py:23: UserWarning: Saturation mixing ratio is undefined for some requested pressure/temperature combinations. Total pressure must be greater than the water vapor saturation pressure for liquid water to be in equilibrium.
       return np.asarray(fun(t, y), dtype=dtype)
-    /opt/hostedtoolcache/Python/3.13.9/x64/lib/python3.13/site-packages/metpy/calc/thermo.py:1633: RuntimeWarning: invalid value encountered in power
+    /opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/site-packages/metpy/calc/thermo.py:1633: RuntimeWarning: invalid value encountered in power
       * (mpconsts.nounit.T0 / temperature) ** heat_power
 
 
@@ -169,7 +169,7 @@ assign units.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.189 seconds)
+   **Total running time of the script:** (0 minutes 0.183 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Sounding_LCL_Dataset.py:
