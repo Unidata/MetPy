@@ -76,7 +76,7 @@ the simplified plotting interface.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 10.462 seconds)
+   **Total running time of the script:** (0 minutes 11.411 seconds)
 
 
 .. _sphx_glr_download_examples_remote_ml_forecast.py:
