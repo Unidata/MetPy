@@ -47,7 +47,7 @@ jobs:
 
     - name: Upload test log
       if: failure()
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: log-nightly-tests
         path: tests-nightly.log
@@ -86,7 +86,7 @@ jobs:
 
     - name: Upload build log
       if: failure()
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: log-nightly-docs
         path: |
