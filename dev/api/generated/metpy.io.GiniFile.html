@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Dec 23, 2025 at 22:39:25"/>
+    <meta name="docbuild:last-update" content="Dec 23, 2025 at 22:56:11"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.io.GiniFile.html" />
 
   </head>
@@ -863,10 +863,16 @@ this will be read from directly.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_attrs" title="metpy.io.GiniFile.get_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attrs</span></code></a>()</p></td>
 <td><p>Get the global attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_dimensions" title="metpy.io.GiniFile.get_dimensions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dimensions</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_child_store" title="metpy.io.GiniFile.get_child_store"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_child_store</span></code></a>(group)</p></td>
+<td><p>Get a store corresponding to the indicated child group.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_dimensions" title="metpy.io.GiniFile.get_dimensions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dimensions</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_encoding" title="metpy.io.GiniFile.get_encoding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_encoding</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_encoding" title="metpy.io.GiniFile.get_encoding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_encoding</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_parent_dimensions" title="metpy.io.GiniFile.get_parent_dimensions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_parent_dimensions</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_variables" title="metpy.io.GiniFile.get_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_variables</span></code></a>()</p></td>
@@ -957,6 +963,12 @@ this will be read from directly.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="metpy.io.GiniFile.get_child_store">
+<span class="sig-name descname"><span class="pre">get_child_store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Self" title="(in Python v3.14)"><span class="pre">Self</span></a></span></span><a class="headerlink" href="#metpy.io.GiniFile.get_child_store" title="Link to this definition">#</a></dt>
+<dd><p>Get a store corresponding to the indicated child group.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="metpy.io.GiniFile.get_dimensions">
 <span class="sig-name descname"><span class="pre">get_dimensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.get_dimensions" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -964,6 +976,11 @@ this will be read from directly.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.io.GiniFile.get_encoding">
 <span class="sig-name descname"><span class="pre">get_encoding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.get_encoding" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metpy.io.GiniFile.get_parent_dimensions">
+<span class="sig-name descname"><span class="pre">get_parent_dimensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.get_parent_dimensions" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1063,8 +1080,10 @@ are requested, so care should be taken to make sure its fast.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.io.GiniFile.__init__"><code class="docutils literal notranslate"><span class="pre">GiniFile.__init__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.io.GiniFile.close"><code class="docutils literal notranslate"><span class="pre">GiniFile.close()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.io.GiniFile.get_attrs"><code class="docutils literal notranslate"><span class="pre">GiniFile.get_attrs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.io.GiniFile.get_child_store"><code class="docutils literal notranslate"><span class="pre">GiniFile.get_child_store()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.io.GiniFile.get_dimensions"><code class="docutils literal notranslate"><span class="pre">GiniFile.get_dimensions()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.io.GiniFile.get_encoding"><code class="docutils literal notranslate"><span class="pre">GiniFile.get_encoding()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.io.GiniFile.get_parent_dimensions"><code class="docutils literal notranslate"><span class="pre">GiniFile.get_parent_dimensions()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.io.GiniFile.get_variables"><code class="docutils literal notranslate"><span class="pre">GiniFile.get_variables()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metpy.io.GiniFile.load"><code class="docutils literal notranslate"><span class="pre">GiniFile.load()</span></code></a></li>
 </ul>

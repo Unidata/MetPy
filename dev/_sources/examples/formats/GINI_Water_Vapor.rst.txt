@@ -63,8 +63,8 @@ data using CartoPy.
     <xarray.Dataset> Size: 28MB
     Dimensions:     (y: 1280, x: 1100)
     Coordinates:
-      * x           (x) float64 9kB -4.226e+06 -4.222e+06 ... 2.357e+05 2.397e+05
       * y           (y) float64 10kB 4.365e+06 4.36e+06 ... -8.286e+05 -8.327e+05
+      * x           (x) float64 9kB -4.226e+06 -4.222e+06 ... 2.357e+05 2.397e+05
         lon         (y, x) float64 11MB ...
         lat         (y, x) float64 11MB ...
         time        datetime64[ns] 8B ...
@@ -133,7 +133,7 @@ the projection information.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.049 seconds)
+   **Total running time of the script:** (0 minutes 1.053 seconds)
 
 
 .. _sphx_glr_download_examples_formats_GINI_Water_Vapor.py:

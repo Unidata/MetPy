@@ -36,8 +36,10 @@ GiniFile
       ~GiniFile.__init__
       ~GiniFile.close
       ~GiniFile.get_attrs
+      ~GiniFile.get_child_store
       ~GiniFile.get_dimensions
       ~GiniFile.get_encoding
+      ~GiniFile.get_parent_dimensions
       ~GiniFile.get_variables
       ~GiniFile.load
 
@@ -73,8 +75,10 @@ GiniFile
    .. automethod:: __init__
    .. automethod:: close
    .. automethod:: get_attrs
+   .. automethod:: get_child_store
    .. automethod:: get_dimensions
    .. automethod:: get_encoding
+   .. automethod:: get_parent_dimensions
    .. automethod:: get_variables
    .. automethod:: load
 

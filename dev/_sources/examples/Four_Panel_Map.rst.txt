@@ -104,11 +104,11 @@ By reading model output data from a netCDF file, we can create a four panel plot
  .. code-block:: none
 
     <xarray.Dataset> Size: 3MB
-    Dimensions:       (lat: 201, lon: 361, time: 1)
+    Dimensions:       (time: 1, lat: 201, lon: 361)
     Coordinates:
+      * time          (time) datetime64[ns] 8B 2017-02-28T21:00:00
       * lat           (lat) float32 804B 65.0 64.75 64.5 64.25 ... 15.5 15.25 15.0
       * lon           (lon) float32 1kB 220.0 220.2 220.5 ... 309.5 309.8 310.0
-      * time          (time) datetime64[ns] 8B 2017-02-28T21:00:00
     Data variables:
         temp          (time, lat, lon) float64 580kB ...
         precip_water  (time, lat, lon) float64 580kB ...
@@ -259,7 +259,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.130 seconds)
+   **Total running time of the script:** (0 minutes 8.192 seconds)
 
 
 .. _sphx_glr_download_examples_Four_Panel_Map.py:
