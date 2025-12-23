@@ -10,7 +10,7 @@ jobs:
   Backport:
     environment:
       name: PR Backport
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     if: github.event.pull_request.merged && contains( github.event.pull_request.labels.*.name, 'backport' )
     permissions:
       pull-requests: write

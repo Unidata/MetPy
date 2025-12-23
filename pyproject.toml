@@ -122,7 +122,10 @@ filterwarnings = [
     # Pandas >=2.2 warns about PyArrow being a future dependency
     'ignore:\nPyarrow will become a required dependency of pandas:DeprecationWarning',
     # Not yet fixed in xarray
-    "ignore:__array__ implementation doesn't accept a copy keyword:DeprecationWarning"
+    "ignore:__array__ implementation doesn't accept a copy keyword:DeprecationWarning",
+    # Needs matplotlib >=3.10.7 for fixes
+    "ignore:'\\S+' deprecated - use '\\S+':DeprecationWarning:matplotlib._fontconfig_pattern",
+    "ignore:'\\S+' deprecated - use '\\S+':DeprecationWarning:matplotlib._mathtext"
 ]
 
 [tool.ruff]

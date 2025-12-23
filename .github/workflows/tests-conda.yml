@@ -60,7 +60,7 @@ jobs:
   codecov:
     name: CodeCov Upload
     needs: CondaTests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     environment:
       name: CodeCov
     timeout-minutes: 2
