@@ -130,7 +130,7 @@ filterwarnings = [
 
 [tool.ruff]
 line-length = 95
-exclude = ["docs", "build", "src/metpy/io/_metar_parser/metar_parser.py", "talks"]
+exclude = ["docs", "build", "src/metpy/io/_metar_parser.py", "talks"]
 preview = true
 
 [tool.ruff.lint]
