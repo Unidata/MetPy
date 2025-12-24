@@ -51,11 +51,12 @@ The wind probabilities shapefile was retrieved from the `National Hurricane Cent
 
 Read in the shapefile file containing the wind probabilities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-27
+.. GENERATED FROM PYTHON SOURCE LINES 25-28
 
 .. code-block:: Python
 
-    wind_data = geopandas.read_file(get_test_data('nhc_wind_prob_2021082012.zip'))
+    wind_data = geopandas.read_file(get_test_data('nhc_wind_prob_2021082012.zip',
+                                                  as_file_obj=False))
 
 
 
@@ -65,18 +66,18 @@ Read in the shapefile file containing the wind probabilities.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/site-packages/pyogrio/geopandas.py:382: UserWarning: More than one layer found in 'pyogrio_0c36578380f04e5f867db2fdc1a4d7a2.zip': '2021082012_wsp34knt120hr_5km' (default), '2021082012_wsp50knt120hr_5km', '2021082012_wsp64knt120hr_5km'. Specify layer parameter to avoid this warning.
+    /opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/site-packages/pyogrio/geopandas.py:382: UserWarning: More than one layer found in 'nhc_wind_prob_2021082012.zip': '2021082012_wsp34knt120hr_5km' (default), '2021082012_wsp50knt120hr_5km', '2021082012_wsp64knt120hr_5km'. Specify layer parameter to avoid this warning.
       result = read_func(
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-30
+.. GENERATED FROM PYTHON SOURCE LINES 29-31
 
 Add the color scheme to the GeoDataFrame. This is the same color scheme used by the National
 Hurricane Center for their wind speed probability plots.
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-34
+.. GENERATED FROM PYTHON SOURCE LINES 31-35
 
 .. code-block:: Python
 
@@ -189,15 +190,15 @@ Hurricane Center for their wind speed probability plots.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-36
+.. GENERATED FROM PYTHON SOURCE LINES 36-37
 
 Read in the shapefile file containing the cities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-38
+.. GENERATED FROM PYTHON SOURCE LINES 37-39
 
 .. code-block:: Python
 
-    cities = geopandas.read_file(get_test_data('us_cities.zip'))
+    cities = geopandas.read_file(get_test_data('us_cities.zip', as_file_obj=False))
 
 
 
@@ -206,12 +207,12 @@ Read in the shapefile file containing the cities.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-41
+.. GENERATED FROM PYTHON SOURCE LINES 40-42
 
 There are thousands of cities in the United States. We choose a few cities here that we want
 to display on our plot.
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-51
+.. GENERATED FROM PYTHON SOURCE LINES 42-52
 
 .. code-block:: Python
 
@@ -398,11 +399,11 @@ to display on our plot.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-53
+.. GENERATED FROM PYTHON SOURCE LINES 53-54
 
 Make sure that both GeoDataFrames have the same coordinate reference system (CRS).
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-55
+.. GENERATED FROM PYTHON SOURCE LINES 54-56
 
 .. code-block:: Python
 
@@ -415,14 +416,14 @@ Make sure that both GeoDataFrames have the same coordinate reference system (CRS
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-60
+.. GENERATED FROM PYTHON SOURCE LINES 57-61
 
 We want to find out what the probability of tropical-storm-force winds is for each of the
 cities we selected above. Geopandas provides a spatial join method, which merges the two
 GeoDataFrames and can tell us which wind speed probability polygon each of our city points
 lies within. That information is stored in the 'PERCENTAGE' column below.
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-63
+.. GENERATED FROM PYTHON SOURCE LINES 61-64
 
 .. code-block:: Python
 
@@ -623,13 +624,13 @@ lies within. That information is stored in the 'PERCENTAGE' column below.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-67
+.. GENERATED FROM PYTHON SOURCE LINES 65-68
 
 Plot the wind speed probability polygons from the 'geometry' column. Use the 'fill' column
 we created above as the fill colors for the polygons, and set the stroke color to 'none' for
 all of the polygons.
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-72
+.. GENERATED FROM PYTHON SOURCE LINES 68-73
 
 .. code-block:: Python
 
@@ -645,13 +646,13 @@ all of the polygons.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-76
+.. GENERATED FROM PYTHON SOURCE LINES 74-77
 
 Plot the cities from the 'geometry' column, marked with diamonds ('D'). Label each point
 with the name of the city, and it's probability of tropical-storm-force winds on the line
 below. Points are set to plot in white and the font color is set to black.
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-83
+.. GENERATED FROM PYTHON SOURCE LINES 77-84
 
 .. code-block:: Python
 
@@ -669,12 +670,12 @@ below. Points are set to plot in white and the font color is set to black.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-86
+.. GENERATED FROM PYTHON SOURCE LINES 85-87
 
 Add the geometry plots to a panel and container. Finally, we are left with a complete plot of
 wind speed probabilities, along with some select cities and their specific probabilities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-97
+.. GENERATED FROM PYTHON SOURCE LINES 87-98
 
 .. code-block:: Python
 
@@ -704,7 +705,7 @@ wind speed probabilities, along with some select cities and their specific proba
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.857 seconds)
+   **Total running time of the script:** (0 minutes 6.870 seconds)
 
 
 .. _sphx_glr_download_examples_plots_nhc_wind_probabilities.py:

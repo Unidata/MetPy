@@ -22,7 +22,8 @@ from metpy.plots import MapPanel, PanelContainer, PlotGeometry
 
 ###########################
 # Read in the shapefile file containing the wind probabilities.
-wind_data = geopandas.read_file(get_test_data('nhc_wind_prob_2021082012.zip'))
+wind_data = geopandas.read_file(get_test_data('nhc_wind_prob_2021082012.zip',
+                                              as_file_obj=False))
 
 ###########################
 # Add the color scheme to the GeoDataFrame. This is the same color scheme used by the National
@@ -33,7 +34,7 @@ wind_data
 
 ###########################
 # Read in the shapefile file containing the cities.
-cities = geopandas.read_file(get_test_data('us_cities.zip'))
+cities = geopandas.read_file(get_test_data('us_cities.zip', as_file_obj=False))
 
 ###########################
 # There are thousands of cities in the United States. We choose a few cities here that we want

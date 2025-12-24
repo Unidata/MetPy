@@ -14,10 +14,10 @@ Plots a sample satellite image file.
 import xarray as xr
 
 from metpy.cbook import get_test_data
-from metpy.io import GiniFile
 from metpy.plots import ImagePlot, MapPanel, PanelContainer
 
-data = xr.open_dataset(GiniFile(get_test_data('NHEM-MULTICOMP_1km_IR_20151208_2100.gini')))
+data = xr.open_dataset(get_test_data('NHEM-MULTICOMP_1km_IR_20151208_2100.gini',
+                                     as_file_obj=False))
 
 img = ImagePlot()
 img.data = data

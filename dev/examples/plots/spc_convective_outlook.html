@@ -74,13 +74,13 @@
     <link rel="icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Combined Plotting" href="Combined_plotting.html" />
-    <link rel="prev" title="Simple Plotting of Fronts" href="Simple_Fronts_Plot.html" />
+    <link rel="next" title="Surface Analysis using Declarative Syntax" href="surface_declarative.html" />
+    <link rel="prev" title="Combined Plotting" href="Combined_plotting.html" />
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Dec 23, 2025 at 23:17:12"/>
+    <meta name="docbuild:last-update" content="Dec 24, 2025 at 18:52:02"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/plots/spc_convective_outlook.html" />
 
   </head>
@@ -521,12 +521,12 @@
 <li class="toctree-l2"><a class="reference internal" href="raster_declarative.html">Raster Plots using Declarative Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="US_Counties.html">US Counties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Simple_Fronts_Plot.html">Simple Plotting of Fronts</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">NOAA SPC Convective Outlook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Combined_plotting.html">Combined Plotting</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">NOAA SPC Convective Outlook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="surface_declarative.html">Surface Analysis using Declarative Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upperair_declarative.html">Upper Air Analysis using Declarative Syntax</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nhc_wind_probabilities.html">NOAA NHC Wind Speed Probabilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Skew-T_Layout.html">Skew-T with Complex Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nhc_wind_probabilities.html">NOAA NHC Wind Speed Probabilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Hodograph_Inset.html">Hodograph Inset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Sounding_LCL_Dataset.html">Sounding as Dataset Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Plotting_Surface_Analysis.html">Plotting Fronts</a></li>
@@ -622,7 +622,8 @@ archives</a>.</p>
 </pre></div>
 </div>
 <p>Read in the geoJSON file containing the convective outlook.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">day1_outlook</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;spc_day1otlk_20210317_1200_lyr.geojson&#39;</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">day1_outlook</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;spc_day1otlk_20210317_1200_lyr.geojson&#39;</span><span class="p">,</span>
+                                                 <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Preview the data.</p>
@@ -762,7 +763,7 @@ shapes.</p>
 <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_spc_convective_outlook_001.png" srcset="../../_images/sphx_glr_spc_convective_outlook_001.png" alt="SPC Day 1 Convective Outlook (Valid 12z Mar 17 2021)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 7.005 seconds)</p>
+<img src="../../_images/sphx_glr_spc_convective_outlook_001.png" srcset="../../_images/sphx_glr_spc_convective_outlook_001.png" alt="SPC Day 1 Convective Outlook (Valid 12z Mar 17 2021)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 7.070 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-spc-convective-outlook-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/0c4829bf9f81fa07605c78ac7049bb69/spc_convective_outlook.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">spc_convective_outlook.ipynb</span></code></a></p>
@@ -788,20 +789,20 @@ shapes.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="Simple_Fronts_Plot.html"
+       href="Combined_plotting.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Simple Plotting of Fronts</p>
+        <p class="prev-next-title">Combined Plotting</p>
       </div>
     </a>
     <a class="right-next"
-       href="Combined_plotting.html"
+       href="surface_declarative.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Combined Plotting</p>
+        <p class="prev-next-title">Surface Analysis using Declarative Syntax</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

@@ -47,11 +47,12 @@ archives <https://www.spc.noaa.gov/archive/>`_.
 
 Read in the geoJSON file containing the convective outlook.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-23
+.. GENERATED FROM PYTHON SOURCE LINES 21-24
 
 .. code-block:: Python
 
-    day1_outlook = geopandas.read_file(get_test_data('spc_day1otlk_20210317_1200_lyr.geojson'))
+    day1_outlook = geopandas.read_file(get_test_data('spc_day1otlk_20210317_1200_lyr.geojson',
+                                                     as_file_obj=False))
 
 
 
@@ -60,11 +61,11 @@ Read in the geoJSON file containing the convective outlook.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-25
+.. GENERATED FROM PYTHON SOURCE LINES 25-26
 
 Preview the data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-27
+.. GENERATED FROM PYTHON SOURCE LINES 26-28
 
 .. code-block:: Python
 
@@ -187,13 +188,13 @@ Preview the data.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-31
+.. GENERATED FROM PYTHON SOURCE LINES 29-32
 
 Plot the shapes from the 'geometry' column. Give the shapes their fill and stroke color by
 providing the 'fill' and 'stroke' columns. Use text from the 'LABEL' column as labels for the
 shapes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-38
+.. GENERATED FROM PYTHON SOURCE LINES 32-39
 
 .. code-block:: Python
 
@@ -211,11 +212,11 @@ shapes.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-40
+.. GENERATED FROM PYTHON SOURCE LINES 40-41
 
 Add the geometry plot to a panel and container.
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-51
+.. GENERATED FROM PYTHON SOURCE LINES 41-52
 
 .. code-block:: Python
 
@@ -245,7 +246,7 @@ Add the geometry plot to a panel and container.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.005 seconds)
+   **Total running time of the script:** (0 minutes 7.070 seconds)
 
 
 .. _sphx_glr_download_examples_plots_spc_convective_outlook.py:

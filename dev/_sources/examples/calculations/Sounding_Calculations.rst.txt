@@ -49,7 +49,7 @@ event on May 22, 2011 from the Norman, OK sounding.
 
 Effective Shear Algorithm for use in Supercell Composite Calculation
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-70
+.. GENERATED FROM PYTHON SOURCE LINES 23-67
 
 .. code-block:: Python
 
@@ -70,14 +70,11 @@ Effective Shear Algorithm for use in Supercell Composite Calculation
           - pbot/hbot, ptop/htop: pressure/height of the bottom level,
                                   pressure/height of the top level
         """
-        from metpy.calc import cape_cin, parcel_profile
-        from metpy.units import units
-
         pbot = None
 
         for i in range(p.shape[0]):
-            prof = parcel_profile(p[i:], t[i], td[i])
-            sbcape, sbcin = cape_cin(p[i:], t[i:], td[i:], prof)
+            prof = mpcalc.parcel_profile(p[i:], t[i], td[i])
+            sbcape, sbcin = mpcalc.cape_cin(p[i:], t[i:], td[i:], prof)
             if sbcape >= 100 * units('J/kg') and sbcin > -250 * units('J/kg'):
                 pbot = p[i]
                 hbot = h[i]
@@ -87,8 +84,8 @@ Effective Shear Algorithm for use in Supercell Composite Calculation
             return None, None
 
         for i in range(bot_idx + 1, p.shape[0]):
-            prof = parcel_profile(p[i:], t[i], td[i])
-            sbcape, sbcin = cape_cin(p[i:], t[i:], td[i:], prof)
+            prof = mpcalc.parcel_profile(p[i:], t[i], td[i])
+            sbcape, sbcin = mpcalc.cape_cin(p[i:], t[i:], td[i:], prof)
             if sbcape < 100 * units('J/kg') or sbcin < -250 * units('J/kg'):
                 ptop = p[i]
                 htop = h[i]
@@ -107,12 +104,12 @@ Effective Shear Algorithm for use in Supercell Composite Calculation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-73
+.. GENERATED FROM PYTHON SOURCE LINES 68-70
 
 Upper air data can be obtained using the siphon package, but for this example we will use
 some of MetPy's sample data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-82
+.. GENERATED FROM PYTHON SOURCE LINES 70-79
 
 .. code-block:: Python
 
@@ -132,11 +129,11 @@ some of MetPy's sample data.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-84
+.. GENERATED FROM PYTHON SOURCE LINES 80-81
 
 Isolate needed variables from our data file and attach units
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-91
+.. GENERATED FROM PYTHON SOURCE LINES 81-88
 
 .. code-block:: Python
 
@@ -154,11 +151,11 @@ Isolate needed variables from our data file and attach units
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-93
+.. GENERATED FROM PYTHON SOURCE LINES 89-90
 
 Compute needed variables from our data file and attach units
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-96
+.. GENERATED FROM PYTHON SOURCE LINES 90-93
 
 .. code-block:: Python
 
@@ -172,11 +169,11 @@ Compute needed variables from our data file and attach units
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-98
+.. GENERATED FROM PYTHON SOURCE LINES 94-95
 
 Compute the wind components
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-100
+.. GENERATED FROM PYTHON SOURCE LINES 95-97
 
 .. code-block:: Python
 
@@ -189,11 +186,11 @@ Compute the wind components
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-102
+.. GENERATED FROM PYTHON SOURCE LINES 98-99
 
 Compute common sounding index parameters
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-109
+.. GENERATED FROM PYTHON SOURCE LINES 99-106
 
 .. code-block:: Python
 
@@ -211,11 +208,11 @@ Compute common sounding index parameters
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-111
+.. GENERATED FROM PYTHON SOURCE LINES 107-108
 
 Compture the parcel profile for a surface-based parcel
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-113
+.. GENERATED FROM PYTHON SOURCE LINES 108-110
 
 .. code-block:: Python
 
@@ -228,11 +225,11 @@ Compture the parcel profile for a surface-based parcel
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-115
+.. GENERATED FROM PYTHON SOURCE LINES 111-112
 
 Compute the corresponding LI, CAPE, CIN values for a surface parcel
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-118
+.. GENERATED FROM PYTHON SOURCE LINES 112-115
 
 .. code-block:: Python
 
@@ -246,11 +243,11 @@ Compute the corresponding LI, CAPE, CIN values for a surface parcel
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-120
+.. GENERATED FROM PYTHON SOURCE LINES 116-117
 
 Determine the LCL, LFC, and EL for our surface parcel
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-124
+.. GENERATED FROM PYTHON SOURCE LINES 117-121
 
 .. code-block:: Python
 
@@ -265,11 +262,11 @@ Determine the LCL, LFC, and EL for our surface parcel
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-126
+.. GENERATED FROM PYTHON SOURCE LINES 122-123
 
 Compute the characteristics of a mean layer parcel (50-hPa depth)
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-130
+.. GENERATED FROM PYTHON SOURCE LINES 123-127
 
 .. code-block:: Python
 
@@ -284,11 +281,11 @@ Compute the characteristics of a mean layer parcel (50-hPa depth)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 131-132
+.. GENERATED FROM PYTHON SOURCE LINES 128-129
 
 Compute the characteristics of the most unstable parcel (50-hPa depth)
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-135
+.. GENERATED FROM PYTHON SOURCE LINES 129-132
 
 .. code-block:: Python
 
@@ -302,11 +299,11 @@ Compute the characteristics of the most unstable parcel (50-hPa depth)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-137
+.. GENERATED FROM PYTHON SOURCE LINES 133-134
 
 Compute the Bunkers Storm Motion vector and use to calculate the critical angle
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-140
+.. GENERATED FROM PYTHON SOURCE LINES 134-137
 
 .. code-block:: Python
 
@@ -320,11 +317,11 @@ Compute the Bunkers Storm Motion vector and use to calculate the critical angle
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-142
+.. GENERATED FROM PYTHON SOURCE LINES 138-139
 
 Work on the calculations needed to compute the significant tornado parameter
 
-.. GENERATED FROM PYTHON SOURCE LINES 142-163
+.. GENERATED FROM PYTHON SOURCE LINES 139-160
 
 .. code-block:: Python
 
@@ -356,11 +353,11 @@ Work on the calculations needed to compute the significant tornado parameter
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 164-165
+.. GENERATED FROM PYTHON SOURCE LINES 161-162
 
 Compute the supercell composite parameter, if possible
 
-.. GENERATED FROM PYTHON SOURCE LINES 165-179
+.. GENERATED FROM PYTHON SOURCE LINES 162-176
 
 .. code-block:: Python
 
@@ -385,11 +382,11 @@ Compute the supercell composite parameter, if possible
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 180-181
+.. GENERATED FROM PYTHON SOURCE LINES 177-178
 
 Print Important Sounding Parameters
 
-.. GENERATED FROM PYTHON SOURCE LINES 181-217
+.. GENERATED FROM PYTHON SOURCE LINES 178-214
 
 .. code-block:: Python
 

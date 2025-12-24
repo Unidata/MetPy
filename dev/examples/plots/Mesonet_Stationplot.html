@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Dec 23, 2025 at 23:17:12"/>
+    <meta name="docbuild:last-update" content="Dec 24, 2025 at 18:52:02"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/plots/Mesonet_Stationplot.html" />
 
   </head>
@@ -525,12 +525,12 @@
 <li class="toctree-l2"><a class="reference internal" href="raster_declarative.html">Raster Plots using Declarative Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="US_Counties.html">US Counties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Simple_Fronts_Plot.html">Simple Plotting of Fronts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spc_convective_outlook.html">NOAA SPC Convective Outlook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Combined_plotting.html">Combined Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spc_convective_outlook.html">NOAA SPC Convective Outlook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="surface_declarative.html">Surface Analysis using Declarative Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upperair_declarative.html">Upper Air Analysis using Declarative Syntax</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nhc_wind_probabilities.html">NOAA NHC Wind Speed Probabilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Skew-T_Layout.html">Skew-T with Complex Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nhc_wind_probabilities.html">NOAA NHC Wind Speed Probabilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Hodograph_Inset.html">Hodograph Inset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Sounding_LCL_Dataset.html">Sounding as Dataset Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Plotting_Surface_Analysis.html">Plotting Fronts</a></li>
@@ -636,7 +636,7 @@ with strings. We’ll also convert any blank cells to NaNs, and then drop rows w
 in variables that we want to plot</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Current observations can be downloaded here:</span>
 <span class="c1"># https://www.mesonet.org/index.php/weather/category/past_data_files</span>
-<a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html#pandas.read_csv" title="pandas.read_csv" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-function"><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;mesonet_sample.txt&#39;</span><span class="p">),</span> <span class="n">na_values</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html#pandas.read_csv" title="pandas.read_csv" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-function"><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;mesonet_sample.txt&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">na_values</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
 
 <span class="c1"># Drop stations with missing values of data we want</span>
 <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html#pandas.DataFrame.dropna" title="pandas.DataFrame.dropna" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">data</span><span class="o">.</span><span class="n">dropna</span></a><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PRES&#39;</span><span class="p">,</span> <span class="s1">&#39;TAIR&#39;</span><span class="p">,</span> <span class="s1">&#39;TDEW&#39;</span><span class="p">,</span> <span class="s1">&#39;WDIR&#39;</span><span class="p">,</span> <span class="s1">&#39;WSPD&#39;</span><span class="p">])</span>
@@ -712,7 +712,7 @@ The number of stations plotted will be reduced using <em class="xref py py-obj">
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_Mesonet_Stationplot_001.png" srcset="../../_images/sphx_glr_Mesonet_Stationplot_001.png" alt="Oklahoma Mesonet Observations, Time: 2100 UTC 09 September 2019" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 13.815 seconds)</p>
+<img src="../../_images/sphx_glr_Mesonet_Stationplot_001.png" srcset="../../_images/sphx_glr_Mesonet_Stationplot_001.png" alt="Oklahoma Mesonet Observations, Time: 2100 UTC 09 September 2019" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 13.692 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-mesonet-stationplot-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/3f80eaf969d597174a3c39544b2f3037/Mesonet_Stationplot.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Mesonet_Stationplot.ipynb</span></code></a></p>

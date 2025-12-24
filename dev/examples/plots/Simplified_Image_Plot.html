@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Dec 23, 2025 at 23:17:12"/>
+    <meta name="docbuild:last-update" content="Dec 24, 2025 at 18:52:02"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/plots/Simplified_Image_Plot.html" />
 
   </head>
@@ -521,12 +521,12 @@
 <li class="toctree-l2"><a class="reference internal" href="raster_declarative.html">Raster Plots using Declarative Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="US_Counties.html">US Counties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Simple_Fronts_Plot.html">Simple Plotting of Fronts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spc_convective_outlook.html">NOAA SPC Convective Outlook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Combined_plotting.html">Combined Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spc_convective_outlook.html">NOAA SPC Convective Outlook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="surface_declarative.html">Surface Analysis using Declarative Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upperair_declarative.html">Upper Air Analysis using Declarative Syntax</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nhc_wind_probabilities.html">NOAA NHC Wind Speed Probabilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Skew-T_Layout.html">Skew-T with Complex Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nhc_wind_probabilities.html">NOAA NHC Wind Speed Probabilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Hodograph_Inset.html">Hodograph Inset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Sounding_LCL_Dataset.html">Sounding as Dataset Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Plotting_Surface_Analysis.html">Plotting Fronts</a></li>
@@ -622,10 +622,10 @@ to download the full example code.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">metpy.cbook</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.io</span><span class="w"> </span><span class="kn">import</span> <a href="../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile" title="metpy.io.GiniFile" class="sphx-glr-backref-module-metpy-io sphx-glr-backref-type-py-class"><span class="n">GiniFile</span></a>
 <span class="kn">from</span><span class="w"> </span><span class="nn">metpy.plots</span><span class="w"> </span><span class="kn">import</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">ImagePlot</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PanelContainer</span></a>
 
-<a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="xarray.open_dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-function"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><a href="../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile" title="metpy.io.GiniFile" class="sphx-glr-backref-module-metpy-io sphx-glr-backref-type-py-class"><span class="n">GiniFile</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;NHEM-MULTICOMP_1km_IR_20151208_2100.gini&#39;</span><span class="p">)))</span>
+<a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="xarray.open_dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-function"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;NHEM-MULTICOMP_1km_IR_20151208_2100.gini&#39;</span><span class="p">,</span>
+                                     <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
 <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">img</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">ImagePlot</span></a><span class="p">()</span>
 <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot.data" title="metpy.plots.ImagePlot.data" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-attribute"><span class="n">img</span><span class="o">.</span><span class="n">data</span></a> <span class="o">=</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a>
@@ -640,7 +640,7 @@ to download the full example code.</p>
 <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.534 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.529 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-simplified-image-plot-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/cc4d32e7208ddd5bd00c7f866683d0f4/Simplified_Image_Plot.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Simplified_Image_Plot.ipynb</span></code></a></p>

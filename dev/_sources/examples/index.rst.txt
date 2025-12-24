@@ -832,23 +832,6 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy&#x27;s simplified plotting interface. This example walks through plotting the Day 1 Convective Outlook from NOAA Storm Prediction Center. The geoJSON file was retrieved from the Storm Prediction Center&#x27;s archives.">
-
-.. only:: html
-
-  .. image:: /examples/plots/images/thumb/sphx_glr_spc_convective_outlook_thumb.png
-    :alt:
-
-  :doc:`/examples/plots/spc_convective_outlook`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">NOAA SPC Convective Outlook</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface combining multiple plots.">
 
 .. only:: html
@@ -861,6 +844,23 @@ Examples using MetPy's various specialty plotting routines.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Combined Plotting</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy&#x27;s simplified plotting interface. This example walks through plotting the Day 1 Convective Outlook from NOAA Storm Prediction Center. The geoJSON file was retrieved from the Storm Prediction Center&#x27;s archives.">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_spc_convective_outlook_thumb.png
+    :alt:
+
+  :doc:`/examples/plots/spc_convective_outlook`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">NOAA SPC Convective Outlook</div>
     </div>
 
 
@@ -900,23 +900,6 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy&#x27;s simplified plotting interface. This example walks through plotting cities, along with 5-day tropical-storm-force wind speed probabilities from NOAA National Hurricane Center.">
-
-.. only:: html
-
-  .. image:: /examples/plots/images/thumb/sphx_glr_nhc_wind_probabilities_thumb.png
-    :alt:
-
-  :doc:`/examples/plots/nhc_wind_probabilities`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">NOAA NHC Wind Speed Probabilities</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s GridSpec layout capability.">
 
 .. only:: html
@@ -929,6 +912,23 @@ Examples using MetPy's various specialty plotting routines.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Skew-T with Complex Layout</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy&#x27;s simplified plotting interface. This example walks through plotting cities, along with 5-day tropical-storm-force wind speed probabilities from NOAA National Hurricane Center.">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_nhc_wind_probabilities_thumb.png
+    :alt:
+
+  :doc:`/examples/plots/nhc_wind_probabilities`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">NOAA NHC Wind Speed Probabilities</div>
     </div>
 
 

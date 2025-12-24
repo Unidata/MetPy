@@ -33,11 +33,11 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_examples_formats_NEXRAD_Level_2_File.py` (``NEXRAD_Level_2_File.py``)
-     - 00:04.975
+     - 00:04.976
      - 0.0
    * - :ref:`sphx_glr_examples_formats_NEXRAD_Level_3_File.py` (``NEXRAD_Level_3_File.py``)
-     - 00:01.574
+     - 00:01.587
      - 0.0
    * - :ref:`sphx_glr_examples_formats_GINI_Water_Vapor.py` (``GINI_Water_Vapor.py``)
-     - 00:01.058
+     - 00:01.044
      - 0.0
