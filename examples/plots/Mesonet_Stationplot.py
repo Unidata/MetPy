@@ -31,7 +31,7 @@ from metpy.units import units
 
 # Current observations can be downloaded here:
 # https://www.mesonet.org/index.php/weather/category/past_data_files
-data = pd.read_csv(get_test_data('mesonet_sample.txt'), na_values=' ')
+data = pd.read_csv(get_test_data('mesonet_sample.txt', as_file_obj=False), na_values=' ')
 
 # Drop stations with missing values of data we want
 data = data.dropna(how='any', subset=['PRES', 'TAIR', 'TDEW', 'WDIR', 'WSPD'])
