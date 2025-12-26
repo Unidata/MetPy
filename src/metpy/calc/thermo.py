@@ -1753,8 +1753,7 @@ def dewpoint(vapor_pressure, method='bolton'):
     method : str, optional
         Formula to use for calculation. Options are:
         - 'bolton' (default): Analytical inversion of Bolton (1980) formula
-        - 'ambaum': Numerical inversion of Ambaum (2020) formula, consistent
-          with :func:`saturation_vapor_pressure`
+        - 'ambaum': Ambaum (2020) formula (matches :func:`saturation_vapor_pressure`)
 
     Returns
     -------
