@@ -436,6 +436,20 @@ def test_dewpoint_weird_units():
                         13.8564 * units.degC, 4)
 
 
+def test_dewpoint_ambaum_roundtrip():
+    """Test that dewpoint with ambaum method round-trips with saturation_vapor_pressure."""
+    temperatures = np.array([-40, -20, 0, 20, 40]) * units.degC
+
+    # Calculate saturation vapor pressure
+    e_sat = saturation_vapor_pressure(temperatures)
+
+    # Calculate dewpoint using ambaum method
+    td = dewpoint(e_sat, method='ambaum')
+
+    # Should round-trip with very small error
+    assert_array_almost_equal(td, temperatures, 10)
+
+
 def test_mixing_ratio():
     """Test mixing ratio calculation."""
     p = 998. * units.mbar
