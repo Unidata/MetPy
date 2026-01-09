@@ -118,16 +118,18 @@ class MetPyHasTraits(HasTraits):
             """Supply a dictionary of valid Matplotlib keyword arguments to modify
             how the plot variable is drawn.
 
-            Using this attribute you must choose the appropriate keyword arguments (kwargs) based on
-            what you are plotting (e.g., contours, color-filled contours, image plot, etc.). This is
-            available for all plot types (ContourPlot, FilledContourPlot, RasterPlot, ImagePlot,
-            BarbPlot, ArrowPlot, PlotGeometry, and PlotObs). For PlotObs, the kwargs are those to
-            specify the StationPlot object. NOTE: Setting the mpl_args trait will override
-            any other trait that corresponds to a specific kwarg for the particular plot type
+            Using this attribute you must choose the appropriate keyword arguments (kwargs)
+            based on what you are plotting (e.g., contours, color-filled contours,
+            image plot, etc.). This is available for all plot types
+            (ContourPlot, FilledContourPlot, RasterPlot, ImagePlot, BarbPlot, ArrowPlot,
+            PlotGeometry, and PlotObs). For PlotObs, the kwargs are those to specify the
+            StationPlot object. NOTE: Setting the mpl_args trait will override any other
+            trait that corresponds to a specific kwarg for the particular plot type
             (e.g., linecolor, linewidth).
             """
         ),
     )
+
 
 class Panel(MetPyHasTraits):
     """Draw one or more plots."""
@@ -148,8 +150,9 @@ class PanelContainer(MetPyHasTraits, ValidationMixin):
         default_value=None,
         help=(
             """This trait takes a tuple of (width, height) to set the size of the figure.
-            
-            This trait defaults to None and will assume the default `matplotlib.pyplot.figure` size.
+
+            This trait defaults to None and will assume the default
+            `matplotlib.pyplot.figure` size.
             """
         ),
     )
@@ -158,7 +161,7 @@ class PanelContainer(MetPyHasTraits, ValidationMixin):
         Instance(Panel),
         help=(
             """A list of panels to plot on the figure.
-            
+
             This trait must contain at least one panel to plot on the figure.
             """
         ),
@@ -243,12 +246,12 @@ class MapPanel(Panel, ValidationMixin):
         help=(
             """A tuple that contains the description (nrows, ncols, index) of the
             panel position; default value is (1, 1, 1).
-    
-            This trait is set to describe the panel position and the default is for a single panel. For
-            example, a four-panel plot will have two rows and two columns with the tuple setting for
-            the upper-left panel as (2, 2, 1), upper-right as (2, 2, 2), lower-left as (2, 2, 3), and
-            lower-right as (2, 2, 4). For more details see the documentation for
-            `matplotlib.figure.Figure.add_subplot`.
+
+            This trait is set to describe the panel position and the default is for a single
+            panel. For example, a four-panel plot will have two rows and two columns with the
+            tuple setting for the upper-left panel as (2, 2, 1), upper-right as (2, 2, 2),
+            lower-left as (2, 2, 3), and lower-right as (2, 2, 4). For more details see
+            the documentation for `matplotlib.figure.Figure.add_subplot`.
             """
         ),
     )
@@ -258,9 +261,9 @@ class MapPanel(Panel, ValidationMixin):
         help=(
             """A list of handles that represent the plots (e.g., `ContourPlot`,
             `FilledContourPlot`, `ImagePlot`) to put on a given panel.
-    
-            This trait collects the different plots, including contours and images, that are intended
-            for a given panel.
+
+            This trait collects the different plots, including contours and images,
+            that are intended for a given panel.
             """
         ),
     )
@@ -276,18 +279,20 @@ class MapPanel(Panel, ValidationMixin):
         default_value=None,
         help=(
             """A tuple or string value that indicates the graphical area of the plot.
-    
-            The tuple value corresponds to longitude/latitude box based on the projection of the map
-            with the format (west-most longitude, east-most longitude, south-most latitude,
-            north-most latitude). This tuple defines a box from the lower-left to the upper-right
-            corner.
-    
-            This trait can also be set with a string value associated with the named geographic regions
-            within MetPy. The tuples associated with the names are based on a PlatteCarree projection.
-            For a CONUS region, the following strings can be used: 'us', 'spcus', 'ncus', and 'afus'.
-            For regional plots, US postal state abbreviations can be used, such as 'co', 'ny', 'ca',
+
+            The tuple value corresponds to longitude/latitude box based on the projection
+            of the map with the format (west-most longitude, east-most longitude, south-most
+            latitude, north-most latitude). This tuple defines a box from the lower-left to
+            the upper-right corner.
+
+            This trait can also be set with a string value associated with the named
+            geographic regions within MetPy. The tuples associated with the names are
+            based on a PlatteCarree projection. For a CONUS region, the following
+            strings can be used: 'us', 'spcus', 'ncus', and 'afus'. For regional
+            plots, US postal state abbreviations can be used, such as 'co', 'ny', 'ca',
             et cetera. Providing a '+' or '-' suffix to the string value will zoom in or out,
-            respectively. Providing multiple '+' or '-' characters will zoom in or out further.
+            respectively. Providing multiple '+' or '-' characters will zoom in or out
+            further.
             """
         ),
     )
@@ -301,11 +306,11 @@ class MapPanel(Panel, ValidationMixin):
         help=(
             """A string for a pre-defined projection or a Cartopy projection
             object.
-    
+
             There are three pre-defined projections that can be called with a short name:
-            Lambert conformal conic ('lcc'), Mercator ('mer'), or polar-stereographic ('ps'), or 'area'
-            to use a default projection based on the string area used. Additionally, this trait can be
-            set to a Cartopy projection object.
+            Lambert conformal conic ('lcc'), Mercator ('mer'), or polar-stereographic ('ps'),
+            or 'area' to use a default projection based on the string area used.
+            Additionally, this trait can be set to a Cartopy projection object.
             """
         ),
     )
@@ -321,11 +326,12 @@ class MapPanel(Panel, ValidationMixin):
         help=(
             """A list of strings for a pre-defined feature layer or a Cartopy Feature
             object.
-    
-            Like the projection, there are a couple of pre-defined feature layers that can be called
-            using a short name. The pre-defined layers are: 'coastline', 'states', 'borders', 'lakes',
-            'land', 'ocean', 'rivers', 'usstates', and 'uscounties'. Additionally, this can accept
-            Cartopy Feature objects.
+
+            Like the projection, there are a couple of pre-defined feature layers
+            that can be called using a short name. The pre-defined layers are:
+            'coastline', 'states', 'borders', 'lakes', 'land', 'ocean', 'rivers',
+            'usstates', and 'uscounties'. Additionally, this can accept Cartopy
+            Feature objects.
             """
         ),
     )
@@ -335,10 +341,11 @@ class MapPanel(Panel, ValidationMixin):
         default_value=['black'],
         help=(
             """A list of strings for a pre-defined edgecolor for a layer.
-    
-            An option to set a different color for the map layer edge colors. Length of list should
-            match that of layers if not using default value. Behavior is to repeat colors if not enough
-            provided by user. Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
+
+            An option to set a different color for the map layer edge colors.
+            Length of list should match that of layers if not using default
+            value. Behavior is to repeat colors if not enough provided by user.
+            Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
             """
         ),
     )
@@ -352,9 +359,10 @@ class MapPanel(Panel, ValidationMixin):
         help=(
             """A list of values defining the linewidth for a layer.
 
-            An option to set a different linewidth for the layer feature. Length of list should
-            match that of layers if not using default value. Behavior is to repeat linewidth if
-            not enough provided by user. Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
+            An option to set a different linewidth for the layer feature.
+            Length of list should match that of layers if not using default
+            value. Behavior is to repeat linewidth if not enough provided
+            by user. Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
             """
         ),
     )
@@ -365,14 +373,14 @@ class MapPanel(Panel, ValidationMixin):
         help=(
             """A list of string values defining the linestyle for a layer or
             None.
-    
-            Default is `solid`, which, will use a solid lines for drawing the layer. Behavior is to
-            repeat linestyle if not enough provided by user.
-    
-            The valid string values are those of Matplotlib which are 'solid', 'dashed', 'dotted', and
-            'dashdot', as well as their short codes ('-', '--', '.', '-.'). The object `None`, as
-            described above, can also be used. Use `None` value for 'ocean', 'lakes', 'rivers', and
-            'land'.
+
+            Default is `solid`, which, will use a solid lines for drawing
+            the layer. Behavior is to repeat linestyle if not enough provided by user.
+
+            The valid string values are those of Matplotlib which are 'solid', 'dashed',
+            'dotted', and 'dashdot', as well as their short codes ('-', '--', '.', '-.').
+            The object `None`, as described above, can also be used. Use `None` value for
+            'ocean', 'lakes', 'rivers', and 'land'.
             """
         ),
     )
@@ -385,10 +393,10 @@ class MapPanel(Panel, ValidationMixin):
         default_value=[None],
         help=(
             """A list of values defining the zorder for a layer.
-    
-            An option to set a different zorder for the map layer edge colors. Length of list should
-            match that of layers if not using default value. Behavior is to repeat zorder if not enough
-            provided by user.
+
+            An option to set a different zorder for the map layer edge colors.
+            Length of list should match that of layers if not using default
+            value. Behavior is to repeat zorder if not enough provided by user.
             """
         ),
     )
@@ -400,10 +408,10 @@ class MapPanel(Panel, ValidationMixin):
         default_value=[1],
         help=(
             """A list of values defining the alpha for a layer.
-    
-            An option to set a different alpha for the map layer edge colors. Length of list should
-            match that of layers if not using default value. Behavior is to repeat alpha if not enough
-            provided by user.
+
+            An option to set a different alpha for the map layer edge colors.
+            Length of list should match that of layers if not using default
+            value. Behavior is to repeat alpha if not enough provided by user.
             """
         ),
     )
@@ -411,8 +419,9 @@ class MapPanel(Panel, ValidationMixin):
     title = Unicode(
         help=(
             """A string to set a title for the figure.
-            
-            This trait sets a user-defined title that will plot at the top center of the figure.
+
+            This trait sets a user-defined title that will plot at the top
+            center of the figure.
             """
         ),
     )
@@ -423,7 +432,7 @@ class MapPanel(Panel, ValidationMixin):
         help=(
             """A string to set a title for the figure with the location on the
             top left of the figure.
-    
+
             This trait sets a user-defined title that will plot at the top left of the figure.
             """
         ),
@@ -435,8 +444,9 @@ class MapPanel(Panel, ValidationMixin):
         help=(
             """A string to set a title for the figure with the location on the
             top right of the figure.
-    
-            This trait sets a user-defined title that will plot at the top right of the figure.
+
+            This trait sets a user-defined title that will plot at the top right of the
+            figure.
             """
         ),
     )
@@ -448,10 +458,11 @@ class MapPanel(Panel, ValidationMixin):
         help=(
             """An integer or string value for the font size of the title of
             the figure.
-    
-            This trait sets the font size for the title that will plot at the top center of the figure.
-            Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
-            'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
+
+            This trait sets the font size for the title that will plot at the top
+            center of the figure. Accepts size in points or relative size.
+            Allowed relative sizes are those of Matplotlib: 'xx-small',
+            'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
             """
         ),
     )
@@ -690,10 +701,11 @@ class SubsetTraits(MetPyHasTraits):
         ],
         help=(
             """The x coordinate of the field to be plotted.
-    
-            This is a value with units to choose a desired x coordinate. For example, selecting a
-            point or transect through the projection origin, set this parameter to
-            ``0 * units.meter``. Note that this requires your data to have an x dimension coordinate.
+
+            This is a value with units to choose a desired x coordinate.
+            For example, selecting a point or transect through the projection
+            origin, set this parameter to ``0 * units.meter``.
+            Note that this requires your data to have an x dimension coordinate.
             """
         ),
     )
@@ -708,11 +720,11 @@ class SubsetTraits(MetPyHasTraits):
         ],
         help=(
             """The longitude coordinate of the field to be plotted.
-    
-            This is a value with units to choose a desired longitude coordinate. For example,
-            selecting a point or transect through 95 degrees west, set this parameter to
-            ``-95 * units.degrees_east``. Note that this requires your data to have a longitude
-            dimension coordinate.
+
+            This is a value with units to choose a desired longitude
+            coordinate. For example, selecting a point or transect through
+            95 degrees west, set this parameter to ``-95 * units.degrees_east``.
+            Note that this requires your data to have a longitude dimension coordinate.
             """
         ),
     )
@@ -727,10 +739,11 @@ class SubsetTraits(MetPyHasTraits):
         ],
         help=(
             """The y coordinate of the field to be plotted.
-    
-            This is a value with units to choose a desired x coordinate. For example, selecting a
-            point or transect through the projection origin, set this parameter to
-            ``0 * units.meter``. Note that this requires your data to have an y dimension coordinate.
+
+            This is a value with units to choose a desired x coordinate. For example,
+            selecting a point or transect through the projection origin, set this
+            parameter to ``0 * units.meter``. Note that this requires your data
+            to have an y dimension coordinate.
             """
         ),
     )
@@ -745,7 +758,7 @@ class SubsetTraits(MetPyHasTraits):
         ],
         help=(
             """The latitude coordinate of the field to be plotted.
-    
+
             This is a value with units to choose a desired latitude coordinate. For example,
             selecting a point or transect through 40 degrees north, set this parameter to
             ``40 * units.degrees_north``. Note that this requires your data to have a latitude
@@ -764,10 +777,10 @@ class SubsetTraits(MetPyHasTraits):
         ],
         help=(
             """The level of the field to be plotted.
-    
-            This is a value with units to choose a desired plot level. For example, selecting the
-            850-hPa level, set this parameter to ``850 * units.hPa``. Note that this requires your
-            data to have a vertical dimension coordinate.
+
+            This is a value with units to choose a desired plot level. For example,
+            selecting the 850-hPa level, set this parameter to ``850 * units.hPa``.
+            Note that this requires your data to have a vertical dimension coordinate.
             """
         ),
     )
@@ -777,10 +790,11 @@ class SubsetTraits(MetPyHasTraits):
         allow_none=True,
         help=(
             """Set the valid time to be plotted as a datetime object.
-    
-            If a forecast hour is to be plotted the time should be set to the valid future time, which
-            can be done using the `~datetime.datetime` and `~datetime.timedelta` objects
-            from the Python standard library. Note that this requires your data to have a time
+
+            If a forecast hour is to be plotted the time should be set to the
+            valid future time, which can be done using the `~datetime.datetime`
+            and `~datetime.timedelta` objects from the Python standard library.
+            Note that this requires your data to have a time
             dimension coordinate.
             """
         ),
@@ -803,9 +817,9 @@ class Plots2D(SubsetTraits):
         default_value=None,
         help=(
             """The desired units to plot the field in.
-    
-            Setting this attribute will convert the units of the field variable to the given units for
-            plotting using the MetPy Units module.
+
+            Setting this attribute will convert the units of the field variable to
+            the given units for plotting using the MetPy Units module.
             """
         ),
     )
@@ -814,10 +828,10 @@ class Plots2D(SubsetTraits):
         default_value=1e0,
         help=(
             """Scale the field to be plotted by the value given.
-    
+
             This attribute will scale the field by multiplying by the scale. For example, to
-            scale vorticity to be whole values for contouring you could set the scale to 1e5, such that
-            the data values will be multiplied by 10^5.
+            scale vorticity to be whole values for contouring you could set the scale to 1e5,
+            such that the data values will be multiplied by 10^5.
             """
         ),
     )
@@ -929,13 +943,13 @@ class PlotScalar(Plots2D):
     field = Unicode(
         help=(
             """Name of the field to be plotted.
-    
-            This is the name of the variable from the dataset that is to be plotted. An example,
-            from a model grid file that uses the THREDDS convention for naming would be
-            `Geopotential_height_isobaric` or `Temperature_isobaric`. For GOES-16/17 satellite data it
-            might be `Sectorized_CMI`. To check for the variables available within a dataset, list the
-            variables with the following command assuming the dataset was read using xarray as `ds`,
-            `list(ds)`
+
+            This is the name of the variable from the dataset that is to be plotted.
+            An example, from a model grid file that uses the THREDDS convention for
+            naming would be `Geopotential_height_isobaric` or `Temperature_isobaric`.
+            For GOES-16/17 satellite data it might be `Sectorized_CMI`. To check for the
+            variables available within a dataset, list the variables with the following
+            command assuming the dataset was read using xarray as `ds`, `list(ds)`
             """
         ),
     )
@@ -945,11 +959,12 @@ class PlotScalar(Plots2D):
         default_value=None,
         help=(
             """Number of smoothing passes using 9-pt smoother.
-    
-            By setting this parameter with an integer value it will call the MetPy 9-pt smoother and
-            provide a smoothed field for plotting. It is best to use this smoothing for data with
-            finer resolutions (e.g., smaller grid spacings with a lot of grid points).
-    
+
+            By setting this parameter with an integer value it will call the
+            MetPy 9-pt smoother and provide a smoothed field for plotting. It is
+            best to use this smoothing for data with finer resolutions
+            (e.g., smaller grid spacings with a lot of grid points).
+
             See Also
             --------
             metpy.calc.smooth_n_point, smooth_contour
@@ -967,16 +982,16 @@ class PlotScalar(Plots2D):
         ],
         help=(
             """Spline interpolation to smooth contours.
-        
-            This attribute requires settings for the `metpy.calc.zoom_xarray` function, which will
-            produce a spline interpolation given an integer zoom factor. Either a single integer
-            specifying the zoom factor (e.g., 4) or a tuple containing two integers for the zoom factor
-            and the spline interpolation order can be used. The default spline interpolation order is
-            3.
-    
-            This is best used to smooth contours when contouring a sparse grid (e.g., when your data
-            has a large grid spacing).
-    
+
+            This attribute requires settings for the `metpy.calc.zoom_xarray` function,
+            which will produce a spline interpolation given an integer zoom factor.
+            Either a single integer specifying the zoom factor (e.g., 4) or a tuple
+            containing two integers for the zoom factor and the spline interpolation
+            order can be used. The default spline interpolation order is 3.
+
+            This is best used to smooth contours when contouring a sparse grid
+            (e.g., when your data has a large grid spacing).
+
             See Also
             --------
             metpy.calc.zoom_xarray, smooth_field
@@ -1095,12 +1110,12 @@ class ContourTraits(MetPyHasTraits):
         default_value=25,
         help=(
             """A list of values to contour or an integer number of contour levels.
-    
-            This parameter sets contour or colorfill values for a plot. Values can be entered either
-            as a Python range instance, a list of values or as an integer with the number of contours
-            to be plotted (as per matplotlib documentation). A list can be generated by using square
-            brackets or creating a numpy 1D array and converting it to a list with the
-            `~numpy.ndarray.tolist` method.
+
+            This parameter sets contour or colorfill values for a plot. Values can be
+            entered either as a Python range instance, a list of values or as an integer with
+            the number of contours to be plotted (as per matplotlib documentation).
+            A list can be generated by using square brackets or creating a numpy 1D array
+            and converting it to a list with the `~numpy.ndarray.tolist` method.
             """
         ),
     )
@@ -1109,7 +1124,7 @@ class ContourTraits(MetPyHasTraits):
         default_value=False,
         help=(
             """A boolean (True/False) on whether to plot contour labels.
-    
+
             To plot contour labels set this trait to ``True``, the default value is ``False``.
             """
         ),
@@ -1122,10 +1137,11 @@ class ContourTraits(MetPyHasTraits):
         help=(
             """An integer, float, or string value to set the font size of
             labels for contours.
-    
-            This trait sets the font size for labels that will plot along contour lines. Accepts
-            size in points or relative size. Allowed relative sizes are those of Matplotlib:
-            'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
+
+            This trait sets the font size for labels that will plot along contour lines.
+            Accepts size in points or relative size. Allowed relative sizes are those of
+            Matplotlib: 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large',
+            'xx-large'.
             """
         ),
     )
@@ -1139,8 +1155,9 @@ class ColorfillTraits(MetPyHasTraits):
         default_value=None,
         help=(
             """The string name for a Matplolib or MetPy colormap.
-    
-            For example, the Blue-Purple colormap from Matplotlib can be accessed using 'BuPu'.
+
+            For example, the Blue-Purple colormap from Matplotlib can be accessed using
+            'BuPu'.
             """
         ),
     )
@@ -1157,7 +1174,7 @@ class ColorfillTraits(MetPyHasTraits):
         help=(
             """A tuple of min and max values that represent the range of values
             to color the rasterized image.
-    
+
             The min and max values entered as a tuple will be converted to a
             `matplotlib.colors.Normalize` instance for plotting.
             """
@@ -1175,12 +1192,13 @@ class ColorfillTraits(MetPyHasTraits):
         help=(
             """A string (horizontal/vertical) on whether to add a colorbar to the
             plot.
-    
-            To add a colorbar associated with the plot, you can either set the trait with a string of
-            ``horizontal`` or ``vertical``, which specifies the orientation of the produced colorbar
-            and uses pre-defined defaults for aspect and pad. Alternatively, you can set a dictionary
-            of keyword argument values valid for a Matplotlib colorbar to specify how the colorbar will
-            be plotted. The default value is ``None``.
+
+            To add a colorbar associated with the plot, you can either set the trait with
+            a string of ``horizontal`` or ``vertical``, which specifies the orientation
+            of the produced colorbar and uses pre-defined defaults for aspect and pad.
+            Alternatively, you can set a dictionary of keyword argument values valid
+            for a Matplotlib colorbar to specify how the colorbar will be plotted.
+            The default value is ``None``.
             """
         ),
     )
@@ -1192,10 +1210,11 @@ class ColorfillTraits(MetPyHasTraits):
         help=(
             """An integer, float, or string value to set the font size of
                 labels for the colorbar.
-        
-                This trait sets the font size of labels for the colorbar. Accepts size in points or
-                relative size. Allowed relative sizes are those of Matplotlib: 'xx-small', 'x-small',
-                'small', 'medium', 'large', 'x-large', 'xx-large'.
+
+                This trait sets the font size of labels for the colorbar.
+                Accepts size in points or relative size. Allowed relative
+                sizes are those of Matplotlib: 'xx-small', 'x-small', 'small',
+                'medium', 'large', 'x-large', 'xx-large'.
                 """
         ),
     )
@@ -1264,7 +1283,7 @@ class ContourPlot(PlotScalar, ContourTraits, ValidationMixin):
         help=(
             """A string value to set the color of plotted contours; default is
             black.
-    
+
             This trait can be set to any Matplotlib color
             (https://matplotlib.org/3.1.0/gallery/color/named_colors.html)
             """
@@ -1276,9 +1295,9 @@ class ContourPlot(PlotScalar, ContourTraits, ValidationMixin):
         help=(
             """An integer value to set the width of plotted contours; default value
             is 2.
-    
-            This trait changes the thickness of contour lines with a higher value plotting a thicker
-            line.
+
+            This trait changes the thickness of contour lines with a higher value plotting
+            a thicker line.
             """
         ),
     )
@@ -1288,12 +1307,12 @@ class ContourPlot(PlotScalar, ContourTraits, ValidationMixin):
         allow_none=True,
         help=(
             """A string value to set the linestyle (e.g., dashed), or `None`;
-            default is `None`, which, when using monochrome line colors, uses solid lines for positive
-            values and dashed lines for negative values.
-    
-            The valid string values are those of Matplotlib which are 'solid', 'dashed', 'dotted', and
-            'dashdot', as well as their short codes ('-', '--', '.', '-.'). The object `None`, as
-            described above, can also be used.
+            default is `None`, which, when using monochrome line colors, uses solid lines
+            for positive values and dashed lines for negative values.
+
+            The valid string values are those of Matplotlib which are 'solid', 'dashed',
+            'dotted', and 'dashdot', as well as their short codes ('-', '--', '.', '-.').
+            The object `None`, as described above, can also be used.
             """
         ),
     )
@@ -1379,9 +1398,9 @@ class PlotVector(Plots2D):
         help=(
             """A tuple containing the two components of the vector field from the
             dataset in the form (east-west component, north-south component).
-    
-            For a wind barb plot each component of the wind must be specified and should be of the form
-            (u-wind, v-wind).
+
+            For a wind barb plot each component of the wind must be specified and
+            should be of the form (u-wind, v-wind).
             """
         ),
     )
@@ -1391,9 +1410,9 @@ class PlotVector(Plots2D):
         help=(
             """A string setting the pivot point of the vector. Default value is
             'middle'.
-    
-            This trait takes the values of the keyword argument from `matplotlin.pyplot.barbs`:
-            'tip' or 'middle'.
+
+            This trait takes the values of the keyword argument from
+            `matplotlin.pyplot.barbs`: 'tip' or 'middle'.
             """
         ),
     )
@@ -1405,10 +1424,10 @@ class PlotVector(Plots2D):
         help=(
             """A tuple of integers to indicate the number of grid points to skip between
             plotting vectors. Default is (1, 1).
-    
-            This trait is to be used to reduce the number of vectors plotted in the (east-west,
-            north-south) components. The two values can be set to the same or different integer values
-            depending on what is desired.
+
+            This trait is to be used to reduce the number of vectors plotted in the
+            (east-west, north-south) components. The two values can be set to the
+            same or different integer values depending on what is desired.
             """
         ),
     )
@@ -1419,12 +1438,12 @@ class PlotVector(Plots2D):
             """A boolean value to indicate whether the vector to be plotted
             is earth- or grid-relative. Default value is `True`, indicating that vectors are
             earth-relative.
-    
+
             Common gridded meteorological datasets including GFS and NARR output contain wind
             components that are earth-relative. The primary exception is NAM output with wind
             components that are grid-relative. For any grid-relative vectors set this trait to
-            `False`. This value is ignored for 2D vector fields not in the plane of the plot (e.g.,
-            cross sections).
+            `False`. This value is ignored for 2D vector fields not in the plane of the plot
+            (e.g., cross sections).
             """
         ),
     )
@@ -1434,9 +1453,10 @@ class PlotVector(Plots2D):
         help=(
             """A string value that controls the color of the vectors. Default value is
             black.
-    
+
             This trait can be set to any named color from
-            `Matplotlibs Colors <https://matplotlib.org/3.1.0/gallery/color/named_colors.html>`
+            `Matplotlibs Colors
+            <https://matplotlib.org/3.1.0/gallery/color/named_colors.html>`
             """
         ),
     )
@@ -1549,7 +1569,7 @@ class BarbPlot(PlotVector, ValidationMixin):
         help=(
             """A float value that changes the length of the wind barbs. Default
             value is 7.
-    
+
             This trait corresponds to the keyword length in `matplotlib.pyplot.barbs`.
             """
         ),
@@ -1595,11 +1615,11 @@ class ArrowPlot(PlotVector, ValidationMixin):
         help=(
             """Number of data units per arrow length unit, e.g., m/s per plot
             width; a smaller scale parameter makes the arrow longer. Default is `None`.
-    
+
             If `None`, a simple autoscaling algorithm is used, based on the average
             vector length and the number of vectors. The arrow length unit is given by
             the `key_length` attribute.
-    
+
             This trait corresponds to the keyword length in `matplotlib.pyplot.quiver`.
             """
         ),
@@ -1616,21 +1636,22 @@ class ArrowPlot(PlotVector, ValidationMixin):
         help=(
             """Set the characteristics of an arrow key using a tuple of values
             representing (value, xloc, yloc, position, string).
-    
+
             Default is `None`.
-    
+
             If `None`, no vector key will be plotted.
-    
+
             value default is 100
             xloc default is 0.85
             yloc default is 1.02
             position default is 'E' (options are 'N', 'S', 'E', 'W')
             label default is an empty string
-    
-            If you wish to change a characteristic of the arrowkey you'll need to have a tuple of five
-            elements, fill in the full tuple using `None` for those characteristics you wish to use the
-            default value and put in the new values for the other elements. This trait corresponds to
-            the keyword length in `matplotlib.pyplot.quiverkey`.
+
+            If you wish to change a characteristic of the arrowkey you'll need to have a
+            tuple of five elements, fill in the full tuple using `None` for those
+            characteristics you wish to use the default value and put in the new values
+            for the other elements. This trait corresponds to the keyword length in
+            `matplotlib.pyplot.quiverkey`.
             """
         ),
     )
@@ -1706,10 +1727,10 @@ class PlotObs(MetPyHasTraits, ValidationMixin):
         default_value=None,
         help=(
             """The level of the field to be plotted.
-    
-            This is a value with units to choose the desired plot level. For example, selecting the
-            850-hPa level, set this parameter to ``850 * units.hPa``. For surface data, parameter
-            must be set to `None`.
+
+            This is a value with units to choose the desired plot level. For example,
+            selecting the 850-hPa level, set this parameter to ``850 * units.hPa``.
+            For surface data, parameter must be set to `None`.
             """
         ),
     )
@@ -1719,10 +1740,10 @@ class PlotObs(MetPyHasTraits, ValidationMixin):
         allow_none=True,
         help=(
             """Set the valid time to be plotted as a datetime object.
-    
-            If a forecast hour is to be plotted the time should be set to the valid future time, which
-            can be done using the `~datetime.datetime` and `~datetime.timedelta` objects
-            from the Python standard library.
+
+            If a forecast hour is to be plotted the time should be set to the valid future
+            time, which can be done using the `~datetime.datetime` and
+            `~datetime.timedelta` objects from the Python standard library.
             """
         ),
     )
@@ -1733,11 +1754,11 @@ class PlotObs(MetPyHasTraits, ValidationMixin):
         allow_none=True,
         help=(
             """Set a range to look for data to plot as a timedelta object.
-    
-            If this parameter is set, it will subset the data provided to be within the time and plus
-            or minus the range value given. If there is more than one observation from a given station
-            then it will keep only the most recent one for plotting purposes. Default value is to have
-            no range. (optional)
+
+            If this parameter is set, it will subset the data provided to be within the
+            time and plus or minus the range value given. If there is more than one
+            observation from a given station then it will keep only the most recent one
+            for plotting purposes. Default value is to have no range. (optional)
             """
         ),
     )
@@ -1746,8 +1767,9 @@ class PlotObs(MetPyHasTraits, ValidationMixin):
         Unicode(),
         help=(
             """Name of the scalar or symbol fields to be plotted.
-    
-            List of parameters to be plotted around station plot (e.g., temperature, dewpoint, skyc).
+
+            List of parameters to be plotted around station plot
+            (e.g., temperature, dewpoint, skyc).
             """
         ),
     )
@@ -1756,9 +1778,9 @@ class PlotObs(MetPyHasTraits, ValidationMixin):
         default_value=['C'],
         help=(
             """List of strings for scalar or symbol field plotting locations.
-    
-            List of parameters locations for plotting parameters around the station plot (e.g.,
-            NW, NE, SW, SE, W, C). (optional)
+
+            List of parameters locations for plotting parameters around the station plot
+            (e.g., NW, NE, SW, SE, W, C). (optional)
             """
         ),
     )
@@ -1767,14 +1789,15 @@ class PlotObs(MetPyHasTraits, ValidationMixin):
         default_value=[None],
         help=(
             """List of the scalar, symbol, and text field data formats. (optional)
-    
-            List of scalar parameters formatters or mapping values (if symbol) for plotting text and/or
-            symbols around the station plot (e.g., for pressure variable
-            ```lambda v: format(10 * v, '.0f')[-3:]```).
-    
-            For symbol mapping the following options are available to be put in as a string:
-            current_weather, sky_cover, low_clouds, mid_clouds, high_clouds, and pressure_tendency.
-    
+
+            List of scalar parameters formatters or mapping values (if symbol) for
+            plotting text and/or symbols around the station plot (e.g., for
+            pressure variable ```lambda v: format(10 * v, '.0f')[-3:]```).
+
+            For symbol mapping the following options are available to be put
+            in as a string: current_weather, sky_cover, low_clouds, mid_clouds,
+            high_clouds, and pressure_tendency.
+
             For plotting text, use the format setting of 'text'.
             """
         ),
@@ -1785,9 +1808,9 @@ class PlotObs(MetPyHasTraits, ValidationMixin):
         default_value=['black'],
         help=(
             """List of the scalar and symbol field colors.
-    
-            List of strings that represent the colors to be used for the variable being plotted.
-            (optional)
+
+            List of strings that represent the colors to be used for the
+            variable being plotted. (optional)
             """
         ),
     )
@@ -1797,9 +1820,9 @@ class PlotObs(MetPyHasTraits, ValidationMixin):
         allow_none=True,
         help=(
             """List of the vector field to be plotted.
-    
-            List of vector components to combined and plotted from the center of the station plot
-            (e.g., wind components). (optional)
+
+            List of vector components to combined and plotted from the center of
+            the station plot (e.g., wind components). (optional)
             """
         ),
     )
@@ -1832,9 +1855,10 @@ class PlotObs(MetPyHasTraits, ValidationMixin):
         allow_none=True,
         help=(
             """A list of the desired units to plot the fields in.
-    
-            Setting this attribute will convert the units of the field variable to the given units for
-            plotting using the MetPy Units module, provided that units are attached to the DataFrame.
+
+            Setting this attribute will convert the units of the field variable to the
+            given units for plotting using the MetPy Units module, provided that units
+            are attached to the DataFrame.
             """
         ),
     )
@@ -1844,9 +1868,10 @@ class PlotObs(MetPyHasTraits, ValidationMixin):
         allow_none=True,
         help=(
             """The desired units to plot the vector field in.
-        
-            Setting this attribute will convert the units of the field variable to the given units for
-            plotting using the MetPy Units module, provided that units are attached to the DataFrame.
+
+            Setting this attribute will convert the units of the field variable to the
+            given units for plotting using the MetPy Units module, provided that units
+            are attached to the DataFrame.
             """
         ),
     )
@@ -2078,10 +2103,11 @@ class PlotGeometry(MetPyHasTraits):
         allow_none=False,
         help=(
             """A collection of Shapely objects to plot.
-    
+
             A collection of Shapely objects, such as the 'geometry' column from a
-            ``geopandas.GeoDataFrame``. Acceptable Shapely objects are ``shapely.MultiPolygon``,
-            ``shapely.Polygon``, ``shapely.MultiLineString``, ``shapely.LineString``,
+            ``geopandas.GeoDataFrame``. Acceptable Shapely objects are
+            ``shapely.MultiPolygon``, ``shapely.Polygon``,
+            ``shapely.MultiLineString``, ``shapely.LineString``,
             ``shapely.MultiPoint``, and ``shapely.Point``.
             """
         ),
@@ -2096,12 +2122,13 @@ class PlotGeometry(MetPyHasTraits):
         allow_none=True,
         help=(
             """Fill color(s) for polygons and points.
-    
-            A single string (color name or hex code) or collection of strings with which to fill
-            polygons and points. If a collection, the first color corresponds to the first Shapely
-            object in `geometry`, the second color corresponds to the second Shapely object, and so on.
-            If `fill` is shorter than `geometry`, `fill` cycles back to the beginning, repeating the
-            sequence of colors as needed. Default value is lightgray.
+
+            A single string (color name or hex code) or collection of strings with
+            which to fill polygons and points. If a collection, the first color
+            corresponds to the first Shapely object in `geometry`, the second color
+            corresponds to the second Shapely object, and so on.
+            If `fill` is shorter than `geometry`, `fill` cycles back to the beginning,
+            repeating the sequence of colors as needed. Default value is lightgray.
             """
         ),
     )
@@ -2115,11 +2142,12 @@ class PlotGeometry(MetPyHasTraits):
         allow_none=True,
         help=(
             """Stroke color(s) for polygons and line color(s) for lines.
-    
-            A single string (color name or hex code) or collection of strings with which to outline
-            polygons and color lines. If a collection, the first color corresponds to the first Shapely
-            object in `geometry`, the second color corresponds to the second Shapely object, and so on.
-            If `stroke` is shorter than `geometry`, `stroke` cycles back to the beginning, repeating
+
+            A single string (color name or hex code) or collection of strings with
+            which to outline polygons and color lines. If a collection, the first
+            color corresponds to the first Shapely object in `geometry`, the second
+            color corresponds to the second Shapely object, and so on. If `stroke`
+            is shorter than `geometry`, `stroke` cycles back to the beginning, repeating
             the sequence of colors as needed. Default value is black.
             """
         ),
@@ -2134,12 +2162,13 @@ class PlotGeometry(MetPyHasTraits):
         allow_none=True,
         help=(
             """Stroke width(s) for polygons and lines.
-    
-            A single integer or floating point value or collection of values representing the size of
-            the stroke width. If a collection, the first value corresponds to the first Shapely
-            object in `geometry`, the second value corresponds to the second Shapely object, and so on.
-            If `stroke_width` is shorter than `geometry`, `stroke_width` cycles back to the beginning,
-            repeating the sequence of values as needed. Default value is 1.
+
+            A single integer or floating point value or collection of values representing
+            the size of the stroke width. If a collection, the first value corresponds
+            to the first Shapely object in `geometry`, the second value corresponds to the
+            second Shapely object, and so on. If `stroke_width` is shorter than `geometry`,
+            `stroke_width` cycles back to the beginning, repeating the sequence of values
+            as needed. Default value is 1.
             """
         ),
     )
@@ -2149,8 +2178,9 @@ class PlotGeometry(MetPyHasTraits):
         allow_none=False,
         help=(
             """Symbol used to denote points.
-    
-            Accepts any matplotlib marker. Default value is '.', which plots a dot at each point.
+
+            Accepts any matplotlib marker. Default value is '.', which plots a dot
+            at each point.
             """
         ),
     )
@@ -2160,13 +2190,13 @@ class PlotGeometry(MetPyHasTraits):
         allow_none=True,
         help=(
             """A collection of labels corresponding to plotted geometry.
-    
+
             A collection of strings to use as labels for geometry, such as a column from a
-            ``Geopandas.GeoDataFrame``. The first label corresponds to the first Shapely object in
-            `geometry`, the second label corresponds to the second Shapely object, and so on. The
-            length of `labels` must be equal to the length of `geometry`. Labels are positioned along
-            the edge of polygons, and below lines and points. No labels are plotted if this attribute
-            is left undefined, or set equal to `None`.
+            ``Geopandas.GeoDataFrame``. The first label corresponds to the first Shapely
+            object in `geometry`, the second label corresponds to the second Shapely object,
+            and so on. The length of `labels` must be equal to the length of `geometry`.
+            Labels are positioned along the edge of polygons, and below lines and points.
+            No labels are plotted if this attribute is left undefined, or set equal to `None`.
             """
         ),
     )
@@ -2177,8 +2207,9 @@ class PlotGeometry(MetPyHasTraits):
         allow_none=True,
         help=(
             """An integer or string value for the font size of labels.
-    
-            Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
+
+            Accepts size in points or relative size. Allowed relative sizes are those
+            of Matplotlib:
             'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
             """
         ),
@@ -2192,11 +2223,11 @@ class PlotGeometry(MetPyHasTraits):
         allow_none=True,
         help=(
             """Font color(s) for labels.
-       
-            A single string (color name or hex code) or collection of strings for the font color of
-            labels. If a collection, the first color corresponds to the label of the first Shapely
-            object in `geometry`, the second color corresponds to the label of the second Shapely
-            object, and so on. Default value is `stroke`.
+
+            A single string (color name or hex code) or collection of strings for the
+            font color of labels. If a collection, the first color corresponds to the
+            label of the first Shapely object in `geometry`, the second color corresponds
+            to the label of the second Shapely object, and so on. Default value is `stroke`.
             """
         ),
     )
@@ -2209,11 +2240,11 @@ class PlotGeometry(MetPyHasTraits):
         allow_none=True,
         help=(
             """Outline color(s) for labels.
-    
-            A single string (color name or hex code) or collection of strings for the outline color of
-            labels. If a collection, the first color corresponds to the label of the first Shapely
-            object in `geometry`, the second color corresponds to the label of the second Shapely
-            object, and so on. Default value is `fill`.
+
+            A single string (color name or hex code) or collection of strings for the
+            outline color of labels. If a collection, the first color corresponds to
+            the label of the first Shapely object in `geometry`, the second color corresponds
+            to the label of the second Shapely object, and so on. Default value is `fill`.
             """
         ),
     )
@@ -2420,9 +2451,9 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=False,
         help=(
             """A collection of Shapely objects to plot.
-    
-            A collection of Shapely objects, such as the 'geometry' column from a bulletin parsed
-            with `parse_wpc_surface_bulletin()`. Acceptable Shapely objects are
+
+            A collection of Shapely objects, such as the 'geometry' column from a bulletin
+            parsed with `parse_wpc_surface_bulletin()`. Acceptable Shapely objects are
             ``shapely.LineString``, and ``shapely.Point``.
             """
         ),
@@ -2436,10 +2467,11 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=False,
         help=(
             """Collection of names of features to be plotted.
-        
+
             Collection of strings, each corresponding one-to-one with geometries, such as the
             'features' column from a bulletin parsed with `parse_wpc_surface_bulletin()`.
-            Acceptable feature names include: 'HIGH', 'LOW', 'WARM', 'COLD', 'OCFNT', 'STNRY', 'TROF'.
+            Acceptable feature names include: 'HIGH', 'LOW', 'WARM', 'COLD', 'OCFNT',
+            'STNRY', 'TROF'.
             """
         ),
     )
@@ -2453,9 +2485,10 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Collection of strengths corresponding to pressure systems.
-    
-            Collection of floats, each corresponding one-to-one with pressure system features. Such
-            as the 'strength' column from a bulletin parsed with `parse_wpc_surface_bulletin()`.
+
+            Collection of floats, each corresponding one-to-one with pressure system features.
+            Such as the 'strength' column from a bulletin parsed with
+            `parse_wpc_surface_bulletin()`.
             """
         ),
     )
@@ -2466,9 +2499,9 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Color for plotting high-pressure systems.
-    
-            A single string (color name or hex code) used to plot label of high-pressure system and
-            their strength, if provided. Default value is 'blue'.
+
+            A single string (color name or hex code) used to plot label of high-pressure
+            system and their strength, if provided. Default value is 'blue'.
             """
         ),
     )
@@ -2479,9 +2512,9 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Color for plotting low-pressure systems.
-    
-            A single string (color name or hex code) used to plot label of low-pressure system and
-            their strength, if provided. Default value is 'red'.
+
+            A single string (color name or hex code) used to plot label of low-pressure
+            system and their strength, if provided. Default value is 'red'.
             """
         ),
     )
@@ -2492,7 +2525,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Color for plotting warm fronts.
-    
+
             A single string (color name or hex code) used to plot warm fronts. Default
             color is 'red', which is used by `WarmFront()` class. `WARM_color` alternates
             with `COLD_color` to plot stationary fronts.
@@ -2506,7 +2539,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Color for plotting cold fronts.
-    
+
             A single string (color name or hex code) used to plot cold fronts. Default
             color is 'blue', which is used by `ColdFront()` class. `COLD_color` alternates
             with `WARM_color` to plot stationary fronts.
@@ -2520,7 +2553,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Color for plotting occluded fronts.
-    
+
             A single string (color name or hex code) used to plot Occluded fronts. Default
             color is 'purple', which is used by `OccludedFront()` class.
             """
@@ -2533,7 +2566,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Color for plotting trough lines.
-    
+
             A single string (color name or hex code) used to plot trough lines. Default
             color is 'darkorange'.
             """
@@ -2546,7 +2579,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Label used to plot high-pressure systems.
-    
+
             Single string used as marker to plot high-pressure systems. Default value is 'H'.
             """
         ),
@@ -2558,7 +2591,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Label used to plot low-pressure systems.
-    
+
             Single string used as marker to plot low-pressure systems. Default value is 'L'.
             """
         ),
@@ -2570,7 +2603,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Linestyle of Trough lines.
-    
+
             Single string, default value is 'dashed'.
             Accept matplotlib linestyles: 'solid', 'dotted', 'dashdot'.
             """
@@ -2583,9 +2616,10 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Font sizes of pressure systems labels.
-    
-            Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
-            'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
+
+            Accepts size in points or relative size. Allowed relative sizes are those of
+            Matplotlib: 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large',
+            'xx-large'.
             """
         ),
     )
@@ -2596,8 +2630,9 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Stroke width for trough lines.
-    
-            A single integer or floating point value representing the size of the stroke width.
+
+            A single integer or floating point value representing the size of the stroke
+            width.
             """
         ),
     )
@@ -2608,7 +2643,7 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Stroke width for front lines.
-    
+
             A single floating point value representing the size of the stroke width.
             """
         ),
@@ -2620,10 +2655,10 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         allow_none=True,
         help=(
             """Size of symbols in front lines.
-    
-            Accepts size in points or relative size. Default value is 3. Allowed relative sizes are
-            those of Matplotlib: 'xx-small', 'x-small', 'small', 'medium', 'large',
-            'x-large', 'xx-large'.
+
+            Accepts size in points or relative size. Default value is 3. Allowed relative
+            sizes are those of Matplotlib: 'xx-small', 'x-small', 'small', 'medium',
+            'large', 'x-large', 'xx-large'.
             """
         ),
     )
@@ -2635,9 +2670,9 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
         help=(
             """Offset between label of pressure system and its
             corresponding strength.
-    
-            Tuple representing the relative position of strength value with respect to label of
-            pressure system. Default value is (0,-1). Scaled by multiplying times 80% of
+
+            Tuple representing the relative position of strength value with respect to label
+            of pressure system. Default value is (0,-1). Scaled by multiplying times 80% of
             label_fontsize value.
             """
         ),
