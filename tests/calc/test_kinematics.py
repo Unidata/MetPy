@@ -426,6 +426,7 @@ def test_advection_z_y():
     assert_array_equal(a, truth)
 
 
+@pytest.mark.network
 def test_advection_4d_vertical(data_4d):
     """Test 4-d vertical advection with parsed dims."""
     data_4d['w'] = -abs(data_4d['u'])
@@ -1029,6 +1030,7 @@ def test_potential_vorticity_baroclinic_isobaric_real_data():
     assert_almost_equal(pvor, true_pv, 10)
 
 
+@pytest.mark.network
 def test_potential_vorticity_baroclinic_4d(data_4d):
     """Test potential vorticity calculation with latlon+xarray spatial handling."""
     theta = potential_temperature(data_4d.pressure, data_4d.temperature)
@@ -1421,12 +1423,14 @@ true_vort4d = np.array([[[[-5.72939079e-05, 3.36008149e-05, 4.80394116e-05, 2.24
                            2.84689950e-05]]]]) * units('s^-1')
 
 
+@pytest.mark.network
 def test_vorticity_4d(data_4d):
     """Test vorticity on a 4D (time, pressure, y, x) grid."""
     vort = vorticity(data_4d.u, data_4d.v)
     assert_array_almost_equal(vort.data, true_vort4d, 12)
 
 
+@pytest.mark.network
 def test_absolute_vorticity_4d(data_4d):
     """Test absolute_vorticity on a 4D (time, pressure, y, x) grid."""
     vort = absolute_vorticity(data_4d.u, data_4d.v)
@@ -1435,6 +1439,7 @@ def test_absolute_vorticity_4d(data_4d):
     assert_array_almost_equal(vort.data, truth, 12)
 
 
+@pytest.mark.network
 def test_divergence_4d(data_4d):
     """Test divergence on a 4D (time, pressure, y, x) grid."""
     div = divergence(data_4d.u, data_4d.v)
@@ -1478,6 +1483,7 @@ def test_divergence_4d(data_4d):
     assert_array_almost_equal(div.data, truth, 12)
 
 
+@pytest.mark.network
 def test_shearing_deformation_4d(data_4d):
     """Test shearing_deformation on a 4D (time, pressure, y, x) grid."""
     shdef = shearing_deformation(data_4d.u, data_4d.v)
@@ -1521,6 +1527,7 @@ def test_shearing_deformation_4d(data_4d):
     assert_array_almost_equal(shdef.data, truth, 12)
 
 
+@pytest.mark.network
 def test_stretching_deformation_4d(data_4d):
     """Test stretching_deformation on a 4D (time, pressure, y, x) grid."""
     stdef = stretching_deformation(data_4d.u, data_4d.v)
@@ -1564,6 +1571,7 @@ def test_stretching_deformation_4d(data_4d):
     assert_array_almost_equal(stdef.data, truth, 10)
 
 
+@pytest.mark.network
 def test_total_deformation_4d(data_4d):
     """Test total_deformation on a 4D (time, pressure, y, x) grid."""
     totdef = total_deformation(data_4d.u, data_4d.v)
@@ -1607,6 +1615,7 @@ def test_total_deformation_4d(data_4d):
     assert_array_almost_equal(totdef.data, truth, 12)
 
 
+@pytest.mark.network
 def test_frontogenesis_4d(data_4d):
     """Test frontogenesis on a 4D (time, pressure, y, x) grid."""
     theta = potential_temperature(data_4d.pressure, data_4d.temperature)
@@ -1657,6 +1666,7 @@ def test_frontogenesis_4d(data_4d):
     assert_array_almost_equal(frnt.data, truth, 13)
 
 
+@pytest.mark.network
 def test_geostrophic_wind_4d(data_4d):
     """Test geostrophic_wind on a 4D (time, pressure, y, x) grid."""
     u_g, v_g = geostrophic_wind(data_4d.height)
@@ -1772,6 +1782,7 @@ def test_geostrophic_wind_4d(data_4d):
     assert_array_almost_equal(v_g.data, v_g_truth, 4)
 
 
+@pytest.mark.network
 def test_inertial_advective_wind_4d(data_4d):
     """Test inertial_advective_wind on a 4D (time, pressure, y, x) grid."""
     u_g, v_g = geostrophic_wind(data_4d.height)
@@ -1860,6 +1871,7 @@ def test_inertial_advective_wind_4d(data_4d):
     assert_array_almost_equal(v_i.data, v_i_truth, 4)
 
 
+@pytest.mark.network
 def test_q_vector_4d(data_4d):
     """Test q_vector on a 4D (time, pressure, y, x) grid."""
     u_g, v_g = geostrophic_wind(data_4d.height)

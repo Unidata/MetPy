@@ -26,6 +26,7 @@ from metpy.testing import needs_cartopy, version_check
 from metpy.units import units
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=2.58 if version_check('matplotlib<3.10') else 0.0081)
 @needs_cartopy
@@ -50,6 +51,7 @@ def test_declarative_image():
     return pc.figure
 
 
+@pytest.mark.network
 @needs_cartopy
 def test_declarative_three_dims_error():
     """Test making an image plot with three dimensions."""
@@ -70,6 +72,7 @@ def test_declarative_three_dims_error():
         pc.draw()
 
 
+@pytest.mark.network
 @needs_cartopy
 def test_declarative_four_dims_error():
     """Test making a contour plot with four dimensions."""
@@ -94,6 +97,7 @@ def test_declarative_four_dims_error():
         pc.draw()
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.163 if version_check('cartopy<0.23') else 0.09)
 @needs_cartopy
@@ -123,6 +127,7 @@ def test_declarative_contour():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.094)
 @needs_cartopy
 def test_declarative_titles():
@@ -154,6 +159,7 @@ def test_declarative_titles():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.159 if version_check('cartopy<0.23') else 0.066)
 @needs_cartopy
@@ -184,6 +190,7 @@ def test_declarative_smooth_contour():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.155 if version_check('cartopy<0.23') else 0.006)
 @needs_cartopy
@@ -227,6 +234,7 @@ def test_declarative_smooth_contour_calculation():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.142 if version_check('cartopy<0.23') else 0.0038)
 @needs_cartopy
@@ -257,6 +265,7 @@ def test_declarative_smooth_contour_order():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.114 if version_check('cartopy<0.23') else 0.058)
 @needs_cartopy
@@ -286,6 +295,7 @@ def test_declarative_figsize():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.104 if version_check('cartopy<0.23') else 0.033)
 @needs_cartopy
@@ -316,6 +326,7 @@ def test_declarative_smooth_field():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.828)
 @needs_cartopy
 def test_declarative_contour_cam():
@@ -343,6 +354,7 @@ def test_declarative_contour_cam():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(
     remove_text=True,
     tolerance=3.71 if version_check('matplotlib<3.8') else 0.74)
@@ -375,6 +387,7 @@ def test_declarative_contour_options():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.152 if version_check('cartopy<0.23') else 0.009)
 @needs_cartopy
@@ -406,6 +419,7 @@ def test_declarative_layers_plot_options():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.055 if version_check('cartopy<0.23') else 0.009)
 @needs_cartopy
@@ -440,6 +454,7 @@ def test_declarative_additional_layers_plot_options():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(
     remove_text=True,
     tolerance=(
@@ -474,6 +489,7 @@ def test_declarative_contour_convert_units():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=5.34 if version_check('matplotlib<3.10') else 0.246)
 @needs_cartopy
@@ -518,6 +534,7 @@ def test_declarative_events():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.009)
 @needs_cartopy
 def test_declarative_raster_events():
@@ -549,6 +566,7 @@ def test_declarative_raster_events():
     return pc.figure
 
 
+@pytest.mark.network
 def test_no_field_error():
     """Make sure we get a useful error when the field is not set."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -561,6 +579,7 @@ def test_no_field_error():
         contour.draw()
 
 
+@pytest.mark.network
 def test_ndim_error_scalar(cfeature):
     """Make sure we get a useful error when the field is not set."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -585,6 +604,7 @@ def test_ndim_error_scalar(cfeature):
     plt.close(pc.figure)
 
 
+@pytest.mark.network
 def test_ndim_error_vector(cfeature):
     """Make sure we get a useful error when the field is not set."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -608,6 +628,7 @@ def test_ndim_error_vector(cfeature):
     plt.close(pc.figure)
 
 
+@pytest.mark.network
 def test_no_field_error_barbs():
     """Make sure we get a useful error when the field is not set."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -620,6 +641,7 @@ def test_no_field_error_barbs():
         barbs.draw()
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.381)
 def test_projection_object(ccrs, cfeature):
     """Test that we can pass a custom map projection."""
@@ -643,6 +665,7 @@ def test_projection_object(ccrs, cfeature):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.009)
 @needs_cartopy
 def test_colorfill():
@@ -669,6 +692,7 @@ def test_colorfill():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.238 if version_check('cartopy<0.23') else 0.004)
 def test_colorfill_with_image_range(cfeature):
@@ -696,6 +720,7 @@ def test_colorfill_with_image_range(cfeature):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(
     remove_text=True,
     tolerance=0.238 if version_check('cartopy<0.23') else 0.004,
@@ -726,6 +751,7 @@ def test_colorfill_with_normalize_instance_image_range(cfeature):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
 @needs_cartopy
 def test_colorfill_horiz_colorbar():
@@ -752,6 +778,7 @@ def test_colorfill_horiz_colorbar():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
 def test_colorbar_kwargs(cfeature):
     """Test that we can use ContourFillPlot with specifying colorbar kwargs."""
@@ -777,6 +804,7 @@ def test_colorbar_kwargs(cfeature):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.370 if version_check('cartopy<0.23') else 0.005)
 def test_colorfill_no_colorbar(cfeature):
@@ -803,6 +831,7 @@ def test_colorfill_no_colorbar(cfeature):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=1.389 if version_check('matplotlib<3.10') else 0.0012)
 @needs_cartopy
@@ -826,6 +855,7 @@ def test_global():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=5.101 if version_check('matplotlib<3.10') else 0.019)
 @needs_cartopy
@@ -858,6 +888,7 @@ def test_latlon():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.393)
 @needs_cartopy
 def test_declarative_barb_options():
@@ -888,6 +919,7 @@ def test_declarative_barb_options():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.37)
 @needs_cartopy
 def test_declarative_arrowplot():
@@ -918,6 +950,7 @@ def test_declarative_arrowplot():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.37)
 @needs_cartopy
 def test_declarative_arrowkey():
@@ -949,6 +982,7 @@ def test_declarative_arrowkey():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.37)
 @needs_cartopy
 def test_declarative_arrow_changes():
@@ -980,6 +1014,7 @@ def test_declarative_arrow_changes():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.891)
 @needs_cartopy
 def test_declarative_barb_earth_relative():
@@ -1019,6 +1054,7 @@ def test_declarative_barb_earth_relative():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.612)
 @needs_cartopy
 def test_declarative_overlay_projections():
@@ -1058,6 +1094,7 @@ def test_declarative_overlay_projections():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.133 if version_check('cartopy<0.23') else 0.0094)
 @needs_cartopy
@@ -1088,6 +1125,7 @@ def test_declarative_gridded_scale():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
 @needs_cartopy
 def test_declarative_global_gfs():
@@ -1117,6 +1155,7 @@ def test_declarative_global_gfs():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=1.42)
 @needs_cartopy
 def test_declarative_barb_gfs():
@@ -1146,6 +1185,7 @@ def test_declarative_barb_gfs():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.665)
 @needs_cartopy
 def test_declarative_barb_scale():
@@ -1176,6 +1216,7 @@ def test_declarative_barb_scale():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.722)
 @needs_cartopy
 def test_declarative_barb_gfs_knots():
@@ -1226,6 +1267,7 @@ def pandas_sfc():
     return df
 
 
+@pytest.mark.network
 def test_plotobs_subset_default_nolevel(sample_obs):
     """Test PlotObs subsetting with minimal config."""
     obs = PlotObs()
@@ -1238,6 +1280,7 @@ def test_plotobs_subset_default_nolevel(sample_obs):
     pd.testing.assert_frame_equal(obs.obsdata, truth)
 
 
+@pytest.mark.network
 def test_plotobs_subset_level(sample_obs):
     """Test PlotObs subsetting based on level."""
     obs = PlotObs()
@@ -1251,6 +1294,7 @@ def test_plotobs_subset_level(sample_obs):
     pd.testing.assert_frame_equal(obs.obsdata, truth)
 
 
+@pytest.mark.network
 def test_plotobs_subset_level_no_units(sample_obs):
     """Test PlotObs subsetting based on unitless level."""
     obs = PlotObs()
@@ -1264,6 +1308,7 @@ def test_plotobs_subset_level_no_units(sample_obs):
     pd.testing.assert_frame_equal(obs.obsdata, truth)
 
 
+@pytest.mark.network
 def test_plotobs_subset_time(sample_obs):
     """Test PlotObs subsetting for a particular time."""
     obs = PlotObs()
@@ -1277,6 +1322,7 @@ def test_plotobs_subset_time(sample_obs):
     pd.testing.assert_frame_equal(obs.obsdata, truth)
 
 
+@pytest.mark.network
 def test_plotobs_subset_time_window(sample_obs):
     """Test PlotObs subsetting for a particular time with a window."""
     # Test also using an existing index
@@ -1296,6 +1342,7 @@ def test_plotobs_subset_time_window(sample_obs):
     pd.testing.assert_frame_equal(obs.obsdata, truth)
 
 
+@pytest.mark.network
 def test_plotobs_subset_time_window_level(sample_obs):
     """Test PlotObs subsetting for a particular time with a window and a level."""
     # Test also using an existing index
@@ -1315,6 +1362,7 @@ def test_plotobs_subset_time_window_level(sample_obs):
     pd.testing.assert_frame_equal(obs.obsdata, truth)
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
 def test_plotobs_units_with_formatter(ccrs, pandas_sfc):
     """Test using PlotObs with a field that both has units and a custom formatter."""
@@ -1352,6 +1400,7 @@ def test_plotobs_units_with_formatter(ccrs, pandas_sfc):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.081 if version_check('cartopy<0.23') else 0.025)
 def test_declarative_sfc_obs(ccrs, pandas_sfc):
@@ -1382,6 +1431,7 @@ def test_declarative_sfc_obs(ccrs, pandas_sfc):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.075 if version_check('cartopy<0.23') else 0.)
 def test_declarative_sfc_obs_args(ccrs, pandas_sfc):
@@ -1413,6 +1463,7 @@ def test_declarative_sfc_obs_args(ccrs, pandas_sfc):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
 @needs_cartopy
 def test_declarative_sfc_text(pandas_sfc):
@@ -1444,6 +1495,7 @@ def test_declarative_sfc_text(pandas_sfc):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.081 if version_check('cartopy<0.23') else 0.)
 def test_declarative_sfc_obs_changes(ccrs, pandas_sfc):
@@ -1478,6 +1530,7 @@ def test_declarative_sfc_obs_changes(ccrs, pandas_sfc):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.171)
 def test_declarative_colored_barbs(ccrs, pandas_sfc):
     """Test making a surface plot with a colored barb (gh-1274)."""
@@ -1507,6 +1560,7 @@ def test_declarative_colored_barbs(ccrs, pandas_sfc):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.314)
 def test_declarative_sfc_obs_full(ccrs, pandas_sfc):
     """Test making a full surface observation plot."""
@@ -1542,6 +1596,7 @@ def test_declarative_sfc_obs_full(ccrs, pandas_sfc):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.522)
 @needs_cartopy
 def test_declarative_upa_obs():
@@ -1579,6 +1634,7 @@ def test_declarative_upa_obs():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.518)
 @needs_cartopy
 def test_declarative_upa_obs_convert_barb_units():
@@ -1622,6 +1678,7 @@ def test_declarative_upa_obs_convert_barb_units():
     return pc.figure
 
 
+@pytest.mark.network
 def test_attribute_error_time(ccrs, pandas_sfc):
     """Make sure we get a useful error when the time variable is not found."""
     pandas_sfc.rename(columns={'valid': 'vtime'}, inplace=True)
@@ -1653,6 +1710,7 @@ def test_attribute_error_time(ccrs, pandas_sfc):
     plt.close(pc.figure)
 
 
+@pytest.mark.network
 def test_attribute_error_station(ccrs, pandas_sfc):
     """Make sure we get a useful error when the station variable is not found."""
     pandas_sfc.rename(columns={'station': 'location'}, inplace=True)
@@ -1684,6 +1742,7 @@ def test_attribute_error_station(ccrs, pandas_sfc):
     plt.close(pc.figure)
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.082 if version_check('cartopy<0.23') else 0.)
 def test_declarative_sfc_obs_change_units(ccrs):
@@ -1718,6 +1777,7 @@ def test_declarative_sfc_obs_change_units(ccrs):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance=0.125 if version_check('cartopy<0.23') else 0.0)
 def test_declarative_multiple_sfc_obs_change_units(ccrs):
@@ -1754,6 +1814,7 @@ def test_declarative_multiple_sfc_obs_change_units(ccrs):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.607)
 @needs_cartopy
 def test_declarative_title_fontsize():
@@ -1784,6 +1845,7 @@ def test_declarative_title_fontsize():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=False,
                                tolerance=0.951 if version_check('cartopy<0.23') else 0.)
 @needs_cartopy
@@ -1815,6 +1877,7 @@ def test_declarative_colorbar_fontsize():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
 @needs_cartopy
 def test_declarative_station_plot_fontsize():
@@ -1850,6 +1913,7 @@ def test_declarative_station_plot_fontsize():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
 @needs_cartopy
 def test_declarative_contour_label_fontsize():
@@ -1880,6 +1944,7 @@ def test_declarative_contour_label_fontsize():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
 @needs_cartopy
 def test_declarative_raster():
@@ -1906,6 +1971,7 @@ def test_declarative_raster():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
 @needs_cartopy
 def test_declarative_raster_options():
@@ -1933,6 +1999,7 @@ def test_declarative_raster_options():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
 @needs_cartopy
 def test_declarative_region_modifier_zoom_in():
@@ -1957,6 +2024,7 @@ def test_declarative_region_modifier_zoom_in():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.377)
 @needs_cartopy
 def test_declarative_region_modifier_zoom_out():
@@ -2073,6 +2141,7 @@ def test_copy():
         assert obj.plots[i] is not copied_obj.plots[i]
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.607)
 @needs_cartopy
 def test_declarative_plot_geometry_polygons():
@@ -2118,6 +2187,7 @@ def test_declarative_plot_geometry_polygons():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=False, tolerance=2.985)
 def test_declarative_plot_geometry_lines(ccrs):
     """Test that `PlotGeometry` correctly plots MultiLineString and LineString objects."""
@@ -2158,6 +2228,7 @@ def test_declarative_plot_geometry_lines(ccrs):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.013)
 def test_declarative_plot_geometry_fills(ccrs):
     """Test that `PlotGeometry` correctly plots MultiLineString and LineString objects."""
@@ -2194,6 +2265,7 @@ def test_declarative_plot_geometry_fills(ccrs):
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=False, tolerance=1.900)
 def test_declarative_plot_geometry_points(ccrs):
     """Test that `PlotGeometry` correctly plots Point and MultiPoint objects."""
@@ -2272,6 +2344,7 @@ def test_attribute_error_no_suggest():
     assert 'Perhaps you meant' not in str(excinfo.value)
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=False)
 @needs_cartopy
 def test_declarative_plot_surface_analysis_default():
@@ -2301,6 +2374,7 @@ def test_declarative_plot_surface_analysis_default():
     return pc.figure
 
 
+@pytest.mark.network
 @pytest.mark.mpl_image_compare(remove_text=False)
 @needs_cartopy
 def test_declarative_plot_surface_analysis_custom():

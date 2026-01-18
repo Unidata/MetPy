@@ -53,6 +53,7 @@ raw_gini_info = [('WEST-CONUS_4km_WV_20151208_2200.gini',
                  ]
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('filename,pdb,pdb2,proj_info', raw_gini_info,
                          ids=['LCC', 'Stereographic', 'Mercator'])
 def test_raw_gini(filename, pdb, pdb2, proj_info):
@@ -64,6 +65,7 @@ def test_raw_gini(filename, pdb, pdb2, proj_info):
     assert f.data.shape == (pdb.num_records, pdb.record_len)
 
 
+@pytest.mark.network
 def test_gini_bad_size():
     """Test reading a GINI file that reports a bad header size."""
     f = GiniFile(get_test_data('NHEM-MULTICOMP_1km_IR_20151208_2100.gini'))
@@ -95,6 +97,7 @@ gini_dataset_info = [('WEST-CONUS_4km_WV_20151208_2200.gini',
                      ]
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('filename,bounds,data_var,proj_attrs,image,dt', gini_dataset_info,
                          ids=['LCC', 'Stereographic', 'Mercator'])
 def test_gini_xarray(filename, bounds, data_var, proj_attrs, image, dt):
@@ -132,6 +135,7 @@ def test_gini_xarray(filename, bounds, data_var, proj_attrs, image, dt):
     assert np.asarray(dt, dtype='datetime64[ms]') == ds.variables['time']
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('filename,bounds,data_var,proj_attrs,image,dt', gini_dataset_info,
                          ids=['LCC', 'Stereographic', 'Mercator'])
 @pytest.mark.parametrize('specify_engine', [True, False], ids=['engine', 'no engine'])
@@ -168,6 +172,7 @@ def test_gini_xarray_entrypoint(filename, bounds, data_var, proj_attrs, image, d
     assert np.asarray(dt, dtype='datetime64[ms]') == ds.variables['time']
 
 
+@pytest.mark.network
 def test_gini_mercator_upper_corner():
     """Test that the upper corner of the Mercator coordinates is correct."""
     f = GiniFile(get_test_data('HI-REGIONAL_4km_3.9_20160616_1715.gini'))
@@ -181,6 +186,7 @@ def test_gini_mercator_upper_corner():
     assert_almost_equal(lat[0, -1] + (lat[0, -1] - lat[1, -1]), f.proj_info.la2, 4)
 
 
+@pytest.mark.network
 def test_gini_str():
     """Test the str representation of GiniFile."""
     f = GiniFile(get_test_data('WEST-CONUS_4km_WV_20151208_2200.gini'))
@@ -191,6 +197,7 @@ def test_gini_str():
     assert str(f) == truth
 
 
+@pytest.mark.network
 def test_gini_pathlib():
     """Test that GiniFile works with `pathlib.Path` instances."""
     from pathlib import Path
@@ -199,6 +206,7 @@ def test_gini_pathlib():
     assert f.prod_desc.sector_id == 'West CONUS'
 
 
+@pytest.mark.network
 def test_unidata_composite():
     """Test reading radar composites in GINI format made by Unidata."""
     f = GiniFile(get_test_data('Level3_Composite_dhr_1km_20180309_2225.gini'))
@@ -210,6 +218,7 @@ def test_unidata_composite():
     assert f.data[2160, 2130] == 66
 
 
+@pytest.mark.network
 def test_percent_normal():
     """Test reading PCT products properly."""
     f = GiniFile(get_test_data('PR-NATIONAL_1km_PCT_20200320_0446.gini'))
