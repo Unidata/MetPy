@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Dec 24, 2025 at 18:52:02"/>
+    <meta name="docbuild:last-update" content="Jan 19, 2026 at 16:42:02"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.interpolate.interpolate_to_points.html" />
 
   </head>
@@ -804,7 +804,7 @@
 <span class="sig-prename descclassname"><span class="pre">metpy.interpolate.</span></span><span class="sig-name descname"><span class="pre">interpolate_to_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_star</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.052</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbf_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbf_smooth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/interpolate/points.py#L282-L407"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.interpolate.interpolate_to_points" title="Link to this definition">#</a></dt>
 <dd><p>Interpolate unstructured point data to the given points.</p>
 <p>This function interpolates the given <em class="xref py py-obj">values</em> valid at <code class="docutils literal notranslate"><span class="pre">points</span></code> to the points <em class="xref py py-obj">xi</em>.
-This is modeled after <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.griddata.html#scipy.interpolate.griddata" title="(in SciPy v1.16.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.griddata</span></code></a>, but acts as a generalization of it by
+This is modeled after <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.griddata.html#scipy.interpolate.griddata" title="(in SciPy v1.17.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.griddata</span></code></a>, but acts as a generalization of it by
 including the following types of interpolation:</p>
 <ul class="simple">
 <li><p>Linear</p></li>
@@ -822,7 +822,7 @@ including the following types of interpolation:</p>
 <li><p><strong>values</strong> (<em>array-like</em><em>, </em><em>(</em><em>N</em><em>,</em><em>)</em>) – Values of the data points.</p></li>
 <li><p><strong>xi</strong> (<em>array-like</em><em>, </em><em>(</em><em>M</em><em>, </em><em>P</em><em>)</em>) – Points to interpolate the data onto.</p></li>
 <li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – What type of interpolation to use. Available options include:
-1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.16.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
+1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.17.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
 2) “natural_neighbor”, “barnes”, or “cressman” from <a class="reference internal" href="metpy.interpolate.html#module-metpy.interpolate" title="metpy.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate</span></code></a>.
 Default “linear”.</p></li>
 <li><p><strong>minimum_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Minimum number of neighbors needed to perform Barnes or Cressman interpolation for a
@@ -835,7 +835,7 @@ If search_radius is not specified, it will default to 5 times the average spacin
 observations.</p></li>
 <li><p><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Specifies which function to use for Rbf interpolation.
 Options include: ‘multiquadric’, ‘inverse’, ‘gaussian’, ‘linear’, ‘cubic’,
-‘quintic’, and ‘thin_plate’. Default ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.16.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
+‘quintic’, and ‘thin_plate’. Default ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.17.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
 information.</p></li>
 <li><p><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</p></li>
 </ul>
@@ -931,7 +931,7 @@ individual functions are also available for direct use.</p>
 
   <p class="copyright">
     
-      © Copyright 2008–2025, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
+      © Copyright 2008–2026, MetPy Developers. Development is supported by Unidata and the National Science Foundation.
       <br/>
     
   </p>
