@@ -494,12 +494,12 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td>JCBN(S1, S2)</td>
-        <td>Jacobian determinant</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td class="tg-implemented">JCBN(S1, S2)</td>
+        <td class="tg-implemented">Jacobian determinant</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.jacobian.html#metpy.calc.jacobian">metpy.calc.jacobian</a></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">KNTS(S)</td>
