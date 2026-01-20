@@ -743,6 +743,76 @@ class SkewT:
         return self.shade_area(pressure[idx], t_parcel[idx], t[idx], which='negative',
                                **kwargs)
 
+    def plot_vertical_range(self, y0, y1, x, *, width=0.04, align='mid', **kwargs):
+        """Plot a vertical range indicator.
+
+        Draws a vertical staff, capped at either end by a horizontal line, used to denote
+        vertical regions of interest on the plot. The vertical extent of the range is
+        given by ``y0`` and ``y1`` and is centered at ``x``.
+
+        Parameters
+        ----------
+        y0 : float or int
+            Starting point of the staff in data coordinates
+        y1 : float or int
+            Ending point of the staff in data coordinates
+        x : float
+            Horizontal location given in normalized axes coordinates, where 0 and 1 represent
+            the left and right edges, respectively.
+        width : float
+            Width of the caps, given in normalized axes coordinates where 1.0 is the full
+            width of the axes. Optional and defaults to 0.04.
+        align : {'left', 'mid', 'right'}
+            Where in the cap the staff should be aligned, optional. Defaults to 'mid'.
+        kwargs
+            Other keyword arguments, such as ``colors`` or ``linewidths``, to pass to
+            :class:`matplotlib.collections.LineCollection` to control the appearance.
+
+        Returns
+        -------
+        :class:`matplotlib.collections.LineCollection`
+
+        See Also
+        --------
+        :class:`matplotlib.collections.LineCollection`
+
+        Notes
+        -----
+        The indicator is drawn using a single :class:`~matplotlib.collections.LineCollection`
+        instance, in the order of vertical staff, cap at y0, cap at y1, forcing the caps
+        to draw on top the staff. This is important when providing multiple colors.
+
+        If the ``colors`` argument is not passed in, the default color is ``'black'``.
+
+        """
+        # Override matplotlib's default color (tab:blue) since that doesn't work well
+        # for this on our default colors.
+        if 'colors' not in kwargs:
+            kwargs['colors'] = 'black'
+
+        # Configure how the top bars are aligned to the middle staff
+        if align == 'left':
+            left = x
+            right = x + width
+        elif align == 'mid':
+            left = x - width / 2
+            right = x + width / 2
+        elif align == 'right':
+            left = x - width
+            right = x
+        else:
+            raise ValueError('align should be one of "left", "right", or "mid".')
+
+        # Need to convert units before giving to LineCollection
+        y0 = self.ax.convert_yunits(y0)
+        y1 = self.ax.convert_yunits(y1)
+
+        # Create the collection where the x is given in axes coords, y in data coords.
+        lc = LineCollection([[(x, y0), (x, y1)],  # staff
+                             [(left, y0), (right, y0)], [(left, y1), (right, y1)]],  # caps
+                            transform=self.ax.get_yaxis_transform(), **kwargs)
+        return self.ax.add_collection(lc)
+
 
 @exporter.export
 class Stuve(SkewT):
