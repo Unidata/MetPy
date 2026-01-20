@@ -4,17 +4,58 @@ interactions:
     headers:
       User-Agent:
       - !!binary |
-        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
-        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
-        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+        Qm90bzMvMS4zOC40MiBtZC9Cb3RvY29yZSMxLjM4LjQyIHVhLzIuMSBvcy9tYWNvcyMyNC4zLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjggbWQvcHlpbXBsI0NQeXRob24gbS9aLEQs
+        YiBjZmcvcmV0cnktbW9kZSNsZWdhY3kgQm90b2NvcmUvMS4zOC40MiBSZXNvdXJjZQ==
       amz-sdk-invocation-id:
       - !!binary |
-        OGJhOGU3NmUtOWFkNC00NjQ1LWJkM2EtMGU3NDY2MGNjMTY0
+        N2IyZGMwZTQtNDc2OS00MmJiLWI3OGYtZmFmMzM5ZTk4OWU1
       amz-sdk-request:
       - !!binary |
         YXR0ZW1wdD0x
     method: GET
-    uri: https://noaa-goes16.s3.amazonaws.com/?list-type=2&prefix=ABI-L1b-RadC%2F2024%2F345%2F01%2FOR_ABI-L1b-RadC-&delimiter=_&encoding-type=url
+    uri: https://noaa-goes16.s3.us-east-2.amazonaws.com/?list-type=2&prefix=ABI-L1b-RadC%2F2024%2F345%2F01%2FOR_ABI-L1b-RadC-&delimiter=_&encoding-type=url
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>PermanentRedirect</Code><Message>The bucket you are attempting
+        to access must be addressed using the specified endpoint. Please send all
+        future requests to this endpoint.</Message><Endpoint>s3.amazonaws.com</Endpoint><Bucket>noaa-goes16</Bucket><RequestId>HY3ZX6QYFMG28GK2</RequestId><HostId>RPddz7APKHvZLEGjdwSKVRhVseEXeLF/hKxfJINRaam1M5SbcLTuUn9Uj2nsH6ua6ArnMl3zADQ=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Sun, 06 Jul 2025 19:22:34 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-bucket-region:
+      - us-east-1
+      x-amz-id-2:
+      - RPddz7APKHvZLEGjdwSKVRhVseEXeLF/hKxfJINRaam1M5SbcLTuUn9Uj2nsH6ua6ArnMl3zADQ=
+      x-amz-request-id:
+      - HY3ZX6QYFMG28GK2
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4zOC40MiBtZC9Cb3RvY29yZSMxLjM4LjQyIHVhLzIuMSBvcy9tYWNvcyMyNC4zLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjggbWQvcHlpbXBsI0NQeXRob24gbS9aLEQs
+        YiBjZmcvcmV0cnktbW9kZSNsZWdhY3kgQm90b2NvcmUvMS4zOC40MiBSZXNvdXJjZQ==
+      amz-sdk-invocation-id:
+      - !!binary |
+        N2IyZGMwZTQtNDc2OS00MmJiLWI3OGYtZmFmMzM5ZTk4OWU1
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0yOyBtYXg9NQ==
+    method: GET
+    uri: https://noaa-goes16.s3.us-east-1.amazonaws.com/?list-type=2&prefix=ABI-L1b-RadC%2F2024%2F345%2F01%2FOR_ABI-L1b-RadC-&delimiter=_&encoding-type=url
   response:
     body:
       string: '<?xml version="1.0" encoding="UTF-8"?>
@@ -24,7 +65,7 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Fri, 10 Jan 2025 02:09:09 GMT
+      - Sun, 06 Jul 2025 19:22:36 GMT
       Server:
       - AmazonS3
       Transfer-Encoding:
@@ -32,9 +73,9 @@ interactions:
       x-amz-bucket-region:
       - us-east-1
       x-amz-id-2:
-      - f2SLO60WyihXD/REdoHXhu++F4YjkDNmyN6viuJblxa1UlTUD4z6VfVbGhg5NRBw0IADG/3vQjou1JOuyGxYpQ==
+      - bOvXRYTQU6dLHyCTKdITuWRXnIB8zE9YFkLDjgJKwV8LZWb9BfyG0yg2FoP1a402y8ALikxuveM=
       x-amz-request-id:
-      - EJ045912YFMVHY92
+      - HY3N1K4YTXPBV6N3
     status:
       code: 200
       message: OK
@@ -43,17 +84,17 @@ interactions:
     headers:
       User-Agent:
       - !!binary |
-        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
-        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
-        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+        Qm90bzMvMS4zOC40MiBtZC9Cb3RvY29yZSMxLjM4LjQyIHVhLzIuMSBvcy9tYWNvcyMyNC4zLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjggbWQvcHlpbXBsI0NQeXRob24gbS9aLEMs
+        RCxiIGNmZy9yZXRyeS1tb2RlI2xlZ2FjeSBCb3RvY29yZS8xLjM4LjQyIFJlc291cmNl
       amz-sdk-invocation-id:
       - !!binary |
-        NjFhZDIzYmMtNGM1Yy00OTY2LWI3ZDgtYzczMTI5OGVkMzFl
+        YjVmMjJhYmItYzg4NC00ZmNmLWI1ZTYtNjQwMWNmMmI2MWFk
       amz-sdk-request:
       - !!binary |
         YXR0ZW1wdD0x
     method: GET
-    uri: https://noaa-goes16.s3.amazonaws.com/?prefix=ABI-L1b-RadC%2F2024%2F345%2F01%2FOR_ABI-L1b-RadC-M6C01&encoding-type=url
+    uri: https://noaa-goes16.s3.us-east-1.amazonaws.com/?prefix=ABI-L1b-RadC%2F2024%2F345%2F01%2FOR_ABI-L1b-RadC-M6C01&encoding-type=url
   response:
     body:
       string: '<?xml version="1.0" encoding="UTF-8"?>
@@ -63,7 +104,7 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Fri, 10 Jan 2025 02:09:09 GMT
+      - Sun, 06 Jul 2025 19:22:36 GMT
       Server:
       - AmazonS3
       Transfer-Encoding:
@@ -71,9 +112,9 @@ interactions:
       x-amz-bucket-region:
       - us-east-1
       x-amz-id-2:
-      - 7mufcJlqux7+INRgofp1gQvd8Vl6shpIjUuhOQec5yuYJu+EMWniJBXMCi+G4pXjXJYJk3/3WLh4eZ2WKo7sxw==
+      - peUA09hzI9ThPM/OgMjtvExQfHU6ato2PZGUJzGdMNYQaeThlOYU3RBl8oJFQB6adqdc0gQU7z8=
       x-amz-request-id:
-      - EJ0AWGMVW48967NV
+      - HY3QFRBQXGYGA2JM
     status:
       code: 200
       message: OK
@@ -82,17 +123,17 @@ interactions:
     headers:
       User-Agent:
       - !!binary |
-        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
-        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
-        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+        Qm90bzMvMS4zOC40MiBtZC9Cb3RvY29yZSMxLjM4LjQyIHVhLzIuMSBvcy9tYWNvcyMyNC4zLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjggbWQvcHlpbXBsI0NQeXRob24gbS9aLEQs
+        YiBjZmcvcmV0cnktbW9kZSNsZWdhY3kgQm90b2NvcmUvMS4zOC40MiBSZXNvdXJjZQ==
       amz-sdk-invocation-id:
       - !!binary |
-        YzZhNDc4ZjEtNmY4Ny00NDRlLWIyMjItNGEwOGIzMWZiYzNk
+        ZjdmOWI0MDAtMWI4ZS00NmJjLWIxMTctNGU4MWQ0ZDQ4M2Uy
       amz-sdk-request:
       - !!binary |
         YXR0ZW1wdD0x
     method: GET
-    uri: https://noaa-goes16.s3.amazonaws.com/?list-type=2&prefix=ABI-L1b-RadC%2F2024%2F345%2F02%2FOR_ABI-L1b-RadC-&delimiter=_&encoding-type=url
+    uri: https://noaa-goes16.s3.us-east-1.amazonaws.com/?list-type=2&prefix=ABI-L1b-RadC%2F2024%2F345%2F02%2FOR_ABI-L1b-RadC-&delimiter=_&encoding-type=url
   response:
     body:
       string: '<?xml version="1.0" encoding="UTF-8"?>
@@ -102,7 +143,7 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Fri, 10 Jan 2025 02:09:09 GMT
+      - Sun, 06 Jul 2025 19:22:36 GMT
       Server:
       - AmazonS3
       Transfer-Encoding:
@@ -110,9 +151,9 @@ interactions:
       x-amz-bucket-region:
       - us-east-1
       x-amz-id-2:
-      - tAqoJiBkXJdHKrtpWWZb4Yt8DphggjAKI8OJC2MiGKmNJWBLk5VHaHwZEtUMt+BSZWiwddKw97WJmjiBthZe0Q==
+      - F/4ZOyIGH+pHVCGwOQrqIAmwf6aSWMorFfKelg2uvk0ySyU3ELRCFSyxdFfm6rriBHXuadIYvq0=
       x-amz-request-id:
-      - EJ03B4YM36WGMTTA
+      - HY3PBEFX6JFMS9FK
     status:
       code: 200
       message: OK
@@ -121,17 +162,17 @@ interactions:
     headers:
       User-Agent:
       - !!binary |
-        Qm90bzMvMS4zNS44OCBtZC9Cb3RvY29yZSMxLjM1Ljg4IHVhLzIuMCBvcy9tYWNvcyMyNC4yLjAg
-        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjcgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
-        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzUuODggUmVzb3VyY2U=
+        Qm90bzMvMS4zOC40MiBtZC9Cb3RvY29yZSMxLjM4LjQyIHVhLzIuMSBvcy9tYWNvcyMyNC4zLjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjEyLjggbWQvcHlpbXBsI0NQeXRob24gbS9aLEMs
+        RCxiIGNmZy9yZXRyeS1tb2RlI2xlZ2FjeSBCb3RvY29yZS8xLjM4LjQyIFJlc291cmNl
       amz-sdk-invocation-id:
       - !!binary |
-        NGNhZmJhNmMtNTM2YS00NWM0LThjNGYtNDRjZjliMWQ3NTcz
+        YmRkZTlkYmYtOTc2NS00NWIxLWEwNzYtMTExYzVhMDBkYjZm
       amz-sdk-request:
       - !!binary |
         YXR0ZW1wdD0x
     method: GET
-    uri: https://noaa-goes16.s3.amazonaws.com/?prefix=ABI-L1b-RadC%2F2024%2F345%2F02%2FOR_ABI-L1b-RadC-M6C01&encoding-type=url
+    uri: https://noaa-goes16.s3.us-east-1.amazonaws.com/?prefix=ABI-L1b-RadC%2F2024%2F345%2F02%2FOR_ABI-L1b-RadC-M6C01&encoding-type=url
   response:
     body:
       string: '<?xml version="1.0" encoding="UTF-8"?>
@@ -141,7 +182,7 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Fri, 10 Jan 2025 02:09:09 GMT
+      - Sun, 06 Jul 2025 19:22:36 GMT
       Server:
       - AmazonS3
       Transfer-Encoding:
@@ -149,9 +190,9 @@ interactions:
       x-amz-bucket-region:
       - us-east-1
       x-amz-id-2:
-      - sfOGqkBfxVw7mfxv9HJ7bu241qditGmUbHrHkg7ZBNx+2L+8sPyYmd17d3xLQ+DN2hkUdLQ7WHxt38dd8ytfKg==
+      - pdHzOjM4OtCc+je7BkRjfRYOpj6WKN2QXS7gI//NhegVsHrH7Lf4IMxIr1OeSuLN+ORoDwLbbuE=
       x-amz-request-id:
-      - EJ01RYXSA2KSGN1R
+      - HY3T3WM5FH6FVVHW
     status:
       code: 200
       message: OK
