@@ -1711,16 +1711,49 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity):
     return dewpoint(relative_humidity * saturation_vapor_pressure(temperature))
 
 
+def _dewpoint_ambaum(vapor_pressure):
+    """Calculate dewpoint by numerically inverting Ambaum (2020) formula."""
+    def objective(temp_kelvin, target_pressure):
+        """Calculate difference between saturation pressure at temp and target."""
+        latent_heat = (mpconsts.nounit.Lv
+                      - (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v)
+                      * (temp_kelvin - mpconsts.nounit.T0))
+        heat_power = (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
+        exp_term = ((mpconsts.nounit.Lv / mpconsts.nounit.T0 - latent_heat / temp_kelvin)
+                    / mpconsts.nounit.Rv)
+        e_sat = (mpconsts.nounit.sat_pressure_0c
+                * (mpconsts.nounit.T0 / temp_kelvin) ** heat_power
+                * np.exp(exp_term))
+        return e_sat - target_pressure
+
+    t_min = 182.65  # -90.5°C
+    t_max = 373.15  # 100°C
+
+    if np.isscalar(vapor_pressure) or vapor_pressure.size == 1:
+        return so.brentq(objective, t_min, t_max, args=(vapor_pressure,))
+    else:
+        vapor_pressure_flat = vapor_pressure.flatten()
+        result_flat = np.empty_like(vapor_pressure_flat)
+        for i, vp in enumerate(vapor_pressure_flat):
+            result_flat[i] = so.brentq(objective, t_min, t_max, args=(vp,))
+        return result_flat.reshape(vapor_pressure.shape)
+
+
 @exporter.export
 @preprocess_and_wrap(wrap_like='vapor_pressure')
 @process_units({'vapor_pressure': '[pressure]'}, '[temperature]', output_to=units.degC)
-def dewpoint(vapor_pressure):
+def dewpoint(vapor_pressure, method='bolton'):
     r"""Calculate the ambient dewpoint given the vapor pressure.
 
     Parameters
     ----------
     vapor_pressure : `pint.Quantity`
         Water vapor partial pressure
+
+    method : str, optional
+        Formula to use for calculation. Options are:
+        - 'bolton' (default): Analytical inversion of Bolton (1980) formula
+        - 'ambaum': Ambaum (2020) formula (matches :func:`saturation_vapor_pressure`)
 
     Returns
     -------
@@ -1734,24 +1767,41 @@ def dewpoint(vapor_pressure):
     >>> dewpoint(22 * units.hPa)
     <Quantity(19.0291018, 'degree_Celsius')>
 
+    Using the Ambaum method for consistency with saturation_vapor_pressure:
+
+    >>> dewpoint(22 * units.hPa, method='ambaum')
+    <Quantity(19.0426679, 'degree_Celsius')>
+
     See Also
     --------
     dewpoint_from_relative_humidity, saturation_vapor_pressure, vapor_pressure
 
     Notes
     -----
-    This function inverts the [Bolton1980]_ formula for saturation vapor
-    pressure to instead calculate the temperature. This yields the following formula for
-    dewpoint in degrees Celsius, where :math:`e` is the ambient vapor pressure in millibars:
+    The default 'bolton' method inverts the [Bolton1980]_ formula:
 
     .. math:: T = \frac{243.5 \log(e / 6.112)}{17.67 - \log(e / 6.112)}
+
+    The 'ambaum' method numerically inverts the [Ambaum2020]_ formula used by
+    :func:`saturation_vapor_pressure`, ensuring thermodynamic consistency
+    where ``dewpoint(saturation_vapor_pressure(T), method='ambaum') == T``.
 
     .. versionchanged:: 1.0
        Renamed ``e`` parameter to ``vapor_pressure``
 
+    .. versionchanged:: 1.8
+       Added ``method`` parameter with 'ambaum' option for consistency with
+       :func:`saturation_vapor_pressure`.
+
     """
-    val = np.log(vapor_pressure / mpconsts.nounit.sat_pressure_0c)
-    return mpconsts.nounit.zero_degc + 243.5 * val / (17.67 - val)
+    if method == 'ambaum':
+        return _dewpoint_ambaum(vapor_pressure)
+    elif method == 'bolton':
+        # Original Bolton (1980) analytical formula
+        val = np.log(vapor_pressure / mpconsts.nounit.sat_pressure_0c)
+        return mpconsts.nounit.zero_degc + 243.5 * val / (17.67 - val)
+    else:
+        raise ValueError(f"Unknown method '{method}'. Must be 'bolton' or 'ambaum'.")
 
 
 @exporter.export
