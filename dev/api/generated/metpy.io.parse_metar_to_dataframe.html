@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Jan 19, 2026 at 16:42:02"/>
+    <meta name="docbuild:last-update" content="Jan 21, 2026 at 23:42:45"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.io.parse_metar_to_dataframe.html" />
 
   </head>
@@ -803,7 +803,7 @@
 <dt class="sig sig-object py" id="metpy.io.parse_metar_to_dataframe">
 <span class="sig-prename descclassname"><span class="pre">metpy.io.</span></span><span class="sig-name descname"><span class="pre">parse_metar_to_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metar_text</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/io/metar.py#L81-L106"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.parse_metar_to_dataframe" title="Link to this definition">#</a></dt>
 <dd><p>Parse a single METAR report into a Pandas DataFrame.</p>
-<p>Takes a METAR string in a text form, and creates a <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.3.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> including the
+<p>Takes a METAR string in a text form, and creates a <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> including the
 essential information (not including the remarks)</p>
 <p>The parser follows the WMO format, allowing for missing data and assigning
 nan values where necessary. The WMO code is also provided for current weather,
@@ -817,7 +817,7 @@ which can be utilized when plotting.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.3.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

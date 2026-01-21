@@ -76,7 +76,7 @@ Use MetPy to access data hosted in known AWS S3 buckets
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 14.037 seconds)
+   **Total running time of the script:** (0 minutes 14.029 seconds)
 
 
 .. _sphx_glr_download_examples_remote_basic.py:
