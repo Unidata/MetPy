@@ -151,6 +151,7 @@ def test_generate_grid_coords():
     assert pts.flags['C_CONTIGUOUS']  # need output to be C-contiguous
 
 
+@pytest.mark.network
 def test_natural_neighbor_to_grid(test_data, test_grid):
     r"""Test natural neighbor interpolation to grid function."""
     xp, yp, z = test_data
@@ -167,6 +168,7 @@ def test_natural_neighbor_to_grid(test_data, test_grid):
 interp_methods = ['cressman', 'barnes']
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('method', interp_methods)
 def test_inverse_distance_to_grid(method, test_data, test_grid):
     r"""Test inverse distance interpolation to grid function."""
@@ -243,6 +245,7 @@ def test_interpolate_to_isosurface():
     assert_array_almost_equal(truth, dt_theta)
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('assume_units', [None, 'mbar'])
 @pytest.mark.parametrize('method', interp_methods)
 @pytest.mark.parametrize('boundary_coords', boundary_types)

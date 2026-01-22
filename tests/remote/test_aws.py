@@ -6,10 +6,13 @@ from datetime import datetime
 from pathlib import Path
 import tempfile
 
+import pytest
+
 from metpy.remote import GOESArchive, MLWPArchive, NEXRADLevel2Archive, NEXRADLevel3Archive
 from metpy.testing import needs_aws
 
 
+@pytest.mark.network
 @needs_aws
 def test_nexrad3_single():
     """Test getting a single product from the NEXRAD level 3 archive."""
@@ -18,6 +21,7 @@ def test_nexrad3_single():
     assert l3.access()
 
 
+@pytest.mark.network
 @needs_aws
 def test_nexrad3_range():
     """Test getting a range of products from the NEXRAD level 3 archive."""
@@ -40,6 +44,7 @@ def test_nexrad3_range():
         assert (Path(tmpdir) / 'tempprod').exists()
 
 
+@pytest.mark.network
 @needs_aws
 def test_nexrad2_single():
     """Test getting a single volume from the NEXRAD level 2 archive."""
@@ -47,6 +52,7 @@ def test_nexrad2_single():
     assert l2.name == 'KTLX20130520_201643_V06.gz'
 
 
+@pytest.mark.network
 @needs_aws
 def test_nexrad2_range():
     """Test getting a range of products from the NEXRAD level 2 archive."""
@@ -59,6 +65,7 @@ def test_nexrad2_range():
                      'KFTG20241214_161349_V06', 'KFTG20241214_162248_V06']
 
 
+@pytest.mark.network
 @needs_aws
 def test_goes_single():
     """Test getting a single product from the GOES archive."""
@@ -70,6 +77,7 @@ def test_goes_single():
                                                    '_e20250092356311_c20250092356338.nc')
 
 
+@pytest.mark.network
 @needs_aws
 def test_goes_range():
     """Test getting a range of products from the GOES archive."""
@@ -94,6 +102,7 @@ def test_goes_range():
     assert names == truth
 
 
+@pytest.mark.network
 @needs_aws
 def test_mlwp_single():
     """Test getting a single product from the MLWP archive."""
@@ -102,6 +111,7 @@ def test_mlwp_single():
                         '2025/0130/GRAP_v100_GFS_2025013012_f000_f240_06.nc')
 
 
+@pytest.mark.network
 @needs_aws
 def test_mlwp_range():
     """Test getting a single product from the MLWP archive."""

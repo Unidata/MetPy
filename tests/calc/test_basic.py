@@ -814,6 +814,7 @@ def test_altimeter_to_sea_level_pressure_hpa(array_type):
     assert_array_almost_equal(res, truth, 3)
 
 
+@pytest.mark.network
 def test_zoom_xarray():
     """Test zoom_xarray on 2D DataArray."""
     data = xr.open_dataset(get_test_data('GFS_test.nc', False))

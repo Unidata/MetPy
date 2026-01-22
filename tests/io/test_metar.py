@@ -15,6 +15,7 @@ from metpy.io.metar import Metar, parse_metar
 from metpy.units import is_quantity, units
 
 
+@pytest.mark.network
 @pytest.mark.parametrize(['metar', 'truth'], [
     # Missing station
     ('METAR KLBG 261155Z AUTO 00000KT 10SM CLR 05/00 A3001 RMK AO2=',
@@ -208,6 +209,7 @@ def test_metar_parser(metar, truth):
     assert parse_metar(metar, 2017, 5) == truth
 
 
+@pytest.mark.network
 def test_date_time_given():
     """Test for when date_time is given."""
     df = parse_metar_to_dataframe('K6B0 261200Z AUTO 00000KT 10SM CLR 20/M17 A3002 RMK AO2 '
@@ -227,6 +229,7 @@ def test_parse_metar_df_positional_datetime_failure():
                                  'A3002 RMK AO2 T01990165=', 2019, 6)
 
 
+@pytest.mark.network
 def test_parse_metar_to_dataframe():
     """Test parsing a single METAR to a DataFrame."""
     df = parse_metar_to_dataframe('KDEN 012153Z 09010KT 10SM FEW060 BKN110 BKN220 27/13 '
@@ -241,6 +244,7 @@ def test_parse_metar_to_dataframe():
     assert df.dew_point_temperature.values == 13
 
 
+@pytest.mark.network
 def test_parse_file():
     """Test the parser on an entire file."""
     input_file = get_test_data('metar_20190701_1200.txt', as_file_obj=False)
@@ -296,6 +300,7 @@ def test_parse_file():
     assert_almost_equal(paku.altimeter.values, [30.02, 30.04])
 
 
+@pytest.mark.network
 def test_parse_file_positional_datetime_failure():
     """Test that positional year, month arguments fail for parse_metar_file."""
     # pylint: disable=too-many-function-args
@@ -304,6 +309,7 @@ def test_parse_file_positional_datetime_failure():
         parse_metar_file(input_file, 2016, 12)
 
 
+@pytest.mark.network
 def test_parse_file_bad_encoding():
     """Test the parser on an entire file that has at least one bad utf-8 encoding."""
     input_file = get_test_data('2020010600_sao.wmo', as_file_obj=False)
@@ -350,6 +356,7 @@ def test_parse_file_bad_encoding():
     assert test.air_pressure_at_sea_level.values == 1024.71
 
 
+@pytest.mark.network
 def test_parse_file_object():
     """Test the parser reading from a file-like object."""
     input_file = get_test_data('metar_20190701_1200.txt', mode='rt')
@@ -364,6 +371,7 @@ def test_parse_file_object():
     assert_almost_equal(test.northward_wind.values, 6)
 
 
+@pytest.mark.network
 def test_parse_no_pint_objects_in_df():
     """Test that there are no Pint quantities in dataframes created by parser."""
     input_file = get_test_data('metar_20190701_1200.txt', mode='rt')
@@ -401,6 +409,7 @@ def test_repr():
                    "remarks=TreeNode(text='', offset=47), end=TreeNode(text='', offset=47))")
 
 
+@pytest.mark.network
 def test_metar_units_in_place():
     """Test that parsing a METAR yields units that can be changed safely in-place."""
     df = parse_metar_to_dataframe('KDEN 012153Z 09010KT 10SM FEW060 BKN110 BKN220 27/13 A3010')
