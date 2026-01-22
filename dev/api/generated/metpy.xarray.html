@@ -46,16 +46,10 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../_static/documentation_options.js?v=030dc6f6"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J48T2BG3J7"></script>
-    <script>
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){ dataLayer.push(arguments); }
-                gtag('js', new Date());
-                gtag('config', 'G-J48T2BG3J7');
-            </script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
@@ -80,7 +74,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Jan 21, 2026 at 23:42:45"/>
+    <meta name="docbuild:last-update" content="Jan 22, 2026 at 00:46:46"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.xarray.html" />
 
   </head>
@@ -810,7 +804,7 @@ Dataset.</p>
 <h2>Accessors<a class="headerlink" href="#accessors" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.xarray.</span></span><span class="sig-name descname"><span class="pre">MetPyDataArrayAccessor</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L105-L747"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">metpy.xarray.</span></span><span class="sig-name descname"><span class="pre">MetPyDataArrayAccessor</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L105-L747"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor" title="Link to this definition">#</a></dt>
 <dd><p>Provide custom attributes and methods on xarray DataArrays for MetPy functionality.</p>
 <p>This accessor provides several convenient attributes and methods through the <code class="docutils literal notranslate"><span class="pre">.metpy</span></code>
 attribute on a DataArray. For example, MetPy can identify the coordinate corresponding
@@ -911,19 +905,19 @@ transformations.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.cartopy_crs">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cartopy_crs</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L263-L266"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.cartopy_crs" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">cartopy_crs</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L263-L266"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.cartopy_crs" title="Link to this definition">#</a></dt>
 <dd><p>Return the coordinate reference system (CRS) as a cartopy object.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.cartopy_geodetic">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cartopy_geodetic</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L273-L276"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.cartopy_geodetic" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">cartopy_geodetic</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L273-L276"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.cartopy_geodetic" title="Link to this definition">#</a></dt>
 <dd><p>Return the cartopy Geodetic CRS associated with the native CRS globe.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.cartopy_globe">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cartopy_globe</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L268-L271"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.cartopy_globe" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">cartopy_globe</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L268-L271"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.cartopy_globe" title="Link to this definition">#</a></dt>
 <dd><p>Return the globe belonging to the coordinate reference system (CRS).</p>
 </dd></dl>
 
@@ -997,7 +991,7 @@ attempted.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.crs">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">crs</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L254-L261"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.crs" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">crs</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L254-L261"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.crs" title="Link to this definition">#</a></dt>
 <dd><p>Return the coordinate reference system (CRS) as a CFProjection object.</p>
 </dd></dl>
 
@@ -1033,43 +1027,43 @@ name (string) or a standard axis type (string).</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.grid_deltas">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid_deltas</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L521-L549"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.grid_deltas" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">grid_deltas</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L521-L549"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.grid_deltas" title="Link to this definition">#</a></dt>
 <dd><p>Return the horizontal dimensional grid deltas suitable for vector derivatives.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.latitude">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">latitude</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L494-L497"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.latitude" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">latitude</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L494-L497"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.latitude" title="Link to this definition">#</a></dt>
 <dd><p>Return the latitude coordinate (if it exists).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.loc">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">loc</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L636-L639"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.loc" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">loc</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L636-L639"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.loc" title="Link to this definition">#</a></dt>
 <dd><p>Wrap DataArray.loc with an indexer to handle units and coordinate types.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.longitude">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">longitude</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L504-L507"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.longitude" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">longitude</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L504-L507"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.longitude" title="Link to this definition">#</a></dt>
 <dd><p>Return the longitude coordinate (if it exists).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.magnitude">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">magnitude</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L144-L150"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.magnitude" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">magnitude</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L144-L150"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.magnitude" title="Link to this definition">#</a></dt>
 <dd><p>Return the magnitude of the data values of this DataArray (i.e., without units).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.pyproj_crs">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pyproj_crs</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L278-L281"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.pyproj_crs" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">pyproj_crs</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L278-L281"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.pyproj_crs" title="Link to this definition">#</a></dt>
 <dd><p>Return the coordinate reference system (CRS) as a pyproj object.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.pyproj_proj">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pyproj_proj</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L283-L286"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.pyproj_proj" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">pyproj_proj</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L283-L286"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.pyproj_proj" title="Link to this definition">#</a></dt>
 <dd><p>Return the Proj object corresponding to the coordinate reference system (CRS).</p>
 </dd></dl>
 
@@ -1091,19 +1085,19 @@ subsetting!</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.time">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L479-L482"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.time" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">time</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L479-L482"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.time" title="Link to this definition">#</a></dt>
 <dd><p>Return the time coordinate.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.time_deltas">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time_deltas</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L515-L519"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.time_deltas" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">time_deltas</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L515-L519"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.time_deltas" title="Link to this definition">#</a></dt>
 <dd><p>Return the time difference of the data in seconds (to microsecond precision).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.unit_array">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unit_array</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L152-L165"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.unit_array" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">unit_array</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L152-L165"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.unit_array" title="Link to this definition">#</a></dt>
 <dd><p>Return the data values of this DataArray as a <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.1.dev50+g84762624b)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>.</p>
 <p class="rubric">Notes</p>
 <p>If not already existing as a <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.1.dev50+g84762624b)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> or Dask array, the data of this DataArray
@@ -1113,25 +1107,25 @@ large-sized remote datasets before subsetting!</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.units">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">units</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L131-L142"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.units" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">units</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L131-L142"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.units" title="Link to this definition">#</a></dt>
 <dd><p>Return the units of this DataArray as a <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Unit" title="(in pint v0.1.dev50+g84762624b)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Unit</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.vertical">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vertical</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L484-L487"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.vertical" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">vertical</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L484-L487"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.vertical" title="Link to this definition">#</a></dt>
 <dd><p>Return the vertical coordinate.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.x">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L499-L502"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.x" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">x</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L499-L502"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.x" title="Link to this definition">#</a></dt>
 <dd><p>Return the x coordinate.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.y">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L489-L492"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.y" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">y</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L489-L492"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.y" title="Link to this definition">#</a></dt>
 <dd><p>Return the y coordinate.</p>
 </dd></dl>
 
@@ -1139,7 +1133,7 @@ large-sized remote datasets before subsetting!</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDatasetAccessor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.xarray.</span></span><span class="sig-name descname"><span class="pre">MetPyDatasetAccessor</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L750-L1109"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">metpy.xarray.</span></span><span class="sig-name descname"><span class="pre">MetPyDatasetAccessor</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L750-L1109"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor" title="Link to this definition">#</a></dt>
 <dd><p>Provide custom attributes and methods on XArray Datasets for MetPy functionality.</p>
 <p>This accessor provides parsing of CF grid mapping metadata, generating missing coordinate
 types, and unit-/coordinate-type-aware operations.</p>
@@ -1230,7 +1224,7 @@ with valid latitude and longitude coordinates.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDatasetAccessor.loc">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">loc</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L914-L917"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.loc" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">loc</span></span><a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/src/metpy/xarray.py#L914-L917"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.loc" title="Link to this definition">#</a></dt>
 <dd><p>Wrap Dataset.loc with an indexer to handle units and coordinate types.</p>
 </dd></dl>
 
@@ -1308,7 +1302,7 @@ is not present/the callable returns None, the attribute will not be updated.</p>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <blockquote>
-<div><div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<div><div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.xarray.grid_deltas_from_dataarray.html#metpy.xarray.grid_deltas_from_dataarray" title="metpy.xarray.grid_deltas_from_dataarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_deltas_from_dataarray</span></code></a>(f[, kind])</p></td>
 <td><p>Calculate the horizontal deltas between grid points of a DataArray.</p></td>
@@ -1455,7 +1449,7 @@ is not present/the callable returns None, the attribute will not be updated.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>
