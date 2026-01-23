@@ -12,7 +12,7 @@ import xarray as xr
 
 from metpy.plots.mapping import CFProjection
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           get_test_data, assert_allclose)
+                           get_test_data)
 from metpy.units import DimensionalityError, is_quantity, units
 from metpy.xarray import (add_vertical_dim_from_xarray, check_axis, check_matching_coordinates,
                           grid_deltas_from_dataarray, preprocess_and_wrap)
@@ -1417,8 +1417,8 @@ def test_grid_deltas_from_dataarray_lonlat(test_da_lonlat):
                          [369802.28173967, 369802.28173967, 369802.28173967, 369802.28173967],
                          [370009.56291098, 370009.56291098, 370009.56291098,
                           370009.56291098]]]) * units.m
-    assert_allclose(dx, true_dx, rtol=1e-6)
-    assert_allclose(dy, true_dy, rtol=1e-6)
+    np.testing.assert_allclose(dx, true_dx, rtol=1e-6)
+    np.testing.assert_allclose(dy, true_dy, rtol=1e-6)
 
 
 def test_grid_deltas_from_dataarray_xy(test_da_xy):
@@ -1453,8 +1453,8 @@ def test_grid_deltas_from_dataarray_actual_xy(test_da_xy, ccrs):
     true_dy = [[[[496587.363, 496410.523, 495857.430, 494863.795],
                  [499498.308, 499429.714, 499191.065, 498689.047],
                  [499474.250, 499549.538, 499727.711, 499874.122]]]] * units.m
-    assert_allclose(dx, true_dx, rtol=1e-6)
-    assert_allclose(dy, true_dy, rtol=1e-6)
+    np.testing.assert_allclose(dx, true_dx, rtol=1e-6)
+    np.testing.assert_allclose(dy, true_dy, rtol=1e-6)
 
 
 def test_grid_deltas_from_dataarray_nominal_lonlat(test_da_lonlat):
@@ -1462,8 +1462,8 @@ def test_grid_deltas_from_dataarray_nominal_lonlat(test_da_lonlat):
     dx, dy = grid_deltas_from_dataarray(test_da_lonlat, kind='nominal')
     true_dx = [[[3.333333] * 3]] * units.degrees
     true_dy = [[[3.333333]] * 3] * units.degrees
-    assert_allclose(dx, true_dx, rtol=1e-7, atol=1e-5)
-    assert_allclose(dy, true_dy, rtol=1e-7, atol=1e-5)
+    np.testing.assert_allclose(dx, true_dx, rtol=1e-7, atol=1e-5)
+    np.testing.assert_allclose(dy, true_dy, rtol=1e-7, atol=1e-5)
 
 def test_grid_deltas_from_dataarray_lonlat_assumed_order():
     """Test grid_deltas_from_dataarray when dim order must be assumed."""
@@ -1490,8 +1490,8 @@ def test_grid_deltas_from_dataarray_lonlat_assumed_order():
                [222031.0111961, 222107.8492205]] * units.m
     true_dy = [[175661.5413976, 170784.1311091, 165697.7563223],
                [175661.5413976, 170784.1311091, 165697.7563223]] * units.m
-    assert_allclose(dx, true_dx, rtol=1e-6)
-    assert_allclose(dy, true_dy, rtol=1e-6)
+    np.testing.assert_allclose(dx, true_dx, rtol=1e-6)
+    np.testing.assert_allclose(dy, true_dy, rtol=1e-6)
 
 
 def test_grid_deltas_from_dataarray_invalid_kind(test_da_xy):
