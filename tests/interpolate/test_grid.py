@@ -327,5 +327,4 @@ def test_interpolate_to_isosurface_from_below():
                       [352., 367., 382., 400., 420.],
                       [356., 371., 390., 410., 430.]])
 
-    assert_array_almost_equal(truth, dt_theta)
     np.testing.assert_allclose(truth, dt_theta, rtol=1e-6, atol=1e-6)

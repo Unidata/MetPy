@@ -115,7 +115,7 @@ def test_cressman_weights():
              0.470588235294117,
              0.219512195121951]
 
-    assert_array_almost_equal(truth, weights)
+    np.testing.assert_allclose(truth, weights, rtol=1e-6)
 
 
 def test_interpolate_to_grid_pandas():
