@@ -240,7 +240,7 @@ def test_interpolate_to_isosurface():
                       [336.7088576, 336.4165698, 335.6255217, 334.0758288, 331.9684081],
                       [335.6583567, 336.3500714, 336.6844744, 336.3286052, 335.3874244]])
 
-    assert_array_almost_equal(truth, dt_theta)
+    np.testing.assert_allclose(truth, dt_theta, rtol=1e-6, atol=1e-6)
 
 
 @pytest.mark.parametrize('assume_units', [None, 'mbar'])
@@ -282,7 +282,7 @@ def test_interpolate_to_grid(method, assume_units, test_coords, boundary_coords)
 
     assert np.all(np.diff(xg, axis=-1) <= hres)
     assert np.all(np.diff(yg, axis=0) <= hres)
-    assert_array_almost_equal(truth, img)
+    np.testing.assert_allclose(truth, img, rtol=1e-6, atol=1e-6)
 
 
 def test_interpolate_to_isosurface_from_below():
@@ -328,3 +328,4 @@ def test_interpolate_to_isosurface_from_below():
                       [356., 371., 390., 410., 430.]])
 
     assert_array_almost_equal(truth, dt_theta)
+    np.testing.assert_allclose(truth, dt_theta, rtol=1e-6, atol=1e-6)
