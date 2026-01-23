@@ -1406,6 +1406,7 @@ def test_preprocess_and_wrap_with_variable():
     assert_array_equal(result_21, expected_21)
 
 
+@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
 def test_grid_deltas_from_dataarray_lonlat(test_da_lonlat):
     """Test grid_deltas_from_dataarray with a lonlat grid."""
     dx, dy = grid_deltas_from_dataarray(test_da_lonlat)
@@ -1417,6 +1418,10 @@ def test_grid_deltas_from_dataarray_lonlat(test_da_lonlat):
                          [369802.28173967, 369802.28173967, 369802.28173967, 369802.28173967],
                          [370009.56291098, 370009.56291098, 370009.56291098,
                           370009.56291098]]]) * units.m
+
+    assert dx.units == units.m
+    assert dy.units == units.m
+
     np.testing.assert_allclose(dx, true_dx, rtol=1e-6)
     np.testing.assert_allclose(dy, true_dy, rtol=1e-6)
 
@@ -1430,6 +1435,7 @@ def test_grid_deltas_from_dataarray_xy(test_da_xy):
     assert_array_almost_equal(dy, true_dy, 5)
 
 
+@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
 def test_grid_deltas_from_dataarray_actual_xy(test_da_xy, ccrs):
     """Test grid_deltas_from_dataarray with a xy grid and kind='actual'."""
     # Construct lon/lat coordinates
@@ -1453,18 +1459,29 @@ def test_grid_deltas_from_dataarray_actual_xy(test_da_xy, ccrs):
     true_dy = [[[[496587.363, 496410.523, 495857.430, 494863.795],
                  [499498.308, 499429.714, 499191.065, 498689.047],
                  [499474.250, 499549.538, 499727.711, 499874.122]]]] * units.m
+
+    assert dx.units == units.m
+    assert dy.units == units.m
+
     np.testing.assert_allclose(dx, true_dx, rtol=1e-6)
     np.testing.assert_allclose(dy, true_dy, rtol=1e-6)
 
 
+@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
 def test_grid_deltas_from_dataarray_nominal_lonlat(test_da_lonlat):
     """Test grid_deltas_from_dataarray with a lonlat grid and kind='nominal'."""
     dx, dy = grid_deltas_from_dataarray(test_da_lonlat, kind='nominal')
     true_dx = [[[3.333333] * 3]] * units.degrees
     true_dy = [[[3.333333]] * 3] * units.degrees
+
+    assert dx.units.is_compatible_with(units.degrees)
+    assert dy.units.is_compatible_with(units.degrees)
+
     np.testing.assert_allclose(dx, true_dx, rtol=1e-7, atol=1e-5)
     np.testing.assert_allclose(dy, true_dy, rtol=1e-7, atol=1e-5)
 
+
+@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
 def test_grid_deltas_from_dataarray_lonlat_assumed_order():
     """Test grid_deltas_from_dataarray when dim order must be assumed."""
     # Create test dataarray
@@ -1490,6 +1507,10 @@ def test_grid_deltas_from_dataarray_lonlat_assumed_order():
                [222031.0111961, 222107.8492205]] * units.m
     true_dy = [[175661.5413976, 170784.1311091, 165697.7563223],
                [175661.5413976, 170784.1311091, 165697.7563223]] * units.m
+
+    assert dx.units == units.m
+    assert dy.units == units.m
+
     np.testing.assert_allclose(dx, true_dx, rtol=1e-6)
     np.testing.assert_allclose(dy, true_dy, rtol=1e-6)
 
