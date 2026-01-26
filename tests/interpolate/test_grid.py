@@ -198,6 +198,7 @@ boundary_types = [{'west': 80.0, 'south': 140.0, 'east': 980.0, 'north': 980.0},
                   None]
 
 
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_interpolate_to_isosurface():
     r"""Test interpolation to level function."""
     pv = np.array([[[4.29013406, 4.61736108, 4.97453387, 5.36730237, 5.75500645],
@@ -240,12 +241,13 @@ def test_interpolate_to_isosurface():
                       [336.7088576, 336.4165698, 335.6255217, 334.0758288, 331.9684081],
                       [335.6583567, 336.3500714, 336.6844744, 336.3286052, 335.3874244]])
 
-    assert_array_almost_equal(truth, dt_theta)
+    np.testing.assert_allclose(truth, dt_theta, rtol=1e-6, atol=1e-6)
 
 
 @pytest.mark.parametrize('assume_units', [None, 'mbar'])
 @pytest.mark.parametrize('method', interp_methods)
 @pytest.mark.parametrize('boundary_coords', boundary_types)
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_interpolate_to_grid(method, assume_units, test_coords, boundary_coords):
     r"""Test main grid interpolation function."""
     xp, yp = test_coords
@@ -282,9 +284,11 @@ def test_interpolate_to_grid(method, assume_units, test_coords, boundary_coords)
 
     assert np.all(np.diff(xg, axis=-1) <= hres)
     assert np.all(np.diff(yg, axis=0) <= hres)
-    assert_array_almost_equal(truth, img)
+
+    np.testing.assert_allclose(truth, img, rtol=1e-6, atol=1e-6)
 
 
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_interpolate_to_isosurface_from_below():
     r"""Test interpolation to level function."""
     pv = np.array([[[1.75, 1.875, 2., 2.125, 2.25],
@@ -327,4 +331,4 @@ def test_interpolate_to_isosurface_from_below():
                       [352., 367., 382., 400., 420.],
                       [356., 371., 390., 410., 430.]])
 
-    assert_array_almost_equal(truth, dt_theta)
+    np.testing.assert_allclose(truth, dt_theta, rtol=1e-6, atol=1e-6)

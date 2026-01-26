@@ -718,7 +718,7 @@ def test_smooth_window_1d_dataarray():
         dims=('time',),
         coords={'time': pd.date_range('2020-01-01', periods=10, freq='h')}
     )
-    xr.testing.assert_allclose(smoothed, truth)
+    xr.testing.assert_allclose(smoothed, truth, rtol=1e-6)
 
 
 def test_smooth_rectangular(array_type):
@@ -840,4 +840,4 @@ def test_zoom_xarray():
                 'metpy_crs': hght.metpy_crs},
         attrs=hght.attrs
     )
-    xr.testing.assert_allclose(zoomed, truth)
+    xr.testing.assert_allclose(zoomed, truth, rtol=1e-6)

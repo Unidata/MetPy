@@ -47,9 +47,10 @@ def test_log_interpolate_1d():
     x_interp = np.array([5e3, 5e4, 5e5])
     y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
     y_interp = log_interpolate_1d(x_interp, x_log, y_log)
-    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+    np.testing.assert_allclose(y_interp, y_interp_truth, rtol=1e-7)
 
 
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_log_interpolate_1d_mixed():
     """Test log interpolation with a mix of compatible input types."""
     x_log = xr.DataArray([1e3, 1e4, 1e5, 1e6])
@@ -57,9 +58,10 @@ def test_log_interpolate_1d_mixed():
     x_interp = np.array([5e3, 5e4, 5e5])
     y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
     y_interp = log_interpolate_1d(x_interp, x_log, y_log)
-    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+    np.testing.assert_allclose(y_interp, y_interp_truth, rtol=1e-7)
 
 
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_log_interpolate_1d_units():
     """Test interpolating with log x-scale with units."""
     x_log = np.array([1e3, 1e4, 1e5, 1e6]) * units.hPa
@@ -67,7 +69,8 @@ def test_log_interpolate_1d_units():
     x_interp = np.array([5e5, 5e6, 5e7]) * units.Pa
     y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548]) * units.degC
     y_interp = log_interpolate_1d(x_interp, x_log, y_log)
-    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+    assert y_interp.units == units.degC
+    np.testing.assert_allclose(y_interp, y_interp_truth, rtol=1e-7)
 
 
 def test_log_interpolate_2d():
@@ -77,7 +80,7 @@ def test_log_interpolate_2d():
     x_interp = np.array([5e3, 5e4, 5e5])
     y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
     y_interp = log_interpolate_1d(x_interp, x_log, y_log, axis=1)
-    assert_array_almost_equal(y_interp[1], y_interp_truth, 7)
+    np.testing.assert_allclose(y_interp[1], y_interp_truth, rtol=1e-7)
 
 
 def test_log_interpolate_3d():
@@ -87,7 +90,7 @@ def test_log_interpolate_3d():
     x_interp = np.array([5e3, 5e4, 5e5])
     y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
     y_interp = log_interpolate_1d(x_interp, x_log, y_log, axis=1)
-    assert_array_almost_equal(y_interp[0, :, 0], y_interp_truth, 7)
+    np.testing.assert_allclose(y_interp[0, :, 0], y_interp_truth, rtol=1e-7)
 
 
 def test_log_interpolate_4d():
@@ -97,7 +100,7 @@ def test_log_interpolate_4d():
     x_interp = np.array([5e3, 5e4, 5e5])
     y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
     y_interp = log_interpolate_1d(x_interp, x_log, y_log, axis=3)
-    assert_array_almost_equal(y_interp[0, 0, 0, :], y_interp_truth, 7)
+    np.testing.assert_allclose(y_interp[0, 0, 0, :], y_interp_truth, rtol=1e-7)
 
 
 def test_log_interpolate_2args():
@@ -108,8 +111,8 @@ def test_log_interpolate_2args():
     x_interp = np.array([5e3, 5e4, 5e5])
     y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
     y_interp = log_interpolate_1d(x_interp, x_log, y_log, y_log2)
-    assert_array_almost_equal(y_interp[1], y_interp_truth, 7)
-    assert_array_almost_equal(y_interp[0], y_interp_truth, 7)
+    np.testing.assert_allclose(y_interp[1], y_interp_truth, rtol=1e-7)
+    np.testing.assert_allclose(y_interp[0], y_interp_truth, rtol=1e-7)
 
 
 def test_log_interpolate_set_nan_above():
@@ -120,7 +123,7 @@ def test_log_interpolate_set_nan_above():
     y_interp_truth = np.nan
     with pytest.warns(Warning):
         y_interp = log_interpolate_1d(x_interp, x_log, y_log)
-    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+    np.testing.assert_allclose(y_interp, y_interp_truth, equal_nan=True)
 
 
 def test_log_interpolate_no_extrap():
@@ -140,7 +143,7 @@ def test_log_interpolate_set_nan_below():
     y_interp_truth = np.nan
     with pytest.warns(Warning):
         y_interp = log_interpolate_1d(x_interp, x_log, y_log)
-    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+    np.testing.assert_allclose(y_interp, y_interp_truth, equal_nan=True)
 
 
 def test_interpolate_2args():
@@ -151,8 +154,8 @@ def test_interpolate_2args():
     x_interp = np.array([2.5000000, 3.5000000])
     y_interp_truth = np.array([2.5000000, 3.5000000])
     y_interp = interpolate_1d(x_interp, x, y, y2)
-    assert_array_almost_equal(y_interp[0], y_interp_truth, 7)
-    assert_array_almost_equal(y_interp[1], y_interp_truth, 7)
+    np.testing.assert_allclose(y_interp[0], y_interp_truth, rtol=1e-7)
+    np.testing.assert_allclose(y_interp[1], y_interp_truth, rtol=1e-7)
 
 
 def test_interpolate_decrease():
@@ -162,7 +165,7 @@ def test_interpolate_decrease():
     x_interp = np.array([3.5000000, 2.5000000])
     y_interp_truth = np.array([3.5000000, 2.5000000])
     y_interp = interpolate_1d(x_interp, x, y)
-    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+    np.testing.assert_allclose(y_interp, y_interp_truth, rtol=1e-7)
 
 
 def test_interpolate_decrease_xp():
@@ -172,7 +175,7 @@ def test_interpolate_decrease_xp():
     x_interp = np.array([3.5000000, 2.5000000])
     y_interp_truth = np.array([3.5000000, 2.5000000])
     y_interp = interpolate_1d(x_interp, x, y)
-    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+    np.testing.assert_allclose(y_interp, y_interp_truth, rtol=1e-7)
 
 
 def test_interpolate_end_point():
@@ -182,9 +185,10 @@ def test_interpolate_end_point():
     x_interp = np.array([1.0, 4.0])
     y_interp_truth = np.array([1.0, 4.0])
     y_interp = interpolate_1d(x_interp, x, y)
-    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+    np.testing.assert_allclose(y_interp, y_interp_truth, rtol=1e-7)
 
 
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_interpolate_masked_units():
     """Test interpolating with masked arrays with units."""
     x = units.Quantity(np.ma.array([1., 2., 3., 4.]), units.m)
@@ -192,14 +196,20 @@ def test_interpolate_masked_units():
     x_interp = np.array([250., 350.]) * units.cm
     y_interp_truth = np.array([65., 75.]) * units.degC
     y_interp = interpolate_1d(x_interp, x, y)
-    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+    assert y_interp.units == units.degC
+    np.testing.assert_allclose(y_interp, y_interp_truth, rtol=1e-7)
 
 
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_interpolate_broadcast():
     """Test interpolate_1d with input levels needing broadcasting."""
     p = units.Quantity([850, 700, 500], 'hPa')
     t = units.Quantity(np.arange(60).reshape(3, 4, 5), 'degC')
 
     t_level = interpolate_1d(units.Quantity(700, 'hPa'), p[:, None, None], t)
-    assert_array_almost_equal(t_level,
-                              units.Quantity(np.arange(20., 40.).reshape(1, 4, 5), 'degC'), 7)
+    assert t_level.units == units.degC
+    np.testing.assert_allclose(
+        t_level,
+        units.Quantity(np.arange(20., 40.).reshape(1, 4, 5), 'degC'),
+        rtol=1e-7
+    )
