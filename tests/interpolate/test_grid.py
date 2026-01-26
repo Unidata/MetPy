@@ -198,7 +198,7 @@ boundary_types = [{'west': 80.0, 'south': 140.0, 'east': 980.0, 'north': 980.0},
                   None]
 
 
-@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_interpolate_to_isosurface():
     r"""Test interpolation to level function."""
     pv = np.array([[[4.29013406, 4.61736108, 4.97453387, 5.36730237, 5.75500645],
@@ -247,7 +247,7 @@ def test_interpolate_to_isosurface():
 @pytest.mark.parametrize('assume_units', [None, 'mbar'])
 @pytest.mark.parametrize('method', interp_methods)
 @pytest.mark.parametrize('boundary_coords', boundary_types)
-@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_interpolate_to_grid(method, assume_units, test_coords, boundary_coords):
     r"""Test main grid interpolation function."""
     xp, yp = test_coords
@@ -288,7 +288,7 @@ def test_interpolate_to_grid(method, assume_units, test_coords, boundary_coords)
     np.testing.assert_allclose(truth, img, rtol=1e-6, atol=1e-6)
 
 
-@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_interpolate_to_isosurface_from_below():
     r"""Test interpolation to level function."""
     pv = np.array([[[1.75, 1.875, 2., 2.125, 2.25],

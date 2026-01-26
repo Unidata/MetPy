@@ -1406,7 +1406,7 @@ def test_preprocess_and_wrap_with_variable():
     assert_array_equal(result_21, expected_21)
 
 
-@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_grid_deltas_from_dataarray_lonlat(test_da_lonlat):
     """Test grid_deltas_from_dataarray with a lonlat grid."""
     dx, dy = grid_deltas_from_dataarray(test_da_lonlat)
@@ -1435,7 +1435,7 @@ def test_grid_deltas_from_dataarray_xy(test_da_xy):
     assert_array_almost_equal(dy, true_dy, 5)
 
 
-@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_grid_deltas_from_dataarray_actual_xy(test_da_xy, ccrs):
     """Test grid_deltas_from_dataarray with a xy grid and kind='actual'."""
     # Construct lon/lat coordinates
@@ -1467,7 +1467,7 @@ def test_grid_deltas_from_dataarray_actual_xy(test_da_xy, ccrs):
     np.testing.assert_allclose(dy, true_dy, rtol=1e-6)
 
 
-@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_grid_deltas_from_dataarray_nominal_lonlat(test_da_lonlat):
     """Test grid_deltas_from_dataarray with a lonlat grid and kind='nominal'."""
     dx, dy = grid_deltas_from_dataarray(test_da_lonlat, kind='nominal')
@@ -1481,7 +1481,7 @@ def test_grid_deltas_from_dataarray_nominal_lonlat(test_da_lonlat):
     np.testing.assert_allclose(dy, true_dy, rtol=1e-7, atol=1e-5)
 
 
-@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_grid_deltas_from_dataarray_lonlat_assumed_order():
     """Test grid_deltas_from_dataarray when dim order must be assumed."""
     # Create test dataarray

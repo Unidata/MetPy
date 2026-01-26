@@ -50,7 +50,7 @@ def test_log_interpolate_1d():
     np.testing.assert_allclose(y_interp, y_interp_truth, rtol=1e-7)
 
 
-@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_log_interpolate_1d_mixed():
     """Test log interpolation with a mix of compatible input types."""
     x_log = xr.DataArray([1e3, 1e4, 1e5, 1e6])
@@ -61,7 +61,7 @@ def test_log_interpolate_1d_mixed():
     np.testing.assert_allclose(y_interp, y_interp_truth, rtol=1e-7)
 
 
-@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_log_interpolate_1d_units():
     """Test interpolating with log x-scale with units."""
     x_log = np.array([1e3, 1e4, 1e5, 1e6]) * units.hPa
@@ -188,7 +188,7 @@ def test_interpolate_end_point():
     np.testing.assert_allclose(y_interp, y_interp_truth, rtol=1e-7)
 
 
-@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_interpolate_masked_units():
     """Test interpolating with masked arrays with units."""
     x = units.Quantity(np.ma.array([1., 2., 3., 4.]), units.m)
@@ -200,7 +200,7 @@ def test_interpolate_masked_units():
     np.testing.assert_allclose(y_interp, y_interp_truth, rtol=1e-7)
 
 
-@pytest.mark.filterwarnings("ignore::pint.errors.UnitStrippedWarning")
+@pytest.mark.filterwarnings('ignore::pint.errors.UnitStrippedWarning')
 def test_interpolate_broadcast():
     """Test interpolate_1d with input levels needing broadcasting."""
     p = units.Quantity([850, 700, 500], 'hPa')
