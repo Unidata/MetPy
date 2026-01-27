@@ -618,6 +618,69 @@ class SkewT:
         self.mixing_lines = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.mixing_lines
 
+    def plot_labeled_skewt_lines(self):
+        r"""Plot common skewt lines and labels.
+
+        This function plots the three common SkewT lines, dry adiabats, moist adiabats,
+        and mixing ratio lines with labels using a default coloring. Function assumes
+        that temperature value limits are in Celsius and pressure value limits are in
+        hPa.
+        """
+        from metpy.constants import Cp_d, Rd
+
+        # Get axes x, y limits
+        xmin, xmax = self.ax.get_xlim()
+        ymax, _ = self.ax.get_ylim()
+
+        # Pressure for plotting mixing ratio lines
+        pressure = units.Quantity(np.linspace(500, ymax, 25)[::-1], 'hPa')
+
+        # Set plotting certain mixing ratio values
+        mixing_ratio = units.Quantity(np.array([0.1, 0.2, 0.4, 0.6, 1, 1.5, 2, 3,
+                                                4, 6, 8, 10, 13, 16, 20, 25, 30, 36, 42
+                                                ]).reshape(-1, 1)[:, 0], 'g/kg')
+
+        # Calculate the dewpoint at 500 hPa based on the mixing ratio (for plotting mixing
+        # ratio values)
+        plottd = dewpoint(vapor_pressure(units.Quantity(500, 'hPa'), mixing_ratio))
+
+        # Add the relevant special lines
+        self.plot_dry_adiabats(t0=units.Quantity(np.arange(xmin + 273.15, xmax + 273.15 + 200,
+                                                 10), 'K'),
+                               alpha=0.25, colors='orangered', linewidths=1)
+        self.plot_moist_adiabats(t0=units.Quantity(np.arange(xmin + 273.15,
+                                                   xmax + 273.15 + 100, 5), 'K'),
+                                 alpha=0.25, colors='tab:green', linewidths=1)
+        self.plot_mixing_lines(pressure=pressure, mixing_ratio=mixing_ratio,
+                               linestyles='dotted', colors='dodgerblue', linewidths=1)
+
+        # Add isotherm labels
+        if (xmax % 10) != 0:
+            xmax += (10 - xmax % 10)
+        # Set temperature limit at 10 less than the max
+        tt = np.arange(xmax - 10, -111, -10)
+
+        # Use inverse potential temperature to get pressure levels of temperatures
+        pp = 1 / (((273.15 + xmax + 5) / (tt + 273.15))**(Cp_d / Rd) / 1000)
+
+        # Color lines according to above, below, or exactly 0 Celsius
+        for i in range(tt.size):
+            if tt[i] > 0.:
+                color = 'tab:red'
+            elif tt[i] == 0.:
+                color = '#777777'
+            else:
+                color = 'tab:blue'
+            _ = self.ax.text(tt[i], pp[i], f'{tt[i]:.0f}', ha='center', va='center',
+                             weight='bold', color=color, size=8, rotation=45, clip_on=True)
+
+        # Add saturation mixing ratio labels
+        for i in range(mixing_ratio.m.size):
+            val = str(mixing_ratio[i].m) if mixing_ratio.m[i] % 1 else int(mixing_ratio[i].m)
+            _ = self.ax.text(plottd.m[i], 500, f'{val}', ha='center', va='bottom',
+                             weight='bold', size=8, color='dodgerblue', clip_on=True,
+                             rotation=30)
+
     def shade_area(self, y, x1, x2=0, which='both', **kwargs):
         r"""Shade area between two curves.
 
