@@ -212,7 +212,7 @@ examine the results to see if they are correct.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7ff446e151d0>
+    <matplotlib.legend.Legend object at 0x7f74e83f34d0>
 
 
 
