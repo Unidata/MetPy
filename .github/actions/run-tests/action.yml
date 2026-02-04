@@ -42,14 +42,14 @@ runs:
 
     - name: Upload test images
       if: failure()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: ${{ inputs.key }}-images
         path: test_output/
 
     - name: Upload coverage artifact
       if: ${{ inputs.upload-coverage == 'true' }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: ${{ inputs.key }}
         path: coverage.xml

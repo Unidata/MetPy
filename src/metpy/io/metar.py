@@ -5,13 +5,13 @@
 # Import the necessary libraries
 from collections import namedtuple
 import contextlib
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 import warnings
 
 import numpy as np
 import pandas as pd
 
-from ._metar_parser.metar_parser import parse, ParseError, TreeNode
+from ._metar_parser import parse, ParseError, TreeNode
 from ._tools import open_as_needed
 from .station_data import station_info
 from ..package_tools import Exporter
@@ -433,7 +433,7 @@ def _metars_to_dataframe(metar_iter, *, year=None, month=None):
 
     # Defaults year and/or month to present reported date if not provided
     if year is None or month is None:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         year = now.year if year is None else year
         month = now.month if month is None else month
 

@@ -1,7 +1,8 @@
-packaging==25.0
-pytest==8.4.0
+
+packaging==26.0
+pytest==9.0.0
 pytest-cov==6.2.1
-pytest-mpl==0.17.0
+pytest-mpl==0.18.0
 pytest-xdist==3.8.0
-coverage==7.10.2
-vcrpy==7.0.0
+coverage==7.13.0
+vcrpy==8.1.0

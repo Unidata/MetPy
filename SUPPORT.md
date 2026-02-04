@@ -22,7 +22,7 @@ of these, so you only need to pick one to share your problem. 😉
   using GitHub or Twitter.
 * [MetPy on Bluesky](https://bsky.app/profile/metpy.bsky.social)
 * [MetPy on Twitter](https://twitter.com/MetPy)
-* [Unidata Python User’s Mailing List](https://www.unidata.ucar.edu/support/#mailinglists)
+* [Unidata Python User’s Mailing List](https://mailinglists.unidata.ucar.edu/?software)
 
 ## Issues
 

@@ -14,25 +14,25 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Framework :: Matplotlib",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: Atmospheric Science",
     "Intended Audience :: Science/Research",
     "Operating System :: OS Independent",
     "License :: OSI Approved :: BSD License"
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
-    "matplotlib>=3.5.0",
-    "numpy>=1.23.0",
-    "pandas>=1.4.0",
-    "pint>=0.17",
+    "matplotlib>=3.7.0",
+    "numpy>=1.25.0",
+    "pandas>=2.1.0",
+    "pint>=0.22",
     "pooch>=1.2.0",
-    "pyproj>=3.3.0",
-    "scipy>=1.8.0",
+    "pyproj>=3.4.0",
+    "scipy>=1.10.0",
     "traitlets>=5.1.0",
     "xarray>=2022.6.0"
 ]
@@ -124,12 +124,15 @@ filterwarnings = [
     # Pandas >=2.2 warns about PyArrow being a future dependency
     'ignore:\nPyarrow will become a required dependency of pandas:DeprecationWarning',
     # Not yet fixed in xarray
-    "ignore:__array__ implementation doesn't accept a copy keyword:DeprecationWarning"
+    "ignore:__array__ implementation doesn't accept a copy keyword:DeprecationWarning",
+    # Needs matplotlib >=3.10.7 for fixes
+    "ignore:'\\S+' deprecated - use '\\S+':DeprecationWarning:matplotlib._fontconfig_pattern",
+    "ignore:'\\S+' deprecated - use '\\S+':DeprecationWarning:matplotlib._mathtext"
 ]
 
 [tool.ruff]
 line-length = 95
-exclude = ["docs", "build", "src/metpy/io/_metar_parser/metar_parser.py", "talks"]
+exclude = ["docs", "build", "src/metpy/io/_metar_parser.py", "talks"]
 preview = true
 
 [tool.ruff.lint]

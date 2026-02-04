@@ -232,8 +232,9 @@ MetPy documentation via the `gh-pages` branch on GitHub.
 
 Unit tests are the lifeblood of the project, as it ensures that we can continue to add and
 change the code and stay confident that things have not broken. Running the tests requires
-``pytest``, which is easily available through ``conda`` or ``pip``. It was also installed if
-you made our default ``devel`` environment.
+``pytest``, which is easily available through ``conda``, ``pip``, or after installing the
+`test` extras with `uv`. It was also installed if you made our default ``devel`` 
+environment.
 
 ### Running Tests
 
@@ -407,7 +408,7 @@ other ways, feel free to contact us:
 * [MetPy's Gitter Channel](https://gitter.im/Unidata/MetPy)
 * ["metpy" tag on Stack Overflow](https://stackoverflow.com/questions/tagged/metpy)
 * [Unidata's Python support address](mailto:support-python@unidata.ucar.edu)
-* [python-users](https://www.unidata.ucar.edu/support/#mailinglists) mailing list
+* [python-users](https://mailinglists.unidata.ucar.edu/?software) mailing list
 
 ## Further Reading
 

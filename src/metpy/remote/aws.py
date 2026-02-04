@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools for reading known collections of data that are hosted on Amazon Web Services (AWS)."""
 import bisect
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, UTC
 import itertools
 from pathlib import Path
 import shutil
@@ -18,7 +18,7 @@ exporter = Exporter(globals())
 
 def ensure_timezone(dt):
     """Add UTC timezone if no timezone present."""
-    return dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt
+    return dt.replace(tzinfo=UTC) if dt.tzinfo is None else dt
 
 
 class AWSProduct:
@@ -239,7 +239,7 @@ class NEXRADLevel3Archive(S3DataStore):
     def dt_from_key(self, key):  # noqa: D102
         # Docstring inherited
         return datetime.strptime(key.split(self.delimiter, maxsplit=2)[-1],
-                                 '%Y_%m_%d_%H_%M_%S').replace(tzinfo=timezone.utc)
+                                 '%Y_%m_%d_%H_%M_%S').replace(tzinfo=UTC)
 
     def get_range(self, site, prod_id, start, end):
         """Yield products within a particular date/time range.
@@ -317,7 +317,7 @@ class NEXRADLevel3Archive(S3DataStore):
         product_ids, sites, get_range
 
         """
-        dt = datetime.now(timezone.utc) if dt is None else ensure_timezone(dt)
+        dt = datetime.now(UTC) if dt is None else ensure_timezone(dt)
 
         # We work with a list of keys/prefixes that we iteratively find that bound our target
         # key. To start, this only contains the site and product.
@@ -371,7 +371,7 @@ class NEXRADLevel2Archive(S3DataStore):
             Whether Model Data Messages (MDM) should be included in results. Defaults to False.
 
         """
-        super().__init__('noaa-nexrad-level2')
+        super().__init__('unidata-nexrad-level2')
         self.include_mdm = include_mdm
 
     def sites(self, dt=None):
@@ -389,7 +389,7 @@ class NEXRADLevel2Archive(S3DataStore):
 
         """
         if dt is None:
-            dt = datetime.now(timezone.utc)
+            dt = datetime.now(UTC)
         prefix = self._build_key('', dt, depth=3) + self.delimiter
         return [item.split('/')[-2] for item in self.common_prefixes(prefix)]
 
@@ -401,7 +401,7 @@ class NEXRADLevel2Archive(S3DataStore):
     def dt_from_key(self, key):  # noqa: D102
         # Docstring inherited
         return datetime.strptime(key.rsplit(self.delimiter, maxsplit=1)[-1][4:19],
-                                 '%Y%m%d_%H%M%S').replace(tzinfo=timezone.utc)
+                                 '%Y%m%d_%H%M%S').replace(tzinfo=UTC)
 
     def get_range(self, site, start, end):
         """Yield products within a particular date/time range.
@@ -450,7 +450,7 @@ class NEXRADLevel2Archive(S3DataStore):
         sites, get_range
 
         """
-        dt = datetime.now(timezone.utc) if dt is None else ensure_timezone(dt)
+        dt = datetime.now(UTC) if dt is None else ensure_timezone(dt)
         search_key = self._build_key(site, dt)
         prefix = search_key.split('_')[0]
         objs = (self.objects(prefix) if self.include_mdm else
@@ -530,7 +530,7 @@ class GOESArchive(S3DataStore):
     def dt_from_key(self, key):  # noqa: D102
         # Docstring inherited
         start_time = key.split('_')[-3]
-        return datetime.strptime(start_time[:-1], 's%Y%j%H%M%S').replace(tzinfo=timezone.utc)
+        return datetime.strptime(start_time[:-1], 's%Y%j%H%M%S').replace(tzinfo=UTC)
 
     def get_product(self, product, dt=None, mode=None, band=None):
         """Get a product from the archive.
@@ -556,7 +556,7 @@ class GOESArchive(S3DataStore):
         product_ids, get_range
 
         """
-        dt = datetime.now(timezone.utc) if dt is None else ensure_timezone(dt)
+        dt = datetime.now(UTC) if dt is None else ensure_timezone(dt)
         time_prefix = self._build_time_prefix(product, dt)
         prod_prefix = self._subprod_prefix(time_prefix, mode, band)
         return self._closest_result(self.objects(prod_prefix), dt)
@@ -645,7 +645,7 @@ class MLWPArchive(S3DataStore):
         # Docstring inherited
         # GRAP_v100_GFS_2025021212_f000_f240_06.nc
         dt = key.split('/')[-1].split('_')[3]
-        return datetime.strptime(dt, '%Y%m%d%H').replace(tzinfo=timezone.utc)
+        return datetime.strptime(dt, '%Y%m%d%H').replace(tzinfo=UTC)
 
     def get_product(self, model, dt=None, version=None, init=None):
         """Get a product from the archive.
@@ -673,7 +673,7 @@ class MLWPArchive(S3DataStore):
         get_range
 
         """
-        dt = datetime.now(timezone.utc) if dt is None else ensure_timezone(dt)
+        dt = datetime.now(UTC) if dt is None else ensure_timezone(dt)
         model_id = self._model_id(model, version, init)
         search_key = self._build_key(model_id, dt)
         prefix = search_key.rsplit('_', maxsplit=4)[0]

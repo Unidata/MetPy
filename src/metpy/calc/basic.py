@@ -1150,7 +1150,7 @@ def zoom_xarray(input_field, zoom, output=None, order=3, mode='constant', cval=0
 def altimeter_to_station_pressure(altimeter_value, height):
     r"""Convert the altimeter measurement to station pressure.
 
-    This function is useful for working with METARs since they do not provide
+    This function is useful for working with METARs since they do provide
     altimeter values, but not sea-level pressure or station pressure.
     The following definitions of altimeter setting and station pressure
     are taken from [Smithsonian1951]_ Altimeter setting is the

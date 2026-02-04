@@ -28,13 +28,13 @@ jobs:
     name: Report
     needs: Builds
     if: failure() || github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       issues: write
 
     steps:
       - name: Download logs
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           path: /tmp/workspace/logs
 
@@ -44,7 +44,7 @@ jobs:
           touch tests-nightly.log build.log linkchecker.log
 
       - name: Report failures
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const fs = require('fs');

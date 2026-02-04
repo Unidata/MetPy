@@ -1,19 +1,19 @@
-ruff==0.12.0
+ruff==0.14.0
 
 flake8==7.3.0
 pycodestyle==2.14.0
 pyflakes==3.4.0
 
-flake8-continuation==1.0.5
-flake8-isort==6.1.2
-isort==6.0.1
-flake8-requirements==2.2.1
+flake8-broken-line==1.0.0
+flake8-isort==7.0.0
+isort==7.0.0
+flake8-requirements==2.3.0
 
-flake8-rst-docstrings==0.3.1
+flake8-rst-docstrings==0.4.0
 
 doc8==2.0.0
-restructuredtext_lint==1.4.0
+restructuredtext_lint==2.0.2
 
 codespell==2.4.1
 
-pooch==1.8.2
+pooch==1.9.0

@@ -6,7 +6,7 @@
 import bz2
 from collections import defaultdict, namedtuple, OrderedDict
 import contextlib
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 import logging
 import pathlib
 import re
@@ -76,7 +76,7 @@ def nexrad_to_datetime(julian_date, ms_midnight):
     """Convert NEXRAD date time format to python `datetime.datetime`."""
     # Subtracting one from julian_date is because epoch date is 1
     return datetime.fromtimestamp((julian_date - 1) * day + ms_midnight * milli,
-                                  tz=timezone.utc).replace(tzinfo=None)
+                                  tz=UTC).replace(tzinfo=None)
 
 
 def remap_status(val):
@@ -984,7 +984,7 @@ class LegacyMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the values and labels from the product."""
-        # Don't worry about super() since we're using our own lut assembled sequentially
+        super().__init__()
         self.labels = []
         self.lut = []
         for t in prod.thresholds:

@@ -21,11 +21,11 @@ jobs:
       run: 
         working-directory: ./benchmarks #sets the default working directory to ./benchmarks 
     steps:
-          - uses: actions/setup-python@v5  #sets up python with version 3.12
+          - uses: actions/setup-python@v6  #sets up python with version 3.12
             with:
               python-version: "3.12"
           - name: Checkout repo
-            uses: actions/checkout@v4  #checks out repository
+            uses: actions/checkout@v6  #checks out repository
             with:
               fetch-depth: 0  # Fetch full history
           - run: python -m pip install numpy pandas xarray metpy netcdf4

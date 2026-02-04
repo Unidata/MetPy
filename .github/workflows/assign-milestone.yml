@@ -13,9 +13,9 @@ jobs:
       issues: write
 
     name: Assign Latest Milestone
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         name: Run script
         with:
           script: |

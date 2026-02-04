@@ -779,8 +779,7 @@ def _less_or_close(a, value, **kwargs):
 def make_take(ndims, slice_dim):
     """Generate a take function to index in a particular dimension."""
     def take(indexer):
-        return tuple(indexer if slice_dim % ndims == i else slice(None)  # noqa: S001
-                     for i in range(ndims))
+        return tuple(indexer if slice_dim % ndims == i else slice(None) for i in range(ndims))
     return take
 
 

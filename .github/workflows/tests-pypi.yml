@@ -25,22 +25,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.10', 3.11, 3.12, 3.13]
+        python-version: [3.11, 3.12, 3.13, 3.14]
         dep-versions: [Latest]
         no-extras: ['']
         include:
-          - python-version: '3.10'
+          - python-version: 3.11
             dep-versions: Minimum
-          - python-version: '3.10'
+          - python-version: 3.11
             dep-versions: Minimum
             no-extras: 'No Extras'
-          - python-version: 3.13
+          - python-version: 3.14
             dep-versions: Latest
             no-extras: 'No Extras'
 
     steps:
     - name: Checkout source
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         fetch-depth: 150
         fetch-tags: true
@@ -86,18 +86,18 @@ jobs:
   codecov:
     needs: PyPITests
     name: CodeCov Upload
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     environment:
       name: CodeCov
     timeout-minutes: 2
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
 
       - name: Download coverage artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
 
       - name: Upload coverage
         uses: codecov/codecov-action@v5
