@@ -58,6 +58,8 @@ test = [
     "netCDF4",
     "packaging>=21.0",
     "pytest>=7.0",
+    "pytest-xdist",
+    "pytest-cov",
     "pytest-mpl",
     "vcrpy>=4.3.1"
 ]
