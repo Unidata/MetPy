@@ -17,6 +17,7 @@ from metpy.io.gempak import GempakGrid, GempakSounding, GempakSurface
 logging.getLogger('metpy.io.gempak').setLevel(logging.ERROR)
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('order', ['little', 'big'])
 def test_byte_swap(order):
     """"Test byte swapping."""
@@ -29,6 +30,7 @@ def test_byte_swap(order):
     assert_equal(grid, reference)
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('grid_name', ['none', 'diff', 'dec', 'grib'])
 def test_grid_loading(grid_name):
     """Test reading grids with different packing."""
@@ -44,6 +46,7 @@ def test_grid_loading(grid_name):
     assert_allclose(gio, gempak, rtol=1e-6, atol=0)
 
 
+@pytest.mark.network
 def test_merged_sounding():
     """Test loading a merged sounding.
 
@@ -106,6 +109,7 @@ def test_merged_sounding():
     np.testing.assert_allclose(gdtar, ddtar, rtol=1e-10, atol=1e-2)
 
 
+@pytest.mark.network
 def test_merged_sounding_no_packing():
     """Test loading a merged sounding without data packing."""
     gso = GempakSounding(get_test_data('gem_merged_nopack.snd')).snxarray(
@@ -135,6 +139,7 @@ def test_merged_sounding_no_packing():
     assert_allclose(ghght, dhght, rtol=1e-10, atol=1e-1)
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('gem,gio,station', [
     ('gem_sigw_hght_unmrg.csv', 'gem_sigw_hght_unmrg.snd', 'TOP'),
     ('gem_sigw_pres_unmrg.csv', 'gem_sigw_pres_unmrg.snd', 'WAML')
@@ -170,6 +175,7 @@ def test_unmerged_sounding(gem, gio, station):
     assert_allclose(ghght, dhght, rtol=1e-10, atol=1e-1)
 
 
+@pytest.mark.network
 def test_unmerged_sigw_pressure_sounding():
     """Test loading an unmerged sounding.
 
@@ -201,6 +207,7 @@ def test_unmerged_sigw_pressure_sounding():
     assert_allclose(ghght, dhght, rtol=1e-10, atol=1e-1)
 
 
+@pytest.mark.network
 def test_climate_surface():
     """Test to read a cliamte surface file."""
     gsf = GempakSurface(get_test_data('gem_climate.sfc'))
@@ -219,6 +226,7 @@ def test_climate_surface():
             assert val == pytest.approx(gemsfc[param.upper()])
 
 
+@pytest.mark.network
 def test_standard_surface():
     """Test to read a standard surface file."""
     skip = ['text', 'spcl']
@@ -240,6 +248,7 @@ def test_standard_surface():
                 assert val == pytest.approx(gemsfc[param.upper()])
 
 
+@pytest.mark.network
 def test_ship_surface():
     """Test to read a ship surface file."""
     skip = ['text', 'spcl']
@@ -267,6 +276,7 @@ def test_ship_surface():
                 assert_allclose(decoded_vals, actual_vals)
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('proj_type', ['conical', 'cylindrical', 'azimuthal'])
 def test_coordinates_creation(proj_type):
     """Test projections and coordinates."""
@@ -282,6 +292,7 @@ def test_coordinates_creation(proj_type):
     assert_allclose(decode_lon, true_lon, rtol=1e-6, atol=1e-2)
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('proj_type, proj_attrs', [
     ('conical', {
         'grid_mapping_name': 'lambert_conformal_conic',
@@ -313,6 +324,7 @@ def test_metpy_crs_creation(proj_type, proj_attrs):
     assert y_unit == 'meters'
 
 
+@pytest.mark.network
 def test_date_parsing():
     """Test parsing of dates with leading zeroes."""
     sfc_data = GempakSurface(get_test_data('sfc_obs.gem'))
@@ -320,6 +332,7 @@ def test_date_parsing():
     assert dat == datetime(2000, 1, 2)
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('access_type', ['STID', 'STNM'])
 def test_surface_access(access_type):
     """Test for proper surface retrieval with multi-parameter filter."""
@@ -334,6 +347,7 @@ def test_surface_access(access_type):
                    date_time='202109070000')
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('text_type,date_time', [
     ('text', '202109070000'), ('spcl', '202109071600')
 ])
@@ -349,6 +363,7 @@ def test_surface_text(text_type, date_time):
     assert text == gem_text
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('access_type', ['STID', 'STNM'])
 def test_sounding_access(access_type):
     """Test for proper sounding retrieval with multi-parameter filter."""
@@ -363,6 +378,7 @@ def test_sounding_access(access_type):
                      date_time='202101200000')
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('text_type', ['txta', 'txtb', 'txtc', 'txpb'])
 def test_sounding_text(text_type):
     """Test for proper decoding of coded message text."""
@@ -377,6 +393,7 @@ def test_sounding_text(text_type):
     assert text == gem_text
 
 
+@pytest.mark.network
 def test_special_surface_observation():
     """Test special surface observation conversion."""
     sfc = get_test_data('gem_surface_with_text.sfc')
@@ -400,6 +417,7 @@ def test_special_surface_observation():
     assert stn['vsby'] == 2
 
 
+@pytest.mark.network
 def test_multi_level_multi_time_access():
     """Test accessing data with multiple levels and times."""
     g = get_test_data('gem_multilevel_multidate.grd')
@@ -416,6 +434,7 @@ def test_multi_level_multi_time_access():
     )
 
 
+@pytest.mark.network
 def test_multi_time_grid():
     """Test files with multiple times on a single grid."""
     g = get_test_data('gem_multi_time.grd')
@@ -429,6 +448,7 @@ def test_multi_time_grid():
     assert dattim2 == datetime(1991, 8, 20, 0, 0)
 
 
+@pytest.mark.network
 def test_unmerged_no_ttcc():
     """Test loading an unmerged sounding.
 

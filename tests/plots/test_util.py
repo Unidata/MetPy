@@ -50,6 +50,7 @@ def test_add_timestamp_high_contrast():
     return fig
 
 
+@pytest.mark.network
 def test_add_timestamp_xarray():
     """Test that add_timestamp can work with xarray datetime accessor."""
     with autoclose_figure() as fig:

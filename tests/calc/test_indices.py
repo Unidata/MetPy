@@ -16,6 +16,7 @@ from metpy.testing import assert_almost_equal, assert_array_almost_equal, get_up
 from metpy.units import concatenate, units
 
 
+@pytest.mark.network
 def test_precipitable_water():
     """Test precipitable water with observed sounding."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -24,6 +25,7 @@ def test_precipitable_water():
     assert_array_almost_equal(pw, truth, 4)
 
 
+@pytest.mark.network
 def test_precipitable_water_no_bounds():
     """Test precipitable water with observed sounding and no bounds given."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -83,6 +85,7 @@ def test_precipitable_water_descriptive_bound_error():
         precipitable_water(pressure, dewpoint, bottom=units.Quantity(999, 'hPa'))
 
 
+@pytest.mark.network
 def test_mean_pressure_weighted():
     """Test pressure-weighted mean wind function with vertical interpolation."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -95,6 +98,7 @@ def test_mean_pressure_weighted():
     assert_almost_equal(v, 7.966031839967931 * units('m/s'), 7)
 
 
+@pytest.mark.network
 def test_mean_pressure_weighted_temperature():
     """Test pressure-weighted mean temperature function with vertical interpolation."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -105,6 +109,7 @@ def test_mean_pressure_weighted_temperature():
     assert_almost_equal(t, 281.535035296836 * units('kelvin'), 7)
 
 
+@pytest.mark.network
 def test_mean_pressure_weighted_elevated():
     """Test pressure-weighted mean wind function with a base above the surface."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -118,6 +123,7 @@ def test_mean_pressure_weighted_elevated():
     assert_almost_equal(v, 1.7392601775853547 * units('m/s'), 7)
 
 
+@pytest.mark.network
 def test_weighted_continuous_average():
     """Test pressure-weighted mean wind function with vertical interpolation."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -130,6 +136,7 @@ def test_weighted_continuous_average():
     assert_almost_equal(v, 6.900543760612305 * units('m/s'), 7)
 
 
+@pytest.mark.network
 def test_weighted_continuous_average_temperature():
     """Test pressure-weighted mean temperature function with vertical interpolation."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -140,6 +147,7 @@ def test_weighted_continuous_average_temperature():
     assert_almost_equal(t, 279.07450928270185 * units('kelvin'), 7)
 
 
+@pytest.mark.network
 def test_weighted_continuous_average_elevated():
     """Test pressure-weighted mean wind function with a base above the surface."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -153,6 +161,7 @@ def test_weighted_continuous_average_elevated():
     assert_almost_equal(v, 1.616638856115755 * units('m/s'), 7)
 
 
+@pytest.mark.network
 def test_precipitable_water_xarray():
     """Test precipitable water with xarray input."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -163,6 +172,7 @@ def test_precipitable_water_xarray():
     assert_almost_equal(pw, truth)
 
 
+@pytest.mark.network
 def test_bunkers_motion():
     """Test Bunkers storm motion with observed sounding."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -174,6 +184,7 @@ def test_bunkers_motion():
     assert_almost_equal(motion.flatten(), truth, 8)
 
 
+@pytest.mark.network
 def test_corfidi_motion():
     """Test corfidi MCS motion with observed sounding."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -184,6 +195,7 @@ def test_corfidi_motion():
     assert_almost_equal(motion_full.flatten(), truth_full, 8)
 
 
+@pytest.mark.network
 def test_corfidi_motion_override_llj():
     """Test corfidi MCS motion with overridden LLJ."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -204,6 +216,7 @@ def test_corfidi_motion_override_llj():
                              data['v_wind'], v_llj=10 * units('kt'))
 
 
+@pytest.mark.network
 def test_corfidi_corfidi_llj_unaivalable():
     """Test corfidi MCS motion where the LLJ is unailable."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -211,6 +224,7 @@ def test_corfidi_corfidi_llj_unaivalable():
         corfidi_storm_motion(data['pressure'][6:], data['u_wind'][6:], data['v_wind'][6:])
 
 
+@pytest.mark.network
 def test_corfidi_corfidi_cloudlayer_trimmed():
     """Test corfidi MCS motion where sounding does not include the entire cloud layer."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -221,6 +235,7 @@ def test_corfidi_corfidi_cloudlayer_trimmed():
     assert_almost_equal(motion_no_top.flatten(), truth_no_top, 8)
 
 
+@pytest.mark.network
 def test_corfidi_motion_with_nans():
     """Test corfidi MCS motion with observed sounding with nans."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -235,6 +250,7 @@ def test_corfidi_motion_with_nans():
     assert_almost_equal(motion_with_nans.flatten(), truth_with_nans, 8)
 
 
+@pytest.mark.network
 def test_bunkers_motion_with_nans():
     """Test Bunkers storm motion with observed sounding."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -250,6 +266,7 @@ def test_bunkers_motion_with_nans():
     assert_almost_equal(motion.flatten(), truth, 8)
 
 
+@pytest.mark.network
 def test_bulk_shear():
     """Test bulk shear with observed sounding."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -261,6 +278,7 @@ def test_bulk_shear():
     assert_almost_equal(v.to('knots'), truth[1], 8)
 
 
+@pytest.mark.network
 def test_bulk_shear_no_depth():
     """Test bulk shear with observed sounding and no depth given. Issue #568."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -271,6 +289,7 @@ def test_bulk_shear_no_depth():
     assert_almost_equal(v.to('knots'), truth[1], 8)
 
 
+@pytest.mark.network
 def test_bulk_shear_elevated():
     """Test bulk shear with observed sounding and a base above the surface."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -325,6 +344,7 @@ def test_sigtor_scalar():
     assert_almost_equal(sigtor, truth, 6)
 
 
+@pytest.mark.network
 def test_critical_angle():
     """Test critical angle with observed sounding."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -335,6 +355,7 @@ def test_critical_angle():
     assert_almost_equal(ca, truth, 8)
 
 
+@pytest.mark.network
 def test_critical_angle_units():
     """Test critical angle with observed sounding and different storm motion units."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')

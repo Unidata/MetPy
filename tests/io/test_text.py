@@ -5,12 +5,14 @@
 from datetime import datetime
 
 import numpy as np
+import pytest
 
 from metpy.cbook import get_test_data
 from metpy.io import parse_wpc_surface_bulletin
 from metpy.testing import needs_module
 
 
+@pytest.mark.network
 @needs_module('shapely')
 def test_parse_wpc_surface_bulletin_highres():
     """Test parser reading a high res WPC coded surface bulletin into a dataframe."""
@@ -37,6 +39,7 @@ def test_parse_wpc_surface_bulletin_highres():
     assert all(df.valid == datetime(2021, 6, 28, 18, 0, 0))
 
 
+@pytest.mark.network
 @needs_module('shapely')
 def test_parse_wpc_surface_bulletin():
     """Test parser reading a low res WPC coded surface bulletin into a dataframe."""

@@ -41,6 +41,7 @@ level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46)
 
 
 # ids here fixes how things are presented in pycharm
+@pytest.mark.network
 @pytest.mark.parametrize('fname, voltime, num_sweeps, mom_first, mom_last, expected_logs',
                          level2_files, ids=[i[0].replace('.', '_') for i in level2_files])
 def test_level2(fname, voltime, num_sweeps, mom_first, mom_last, expected_logs, caplog):
@@ -54,6 +55,7 @@ def test_level2(fname, voltime, num_sweeps, mom_first, mom_last, expected_logs, 
     assert len(caplog.records) == expected_logs
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('filename', ['Level2_KFTG_20150430_1419.ar2v',
                                       'TDAL20191021021543V08.raw.gz',
                                       'KTLX20150530_000802_V06.bz2'])
@@ -83,6 +85,7 @@ def test_level2_fobj(filename, use_seek):
         Level2File(f)
 
 
+@pytest.mark.network
 def test_doubled_file():
     """Test for #489 where doubled-up files didn't parse at all."""
     with contextlib.closing(get_test_data('Level2_KFTG_20150430_1419.ar2v')) as infile:
@@ -92,6 +95,7 @@ def test_doubled_file():
     assert len(f.sweeps) == 12
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('fname, has_v2', [('KTLX20130520_201643_V06.gz', False),
                                            ('Level2_KFTG_20150430_1419.ar2v', True),
                                            ('TDAL20191021021543V08.raw.gz', False)])
@@ -101,6 +105,7 @@ def test_conditional_radconst(fname, has_v2):
     assert hasattr(f.sweeps[0][0][3], 'calib_dbz0_v') == has_v2
 
 
+@pytest.mark.network
 def test_msg15():
     """Check proper decoding of message type 15."""
     f = Level2File(get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False))
@@ -109,12 +114,14 @@ def test_msg15():
     assert f.clutter_filter_map['datetime'] == datetime(2013, 5, 19, 5, 15, 0, 0)
 
 
+@pytest.mark.network
 def test_msg18_novcps():
     """Check handling of message type 18 with VCP info now spares does not crash."""
     f = Level2File(get_test_data('KJKL_20240227_102059', as_file_obj=False))
     assert 'VCPAT11' not in f.rda
 
 
+@pytest.mark.network
 def test_single_chunk(caplog):
     """Check that Level2File copes with reading a file containing a single chunk."""
     # Need to override the test level set above
@@ -129,6 +136,7 @@ def test_single_chunk(caplog):
     assert 'Unable to read volume header' not in caplog.text
 
 
+@pytest.mark.network
 def test_build19_level2_additions():
     """Test handling of new additions in Build 19 level2 data."""
     f = Level2File(get_test_data('Level2_KDDC_20200823_204121.ar2v'))
@@ -164,6 +172,7 @@ def test_level3_files(fname):
     assert f.filename == fname
 
 
+@pytest.mark.network
 def test_basic():
     """Test reading one specific NEXRAD NIDS file based on the filename."""
     f = Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids', as_file_obj=False))
@@ -178,6 +187,7 @@ def test_basic():
     assert str(f)
 
 
+@pytest.mark.network
 def test_new_gsm():
     """Test parsing recent mods to the GSM product."""
     f = Level3File(get_test_data('nids/KDDC-gsm.nids'))
@@ -194,6 +204,7 @@ def test_new_gsm():
     assert str(f)
 
 
+@pytest.mark.network
 def test_bad_length(caplog):
     """Test reading a product with too many bytes produces a log message."""
     fname = get_test_data('nids/KOUN_SDUS84_DAATLX_201305202016', as_file_obj=False)
@@ -207,23 +218,27 @@ def test_bad_length(caplog):
         assert 'This product may not parse correctly' in caplog.records[0].message
 
 
+@pytest.mark.network
 def test_tdwr():
     """Test reading a specific TDWR file."""
     f = Level3File(get_test_data('nids/Level3_SLC_TV0_20160516_2359.nids'))
     assert f.prod_desc.prod_code == 182
 
 
+@pytest.mark.network
 def test_dhr():
     """Test reading a time field for DHR product."""
     f = Level3File(get_test_data('nids/KOUN_SDUS54_DHRTLX_201305202016'))
     assert f.metadata['avg_time'] == datetime(2013, 5, 20, 20, 18)
 
 
+@pytest.mark.network
 def test_fobj():
     """Test reading a specific NEXRAD NIDS files from a file object."""
     Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids'))
 
 
+@pytest.mark.network
 def test_level3_pathlib():
     """Test that reading with Level3File properly sets the filename from a Path."""
     fname = Path(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids', as_file_obj=False))
@@ -231,6 +246,7 @@ def test_level3_pathlib():
     assert f.filename == str(fname)
 
 
+@pytest.mark.network
 def test_nids_super_res_width():
     """Test decoding a super resolution spectrum width product."""
     f = Level3File(get_test_data('nids/KLZK_H0W_20200812_1305'))
@@ -238,6 +254,7 @@ def test_nids_super_res_width():
     assert np.nanmax(width) == 15
 
 
+@pytest.mark.network
 def test_power_removed_control():
     """Test decoding new PRC product."""
     f = Level3File(get_test_data('nids/KGJX_NXF_20200817_0600.nids'))
@@ -265,6 +282,7 @@ def test31_clear_air():
     assert not is_precip_mode(31), 'VCP 31 is not precip'
 
 
+@pytest.mark.network
 def test_tracks():
     """Check that tracks are properly decoded."""
     f = Level3File(get_test_data('nids/KOUN_SDUS34_NSTTLX_201305202016'))
@@ -275,6 +293,7 @@ def test_tracks():
             assert len(y)
 
 
+@pytest.mark.network
 def test_vector_packet():
     """Check that vector packets are properly decoded."""
     f = Level3File(get_test_data('nids/KOUN_SDUS64_NHITLX_201305202016'))
@@ -288,6 +307,7 @@ def test_vector_packet():
                 assert len(y2)
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('fname,truth',
                          [('nids/KEAX_N0Q_20200817_0401.nids', (0, 'MRLE scan')),
                           ('nids/KEAX_N0Q_20200817_0405.nids', (0, 'Non-supplemental scan')),

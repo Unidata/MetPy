@@ -1306,6 +1306,7 @@ def test_remove_nans():
     assert_almost_equal(y_expected, y_test, 0)
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('subset', (False, True))
 @pytest.mark.parametrize('datafile, assign_lat_lon, no_crs, transpose',
                          [('GFS_test.nc', False, False, False),
@@ -1583,6 +1584,7 @@ def test_peak_persistence_minima(peak_data):
     assert per == [((2, 3), np.inf), ((3, 0), 2)]
 
 
+@pytest.mark.network
 def test_find_peaks(peak_data):
     """Test find_peaks correctly identifies peaks."""
     data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
@@ -1596,6 +1598,7 @@ def test_find_peaks(peak_data):
     assert_array_almost_equal(hgt.metpy.x[xind], [3.665191, 5.235988], 6)
 
 
+@pytest.mark.network
 def test_find_peaks_minima(peak_data):
     """Test find_peaks correctly identifies peaks."""
     data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))

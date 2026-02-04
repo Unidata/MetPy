@@ -103,7 +103,10 @@ combine_as_imports = true
 combine_star = true
 
 [tool.pytest.ini_options]
-markers = "xfail_dask: marks tests as expected to fail with Dask arrays"
+markers = [
+    "xfail_dask: marks tests as expected to fail with Dask arrays",
+    "network: make tests requiring access to the internet",
+]
 norecursedirs = "build docs .idea"
 doctest_optionflags = "NORMALIZE_WHITESPACE"
 mpl-results-path = "test_output"

@@ -323,6 +323,7 @@ def test_absolute_momentum_given_xy(test_cross_xy):
     assert_xarray_allclose(momentum, true_momentum)
 
 
+@pytest.mark.network
 def test_absolute_momentum_xarray_units_attr():
     """Test absolute momentum when `u` and `v` are DataArrays with a `units` attribute."""
     data = xr.open_dataset(get_test_data('narr_example.nc', False))

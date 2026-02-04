@@ -96,6 +96,7 @@ def test_barnes_point(test_data):
     assert_almost_equal(barnes_point(dists, values, 5762.7), 4.0871824)
 
 
+@pytest.mark.network
 def test_natural_neighbor_to_points(test_data, test_points):
     r"""Test natural neighbor interpolation to grid function."""
     xp, yp, z = test_data
@@ -109,6 +110,7 @@ def test_natural_neighbor_to_points(test_data, test_points):
     assert_array_almost_equal(truth, img)
 
 
+@pytest.mark.network
 def test_inverse_distance_to_points_invalid(test_data, test_points):
     """Test that inverse_distance_to_points raises when given an invalid method."""
     xp, yp, z = test_data
@@ -117,6 +119,7 @@ def test_inverse_distance_to_points_invalid(test_data, test_points):
         inverse_distance_to_points(obs_points, z, test_points, kind='shouldraise', r=40)
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('assume_units', [None, 'mbar'])
 @pytest.mark.parametrize('method', ['cressman', 'barnes'])
 def test_inverse_distance_to_points(method, assume_units, test_data, test_points):
@@ -138,6 +141,7 @@ def test_inverse_distance_to_points(method, assume_units, test_data, test_points
     assert_array_almost_equal(truth, img)
 
 
+@pytest.mark.network
 def test_interpolate_to_points_invalid(test_data):
     """Test that interpolate_to_points raises when given an invalid method."""
     xp, yp, z = test_data
@@ -150,6 +154,7 @@ def test_interpolate_to_points_invalid(test_data):
         interpolate_to_points(obs_points, z, test_points, interp_type='shouldraise')
 
 
+@pytest.mark.network
 @pytest.mark.parametrize('assume_units', [None, 'mbar'])
 @pytest.mark.parametrize('method', ['natural_neighbor', 'cressman', 'barnes', 'linear',
                                     'nearest', 'rbf', 'cubic'])
