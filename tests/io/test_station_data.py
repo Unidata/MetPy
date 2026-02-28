@@ -10,6 +10,7 @@ import pytest
 from metpy.io import add_station_lat_lon, station_info
 
 
+@pytest.mark.network
 def test_add_lat_lon_station_data():
     """Test for when the METAR does not correspond to a station in the dictionary."""
     df = pd.DataFrame({'station': ['KOUN', 'KVPZ', 'KDEN', 'PAAA']})
@@ -26,6 +27,7 @@ def test_add_lat_lon_station_data():
     assert df['longitude'].dtype == np.float64
 
 
+@pytest.mark.network
 def test_add_lat_lon_station_data_optional():
     """Test for when only one argument is passed."""
     df = pd.DataFrame({'station': ['KOUN', 'KVPZ', 'KDEN', 'PAAA']})
@@ -51,16 +53,19 @@ def test_add_lat_lon_station_data_existing_col():
         add_station_lat_lon(df)
 
 
+@pytest.mark.network
 def test_station_lookup_get_station():
     """Test that you can get a station by ID from the lookup."""
     assert station_info['KOUN'].id == 'KOUN'
 
 
+@pytest.mark.network
 def test_station_lookup_len():
     """Test that you can get the length of the station data."""
     assert len(station_info) == 13798
 
 
+@pytest.mark.network
 def test_station_lookup_iter():
     """Test iterating over the station data."""
     for stid in station_info:

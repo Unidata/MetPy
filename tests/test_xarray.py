@@ -58,6 +58,7 @@ def test_var_multidim_no_xy(test_var_multidim_full):
     return test_var_multidim_full.drop_vars(['y', 'x'])
 
 
+@pytest.mark.network
 def test_projection(test_var, ccrs):
     """Test getting the proper projection out of the variable."""
     crs = test_var.metpy.crs
@@ -66,6 +67,7 @@ def test_projection(test_var, ccrs):
     assert isinstance(test_var.metpy.cartopy_crs, ccrs.LambertConformal)
 
 
+@pytest.mark.network
 def test_pyproj_projection(test_var):
     """Test getting the proper pyproj projection out of the variable."""
     proj = test_var.metpy.pyproj_crs
@@ -74,6 +76,7 @@ def test_pyproj_projection(test_var):
     assert proj.coordinate_operation.method_name == 'Lambert Conic Conformal (1SP)'
 
 
+@pytest.mark.network
 def test_no_projection(test_ds):
     """Test getting the crs attribute when not available produces a sensible error."""
     var = test_ds.lat
@@ -83,6 +86,7 @@ def test_no_projection(test_ds):
     assert 'not available' in str(exc.value)
 
 
+@pytest.mark.network
 def test_globe(test_var, ccrs):
     """Test getting the globe belonging to the projection."""
     globe = test_var.metpy.cartopy_globe
@@ -93,6 +97,7 @@ def test_globe(test_var, ccrs):
     assert isinstance(globe, ccrs.Globe)
 
 
+@pytest.mark.network
 def test_geodetic(test_var, ccrs):
     """Test getting the Geodetic CRS for the projection."""
     geodetic = test_var.metpy.cartopy_geodetic
@@ -100,6 +105,7 @@ def test_geodetic(test_var, ccrs):
     assert isinstance(geodetic, ccrs.Geodetic)
 
 
+@pytest.mark.network
 def test_unit_array(test_var):
     """Test unit handling through the accessor."""
     arr = test_var.metpy.unit_array
@@ -107,11 +113,13 @@ def test_unit_array(test_var):
     assert arr.units == units.kelvin
 
 
+@pytest.mark.network
 def test_units(test_var):
     """Test the units property on the accessor."""
     assert test_var.metpy.units == units.kelvin
 
 
+@pytest.mark.network
 def test_units_data(test_var):
     """Test units property fetching does not touch variable.data."""
     with patch.object(xr.Variable, 'data', new_callable=PropertyMock) as mock_data_property:
@@ -119,6 +127,7 @@ def test_units_data(test_var):
         mock_data_property.assert_not_called()
 
 
+@pytest.mark.network
 def test_units_percent():
     """Test that '%' is handled as 'percent'."""
     test_var_percent = xr.open_dataset(
@@ -127,6 +136,7 @@ def test_units_percent():
     assert test_var_percent.metpy.units == units.percent
 
 
+@pytest.mark.network
 def test_magnitude_with_quantity(test_var):
     """Test magnitude property on accessor when data is a quantity."""
     assert isinstance(test_var.metpy.magnitude, np.ndarray)
@@ -142,6 +152,7 @@ def test_magnitude_without_quantity(test_ds_generic):
     )
 
 
+@pytest.mark.network
 def test_convert_units(test_var):
     """Test conversion of units."""
     result = test_var.metpy.convert_units('degC')
@@ -154,6 +165,7 @@ def test_convert_units(test_var):
     assert_almost_equal(result[0, 0, 0, 0], 18.44 * units.degC, 2)
 
 
+@pytest.mark.network
 def test_convert_to_base_units(test_ds):
     """Test conversion of units."""
     uwnd = test_ds.u_wind.metpy.quantify()
@@ -174,6 +186,7 @@ def test_convert_coordinate_units(test_ds_generic):
     assert result['b'].metpy.units == units.percent
 
 
+@pytest.mark.network
 def test_latlon_default_units(test_var_multidim_full):
     """Test that lat/lon are given degree units by default."""
     del test_var_multidim_full.lat.attrs['units']
@@ -288,12 +301,14 @@ def test_missing_grid_mapping_valid():
     )
 
 
+@pytest.mark.network
 def test_missing_grid_mapping_invalid(test_var_multidim_no_xy):
     """Test not falling back to implicit lat/lon projection when invalid."""
     data_var = test_var_multidim_no_xy.to_dataset(name='data').metpy.parse_cf('data')
     assert 'metpy_crs' not in data_var.coords
 
 
+@pytest.mark.network
 def test_xy_not_vertical(test_ds):
     """Test not detecting x/y as a vertical coordinate based on metadata."""
     test_ds.x.attrs['positive'] = 'up'
@@ -355,6 +370,7 @@ def test_preprocess_and_wrap_only_preprocessing():
     assert_array_equal(func(data, b=data2), np.array([1001, 1001, 1001]) * units.m)
 
 
+@pytest.mark.network
 def test_coordinates_basic_by_method(test_var):
     """Test that NARR example coordinates are like we expect using coordinates method."""
     x, y, vertical, time = test_var.metpy.coordinates('x', 'y', 'vertical', 'time')
@@ -365,6 +381,7 @@ def test_coordinates_basic_by_method(test_var):
     assert test_var['time'].identical(time)
 
 
+@pytest.mark.network
 def test_coordinates_basic_by_property(test_var):
     """Test that NARR example coordinates are like we expect using properties."""
     assert test_var['x'].identical(test_var.metpy.x)
@@ -600,6 +617,7 @@ def test_check_axis_regular_expression_match(test_ds_generic, test_tuple):
     assert check_axis(data[test_tuple[0]], test_tuple[1])
 
 
+@pytest.mark.network
 def test_narr_example_variable_without_grid_mapping(test_ds):
     """Test that NARR example is parsed correctly, with x/y coordinates scaled the same."""
     data = test_ds.metpy.parse_cf()
@@ -645,6 +663,7 @@ def test_check_matching_coordinates(test_ds_generic):
         add(test_ds_generic['test'], other)
 
 
+@pytest.mark.network
 def test_time_deltas():
     """Test the time_deltas attribute."""
     ds = xr.open_dataset(get_test_data('irma_gfs_example.nc', as_file_obj=False))
@@ -653,21 +672,25 @@ def test_time_deltas():
     assert_array_almost_equal(time.metpy.time_deltas, truth)
 
 
+@pytest.mark.network
 def test_find_axis_name_integer(test_var):
     """Test getting axis name using the axis number identifier."""
     assert test_var.metpy.find_axis_name(2) == 'y'
 
 
+@pytest.mark.network
 def test_find_axis_name_axis_type(test_var):
     """Test getting axis name using the axis type identifier."""
     assert test_var.metpy.find_axis_name('vertical') == 'isobaric'
 
 
+@pytest.mark.network
 def test_find_axis_name_dim_coord_name(test_var):
     """Test getting axis name using the dimension coordinate name identifier."""
     assert test_var.metpy.find_axis_name('isobaric') == 'isobaric'
 
 
+@pytest.mark.network
 def test_find_axis_name_bad_identifier(test_var):
     """Test getting axis name using the axis type identifier."""
     with pytest.raises(ValueError) as exc:
@@ -675,21 +698,25 @@ def test_find_axis_name_bad_identifier(test_var):
     assert 'axis is not valid' in str(exc.value)
 
 
+@pytest.mark.network
 def test_find_axis_number_integer(test_var):
     """Test getting axis number using the axis number identifier."""
     assert test_var.metpy.find_axis_number(2) == 2
 
 
+@pytest.mark.network
 def test_find_axis_number_axis_type(test_var):
     """Test getting axis number using the axis type identifier."""
     assert test_var.metpy.find_axis_number('vertical') == 1
 
 
+@pytest.mark.network
 def test_find_axis_number_dim_coord_number(test_var):
     """Test getting axis number using the dimension coordinate name identifier."""
     assert test_var.metpy.find_axis_number('isobaric') == 1
 
 
+@pytest.mark.network
 def test_find_axis_number_bad_identifier(test_var):
     """Test getting axis number using the axis type identifier."""
     with pytest.raises(ValueError) as exc:
@@ -697,12 +724,14 @@ def test_find_axis_number_bad_identifier(test_var):
     assert 'axis is not valid' in str(exc.value)
 
 
+@pytest.mark.network
 def test_data_array_loc_get_with_units(test_var):
     """Test the .loc indexer on the metpy accessor."""
     truth = test_var.loc[:, 850.]
     assert truth.identical(test_var.metpy.loc[:, 8.5e4 * units.Pa])
 
 
+@pytest.mark.network
 def test_data_array_loc_set_with_units(test_var):
     """Test the .loc indexer on the metpy accessor for setting."""
     temperature = test_var.copy()
@@ -711,24 +740,28 @@ def test_data_array_loc_set_with_units(test_var):
     assert not np.isnan(temperature.loc[:, 700.]).any()
 
 
+@pytest.mark.network
 def test_data_array_loc_with_ellipsis(test_var):
     """Test the .loc indexer using multiple Ellipses to verify expansion behavior."""
     truth = test_var[:, :, -1, :]
     assert truth.identical(test_var.metpy.loc[..., 711.3653535503963 * units.km, ...])
 
 
+@pytest.mark.network
 def test_data_array_loc_non_tuple(test_var):
     """Test the .loc indexer with a non-tuple indexer."""
     truth = test_var[-1]
     assert truth.identical(test_var.metpy.loc['1987-04-04T18:00'])
 
 
+@pytest.mark.network
 def test_data_array_loc_too_many_indices(test_var):
     """Test the .loc indexer when too many indices are given."""
     with pytest.raises(IndexError):
         test_var.metpy.loc[:, 8.5e4 * units.Pa, :, :, :]
 
 
+@pytest.mark.network
 def test_data_array_sel_dict_with_units(test_var):
     """Test .sel on the metpy accessor with dictionary."""
     truth = test_var.squeeze().loc[500.]
@@ -736,6 +769,7 @@ def test_data_array_sel_dict_with_units(test_var):
                                                'isobaric': 5e4 * units.Pa}))
 
 
+@pytest.mark.network
 def test_data_array_sel_kwargs_with_units(test_var):
     """Test .sel on the metpy accessor with kwargs and axis type."""
     truth = test_var.loc[:, 500.][..., 122]
@@ -748,6 +782,7 @@ def test_data_array_sel_kwargs_with_units(test_var):
     assert truth.identical(selection)
 
 
+@pytest.mark.network
 def test_dataset_loc_with_units(test_ds):
     """Test .loc on the metpy accessor for Datasets using slices."""
     truth = test_ds[{'isobaric': slice(6, 17)}]
@@ -755,6 +790,7 @@ def test_dataset_loc_with_units(test_ds):
                                                                 5e4 * units.Pa)}])
 
 
+@pytest.mark.network
 def test_dataset_sel_kwargs_with_units(test_ds):
     """Test .sel on the metpy accessor for Datasets with kwargs."""
     truth = test_ds[{'time': 0, 'y': 50, 'x': 122}]
@@ -763,6 +799,7 @@ def test_dataset_sel_kwargs_with_units(test_ds):
                                              method='nearest'))
 
 
+@pytest.mark.network
 def test_dataset_sel_non_dict_pos_arg(test_ds):
     """Test that .sel errors when first positional argument is not a dict."""
     with pytest.raises(ValueError) as exc:
@@ -770,6 +807,7 @@ def test_dataset_sel_non_dict_pos_arg(test_ds):
     assert 'must be a dictionary' in str(exc.value)
 
 
+@pytest.mark.network
 def test_dataset_sel_mixed_dict_and_kwarg(test_ds):
     """Test that .sel errors when dict positional argument and kwargs are mixed."""
     with pytest.raises(ValueError) as exc:
@@ -778,12 +816,14 @@ def test_dataset_sel_mixed_dict_and_kwarg(test_ds):
     assert 'cannot specify both keyword and positional arguments' in str(exc.value)
 
 
+@pytest.mark.network
 def test_dataset_loc_without_dict(test_ds):
     """Test that .metpy.loc for Datasets raises error when used with a non-dict."""
     with pytest.raises(TypeError):
         test_ds.metpy.loc[:, 700 * units.hPa]
 
 
+@pytest.mark.network
 def test_dataset_parse_cf_keep_attrs(test_ds):
     """Test that .parse_cf() does not remove attributes on the parsed dataset."""
     parsed_ds = test_ds.metpy.parse_cf()
@@ -799,6 +839,7 @@ def test_check_axis_with_bad_unit(test_ds_generic):
     assert not check_axis(var, 'x', 'y', 'vertical', 'time')
 
 
+@pytest.mark.network
 def test_dataset_parse_cf_varname_list(test_ds):
     """Test that .parse_cf() returns correct subset of dataset when given list of vars."""
     full_ds = test_ds.copy().metpy.parse_cf()
@@ -854,6 +895,7 @@ def test_one_dimensional_lat_lon(test_ds_generic):
     assert var['e'].identical(var.metpy.longitude)
 
 
+@pytest.mark.network
 def test_auxilary_lat_lon_with_xy(test_var_multidim_full):
     """Test that auxiliary lat/lon coord identification works with other x/y coords present."""
     assert test_var_multidim_full['y'].identical(test_var_multidim_full.metpy.y)
@@ -862,12 +904,14 @@ def test_auxilary_lat_lon_with_xy(test_var_multidim_full):
     assert test_var_multidim_full['lon'].identical(test_var_multidim_full.metpy.longitude)
 
 
+@pytest.mark.network
 def test_auxilary_lat_lon_without_xy(test_var_multidim_no_xy):
     """Test that multidimensional lat/lon are recognized in absence of x/y coords."""
     assert test_var_multidim_no_xy['lat'].identical(test_var_multidim_no_xy.metpy.latitude)
     assert test_var_multidim_no_xy['lon'].identical(test_var_multidim_no_xy.metpy.longitude)
 
 
+@pytest.mark.network
 def test_auxilary_lat_lon_without_xy_as_xy(test_var_multidim_no_xy):
     """Test that the pre-v1.0 behavior of multidimensional lat/lon errors."""
     with pytest.raises(AttributeError):
