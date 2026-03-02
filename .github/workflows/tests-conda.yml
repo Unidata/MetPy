@@ -71,7 +71,7 @@ jobs:
           persist-credentials: false
 
       - name: Download coverage artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
 
       - name: Upload coverage
         uses: codecov/codecov-action@v5
