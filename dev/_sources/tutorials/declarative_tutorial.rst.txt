@@ -516,7 +516,7 @@ to plot the figure; similar to what you would do for a gridded plot.
            'dew_point_temperature', 'altimeter', 'current_wx1_symbol',
            'current_wx2_symbol', 'current_wx3_symbol', 'remarks',
            'air_pressure_at_sea_level', 'eastward_wind', 'northward_wind'],
-          dtype='object')
+          dtype='str')
 
 
 
@@ -897,7 +897,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 10.011 seconds)
+   **Total running time of the script:** (0 minutes 11.716 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
