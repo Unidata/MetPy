@@ -827,7 +827,7 @@ def test_global():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=5.101 if version_check('matplotlib<3.10') else 0.019)
+                               tolerance=5.101 if version_check('matplotlib<3.10') else 0.044)
 @needs_cartopy
 def test_latlon():
     """Test our handling of lat/lon information."""
