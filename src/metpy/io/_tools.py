@@ -53,7 +53,7 @@ def open_as_needed(filename, mode='rb'):
     elif filename.endswith('.gz'):
         return gzip.GzipFile(filename, mode)
     else:
-        kwargs = {'errors': 'surrogateescape'} if mode != 'rb' else {}
+        kwargs = {'errors': 'replace'} if mode != 'rb' else {}
         return open(filename, mode, **kwargs)  # noqa: SIM115
 
 
