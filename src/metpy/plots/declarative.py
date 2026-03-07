@@ -1000,7 +1000,7 @@ class ImagePlot(PlotScalar, ColorfillTraits, ValidationMixin):
         # At least currently imshow with cartopy does not like this
         if 'degree' in x_like.units:
             x_like = x_like.data
-            x_like[x_like > 180] -= 360
+            x_like = np.where(x_like > 180 , x_like - 360, x_like)
 
         return x_like, self.griddata[self.griddata.dims[0]], self.griddata
 
