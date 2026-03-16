@@ -1,5 +1,5 @@
 matplotlib==3.10.8
-numpy==2.4.2
+numpy==2.4.3
 pandas==3.0.1
 pooch==1.9.0
 pint==0.25.2
