@@ -63,6 +63,7 @@ jobs:
     runs-on: ubuntu-slim
     environment:
       name: CodeCov
+      deployment: false
     timeout-minutes: 2
     steps:
       - name: Checkout source

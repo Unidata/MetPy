@@ -63,6 +63,7 @@ jobs:
     needs: Docs
     environment:
       name: github-pages
+      deployment: false
     runs-on: ubuntu-slim
     env:
       DOC_VERSION: dev
@@ -101,6 +102,7 @@ jobs:
     name: "Manage doc versions"
     environment:
       name: github-pages
+      deployment: false
     runs-on: ubuntu-slim
     permissions:
       contents: write
