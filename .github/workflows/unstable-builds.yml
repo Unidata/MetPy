@@ -13,6 +13,8 @@ on:
 jobs:
   Tests:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       result: ${{ steps.tests.outcome }}
     steps:
@@ -55,6 +57,8 @@ jobs:
 
   Docs:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       result: ${{ steps.build.outcome }}
     steps:

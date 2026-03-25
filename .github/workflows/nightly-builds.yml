@@ -22,6 +22,8 @@ on:
 
 jobs:
   Builds:
+    permissions:
+      contents: read
     uses: ./.github/workflows/unstable-builds.yml
 
   Report:

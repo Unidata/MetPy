@@ -22,6 +22,8 @@ jobs:
   CondaTests:
     name: ${{ matrix.os }} ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}-latest
+    permissions:
+      contents: read
     defaults:
       run:
         shell: bash -l {0}
@@ -61,6 +63,8 @@ jobs:
     name: CodeCov Upload
     needs: CondaTests
     runs-on: ubuntu-slim
+    permissions:
+      contents: read
     environment:
       name: CodeCov
       deployment: false

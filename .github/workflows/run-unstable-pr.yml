@@ -13,4 +13,6 @@ jobs:
     if: |
       ((github.event.action == 'labeled' && github.event.label.name == 'nightly-ci') ||
        contains(github.event.pull_request.labels.*.name, 'nightly-ci'))
+    permissions:
+      contents: read
     uses: ./.github/workflows/unstable-builds.yml

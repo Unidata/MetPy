@@ -6,7 +6,6 @@ on:
     types: [opened, synchronize, reopened, labeled] #defaults and when labeled
   workflow_dispatch:
 
-
 concurrency:
   group: ${{ github.workflow}}-${{ github.head_ref }}
   cancel-in-progress: true
@@ -14,6 +13,8 @@ concurrency:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     #sets only to run when the GitHub PR is labeled with 'benchmark'
     if: contains(github.event.pull_request.labels.*.name, 'benchmark')
     timeout-minutes: 20  #times out after 20 minutes

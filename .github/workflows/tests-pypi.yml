@@ -22,6 +22,8 @@ jobs:
   PyPITests:
     name: ${{ matrix.python-version }} ${{ matrix.dep-versions }} ${{ matrix.no-extras }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -87,6 +89,8 @@ jobs:
     needs: PyPITests
     name: CodeCov Upload
     runs-on: ubuntu-slim
+    permissions:
+      contents: read
     environment:
       name: CodeCov
       deployment: false
