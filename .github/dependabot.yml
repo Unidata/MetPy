@@ -6,6 +6,8 @@ updates:
     directory: "/ci"
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 2
     # Boto3 makes patch releases daily, so ignore those to reduce the noise
     ignore:
       - dependency-name: "boto3"
@@ -32,6 +34,8 @@ updates:
     directory: "/ci-dev"
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 2
     # We don't need to worry about updating to every patch release of dev tools
     ignore:
       - dependency-name: "*"
@@ -59,6 +63,8 @@ updates:
       - "/.github/actions/*"
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 2
     open-pull-requests-limit: 10
     pull-request-branch-name:
       separator: "-"

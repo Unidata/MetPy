@@ -59,7 +59,7 @@ runs:
 
     - name: Upload docs as artifact
       if: ${{ always() && inputs.key != '' }}
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
       with:
         name: ${{ inputs.key }}-docs
         path: |

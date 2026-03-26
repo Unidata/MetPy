@@ -13,11 +13,13 @@ on:
 jobs:
   Tests:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       result: ${{ steps.tests.outcome }}
     steps:
     - name: Checkout source
-      uses: actions/checkout@v6
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 150
         fetch-tags: true
@@ -47,7 +49,7 @@ jobs:
 
     - name: Upload test log
       if: failure()
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
       with:
         name: log-nightly-tests
         path: tests-nightly.log
@@ -55,11 +57,13 @@ jobs:
 
   Docs:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       result: ${{ steps.build.outcome }}
     steps:
     - name: Checkout source
-      uses: actions/checkout@v6
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 150
         fetch-tags: true
@@ -86,7 +90,7 @@ jobs:
 
     - name: Upload build log
       if: failure()
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
       with:
         name: log-nightly-docs
         path: |
