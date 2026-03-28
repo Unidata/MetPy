@@ -301,7 +301,14 @@ To run these tests, use:
 
 ```sh
 pytest --mpl
-````
+```
+
+To run tests in parallel, use `-n <number_of_processes>` or `-n auto` (using `pytest-xdist`):
+
+```sh
+pytest --mpl -n auto
+pytest --mpl -n 2
+```
 
 When adding new image comparison tests, start by creating the baseline images for the tests:
 
