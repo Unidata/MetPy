@@ -9,7 +9,7 @@ permissions:
 jobs:
   verify-pinned-actions:
     name: Verify Pinned Actions
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: lesserwhirls/pinned-actions-verifier@ec04596d2fb5dfff128633b505a274a2d48bb298
