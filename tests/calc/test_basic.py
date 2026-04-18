@@ -818,7 +818,7 @@ def test_station_to_sea_level_pressure_basic():
     temp = 30 * units.degC
     # Based on the inverse of the existing test truth
     expected_mslp = 1006.089 * units.hPa
-    
+
     res = station_to_sea_level_pressure(p_station, elev, temp)
     assert_almost_equal(res, expected_mslp, 2)
 
@@ -828,11 +828,11 @@ def test_altimeter_round_trip(array_type):
     # Use a range of values to ensure the 0.3 hPa offset is handled correctly everywhere
     altim_start = array_type([29.92, 30.00, 31.00], 'inHg')
     elev = array_type([0, 1000, 2000], 'meter')
-    
+
     # Forward then Backward
     intermediate_p = altimeter_to_station_pressure(altim_start, elev)
     final_altim = station_pressure_to_altimeter(intermediate_p, elev)
-    
+
     assert_array_almost_equal(altim_start, final_altim, 4)
 
 
