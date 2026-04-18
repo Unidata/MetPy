@@ -8,32 +8,14 @@ import pandas as pd
 import pytest
 import xarray as xr
 
-from metpy.calc import (
-    add_height_to_pressure,
-    add_pressure_to_height,
-    altimeter_to_sea_level_pressure,
-    altimeter_to_station_pressure,
-    apparent_temperature,
-    coriolis_parameter,
-    geopotential_to_height,
-    heat_index,
-    height_to_geopotential,
-    height_to_pressure_std,
-    pressure_to_height_std,
-    sigma_to_pressure,
-    smooth_circular,
-    smooth_gaussian,
-    smooth_n_point,
-    smooth_rectangular,
-    smooth_window,
-    station_pressure_to_altimeter,
-    station_to_sea_level_pressure,
-    wind_components,
-    wind_direction,
-    wind_speed,
-    windchill,
-    zoom_xarray,
-)
+from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
+                        altimeter_to_sea_level_pressure, altimeter_to_station_pressure,
+                        apparent_temperature, coriolis_parameter, geopotential_to_height,
+                        heat_index, height_to_geopotential, height_to_pressure_std,
+                        pressure_to_height_std, sigma_to_pressure, smooth_circular,
+                        smooth_gaussian, smooth_n_point, smooth_rectangular, smooth_window,
+                        station_pressure_to_altimeter, station_to_sea_level_pressure,
+                        wind_components, wind_direction, wind_speed, windchill, zoom_xarray)
 from metpy.cbook import get_test_data
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
@@ -828,6 +810,7 @@ def test_station_pressure_to_altimeter_hpa(array_type):
     res = station_pressure_to_altimeter(station_pressure, elev)
     truth = array_type([1000., 1005., 1010., 1013.], 'hectopascal', mask=mask)
     assert_array_almost_equal(res, truth, 3)
+
 
 def test_station_to_sea_level_pressure_basic():
     """Test MSLP calculation with standard values."""
