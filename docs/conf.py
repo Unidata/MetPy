@@ -63,8 +63,7 @@ sphinx_gallery_conf = {
 }
 
 # By default, only generate all the areas when running on a release CI job
-metpy_generate_all_areas = (not os.environ.get('GITHUB_REF', '').startswith('refs/pull')
-                            and sys.version_info < (3, 12))
+metpy_generate_all_areas = not os.environ.get('GITHUB_REF', '').startswith('refs/pull')
 
 # Turn off code and image links for embedded mpl plots
 plot_html_show_source_link = False
