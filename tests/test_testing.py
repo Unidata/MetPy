@@ -66,3 +66,12 @@ def test_module_version_check_invalid_comparison():
     """Test invalid operator in version comparison."""
     with pytest.raises(ValueError, match='Comparison operator << '):
         version_check('numpy << 36')
+
+
+def test_coverage_for_rtol_atol():
+    """Test to ensure the rtol/atol logic paths are covered."""
+    a = np.array([1.0, 2.0])
+    b = np.array([1.00001, 2.00001])
+    
+    assert_array_almost_equal(a, b, rtol=1e-4)
+    assert_array_almost_equal(a, b, atol=1e-4)
