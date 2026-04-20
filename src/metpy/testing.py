@@ -323,7 +323,7 @@ def assert_array_almost_equal(actual, desired, decimal=7, rtol=None, atol=None):
     check_mask(actual, desired)
     if rtol is not None or atol is not None:
         numpy.testing.assert_allclose(actual, desired, rtol=rtol or 0, atol=atol or 0)
-    else:    
+    else:
         numpy.testing.assert_array_almost_equal(actual, desired, decimal)
 
 
