@@ -58,6 +58,10 @@ information on how to contribute can be found by checking out
 the [Contributors Guide](https://github.com/Unidata/MetPy/blob/main/CONTRIBUTING.md)
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 

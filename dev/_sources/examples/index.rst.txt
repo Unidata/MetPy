@@ -16,6 +16,10 @@ General Examples
 Examples of using a variety of MetPy's functionality together.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
@@ -184,6 +188,10 @@ Calculations
 
 Examples using various calculation functions from MetPy.
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html
@@ -579,6 +587,10 @@ File Formats
 Examples using MetPy's support for reading various file formats.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
@@ -649,6 +661,10 @@ Gridding
 
 Examples generating a grid of data from scattered point observations.
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html
@@ -754,6 +770,10 @@ Plotting
 
 Examples using MetPy's various specialty plotting routines.
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html
@@ -1064,6 +1084,10 @@ Remote Data
 Examples using MetPy's clients for accessing data from remote data sources, like
 public AWS S3 buckets.
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html

@@ -10,6 +10,10 @@ Gridding
 Examples generating a grid of data from scattered point observations.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 

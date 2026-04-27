@@ -10,6 +10,10 @@ Calculations
 Examples using various calculation functions from MetPy.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 

@@ -10,6 +10,10 @@ File Formats
 Examples using MetPy's support for reading various file formats.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 

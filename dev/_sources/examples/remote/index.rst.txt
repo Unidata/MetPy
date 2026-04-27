@@ -11,6 +11,10 @@ Examples using MetPy's clients for accessing data from remote data sources, like
 public AWS S3 buckets.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 

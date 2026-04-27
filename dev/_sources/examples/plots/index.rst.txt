@@ -10,6 +10,10 @@ Plotting
 Examples using MetPy's various specialty plotting routines.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
