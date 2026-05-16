@@ -50,6 +50,7 @@ print(cross)
 # For this example, we will be plotting potential temperature, relative humidity, and
 # tangential/normal winds. And so, we need to calculate those, and add them to the dataset:
 
+# Temperature is in Kelvin for NARR data
 cross['Potential_temperature'] = mpcalc.potential_temperature(
     cross['isobaric'],
     cross['Temperature']
