@@ -10,8 +10,8 @@ import pytest
 
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            assert_nan)
-from metpy.units import (UndefinedUnitError, check_units, concatenate, is_quantity,
-                         pandas_dataframe_to_unit_arrays, units)
+from metpy.units import (UndefinedUnitError, check_units, concatenate,
+                         is_quantity, pandas_dataframe_to_unit_arrays, units)
 
 
 def test_concatenate():
@@ -238,6 +238,7 @@ def test_percent_units():
 def test_udunits_power_syntax(unit_str, pint_unit):
     """Test that UDUNITS style powers are properly parsed and interpreted."""
     assert units(unit_str).to_base_units().units == pint_unit
+
 
 def test_unsupported_udunits_power_fails():
     """Test that removing the spaces between factors causes parsing to fail.
