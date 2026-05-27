@@ -10,7 +10,7 @@ import pytest
 
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            assert_nan)
-from metpy.units import (check_units, concatenate, is_quantity,
+from metpy.units import (UndefinedUnitError, check_units, concatenate, is_quantity,
                          pandas_dataframe_to_unit_arrays, units)
 
 
@@ -231,9 +231,18 @@ def test_percent_units():
             marks=pytest.mark.xfail(reason='hgrecco/pint#1485')
         ),
         ('(J kg-1)(m s-1)(-1)', units.m ** 3 / units.s ** 3),
-        ('/s', units.s ** -1)
+        ('/s', units.s ** -1),
+        ('feet_H2O', units.kg / units.m / units.s ** 2)
     )
 )
 def test_udunits_power_syntax(unit_str, pint_unit):
     """Test that UDUNITS style powers are properly parsed and interpreted."""
     assert units(unit_str).to_base_units().units == pint_unit
+
+def test_unsupported_udunits_power_fails():
+    """Test that removing the spaces between factors causes parsing to fail.
+
+    UDUnits does not support this either.
+    """
+    with pytest.raises(UndefinedUnitError):
+        assert units('m2s-2').to_base_units.units == units.m ** 2 / units.s ** 2
