@@ -847,7 +847,7 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
 def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoint_start=None,
-        which='top'):
+        which='top', lcl_pressure=None, lcl_temperature=None):
     r"""Calculate the level of free convection (LFC).
 
     This works by finding the first intersection of the ideal parcel path and
@@ -881,6 +881,18 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
         'bottom' returns the highest-pressure LFC,
         'wide' returns the LFC whose corresponding EL is farthest away,
         'most_cape' returns the LFC that results in the most CAPE in the profile.
+
+    lcl_pressure: `pint.Quantity`, optional
+        Pressure of the parcel's lifting condensation level (LCL). If not provided, it is
+        computed from ``parcel_temperature_profile`` and ``dewpoint_start``. Supplying it is
+        useful when ``temperature`` and ``parcel_temperature_profile`` are virtual
+        temperatures (as in :func:`cape_cin`), so that the LCL is computed from the actual
+        temperatures rather than the virtual ones. Must be given together with
+        ``lcl_temperature``.
+
+    lcl_temperature: `pint.Quantity`, optional
+        Temperature of the parcel's lifting condensation level (LCL), used alongside
+        ``lcl_pressure`` when the LFC coincides with the LCL.
 
     Returns
     -------
@@ -951,8 +963,13 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
         x, y = find_intersections(pressure, parcel_temperature_profile,
                                   temperature, direction='increasing', log_x=True)
 
-    # Compute LCL for this parcel for future comparisons
-    this_lcl = lcl(pressure[0], parcel_temperature_profile[0], dewpoint_start)
+    # Compute LCL for this parcel for future comparisons. Allow the caller to supply a
+    # precomputed LCL so it can be based on the actual (not virtual) temperatures when the
+    # temperature profiles passed in are virtual temperatures (see cape_cin).
+    if lcl_pressure is None:
+        this_lcl = lcl(pressure[0], parcel_temperature_profile[0], dewpoint_start)
+    else:
+        this_lcl = (lcl_pressure, lcl_temperature)
 
     # The LFC could:
     # 1) Not exist
@@ -1067,7 +1084,8 @@ def _most_cape_option(intersect_type, p_list, t_list, pressure, temperature, dew
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='top'):
+def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='top',
+       lcl_pressure=None):
     r"""Calculate the equilibrium level.
 
     This works by finding the last intersection of the ideal parcel path and
@@ -1095,6 +1113,13 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
         'bottom' returns the highest-pressure EL.
         'wide' returns the EL whose corresponding LFC is farthest away.
         'most_cape' returns the EL that results in the most CAPE in the profile.
+
+    lcl_pressure: `pint.Quantity`, optional
+        Pressure of the parcel's lifting condensation level (LCL). If not provided, it is
+        computed from ``temperature`` and ``dewpoint``. Supplying it is useful when
+        ``temperature`` and ``parcel_temperature_profile`` are virtual temperatures (as in
+        :func:`cape_cin`), so that the LCL is computed from the actual temperatures rather
+        than the virtual ones.
 
     Returns
     -------
@@ -1163,7 +1188,12 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
     # and reassigned to allow np.log() to function properly.
     x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:],
                               direction='decreasing', log_x=True)
-    lcl_p, _ = lcl(pressure[0], temperature[0], dewpoint[0])
+    # Allow the caller to supply a precomputed LCL pressure so it can be based on the actual
+    # (not virtual) temperatures when the temperature profiles passed in are virtual
+    # temperatures (see cape_cin).
+    if lcl_pressure is None:
+        lcl_pressure, _ = lcl(pressure[0], temperature[0], dewpoint[0])
+    lcl_p = lcl_pressure
     if len(x) > 0 and x[-1] < lcl_p:
         idx = x < lcl_p
         return _multiple_el_lfc_options(x, y, idx, which, pressure,
@@ -2825,7 +2855,10 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
                                                                    dewpoint, parcel_profile)
 
-    pressure_lcl, _ = lcl(pressure[0], temperature[0], dewpoint[0])
+    # Compute the LCL from the actual temperatures, before they are replaced below by
+    # virtual temperatures. This is passed to lfc/el so they do not recompute the LCL from
+    # the virtual temperatures (see GH #3857).
+    pressure_lcl, temperature_lcl = lcl(pressure[0], temperature[0], dewpoint[0])
     below_lcl = pressure > pressure_lcl
 
     # The mixing ratio of the parcel comes from the dewpoint below the LCL, is saturated
@@ -2840,9 +2873,11 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     temperature = virtual_temperature_from_dewpoint(pressure, temperature, dewpoint)
     parcel_profile = virtual_temperature(parcel_profile, parcel_mixing_ratio)
 
-    # Calculate LFC limit of integration
+    # Calculate LFC limit of integration. The LCL is supplied from the actual-temperature
+    # computation above so it is not recomputed from the virtual temperatures.
     lfc_pressure, _ = lfc(pressure, temperature, dewpoint,
-                          parcel_temperature_profile=parcel_profile, which=which_lfc)
+                          parcel_temperature_profile=parcel_profile, which=which_lfc,
+                          lcl_pressure=pressure_lcl, lcl_temperature=temperature_lcl)
 
     # If there is no LFC, no need to proceed.
     if np.isnan(lfc_pressure):
@@ -2850,9 +2885,10 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     else:
         lfc_pressure = lfc_pressure.magnitude
 
-    # Calculate the EL limit of integration
+    # Calculate the EL limit of integration (LCL supplied as above).
     el_pressure, _ = el(pressure, temperature, dewpoint,
-                        parcel_temperature_profile=parcel_profile, which=which_el)
+                        parcel_temperature_profile=parcel_profile, which=which_el,
+                        lcl_pressure=pressure_lcl)
 
     # No EL and we use the top reading of the sounding.
     el_pressure = pressure[-1].magnitude if np.isnan(el_pressure) else el_pressure.magnitude
