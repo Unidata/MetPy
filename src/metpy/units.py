@@ -56,7 +56,7 @@ def _fix_udunits_div(string):
 
 # Fix UDUNITS-style powers, percent signs, and ill-defined units
 _UDUNIT_POWER = re.compile(r'(?<=[A-Za-z\)])(?![A-Za-z\)])'
-                           r'(?<![0-9\-][eE])(?<![0-9\-])(?=[0-9\-])')
+                           r'(?<![0-9\-][eE])(?<![0-9\-])(?=-?[0-9]+([ )]|$))')
 _unit_preprocessors = [_fix_udunits_powers, lambda string: string.replace('%', 'percent'),
                        _fix_udunits_div]
 
