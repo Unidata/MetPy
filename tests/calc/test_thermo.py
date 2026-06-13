@@ -2379,9 +2379,61 @@ def test_cape_cin_value_error():
                          -35.9, -26.7, -37.7, -43.1, -33.9, -40.9, -46.1, -34.9, -33.9,
                          -33.7, -33.3, -42.5, -50.3, -49.7, -49.5, -58.3, -61.3]) * units.degC
     cape, cin = surface_based_cape_cin(pressure, temperature, dewpoint)
-    expected_cape, expected_cin = 2161.912443 * units('joules/kg'), 0.0 * units('joules/kg')
+    # The LFC for this profile is floored at the LCL; with the LCL now computed from the
+    # actual (not virtual) temperatures (GH #3857) the LFC moves to the correct, higher
+    # pressure, widening the integration range and increasing CAPE from the prior 2161.912.
+    expected_cape, expected_cin = 2206.730694 * units('joules/kg'), 0.0 * units('joules/kg')
     assert_almost_equal(cape, expected_cape, 3)
     assert_almost_equal(cin, expected_cin, 3)
+
+
+def test_lfc_el_lcl_from_actual_temperature():
+    """Test that lfc and el base the LCL on actual, not virtual, temperatures (GH #3857).
+
+    ``cape_cin`` replaces the temperature profiles with virtual temperatures before calling
+    ``lfc``/``el``. Since virtual temperature exceeds temperature, recomputing the LCL from
+    those profiles puts it at too low a pressure (too high an altitude), which in turn
+    biases the LFC and EL upward. The ``lcl_pressure``/``lcl_temperature`` keywords let the
+    caller supply the LCL computed from the actual temperatures instead.
+    """
+    pressure = np.array([1000., 925., 850., 800., 700., 600., 500., 400., 300.]) * units.hPa
+    temperature = np.array([28., 22., 16., 13., 6., -2., -12., -25., -40.]) * units.degC
+    dewpoint = np.array([24., 19., 13., 9., 0., -8., -20., -35., -55.]) * units.degC
+    profile = parcel_profile(pressure, temperature[0], dewpoint[0])
+
+    # Reproduce the virtual-temperature profiles cape_cin builds internally.
+    lcl_pressure, lcl_temperature = lcl(pressure[0], temperature[0], dewpoint[0])
+    below_lcl = pressure > lcl_pressure
+    parcel_mixing_ratio = np.where(below_lcl,
+                                   saturation_mixing_ratio(pressure[0], dewpoint[0]),
+                                   saturation_mixing_ratio(pressure, profile))
+    temperature_v = virtual_temperature_from_dewpoint(pressure, temperature, dewpoint)
+    profile_v = virtual_temperature(profile, parcel_mixing_ratio)
+
+    # The LCL recomputed from the virtual parcel temperature is spuriously low (high).
+    lcl_pressure_virtual, _ = lcl(pressure[0], profile_v[0], dewpoint[0])
+    assert lcl_pressure > lcl_pressure_virtual
+
+    # The LFC for this profile is floored at the LCL, so it tracks whichever LCL is used:
+    # without the override it floors at the wrong (virtual) LCL ...
+    lfc_pressure_virtual, _ = lfc(pressure, temperature_v, dewpoint,
+                                  parcel_temperature_profile=profile_v, which='bottom')
+    assert_almost_equal(lfc_pressure_virtual, lcl_pressure_virtual, 5)
+
+    # ... and with the actual-temperature LCL supplied it floors at the correct LCL.
+    lfc_pressure_actual, lfc_temperature_actual = lfc(
+        pressure, temperature_v, dewpoint, parcel_temperature_profile=profile_v,
+        which='bottom', lcl_pressure=lcl_pressure, lcl_temperature=lcl_temperature)
+    assert_almost_equal(lfc_pressure_actual, lcl_pressure, 5)
+    assert_almost_equal(lfc_temperature_actual, lcl_temperature, 5)
+    assert lfc_pressure_actual > lfc_pressure_virtual
+
+    # el likewise honors the supplied LCL when deciding which crossings lie above it.
+    el_default, _ = el(pressure, temperature_v, dewpoint,
+                       parcel_temperature_profile=profile_v)
+    el_with_lcl, _ = el(pressure, temperature_v, dewpoint,
+                        parcel_temperature_profile=profile_v, lcl_pressure=lcl_pressure)
+    assert_almost_equal(el_default, el_with_lcl, 5)
 
 
 def test_lcl_grid_surface_lcls():
