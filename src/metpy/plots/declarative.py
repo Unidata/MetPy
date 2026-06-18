@@ -21,6 +21,7 @@ from traitlets import (Any, Bool, Dict, Float, HasTraits, Instance, Int, List, o
 from . import ctables, wx_symbols
 from .cartopy_utils import import_cartopy
 from .patheffects import ColdFront, OccludedFront, StationaryFront, WarmFront
+from .skewt import SkewT
 from .station_plot import StationPlot
 from .text import scattertext, TextCollection
 from ..calc import reduce_point_density, smooth_n_point, zoom_xarray
@@ -206,8 +207,49 @@ class PanelContainer(MetPyHasTraits, ValidationMixin):
         return copy.copy(self)
 
 
+class PanelTraits(MetPyHasTraits):
+    """Represent common traits for panels."""
+
+    title = Unicode()
+    title.__doc__ = """A string to set a title for the figure.
+
+    This trait sets a user-defined title that will plot at the top center of the figure.
+    """
+
+    title_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
+    title_fontsize.__doc__ = """An integer or string value for the font size of the title of
+    the figure.
+
+    This trait sets the font size for the title that will plot at the top center of the figure.
+    Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
+    'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
+    """
+
+    left_title = Unicode(allow_none=True, default_value=None)
+    left_title.__doc__ = """A string to set a title for the figure with the location on the
+    top left of the figure.
+
+    This trait sets a user-defined title that will plot at the top left of the figure.
+    """
+
+    right_title = Unicode(allow_none=True, default_value=None)
+    right_title.__doc__ = """A string to set a title for the figure with the location on the
+    top right of the figure.
+
+    This trait sets a user-defined title that will plot at the top right of the figure.
+    """
+
+    plots = List(Any())
+    plots.__doc__ = """A list of handles that represent the plots (e.g., `ContourPlot`,
+    `FilledContourPlot`, `ImagePlot`, `SkewPlot`) to put on a given panel.
+
+    This trait collects the different plots, including contours and images, that are intended
+    for a given panel.
+    """
+
+
 @exporter.export
-class MapPanel(Panel, ValidationMixin):
+class MapPanel(Panel, PanelTraits, ValidationMixin):
     """Set figure related elements for an individual panel.
 
     Parameters that need to be set include collecting all plotting types
@@ -227,14 +269,6 @@ class MapPanel(Panel, ValidationMixin):
     the upper-left panel as (2, 2, 1), upper-right as (2, 2, 2), lower-left as (2, 2, 3), and
     lower-right as (2, 2, 4). For more details see the documentation for
     `matplotlib.figure.Figure.add_subplot`.
-    """
-
-    plots = List(Any())
-    plots.__doc__ = """A list of handles that represent the plots (e.g., `ContourPlot`,
-    `FilledContourPlot`, `ImagePlot`) to put on a given panel.
-
-    This trait collects the different plots, including contours and images, that are intended
-    for a given panel.
     """
 
     _need_redraw = Bool(default_value=True)
@@ -321,35 +355,6 @@ class MapPanel(Panel, ValidationMixin):
     An option to set a different alpha for the map layer edge colors. Length of list should
     match that of layers if not using default value. Behavior is to repeat alpha if not enough
     provided by user.
-    """
-
-    title = Unicode()
-    title.__doc__ = """A string to set a title for the figure.
-
-    This trait sets a user-defined title that will plot at the top center of the figure.
-    """
-
-    left_title = Unicode(allow_none=True, default_value=None)
-    left_title.__doc__ = """A string to set a title for the figure with the location on the
-    top left of the figure.
-
-    This trait sets a user-defined title that will plot at the top left of the figure.
-    """
-
-    right_title = Unicode(allow_none=True, default_value=None)
-    right_title.__doc__ = """A string to set a title for the figure with the location on the
-    top right of the figure.
-
-    This trait sets a user-defined title that will plot at the top right of the figure.
-    """
-
-    title_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
-    title_fontsize.__doc__ = """An integer or string value for the font size of the title of
-    the figure.
-
-    This trait sets the font size for the title that will plot at the top center of the figure.
-    Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
-    'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
     """
 
     @validate('area')
@@ -553,6 +558,125 @@ class MapPanel(Panel, ValidationMixin):
 
     def __copy__(self):
         """Return a copy of this MapPanel."""
+        # Create new, blank instance of MapPanel
+        cls = self.__class__
+        obj = cls.__new__(cls)
+
+        # Copy each attribute from current MapPanel to new MapPanel
+        for name in self.trait_names():
+            # The 'plots' attribute is a list.
+            # A copy must be made for each plot in the list.
+            if name == 'plots':
+                obj.plots = [copy.copy(plot) for plot in self.plots]
+            else:
+                setattr(obj, name, getattr(self, name))
+
+        return obj
+
+    def copy(self):
+        """Return a copy of the panel."""
+        return copy.copy(self)
+
+
+@exporter.export
+class SkewtPanel(PanelTraits, Panel):
+    """A class to collect skewt plots and set complete figure related settings (e.g., size)."""
+
+    parent = Instance(PanelContainer, allow_none=True)
+
+    ylimits = Tuple(Int(), Int(), default_value=(1000, 100), allow_none=True)
+    ylimits.__doc__ = """A tuple of y-axis limits to plot the skew-T.
+
+    Order is in higher pressure to lower pressure. Assumption is that y-limit values are
+    hPa."""
+
+    xlimits = Tuple(Int(), Int(), default_value=(-40, 40), allow_none=True)
+    xlimits.__doc__ = """A tuple of x-axis limits to plot the skew-T.
+
+    Order is lower temperature to higher temperature. Assumption is that x-limit values are
+    Celsius."""
+
+    ylabel = Unicode(default_value='pressure [hPa]')
+    ylabel.__doc__ = """A string to plot for the y-axis label.
+
+    Defaults to 'pressure [hPa]'"""
+
+    xlabel = Unicode(default_value='temperature [\N{DEGREE SIGN}C]')
+    xlabel.__doc__ = """A string to plot for the y-axis label.
+
+    Defaults to 'temperature [C]'"""
+
+    @observe('plots')
+    def _plots_changed(self, change):
+        """Handle when our collection of plots changes."""
+        for plot in change.new:
+            plot.parent = self
+            plot.observe(self.refresh, names=('_need_redraw'))
+        self._need_redraw = True
+
+    @observe('parent')
+    def _parent_changed(self, _):
+        """Handle when the parent is changed."""
+        self.ax = None
+
+    @property
+    def ax(self):
+        """Get the :class:`matplotlib.axes.Axes` to draw on.
+
+        Creates a new instance if necessary.
+
+        """
+        # If we haven't actually made an instance yet, make one with the right size and
+        # map projection.
+        if getattr(self, '_ax', None) is None:
+            self._ax = SkewT(self.parent.figure, rotation=45)
+
+        return self._ax
+
+    @ax.setter
+    def ax(self, val):
+        """Set the :class:`matplotlib.axes.Axes` to draw on.
+
+        Clears existing state as necessary.
+
+        """
+        if getattr(self, '_ax', None) is not None:
+            self._ax.cla()
+        self._ax = val
+
+    def refresh(self, changed):
+        """Refresh the drawing if necessary."""
+        self._need_redraw = changed.new
+
+    def draw(self):
+        """Draw the panel."""
+        # Only need to run if we've actually changed.
+        if self._need_redraw:
+
+            skew = self.ax
+
+            # Set the extent as appropriate based on the limits.
+            xmin, xmax = self.xlimits
+            ymax, ymin = self.ylimits
+            skew.ax.set_xlim(xmin, xmax)
+            skew.ax.set_ylim(ymax, ymin)
+            skew.ax.set_xlabel(self.xlabel)
+            skew.ax.set_ylabel(self.ylabel)
+
+            # Draw all of the plots.
+            for p in self.plots:
+                with p.hold_trait_notifications():
+                    p.draw()
+
+            skew.plot_labeled_skewt_lines()
+
+            # Use the set title or generate one.
+            title = self.title or ',\n'.join(plot.name for plot in self.plots)
+            skew.ax.set_title(title, fontsize=self.title_fontsize)
+            self._need_redraw = False
+
+    def __copy__(self):
+        """Return a copy of this SkewPanel."""
         # Create new, blank instance of MapPanel
         cls = self.__class__
         obj = cls.__new__(cls)
@@ -2258,3 +2382,194 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
                 # Plot strengths if provided
                 if strengthvalues is not None:
                     self._draw_strengths(strengthvalues, lon, lat, **kwargs)
+
+
+@exporter.export
+class SkewtPlot(MetPyHasTraits, ValidationMixin):
+    """A class to set plot charactersitics of skewt data."""
+
+    temperature_variable = List(Unicode())
+    temperature_variable.__doc__ = """A list of string names for plotting variables from
+    dictinary-like object.
+
+    No order in particular is needed, however, to shade cape or cin the order of temperature,
+    dewpoint temperature, parcel temperature is required."""
+
+    vertical_variable = Unicode()
+    vertical_variable.__doc__ = """A string with the vertical variable name (e.g., 'pressure').
+
+    """
+
+    linecolor = List(Unicode(default_value='black'))
+    linecolor.__doc__ = """A list of color names corresponding to the parameters in
+    `temperature_variables`.
+
+    A list of the same length as `temperature_variables` is preferred, otherwise, colors will
+    repeat. The default value is 'black'."""
+
+    linestyle = List(Unicode(default_value='solid'))
+    linestyle.__doc__ = """A list of line style names corresponding to the parameters in
+    `temperature_variables`.
+
+    A list of the same length as `temperature_variables` is preferred, otherwise, colors will
+    repeat. The default value is 'solid'."""
+
+    linewidth = List(Union([Int(), Float()]), default_value=[1])
+    linewidth.__doc__ = """A list of linewidth values corresponding to the parameters in
+    `temperature_variables`.
+
+    A list of the same length as `temperature_variables` is preferred, otherwise, colors will
+    repeat. The default value is 1."""
+
+    shade_cape = Bool(default_value=False)
+    shade_cape.__doc__ = """A boolean (True/False) on whether to shade the CAPE for the
+    sounding.
+
+    This parameter uses the default settings from MetPy for plotting CAPE. In order to shade
+    CAPE, the `temperature_variables` attribute must be in the order of temperature, dewpoint
+    temperature, parcel temperature. The default value is `False`."""
+
+    shade_cin = Bool(default_value=False)
+    shade_cin.__doc__ = """A boolean (True/False) on whether to shade the CIN for the sounding.
+
+    This parameter uses the default settings from MetPy for plotting CIN using the dewpoint,
+    so only the CIN between the surface and the LFC is filled. In order to shade CIN, the
+    `temperature_variables` attribute must be in the order of temperature, dewpoint
+    temperature, parcel temperature. The default value is `False`."""
+
+    wind_barb_variables = List(default_value=[None], allow_none=True)
+    wind_barb_variables.__doc__ = """A list of string names of the u- and v-components of the
+    wind.
+
+    This attribute requires two string names in the order u-component, v-component for those
+    respective variables stored in the dictionary-like object."""
+
+    wind_barb_color = Unicode('black', allow_none=True)
+    wind_barb_color.__doc__ = """A string declaring the name of the color to plot the wind
+    barbs.
+
+    The default value is 'black'."""
+
+    wind_barb_length = Int(default_value=7, allow_none=True)
+    wind_barb_length.__doc__ = """An integer value for defining the size of the wind barbs.
+
+    The default value is 7."""
+
+    wind_barb_skip = Int(default_value=1)
+    wind_barb_skip.__doc__ = """An integer value for skipping the plotting of wind barbs.
+
+    The default value is 1 (no skipping)."""
+
+    wind_barb_position = Float(default_value=1.0)
+    wind_barb_position.__doc__ = """A float value for defining location of the wind barbs on
+    the plot.
+
+    The float value describes the location in figure space. The default value is 1.0."""
+
+    parent = Instance(Panel)
+    _need_redraw = Bool(default_value=True)
+
+    def clear(self):
+        """Clear the plot.
+
+        Resets all internal state and sets need for redraw.
+
+        """
+        if getattr(self, 'handle', None) is not None:
+            self.handle.ax.cla()
+            self.handle = None
+            self._need_redraw = True
+
+    @observe('parent')
+    def _parent_changed(self, _):
+        """Handle setting the parent object for the plot."""
+        self.clear()
+
+    @observe('temperature_variable', 'vertical_variable', 'wind_barb_variables')
+    def _update_data(self, _=None):
+        """Handle updating the internal cache of data.
+
+        Responds to changes in various subsetting parameters.
+
+        """
+        self._xydata = None
+        self.clear()
+
+    # Can't be a Traitlet because notifications don't work with arrays for traits
+    # notification never happens
+    @property
+    def data(self):
+        """Dictionary-like data that contains the fields to be plotted."""
+        return self._data
+
+    @data.setter
+    def data(self, val):
+        self._data = val
+        self._update_data()
+
+    @property
+    def name(self):
+        """Generate a name for the plot."""
+        ret = ''
+        ret += ' and '.join([self.x_variable])
+        return ret
+
+    @property
+    def xydata(self, var):
+        """Return the internal cached data."""
+        if getattr(self, '_xydata', None) is None:
+            # Use a copy of data so we retain all of the original data passed in unmodified
+            self._xydata = self.data
+        return self._xydata[var]
+
+    def draw(self):
+        """Draw the plot."""
+        if self._need_redraw:
+            if getattr(self, 'handle', None) is None:
+                self._build()
+            self._need_redraw = False
+
+    @observe('linecolor', 'linewidth', 'linestyle', 'wind_barb_color', 'wind_barb_length',
+             'wind_barb_position', 'wind_barb_skip', 'shade_cape', 'shade_cin')
+    def _set_need_rebuild(self, _):
+        """Handle changes to attributes that need to regenerate everything."""
+        # Because matplotlib doesn't let you just change these properties, we need
+        # to trigger a clear and re-call of contour()
+        self.clear()
+
+    def _build(self):
+        """Build the plot by calling needed plotting methods as necessary."""
+        data = self.data
+        y = data[self.vertical_variable]
+        if len(self.temperature_variable) != len(self.linewidth):
+            self.linewidth *= len(self.temperature_variable)
+        if len(self.temperature_variable) != len(self.linecolor):
+            self.linecolor *= len(self.temperature_variable)
+        if len(self.temperature_variable) != len(self.linestyle):
+            self.linestyle *= len(self.temperature_variable)
+        for i in range(len(self.temperature_variable)):
+            x = data[self.temperature_variable[i]]
+
+            self.parent.ax.plot(y, x, self.linecolor[i], linestyle=self.linestyle[i],
+                                linewidth=self.linewidth[i])
+
+        if self.wind_barb_variables[0] is not None:
+            u = data[self.wind_barb_variables[0]]
+            v = data[self.wind_barb_variables[1]]
+            barb_skip = slice(None, None, self.wind_barb_skip)
+            self.parent.ax.plot_barbs(y[barb_skip], u[barb_skip], v[barb_skip],
+                                      y_clip_radius=0, xloc=self.wind_barb_position)
+
+        if self.shade_cape:
+            self.parent.ax.shade_cape(data[self.vertical_variable],
+                                      data[self.temperature_variable[0]],
+                                      data[self.temperature_variable[2]])
+        if self.shade_cin:
+            self.parent.ax.shade_cin(data[self.vertical_variable],
+                                     data[self.temperature_variable[0]],
+                                     data[self.temperature_variable[2]],
+                                     data[self.temperature_variable[1]])
+
+    def copy(self):
+        """Return a copy of the plot."""
+        return copy.copy(self)
