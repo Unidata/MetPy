@@ -1224,6 +1224,87 @@ def altimeter_to_station_pressure(altimeter_value, height):
 
 
 @exporter.export
+@preprocess_and_wrap(wrap_like='station_pressure')
+@check_units('[pressure]', '[length]')
+def station_pressure_to_altimeter(station_pressure, height):
+    r"""Convert station pressure to the altimeter setting.
+
+    This function calculates the altimeter setting, which is the pressure value
+    to which an aircraft altimeter scale is set so that it indicates the
+    altitude above mean sea-level. This is the mathematical inverse of
+    altimeter_to_station_pressure.
+
+    Parameters
+    ----------
+    station_pressure : `pint.Quantity`
+        The atmospheric pressure at the designated station elevation
+
+    height: `pint.Quantity`
+        Elevation of the station measuring pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        The altimeter setting value (in. Hg or hPa)
+
+    Notes
+    -----
+    This function is implemented by inverting the equations from the
+    Smithsonian Handbook (1951) p. 269 used in altimeter_to_station_pressure.
+
+    The 0.3 hPa offset is subtracted from the station pressure before
+    performing the exponentiation to ensure mathematical consistency with
+    the original forward formula.
+    """
+    # Calculate the Poisson constant n (approx. 0.190284)
+    # n = (Rd * gamma) / g
+    n = (mpconsts.Rd * gamma / mpconsts.g).to_base_units()
+
+    # 1. Subtract the 0.3 hPa offset from station pressure first
+    # 2. Raise to power of n
+    # 3. Add the height correction term
+    # 4. Raise the entire result to 1/n
+    return (((station_pressure - units.Quantity(0.3, 'hPa')) ** n
+             + ((p0.to(station_pressure.units) ** n * gamma * height) / t0)) ** (1 / n))
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='station_pressure')
+@check_units('[pressure]', '[length]', '[temperature]')
+def station_to_sea_level_pressure(station_pressure, height, temperature):
+    r"""Convert station pressure to sea level pressure (MSLP).
+
+    This function calculates the Mean Sea Level Pressure (MSLP) using the
+    station pressure, the station elevation, and the current temperature.
+    This follows the requirements for atmospheric pressure reduction.
+
+    Parameters
+    ----------
+    station_pressure : `pint.Quantity`
+        The atmospheric pressure measured at the station
+
+    height : `pint.Quantity`
+        The elevation of the station
+
+    temperature : `pint.Quantity`
+        The air temperature at the station
+
+    Returns
+    -------
+    `pint.Quantity`
+        The calculated sea level pressure
+
+    Notes
+    -----
+    The formula used is a variation of the hypsometric equation:
+    .. math:: P_{slp} = P_s \exp \left( \frac{g \cdot H}{R_d \cdot \bar{T}} \right)
+    """
+    # Rd is the gas constant for dry air, g is acceleration due to gravity
+    # These are typically pulled from metpy.constants
+    return station_pressure * np.exp((mpconsts.g * height) / (mpconsts.Rd * temperature))
+
+
+@exporter.export
 @preprocess_and_wrap(wrap_like='altimeter_value')
 @check_units('[pressure]', '[length]', '[temperature]')
 def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
