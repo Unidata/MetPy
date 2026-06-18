@@ -29,6 +29,16 @@ t0 = units.Quantity(288., 'kelvin')
 p0 = units.Quantity(1013.25, 'hPa')
 gamma = units.Quantity(6.5, 'K/km')
 
+# Values according to the 1976 U.S. Standard atmosphere [NOAA1976]_.
+# List of tuples (height, temperature, pressure, temperature gradient)
+_STANDARD_ATMOSPHERE = list(
+    zip(units.Quantity([0, 11, 20, 32, 47, 51, 71], 'km'),
+        units.Quantity([288.15, 216.65, 216.65, 228.65, 270.65, 270.65, 214.65], 'K'),
+        units.Quantity([101325, 22632.1, 5474.89, 868.019, 110.906, 66.9389, 3.95642], 'Pa'),
+        units.Quantity([0.0065, 0, -0.001, -0.0028, 0, 0.0028, float('NAN')], 'K/m')))
+
+_HEIGHT, _TEMPERATURE, _PRESSURE, _TEMPERATURE_GRADIENT = 0, 1, 2, 3
+
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='u')
@@ -442,27 +452,67 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
 @preprocess_and_wrap(wrap_like='pressure')
 @check_units('[pressure]')
 def pressure_to_height_std(pressure):
-    r"""Convert pressure data to height using the U.S. standard atmosphere [NOAA1976]_.
+    r"""Convert pressure to height (km).
 
-    The implementation uses the formula outlined in [Hobbs1977]_ pg.60-61.
+    Conversion of pressure to height (km) with the
+    hydrostatic equation, according to the profile of the
+    1976 U.S. Standard atmosphere [NOAA1976]_.
+    Reference [Kraus2004]_.
 
     Parameters
     ----------
-    pressure : `pint.Quantity`
+    pressure : `pint.Quantity` or `xarray.DataArray`
         Atmospheric pressure
 
     Returns
     -------
-    `pint.Quantity`
-        Corresponding height value(s)
+    `pint.Quantity` or `xarray.DataArray`
+        Corresponding height value(s) (kilometers)
 
     Notes
     -----
-    .. math:: Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]
-
+    .. math:: Z = \begin{cases}
+              Z_0 + \frac{T_0 - T_0 \cdot \exp\left(\frac{\Gamma \cdot R}
+              {g\cdot\log(\frac{p}{p0})}\right)}{\Gamma}&\Gamma \neq 0
+              \\Z_0 - \frac{R \cdot T_0}{g \cdot \log(\frac{p}{p_0})} &\text{else}
+              \end{cases}
     """
-    return (t0 / gamma) * (1 - (pressure / p0).to('dimensionless')**(
-        mpconsts.Rd * gamma / mpconsts.g))
+    is_array = hasattr(pressure.magnitude, '__len__')
+    if not is_array:
+        pressure = units.Quantity([pressure.magnitude], pressure.units)
+
+    # Initialize the return array.
+    is_dask = not hasattr(pressure.magnitude, 'fill')
+    if not is_dask:
+        z = units.Quantity(np.full_like(pressure, np.nan), 'km')
+    else:
+        # full_like for Dask seems to be broken, use an alternative means of filling with nan
+        # TypeError: ones_like() got an unexpected keyword argument 'subok'
+        z = units.Quantity(np.empty_like(pressure), 'km')
+        z += np.nan
+
+    for i, ((z0, t0, p0, gamma), (_z1, _t1, p1, _)) in enumerate(zip(
+            _STANDARD_ATMOSPHERE[:-1], _STANDARD_ATMOSPHERE[1:])):
+        p1 = _STANDARD_ATMOSPHERE[i + 1][_PRESSURE]
+        indices = (pressure > p1) & (pressure <= p0)
+
+        if i == 0:
+            indices |= (pressure >= p0)
+        if is_dask:
+            indices = indices.compute()
+
+        if gamma != 0:
+            z[indices] = (z0 + 1. / gamma * (
+                t0 - t0 * np.exp(gamma * mpconsts.Rd / mpconsts.g * np.log(
+                    pressure[indices] / p0)))).to(units.km)
+        else:
+            z[indices] = (z0 - (mpconsts.Rd * t0) / mpconsts.g * np.log(pressure[indices] / p0
+                                                                        )).to(units.km)
+
+    if np.isnan(z).any():
+        raise ValueError('Height to pressure conversion not implemented for z > 71km')
+
+    return z if is_array else z[0]
 
 
 @exporter.export
@@ -586,26 +636,65 @@ def geopotential_to_height(geopotential):
 @preprocess_and_wrap(wrap_like='height')
 @check_units('[length]')
 def height_to_pressure_std(height):
-    r"""Convert height data to pressures using the U.S. standard atmosphere [NOAA1976]_.
+    r"""Convert height to pressure (hPa).
 
-    The implementation inverts the formula outlined in [Hobbs1977]_ pg.60-61.
+    Conversion of height to pressure (hPa) with the
+    hydrostatic equation, according to the profile of the
+    1976 U.S. Standard atmosphere [NOAA1976]_.
+    Reference [Kraus2004]_.
 
     Parameters
     ----------
-    height : `pint.Quantity`
+    height : `pint.Quantity` or `xarray.DataArray`
         Atmospheric height
 
     Returns
     -------
-    `pint.Quantity`
-        Corresponding pressure value(s)
+    `pint.Quantity` or `xarray.DataArray`
+        Corresponding pressure value(s) (hPa)
 
     Notes
     -----
-    .. math:: p = p_0 e^{\frac{g}{R \Gamma} \text{ln}(1-\frac{Z \Gamma}{T_0})}
-
+    .. math:: p = \begin{cases}
+              p_0 \cdot \left[\frac{T_0 - \Gamma \cdot (Z - Z_0)}{T_0}\right]^
+              {\frac{g}{\Gamma \cdot R}} &\Gamma \neq 0
+              \\p_0 \cdot \exp\left(\frac{-g \cdot (Z - Z_0)}{R \cdot T_0}\right) &\text{else}
+              \end{cases}
     """
-    return p0 * (1 - (gamma / t0) * height) ** (mpconsts.g / (mpconsts.Rd * gamma))
+    is_array = hasattr(height.magnitude, '__len__')
+    if not is_array:
+        height = units.Quantity([height.magnitude], height.units)
+
+    # Initialize the return array.
+    is_dask = not hasattr(height.magnitude, 'fill')
+    if not is_dask:
+        p = units.Quantity(np.full_like(height, np.nan), 'hPa')
+    else:
+        # full_like for Dask seems to be broken, use an alternative means of filling with nan
+        # TypeError: ones_like() got an unexpected keyword argument 'subok'
+        p = units.Quantity(np.empty_like(height), 'hPa')
+        p += np.nan
+
+    for i, ((z0, t0, p0, gamma), (z1, _t1, _p1, _)) in enumerate(zip(
+            _STANDARD_ATMOSPHERE[:-1], _STANDARD_ATMOSPHERE[1:])):
+        indices = (height >= z0) & (height < z1)
+
+        if i == 0:
+            indices |= height < z0
+        if is_dask:
+            indices = indices.compute()
+
+        if gamma != 0:
+            p[indices] = (p0 * ((t0 - gamma * (height[indices] - z0)) / t0) ** (
+                mpconsts.g / (gamma * mpconsts.Rd))).to(units.hPa)
+        else:
+            p[indices] = (p0 * np.exp(-mpconsts.g * (height[indices] - z0) / (mpconsts.Rd * t0)
+                                      )).to(units.hPa)
+
+    if np.isnan(p).any():
+        raise ValueError('Height to pressure conversion not implemented for z > 71km')
+
+    return p if is_array else p[0]
 
 
 @exporter.export
