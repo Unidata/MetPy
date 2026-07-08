@@ -74,3 +74,7 @@ updates:
     commit-message:
       prefix: "CI: "
       include: "scope"
+    groups:
+      codeql:
+        patterns:
+          - "github/codeql-action/*"
