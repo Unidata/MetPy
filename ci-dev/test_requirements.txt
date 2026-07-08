@@ -2,4 +2,4 @@ packaging==26.2
 pytest==9.1.1
 pytest-mpl==0.19.0
 coverage==7.15.0
-vcrpy==8.2.1
+vcrpy==8.3.0
