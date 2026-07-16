@@ -746,6 +746,63 @@ class MetPyDataArrayAccessor:
         new_dataarray = self._data_array.assign_coords(**{y.name: y, x.name: x})
         return new_dataarray.metpy.assign_coordinates(None)
 
+    def to_geotiff(self, path, **kwargs):
+        """Write this DataArray to a GeoTIFF file, preserving the MetPy CRS.
+
+        This is a convenience bridge to ``rioxarray``: it attaches the DataArray's MetPy
+        coordinate reference system (as assigned by ``.parse_cf`` or ``.assign_crs``) and its
+        x/y spatial dimension coordinates so the field is written as a properly georeferenced
+        raster that GIS software (e.g. QGIS, ArcGIS, GDAL-based tooling) can read directly.
+
+        Parameters
+        ----------
+        path : str or path-like
+            Destination path for the output GeoTIFF.
+        kwargs
+            Additional keyword arguments passed through to ``rioxarray``'s ``to_raster``
+            (e.g. ``driver``, ``compress``, ``dtype``, ``tiled``).
+
+        Notes
+        -----
+        Requires the optional ``rioxarray`` dependency. A valid CRS coordinate must be present
+        (as assigned by ``.parse_cf`` or ``.assign_crs``), and the DataArray must have
+        identifiable x and y dimension coordinates. PyProj is used to communicate the CRS to
+        ``rioxarray``.
+
+        """
+        try:
+            import rioxarray  # noqa: F401
+        except ImportError:
+            raise ImportError(
+                'rioxarray is required to write GeoTIFF files. Install it with '
+                '`pip install rioxarray` or `conda install -c conda-forge rioxarray`.'
+            ) from None
+
+        # Identify the spatial dimension coordinates that rioxarray needs
+        try:
+            x, y = self.coordinates('x', 'y')
+        except AttributeError:
+            raise ValueError(
+                'Both x and y dimension coordinates are required to write a GeoTIFF. Verify '
+                'that the data has been parsed by MetPy with proper x and y dimension '
+                'coordinates.'
+            ) from None
+
+        # Grab the CRS before we drop the coordinate holding it
+        crs = self.pyproj_crs
+
+        # rioxarray/rasterio operate on plain arrays, so drop pint units first. Also drop the
+        # metpy_crs coordinate, which holds a CFProjection object that cannot be serialized as
+        # a raster tag--the CRS is instead communicated to rioxarray explicitly below.
+        data = self.dequantify()
+        if 'metpy_crs' in data.coords:
+            data = data.drop_vars('metpy_crs')
+
+        # Tell rioxarray which dimensions are spatial and what the CRS is, then write
+        data = data.rio.set_spatial_dims(x_dim=x.name, y_dim=y.name, inplace=False)
+        data = data.rio.write_crs(crs, inplace=False)
+        data.rio.to_raster(path, **kwargs)
+
 
 @xr.register_dataset_accessor('metpy')
 class MetPyDatasetAccessor:

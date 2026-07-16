@@ -74,6 +74,49 @@ def test_pyproj_projection(test_var):
     assert proj.coordinate_operation.method_name == 'Lambert Conic Conformal (1SP)'
 
 
+def test_to_geotiff(test_var, tmp_path):
+    """Test writing a parsed DataArray to a georeferenced GeoTIFF."""
+    rioxarray = pytest.importorskip('rioxarray')
+
+    # Reduce to a single 2D spatial field so we have a plain (y, x) raster
+    field = test_var
+    for dim in field.dims:
+        if dim not in ('y', 'x'):
+            field = field.isel({dim: 0})
+
+    path = tmp_path / 'test.tif'
+    field.metpy.to_geotiff(path)
+    assert path.exists()
+
+    # Read back and verify the georeferencing round-trips
+    result = rioxarray.open_rasterio(path)
+    assert result.rio.crs == pyproj.CRS(test_var.metpy.pyproj_crs)
+    assert result.rio.width == test_var.sizes['x']
+    assert result.rio.height == test_var.sizes['y']
+
+
+def test_to_geotiff_no_rioxarray(test_var, monkeypatch):
+    """Test that a helpful error is raised when rioxarray is not installed."""
+    import builtins
+    real_import = builtins.__import__
+
+    def fake_import(name, *args, **kwargs):
+        if name == 'rioxarray':
+            raise ImportError('No module named rioxarray')
+        return real_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, '__import__', fake_import)
+    with pytest.raises(ImportError, match='rioxarray is required'):
+        test_var.metpy.to_geotiff('unused.tif')
+
+
+def test_to_geotiff_no_spatial_coords(test_ds_generic, tmp_path):
+    """Test that writing data without x/y dimension coordinates raises a helpful error."""
+    pytest.importorskip('rioxarray')
+    with pytest.raises(ValueError, match='x and y dimension coordinates are required'):
+        test_ds_generic['test'].metpy.to_geotiff(tmp_path / 'unused.tif')
+
+
 def test_no_projection(test_ds):
     """Test getting the crs attribute when not available produces a sensible error."""
     var = test_ds.lat
