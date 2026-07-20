@@ -1,5 +1,5 @@
 cartopy==0.25.0
-dask==2026.7.0
+dask==2026.7.1
 netCDF4==1.7.4
 shapely==2.1.2
 boto3==1.43.14
