@@ -966,6 +966,8 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
     # Compute LCL for this parcel for future comparisons. Allow the caller to supply a
     # precomputed LCL so it can be based on the actual (not virtual) temperatures when the
     # temperature profiles passed in are virtual temperatures (see cape_cin).
+    if (lcl_pressure is None) != (lcl_temperature is None):
+        raise ValueError('lcl_pressure and lcl_temperature must be provided together')
     if lcl_pressure is None:
         this_lcl = lcl(pressure[0], parcel_temperature_profile[0], dewpoint_start)
     else:

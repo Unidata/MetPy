@@ -2396,9 +2396,12 @@ def test_lfc_el_lcl_from_actual_temperature():
     biases the LFC and EL upward. The ``lcl_pressure``/``lcl_temperature`` keywords let the
     caller supply the LCL computed from the actual temperatures instead.
     """
-    pressure = np.array([1000., 925., 850., 800., 700., 600., 500., 400., 300.]) * units.hPa
-    temperature = np.array([28., 22., 16., 13., 6., -2., -12., -25., -40.]) * units.degC
-    dewpoint = np.array([24., 19., 13., 9., 0., -8., -20., -35., -55.]) * units.degC
+    pressure = np.array([1000., 925., 850., 800., 700., 600., 500., 400., 300.,
+                         250., 200., 150., 100.]) * units.hPa
+    temperature = np.array([28., 22., 16., 13., 6., -2., -12., -25., -40.,
+                            -48., -56., -64., -72.]) * units.degC
+    dewpoint = np.array([24., 19., 13., 9., 0., -8., -20., -35., -55.,
+                         -60., -65., -70., -75.]) * units.degC
     profile = parcel_profile(pressure, temperature[0], dewpoint[0])
 
     # Reproduce the virtual-temperature profiles cape_cin builds internally.
@@ -2428,12 +2431,25 @@ def test_lfc_el_lcl_from_actual_temperature():
     assert_almost_equal(lfc_temperature_actual, lcl_temperature, 5)
     assert lfc_pressure_actual > lfc_pressure_virtual
 
+    # Either LCL value without the other is rejected.
+    with pytest.raises(ValueError):
+        lfc(pressure, temperature_v, dewpoint, parcel_temperature_profile=profile_v,
+            which='bottom', lcl_pressure=lcl_pressure)
+    with pytest.raises(ValueError):
+        lfc(pressure, temperature_v, dewpoint, parcel_temperature_profile=profile_v,
+            which='bottom', lcl_temperature=lcl_temperature)
+
     # el likewise honors the supplied LCL when deciding which crossings lie above it.
     el_default, _ = el(pressure, temperature_v, dewpoint,
                        parcel_temperature_profile=profile_v)
     el_with_lcl, _ = el(pressure, temperature_v, dewpoint,
                         parcel_temperature_profile=profile_v, lcl_pressure=lcl_pressure)
     assert_almost_equal(el_default, el_with_lcl, 5)
+
+    # A LCL above the EL removes the crossings, forcing el to return NaN.
+    el_above_lcl, _ = el(pressure, temperature_v, dewpoint,
+                         parcel_temperature_profile=profile_v, lcl_pressure=100 * units.hPa)
+    assert np.isnan(el_above_lcl)
 
 
 def test_lcl_grid_surface_lcls():
