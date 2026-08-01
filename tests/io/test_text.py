@@ -88,7 +88,7 @@ HIGHS 1022 -3961069 1020 -3851069 1026 3750773 1022 4430845 1019 5520728 1018
 
 @needs_module('shapely')
 def test_negative_lat():
-    """Test decoding of coordinates with negative latitude."""
+    """Test decoding of negative latitude and malformed front coordinates."""
     from io import BytesIO
 
     import shapely.geometry as sgeom
