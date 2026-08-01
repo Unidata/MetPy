@@ -1,10 +1,10 @@
 {
-  "root_cause": "cape_cin overwrites the environmental temperature and parcel_profile variables with virtual-temperature equivalents before calling lfc and el. Those functions then compute the LCL constraint from their temperature inputs, so the LCL calculation receives parcel/environment virtual temperature as if it were ordinary air temperature, biasing the LCL pressure lower and potentially forcing LFC/EL selection too high.",
-  "target_files": ["src/metpy/calc/thermo.py"],
-  "target_functions": ["cape_cin", "lfc", "el"],
-  "approach": "Keep using virtual-temperature profiles for the LFC/EL intersection tests used by CAPE/CIN, but do not let lfc and el recompute the LCL from those virtual temperatures. Add a small optional LCL pressure override to lfc and el, and pass the already-computed real-temperature pressure_lcl from cape_cin into both calls. This preserves the virtual-temperature correction for buoyancy while applying the LCL floor from the original thermodynamic profile.",
-  "tests_to_add": ["No new test within the 7-line patch budget; if the budget is relaxed, add a regression test where cape_cin with a moist surface parcel uses the same real-temperature LCL pressure constraint while retaining virtual-temperature CAPE/CIN integration."],
-  "expected_loc": 6,
-  "risk_notes": "Adding optional public parameters to lfc and el should be backward compatible, but the exact parameter names should avoid implying users normally need to supply them.",
-  "out_of_scope_observations": "No broader refactoring of CAPE/CIN integration or lfc/el selection modes is planned."
+  "root_cause": "WPC surface bulletin coordinate tokens are assumed to contain only an optional leading minus sign and digits. When archived CODSUS products contain stray punctuation or letters embedded in an otherwise valid coordinate, parse_wpc_surface_bulletin passes the raw token into _decode_coords, which splits it by length and then calls float() on strings containing invalid characters, raising ValueError and aborting the whole parse.",
+  "target_files": ["src/metpy/io/text.py", "tests/io/test_text.py"],
+  "target_functions": ["_decode_coords", "test_parse_wpc_surface_bulletin_invalid_coordinate_chars"],
+  "approach": "Make _decode_coords discard non-digit characters from the coordinate body after handling a leading minus sign, so tokens like 411\"45 and I4222 decode as their numeric coordinate values. Keep the change local to coordinate decoding so normal parser behavior and feature recognition are unchanged. Add a compact regression test using an in-memory bulletin with both punctuation and letter contamination in front coordinates.",
+  "tests_to_add": ["Regression test that parse_wpc_surface_bulletin parses a front line containing 411\"45 and I4222 without raising and returns the expected LineString"],
+  "expected_loc": 7,
+  "risk_notes": "Sanitizing malformed coordinate tokens could silently accept a token that should arguably be rejected if too many characters are corrupt.",
+  "out_of_scope_observations": "Malformed feature labels such as TRmOF are currently ignored because they do not match the known feature names; warning on skipped lines is useful but outside the line budget and this fix scope."
 }
