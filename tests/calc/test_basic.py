@@ -340,6 +340,7 @@ def test_heights_to_pressure_basic(array_type):
     pressures = height_to_pressure_std(heights)
     values = array_type([975.2, 987.5, 956., 943.], 'mbar', mask=mask)
     assert_array_almost_equal(pressures, values, 1)
+    assert_almost_equal(height_to_pressure_std(20 * units.km), 54.75 * units.hPa, 2)
 
 
 def test_pressure_to_heights_units():

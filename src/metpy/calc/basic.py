@@ -605,7 +605,11 @@ def height_to_pressure_std(height):
     .. math:: p = p_0 e^{\frac{g}{R \Gamma} \text{ln}(1-\frac{Z \Gamma}{T_0})}
 
     """
-    return p0 * (1 - (gamma / t0) * height) ** (mpconsts.g / (mpconsts.Rd * gamma))
+    t = units.Quantity(288.15, 'kelvin')
+    r = units.Quantity(287.0528, 'J/kg/K')
+    return np.where(height <= 11 * units.km,
+                    p0 * (1 - (gamma / t) * height) ** (mpconsts.g / (r * gamma)),
+                    226.32 * units.hPa * np.exp(-mpconsts.g * (height - 11 * units.km) / (r * 216.65 * units.K)))  # noqa: E501
 
 
 @exporter.export
