@@ -4406,6 +4406,9 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
         temperature = np.atleast_1d(temperature)
         dewpoint = np.atleast_1d(dewpoint)
 
+    if np.any(dewpoint.to(temperature.units) > temperature):
+        raise ValueError('Dewpoint cannot be greater than temperature.')
+
     lcl_press, lcl_temp = lcl(pressure, temperature, dewpoint)
 
     it = np.nditer([pressure.magnitude, lcl_press.magnitude, lcl_temp.magnitude, None],

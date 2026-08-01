@@ -1,10 +1,10 @@
 {
-  "root_cause": "WPC surface bulletin coordinate tokens are assumed to contain only an optional leading minus sign and digits. When archived CODSUS products contain stray punctuation or letters embedded in an otherwise valid coordinate, parse_wpc_surface_bulletin passes the raw token into _decode_coords, which splits it by length and then calls float() on strings containing invalid characters, raising ValueError and aborting the whole parse.",
-  "target_files": ["src/metpy/io/text.py", "tests/io/test_text.py"],
-  "target_functions": ["_decode_coords", "test_negative_lat"],
-  "approach": "Make _decode_coords discard non-digit characters from the coordinate body after handling a leading minus sign, so tokens like 411\"45 and I4222 decode as their numeric coordinate values. Keep the change local to coordinate decoding so normal parser behavior and feature recognition are unchanged. Extend the existing in-memory coordinate regression test with both punctuation and letter contamination in front coordinates.",
-  "tests_to_add": ["Extend test_negative_lat so parse_wpc_surface_bulletin parses 411\"45 and I4222 without raising and returns the expected LineString"],
-  "expected_loc": 3,
-  "risk_notes": "Sanitizing malformed coordinate tokens could silently accept a token that should arguably be rejected if too many characters are corrupt.",
-  "out_of_scope_observations": "Malformed feature labels such as TRmOF are currently ignored because they do not match the known feature names; warning on skipped lines is useful but outside the line budget and this fix scope."
+  "root_cause": "`wet_bulb_temperature` only validates dimensional units before calling `lcl`; it never rejects supersaturated starting states where dewpoint exceeds dry-bulb temperature. `lcl` can still return a numeric LCL for that unphysical input, so the wet-bulb calculation continues through `moist_lapse` and returns a wet-bulb temperature above the dry-bulb temperature instead of signaling invalid input.",
+  "target_files": ["src/metpy/calc/thermo.py", "tests/calc/test_thermo.py"],
+  "target_functions": ["wet_bulb_temperature", "test_wet_bulb_temperature_dewpoint_greater_than_temperature"],
+  "approach": "Add a minimal guard in `wet_bulb_temperature` after scalar inputs are promoted and before `lcl` is called, raising `ValueError` when any dewpoint is greater than the corresponding temperature. Use compatible temperature units in the comparison so Celsius, Fahrenheit, Kelvin, scalar, and array inputs follow the same path. Add one regression test covering the issue example and expecting `ValueError`.",
+  "tests_to_add": ["`test_wet_bulb_temperature_dewpoint_greater_than_temperature` asserting the issue example raises ValueError"],
+  "expected_loc": 6,
+  "risk_notes": "This may break callers that relied on numeric output for supersaturated inputs, but that output is physically invalid and contradicts the function's parcel assumptions.",
+  "out_of_scope_observations": "Other thermodynamic functions accepting temperature/dewpoint pairs may also allow supersaturated states; this plan limits validation to `wet_bulb_temperature` for the reported issue."
 }
