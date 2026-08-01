@@ -51,6 +51,8 @@ def test_level2(fname, voltime, num_sweeps, mom_first, mom_last, expected_logs, 
     assert len(f.sweeps) == num_sweeps
     assert len(f.sweeps[0][0][-1]) == mom_first
     assert len(f.sweeps[-1][0][-1]) == mom_last
+    if fname == 'KTLX19990503_235621.gz':
+        assert b'REF' in f.sweeps[0][0][4]
     assert len(caplog.records) == expected_logs
 
 
