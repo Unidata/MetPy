@@ -1,0 +1,2 @@
+[console_scripts]
+pint-convert = pint.pint_convert:main

@@ -1,0 +1,10 @@
+{
+  "root_cause": "Level2File exposes legacy message 1 radials and newer message 31 radials with incompatible tuple layouts. Newer message 31 radials are stored as the five-field Radial namedtuple, so moments live at index 4 with byte-string keys like b'REF'; legacy message 1 radials are stored as a two-tuple (hdr, data_dict), so indexing [4] raises IndexError on older Level 2 files, and their moment keys are plain strings.",
+  "target_files": ["src/metpy/io/nexrad.py", "tests/io/test_nexrad.py"],
+  "target_functions": ["Level2File._decode_msg1", "test_level2"],
+  "approach": "Normalize the legacy message 1 append path to use the existing Radial namedtuple with missing constant blocks set to None and the decoded moment dictionary in the moments field. Store legacy moment keys as byte strings to match message 31 names, preserving the documented/example access pattern radar.sweeps[sweep][ray][4][b'REF']. Add a compact regression assertion using the existing old Level 2 fixtures.",
+  "tests_to_add": ["Assert an old message 1 Level2File radial supports index 4 moment access with b'REF'."],
+  "expected_loc": 3,
+  "risk_notes": "Code that relied on legacy radials being exactly two-tuples or on string moment keys would need to use the normalized Radial/moments access instead.",
+  "out_of_scope_observations": "The public sweeps structure is still an internal low-level representation; a higher-level stable accessor would be a larger API design change."
+}

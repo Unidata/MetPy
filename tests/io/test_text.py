@@ -88,13 +88,17 @@ HIGHS 1022 -3961069 1020 -3851069 1026 3750773 1022 4430845 1019 5520728 1018
 
 @needs_module('shapely')
 def test_negative_lat():
-    """Test decoding of coordinates with negative latitude."""
+    """Test decoding of negative latitude and malformed front coordinates."""
     from io import BytesIO
 
     import shapely.geometry as sgeom
 
     sample = BytesIO(b"""12HR PROG VALID xxxxxxZ
 HIGHS -351 -3985 -4046 -38117 -7510
+COLD WK 411"45 I4222 43X23
+WARM 411"45 42B22
  """)
     df = parse_wpc_surface_bulletin(sample)
     assert df.geometry[0] == sgeom.Point([-51, -3])
+    assert df.geometry[5] == sgeom.LineString([[-145, 41], [-22, 42], [-23, 43]])
+    assert df.geometry[6] == sgeom.LineString([[-145, 41], [-22, 42]])

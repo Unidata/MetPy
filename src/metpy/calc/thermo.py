@@ -953,6 +953,7 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
 
     # Compute LCL for this parcel for future comparisons
     this_lcl = lcl(pressure[0], parcel_temperature_profile[0], dewpoint_start)
+    which, this_lcl = (which, this_lcl) if isinstance(which, str) else (which[0], (which[1], this_lcl[1]))  # noqa: E501
 
     # The LFC could:
     # 1) Not exist
@@ -1164,6 +1165,7 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
     x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:],
                               direction='decreasing', log_x=True)
     lcl_p, _ = lcl(pressure[0], temperature[0], dewpoint[0])
+    which, lcl_p = which if isinstance(which, tuple) else (which, lcl_p)
     if len(x) > 0 and x[-1] < lcl_p:
         idx = x < lcl_p
         return _multiple_el_lfc_options(x, y, idx, which, pressure,
@@ -2842,7 +2844,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
 
     # Calculate LFC limit of integration
     lfc_pressure, _ = lfc(pressure, temperature, dewpoint,
-                          parcel_temperature_profile=parcel_profile, which=which_lfc)
+                          parcel_temperature_profile=parcel_profile, which=(which_lfc, pressure_lcl))  # noqa: E501
 
     # If there is no LFC, no need to proceed.
     if np.isnan(lfc_pressure):
@@ -2852,7 +2854,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
 
     # Calculate the EL limit of integration
     el_pressure, _ = el(pressure, temperature, dewpoint,
-                        parcel_temperature_profile=parcel_profile, which=which_el)
+                        parcel_temperature_profile=parcel_profile, which=(which_el, pressure_lcl))  # noqa: E501
 
     # No EL and we use the top reading of the sounding.
     el_pressure = pressure[-1].magnitude if np.isnan(el_pressure) else el_pressure.magnitude
@@ -4403,6 +4405,9 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
         pressure = np.atleast_1d(pressure)
         temperature = np.atleast_1d(temperature)
         dewpoint = np.atleast_1d(dewpoint)
+
+    if np.any(dewpoint.to(temperature.units) > temperature):
+        raise ValueError('Dewpoint cannot be greater than temperature.')
 
     lcl_press, lcl_temp = lcl(pressure, temperature, dewpoint)
 

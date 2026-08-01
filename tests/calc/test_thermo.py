@@ -1920,6 +1920,12 @@ def test_wet_bulb_temperature_saturated():
     assert_almost_equal(val, 17.6 * units.degC, 7)
 
 
+def test_wet_bulb_temperature_dewpoint_greater_than_temperature():
+    """Test wet bulb calculation rejects dewpoints greater than temperature."""
+    pytest.raises(ValueError, wet_bulb_temperature, 1000 * units.hPa,
+                  15 * units.degC, 20 * units.degC)
+
+
 def test_wet_bulb_temperature_numpy_scalars():
     """Test wet bulb calculation with NumPy scalars, which have a shape attribute."""
     pressure = units.Quantity(np.float32(1000), 'hPa')

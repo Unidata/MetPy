@@ -1,0 +1,2 @@
+[xarray.backends]
+gini = metpy.io.gini:GiniXarrayBackend

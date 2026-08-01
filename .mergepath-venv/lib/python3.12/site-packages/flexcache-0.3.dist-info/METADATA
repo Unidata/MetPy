@@ -1,0 +1,197 @@
+Metadata-Version: 2.1
+Name: flexcache
+Version: 0.3
+Summary: Saves and loads to the cache a transformed versions of a source object.
+Author-email: "Hernan E. Grecco" <hernan.grecco@gmail.com>
+Maintainer-email: "Hernan E. Grecco" <hernan.grecco@gmail.com>
+License: BSD
+Project-URL: Homepage, https://github.com/hgrecco/flexcache
+Keywords: cache,optimization,storage,disk
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Topic :: System :: Filesystems
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Utilities
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.9
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: typing-extensions
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-mpl ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Requires-Dist: pytest-subtests ; extra == 'test'
+
+.. image:: https://img.shields.io/pypi/v/flexcache.svg
+    :target: https://pypi.python.org/pypi/flexcache
+    :alt: Latest Version
+
+.. image:: https://img.shields.io/pypi/l/flexcache.svg
+    :target: https://pypi.python.org/pypi/flexcache
+    :alt: License
+
+.. image:: https://img.shields.io/pypi/pyversions/flexcache.svg
+    :target: https://pypi.python.org/pypi/flexcache
+    :alt: Python Versions
+
+.. image:: https://github.com/hgrecco/flexcache/workflows/CI/badge.svg
+    :target: https://github.com/hgrecco/flexcache/actions?query=workflow%3ACI
+    :alt: CI
+
+.. image:: https://github.com/hgrecco/flexcache/workflows/Lint/badge.svg
+    :target: https://github.com/hgrecco/flexcache/actions?query=workflow%3ALint
+    :alt: LINTER
+
+.. image:: https://coveralls.io/repos/github/hgrecco/flexcache/badge.svg?branch=main
+    :target: https://coveralls.io/github/hgrecco/flexcache?branch=main
+    :alt: Coverage
+
+
+flexcache
+=========
+
+An robust and extensible package to cache on disk the result of expensive
+calculations.
+
+Consider an expensive function `parse` that takes a path and returns a
+parsed version:
+
+.. code-block:: python
+
+    >>> content = parse("source.txt")
+
+It would be nice to automatically and persistently cache this result and
+this is where flexcache comes in.
+
+First, we create a `DiskCache` object:
+
+.. code-block:: python
+
+    >>> from flexcache import DiskCacheByMTime
+    >>> dc = DiskCacheByMTime(cache_folder="/my/cache/folder")
+
+and then is loaded:
+
+.. code-block:: python
+
+    >>> content, basename = dc.load("source.txt", converter=parse)
+
+If this is the first call, as the cached result is not available,
+`parse` will be called on `source.txt` and the output will be saved
+and returned. The next time, the cached will be loaded and returned.
+
+When the source is changed, the DiskCache detects that the cached
+file is older, calls `parse` again storing and returning the new
+result.
+
+In certain cases you would rather detect that the file has changed
+by hashing the file. Simply use `DiskCacheByHash` instead of
+`DiskCacheByMTime`.
+
+Cached files are saved using the pickle protocol, and each has
+a companion json file with the header content.
+
+This idea is completely flexible, and apply not only to parser.
+In **flexcache** we say there are two types of objects: **source object**
+and **converted object**. The conversion function maps the former in
+to the latter. The cache stores the latter by looking a customizable
+aspect of the former.
+
+
+Building your own caching logic
+-------------------------------
+
+In certain cases you would like to customize how caching and
+invalidation is done.
+
+You can achieve this by subclassing the `DiskCache`.
+
+.. code-block:: python
+
+    >>> from flexcache import DiskCache
+    >>> class MyDiskCache(DiskCache):
+    ...
+    ...    @dataclass(frozen=True)
+    ...    class MyHeader(NameByPathHeader, InvalidateByExist, BasicPythonHeader):
+    ...         pass
+    ...
+    ...    _header_classes = {pathlib.Path: MyHeader}
+
+Here we created a custom Header class and use it to handle `pathlib.Path`
+objects. You can even have multiple headers registered in the same class
+to handle different source object types.
+
+We provide a convenient set of mixable classes to achieve almost any behavior.
+These are divided in three categories and you must choose at least one
+from every kind.
+
+Headers
+~~~~~~~
+
+These classes store the information that will be saved along side the cached file.
+
+- **BaseHeader**: source object and identifier of the converter function.
+- **BasicPythonHeader**: source and identifier of the converter function,
+  platform, python implementation, python version.
+
+
+Invalidate
+~~~~~~~~~~
+
+These classes define how the cache will decide if the cached converted object is an actual
+representation of the source object.
+
+- **InvalidateByExist**: the cached file must exists.
+- **InvalidateByPathMTime**: the cached file exists and is newer than the source object
+  (which has to be `pathlib.Path`)
+- **InvalidateByMultiPathsMtime**: the cached file exists and is newer than the each path
+  in the source object (which has to be `tuple[pathlib.Path]`)
+
+
+Naming
+~~~~~~
+
+These classes define how the name is generated. The basename for the cache file is
+a hash hexdigest built by feeding a collection of values determined by the Header object.
+
+- **NameByFields**: all fields except the `source_object`.
+- **NameByPath**: resolved path of the source object
+  (which has to be `pathlib.Path`).
+- **NameByMultiPaths**: resolved path of each path source object
+  (which has to be `tuple[pathlib.Path]`), sorted in ascending order.
+- **NameByFileContent**: the bytes content of the file referred by the source object
+  (which has to be `pathlib.Path`).
+- **NameByHashIter**: the values in the source object.
+  (which has to be `tuple[str]`), sorted in ascending order
+- **NameByObj**: the pickled version of the source object
+  (which has to be pickable), using the highest available protocol.
+  This also adds `pickle_protocol` to the header.
+
+
+You can mix and match as you see it fit, and of course, you can make your own.
+
+Finally, you can also avoid saving the header by setting the `_store_header`
+class attribute to `False`.
+
+----
+
+This project was started as a part of Pint_, the python units package.
+
+See AUTHORS_ for a list of the maintainers.
+
+To review an ordered list of notable changes for each version of a project,
+see CHANGES_
+
+.. _`AUTHORS`: https://github.com/hgrecco/flexcache/blob/main/AUTHORS
+.. _`CHANGES`: https://github.com/hgrecco/flexcache/blob/main/CHANGES
+.. _`Pint`: https://github.com/hgrecco/pint

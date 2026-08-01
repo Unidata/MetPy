@@ -324,10 +324,10 @@ class Level2File:
             scaled_vals[vals == 1] = self.RANGE_FOLD
 
             # Store
-            data_dict[data_hdr.name] = (data_hdr, scaled_vals)
+            data_dict[data_hdr.name.encode()] = (data_hdr, scaled_vals)
 
         self._add_sweep(hdr)
-        self.sweeps[-1].append((hdr, data_dict))
+        self.sweeps[-1].append(self.Radial(hdr, None, None, None, data_dict))
 
     msg2_fmt = NamedStruct([
         ('rda_status', 'H', BitField('None', 'Start-Up', 'Standby', 'Restart',
