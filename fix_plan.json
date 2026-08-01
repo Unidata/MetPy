@@ -1,18 +1,10 @@
 {
-  "root_cause": "The WPC bulletin parser passes coordinate tokens from valid feature lines directly into _decode_coords, which assumes the token is numeric apart from an optional leading minus. Historical CODSUS products sometimes contain embedded punctuation or stray letters inside otherwise valid coordinate tokens, so the parser can either fail during numeric conversion or lose otherwise parseable feature geometry instead of decoding the digits that remain.",
-  "target_files": [
-    "src/metpy/io/text.py",
-    "tests/io/test_text.py"
-  ],
-  "target_functions": [
-    "_decode_coords",
-    "test_parse_wpc_surface_bulletin_ignores_bad_coordinate_characters"
-  ],
-  "approach": "Keep the fix local to coordinate decoding by preserving the existing optional leading minus handling, then filtering the remaining coordinate token down to digits before the split and float conversion. Add a focused BytesIO regression test with a front line containing embedded punctuation and letters in coordinate fields, asserting the resulting LineString decodes from the remaining digits.",
-  "tests_to_add": [
-    "Regression test that parse_wpc_surface_bulletin handles COLD/WARM coordinate tokens such as 411\"45 and I4222 without raising"
-  ],
-  "expected_loc": 5,
-  "risk_notes": "Filtering all non-digits may hide severely malformed tokens by producing a shorter but still parseable coordinate, so the regression should cover only otherwise valid historical archive corruption.",
-  "out_of_scope_observations": "Malformed feature labels such as TRmOF being ignored or warned about is related parser ergonomics but should be handled separately from coordinate-token corruption."
+  "root_cause": "WPC surface bulletin coordinate tokens are assumed to contain only an optional leading minus sign followed by digits before they are split into latitude and longitude. Archived CODSUS products sometimes contain stray punctuation or letters inside otherwise valid coordinate fields, so the parser attempts to build floats from malformed lat/lon substrings and raises ValueError instead of recovering the numeric coordinate.",
+  "target_files": ["src/metpy/io/text.py", "tests/io/test_text.py"],
+  "target_functions": ["_decode_coords", "test_negative_lat"],
+  "approach": "Sanitize coordinate tokens inside _decode_coords by preserving an initial minus sign for southern hemisphere latitude and removing all other non-digit characters before the existing split/float logic runs. Add a compact regression sample that includes punctuation and letter contamination in front coordinates to verify parse_wpc_surface_bulletin still returns the expected geometry.",
+  "tests_to_add": ["Extend WPC surface bulletin parser regression coverage for malformed coordinate tokens such as 411\"45 and I4222."],
+  "expected_loc": 6,
+  "risk_notes": "Overly permissive sanitizing may turn a severely malformed token into a plausible coordinate instead of rejecting it.",
+  "out_of_scope_observations": "Malformed front labels such as TRmOF being silently ignored could merit a warning, but that is separate from the coordinate parsing crash."
 }
