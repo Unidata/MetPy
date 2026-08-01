@@ -342,10 +342,11 @@ class MetPyDataArrayAccessor:
         # time, vertical, in that order.
         coord_lists = {'longitude': [], 'latitude': [], 'x': [], 'y': [], 'time': [],
                        'vertical': []}
+        fb = {a for a in coord_lists if not any(check_axis(c, a, regex=False) for c in coords)}
         for coord_var in coords:
             # Identify the coordinate type using check_axis helper
             for axis in coord_lists:
-                if check_axis(coord_var, axis):
+                if check_axis(coord_var, axis, regex=axis in fb):
                     coord_lists[axis].append(coord_var)
                     break  # Ensure a coordinate variable only goes to one axis
 
@@ -1126,7 +1127,7 @@ def _assign_axis(attributes, axis):
     return attributes
 
 
-def check_axis(var, *axes):
+def check_axis(var, *axes, regex=True):
     """Check if the criteria for any of the given axes are satisfied.
 
     Parameters
@@ -1165,7 +1166,7 @@ def check_axis(var, *axes):
                 return True
 
         # Check if name matches regular expression (non-CF failsafe)
-        if coordinate_criteria['regular_expression'][axis].match(var.name.lower()):
+        if regex and coordinate_criteria['regular_expression'][axis].match(var.name.lower()):
             return True
 
     # If no match has been made, return False (rather than None)

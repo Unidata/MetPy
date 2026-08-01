@@ -1,0 +1,10 @@
+{
+  "root_cause": "WPC surface bulletin coordinate tokens are assumed to contain only an optional leading minus sign and digits. When archived CODSUS products contain stray punctuation or letters embedded in an otherwise valid coordinate, parse_wpc_surface_bulletin passes the raw token into _decode_coords, which splits it by length and then calls float() on strings containing invalid characters, raising ValueError and aborting the whole parse.",
+  "target_files": ["src/metpy/io/text.py", "tests/io/test_text.py"],
+  "target_functions": ["_decode_coords", "test_parse_wpc_surface_bulletin_invalid_coordinate_chars"],
+  "approach": "Make _decode_coords discard non-digit characters from the coordinate body after handling a leading minus sign, so tokens like 411\"45 and I4222 decode as their numeric coordinate values. Keep the change local to coordinate decoding so normal parser behavior and feature recognition are unchanged. Add a compact regression test using an in-memory bulletin with both punctuation and letter contamination in front coordinates.",
+  "tests_to_add": ["Regression test that parse_wpc_surface_bulletin parses a front line containing 411\"45 and I4222 without raising and returns the expected LineString"],
+  "expected_loc": 7,
+  "risk_notes": "Sanitizing malformed coordinate tokens could silently accept a token that should arguably be rejected if too many characters are corrupt.",
+  "out_of_scope_observations": "Malformed feature labels such as TRmOF are currently ignored because they do not match the known feature names; warning on skipped lines is useful but outside the line budget and this fix scope."
+}

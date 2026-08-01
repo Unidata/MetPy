@@ -49,6 +49,7 @@ def _decode_coords(coordinates):
         coordinates = coordinates[1:]
         # Flip latitude to Southern Hemisphere
         flip = -1
+    coordinates = ''.join(char for char in coordinates if char.isdigit())
 
     # Based on the number of digits, find the correct place to split between lat and lon
     # Hires bulletins provide 7 digits for coordinates; regular bulletins provide 4 or 5 digits

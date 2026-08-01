@@ -1,0 +1,262 @@
+Metadata-Version: 2.4
+Name: Pint
+Version: 0.25.3
+Summary: Physical quantities module
+Project-URL: Homepage, https://github.com/hgrecco/pint
+Project-URL: Documentation, https://pint.readthedocs.io/
+Author-email: "Hernan E. Grecco" <hernan.grecco@gmail.com>
+Maintainer-email: "Hernan E. Grecco" <hernan.grecco@gmail.com>, Jules Chéron <julescheron@gmail.com>
+License: BSD
+License-File: AUTHORS
+License-File: LICENSE
+Keywords: conversion,physical,quantities,science,unit
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development :: Libraries
+Requires-Python: >=3.11
+Requires-Dist: flexcache>=0.3
+Requires-Dist: flexparser>=0.4
+Requires-Dist: platformdirs>=2.1.0
+Requires-Dist: typing-extensions>=4.0.0
+Provides-Extra: all
+Requires-Dist: babel<=2.8; extra == 'all'
+Requires-Dist: dask<2025.3.0; extra == 'all'
+Requires-Dist: matplotlib; extra == 'all'
+Requires-Dist: numpy>=1.23; extra == 'all'
+Requires-Dist: pint-pandas>=0.3; extra == 'all'
+Requires-Dist: scipy; extra == 'all'
+Requires-Dist: uncertainties>=3.1.6; extra == 'all'
+Requires-Dist: xarray; extra == 'all'
+Provides-Extra: babel
+Requires-Dist: babel<=2.8; extra == 'babel'
+Provides-Extra: codspeed
+Requires-Dist: pytest; extra == 'codspeed'
+Requires-Dist: pytest-benchmark; extra == 'codspeed'
+Requires-Dist: pytest-codspeed; extra == 'codspeed'
+Requires-Dist: pytest-cov; extra == 'codspeed'
+Requires-Dist: pytest-mpl; extra == 'codspeed'
+Requires-Dist: pytest-subtests; extra == 'codspeed'
+Provides-Extra: dask
+Requires-Dist: dask<2025.3.0; extra == 'dask'
+Provides-Extra: docs
+Requires-Dist: babel; extra == 'docs'
+Requires-Dist: commonmark==0.8.1; extra == 'docs'
+Requires-Dist: currencyconverter; extra == 'docs'
+Requires-Dist: docutils; extra == 'docs'
+Requires-Dist: graphviz; extra == 'docs'
+Requires-Dist: ipykernel; extra == 'docs'
+Requires-Dist: ipython<=8.12; extra == 'docs'
+Requires-Dist: jupyter-client; extra == 'docs'
+Requires-Dist: nbsphinx; extra == 'docs'
+Requires-Dist: pooch; extra == 'docs'
+Requires-Dist: pygments>=2.4; extra == 'docs'
+Requires-Dist: recommonmark==0.5.0; extra == 'docs'
+Requires-Dist: sciform; extra == 'docs'
+Requires-Dist: scipy; extra == 'docs'
+Requires-Dist: serialize; extra == 'docs'
+Requires-Dist: sparse; extra == 'docs'
+Requires-Dist: sphinx-book-theme>=1.1.0; extra == 'docs'
+Requires-Dist: sphinx-copybutton; extra == 'docs'
+Requires-Dist: sphinx-design; extra == 'docs'
+Requires-Dist: sphinx<8.2,>=6; extra == 'docs'
+Provides-Extra: matplotlib
+Requires-Dist: matplotlib; extra == 'matplotlib'
+Provides-Extra: numpy
+Requires-Dist: numpy>=1.23; extra == 'numpy'
+Provides-Extra: pandas
+Requires-Dist: pint-pandas>=0.3; extra == 'pandas'
+Provides-Extra: scipy
+Requires-Dist: scipy; extra == 'scipy'
+Provides-Extra: test
+Requires-Dist: pytest; extra == 'test'
+Requires-Dist: pytest-benchmark; extra == 'test'
+Requires-Dist: pytest-cov; extra == 'test'
+Requires-Dist: pytest-subtests; extra == 'test'
+Provides-Extra: test-all
+Requires-Dist: pytest; extra == 'test-all'
+Requires-Dist: pytest-benchmark; extra == 'test-all'
+Requires-Dist: pytest-cov; extra == 'test-all'
+Requires-Dist: pytest-mpl; extra == 'test-all'
+Requires-Dist: pytest-subtests; extra == 'test-all'
+Provides-Extra: test-mpl
+Requires-Dist: pytest-mpl; extra == 'test-mpl'
+Provides-Extra: uncertainties
+Requires-Dist: uncertainties>=3.1.6; extra == 'uncertainties'
+Provides-Extra: xarray
+Requires-Dist: xarray; extra == 'xarray'
+Description-Content-Type: text/x-rst
+
+.. image:: https://img.shields.io/pypi/v/pint.svg
+    :target: https://pypi.python.org/pypi/pint
+    :alt: Latest Version
+
+.. image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+    :target: https://github.com/astral-sh/ruff
+    :alt: Ruff
+
+.. image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/format.json
+    :target: https://github.com/astral-sh/ruff
+    :alt: Ruff-Format
+
+.. image:: https://readthedocs.org/projects/pint/badge/
+    :target: https://pint.readthedocs.org/
+    :alt: Documentation
+
+.. image:: https://img.shields.io/pypi/l/pint.svg
+    :target: https://pypi.python.org/pypi/pint
+    :alt: License
+
+.. image:: https://img.shields.io/pypi/pyversions/pint.svg
+    :target: https://pypi.python.org/pypi/pint
+    :alt: Python Versions
+
+.. image:: https://github.com/hgrecco/pint/workflows/CI/badge.svg
+    :target: https://github.com/hgrecco/pint/actions?query=workflow%3ACI
+    :alt: CI
+
+.. image:: https://github.com/hgrecco/pint/workflows/Lint/badge.svg
+    :target: https://github.com/hgrecco/pint/actions?query=workflow%3ALint
+    :alt: LINTER
+
+.. image:: https://coveralls.io/repos/github/hgrecco/pint/badge.svg?branch=master
+    :target: https://coveralls.io/github/hgrecco/pint?branch=master
+    :alt: Coverage
+
+
+Pint: makes units easy
+======================
+
+Pint is a Python package to define, operate and manipulate physical
+quantities: the product of a numerical value and a unit of measurement.
+It allows arithmetic operations between them and conversions from and
+to different units.
+
+It is distributed with a comprehensive list of physical units, prefixes
+and constants. Due to its modular design, you can extend (or even rewrite!)
+the complete list without changing the source code. It supports a lot of
+numpy mathematical operations **without monkey patching or wrapping numpy**.
+
+It has a complete test coverage. It runs in Python 3.9+ with no other dependency.
+It is licensed under BSD.
+
+It is extremely easy and natural to use:
+
+.. code-block:: python
+
+    >>> import pint
+    >>> ureg = pint.UnitRegistry()
+    >>> 3 * ureg.meter + 4 * ureg.cm
+    <Quantity(3.04, 'meter')>
+
+and you can make good use of numpy if you want:
+
+.. code-block:: python
+
+    >>> import numpy as np
+    >>> [3, 4] * ureg.meter + [4, 3] * ureg.cm
+    <Quantity([ 3.04  4.03], 'meter')>
+    >>> np.sum(_)
+    <Quantity(7.07, 'meter')>
+
+
+Quick Installation
+------------------
+
+To install Pint, simply:
+
+.. code-block:: bash
+
+    $ pip install pint
+
+or utilizing conda, with the conda-forge channel:
+
+.. code-block:: bash
+
+    $ conda install -c conda-forge pint
+
+and then simply enjoy it!
+
+
+Documentation
+-------------
+
+Full documentation is available at http://pint.readthedocs.org/
+
+
+Command-line converter
+----------------------
+
+A command-line script `pint-convert` provides a quick way to convert between
+units or get conversion factors.
+
+
+Design principles
+-----------------
+
+Although there are already a few very good Python packages to handle physical
+quantities, no one was really fitting my needs. Like most developers, I
+programmed Pint to scratch my own itches.
+
+**Unit parsing**: prefixed and pluralized forms of units are recognized without
+explicitly defining them. In other words: as the prefix *kilo* and the unit
+*meter* are defined, Pint understands *kilometers*. This results in a much
+shorter and maintainable unit definition list as compared to other packages.
+
+**Standalone unit definitions**: units definitions are loaded from a text file
+which is simple and easy to edit. Adding and changing units and their
+definitions does not involve changing the code.
+
+**Advanced string formatting**: a quantity can be formatted into string using
+`PEP 3101`_ syntax. Extended conversion flags are given to provide symbolic,
+LaTeX and pretty formatting. Unit name translation is available if Babel_ is
+installed.
+
+**Free to choose the numerical type**: You can use any numerical type
+(`fraction`, `float`, `decimal`, `numpy.ndarray`, etc). NumPy_ is not required
+but supported.
+
+**Awesome NumPy integration**: When you choose to use a NumPy_ ndarray, its methods and
+ufuncs are supported including automatic conversion of units. For example
+`numpy.arccos(q)` will require a dimensionless `q` and the units of the output
+quantity will be radian.
+
+**Uncertainties integration**:  transparently handles calculations with
+quantities with uncertainties (like 3.14±0.01 meter) via the `uncertainties
+package`_.
+
+**Handle temperature**: conversion between units with different reference
+points, like positions on a map or absolute temperature scales.
+
+**Dependency free**: it depends only on Python and its standard library. It interacts with other packages
+like numpy and uncertainties if they are installed
+
+**Pandas integration**: Thanks to `Pandas Extension Types`_ it is now possible to use Pint with Pandas. Operations on DataFrames and between columns are units aware, providing even more convenience for users of Pandas DataFrames. For full details, see the `pint-pandas Jupyter notebook`_.
+
+
+Pint is maintained by a community of scientists, programmers and enthusiasts around the world.
+See AUTHORS_ for a complete list.
+
+To review an ordered list of notable changes for each version of a project,
+see CHANGES_
+
+
+.. _Website: http://www.dimensionalanalysis.org/
+.. _`comprehensive list of physical units, prefixes and constants`: https://github.com/hgrecco/pint/blob/master/pint/default_en.txt
+.. _`uncertainties package`: https://pythonhosted.org/uncertainties/
+.. _`NumPy`: http://www.numpy.org/
+.. _`PEP 3101`: https://www.python.org/dev/peps/pep-3101/
+.. _`Babel`: http://babel.pocoo.org/
+.. _`Pandas Extension Types`: https://pandas.pydata.org/pandas-docs/stable/development/extending.html#extension-types
+.. _`pint-pandas Jupyter notebook`: https://github.com/hgrecco/pint-pandas/blob/master/notebooks/pint-pandas.ipynb
+.. _`AUTHORS`: https://github.com/hgrecco/pint/blob/master/AUTHORS
+.. _`CHANGES`: https://github.com/hgrecco/pint/blob/master/CHANGES
