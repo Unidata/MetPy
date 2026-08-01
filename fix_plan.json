@@ -1,10 +1,10 @@
 {
-  "root_cause": "Coordinate discovery calls check_axis once per coordinate and axis, and check_axis treats the name-regex fallback as equal evidence to CF metadata or axis-specific units. As a result, auxiliary coordinates named like latlike/lonlike are added as latitude/longitude candidates alongside the real 2D latitude/longitude coordinates, causing duplicate-axis resolution to discard the axis instead of preferring the metadata-backed coordinate.",
-  "target_files": ["src/metpy/xarray.py"],
-  "target_functions": ["check_axis", "_generate_coordinate_map"],
-  "approach": "Add a keyword-only switch to check_axis that disables the regular-expression fallback. In _generate_coordinate_map, identify coordinates first with CF/units criteria only, then use the regex fallback only for axes that still have no candidate, so namelike auxiliary coordinates cannot create duplicates when a real latitude/longitude coordinate exists.",
-  "tests_to_add": ["Regression test based on test_coord_identification_with_other_namelike_vars if the patch budget allows; otherwise run the issue-provided test locally during patch verification."],
-  "expected_loc": 7,
-  "risk_notes": "The main risk is preserving legacy regex-only discovery for non-CF datasets while changing precedence when stronger coordinate evidence exists.",
-  "out_of_scope_observations": "The issue text misspells auxiliary, and the existing test name test_auxilary_lat_lon_with_xy also contains that typo; no spelling cleanup is planned."
+  "root_cause": "cape_cin overwrites the environmental temperature and parcel_profile variables with virtual-temperature equivalents before calling lfc and el. Those functions then compute the LCL constraint from their temperature inputs, so the LCL calculation receives parcel/environment virtual temperature as if it were ordinary air temperature, biasing the LCL pressure lower and potentially forcing LFC/EL selection too high.",
+  "target_files": ["src/metpy/calc/thermo.py"],
+  "target_functions": ["cape_cin", "lfc", "el"],
+  "approach": "Keep using virtual-temperature profiles for the LFC/EL intersection tests used by CAPE/CIN, but do not let lfc and el recompute the LCL from those virtual temperatures. Add a small optional LCL pressure override to lfc and el, and pass the already-computed real-temperature pressure_lcl from cape_cin into both calls. This preserves the virtual-temperature correction for buoyancy while applying the LCL floor from the original thermodynamic profile.",
+  "tests_to_add": ["No new test within the 7-line patch budget; if the budget is relaxed, add a regression test where cape_cin with a moist surface parcel uses the same real-temperature LCL pressure constraint while retaining virtual-temperature CAPE/CIN integration."],
+  "expected_loc": 6,
+  "risk_notes": "Adding optional public parameters to lfc and el should be backward compatible, but the exact parameter names should avoid implying users normally need to supply them.",
+  "out_of_scope_observations": "No broader refactoring of CAPE/CIN integration or lfc/el selection modes is planned."
 }
