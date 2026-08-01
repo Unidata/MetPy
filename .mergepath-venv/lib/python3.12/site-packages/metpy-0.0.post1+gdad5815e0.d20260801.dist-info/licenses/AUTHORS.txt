@@ -1,0 +1,52 @@
+The following are the contributors of code within MetPy:
+Aaron Hill
+Abby Kenyon
+Alex Haberlie
+Andrew Huang
+Assela Pathirana
+Brian Mapes
+Bryan Guarente
+Claude Dicaire
+Dan Dawson
+Daniel Adriaansen
+Daryl Herzmann
+David Ahijevych
+David Lawrence
+Denis Sergeev
+Drew Camron
+Eric Bruning
+Joern Ungermann
+John Leeman
+Jon Thielen
+Jonathan Helmus
+Joy Monteiro
+Kevin Goebbert
+Kishan Mehta
+Kristen Pozsonyi
+kstilwell
+Leonardo Uieda
+LProx2020
+Lucas Sterzinger
+Matt Wilson
+Max Grover
+Michael James
+mmorello1
+Nathan Wendt
+Patrick Marsh
+Raul Mendez
+Rich Signell
+Russell Manser
+Ryan May
+Sean Arms
+Shawn Murdzek
+Stefan Hofer
+Steven Decker
+Tim Supinie
+TJ Turnage
+Tyler Wixtrom
+UCAR/Unidata
+Vardan Nadkarni
+Warren Pettee
+Will Holmgren
+William Minchin
+Zach Bruick

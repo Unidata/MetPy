@@ -1,0 +1,10 @@
+{
+  "root_cause": "Coordinate discovery calls check_axis once per coordinate and axis, and check_axis treats the name-regex fallback as equal evidence to CF metadata or axis-specific units. As a result, auxiliary coordinates named like latlike/lonlike are added as latitude/longitude candidates alongside the real 2D latitude/longitude coordinates, causing duplicate-axis resolution to discard the axis instead of preferring the metadata-backed coordinate.",
+  "target_files": ["src/metpy/xarray.py"],
+  "target_functions": ["check_axis", "_generate_coordinate_map"],
+  "approach": "Add a keyword-only switch to check_axis that disables the regular-expression fallback. In _generate_coordinate_map, identify coordinates first with CF/units criteria only, then use the regex fallback only for axes that still have no candidate, so namelike auxiliary coordinates cannot create duplicates when a real latitude/longitude coordinate exists.",
+  "tests_to_add": ["Regression test based on test_coord_identification_with_other_namelike_vars if the patch budget allows; otherwise run the issue-provided test locally during patch verification."],
+  "expected_loc": 7,
+  "risk_notes": "The main risk is preserving legacy regex-only discovery for non-CF datasets while changing precedence when stronger coordinate evidence exists.",
+  "out_of_scope_observations": "The issue text misspells auxiliary, and the existing test name test_auxilary_lat_lon_with_xy also contains that typo; no spelling cleanup is planned."
+}
