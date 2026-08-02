@@ -95,6 +95,8 @@ def test_negative_lat():
 
     sample = BytesIO(b"""12HR PROG VALID xxxxxxZ
 HIGHS -351 -3985 -4046 -38117 -7510
+COLD 411"45 I4222
  """)
     df = parse_wpc_surface_bulletin(sample)
     assert df.geometry[0] == sgeom.Point([-51, -3])
+    assert df.geometry[1].geom_type == 'LineString'
