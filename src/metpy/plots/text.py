@@ -230,7 +230,9 @@ class TextCollection(Text):
             _, info, _ = self._get_layout(renderer)
             self._text = ''
 
-            for line, _, x, y in info:
+            for line, _, *xy in info:
+                # Matplotlib 3.11 changed the packing of this
+                x, y = xy if len(xy) == 2 else xy[0]
 
                 mtext = self if len(info) == 1 else None
                 x = x + posx
