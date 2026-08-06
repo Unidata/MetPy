@@ -16,6 +16,7 @@ import scipy.integrate as si
 import scipy.optimize as so
 from scipy.special import lambertw
 import xarray as xr
+import metpy._calc_mod as _calc_mod
 
 from .exceptions import InvalidSoundingError
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
@@ -185,10 +186,8 @@ def water_latent_heat_vaporization(temperature):
     Eq 15, [Ambaum2020]_, using MetPy-defined constants in place of cited values.
 
     """
-    return (mpconsts.nounit.Lv
-            - (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v)
-            * (temperature - mpconsts.nounit.T0))
-
+    # Calling c++ calculation module
+    return _calc_mod.water_latent_heat_vaporization(temperature)
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature')
@@ -227,10 +226,8 @@ def water_latent_heat_sublimation(temperature):
     Eq 18, [Ambaum2020]_, using MetPy-defined constants in place of cited values.
 
     """
-    return (mpconsts.nounit.Ls
-            - (mpconsts.nounit.Cp_i - mpconsts.nounit.Cp_v)
-            * (temperature - mpconsts.nounit.T0))
-
+    # Calling c++ calculation module
+    return _calc_mod.water_latent_heat_sublimation(temperature)
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature')
@@ -516,6 +513,30 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
     return temperature * (pressure / reference_pressure)**mpconsts.kappa
 
 
+
+@exporter.export
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'reference_pressure')
+)
+@process_units(
+    {
+        'pressure': '[pressure]',
+        'temperature': '[temperature]',
+        'reference_pressure': '[pressure]'
+    },
+    '[temperature]'
+)
+def dry_lapse_linfel(pressure, temperature, reference_pressure=None, vertical_dim=0):
+    """
+    Linfeng's version of 'dry_lapse'.  Added on Jun18 2025
+    """
+    if reference_pressure is None:
+        reference_pressure = pressure[0]
+    return _calc_mod.dry_lapse(pressure, temperature, reference_pressure)
+
+
+
 @exporter.export
 @preprocess_and_wrap(
     wrap_like='temperature',
@@ -655,6 +676,33 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
 
 @exporter.export
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'reference_pressure')
+)
+@process_units(
+    {
+        'pressure': '[pressure]',
+        'temperature': '[temperature]',
+        'reference_pressure': '[pressure]'
+    },
+    '[temperature]'
+)
+def moist_lapse_linfel(pressure, temperature, reference_pressure=None):
+    """
+    Linfeng's version of 'moist_lapse'.  Added on Jun 25 2025
+    This function calculates the moist adiabatic profile for multiple starting
+    temperatures (2D surface) and a single communal starting pressure, along a 
+    1D pressure profile.
+    """
+    if reference_pressure is None:
+        reference_pressure = pressure[0]
+    # nstep for RK4 is set to 30
+    return _calc_mod.moist_lapse(pressure, temperature, reference_pressure, 30)
+
+
+
+@exporter.export
 @preprocess_and_wrap()
 @process_units(
     {'pressure': '[pressure]', 'temperature': '[temperature]', 'dewpoint': '[temperature]'},
@@ -737,6 +785,22 @@ def lcl(pressure, temperature, dewpoint, max_iters=None, eps=None):
     p_lcl = pressure * (t_lcl / temperature) ** moist_heat_ratio
 
     return p_lcl, t_lcl
+
+
+@exporter.export
+@preprocess_and_wrap()
+@process_units(
+    {'pressure': '[pressure]', 'temperature': '[temperature]', 'dewpoint': '[temperature]'},
+    ('[pressure]', '[temperature]')
+)
+def lcl_linfel(pressure, temperature, dewpoint, max_iters=None, eps=None):
+    """
+    Linfeng's version of 'lcl'. Added on Jun23 2025
+    """
+    pressure, temperature, dewpoint = np.atleast_1d(pressure, temperature, dewpoint)
+    p_lcl, t_lcl = _calc_mod.lcl(pressure, temperature, dewpoint)
+    return p_lcl, t_lcl
+
 
 
 @exporter.export
@@ -1253,6 +1317,23 @@ def parcel_profile(pressure, temperature, dewpoint):
 
 
 @exporter.export
+@preprocess_and_wrap(wrap_like='pressure')
+@process_units(
+    {
+        'pressure': '[pressure]',
+        'temperature': '[temperature]',
+        'dewpoint': '[temperature]'
+    },
+    '[temperature]'
+) # process units because no unit should be passed to c++ function
+def parcel_profile_linfel(pressure, temperature, dewpoint):
+    """
+    Linfeng's version of 'parcel_profile'. Added on Jun 24 2025
+    """
+    return _calc_mod.parcel_profile(pressure, temperature, dewpoint)
+
+
+@exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def parcel_profile_with_lcl(pressure, temperature, dewpoint):
@@ -1623,17 +1704,8 @@ def _saturation_vapor_pressure_liquid(temperature):
     .. math:: e = e_{s0} \frac{T_0}{T}^{(c_{pl} - c_{pv}) / R_v} \exp{
     \frac{L_0}{R_v T_0} - \frac{L}{R_v T}}
     """
-    latent_heat = water_latent_heat_vaporization._nounit(temperature)
-    heat_power = (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
-    exp_term = ((mpconsts.nounit.Lv / mpconsts.nounit.T0 - latent_heat / temperature)
-                / mpconsts.nounit.Rv)
-
-    return (
-        mpconsts.nounit.sat_pressure_0c
-        * (mpconsts.nounit.T0 / temperature) ** heat_power
-        * np.exp(exp_term)
-    )
-
+    # Calling c++ calculation module
+    return _calc_mod._saturation_vapor_pressure_liquid(temperature)
 
 @preprocess_and_wrap(wrap_like='temperature')
 @process_units({'temperature': '[temperature]'}, '[pressure]')
@@ -1660,17 +1732,8 @@ def _saturation_vapor_pressure_solid(temperature):
     .. math:: e_i = e_{i0} \frac{T_0}{T}^{(c_{pi} - c_{pv}) / R_v} \exp{
     \frac{L_{s0}}{R_v T_0} - \frac{L_s}{R_v T}}
     """
-    latent_heat = water_latent_heat_sublimation._nounit(temperature)
-    heat_power = (mpconsts.nounit.Cp_i - mpconsts.nounit.Cp_v) / mpconsts.nounit.Rv
-    exp_term = ((mpconsts.nounit.Ls / mpconsts.nounit.T0 - latent_heat / temperature)
-                / mpconsts.nounit.Rv)
-
-    return (
-        mpconsts.nounit.sat_pressure_0c
-        * (mpconsts.nounit.T0 / temperature) ** heat_power
-        * np.exp(exp_term)
-    )
-
+    # Calling c++ calculation module
+    return _calc_mod._saturation_vapor_pressure_solid(temperature)
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'relative_humidity'))
@@ -1750,9 +1813,8 @@ def dewpoint(vapor_pressure):
        Renamed ``e`` parameter to ``vapor_pressure``
 
     """
-    val = np.log(vapor_pressure / mpconsts.nounit.sat_pressure_0c)
-    return mpconsts.nounit.zero_degc + 243.5 * val / (17.67 - val)
-
+    # Calling c++ calculation module
+    return _calc_mod.dewpoint(vapor_pressure)
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='partial_press', broadcast=('partial_press', 'total_press'))
@@ -1812,7 +1874,8 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.nou
        Renamed ``part_press``, ``tot_press`` parameters to ``partial_press``, ``total_press``
 
     """
-    return molecular_weight_ratio * partial_press / (total_press - partial_press)
+    # Calling c++ calculation module
+    return _calc_mod.mixing_ratio(partial_press, total_press, molecular_weight_ratio)
 
 
 @exporter.export
@@ -2126,6 +2189,25 @@ def virtual_temperature(
     return temperature * ((mixing_ratio + molecular_weight_ratio)
                           / (molecular_weight_ratio * (1 + mixing_ratio)))
 
+@exporter.export
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'mixing_ratio'))
+@process_units(
+    {
+        'temperature': '[temperature]',
+        'mixing_ratio': '[dimensionless]',
+        'molecular_weight_ratio': '[dimensionless]'
+    },
+    '[temperature]',
+    ignore_inputs_for_output=('molecular_weight_ratio',)
+)
+def virtual_temperature_linfel(
+    temperature, mixing_ratio, molecular_weight_ratio=mpconsts.nounit.epsilon):
+    """
+    Linfeng's version of 'virtual_temperature'.  Added on Jun 30 2025
+    """
+    return _calc_mod.virtual_temperature(
+            temperature, mixing_ratio, molecular_weight_ratio)
+
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure',
@@ -2193,6 +2275,38 @@ def virtual_temperature_from_dewpoint(
 
     # Calculate virtual temperature with given parameters
     return virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio)
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure',
+                                                         'temperature',
+                                                         'dewpoint'))
+@process_units(
+    {
+        'pressure': '[pressure]',
+        'temperature': '[temperature]',
+        'dewpoint': '[temperature]',
+        'molecular_weight_ratio': '[dimensionless]'
+    },
+    '[temperature]',
+    ignore_inputs_for_output=('molecular_weight_ratio',)
+)
+def virtual_temperature_from_dewpoint_linfel(
+        pressure,
+        temperature,
+        dewpoint,
+        molecular_weight_ratio=mpconsts.nounit.epsilon,
+        *,
+        phase='liquid'
+):
+    """
+    Linfeng's version of 'virtual_temperature_from_dewpoint'.  Added on Jun 30 2025
+    """
+    return _calc_mod.virtual_temperature_from_dewpoint(pressure,
+                                                       temperature,
+                                                       dewpoint,
+                                                       molecular_weight_ratio,
+                                                       phase)
 
 
 @exporter.export

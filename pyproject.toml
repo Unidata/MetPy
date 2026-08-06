@@ -1,9 +1,9 @@
 [build-system]
-requires = ["setuptools>=61", "wheel", "setuptools_scm[toml]>=3.4"]
-build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61", "setuptools-scm[toml]>=3.4", "scikit-build-core", "pybind11"]
+build-backend = "scikit_build_core.build"
 
 [project]
-name = "MetPy"
+name = "metpy"
 description = "Collection of tools for reading, visualizing and performing calculations with weather data."
 readme = "README.md"
 dynamic = ["version"]
@@ -176,6 +176,10 @@ max-complexity = 61
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
+[tool.scikit-build]
+metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
+cmake.source-dir = "src"
 
 [tool.setuptools_scm]
 version_scheme = "post-release"
