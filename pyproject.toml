@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61", "wheel", "setuptools_scm[toml]>=3.4"]
+requires = ["setuptools>=77", "setuptools_scm[toml]>=3.4"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,7 +8,8 @@ description = "Collection of tools for reading, visualizing and performing calcu
 readme = "README.md"
 dynamic = ["version"]
 maintainers = [{name = "MetPy Developers", email = "support-python@unidata.ucar.edu"}]
-license = {text = "BSD-3-Clause"}
+license = "BSD-3-Clause"
+license-files = ["LICENSE", "AUTHORS.txt"]
 keywords = ["meteorology", "weather"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -21,8 +22,7 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: Atmospheric Science",
     "Intended Audience :: Science/Research",
-    "Operating System :: OS Independent",
-    "License :: OSI Approved :: BSD License"
+    "Operating System :: OS Independent"
 ]
 requires-python = ">=3.11"
 dependencies = [
