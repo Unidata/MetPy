@@ -14,6 +14,7 @@ from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
                         heat_index, height_to_geopotential, height_to_pressure_std,
                         pressure_to_height_std, sigma_to_pressure, smooth_circular,
                         smooth_gaussian, smooth_n_point, smooth_rectangular, smooth_window,
+                        station_pressure_to_altimeter, station_pressure_to_sea_level_pressure,
                         wind_components, wind_direction, wind_speed, windchill, zoom_xarray)
 from metpy.cbook import get_test_data
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
@@ -812,6 +813,73 @@ def test_altimeter_to_sea_level_pressure_hpa(array_type):
         [1009.963556, 1013.119712, 1015.885392, 1016.245615], 'hectopascal', mask=mask
     )
     assert_array_almost_equal(res, truth, 3)
+
+
+def test_station_pressure_to_altimeter_inhg():
+    """Test the station pressure to altimeter setting with inches of mercury."""
+    pressure = 28.0855 * units.inHg
+    elev = 500 * units.m
+    res = station_pressure_to_altimeter(pressure, elev)
+    truth = 29.80369 * units.inHg
+    assert_almost_equal(res, truth, 3)
+
+
+def test_station_pressure_to_altimeter_hpa(array_type):
+    """Test the station pressure to altimeter setting with hectopascals."""
+    mask = [False, True, False, True]
+    pressure = array_type(
+        [784.262996, 838.651657, 896.037821, 954.639265], 'hectopascal', mask=mask
+    )
+    elev = array_type([2000., 1500., 1000., 500.], 'meter', mask=mask)
+    res = station_pressure_to_altimeter(pressure, elev)
+    truth = array_type([1000., 1005., 1010., 1013.], 'hectopascal', mask=mask)
+    assert_array_almost_equal(res, truth, 3)
+
+
+def test_station_pressure_to_altimeter_roundtrip():
+    """Test that station_pressure_to_altimeter inverts altimeter_to_station_pressure."""
+    altim = 29.8 * units.inHg
+    elev = 500 * units.m
+    pressure = altimeter_to_station_pressure(altim, elev)
+    res = station_pressure_to_altimeter(pressure, elev)
+    assert_almost_equal(res, altim, 5)
+
+
+def test_station_pressure_to_sea_level_pressure_inhg():
+    """Test the station pressure to sea-level pressure with inches of mercury."""
+    pressure = 28.0855 * units.inHg
+    elev = 500 * units.m
+    temp = 30 * units.degC
+    res = station_pressure_to_sea_level_pressure(pressure, elev, temp)
+    truth = 1006.21464 * units.hectopascal
+    assert_almost_equal(res, truth, 3)
+
+
+@pytest.mark.filterwarnings('ignore:overflow encountered in exp:RuntimeWarning')
+def test_station_pressure_to_sea_level_pressure_hpa(array_type):
+    """Test the station pressure to sea-level pressure with hectopascals."""
+    mask = [False, True, False, True]
+    pressure = array_type(
+        [784.262996, 838.651657, 896.037821, 954.639265], 'hectopascal', mask=mask
+    )
+    elev = array_type([2000., 1500., 1000., 500.], 'meter', mask=mask)
+    temp = array_type([-3., -2., -1., 0.], 'degC')
+    res = station_pressure_to_sea_level_pressure(pressure, elev, temp)
+    truth = array_type(
+        [1009.963556, 1013.119712, 1015.885392, 1016.245615], 'hectopascal', mask=mask
+    )
+    assert_array_almost_equal(res, truth, 3)
+
+
+def test_station_pressure_to_sea_level_pressure_roundtrip():
+    """Test station_pressure_to_sea_level_pressure against the altimeter reduction chain."""
+    altim = 29.8 * units.inHg
+    elev = 500 * units.m
+    temp = 30 * units.degC
+    pressure = altimeter_to_station_pressure(altim, elev)
+    res = station_pressure_to_sea_level_pressure(pressure, elev, temp)
+    truth = altimeter_to_sea_level_pressure(altim, elev, temp)
+    assert_almost_equal(res, truth, 5)
 
 
 def test_zoom_xarray():
