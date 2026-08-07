@@ -148,6 +148,10 @@ References
            Evidence and climate significance. *Geophys. Res. Lett.*, **38**, L01706,
            `doi:10.1029/2010GL045777 <https://doi.org/10.1029/2010GL045777>`_.
 
+.. [Kraus2004] H. Kraus, 2004: Die Atmosphaere der Erde,
+           Springer, 470pp., Sections II.1.4. and II.6.1.2.,
+           doi:`10.1007/3-540-35017-9 <https://doi.org/10.1007/3-540-35017-9>`_.
+
 .. [Lackmann2011] Lackmann, G., 2011: *Midlatitude Synoptic Meteorology*. Amer. Meteor. Soc.,
            345 pp.
 
