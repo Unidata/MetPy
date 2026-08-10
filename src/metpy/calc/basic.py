@@ -1296,6 +1296,118 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     return psfc * np.exp(height / h)
 
 
+@exporter.export
+@preprocess_and_wrap(wrap_like='pressure')
+@check_units('[pressure]', '[length]')
+def altimeter_from_station_pressure(pressure, height):
+    r"""Convert station pressure to an altimeter setting.
+
+    This is the inverse of `altimeter_to_station_pressure`. It is useful when a station
+    reports its actual (station) pressure but an altimeter setting is required, e.g. for
+    comparison against METAR observations. The definitions of altimeter setting and station
+    pressure are taken from [Smithsonian1951]_. A standard atmosphere [NOAA1976]_ is assumed.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure at the station elevation
+
+    height : `pint.Quantity`
+        Elevation of the station measuring pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        The altimeter setting
+
+    Examples
+    --------
+    >>> from metpy.calc import altimeter_from_station_pressure
+    >>> from metpy.units import units
+    >>> altimeter_from_station_pressure(900. * units.hPa, 1000. * units.m)
+    <Quantity(1014.36653, 'hectopascal')>
+
+    See Also
+    --------
+    altimeter_to_station_pressure, sea_level_pressure_from_station_pressure
+
+    Notes
+    -----
+    Inverting Equation 1 and Equation 3 of the Smithsonian Handbook (1951) p. 269, as
+    implemented in `altimeter_to_station_pressure`, gives
+
+    .. math:: A_{mb} = \left[\left(p_{mb} - 0.3\right)^n
+                       + \frac{p_{0}^n a H_{b}}{T_{0}}\right]^\frac{1}{n}
+
+    where :math:`p_{0}` = 1013.25 mb is standard sea-level pressure, :math:`T_{0}` = 288 K is
+    standard sea-level temperature, :math:`a` is the standard atmosphere lapse rate
+    :math:`6.5^{\circ}C. km.^{-1}`, :math:`H_{b}` is the station elevation, and
+    :math:`n = \frac{a R_{d}}{g} = 0.190284`.
+
+    """
+    # N-Value
+    n = (mpconsts.Rd * gamma / mpconsts.g).to_base_units()
+
+    return ((pressure - units.Quantity(0.3, 'hPa')) ** n
+            + (p0.to(pressure.units) ** n * gamma * height) / t0) ** (1 / n)
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='pressure')
+@check_units('[pressure]', '[length]', '[temperature]')
+def sea_level_pressure_from_station_pressure(pressure, height, temperature):
+    r"""Convert station pressure to sea-level pressure.
+
+    Sea-level pressure is a pressure value obtained by the theoretical reduction of barometric
+    pressure to sea level. It is assumed that the atmosphere extends to sea level below the
+    station and that the properties of the atmosphere are related to conditions observed at
+    the station [Smithsonian1951]_.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure at the station elevation
+
+    height : `pint.Quantity`
+        Elevation of the station measuring pressure
+
+    temperature : `pint.Quantity`
+        Temperature at the station
+
+    Returns
+    -------
+    `pint.Quantity`
+        The sea-level pressure
+
+    Examples
+    --------
+    >>> from metpy.calc import sea_level_pressure_from_station_pressure
+    >>> from metpy.units import units
+    >>> sea_level_pressure_from_station_pressure(900. * units.hPa, 1000. * units.m,
+    ...                                          15. * units.degC)
+    <Quantity(1013.28978, 'hectopascal')>
+
+    See Also
+    --------
+    altimeter_to_sea_level_pressure, altimeter_from_station_pressure
+
+    Notes
+    -----
+    This function is implemented using the following equations from Wallace and Hobbs (1977),
+    as described in more detail in `altimeter_to_sea_level_pressure`:
+
+    .. math:: p_{sealevel} = p_{station} exp\left(\frac{\Delta z}{H}\right)
+
+    where :math:`\Delta z` is the station elevation and :math:`H = \frac{R_{d}T}{g}` is the
+    scale height.
+
+    """
+    # Calculate the scale height
+    h = mpconsts.Rd * temperature / mpconsts.g
+
+    return pressure * np.exp(height / h)
+
+
 def _check_radians(value, max_radians=2 * np.pi):
     """Input validation of values that could be in degrees instead of radians.
 
