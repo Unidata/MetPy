@@ -477,7 +477,7 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
         Atmospheric pressure level(s) of interest
 
     temperature : `pint.Quantity`
-        Starting temperature
+        Temperature at ``reference_pressure``
 
     reference_pressure : `pint.Quantity`, optional
         Reference pressure; if not given, it defaults to the first element of the
@@ -542,7 +542,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
         Atmospheric pressure level(s) of interest
 
     temperature : `pint.Quantity`
-        Starting temperature
+        Temperature at `reference_pressure`
 
     reference_pressure : `pint.Quantity`, optional
         Reference pressure; if not given, it defaults to the first element of the
