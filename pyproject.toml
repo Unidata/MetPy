@@ -79,6 +79,12 @@ extras = [
 "Twitter" = "https://twitter.com/MetPy"
 "MetPy Mondays" = "https://www.youtube.com/playlist?list=PLQut5OXpV-0ir4IdllSt1iEZKTwFBa7kO"
 
+[tool.setuptools.package-data]
+metpy = ["*.txt"]
+"metpy.plots._static" = ["*.png"]
+"metpy.plots.colortable_files" = ["*.tbl"]
+"metpy.plots.nexrad_tables" = ["*.tbl"]
+
 [tool.codespell]
 skip = "*.tbl,*.ipynb,AUTHORS.txt,gempak.rst,.git,./staticdata,./docs/build,*.pdf,./talks,./tests/remote/fixtures"
 exclude-file = ".codespellexclude"
