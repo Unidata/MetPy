@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Aug 11, 2026 at 17:51:17"/>
+    <meta name="docbuild:last-update" content="Aug 17, 2026 at 20:14:18"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.geopotential_to_height.html" />
 
   </head>
@@ -817,10 +817,10 @@ radius, and <span class="math notranslate nohighlight">\(g\)</span> is standard 
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">metpy.calc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">metpy.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">geopot</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">9805.</span><span class="p">,</span> <span class="mf">19607.</span><span class="p">,</span> <span class="mf">29406.</span><span class="p">],</span> <span class="s1">&#39;m^2/s^2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">geopot</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">9805.</span><span class="p">,</span> <span class="mf">19607.</span><span class="p">,</span> <span class="mf">29406.</span><span class="p">],</span> <span class="s1">'m^2/s^2'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">height</span> <span class="o">=</span> <span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">geopotential_to_height</span><span class="p">(</span><span class="n">geopot</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">height</span>
-<span class="go">&lt;Quantity([   0.          999.98867965 1999.98521653 2999.98947022], &#39;meter&#39;)&gt;</span>
+<span class="go">&lt;Quantity([   0.          999.98867965 1999.98521653 2999.98947022], 'meter')&gt;</span>
 </pre></div>
 </div>
 <div class="admonition seealso">

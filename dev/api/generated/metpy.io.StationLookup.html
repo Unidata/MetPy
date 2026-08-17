@@ -75,7 +75,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Aug 11, 2026 at 17:51:17"/>
+    <meta name="docbuild:last-update" content="Aug 17, 2026 at 20:14:18"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.io.StationLookup.html" />
 
   </head>
@@ -801,9 +801,9 @@
 <p>This class follows the <em class="xref py py-obj">Mapping</em> protocol with station ID as the key. This makes it
 possible to e.g. iterate over all locations and get all of a certain criteria:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">metpy.io</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">conus_stations</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">metpy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">station_info</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;K&#39;</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">conus_stations</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">metpy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">station_info</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'K'</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">conus_stations</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
-<span class="go">[&#39;KEET&#39;, &#39;K8A0&#39;, &#39;KALX&#39;]</span>
+<span class="go">['KEET', 'K8A0', 'KALX']</span>
 </pre></div>
 </div>
 <p class="rubric">Attributes Summary</p>

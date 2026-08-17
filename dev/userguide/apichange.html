@@ -75,7 +75,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Aug 11, 2026 at 17:51:17"/>
+    <meta name="docbuild:last-update" content="Aug 17, 2026 at 20:14:18"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/userguide/apichange.html" />
 
   </head>
@@ -566,12 +566,12 @@ provided one where able, except where otherwise explicitly stated. See the
 arguments to make parameter names consistent among functions and make the documentation of
 parameters clearer for users. Functions in your code with only this change will be unaffected
 by the upgrade to MetPy 1.0 if the values are only specified positionally. For example,</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wind_components</span><span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">),</span> <span class="mf">225.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wind_components</span><span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">'m/s'</span><span class="p">),</span> <span class="mf">225.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>will work the same on MetPy before and after the upgrade to 1.0. However, if you specify these
 arguments by name, e.g.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wind_components</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">),</span> <span class="n">wdir</span><span class="o">=</span><span class="mf">225.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wind_components</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">'m/s'</span><span class="p">),</span> <span class="n">wdir</span><span class="o">=</span><span class="mf">225.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>then you will see breakage upgrading to MetPy 1.0, where the <code class="docutils literal notranslate"><span class="pre">wdir</span></code> argument has been

@@ -75,7 +75,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Aug 11, 2026 at 17:51:17"/>
+    <meta name="docbuild:last-update" content="Aug 17, 2026 at 20:14:18"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.corfidi_storm_motion.html" />
 
   </head>
@@ -840,17 +840,17 @@ to re-add storm motion</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">speed</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">knots</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">wind_components</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="n">wdir</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">corfidi_storm_motion</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-<span class="go">(&lt;Quantity([16.4274315   7.75758388], &#39;knot&#39;)&gt;,</span>
-<span class="go">&lt;Quantity([36.32782655 35.21132283], &#39;knot&#39;)&gt;)</span>
+<span class="go">(&lt;Quantity([16.4274315   7.75758388], 'knot')&gt;,</span>
+<span class="go">&lt;Quantity([36.32782655 35.21132283], 'knot')&gt;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example with manually specified low-level jet as max wind below 1500m</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">3100</span><span class="p">,</span> <span class="mi">5720</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lowest1500_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">h</span> <span class="o">&lt;=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">1500</span><span class="p">,</span> <span class="s1">&#39;meter&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lowest1500_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">h</span> <span class="o">&lt;=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">1500</span><span class="p">,</span> <span class="s1">'meter'</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">llj_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">speed</span><span class="p">[:</span><span class="n">lowest1500_index</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">llj_u</span><span class="p">,</span> <span class="n">llj_v</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="n">llj_index</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="n">llj_index</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">corfidi_storm_motion</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">u_llj</span><span class="o">=</span><span class="n">llj_u</span><span class="p">,</span> <span class="n">v_llj</span><span class="o">=</span><span class="n">llj_v</span><span class="p">)</span>
-<span class="go">(&lt;Quantity([4.90039505   1.47297683], &#39;knot&#39;)&gt;,</span>
-<span class="go">&lt;Quantity([24.8007901 28.92671577], &#39;knot&#39;)&gt;)</span>
+<span class="go">(&lt;Quantity([4.90039505   1.47297683], 'knot')&gt;,</span>
+<span class="go">&lt;Quantity([24.8007901 28.92671577], 'knot')&gt;)</span>
 </pre></div>
 </div>
 <p class="rubric">Notes</p>

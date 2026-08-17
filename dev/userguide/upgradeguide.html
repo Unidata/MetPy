@@ -75,7 +75,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Aug 11, 2026 at 17:51:17"/>
+    <meta name="docbuild:last-update" content="Aug 17, 2026 at 20:14:18"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/userguide/upgradeguide.html" />
 
   </head>
@@ -553,8 +553,8 @@ given such as input, and can also take advantage of the metadata available on a 
 (such as coordinate information) in order to simplify code. For example, calculating
 the geostrophic wind used to look like:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read data and get the geopotential heights for a single time and level</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;irma_gfs_example.nc&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
-<span class="n">height</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">&#39;Geopotential_height_isobaric&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">isobaric3</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">'irma_gfs_example.nc'</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="n">height</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">)</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">isobaric3</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># All the calculations needed for geostrophic wind</span>
 <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">height</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span><span class="p">,</span>

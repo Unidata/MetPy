@@ -75,7 +75,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.7dev" />
-    <meta name="docbuild:last-update" content="Aug 11, 2026 at 17:51:17"/>
+    <meta name="docbuild:last-update" content="Aug 17, 2026 at 20:14:18"/>
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.io.GiniFile.html" />
 
   </head>
@@ -995,8 +995,8 @@ data stores that do automatic encoding/decoding.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SuffixAppendingDataStore</span><span class="p">(</span><span class="n">AbstractDataStore</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">AbstractDataStore</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_suffix&quot;</span> <span class="o">%</span> <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_suffix&quot;</span> <span class="o">%</span> <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"</span><span class="si">%s</span><span class="s2">_suffix"</span> <span class="o">%</span> <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"</span><span class="si">%s</span><span class="s2">_suffix"</span> <span class="o">%</span> <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="k">return</span> <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span>
 </pre></div>
 </div>
