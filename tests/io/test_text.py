@@ -5,6 +5,7 @@
 from datetime import datetime
 
 import numpy as np
+import pandas as pd
 
 from metpy.cbook import get_test_data
 from metpy.io import parse_wpc_surface_bulletin
@@ -98,3 +99,22 @@ HIGHS -351 -3985 -4046 -38117 -7510
  """)
     df = parse_wpc_surface_bulletin(sample)
     assert df.geometry[0] == sgeom.Point([-51, -3])
+
+
+@needs_module('shapely')
+def test_parse_wpc_surface_bulletin_text_file_object():
+    """Test parsing a text-mode file-like object (e.g. StringIO), not just bytes."""
+    from io import BytesIO, StringIO
+
+    text = """VALID 062818Z
+HIGHS 1022 3961069 1020 3851069 1026 3750773
+LOWS 1016 4510934 1002 3441145 1003 4271229
+TROF 2971023 2831018 2691008
+ """
+    # A text-mode file object (read() -> str) must parse identically to a binary one
+    df_text = parse_wpc_surface_bulletin(StringIO(text), year=2000)
+    df_bytes = parse_wpc_surface_bulletin(BytesIO(text.encode('utf-8')), year=2000)
+
+    pd.testing.assert_frame_equal(df_text, df_bytes)
+    assert len(df_text) == 7
+    assert all(df_text.valid == datetime(2000, 6, 28, 18, 0, 0))
