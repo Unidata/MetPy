@@ -17,12 +17,13 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
-from matplotlib.ticker import MultipleLocator, NullFormatter, ScalarFormatter
+from matplotlib.ticker import MultipleLocator, ScalarFormatter, NullLocator, NullFormatter
 import matplotlib.transforms as transforms
 import numpy as np
 
 from ._util import colored_line
-from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure
+from ..calc import (dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure,
+                    pressure_to_height_std, height_to_pressure_std)
 from ..calc.tools import _delete_masked_points
 from ..interpolate import interpolate_1d
 from ..package_tools import Exporter
@@ -286,7 +287,6 @@ class SkewT:
             Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
             Defaults to 80.5. Passing the string ``'auto'`` tells matplotlib to handle
             the aspect ratio automatically (this is not recommended for SkewT).
-
         """
         if fig is None:
             import matplotlib.pyplot as plt
@@ -742,6 +742,36 @@ class SkewT:
             idx = np.arange(0, len(pressure))
         return self.shade_area(pressure[idx], t_parcel[idx], t[idx], which='negative',
                                **kwargs)
+
+    def add_heightax(self):
+        r"""Add a secondary y axis with height values calculated from pressure_to_height_std.
+
+        Axis is created to .12 normalized units to the left of the pressure axis and can
+        be accessed with the name "heightax".
+
+        See Also
+        :meth:`metpy.calc.pressure_to_height_std`
+
+        """        
+        # Set a secondary axis with height from pressure_to_height_standard
+        # Requires direct and inverse fctns - pressure axis and height axis
+        def height_axis(p):
+            return pressure_to_height_std(units.Quantity(p, 'hPa')).m_as('km')
+        def pressure_axis(h):
+            return height_to_pressure_std(units.Quantity(h, 'km')).m
+        # Positions the axis .12 normalized units to the left of the pressure axis
+        self.heightax = self.ax.secondary_yaxis(-0.16,
+                                                functions=(height_axis, pressure_axis))
+        # Set height axis ylims based on pressure ylims 
+        # This doesn't really seem to do anything except make it so that the unit is shown 
+        # on the axis
+        self.heightax.set_ylim(pressure_to_height_std(units.Quantity
+                                                      (self.ax.get_ylim(), 'hPa')))
+        self.heightax.yaxis.set_units(units.km)
+        self.heightax.yaxis.set_minor_locator(NullLocator())
+        self.heightax.yaxis.set_major_formatter(ScalarFormatter())
+        # Create ticks on the height axis counting by 1 from min to max
+        self.heightax.yaxis.set_major_locator(MultipleLocator(1))
 
 
 @exporter.export
