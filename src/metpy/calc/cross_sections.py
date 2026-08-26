@@ -325,4 +325,14 @@ def absolute_momentum(u, v, index='index'):
     _, x, y = xr.broadcast(norm_wind, x, y)
     distance = np.hypot(x.metpy.quantify(), y.metpy.quantify())
 
-    return (norm_wind + f * distance).metpy.convert_units('m/s')
+    momentum = (norm_wind + f * distance).metpy.convert_units('m/s')
+
+    # The arithmetic above can carry through attributes that do not describe
+    # absolute momentum (e.g. the cross-section's x-coordinate metadata picked
+    # up via ``distance``, or the input wind's attributes), and whether they
+    # propagate at all depends on xarray's ``keep_attrs`` default. Absolute
+    # momentum is a newly derived quantity, so return it without these
+    # inherited attributes.
+    momentum.attrs = {}
+
+    return momentum
