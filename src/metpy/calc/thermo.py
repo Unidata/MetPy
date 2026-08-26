@@ -4760,20 +4760,6 @@ def specific_humidity_from_dewpoint(pressure, dewpoint, *, phase='liquid'):
 def lifted_index(pressure, temperature, parcel_profile, vertical_dim=0):
     """Calculate Lifted Index from the pressure temperature and parcel profile.
 
-    Lifted index formula derived from [Galway1956]_ and referenced by [DoswellSchultz2006]_:
-
-    .. math:: LI = T500 - Tp500
-
-    where:
-
-    * :math:`T500` is the measured temperature at 500 hPa
-    * :math:`Tp500` is the temperature of the lifted parcel at 500 hPa
-
-    Calculation of the lifted index is defined as the temperature difference between the
-    observed 500 hPa temperature and the temperature of a parcel lifted from the
-    surface to 500 hPa. As noted in [Galway1956]_, a low-level mixed parcel is often used
-    as the surface parcel.
-
     Parameters
     ----------
     pressure : `pint.Quantity`
@@ -4794,6 +4780,22 @@ def lifted_index(pressure, temperature, parcel_profile, vertical_dim=0):
     -------
     `pint.Quantity`
         Lifted Index
+
+    Notes
+    -----
+    Lifted index formula derived from [Galway1956]_ and referenced by [DoswellSchultz2006]_:
+
+    .. math:: LI = T500 - Tp500
+
+    where:
+
+    * :math:`T500` is the measured temperature at 500 hPa
+    * :math:`Tp500` is the temperature of the lifted parcel at 500 hPa
+
+    Calculation of the lifted index is defined as the temperature difference between the
+    observed 500 hPa temperature and the temperature of a parcel lifted from the
+    surface to 500 hPa. As noted in [Galway1956]_, a low-level mixed parcel is often used
+    as the surface parcel.
 
     Examples
     --------
@@ -4846,22 +4848,6 @@ def lifted_index(pressure, temperature, parcel_profile, vertical_dim=0):
 def k_index(pressure, temperature, dewpoint, vertical_dim=0):
     """Calculate K Index from the pressure temperature and dewpoint.
 
-    K Index formula derived from [George1960]_:
-
-    .. math:: K = (T850 - T500) + Td850 - (T700 - Td700)
-
-    where:
-
-    * :math:`T850` is the temperature at 850 hPa
-    * :math:`T700` is the temperature at 700 hPa
-    * :math:`T500` is the temperature at 500 hPa
-    * :math:`Td850` is the dewpoint at 850 hPa
-    * :math:`Td700` is the dewpoint at 700 hPa
-
-    Calculation of the K Index is defined as the temperature difference between
-    the static instability between 850 hPa and 500 hPa, add with the moisture
-    at 850hPa, then subtract from the dryness of the airmass at 700 hPa.
-
     Parameters
     ----------
     pressure : `pint.Quantity`
@@ -4881,6 +4867,24 @@ def k_index(pressure, temperature, dewpoint, vertical_dim=0):
     -------
     `pint.Quantity`
         K Index
+
+    Notes
+    -----
+    K Index formula derived from [George1960]_:
+
+    .. math:: K = (T850 - T500) + Td850 - (T700 - Td700)
+
+    where:
+
+    * :math:`T850` is the temperature at 850 hPa
+    * :math:`T700` is the temperature at 700 hPa
+    * :math:`T500` is the temperature at 500 hPa
+    * :math:`Td850` is the dewpoint at 850 hPa
+    * :math:`Td700` is the dewpoint at 700 hPa
+
+    Calculation of the K Index is defined as the temperature difference between
+    the static instability between 850 hPa and 500 hPa, add with the moisture
+    at 850hPa, then subtract from the dryness of the airmass at 700 hPa.
 
     Examples
     --------
@@ -4924,6 +4928,31 @@ def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
     """
     Calculate GDI from the pressure, temperature, mixing ratio, and surface pressure.
 
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure level(s)
+
+    temperature : `pint.Quantity`
+        Temperature corresponding to pressure
+
+    mixing_ratio : `pint.Quantity`
+        Mixing ratio values corresponding to pressure
+
+    surface_pressure : `pint.Quantity`
+        Pressure of the surface.
+
+    vertical_dim : int, optional
+        The axis corresponding to vertical, defaults to 0. Automatically determined from
+        xarray DataArray arguments.
+
+    Returns
+    -------
+    `pint.Quantity`
+        GDI Index
+
+    Notes
+    -----
     Calculation of the GDI relies on temperatures and mixing ratios at 950,
     850, 700, and 500 hPa. These four levels define three layers: A) Boundary,
     B) Trade Wind Inversion (TWI), C) Mid-Troposphere.
@@ -4957,29 +4986,6 @@ def galvez_davison_index(pressure, temperature, mixing_ratio, surface_pressure,
           - Isolated to scattered showers.
         * - <5
           - Strong TWI likely, light rain possible.
-
-    Parameters
-    ----------
-    pressure : `pint.Quantity`
-        Pressure level(s)
-
-    temperature : `pint.Quantity`
-        Temperature corresponding to pressure
-
-    mixing_ratio : `pint.Quantity`
-        Mixing ratio values corresponding to pressure
-
-    surface_pressure : `pint.Quantity`
-        Pressure of the surface.
-
-    vertical_dim : int, optional
-        The axis corresponding to vertical, defaults to 0. Automatically determined from
-        xarray DataArray arguments.
-
-    Returns
-    -------
-    `pint.Quantity`
-        GDI Index
 
     Examples
     --------
@@ -5180,15 +5186,6 @@ def scale_height(temperature_bottom, temperature_top):
 def showalter_index(pressure, temperature, dewpoint):
     """Calculate Showalter Index.
 
-    Showalter Index derived from [Galway1956]_:
-
-    .. math:: SI = T500 - Tp500
-
-    where:
-
-    * :math:`T500` is the measured temperature at 500 hPa
-    * :math:`Tp500` is the temperature of the parcel at 500 hPa when lifted from 850 hPa
-
     Parameters
     ----------
     pressure : `pint.Quantity`
@@ -5204,6 +5201,17 @@ def showalter_index(pressure, temperature, dewpoint):
     -------
     `pint.Quantity`
         Showalter index
+
+    Notes
+    -----
+    Showalter Index derived from [Galway1956]_:
+
+    .. math:: SI = T500 - Tp500
+
+    where:
+
+    * :math:`T500` is the measured temperature at 500 hPa
+    * :math:`Tp500` is the temperature of the parcel at 500 hPa when lifted from 850 hPa
 
     Examples
     --------
@@ -5250,20 +5258,6 @@ def showalter_index(pressure, temperature, dewpoint):
 def total_totals_index(pressure, temperature, dewpoint, vertical_dim=0):
     """Calculate Total Totals Index from the pressure temperature and dewpoint.
 
-    Total Totals Index formula derived from [Miller1972]_:
-
-    .. math:: TT = (T850 + Td850) - (2 * T500)
-
-    where:
-
-    * :math:`T850` is the temperature at 850 hPa
-    * :math:`T500` is the temperature at 500 hPa
-    * :math:`Td850` is the dewpoint at 850 hPa
-
-    Calculation of the Total Totals Index is defined as the temperature at 850 hPa plus
-    the dewpoint at 850 hPa, minus twice the temperature at 500 hPa. This index consists of
-    two components, the Vertical Totals (VT) and the Cross Totals (CT).
-
     Parameters
     ----------
     pressure : `pint.Quantity`
@@ -5283,6 +5277,22 @@ def total_totals_index(pressure, temperature, dewpoint, vertical_dim=0):
     -------
     `pint.Quantity`
         Total Totals Index
+
+    Notes
+    -----
+    Total Totals Index formula derived from [Miller1972]_:
+
+    .. math:: TT = (T850 + Td850) - (2 * T500)
+
+    where:
+
+    * :math:`T850` is the temperature at 850 hPa
+    * :math:`T500` is the temperature at 500 hPa
+    * :math:`Td850` is the dewpoint at 850 hPa
+
+    Calculation of the Total Totals Index is defined as the temperature at 850 hPa plus
+    the dewpoint at 850 hPa, minus twice the temperature at 500 hPa. This index consists of
+    two components, the Vertical Totals (VT) and the Cross Totals (CT).
 
     Examples
     --------
@@ -5325,18 +5335,6 @@ def total_totals_index(pressure, temperature, dewpoint, vertical_dim=0):
 def vertical_totals(pressure, temperature, vertical_dim=0):
     """Calculate Vertical Totals from the pressure and temperature.
 
-    Vertical Totals formula derived from [Miller1972]_:
-
-    .. math:: VT = T850 - T500
-
-    where:
-
-    * :math:`T850` is the temperature at 850 hPa
-    * :math:`T500` is the temperature at 500 hPa
-
-    Calculation of the Vertical Totals is defined as the temperature difference between
-    850 hPa and 500 hPa. This is a part of the Total Totals Index.
-
     Parameters
     ----------
     pressure : `pint.Quantity`
@@ -5353,6 +5351,20 @@ def vertical_totals(pressure, temperature, vertical_dim=0):
     -------
     `pint.Quantity`
         Vertical Totals
+
+    Notes
+    -----
+    Vertical Totals formula derived from [Miller1972]_:
+
+    .. math:: VT = T850 - T500
+
+    where:
+
+    * :math:`T850` is the temperature at 850 hPa
+    * :math:`T500` is the temperature at 500 hPa
+
+    Calculation of the Vertical Totals is defined as the temperature difference between
+    850 hPa and 500 hPa. This is a part of the Total Totals Index.
 
     Examples
     --------
@@ -5388,18 +5400,6 @@ def vertical_totals(pressure, temperature, vertical_dim=0):
 def cross_totals(pressure, temperature, dewpoint, vertical_dim=0):
     """Calculate Cross Totals from the pressure temperature and dewpoint.
 
-    Cross Totals formula derived from [Miller1972]_:
-
-    .. math:: CT = Td850 - T500
-
-    where:
-
-    * :math:`Td850` is the dewpoint at 850 hPa
-    * :math:`T500` is the temperature at 500 hPa
-
-    Calculation of the Cross Totals is defined as the difference between dewpoint
-    at 850 hPa and temperature at 500 hPa. This is a part of the Total Totals Index.
-
     Parameters
     ----------
     pressure : `pint.Quantity`
@@ -5419,6 +5419,20 @@ def cross_totals(pressure, temperature, dewpoint, vertical_dim=0):
     -------
     `pint.Quantity`
         Cross Totals
+
+    Notes
+    -----
+    Cross Totals formula derived from [Miller1972]_:
+
+    .. math:: CT = Td850 - T500
+
+    where:
+
+    * :math:`Td850` is the dewpoint at 850 hPa
+    * :math:`T500` is the temperature at 500 hPa
+
+    Calculation of the Cross Totals is defined as the difference between dewpoint
+    at 850 hPa and temperature at 500 hPa. This is a part of the Total Totals Index.
 
     Examples
     --------
@@ -5460,31 +5474,6 @@ def cross_totals(pressure, temperature, dewpoint, vertical_dim=0):
 def sweat_index(pressure, temperature, dewpoint, speed, direction, vertical_dim=0):
     """Calculate SWEAT Index.
 
-    SWEAT Index derived from [Miller1972]_:
-
-    .. math:: SWEAT = 12Td_{850} + 20(TT - 49) + 2f_{850} + f_{500} + 125(S + 0.2)
-
-    where:
-
-    * :math:`Td_{850}` is the dewpoint at 850 hPa; the first term is set to zero
-      if :math:`Td_{850}` is negative.
-    * :math:`TT` is the total totals index; the second term is set to zero
-      if :math:`TT` is less than 49
-    * :math:`f_{850}` is the wind speed at 850 hPa
-    * :math:`f_{500}` is the wind speed at 500 hPa
-    * :math:`S` is the shear term: :math:`sin{(dd_{850} - dd_{500})}`, where
-      :math:`dd_{850}` and :math:`dd_{500}` are the wind directions at 850 hPa and 500 hPa,
-      respectively. It is set to zero if any of the following conditions are not met:
-
-    1. :math:`dd_{850}` is between 130 - 250 degrees
-    2. :math:`dd_{500}` is between 210 - 310 degrees
-    3. :math:`dd_{500} - dd_{850} > 0`
-    4. both the wind speeds are greater than or equal to 15 kts
-
-    Calculation of the SWEAT Index consists of a low-level moisture, instability,
-    and the vertical wind shear (both speed and direction). This index aim to
-    determine the likeliness of severe weather and tornadoes.
-
     Parameters
     ----------
     pressure : `pint.Quantity`
@@ -5510,6 +5499,33 @@ def sweat_index(pressure, temperature, dewpoint, speed, direction, vertical_dim=
     -------
     `pint.Quantity`
         SWEAT Index
+
+    Notes
+    -----
+    SWEAT Index derived from [Miller1972]_:
+
+    .. math:: SWEAT = 12Td_{850} + 20(TT - 49) + 2f_{850} + f_{500} + 125(S + 0.2)
+
+    where:
+
+    * :math:`Td_{850}` is the dewpoint at 850 hPa; the first term is set to zero
+      if :math:`Td_{850}` is negative.
+    * :math:`TT` is the total totals index; the second term is set to zero
+      if :math:`TT` is less than 49
+    * :math:`f_{850}` is the wind speed at 850 hPa
+    * :math:`f_{500}` is the wind speed at 500 hPa
+    * :math:`S` is the shear term: :math:`sin{(dd_{850} - dd_{500})}`, where
+      :math:`dd_{850}` and :math:`dd_{500}` are the wind directions at 850 hPa and 500 hPa,
+      respectively. It is set to zero if any of the following conditions are not met:
+
+    1. :math:`dd_{850}` is between 130 - 250 degrees
+    2. :math:`dd_{500}` is between 210 - 310 degrees
+    3. :math:`dd_{500} - dd_{850} > 0`
+    4. both the wind speeds are greater than or equal to 15 kts
+
+    Calculation of the SWEAT Index consists of a low-level moisture, instability,
+    and the vertical wind shear (both speed and direction). This index aim to
+    determine the likeliness of severe weather and tornadoes.
 
     """
     # Find dewpoint at 850 hPa.
