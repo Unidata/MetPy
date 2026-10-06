@@ -136,6 +136,77 @@ def test_build19_level2_additions():
     assert f.sweeps[0][0].header.az_spacing == 0.5
 
 
+def _level2_decoder(raw):
+    """Create a `Level2File` primed to decode a synthetic message body."""
+    from metpy.io._tools import IOBuffer
+
+    f = Level2File.__new__(Level2File)
+    f._buffer = IOBuffer(bytearray(raw))
+    f.prf_data = {}
+    f.rda_log = []
+    return f
+
+
+def test_msg32_prf_data():
+    """Check decoding of the message 32 RDA PRF data message."""
+    import struct
+
+    # 3 waveforms: CS (2 PRFs), CD (1), SPP (2). Values are 0.001 Hz units;
+    # this matches a real Build 23+ KLSX volume (CS 321.89-862.07 Hz).
+    body = struct.pack('>HH', 3, 0)
+    body += struct.pack('>HH2L', 1, 2, 321890, 862070)
+    body += struct.pack('>HH1L', 2, 1, 1282050)
+    body += struct.pack('>HH2L', 5, 2, 574315, 1135577)
+
+    f = _level2_decoder(body)
+    f._decode_msg32(None)
+    assert f.prf_data == {'CS': [321.89, 862.07],
+                          'CD': [1282.05],
+                          'SPP': [574.315, 1135.577]}
+
+
+def test_msg32_unknown_waveform_kept():
+    """Check that an unrecognized message 32 waveform code is kept numerically."""
+    import struct
+
+    body = struct.pack('>HH', 1, 0) + struct.pack('>HH1L', 7, 1, 500000)
+    f = _level2_decoder(body)
+    f._decode_msg32(None)
+    assert f.prf_data == {7: [500.0]}
+
+
+def test_msg33_rda_log():
+    """Check decoding of a plain-text message 33 RDA log."""
+    import struct
+
+    payload = b'2024-01-01 00:00:00 Azimuth servo OK\n'
+    body = struct.pack('>L26sLLLL22s', 1, b'AzServoLog', 5, 0, len(payload),
+                       len(payload), b'')
+    f = _level2_decoder(body + payload)
+    f._decode_msg33(None)
+    assert len(f.rda_log) == 1
+    entry = f.rda_log[0]
+    assert entry['identifier'] == 'AzServoLog'
+    assert entry['compression'] == 0
+    assert 'servo OK' in entry['text']
+
+
+@pytest.mark.parametrize('compression', [1, 2])
+def test_msg33_rda_log_compressed(compression):
+    """Check message 33 decompression for gzip and bzip2 payloads."""
+    import bz2
+    import gzip
+    import struct
+
+    payload = b'line one\nline two\n'
+    blob = {1: gzip.compress, 2: bz2.compress}[compression](payload)
+    body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 2, compression, len(blob),
+                       len(payload), b'')
+    f = _level2_decoder(body + blob)
+    f._decode_msg33(None)
+    assert f.rda_log[0]['text'] == 'line one\nline two\n'
+
+
 #
 # NIDS/Level 3 Tests
 #

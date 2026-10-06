@@ -212,6 +212,8 @@ class Level2File:
         self._msg_buf = {}
         self.sweeps = []
         self.rda_status = []
+        self.prf_data = {}
+        self.rda_log = []
         while not self._buffer.at_end():
             # Clear old file book marks and set the start of message for
             # easy jumping to the end
@@ -661,6 +663,55 @@ class Level2File:
         if data_hdr.rad_length != self._buffer.offset_from(msg_start):
             log.info('Padding detected in message. Length encoded as %d but offset when '
                      'done is %d', data_hdr.rad_length, self._buffer.offset_from(msg_start))
+
+    msg32_fmt = NamedStruct([('num_waveforms', 'H'), ('spare', 'H')], '>', 'Msg32Hdr')
+    msg32_wf_fmt = NamedStruct([('waveform_type', 'H'), ('num_prfs', 'H')],
+                               '>', 'Msg32WaveformHdr')
+
+    # Waveform type codes from ICD 2620002 Table XVIII (Message 32, added in
+    # RDA Build 23). Unknown codes are kept under their numeric value.
+    prf_waveform_map = {1: 'CS', 2: 'CD', 5: 'SPP'}
+
+    def _decode_msg32(self, msg_hdr):
+        # Message 32 is the RDA PRF Data message: the pulse repetition
+        # frequencies in use for each waveform type, stored in units of
+        # 0.001 Hz.
+        hdr = self._buffer.read_struct(self.msg32_fmt)
+        for _ in range(hdr.num_waveforms):
+            wf = self._buffer.read_struct(self.msg32_wf_fmt)
+            prfs = [prf * 0.001
+                    for prf in self._buffer.read_binary(wf.num_prfs, '>L')]
+            self.prf_data[
+                self.prf_waveform_map.get(wf.waveform_type, wf.waveform_type)] = prfs
+
+    msg33_fmt = NamedStruct([('version', 'L'), ('identifier', '26s'),
+                             ('data_version', 'L'), ('compression', 'L'),
+                             ('compressed_size', 'L'), ('decompressed_size', 'L'),
+                             ('spare', '22s')], '>', 'Msg33Hdr')
+
+    def _decode_msg33(self, msg_hdr):
+        # Message 33 carries a named RDA log file (e.g. AzServoLog), optionally
+        # compressed: 0 = none, 1 = gzip, 2 = bzip2, 3 = zip.
+        hdr = self._buffer.read_struct(self.msg33_fmt)
+        data = self._buffer.read(hdr.compressed_size)
+        try:
+            if hdr.compression == 1:
+                import gzip
+                data = gzip.decompress(bytes(data))
+            elif hdr.compression == 2:
+                import bz2
+                data = bz2.decompress(bytes(data))
+            # Compression type 3 is a ZIP container, which needs a member
+            # index to unpack -- keep the raw payload in that case.
+            text = data.decode('utf-8', 'replace')
+        except (OSError, EOFError):
+            text = ''
+        self.rda_log.append({'identifier': hdr.identifier.decode('ascii', 'replace')
+                                                         .strip('\x00 '),
+                             'version': hdr.version,
+                             'data_version': hdr.data_version,
+                             'compression': hdr.compression,
+                             'text': text})
 
     def _buffer_segment(self, msg_hdr):
         # Add to the buffer
