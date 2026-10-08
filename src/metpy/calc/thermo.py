@@ -2040,7 +2040,7 @@ def wet_bulb_potential_temperature(pressure, temperature, dewpoint):
 
     where :math:`x = \theta_e / 273.15 K`.
 
-    When :math:`\theta_e <= -173.15 K` then :math:`\theta_w = \theta_e`.
+    When :math:`\theta_e <= 173.15 K` then :math:`\theta_w = \theta_e`.
 
     Parameters
     ----------
