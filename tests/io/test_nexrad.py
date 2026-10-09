@@ -25,6 +25,7 @@ logging.getLogger('metpy.io.nexrad').setLevel(logging.CRITICAL)
 # KFTG tests bzip compression and newer format for a part of message 31
 # KTLX 20150530 has missing segments for message 18, which was causing exception
 # KICX has message type 29 (MDM)
+# KLSX 20261008 has message type 32 (RDA PRF data)
 # KVWX and KLTX have some legacy "quirks"; KLTX was crashing the parser
 level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46), 17, 4, 6, 0),
                 ('KTLX19990503_235621.gz', datetime(1999, 5, 3, 23, 56, 21), 16, 1, 3, 0),
@@ -36,6 +37,8 @@ level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46)
                  3, 0),
                 ('Level2_FOP1_20191223_003655.ar2v', datetime(2019, 12, 23, 0, 36, 55, 649000),
                  16, 5, 7, 0),
+                ('KLSX20261008_235320_V06', datetime(2026, 10, 8, 23, 53, 20, 519000), 12, 5,
+                 7, 0),
                 ('KVWX_20050626_221551.gz', datetime(2005, 6, 26, 22, 15, 51), 11, 1, 3, 21),
                 ('KLTX20050329_100015.gz', datetime(2005, 3, 29, 10, 0, 15), 11, 1, 3, 21)]
 
@@ -205,6 +208,18 @@ def test_msg33_rda_log_compressed(compression):
     f = _level2_decoder(body + blob)
     f._decode_msg33(None)
     assert f.rda_log[0]['text'] == 'line one\nline two\n'
+
+
+def test_level2_msg32_real(caplog):
+    """Check that message 32 is parsed without warnings from a real Build 23+ volume."""
+    caplog.set_level(logging.WARNING, 'metpy.io.nexrad')
+    f = Level2File(get_test_data('KLSX20261008_235320_V06', as_file_obj=False))
+    assert 'Unknown message' not in caplog.text
+    assert set(f.prf_data) == {'CS', 'CD', 'SPP'}
+    assert f.prf_data['CS'] == pytest.approx([321.89, 349.65, 388.6, 446.43, 511.95,
+                                              602.41, 717.7, 862.07], abs=1e-2)
+    assert f.prf_data['CD'][0] == pytest.approx(446.43, abs=1e-2)
+    assert f.prf_data['SPP'][-1] == pytest.approx(1135.577, abs=1e-3)
 
 
 #
