@@ -678,21 +678,26 @@ class Level2File:
         # Message 32 is the RDA PRF Data message: the pulse repetition
         # frequencies in use for each waveform type, stored in units of
         # 0.001 Hz. It can arrive segmented like the other bulk messages,
-        # so reassemble through _buffer_segment before parsing.
-        data = self._buffer_segment(msg_hdr)
+        # so reassemble the whole body before parsing.
+        data = self._msg_body(msg_hdr)
         if data:
-            hdr = self.msg32_fmt.unpack(data[:self.msg32_fmt.size])
-            offset = self.msg32_fmt.size
-            for _ in range(hdr.num_waveforms):
-                wf = self.msg32_wf_fmt.unpack(
-                    data[offset:offset + self.msg32_wf_fmt.size])
-                offset += self.msg32_wf_fmt.size
-                prfs = [prf * 0.001 for prf in
-                        struct.unpack_from(f'>{wf.num_prfs}L', data, offset)]
-                offset += 4 * wf.num_prfs
-                self.prf_data[
-                    self.prf_waveform_map.get(wf.waveform_type,
-                                             wf.waveform_type)] = prfs
+            try:
+                hdr = self.msg32_fmt.unpack_from(data, 0)
+                offset = self.msg32_fmt.size
+                for _ in range(hdr.num_waveforms):
+                    wf = self.msg32_wf_fmt.unpack_from(data, offset)
+                    offset += self.msg32_wf_fmt.size
+                    prfs = [prf * 0.001 for prf in
+                            struct.unpack_from(f'>{wf.num_prfs}L', data, offset)]
+                    offset += 4 * wf.num_prfs
+                    # Merge rather than replace: if a volume carries more than
+                    # one message 32 the earlier tables must not be dropped.
+                    table = self.prf_data.setdefault(
+                        self.prf_waveform_map.get(wf.waveform_type,
+                                                 wf.waveform_type), [])
+                    table.extend(prf for prf in prfs if prf not in table)
+            except struct.error:
+                log.warning('Truncated message 32 body')
 
     msg33_fmt = NamedStruct([('version', 'L'), ('identifier', '26s'),
                              ('data_version', 'L'), ('compression', 'L'),
@@ -702,11 +707,15 @@ class Level2File:
     def _decode_msg33(self, msg_hdr):
         # Message 33 carries a named RDA log file (e.g. AzServoLog), optionally
         # compressed: 0 = none, 1 = gzip, 2 = bzip2, 3 = zip. It can arrive
-        # segmented like the other bulk messages, so reassemble through
-        # _buffer_segment before parsing.
-        data = self._buffer_segment(msg_hdr)
+        # segmented like the other bulk messages, so reassemble the whole
+        # body before parsing.
+        data = self._msg_body(msg_hdr)
         if data:
-            hdr = self.msg33_fmt.unpack(data[:self.msg33_fmt.size])
+            try:
+                hdr = self.msg33_fmt.unpack_from(data, 0)
+            except struct.error:
+                log.warning('Truncated message 33 header')
+                return
             payload = data[self.msg33_fmt.size:
                            self.msg33_fmt.size + hdr.compressed_size]
             try:
@@ -725,6 +734,15 @@ class Level2File:
                                  'data_version': hdr.data_version,
                                  'compression': hdr.compression,
                                  'text': text})
+
+    def _msg_body(self, msg_hdr):
+        """Return the full message body, reassembling segments when needed."""
+        if msg_hdr.size_hw == 65535:
+            # ICD 2620002P: a size_hw of 65535 means the segment fields carry
+            # the total message size in bytes -- a single record, never split.
+            total = msg_hdr.num_segments << 16 | msg_hdr.segment_num
+            return bytes(self._buffer.read(total - self.msg_hdr_fmt.size))
+        return self._buffer_segment(msg_hdr)
 
     def _buffer_segment(self, msg_hdr):
         # Add to the buffer

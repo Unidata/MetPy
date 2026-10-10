@@ -246,6 +246,52 @@ def test_msg33_segmented():
     assert f.rda_log[0]['text'] == 'RDA log line\n'
 
 
+def test_msg33_big_size_encoding():
+    """Check message 33 when the segment fields carry the size in bytes."""
+    import struct
+    from types import SimpleNamespace
+
+    payload = b'log line\n'
+    body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 1, 0, len(payload),
+                       len(payload), b'') + payload
+    raw = body + b'\x00' * (len(body) % 2)
+    # ICD 2620002P special encoding: size_hw 65535, segment fields = total
+    # message size in bytes (header + body).
+    total = 16 + len(raw)
+    hdr = SimpleNamespace(msg_type=33, size_hw=65535,
+                          segment_num=total & 0xFFFF,
+                          num_segments=total >> 16)
+    f = _level2_decoder(raw)
+    f._decode_msg33(hdr)
+    assert f.rda_log[0]['text'] == 'log line\n'
+
+
+def test_msg33_truncated(caplog):
+    """Check that a truncated message 33 body logs and skips, not crashes."""
+    import struct
+
+    caplog.set_level(logging.WARNING, 'metpy.io.nexrad')
+    body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 1, 0, 5000, 5000, b'')
+    f = _level2_decoder(body[:20])   # header itself is cut short
+    f._decode_msg33(_msg_hdr(33, 20))
+    assert f.rda_log == []
+    assert 'Truncated message 33' in caplog.text
+
+
+def test_msg32_second_message_merges():
+    """Check a second message 32 adds new PRFs instead of dropping them."""
+    import struct
+    from metpy.io._tools import IOBuffer
+
+    body1 = struct.pack('>HH', 1, 0) + struct.pack('>HH1L', 1, 1, 321890)
+    body2 = struct.pack('>HH', 1, 0) + struct.pack('>HH1L', 1, 1, 862070)
+    f = _level2_decoder(body1)
+    f._decode_msg32(_msg_hdr(32, len(body1)))
+    f._buffer = IOBuffer(bytearray(body2))
+    f._decode_msg32(_msg_hdr(32, len(body2)))
+    assert f.prf_data == {'CS': [321.89, 862.07]}
+
+
 def test_level2_msg32_real(caplog):
     """Check that message 32 is parsed without warnings from a real Build 23+ volume."""
     caplog.set_level(logging.WARNING, 'metpy.io.nexrad')
