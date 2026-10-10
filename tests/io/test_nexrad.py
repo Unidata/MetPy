@@ -25,6 +25,7 @@ logging.getLogger('metpy.io.nexrad').setLevel(logging.CRITICAL)
 # KFTG tests bzip compression and newer format for a part of message 31
 # KTLX 20150530 has missing segments for message 18, which was causing exception
 # KICX has message type 29 (MDM)
+# KLSX 20261008 has message type 32 (RDA PRF data)
 # KVWX and KLTX have some legacy "quirks"; KLTX was crashing the parser
 level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46), 17, 4, 6, 0),
                 ('KTLX19990503_235621.gz', datetime(1999, 5, 3, 23, 56, 21), 16, 1, 3, 0),
@@ -36,6 +37,8 @@ level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46)
                  3, 0),
                 ('Level2_FOP1_20191223_003655.ar2v', datetime(2019, 12, 23, 0, 36, 55, 649000),
                  16, 5, 7, 0),
+                ('KLSX20261008_235320_V06', datetime(2026, 10, 8, 23, 53, 20, 519000), 12, 5,
+                 7, 0),
                 ('KVWX_20050626_221551.gz', datetime(2005, 6, 26, 22, 15, 51), 11, 1, 3, 21),
                 ('KLTX20050329_100015.gz', datetime(2005, 3, 29, 10, 0, 15), 11, 1, 3, 21)]
 
@@ -134,6 +137,173 @@ def test_build19_level2_additions():
     f = Level2File(get_test_data('Level2_KDDC_20200823_204121.ar2v'))
     assert f.vcp_info.vcp_version == 1
     assert f.sweeps[0][0].header.az_spacing == 0.5
+
+
+def _level2_decoder(raw):
+    """Create a `Level2File` primed to decode a synthetic message body."""
+    from metpy.io._tools import IOBuffer
+
+    f = Level2File.__new__(Level2File)
+    f._buffer = IOBuffer(bytearray(raw))
+    f._msg_buf = {}
+    f.prf_data = {}
+    f.rda_log = []
+    return f
+
+
+def _msg_hdr(msg_type, body_len, segment_num=1, num_segments=1):
+    """Create a fake message header sized for a synthetic message body."""
+    from types import SimpleNamespace
+
+    # Message bodies start right after the 16-byte message header and
+    # size_hw counts halfwords of header + body together.
+    return SimpleNamespace(msg_type=msg_type,
+                           size_hw=(16 + body_len) // 2,
+                           segment_num=segment_num, num_segments=num_segments)
+
+
+def test_msg32_prf_data():
+    """Check decoding of the message 32 RDA PRF data message."""
+    import struct
+
+    # 3 waveforms: CS (2 PRFs), CD (1), SPP (2). Values are 0.001 Hz units;
+    # this matches a real Build 23+ KLSX volume (CS 321.89-862.07 Hz).
+    body = struct.pack('>HH', 3, 0)
+    body += struct.pack('>HH2L', 1, 2, 321890, 862070)
+    body += struct.pack('>HH1L', 2, 1, 1282050)
+    body += struct.pack('>HH2L', 5, 2, 574315, 1135577)
+
+    f = _level2_decoder(body)
+    f._decode_msg32(_msg_hdr(32, len(body)))
+    assert f.prf_data == {'CS': [321.89, 862.07],
+                          'CD': [1282.05],
+                          'SPP': [574.315, 1135.577]}
+
+
+def test_msg32_unknown_waveform_kept():
+    """Check that an unrecognized message 32 waveform code is kept numerically."""
+    import struct
+
+    body = struct.pack('>HH', 1, 0) + struct.pack('>HH1L', 7, 1, 500000)
+    f = _level2_decoder(body)
+    f._decode_msg32(_msg_hdr(32, len(body)))
+    assert f.prf_data == {7: [500.0]}
+
+
+def test_msg33_rda_log():
+    """Check decoding of a plain-text message 33 RDA log."""
+    import struct
+
+    payload = b'2024-01-01 00:00:00 Azimuth servo OK\n'
+    body = struct.pack('>L26sLLLL22s', 1, b'AzServoLog', 5, 0, len(payload),
+                       len(payload), b'')
+    raw = body + payload
+    raw += b'\x00' * (len(raw) % 2)   # message bodies are even-length
+    f = _level2_decoder(raw)
+    f._decode_msg33(_msg_hdr(33, len(raw)))
+    assert len(f.rda_log) == 1
+    entry = f.rda_log[0]
+    assert entry['identifier'] == 'AzServoLog'
+    assert entry['compression'] == 0
+    assert 'servo OK' in entry['text']
+
+
+@pytest.mark.parametrize('compression', [1, 2])
+def test_msg33_rda_log_compressed(compression):
+    """Check message 33 decompression for gzip and bzip2 payloads."""
+    import bz2
+    import gzip
+    import struct
+
+    payload = b'line one\nline two\n'
+    blob = {1: gzip.compress, 2: bz2.compress}[compression](payload)
+    body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 2, compression, len(blob),
+                       len(payload), b'')
+    raw = body + blob
+    raw += b'\x00' * (len(raw) % 2)
+    f = _level2_decoder(raw)
+    f._decode_msg33(_msg_hdr(33, len(raw)))
+    assert f.rda_log[0]['text'] == 'line one\nline two\n'
+
+
+def test_msg33_segmented():
+    """Check that a message 33 split across segments is reassembled."""
+    import struct
+    from metpy.io._tools import IOBuffer
+
+    payload = b'RDA log line\n'
+    body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 1, 0, len(payload),
+                       len(payload), b'') + payload
+    body += b'\x00' * (len(body) % 2)
+    split = len(body) // 2 & ~1   # segment bodies are even-length
+
+    f = _level2_decoder(body[:split])
+    f._decode_msg33(_msg_hdr(33, split, 1, 2))
+    assert f.rda_log == []   # nothing until the last segment arrives
+
+    f._buffer = IOBuffer(bytearray(body[split:]))
+    f._decode_msg33(_msg_hdr(33, len(body) - split, 2, 2))
+    assert f.rda_log[0]['text'] == 'RDA log line\n'
+
+
+def test_msg33_big_size_encoding():
+    """Check message 33 when the segment fields carry the size in bytes."""
+    import struct
+    from types import SimpleNamespace
+
+    payload = b'log line\n'
+    body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 1, 0, len(payload),
+                       len(payload), b'') + payload
+    raw = body + b'\x00' * (len(body) % 2)
+    # ICD 2620002P special encoding: size_hw 65535, segment fields = total
+    # message size in bytes (header + body).
+    total = 16 + len(raw)
+    hdr = SimpleNamespace(msg_type=33, size_hw=65535,
+                          segment_num=total & 0xFFFF,
+                          num_segments=total >> 16)
+    f = _level2_decoder(raw)
+    f._decode_msg33(hdr)
+    assert f.rda_log[0]['text'] == 'log line\n'
+
+
+def test_msg33_truncated(caplog):
+    """Check that a truncated message 33 body logs and skips, not crashes."""
+    import struct
+
+    caplog.set_level(logging.WARNING, 'metpy.io.nexrad')
+    body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 1, 0, 5000, 5000, b'')
+    f = _level2_decoder(body[:20])   # header itself is cut short
+    f._decode_msg33(_msg_hdr(33, 20))
+    assert f.rda_log == []
+    assert 'Truncated message 33' in caplog.text
+
+
+def test_msg32_second_message_merges():
+    """Check a second message 32 adds new PRFs instead of dropping them."""
+    import struct
+    from metpy.io._tools import IOBuffer
+
+    body1 = struct.pack('>HH', 1, 0) + struct.pack('>HH1L', 1, 1, 321890)
+    body2 = struct.pack('>HH', 1, 0) + struct.pack('>HH1L', 1, 1, 862070)
+    f = _level2_decoder(body1)
+    f._decode_msg32(_msg_hdr(32, len(body1)))
+    f._buffer = IOBuffer(bytearray(body2))
+    f._decode_msg32(_msg_hdr(32, len(body2)))
+    assert f.prf_data == {'CS': [321.89, 862.07]}
+
+
+def test_level2_msg32_real(caplog):
+    """Check that message 32 is parsed without warnings from a real Build 23+ volume."""
+    caplog.set_level(logging.WARNING, 'metpy.io.nexrad')
+    with open(get_test_data('KLSX20261008_235320_V06', as_file_obj=False),
+              'rb') as fobj:
+        f = Level2File(fobj)
+    assert 'Unknown message' not in caplog.text
+    assert set(f.prf_data) == {'CS', 'CD', 'SPP'}
+    assert f.prf_data['CS'] == pytest.approx([321.89, 349.65, 388.6, 446.43, 511.95,
+                                              602.41, 717.7, 862.07], abs=1e-2)
+    assert f.prf_data['CD'][0] == pytest.approx(446.43, abs=1e-2)
+    assert f.prf_data['SPP'][-1] == pytest.approx(1135.577, abs=1e-3)
 
 
 #
