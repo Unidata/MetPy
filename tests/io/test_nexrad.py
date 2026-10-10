@@ -145,9 +145,21 @@ def _level2_decoder(raw):
 
     f = Level2File.__new__(Level2File)
     f._buffer = IOBuffer(bytearray(raw))
+    f._msg_buf = {}
     f.prf_data = {}
     f.rda_log = []
     return f
+
+
+def _msg_hdr(msg_type, body_len, segment_num=1, num_segments=1):
+    """Create a fake message header sized for a synthetic message body."""
+    from types import SimpleNamespace
+
+    # Message bodies start right after the 16-byte message header and
+    # size_hw counts halfwords of header + body together.
+    return SimpleNamespace(msg_type=msg_type,
+                           size_hw=(16 + body_len) // 2,
+                           segment_num=segment_num, num_segments=num_segments)
 
 
 def test_msg32_prf_data():
@@ -162,7 +174,7 @@ def test_msg32_prf_data():
     body += struct.pack('>HH2L', 5, 2, 574315, 1135577)
 
     f = _level2_decoder(body)
-    f._decode_msg32(None)
+    f._decode_msg32(_msg_hdr(32, len(body)))
     assert f.prf_data == {'CS': [321.89, 862.07],
                           'CD': [1282.05],
                           'SPP': [574.315, 1135.577]}
@@ -174,7 +186,7 @@ def test_msg32_unknown_waveform_kept():
 
     body = struct.pack('>HH', 1, 0) + struct.pack('>HH1L', 7, 1, 500000)
     f = _level2_decoder(body)
-    f._decode_msg32(None)
+    f._decode_msg32(_msg_hdr(32, len(body)))
     assert f.prf_data == {7: [500.0]}
 
 
@@ -185,8 +197,10 @@ def test_msg33_rda_log():
     payload = b'2024-01-01 00:00:00 Azimuth servo OK\n'
     body = struct.pack('>L26sLLLL22s', 1, b'AzServoLog', 5, 0, len(payload),
                        len(payload), b'')
-    f = _level2_decoder(body + payload)
-    f._decode_msg33(None)
+    raw = body + payload
+    raw += b'\x00' * (len(raw) % 2)   # message bodies are even-length
+    f = _level2_decoder(raw)
+    f._decode_msg33(_msg_hdr(33, len(raw)))
     assert len(f.rda_log) == 1
     entry = f.rda_log[0]
     assert entry['identifier'] == 'AzServoLog'
@@ -205,15 +219,39 @@ def test_msg33_rda_log_compressed(compression):
     blob = {1: gzip.compress, 2: bz2.compress}[compression](payload)
     body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 2, compression, len(blob),
                        len(payload), b'')
-    f = _level2_decoder(body + blob)
-    f._decode_msg33(None)
+    raw = body + blob
+    raw += b'\x00' * (len(raw) % 2)
+    f = _level2_decoder(raw)
+    f._decode_msg33(_msg_hdr(33, len(raw)))
     assert f.rda_log[0]['text'] == 'line one\nline two\n'
+
+
+def test_msg33_segmented():
+    """Check that a message 33 split across segments is reassembled."""
+    import struct
+    from metpy.io._tools import IOBuffer
+
+    payload = b'RDA log line\n'
+    body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 1, 0, len(payload),
+                       len(payload), b'') + payload
+    body += b'\x00' * (len(body) % 2)
+    split = len(body) // 2 & ~1   # segment bodies are even-length
+
+    f = _level2_decoder(body[:split])
+    f._decode_msg33(_msg_hdr(33, split, 1, 2))
+    assert f.rda_log == []   # nothing until the last segment arrives
+
+    f._buffer = IOBuffer(bytearray(body[split:]))
+    f._decode_msg33(_msg_hdr(33, len(body) - split, 2, 2))
+    assert f.rda_log[0]['text'] == 'RDA log line\n'
 
 
 def test_level2_msg32_real(caplog):
     """Check that message 32 is parsed without warnings from a real Build 23+ volume."""
     caplog.set_level(logging.WARNING, 'metpy.io.nexrad')
-    f = Level2File(get_test_data('KLSX20261008_235320_V06', as_file_obj=False))
+    with open(get_test_data('KLSX20261008_235320_V06', as_file_obj=False),
+              'rb') as fobj:
+        f = Level2File(fobj)
     assert 'Unknown message' not in caplog.text
     assert set(f.prf_data) == {'CS', 'CD', 'SPP'}
     assert f.prf_data['CS'] == pytest.approx([321.89, 349.65, 388.6, 446.43, 511.95,

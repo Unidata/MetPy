@@ -7,10 +7,12 @@ import bz2
 from collections import defaultdict, namedtuple, OrderedDict
 import contextlib
 from datetime import datetime, UTC
+import gzip
 import logging
 import pathlib
 import re
 import struct
+import zlib
 
 import numpy as np
 from scipy.constants import day, milli
@@ -675,14 +677,22 @@ class Level2File:
     def _decode_msg32(self, msg_hdr):
         # Message 32 is the RDA PRF Data message: the pulse repetition
         # frequencies in use for each waveform type, stored in units of
-        # 0.001 Hz.
-        hdr = self._buffer.read_struct(self.msg32_fmt)
-        for _ in range(hdr.num_waveforms):
-            wf = self._buffer.read_struct(self.msg32_wf_fmt)
-            prfs = [prf * 0.001
-                    for prf in self._buffer.read_binary(wf.num_prfs, '>L')]
-            self.prf_data[
-                self.prf_waveform_map.get(wf.waveform_type, wf.waveform_type)] = prfs
+        # 0.001 Hz. It can arrive segmented like the other bulk messages,
+        # so reassemble through _buffer_segment before parsing.
+        data = self._buffer_segment(msg_hdr)
+        if data:
+            hdr = self.msg32_fmt.unpack(data[:self.msg32_fmt.size])
+            offset = self.msg32_fmt.size
+            for _ in range(hdr.num_waveforms):
+                wf = self.msg32_wf_fmt.unpack(
+                    data[offset:offset + self.msg32_wf_fmt.size])
+                offset += self.msg32_wf_fmt.size
+                prfs = [prf * 0.001 for prf in
+                        struct.unpack_from(f'>{wf.num_prfs}L', data, offset)]
+                offset += 4 * wf.num_prfs
+                self.prf_data[
+                    self.prf_waveform_map.get(wf.waveform_type,
+                                             wf.waveform_type)] = prfs
 
     msg33_fmt = NamedStruct([('version', 'L'), ('identifier', '26s'),
                              ('data_version', 'L'), ('compression', 'L'),
@@ -691,27 +701,30 @@ class Level2File:
 
     def _decode_msg33(self, msg_hdr):
         # Message 33 carries a named RDA log file (e.g. AzServoLog), optionally
-        # compressed: 0 = none, 1 = gzip, 2 = bzip2, 3 = zip.
-        hdr = self._buffer.read_struct(self.msg33_fmt)
-        data = self._buffer.read(hdr.compressed_size)
-        try:
-            if hdr.compression == 1:
-                import gzip
-                data = gzip.decompress(bytes(data))
-            elif hdr.compression == 2:
-                import bz2
-                data = bz2.decompress(bytes(data))
-            # Compression type 3 is a ZIP container, which needs a member
-            # index to unpack -- keep the raw payload in that case.
-            text = data.decode('utf-8', 'replace')
-        except (OSError, EOFError):
-            text = ''
-        self.rda_log.append({'identifier': hdr.identifier.decode('ascii', 'replace')
-                                                         .strip('\x00 '),
-                             'version': hdr.version,
-                             'data_version': hdr.data_version,
-                             'compression': hdr.compression,
-                             'text': text})
+        # compressed: 0 = none, 1 = gzip, 2 = bzip2, 3 = zip. It can arrive
+        # segmented like the other bulk messages, so reassemble through
+        # _buffer_segment before parsing.
+        data = self._buffer_segment(msg_hdr)
+        if data:
+            hdr = self.msg33_fmt.unpack(data[:self.msg33_fmt.size])
+            payload = data[self.msg33_fmt.size:
+                           self.msg33_fmt.size + hdr.compressed_size]
+            try:
+                if hdr.compression == 1:
+                    payload = gzip.decompress(payload)
+                elif hdr.compression == 2:
+                    payload = bz2.decompress(payload)
+                # Compression type 3 is a ZIP container, which needs a member
+                # index to unpack -- keep the raw payload in that case.
+                text = payload.decode('utf-8', 'replace')
+            except (OSError, EOFError, zlib.error):
+                text = ''
+            self.rda_log.append({'identifier': hdr.identifier.decode('ascii', 'replace')
+                                                             .strip('\x00 '),
+                                 'version': hdr.version,
+                                 'data_version': hdr.data_version,
+                                 'compression': hdr.compression,
+                                 'text': text})
 
     def _buffer_segment(self, msg_hdr):
         # Add to the buffer
