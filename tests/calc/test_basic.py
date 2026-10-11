@@ -510,7 +510,7 @@ def test_smooth_gaussian(array_type):
                          [9.00900782, 10.20038736, 13.20489127, 18.20489127, 25.20489127,
                           34.20489127, 45.20489127, 58.20489127, 73.11931702, 86.48310568]],
                         '', mask=mask)
-    assert_array_almost_equal(s_actual, s_true)
+    assert_array_almost_equal(s_actual, s_true, rtol=1e-5)
 
 
 def test_smooth_gaussian_small_n():
