@@ -3602,7 +3602,7 @@ def downdraft_cape(pressure, temperature, dewpoint):
     >>> downdraft_cape(p, T, Td)
     (<Quantity(1220.23958, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
     900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity([17.52312134
-    17.21994919 15.25075922 13.13968054 10.86425666  8.3964948 5.70105258  2.73268083
+    17.21994919 15.25075922 13.13968054 10.86425666  8.39649482 5.70105258  2.73268083
     -0.56730496 -4.27590467], 'degree_Celsius')>)
 
     See Also
