@@ -912,7 +912,7 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # calculate LFC
     >>> lfc(p, T, Td)
-    (<Quantity(967.756439, 'hectopascal')>, <Quantity(25.817629, 'degree_Celsius')>)
+    (<Quantity(967.756439, 'hectopascal')>, <Quantity(25.8176288, 'degree_Celsius')>)
 
     See Also
     --------
@@ -1223,12 +1223,12 @@ def parcel_profile(pressure, temperature, dewpoint):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # computer parcel temperature
     >>> parcel_profile(p, T[0], Td[0]).to('degC')
-    <Quantity([  29.3          28.61221952   25.17408111   23.41044641   21.53049669
-    19.51679547   17.34763012   14.99552875   12.4250297     9.58933992
-        6.4250951     2.84385238   -1.28217807   -6.14487817  -12.0437512
-    -19.45887455  -29.14459155  -42.13147376  -50.19971377  -59.49169312
-    -70.19973455  -82.69068969  -94.44583924 -101.13413664 -108.54542355
-    -116.90037584 -126.55118719 -138.11894611 -144.97290122 -152.88981956], 'degree_Celsius')>
+    <Quantity([  29.3          28.61221952   25.19876715   23.43585492   21.55672278
+    19.54395513   17.37586677   15.02502235   12.45601002     9.62210611
+        6.46004489     2.88152647   -1.24102877   -6.09919686  -11.9920703
+    -19.3993535  -29.07581874  -42.05511268  -50.12190364  -59.41456605
+    -70.12522174  -82.62032186  -94.37972144 -101.07047805 -108.48450214
+    -116.8425445 -126.49692868 -138.0689676 -144.92546045 -152.84530881], 'degree_Celsius')>
 
     See Also
     --------
@@ -1696,7 +1696,7 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity):
     >>> from metpy.calc import dewpoint_from_relative_humidity
     >>> from metpy.units import units
     >>> dewpoint_from_relative_humidity(10 * units.degC, 50 * units.percent)
-    <Quantity(0.057865614, 'degree_Celsius')>
+    <Quantity(0.0578656142, 'degree_Celsius')>
 
     .. versionchanged:: 1.0
        Renamed ``rh`` parameter to ``relative_humidity``
@@ -3600,10 +3600,10 @@ def downdraft_cape(pressure, temperature, dewpoint):
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> downdraft_cape(p, T, Td)
-    (<Quantity(1220.67097, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
-    900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity([17.52017969
-    17.21699119 15.24769167 13.13648889 10.86092343  8.39299889 5.69736825  2.72877681
-    -0.57146657 -4.28036902], 'degree_Celsius')>)
+    (<Quantity(1220.23958, 'joule / kilogram')>, <Quantity([1008. 1000.  950.
+    900.  850.  800.  750.  700.  650.  600.], 'hectopascal')>, <Quantity([17.52312134
+    17.21994919 15.25075922 13.13968054 10.86425666  8.3964948 5.70105258  2.73268083
+    -0.56730496 -4.27590467], 'degree_Celsius')>)
 
     See Also
     --------
@@ -3744,7 +3744,7 @@ def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
     >>> # find the mixed parcel of depth 50 hPa
     >>> mixed_parcel(p, T, Td, depth=50 * units.hPa)
     (<Quantity(1008.0, 'hectopascal')>, <Quantity(28.750033, 'degree_Celsius')>,
-    <Quantity(18.1792530, 'degree_Celsius')>)
+    <Quantity(18.179253, 'degree_Celsius')>)
 
     Notes
     -----
@@ -3845,7 +3845,7 @@ def mixed_layer(pressure, *args, height=None, bottom=None, depth=None, interpola
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # find mixed layer T and Td of depth 50 hPa
     >>> mixed_layer(p, T, Td, depth=50 * units.hPa)
-    [<Quantity(26.5798571, 'degree_Celsius')>, <Quantity(16.6598620, 'degree_Celsius')>]
+    [<Quantity(26.5798571, 'degree_Celsius')>, <Quantity(16.659862, 'degree_Celsius')>]
 
     Notes
     -----
