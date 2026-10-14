@@ -30,3 +30,6 @@ docs/api/areas.rst
 examples/scripts
 test_output/
 docs/sg_execution_times.rst
+# pixi environments
+.pixi/*
+!.pixi/config.toml

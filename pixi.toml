@@ -1,0 +1,252 @@
+####################
+### Pixi.toml
+# Maximal config for MetPy development, testing, documentation, and builds.
+# Supports all previously-specified CI environments for local and/or CI implementations.
+[workspace]
+channels = ["conda-forge/label/testing", "conda-forge"]
+platforms = ["linux-64", "osx-arm64", "osx-64", "win-64"]
+
+####################
+### Features
+
+##########
+## Defaults
+# Default feature, includes core dependencies, excludes those we test unstable releases
+[dependencies]
+matplotlib = "==3.10.5"
+numpy = "==2.2.6"
+pandas = "==2.3.2"
+pooch = "==1.8.2"
+pyproj = "==3.7.1"
+scipy = "==1.14.1"
+traitlets = "==5.14.3"
+
+# Add default tasks available to all environments
+[tasks]
+update-registry = "python -c \"import pooch; pooch.make_registry('staticdata', 'src/metpy/static-data-manifest.txt')\""
+
+# dev feature, includes editable local MetPy install
+[feature.dev.pypi-dependencies]
+MetPy = { path = ".", editable = true}
+
+# stable feature, includes dependencies we separately test unstable releases
+[feature.stable.dependencies]
+pint = "==0.24.4"
+xarray = "==2025.6.1"
+
+# unstable feature, includes dependencies we test unstable upstream releases from GitHub
+[feature.unstable.pypi-dependencies]
+pint = { git = "https://github.com/hgrecco/pint" }
+xarray = { git = "https://github.com/pydata/xarray" }
+
+# extras feature, includes "extras" optional dependencies
+[feature.extras.dependencies]
+cartopy = "==0.24.0"
+dask = "==2025.7.0"
+netCDF4 = "==1.7.2"
+shapely = "==2.1.1"
+boto3 = "==1.40.1"
+
+# doc feature, includes "doc" optional dependencies
+[feature.doc.dependencies]
+sphinx = "==8.1.3"
+pydata-sphinx-theme = "==0.16.1"
+sphinx-design = "==0.6.1"
+sphinx-gallery = "==0.19.0"
+myst-parser = "==4.0.1"
+geopandas = "==1.1.0"
+
+# Add tasks for doc envs, replicates previous Makefile
+[feature.doc.tasks]
+docs-clean = { cmd = "rm -rf {{ build_dir }}", args = [ { arg = "build_dir", default = "docs/build" } ] }
+docs-cleanall = { cmd = "rm -rf {{ docs_dir }}/api/areas.rst {{ docs_dir }}/examples {{docs_dir}}/tutorials {{docs_dir}}/api/generated", args = [ { arg = "docs_dir", default="docs" } ] }
+docs-build = { cmd = "sphinx-build -M {{ builder }} {{ docs_dir }} {{ build_dir }}", args = [
+    { arg = "builder", default = "html" },
+    { arg = "docs_dir", default = "docs" },
+    { arg = "build_dir", default = "docs/build" },
+]}
+docs-overridecheck = { cmd = "python {{ docs_dir }}/override_check.py", args = [ { arg = "docs_dir", default = "docs" } ] }
+
+# Test feature, includes "test" optional dependencies
+[feature.test.dependencies]
+packaging = "==25.0"
+pytest = "==8.4.0"
+pytest-mpl = "==0.17.0"
+coverage = "==7.10.2"
+vcrpy = "==7.0.0"
+
+# Add tasks for test envs
+[feature.test.tasks]
+pytest = "pytest"
+
+# Test-remote feature, includes dependencies only used for metpy.remote tests
+[feature.test-remote.dependencies]
+netcdf4 = ">=1.7.1.post1"
+vcrpy = "*"
+
+# Build feature, includes build dependencies
+[feature.build.dependencies]
+python-build = "*"
+
+# Add tasks for manual builds
+[feature.build.tasks]
+build = "python -m build"
+
+##########
+## Minimum
+# Must be configured separately from default feature
+[feature.minimum]
+platforms = ["linux-64", "osx-64"]
+
+# minimum feature, includes minimum-supported main dependencies
+[feature.minimum.dependencies]
+python = "3.10.*"
+#proj = ">=8.0"
+matplotlib = "==3.5.0"
+numpy = "==1.23.0"
+pandas = "==1.4.0"
+pint = "==0.17"
+pooch = "==1.2.0"
+pyproj = "==3.3.0"
+scipy = "==1.8.0"
+traitlets = "==5.1.0"
+xarray = "==2022.6.0"
+
+# minimum-extras feature, includes minimum-supported "extras" optional dependencies
+# and necessary environment & config to build deps with no compatible binaries
+[feature.minimum-extras.dependencies]
+# Pin setuptools for incompatibility with shapely builds
+setuptools = "<71.0.0"
+geos = ">=3.3"
+boto3 = "==1.26.45"
+
+[feature.minimum-extras.pypi-dependencies]
+cartopy = "==0.21.0"
+dask = "==2020.12.0"
+netcdf4 = ">=1.7.1.post1"
+shapely = "==1.6.4"
+
+[feature.minimum-extras.pypi-options]
+no-build-isolation = ["shapely"]
+
+# minimum-test feature, includes minimum-supported "test" optional dependencies
+[feature.minimum-test.dependencies]
+packaging = "==21.0"
+pytest = "==7.0"
+
+# minimum-test-remote feature, includes minimum-supported dependencies for metpy.remote tests
+[feature.minimum-test-remote.dependencies]
+vcrpy = "==4.3.1"
+
+[feature.minimum-test-remote.pypi-dependencies]
+netcdf4 = ">=1.7.1.post1"
+
+##########
+## Code style
+# lint feature, includes code style dependencies
+[feature.lint.dependencies]
+codespell = "*"
+doc8 = "*"
+flake8 = "*"
+flake8-continuation = "*"
+flake8-isort = "*"
+flake8-requirements = "*"
+flake8-rst-docstrings = "*"
+isort = "*"
+pycodestyle = "*"
+pyflakes = "*"
+restructuredtext_lint = "*"
+ruff = "*"
+
+# Add tasks for lint envs, style checking
+[feature.lint.tasks]
+flake8 = "flake8"
+ruff-check = "ruff check"
+ruff-fix = "ruff check --fix"
+lint = [ { task = "ruff-fix" }, { task = "flake8" } ]
+
+##########
+## Supported Python versions
+[feature]
+# latest alias for newest supported Python version
+latest = { dependencies = { python = "3.13.*" } }
+py310 = { dependencies = { python = "3.10.*" } }
+py311 = { dependencies = { python = "3.11.*" } }
+py312 = { dependencies = { python = "3.12.*" } }
+py313 = { dependencies = { python = "3.13.*" } }
+
+####################
+### Environments
+[environments]
+
+#####
+## Default
+# Only installs latest supported Python
+default = { features = ["latest"], no-default-feature = true }
+
+#####
+## Code style
+lint = { features = ["lint"], no-default-feature = true }
+
+#####
+## Build
+build = { features = ["build"], no-default-feature = true }
+
+#####
+### CI & Local Development
+# Named: `{empty/"metpy"/"doc"/"test"}{version}{empty/"noextras"}`
+# Grouped, environments solved by `version`. Includes Python version matrix, latest, unstable, and minimum.
+# "metpy": includes dev + extras features w/ editable metpy install to reflect dev changes
+# "doc": includes doc feature, "test": includes test feature; both include dev + extras features
+# "noextras": excludes extras and test-remote features
+
+## Latest, defaults
+latest = { features = ["latest", "stable"], solve-group = "latest" }
+metpy-latest = { features = ["latest", "dev", "stable", "extras"], solve-group = "latest" }
+metpy-latest-noextras = { features = ["latest", "dev", "stable"], solve-group = "latest"}
+test-latest = { features = ["latest", "dev", "stable", "test", "test-remote", "extras"], solve-group = "latest" }
+test-noextras = { features = ["latest", "dev", "stable", "test"], solve-group = "latest" }
+doc-latest = { features = ["latest", "dev", "stable", "doc", "extras"], solve-group = "latest" }
+
+## Unstable
+unstable = { features = ["latest", "unstable"], solve-group = "unstable" }
+metpy-unstable = { features = ["latest", "dev", "unstable", "extras"], solve-group = "unstable" }
+metpy-unstable-noextras = { features = ["latest", "dev", "unstable"], solve-group = "unstable" }
+test-unstable = { features = ["latest", "dev", "unstable", "test", "test-remote", "extras"], solve-group = "unstable" }
+test-unstable-noextras = { features = ["latest", "dev", "unstable", "test"], solve-group = "unstable" }
+doc-unstable = { features = ["latest", "dev", "unstable", "doc", "extras"], solve-group = "unstable" }
+
+## Minimum
+minimum = { features = ["minimum"], no-default-feature = true, solve-group = "minimum" }
+metpy-minimum = { features = ["minimum", "dev", "minimum-extras"], no-default-feature = true, solve-group = "minimum" }
+metpy-minimum-noextras = { features = ["minimum", "dev"], no-default-feature = true, solve-group = "minimum" }
+test-minimum = { features = ["minimum", "minimum-test", "minimum-test-remote", "minimum-extras"], no-default-feature = true, solve-group = "minimum" }
+test-minimum-noextras = { features = ["minimum", "minimum-test"], no-default-feature = true, solve-group = "minimum" }
+
+## Python 3.10, defaults
+py310 = { features = ["py310", "stable"], solve-group = "py310" }
+metpy-py310 = { features = ["py310", "dev", "stable", "extras"], solve-group = "py310" }
+metpy-py310-noextras = { features = ["py310", "dev", "stable"], solve-group = "py310" }
+test-py310 = { features = ["py310", "dev", "stable", "test", "test-remote", "extras"], solve-group = "py310" }
+doc-py310 = { features = ["py310", "dev", "stable", "doc", "extras"], solve-group = "py310" }
+
+## Python 3.11, defaults
+py311 = { features = ["py311", "stable"], solve-group = "py311" }
+metpy-py311 = { features = ["py311", "dev", "stable", "extras"], solve-group = "py311" }
+metpy-py311-noextras = { features = ["py311", "dev", "stable"], solve-group = "py311" }
+test-py311 = { features = ["py311", "dev", "stable", "test", "test-remote", "extras"], solve-group = "py311" }
+doc-py311 = { features = ["py311", "dev", "stable", "doc", "extras"], solve-group = "py311" }
+
+## Python 3.12, defaults
+py312 = { features = ["py312", "stable"], solve-group = "py312" }
+metpy-py312 = { features = ["py312", "dev", "stable", "extras"], solve-group = "py312" }
+metpy-py312-noextras = { features = ["py312", "dev", "stable"], solve-group = "py312" }
+test-py312 = { features = ["py312", "dev", "stable", "test", "test-remote", "extras"], solve-group = "py312" }
+doc-py312 = { features = ["py312", "dev", "stable", "doc", "extras"], solve-group = "py312" }
+
+## Python 3.13, defaults
+py313 = { features = ["py313", "stable"], solve-group = "py313" }
+metpy-py313 = { features = ["py313", "dev", "stable", "extras"], solve-group = "py313" }
+metpy-py313-noextras = { features = ["py313", "dev", "stable"], solve-group = "py313" }
+test-py313 = { features = ["py313", "dev", "stable", "test", "test-remote", "extras"], solve-group = "py313" }
+doc-py313 = { features = ["py313", "dev", "stable", "doc", "extras"], solve-group = "py313" }
