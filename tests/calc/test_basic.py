@@ -329,7 +329,7 @@ def test_pressure_to_heights_basic(array_type):
     mask = [False, True, False, True]
     pressures = array_type([975.2, 987.5, 956., 943.], 'mbar', mask=mask)
     heights = pressure_to_height_std(pressures)
-    values = array_type([321.5, 216.5, 487.6, 601.7], 'meter', mask=mask)
+    values = array_type([321.6579, 216.5843, 487.8407, 601.9013], 'meter', mask=mask)
     assert_array_almost_equal(heights, values, 1)
 
 
@@ -344,7 +344,7 @@ def test_heights_to_pressure_basic(array_type):
 
 def test_pressure_to_heights_units():
     """Test that passing non-mbar units works."""
-    assert_almost_equal(pressure_to_height_std(29 * units.inHg), 262.8498 * units.meter, 3)
+    assert_almost_equal(pressure_to_height_std(29 * units.inHg), 262.9867 * units.meter, 3)
 
 
 def test_coriolis_force(array_type):
@@ -363,7 +363,7 @@ def test_add_height_to_pressure(array_type):
     pressure_in = array_type([1000., 900., 800.], 'hPa', mask=mask)
     height = array_type([877.17421094, 500., 300.], 'meter', mask=mask)
     pressure_out = add_height_to_pressure(pressure_in, height)
-    truth = array_type([900., 846.725, 770.666], 'hPa', mask=mask)
+    truth = array_type([900.0464, 846.7529, 770.6813], 'hPa', mask=mask)
     assert_array_almost_equal(pressure_out, truth, 2)
 
 
@@ -373,7 +373,7 @@ def test_add_pressure_to_height(array_type):
     height_in = array_type([110.8286757, 250., 500.], 'meter', mask=mask)
     pressure = array_type([100., 200., 300.], 'hPa', mask=mask)
     height_out = add_pressure_to_height(height_in, pressure)
-    truth = array_type([987.971601, 2114.957, 3534.348], 'meter', mask=mask)
+    truth = array_type([988.4233, 2115.9024, 3535.8360], 'meter', mask=mask)
     assert_array_almost_equal(height_out, truth, 3)
 
 
