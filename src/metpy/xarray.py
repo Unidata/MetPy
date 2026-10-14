@@ -338,26 +338,35 @@ class MetPyDataArrayAccessor:
     def _generate_coordinate_map(self):
         """Generate a coordinate map via CF conventions and other methods."""
         coords = self._data_array.coords.values()
-        # Parse all the coordinates, attempting to identify longitude, latitude, x, y,
-        # time, vertical, in that order.
+        # Parse all coordinates, preferring metadata over the name-based fallback.
         coord_lists = {'longitude': [], 'latitude': [], 'x': [], 'y': [], 'time': [],
                        'vertical': []}
         for coord_var in coords:
-            # Identify the coordinate type using check_axis helper
-            for axis in coord_lists:
-                if check_axis(coord_var, axis):
-                    coord_lists[axis].append(coord_var)
-                    break  # Ensure a coordinate variable only goes to one axis
-
-        # Fill in x/y with longitude/latitude if x/y not otherwise present
-        for geometric, graticule in (('y', 'latitude'), ('x', 'longitude')):
-            if len(coord_lists[geometric]) == 0 and len(coord_lists[graticule]) > 0:
-                coord_lists[geometric] = coord_lists[graticule]
+            axis = next((axis for axis in coord_lists
+                         if check_axis(coord_var, axis, include_regex=False)), None)
+            if axis is None:
+                axis = next((axis for axis in coord_lists
+                             if check_axis(coord_var, axis)), None)
+            if axis is not None:
+                coord_lists[axis].append(coord_var)
 
         # Filter out multidimensional coordinates where not allowed
         require_1d_coord = ['time', 'vertical', 'y', 'x']
         for axis in require_1d_coord:
             coord_lists[axis] = [coord for coord in coord_lists[axis] if coord.ndim <= 1]
+
+        # Use name-based candidates only when no metadata-based candidate exists.
+        for axis in coord_lists:
+            metadata_coords = [coord for coord in coord_lists[axis]
+                               if check_axis(coord, axis, include_regex=False)]
+            if metadata_coords:
+                coord_lists[axis] = metadata_coords
+
+        # Fill in x/y with one-dimensional longitude/latitude if x/y not otherwise present.
+        for geometric, graticule in (('y', 'latitude'), ('x', 'longitude')):
+            if not coord_lists[geometric]:
+                coord_lists[geometric] = [coord for coord in coord_lists[graticule]
+                                          if coord.ndim <= 1]
 
         # Resolve any coordinate type duplication
         axis_duplicates = [axis for axis in coord_lists if len(coord_lists[axis]) > 1]
@@ -1126,7 +1135,7 @@ def _assign_axis(attributes, axis):
     return attributes
 
 
-def check_axis(var, *axes):
+def check_axis(var, *axes, include_regex=True):
     """Check if the criteria for any of the given axes are satisfied.
 
     Parameters
@@ -1136,6 +1145,9 @@ def check_axis(var, *axes):
     axes : str
         Axis type(s) to check for. Currently can check for 'time', 'vertical', 'y', 'latitude',
         'x', and 'longitude'.
+    include_regex : bool, optional
+        Whether to fall back to matching coordinate names when metadata does not identify an
+        axis. Defaults to True.
 
     """
     for axis in axes:
@@ -1165,7 +1177,8 @@ def check_axis(var, *axes):
                 return True
 
         # Check if name matches regular expression (non-CF failsafe)
-        if coordinate_criteria['regular_expression'][axis].match(var.name.lower()):
+        if (include_regex
+                and coordinate_criteria['regular_expression'][axis].match(var.name.lower())):
             return True
 
     # If no match has been made, return False (rather than None)
