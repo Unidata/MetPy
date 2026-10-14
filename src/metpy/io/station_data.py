@@ -288,7 +288,7 @@ def add_station_lat_lon(df, stn_var=None, *, lookup='id'):
     stn_var : str, optional
         The string of the variable name that represents the station in the DataFrame. If not
         provided, 'station', 'stid', and 'station_id' are tried in that order.
-    lookup : {'id', 'synop_id'}, optional
+    lookup : str, optional
         How values in ``stn_var`` are matched. ``'id'`` looks up the station identifier,
         such as ``'KDEN'``. ``'synop_id'`` looks up the WMO/SYNOP identifier, such as
         ``68004``. When several definitions share that SYNOP id, coordinates come from the
