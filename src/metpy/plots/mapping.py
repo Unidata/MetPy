@@ -209,6 +209,14 @@ def make_polar_stereo(attrs_dict, globe):
                     ('scale_factor', 'scale_factor_at_projection_origin')]
     kwargs = CFProjection.build_projection_kwargs(attrs_dict, attr_mapping)
 
+    # CF requires latitude_of_projection_origin (+/-90), but it is left out by some
+    # producers when a standard parallel is given (e.g. pyproj's CRS.to_cf() for EPSG:3413
+    # and other "Polar Stereographic (variant B)" CRSs). Like PROJ, take the pole from the
+    # hemisphere of the standard parallel, instead of falling back to CartoPy's default
+    # central latitude of 0, which gives an equatorial stereographic projection.
+    if 'central_latitude' not in kwargs and 'true_scale_latitude' in kwargs:
+        kwargs['central_latitude'] = -90 if kwargs['true_scale_latitude'] < 0 else 90
+
     return ccrs.Stereographic(globe=globe, **kwargs)
 
 
