@@ -95,6 +95,9 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
     -----
     xp and args must be the same shape.
 
+    If a value is repeated in xp, interpolating at exactly that value uses the first of the
+    repeated points (in the order given).
+
     """
     # Handle units
     x, xp = _strip_matching_units(x, xp)
@@ -102,8 +105,8 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
     # Make x an array
     x = np.asanyarray(x).reshape(-1)
 
-    # Sort input data
-    sort_args = np.argsort(xp, axis=axis)
+    # Sort input data. Use a stable sort so that repeated values in xp stay in input order.
+    sort_args = np.argsort(xp, axis=axis, kind='stable')
     sort_x = np.argsort(x)
 
     # The shape after all arrays are broadcast to each other
@@ -152,13 +155,20 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
     # Create empty output list
     ret = []
 
+    # Fraction of the way from the point below to the point above. When these points have
+    # the same coordinate (repeated values in xp, e.g. a sounding with a duplicated pressure
+    # level), use the value at the point below rather than dividing by zero.
+    spacing = xp[above] - xp[below]
+    with np.errstate(divide='ignore', invalid='ignore'):
+        fraction = (x_array - xp[below]) / spacing
+    fraction[spacing == 0] = 0
+
     # Calculate interpolation for each variable
     for var in variables:
         # Var needs to be on the *left* of the multiply to ensure that if it's a pint
         # Quantity, it gets to control the operation--at least until we make sure
         # masked arrays and pint play together better. See https://github.com/hgrecco/pint#633
-        var_interp = var[below] + (var[above] - var[below]) * ((x_array - xp[below])
-                                                               / (xp[above] - xp[below]))
+        var_interp = var[below] + (var[above] - var[below]) * fraction
 
         # Set points out of bounds to fill value.
         var_interp[minv == xp.shape[axis]] = fill_value
