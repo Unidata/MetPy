@@ -325,4 +325,8 @@ def absolute_momentum(u, v, index='index'):
     _, x, y = xr.broadcast(norm_wind, x, y)
     distance = np.hypot(x.metpy.quantify(), y.metpy.quantify())
 
-    return (norm_wind + f * distance).metpy.convert_units('m/s')
+    # Don't let the result pick up the attributes of the inputs (xarray >= 2025.11.0 keeps
+    # them by default in arithmetic), which would label it with e.g. the x coordinate's name.
+    with xr.set_options(keep_attrs=False):
+        momentum = norm_wind + f * distance
+    return momentum.metpy.convert_units('m/s')
