@@ -3,9 +3,10 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the handling of various mapping tasks."""
 
+from pyproj import CRS, Transformer
 import pytest
 
-from metpy.testing import version_check
+from metpy.testing import assert_almost_equal, version_check
 
 ccrs = pytest.importorskip('cartopy.crs')
 
@@ -243,6 +244,33 @@ def test_polar_stereographic_std_parallel():
     assert isinstance(crs, ccrs.Stereographic)
     assert crs.proj4_params['lat_0'] == -90
     assert crs.proj4_params['lat_ts'] == 60
+
+
+@pytest.mark.parametrize('std_parallel, pole', [(60, 90), (-71, -90)])
+def test_polar_stereographic_no_origin(std_parallel, pole):
+    """Test polar stereographic with a standard parallel but no latitude of origin."""
+    attrs = {'grid_mapping_name': 'polar_stereographic', 'standard_parallel': std_parallel,
+             'straight_vertical_longitude_from_pole': -45}
+    crs = CFProjection(attrs).to_cartopy()
+
+    assert isinstance(crs, ccrs.Stereographic)
+    assert crs.proj4_params['lat_0'] == pole
+    assert crs.proj4_params['lat_ts'] == std_parallel
+    assert crs.proj4_params['lon_0'] == -45
+
+
+@pytest.mark.parametrize('epsg, lon, lat', [(3413, -45, 70), (3031, 30, -75)])
+def test_polar_stereographic_from_pyproj_cf(epsg, lon, lat):
+    """Test cartopy and pyproj agree for polar stereographic CF metadata from pyproj."""
+    attrs = CRS.from_epsg(epsg).to_cf()
+    attrs.pop('crs_wkt')
+    proj = CFProjection(attrs)
+
+    x, y = proj.to_cartopy().transform_point(lon, lat, ccrs.PlateCarree())
+    truth_x, truth_y = Transformer.from_crs(4326, proj.to_pyproj(),
+                                            always_xy=True).transform(lon, lat)
+    assert_almost_equal(x, truth_x, 3)
+    assert_almost_equal(y, truth_y, 3)
 
 
 def test_rotated_latitude_longitude():
