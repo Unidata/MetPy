@@ -1081,8 +1081,7 @@ class MetPyDatasetAccessor:
 
         # Apply across all variables and coordinates
         return (
-            self._dataset
-            .map(mapping_func)
+            _map_data_vars(self._dataset, mapping_func)
             .assign_coords({
                 coord_name: mapping_func(coord_var)
                 for coord_name, coord_var in self._dataset.coords.items()
@@ -1098,15 +1097,26 @@ class MetPyDatasetAccessor:
         by this operation. Do not utilize on moderate- to large-sized remote datasets before
         subsetting!
         """
-        return self._dataset.map(lambda da: da.metpy.quantify()).assign_attrs(
-            self._dataset.attrs
-        )
+        return _map_data_vars(self._dataset, lambda da: da.metpy.quantify())
 
     def dequantify(self):
         """Return new dataset with variables cast to magnitude and units on attribute."""
-        return self._dataset.map(lambda da: da.metpy.dequantify()).assign_attrs(
-            self._dataset.attrs
-        )
+        return _map_data_vars(self._dataset, lambda da: da.metpy.dequantify())
+
+
+def _map_data_vars(dataset, func):
+    """Apply a function to each data variable of a Dataset.
+
+    The attributes on each new variable are exactly those on the DataArray returned by
+    ``func``, and the Dataset-level attributes are carried over. ``Dataset.map`` is not used
+    because, starting with xarray 2025.11.0, it combines the attributes returned by ``func``
+    with (or replaces them by) the original ones, depending on the version and on
+    ``keep_attrs``, so attributes added or removed by ``func`` could be lost.
+    """
+    return xr.Dataset(
+        {name: func(var) for name, var in dataset.data_vars.items()},
+        attrs=dataset.attrs
+    )
 
 
 def _assign_axis(attributes, axis):
