@@ -87,6 +87,25 @@ HIGHS 1022 -3961069 1020 -3851069 1026 3750773 1022 4430845 1019 5520728 1018
 
 
 @needs_module('shapely')
+def test_parse_wpc_surface_bulletin_text_stream():
+    """Test that parse_wpc_surface_bulletin accepts a text-mode file-like object."""
+    from io import StringIO
+
+    sample = StringIO("""VALID 062818Z
+HIGHS 1022 3961069 1020 3851069 1026 3750773 1022 4430845 1019 5520728
+LOWS 1016 4510934 1002 3441145 1003 4271229 1002 4471230 1009 4631181
+TROF 2971023 2831018 2691008 2531003
+TROF 2911100 2681082 2511055 2431024
+ """)
+    df = parse_wpc_surface_bulletin(sample, year=2000)
+    assert len(df[df.feature == 'HIGH']) == 5
+    assert len(df[df.feature == 'LOW']) == 5
+    assert len(df[df.feature == 'TROF']) == 2
+    assert df.strength[0] == 1022.0
+    assert all(df.valid == datetime(2000, 6, 28, 18, 0, 0))
+
+
+@needs_module('shapely')
 def test_negative_lat():
     """Test decoding of coordinates with negative latitude."""
     from io import BytesIO

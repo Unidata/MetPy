@@ -82,7 +82,10 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
     ----------
     bulletin : str or file-like object
         If str, the name of the file to be opened. If `bulletin` is a file-like object,
-        this will be read from directly.
+        this will be read from directly. The file-like object may be opened in either
+        binary mode (e.g., `io.BytesIO` or `open(name, 'rb')`) or text mode
+        (e.g., `io.StringIO` or `open(name, 'r')`); binary-mode contents are assumed
+        to be UTF-8 encoded.
 
     Returns
     -------
@@ -99,7 +102,9 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
 
     # Create list with lines of text from file
     with contextlib.closing(open_as_needed(bulletin)) as file:
-        text = file.read().decode('utf-8')
+        text = file.read()
+        if isinstance(text, bytes):
+            text = text.decode('utf-8')
 
     parsed_text = []
     valid_time = datetime.now(UTC).replace(tzinfo=None)
