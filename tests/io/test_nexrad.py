@@ -229,6 +229,7 @@ def test_msg33_rda_log_compressed(compression):
 def test_msg33_segmented():
     """Check that a message 33 split across segments is reassembled."""
     import struct
+
     from metpy.io._tools import IOBuffer
 
     payload = b'RDA log line\n'
@@ -281,6 +282,7 @@ def test_msg33_truncated(caplog):
 def test_msg32_second_message_merges():
     """Check a second message 32 adds new PRFs instead of dropping them."""
     import struct
+
     from metpy.io._tools import IOBuffer
 
     body1 = struct.pack('>HH', 1, 0) + struct.pack('>HH1L', 1, 1, 321890)
