@@ -718,6 +718,27 @@ def test_lfc_intersection():
     assert_almost_equal(mllfc_t, 272.045 * units.kelvin, 2)
 
 
+def test_lfc_parcel_temperature_start():
+    """Test that parcel_temperature_start is used for the LCL constraint (#3857)."""
+    levels = np.array([1000., 900., 800., 700., 600., 500.]) * units.hPa
+    temperatures = np.array([20., 12., 4., -4., -12., -20.]) * units.degC
+    dewpoints = np.array([15., 5., -5., -15., -25., -35.]) * units.degC
+
+    # A "virtual" parcel profile (warmer than the parcel's actual temperature);
+    # use the LCL-inserted environment consistently
+    levels, temperatures, dewpoints, profile = parcel_profile_with_lcl(
+        levels, temperatures, dewpoints)
+    profile_virtual = profile + 3 * units.delta_degC
+
+    # Parcel is warmer than the environment everywhere above the LCL, so the LFC
+    # is the LCL; without the override it would use the warmer virtual temperature
+    lfc_p, _ = lfc(levels, temperatures, dewpoints,
+                   parcel_temperature_profile=profile_virtual,
+                   parcel_temperature_start=profile[0])
+    expected_lcl, _ = lcl(levels[0], profile[0], dewpoints[0])
+    assert_almost_equal(lfc_p, expected_lcl, 6)
+
+
 def test_no_lfc():
     """Test LFC calculation when there is no LFC in the data."""
     levels = np.array([959., 867.9, 779.2, 647.5, 472.5, 321.9, 251.]) * units.mbar
@@ -2379,7 +2400,7 @@ def test_cape_cin_value_error():
                          -35.9, -26.7, -37.7, -43.1, -33.9, -40.9, -46.1, -34.9, -33.9,
                          -33.7, -33.3, -42.5, -50.3, -49.7, -49.5, -58.3, -61.3]) * units.degC
     cape, cin = surface_based_cape_cin(pressure, temperature, dewpoint)
-    expected_cape, expected_cin = 2161.912443 * units('joules/kg'), 0.0 * units('joules/kg')
+    expected_cape, expected_cin = 2206.730694 * units('joules/kg'), 0.0 * units('joules/kg')
     assert_almost_equal(cape, expected_cape, 3)
     assert_almost_equal(cin, expected_cin, 3)
 
