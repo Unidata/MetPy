@@ -319,6 +319,17 @@ def test_missing_grid_mapping_var(caplog):
     assert 'Could not find' in caplog.text
 
 
+def test_missing_grid_mapping_var_dedup(caplog):
+    """Test the missing grid_mapping warning is only logged once per name (#2351)."""
+    data = xr.DataArray(np.zeros((2, 2)),
+                        attrs={'grid_mapping': 'missing_projection'})
+    ds = xr.Dataset({'a': data.copy(), 'b': data.copy(), 'c': data.copy()})
+
+    ds.metpy.parse_cf()
+
+    assert caplog.text.count('Could not find') == 1
+
+
 def test_parsecf_crs():
     """Test calling `parse_cf` with the metpy_crs variable."""
     ds = xr.Dataset({'metpy_crs': xr.DataArray(1)})
