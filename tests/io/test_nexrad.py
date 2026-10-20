@@ -226,6 +226,26 @@ def test_msg33_rda_log_compressed(compression):
     assert f.rda_log[0]['text'] == 'line one\nline two\n'
 
 
+def test_msg33_corrupt_gzip():
+    """Check that a corrupt gzip payload in message 33 stores empty text."""
+    import gzip
+    import struct
+
+    # Byte 10 begins the deflate stream; an invalid block type makes
+    # gzip.decompress raise zlib.error rather than OSError.
+    blob = bytearray(gzip.compress(b'log line\n'))
+    blob[10] = 0xFF
+    body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 1, 1, len(blob),
+                       len(blob), b'')
+    raw = bytes(body + blob)
+    raw += b'\x00' * (len(raw) % 2)
+    f = _level2_decoder(raw)
+    f._decode_msg33(_msg_hdr(33, len(raw)))
+    assert len(f.rda_log) == 1
+    assert f.rda_log[0]['text'] == ''
+    assert f.rda_log[0]['compression'] == 1
+
+
 def test_msg33_segmented():
     """Check that a message 33 split across segments is reassembled."""
     import struct
@@ -292,6 +312,18 @@ def test_msg32_second_message_merges():
     f._buffer = IOBuffer(bytearray(body2))
     f._decode_msg32(_msg_hdr(32, len(body2)))
     assert f.prf_data == {'CS': [321.89, 862.07]}
+
+
+def test_msg32_truncated(caplog):
+    """Check that a truncated message 32 body logs and skips, not crashes."""
+    import struct
+
+    caplog.set_level(logging.WARNING, 'metpy.io.nexrad')
+    # Header claims 3 waveforms but the body ends after the first
+    body = struct.pack('>HH', 3, 0) + struct.pack('>HH1L', 1, 1, 321890)
+    f = _level2_decoder(body)
+    f._decode_msg32(_msg_hdr(32, len(body)))
+    assert 'Truncated message 32' in caplog.text
 
 
 def test_level2_msg32_real(caplog):

@@ -142,6 +142,11 @@ class Level2File:
         Unpacked RDA adaptation data, if present
     rda_adaptation_desc : dict, optional
         Descriptions of RDA adaptation data, if adaptation data present
+    prf_data : dict
+        Pulse repetition frequencies (Hz) by waveform type (e.g. ``CS``, ``CD``,
+        ``SPP``) from RDA PRF data messages (message 32, RDA Build 23 and later)
+    rda_log : list of dict
+        Decoded RDA log entries from message 33, if present in the volume
 
     Notes
     -----
@@ -741,6 +746,8 @@ class Level2File:
             # ICD 2620002P: a size_hw of 65535 means the segment fields carry
             # the total message size in bytes -- a single record, never split.
             total = msg_hdr.num_segments << 16 | msg_hdr.segment_num
+            if total <= self.msg_hdr_fmt.size:
+                return b''
             return bytes(self._buffer.read(total - self.msg_hdr_fmt.size))
         return self._buffer_segment(msg_hdr)
 
