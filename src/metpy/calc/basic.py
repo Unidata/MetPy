@@ -1086,7 +1086,8 @@ def zoom_xarray(input_field, zoom, output=None, order=3, mode='constant', cval=0
     """Apply a spline interpolation to the data to effectively reduce the grid spacing.
 
     This function applies `scipy.ndimage.zoom` to increase the number of grid points and
-    effectively reduce the grid spacing over the data provided.
+    effectively reduce the grid spacing over the data provided. Regions of missing
+    (NaN) data are preserved rather than propagated by the spline interpolation.
 
     Parameters
     ----------
@@ -1120,11 +1121,32 @@ def zoom_xarray(input_field, zoom, output=None, order=3, mode='constant', cval=0
     """
     # Dequantify input to avoid warnings and make sure units propagate
     input_field = input_field.metpy.dequantify()
-    # Zoom data
-    zoomed_data = scipy_zoom(
-        input_field.data, zoom, output=output, order=order, mode=mode, cval=cval,
-        prefilter=prefilter
-    )
+
+    data = input_field.data
+    if np.any(np.isnan(data)):
+        # Spline interpolation spreads a single NaN across its whole stencil
+        # neighborhood, so instead do a weighted zoom: interpolate the data with
+        # NaNs zeroed and a validity-weight field separately, then normalize.
+        # NaN regions remain NaN rather than polluting (or blanking) the output.
+        nan_mask = np.isnan(data)
+        weighted = scipy_zoom(
+            np.where(nan_mask, 0., data), zoom, output=output, order=order, mode=mode,
+            cval=cval, prefilter=prefilter
+        )
+        weights = scipy_zoom(
+            ~nan_mask * 1., zoom, order=order, mode=mode, cval=cval,
+            prefilter=prefilter
+        )
+        # Spline overshoot can drive weights slightly negative around holes;
+        # treat any non-positive weight as missing data.
+        zoomed_data = np.divide(weighted, weights, out=np.full_like(weighted, np.nan),
+                                where=weights > 0)
+    else:
+        # Zoom data
+        zoomed_data = scipy_zoom(
+            data, zoom, output=output, order=order, mode=mode, cval=cval,
+            prefilter=prefilter
+        )
 
     # Zoom dimension coordinates
     if not np.iterable(zoom):
