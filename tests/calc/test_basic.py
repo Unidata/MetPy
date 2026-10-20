@@ -841,3 +841,29 @@ def test_zoom_xarray():
         attrs=hght.attrs
     )
     xr.testing.assert_allclose(zoomed, truth)
+
+
+def test_zoom_xarray_with_nan():
+    """Test that zoom_xarray preserves NaN regions instead of spreading them."""
+    y, x = np.mgrid[0:20, 0:20]
+    field = xr.DataArray(100. + 0.5 * x - 0.25 * y, dims=('y', 'x'),
+                         coords={'y': np.arange(20) * 1., 'x': np.arange(20) * 1.})
+
+    clean = zoom_xarray(field, 3)
+
+    field = field.copy()
+    field[8:12, 8:12] = np.nan
+    zoomed = zoom_xarray(field, 3)
+
+    # The bulk of the field should remain finite (before the fix, spline
+    # interpolation spread the NaNs across most/all of the output)
+    finite = np.isfinite(zoomed)
+    assert finite.sum() > 0.5 * finite.size
+
+    # The NaN hole should still be (at least partially) missing in the output
+    assert np.any(np.isnan(zoomed))
+
+    # And points away from the hole agree with the NaN-free result
+    xr.testing.assert_allclose(zoomed[:15, :15], clean[:15, :15], rtol=1e-5, atol=1e-2)
+    xr.testing.assert_allclose(zoomed[-15:, -15:], clean[-15:, -15:], rtol=1e-5,
+                               atol=1e-2)
