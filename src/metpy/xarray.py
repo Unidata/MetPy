@@ -1164,8 +1164,15 @@ def check_axis(var, *axes):
                     ))):
                 return True
 
-        # Check if name matches regular expression (non-CF failsafe)
-        if coordinate_criteria['regular_expression'][axis].match(var.name.lower()):
+        # Check if name matches regular expression (non-CF failsafe). Only apply this
+        # fallback to variables that could plausibly be coordinates: numeric dtypes,
+        # or datetimelike dtypes for the time axis. This keeps string-valued
+        # auxiliary variables with similar names (e.g. ``longseason``) from being
+        # misidentified as coordinates.
+        dtype_check = ((np.datetime64, np.timedelta64, np.number) if axis == 'time'
+                       else (np.number,))
+        if (any(np.issubdtype(var.dtype, dtype) for dtype in dtype_check)
+                and coordinate_criteria['regular_expression'][axis].match(var.name.lower())):
             return True
 
     # If no match has been made, return False (rather than None)
