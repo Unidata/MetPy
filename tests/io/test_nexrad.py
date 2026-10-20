@@ -2,17 +2,22 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `nexrad` module."""
+import bz2
 import contextlib
 from datetime import datetime
+import gzip
 from io import BytesIO
 import logging
 from pathlib import Path
+import struct
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
 
 from metpy.cbook import get_test_data, POOCH
 from metpy.io import is_precip_mode, Level2File, Level3File
+from metpy.io._tools import IOBuffer
 
 # Turn off the warnings for tests
 logging.getLogger('metpy.io.nexrad').setLevel(logging.CRITICAL)
@@ -141,8 +146,6 @@ def test_build19_level2_additions():
 
 def _level2_decoder(raw):
     """Create a `Level2File` primed to decode a synthetic message body."""
-    from metpy.io._tools import IOBuffer
-
     f = Level2File.__new__(Level2File)
     f._buffer = IOBuffer(bytearray(raw))
     f._msg_buf = {}
@@ -153,8 +156,6 @@ def _level2_decoder(raw):
 
 def _msg_hdr(msg_type, body_len, segment_num=1, num_segments=1):
     """Create a fake message header sized for a synthetic message body."""
-    from types import SimpleNamespace
-
     # Message bodies start right after the 16-byte message header and
     # size_hw counts halfwords of header + body together.
     return SimpleNamespace(msg_type=msg_type,
@@ -164,8 +165,6 @@ def _msg_hdr(msg_type, body_len, segment_num=1, num_segments=1):
 
 def test_msg32_prf_data():
     """Check decoding of the message 32 RDA PRF data message."""
-    import struct
-
     # 3 waveforms: CS (2 PRFs), CD (1), SPP (2). Values are 0.001 Hz units;
     # this matches a real Build 23+ KLSX volume (CS 321.89-862.07 Hz).
     body = struct.pack('>HH', 3, 0)
@@ -182,8 +181,6 @@ def test_msg32_prf_data():
 
 def test_msg32_unknown_waveform_kept():
     """Check that an unrecognized message 32 waveform code is kept numerically."""
-    import struct
-
     body = struct.pack('>HH', 1, 0) + struct.pack('>HH1L', 7, 1, 500000)
     f = _level2_decoder(body)
     f._decode_msg32(_msg_hdr(32, len(body)))
@@ -192,8 +189,6 @@ def test_msg32_unknown_waveform_kept():
 
 def test_msg33_rda_log():
     """Check decoding of a plain-text message 33 RDA log."""
-    import struct
-
     payload = b'2024-01-01 00:00:00 Azimuth servo OK\n'
     body = struct.pack('>L26sLLLL22s', 1, b'AzServoLog', 5, 0, len(payload),
                        len(payload), b'')
@@ -211,10 +206,6 @@ def test_msg33_rda_log():
 @pytest.mark.parametrize('compression', [1, 2])
 def test_msg33_rda_log_compressed(compression):
     """Check message 33 decompression for gzip and bzip2 payloads."""
-    import bz2
-    import gzip
-    import struct
-
     payload = b'line one\nline two\n'
     blob = {1: gzip.compress, 2: bz2.compress}[compression](payload)
     body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 2, compression, len(blob),
@@ -228,9 +219,6 @@ def test_msg33_rda_log_compressed(compression):
 
 def test_msg33_corrupt_gzip():
     """Check that a corrupt gzip payload in message 33 stores empty text."""
-    import gzip
-    import struct
-
     # Byte 10 begins the deflate stream; an invalid block type makes
     # gzip.decompress raise zlib.error rather than OSError.
     blob = bytearray(gzip.compress(b'log line\n'))
@@ -248,10 +236,6 @@ def test_msg33_corrupt_gzip():
 
 def test_msg33_segmented():
     """Check that a message 33 split across segments is reassembled."""
-    import struct
-
-    from metpy.io._tools import IOBuffer
-
     payload = b'RDA log line\n'
     body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 1, 0, len(payload),
                        len(payload), b'') + payload
@@ -269,9 +253,6 @@ def test_msg33_segmented():
 
 def test_msg33_big_size_encoding():
     """Check message 33 when the segment fields carry the size in bytes."""
-    import struct
-    from types import SimpleNamespace
-
     payload = b'log line\n'
     body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 1, 0, len(payload),
                        len(payload), b'') + payload
@@ -289,8 +270,6 @@ def test_msg33_big_size_encoding():
 
 def test_msg33_truncated(caplog):
     """Check that a truncated message 33 body logs and skips, not crashes."""
-    import struct
-
     caplog.set_level(logging.WARNING, 'metpy.io.nexrad')
     body = struct.pack('>L26sLLLL22s', 1, b'RdaLog', 1, 0, 5000, 5000, b'')
     f = _level2_decoder(body[:20])   # header itself is cut short
@@ -301,10 +280,6 @@ def test_msg33_truncated(caplog):
 
 def test_msg32_second_message_merges():
     """Check a second message 32 adds new PRFs instead of dropping them."""
-    import struct
-
-    from metpy.io._tools import IOBuffer
-
     body1 = struct.pack('>HH', 1, 0) + struct.pack('>HH1L', 1, 1, 321890)
     body2 = struct.pack('>HH', 1, 0) + struct.pack('>HH1L', 1, 1, 862070)
     f = _level2_decoder(body1)
@@ -316,8 +291,6 @@ def test_msg32_second_message_merges():
 
 def test_msg32_truncated(caplog):
     """Check that a truncated message 32 body logs and skips, not crashes."""
-    import struct
-
     caplog.set_level(logging.WARNING, 'metpy.io.nexrad')
     # Header claims 3 waveforms but the body ends after the first
     body = struct.pack('>HH', 3, 0) + struct.pack('>HH1L', 1, 1, 321890)
