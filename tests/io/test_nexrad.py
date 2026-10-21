@@ -54,6 +54,17 @@ def test_level2(fname, voltime, num_sweeps, mom_first, mom_last, expected_logs, 
     assert len(caplog.records) == expected_logs
 
 
+@pytest.mark.parametrize('fname', ['KVWX_20050626_221551.gz', 'KLTX20050329_100015.gz'])
+def test_level2_legacy_msg3_log(fname, caplog):
+    """Test the log message for a legacy-format message 3 formats correctly."""
+    caplog.set_level(logging.INFO, 'metpy.io.nexrad')
+    Level2File(get_test_data(fname, as_file_obj=False))
+    msgs = [rec.getMessage() for rec in caplog.records
+            if rec.msg.startswith('Length of message 3')]
+    assert msgs
+    assert all('instead of expected' in msg for msg in msgs)
+
+
 @pytest.mark.parametrize('filename', ['Level2_KFTG_20150430_1419.ar2v',
                                       'TDAL20191021021543V08.raw.gz',
                                       'KTLX20150530_000802_V06.bz2'])
