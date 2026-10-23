@@ -190,10 +190,12 @@ Standard Atmosphere
    .. autosummary::
       :toctree: ./
 
+      altimeter_from_station_pressure
       altimeter_to_sea_level_pressure
       altimeter_to_station_pressure
       height_to_pressure_std
       pressure_to_height_std
+      sea_level_pressure_from_station_pressure
 
 Smoothing
 ---------
