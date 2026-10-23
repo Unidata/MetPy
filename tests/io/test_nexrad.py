@@ -58,7 +58,8 @@ def test_level2(fname, voltime, num_sweeps, mom_first, mom_last, expected_logs, 
 def test_level2_legacy_msg3_log(fname, caplog):
     """Test the log message for a legacy-format message 3 formats correctly."""
     caplog.set_level(logging.INFO, 'metpy.io.nexrad')
-    Level2File(get_test_data(fname, as_file_obj=False))
+    with get_test_data(fname) as fobj:
+        Level2File(fobj)
     msgs = [rec.getMessage() for rec in caplog.records
             if rec.msg.startswith('Length of message 3')]
     assert msgs
