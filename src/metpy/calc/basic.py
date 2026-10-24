@@ -1296,6 +1296,146 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     return psfc * np.exp(height / h)
 
 
+@exporter.export
+@preprocess_and_wrap(wrap_like='pressure')
+@check_units('[pressure]', '[length]')
+def station_pressure_to_altimeter(pressure, height):
+    r"""Convert the station pressure to altimeter setting.
+
+    This is the inverse of `altimeter_to_station_pressure`. It is useful for
+    obtaining an altimeter setting, as reported in a METAR, from a measured
+    station pressure and the station elevation. The following definitions of
+    altimeter setting and station pressure are taken from [Smithsonian1951]_.
+    Altimeter setting is the pressure value to which an aircraft altimeter scale
+    is set so that it will indicate the altitude above mean sea-level of an aircraft
+    on the ground at the location for which the value is determined. It assumes a standard
+    atmosphere [NOAA1976]_. Station pressure is the atmospheric pressure at the designated
+    station elevation.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        The station pressure, which can be measured in either inches of mercury
+        (in. Hg) or millibars (mb, equivalent to hPa)
+
+    height : `pint.Quantity`
+        Elevation of the station measuring pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        The altimeter setting in hPa or in. Hg, matching the units of `pressure`
+
+    See Also
+    --------
+    altimeter_to_station_pressure, station_pressure_to_sea_level_pressure
+
+    Notes
+    -----
+    This function is implemented using the following equations from the
+    Smithsonian Handbook (1951) p. 269
+
+    Equation 1:
+     .. math:: A_{mb} = (p_{mb} - 0.3)F
+
+    Equation 3:
+     .. math::  F = \left [1 + \left(\frac{p_{0}^n a}{T_{0}} \right)
+                   \frac{H_{b}}{p_{1}^n} \right ] ^ \frac{1}{n}
+
+    Where,
+
+    :math:`p_{0}` = standard sea-level pressure = 1013.25 mb
+
+    :math:`p_{1} = p_{mb} - 0.3` when :math:`p_{0} = 1013.25 mb`
+
+    gamma = lapse rate in [NOAA1976]_ standard atmosphere below the isothermal layer
+    :math:`6.5^{\circ}C. km.^{-1}`
+
+    :math:`T_{0}` = standard sea-level temperature 288 K
+
+    :math:`H_{b} =` station elevation in meters (elevation for which station pressure is given)
+
+    :math:`n = \frac{a R_{d}}{g} = 0.190284` where :math:`R_{d}` is the gas constant for dry
+    air
+
+    Combining Equations 1 and 3 and solving for the altimeter setting
+    :math:`(A_{mb})` results in the equation below, which is the inverse of the
+    relation used in `altimeter_to_station_pressure`
+
+    .. math:: A_{mb} = \left [(p_{mb} - 0.3) ^ n + \left (\frac{p_{0} ^ n a H_{b}}{T_0}
+                       \right) \right] ^ \frac{1}{n}
+
+    """
+    # N-Value
+    n = (mpconsts.Rd * gamma / mpconsts.g).to_base_units()
+
+    return ((pressure - units.Quantity(0.3, 'hPa')) ** n
+            + (p0.to(pressure.units) ** n * gamma * height) / t0) ** (1 / n)
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='pressure')
+@check_units('[pressure]', '[length]', '[temperature]')
+def station_pressure_to_sea_level_pressure(pressure, height, temperature):
+    r"""Convert the station pressure to sea-level pressure.
+
+    This function is useful for reducing a measured station pressure to
+    sea-level pressure, which is often plotted on surface maps. The following
+    definitions of station pressure and sea-level pressure are taken from
+    [Smithsonian1951]_. Station pressure is the atmospheric pressure at the
+    designated station elevation. Sea-level pressure is a pressure value obtained
+    by the theoretical reduction of barometric pressure to sea level. It is
+    assumed that atmosphere extends to sea level below the station and that the
+    properties of the atmosphere are related to conditions observed at the station.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        The station pressure, with units of inches of mercury (in. Hg) or
+        millibars (mb, equivalent to hPa)
+
+    height : `pint.Quantity`
+        Elevation of the station measuring pressure. Often times measured in meters
+
+    temperature : `pint.Quantity`
+        Temperature at the station
+
+    Returns
+    -------
+    `pint.Quantity`
+        The sea-level pressure in hPa or in. Hg, matching the units of `pressure`
+
+    See Also
+    --------
+    altimeter_to_sea_level_pressure, station_pressure_to_altimeter
+
+    Notes
+    -----
+    This function is implemented using the following equations from Wallace and Hobbs (1977).
+
+    Equation 2.29:
+     .. math::
+       \Delta z = Z_{2} - Z_{1}
+       = \frac{R_{d} \bar T_{v}}{g_0}ln\left(\frac{p_{1}}{p_{2}}\right)
+       = \bar H ln \left (\frac {p_{1}}{p_{2}} \right)
+
+    Equation 2.31:
+     .. math::
+       p_{0} = p_{g}exp \left(\frac{Z_{g}}{\bar H} \right)
+       = p_{g}exp \left(\frac{g_{0}Z_{g}}{R_{d}\bar T_{v}} \right)
+
+    Then by substituting :math:`\Delta_{Z}` for :math:`Z_{g}` in Equation 2.31:
+     .. math:: p_{sealevel} = p_{station} exp\left(\frac{\Delta z}{H}\right)
+
+    where :math:`\Delta_{Z}` is the elevation in meters and :math:`H = \frac{R_{d}T}{g}`
+
+    """
+    # Calculate the scale height
+    h = mpconsts.Rd * temperature / mpconsts.g
+
+    return pressure * np.exp(height / h)
+
+
 def _check_radians(value, max_radians=2 * np.pi):
     """Input validation of values that could be in degrees instead of radians.
 
