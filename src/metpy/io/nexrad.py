@@ -401,7 +401,8 @@ class Level2File:
         # right length, which happens with older data.
         if msg_hdr.size_hw * 2 - self.msg_hdr_fmt.size != msg_fmt.size:
             log.info('Length of message 3 is %d instead of expected %d; this is likely the '
-                     'legacy format. Skipping...', 2 * msg_hdr.size_hw)
+                     'legacy format. Skipping...', 2 * msg_hdr.size_hw,
+                     self.msg_hdr_fmt.size + msg_fmt.size)
             return
 
         self.maintenance_data = self._buffer.read_struct(msg_fmt)
