@@ -868,6 +868,14 @@ def test_auxilary_lat_lon_without_xy(test_var_multidim_no_xy):
     assert test_var_multidim_no_xy['lon'].identical(test_var_multidim_no_xy.metpy.longitude)
 
 
+def test_coord_identification_with_lonlike_string_aux(test_var_multidim_full):
+    """Test coord identification ignores string aux vars with coordinate-like names."""
+    test_da = test_var_multidim_full.assign_coords(
+        longseason=('isobaric', ['DJF', 'MAM']),
+    )
+    assert test_da['lon'].identical(test_da.metpy.longitude)
+
+
 def test_auxilary_lat_lon_without_xy_as_xy(test_var_multidim_no_xy):
     """Test that the pre-v1.0 behavior of multidimensional lat/lon errors."""
     with pytest.raises(AttributeError):
