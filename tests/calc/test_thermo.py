@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 import xarray as xr
 
-from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
+from metpy.calc import (boyden_index, brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
                         brunt_vaisala_period, cape_cin, ccl, cross_totals, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
                         downdraft_cape, dry_lapse, dry_static_energy, el,
@@ -2940,3 +2940,29 @@ def test_sweat_index_xarray(index_xarray_data):
                          index_xarray_data.wind_direction)
     assert_array_almost_equal(result, np.array([[[[490.2, 478.2, 466.2],
                                                   [454.2, 442.2, 430.2]]]]))
+
+
+def test_boyden_index():
+    """Test the Boyden Index calculation."""
+    pressure = np.array([1000., 925., 850., 700., 500.]) * units.hPa
+    height = np.array([111., 790., 1490., 3161., 5820.]) * units.m
+    temperature = np.array([25., 21.4, 17.2, 8., -10.5]) * units.degC
+
+    bi = boyden_index(pressure, height, temperature)
+    assert_almost_equal(bi, 97., 6)
+
+
+def test_boyden_index_xarray():
+    """Test the Boyden Index calculation with a grid of xarray data."""
+    pressure = xr.DataArray([1000., 850., 700.], dims=('isobaric',), attrs={'units': 'hPa'})
+    height = xr.DataArray([[[100., 100.], [150., 150.]],
+                           [[1500., 1500.], [1550., 1550.]],
+                           [[3100., 3100.], [3200., 3200.]]] * units.m,
+                          dims=('isobaric', 'y', 'x'))
+    temperature = xr.DataArray([[[293., 293.], [293., 293.]],
+                                [[288., 288.], [288., 288.]],
+                                [[281.15, 283.15], [281.15, 283.15]]] * units.K,
+                               dims=('isobaric', 'y', 'x'))
+
+    result = boyden_index(pressure, height, temperature)
+    assert_array_almost_equal(result, np.array([[92., 90.], [97., 95.]]), 6)
