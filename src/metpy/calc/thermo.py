@@ -5540,3 +5540,64 @@ def sweat_index(pressure, temperature, dewpoint, speed, direction, vertical_dim=
 
     # Calculate sweat index.
     return first_term + second_term + (2 * f850.m) + f500.m + shear_term
+
+
+@exporter.export
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(broadcast=('pressure', 'height', 'temperature'))
+@check_units('[pressure]', '[length]', '[temperature]')
+def boyden_index(pressure, height, temperature, vertical_dim=0):
+    """Calculate Boyden Index from the pressure, height, and temperature.
+
+    Boyden Index formula derived from [Boyden1963]_:
+
+    .. math:: I = (Z700 - Z1000) - T700 - 200
+
+    where:
+
+    * :math:`Z700 - Z1000` is the thickness of the 1000-700 hPa layer, in decameters
+    * :math:`T700` is the temperature at 700 hPa, in degrees Celsius
+
+    Calculation of the Boyden Index is defined as the 1000-700 hPa thickness minus the
+    temperature at 700 hPa, minus 200. Higher values indicate a greater likelihood of
+    thunderstorms. No moisture information is included in the calculation.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure level(s), in order from highest to lowest pressure
+
+    height : `pint.Quantity`
+        Geopotential height corresponding to pressure
+
+    temperature : `pint.Quantity`
+        Temperature corresponding to pressure
+
+    vertical_dim : int, optional
+        The axis corresponding to vertical, defaults to 0. Automatically determined from
+        xarray DataArray arguments.
+
+    Returns
+    -------
+    `pint.Quantity`
+        Boyden Index
+
+    Examples
+    --------
+    >>> from metpy.calc import boyden_index
+    >>> from metpy.units import units
+    >>> p = [1000., 925., 850., 700., 500.] * units.hPa
+    >>> z = [111., 790., 1490., 3161., 5820.] * units.m
+    >>> T = [25., 21.4, 17.2, 8., -10.5] * units.degC
+    >>> boyden_index(p, z, T)
+    <Quantity(97.0, 'dimensionless')>
+
+    """
+    # Find height at 1000 and 700 hPa, and temperature at 700 hPa.
+    (z1000, z700), (_, t700) = interpolate_1d(units.Quantity([1000, 700], 'hPa'),
+                                              pressure, height, temperature,
+                                              axis=vertical_dim)
+
+    # Index is defined with thickness in decameters and temperature in degrees Celsius
+    return units.Quantity((z700 - z1000).m_as('dam') - t700.m_as('degC') - 200,
+                          'dimensionless')
