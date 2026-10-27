@@ -7,12 +7,12 @@ import contextlib
 from datetime import datetime, UTC
 import re
 import string
-import warnings
 
 import numpy as np
 import pandas as pd
 
 from ._tools import open_as_needed
+from .. import _warnings
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
@@ -136,7 +136,7 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
                         try:
                             point = Point(_decode_coords(item))
                         except ValueError:
-                            warnings.warn(f'Skipping unparseable coordinate {item!r} '
+                            _warnings.warn(f'Skipping unparseable coordinate {item!r} '
                                           'in WPC surface bulletin')
                             continue
                         parsed_text.append((valid_time, feature.rstrip('S'), strength,
@@ -158,10 +158,10 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
                     try:
                         points.append(Point(_decode_coords(point)))
                     except ValueError:
-                        warnings.warn(f'Skipping unparseable coordinate {point!r} '
+                        _warnings.warn(f'Skipping unparseable coordinate {point!r} '
                                       'in WPC surface bulletin')
                 if not points:
-                    warnings.warn(f'Skipping {feature} line with no parseable '
+                    _warnings.warn(f'Skipping {feature} line with no parseable '
                                   'coordinates in WPC surface bulletin')
                     continue
                 boundary = LineString(points) if len(points) > 1 else points[0]
