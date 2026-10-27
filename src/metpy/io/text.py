@@ -136,7 +136,7 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
                         try:
                             point = Point(_decode_coords(item))
                         except ValueError:
-                            _warnings.warn(f'Skipping unparseable coordinate {item!r} '
+                            _warnings.warn(f'Skipping unparsable coordinate {item!r} '
                                           'in WPC surface bulletin')
                             continue
                         parsed_text.append((valid_time, feature.rstrip('S'), strength,
@@ -151,14 +151,14 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
                     strength, boundary = np.nan, info
 
                 # Create a list of Points and create Line from points, if possible.
-                # Archived bulletins can contain unparseable points; drop them rather
+                # Archived bulletins can contain unparsable points; drop them rather
                 # than fail the whole product.
                 points = []
                 for point in boundary:
                     try:
                         points.append(Point(_decode_coords(point)))
                     except ValueError:
-                        _warnings.warn(f'Skipping unparseable coordinate {point!r} '
+                        _warnings.warn(f'Skipping unparsable coordinate {point!r} '
                                       'in WPC surface bulletin')
                 if not points:
                     _warnings.warn(f'Skipping {feature} line with no parseable '

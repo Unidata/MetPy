@@ -111,7 +111,7 @@ TROF 99x 2911100 2681082
     # The junk TROF token was dropped with a warning but the front survived
     assert len(df[df.feature == 'TROF']) == 1
     assert df.geometry[3] == sgeom.LineString([[-110, 29.1], [-108.2, 26.8]])
-    assert any('unparseable' in str(r.message) for r in records)
+    assert any('unparsable' in str(r.message) for r in records)
 
 
 @needs_module('shapely')
