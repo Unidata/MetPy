@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 
 from ._tools import open_as_needed
+from .. import _warnings
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
@@ -49,6 +50,14 @@ def _decode_coords(coordinates):
         coordinates = coordinates[1:]
         # Flip latitude to Southern Hemisphere
         flip = -1
+
+    # Archived bulletins can contain stray characters in the coordinate fields
+    # (e.g. '"' or lowercase letters introduced during data recovery). Remove
+    # anything that isn't a digit before decoding.
+    coordinates = re.sub(r'[^0-9]', '', coordinates)
+
+    if len(coordinates) < 3:
+        raise ValueError(f'Could not parse coordinates: {coordinates!r}')
 
     # Based on the number of digits, find the correct place to split between lat and lon
     # Hires bulletins provide 7 digits for coordinates; regular bulletins provide 4 or 5 digits
@@ -121,11 +130,17 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
                 # and keep track of the most recent strength.
                 strength = np.nan
                 for item in info:
-                    if len(item) <= 4 and item[0] in {'8', '9', '1'}:
+                    if len(item) <= 4 and item.isdigit() and item[0] in {'8', '9', '1'}:
                         strength = int(item)
                     else:
+                        try:
+                            point = Point(_decode_coords(item))
+                        except ValueError:
+                            _warnings.warn(f'Skipping unparsable coordinate {item!r} '
+                                          'in WPC surface bulletin')
+                            continue
                         parsed_text.append((valid_time, feature.rstrip('S'), strength,
-                                            Point(_decode_coords(item))))
+                                            point))
             elif feature in {'WARM', 'COLD', 'STNRY', 'OCFNT', 'TROF'}:
                 # Some bulletins include 'WK', 'MDT', or 'STG' to indicate the front's
                 # strength. If present, separate it from the rest of the info, which gives the
@@ -135,9 +150,21 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
                 else:
                     strength, boundary = np.nan, info
 
-                # Create a list of Points and create Line from points, if possible
-                boundary = [Point(_decode_coords(point)) for point in boundary]
-                boundary = LineString(boundary) if len(boundary) > 1 else boundary[0]
+                # Create a list of Points and create Line from points, if possible.
+                # Archived bulletins can contain unparsable points; drop them rather
+                # than fail the whole product.
+                points = []
+                for point in boundary:
+                    try:
+                        points.append(Point(_decode_coords(point)))
+                    except ValueError:
+                        _warnings.warn(f'Skipping unparsable coordinate {point!r} '
+                                      'in WPC surface bulletin')
+                if not points:
+                    _warnings.warn(f'Skipping {feature} line with no parseable '
+                                  'coordinates in WPC surface bulletin')
+                    continue
+                boundary = LineString(points) if len(points) > 1 else points[0]
 
                 # Add new row in the data for each front
                 parsed_text.append((valid_time, feature, strength, boundary))
