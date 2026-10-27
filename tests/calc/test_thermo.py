@@ -387,6 +387,19 @@ def test_sat_vapor_pressure_phase_handling():
     assert solid[zero] == auto[zero] == liquid[zero]
 
 
+@pytest.mark.filterwarnings('ignore:overflow encountered in exp:RuntimeWarning')
+def test_sat_vapor_pressure_masked_auto():
+    """Test saturation_vapor_pressure preserves masks with phase='auto'."""
+    temp = units.Quantity(np.ma.array([300., 300.], mask=[False, True]), units.kelvin)
+    auto = saturation_vapor_pressure(temp, phase='auto')
+    liquid = saturation_vapor_pressure(temp, phase='liquid')
+    assert is_quantity(auto)
+    assert isinstance(auto.m, np.ma.MaskedArray)
+    assert np.array_equal(np.ma.getmaskarray(auto.m), np.ma.getmaskarray(liquid.m))
+    assert_array_almost_equal(np.ma.filled(auto.m, np.nan),
+                              np.ma.filled(liquid.m, np.nan), 4)
+
+
 def test_sat_vapor_pressure_fahrenheit():
     """Test saturation_vapor_pressure handles temperature in Fahrenheit."""
     temp = np.array([50., 68.]) * units.degF
@@ -837,6 +850,19 @@ def test_saturation_mixing_ratio_with_xarray():
     xr.testing.assert_identical(result['isobaric'], temperature['isobaric'])
     xr.testing.assert_identical(result['y'], temperature['y'])
     xr.testing.assert_identical(result['x'], temperature['x'])
+
+
+@pytest.mark.filterwarnings('ignore:overflow encountered in exp:RuntimeWarning')
+def test_saturation_mixing_ratio_masked():
+    """Test saturation_mixing_ratio preserves masks."""
+    p = 1000 * units.hPa
+    t = units.Quantity(np.ma.array([300., 300.], mask=[False, True]), units.kelvin)
+    rs = saturation_mixing_ratio(p, t)
+    expected = units.Quantity(np.ma.array([0.02274315, np.nan], mask=[False, True]),
+                              units.dimensionless)
+    assert is_quantity(rs)
+    assert isinstance(rs.m, np.ma.MaskedArray)
+    assert_array_almost_equal(rs, expected, 6)
 
 
 def test_saturation_mixing_ratio_bad_value_handling():
