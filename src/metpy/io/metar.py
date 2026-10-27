@@ -446,17 +446,17 @@ def _metars_to_dataframe(metar_iter, *, year=None, month=None):
 
     # Take the list of Metar objects and turn it into a DataFrame with appropriate columns
     df = pd.DataFrame(metars)
-    df.set_index('station_id', inplace=True, drop=False)
-    df.rename(columns={'skyc1': 'low_cloud_type', 'skylev1': 'low_cloud_level',
-                       'skyc2': 'medium_cloud_type', 'skylev2': 'medium_cloud_level',
-                       'skyc3': 'high_cloud_type', 'skylev3': 'high_cloud_level',
-                       'skyc4': 'highest_cloud_type', 'skylev4': 'highest_cloud_level',
-                       'cloudcover': 'cloud_coverage', 'temperature': 'air_temperature',
-                       'dewpoint': 'dew_point_temperature'}, inplace=True)
+    df = df.set_index('station_id', drop=False)
+    df = df.rename(columns={'skyc1': 'low_cloud_type', 'skylev1': 'low_cloud_level',
+                            'skyc2': 'medium_cloud_type', 'skylev2': 'medium_cloud_level',
+                            'skyc3': 'high_cloud_type', 'skylev3': 'high_cloud_level',
+                            'skyc4': 'highest_cloud_type', 'skylev4': 'highest_cloud_level',
+                            'cloudcover': 'cloud_coverage',
+                            'temperature': 'air_temperature',
+                            'dewpoint': 'dew_point_temperature'})
 
     # Drop duplicate values
-    df.drop_duplicates(subset=['date_time', 'latitude', 'longitude'], keep='last',
-                       inplace=True)
+    df = df.drop_duplicates(subset=['date_time', 'latitude', 'longitude'], keep='last')
 
     # Calculate sea-level pressure from function in metpy.calc
     df['air_pressure_at_sea_level'] = altimeter_to_sea_level_pressure(

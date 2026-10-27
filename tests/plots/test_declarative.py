@@ -1626,7 +1626,7 @@ def test_declarative_upa_obs_convert_barb_units():
 
 def test_attribute_error_time(ccrs, pandas_sfc):
     """Make sure we get a useful error when the time variable is not found."""
-    pandas_sfc.rename(columns={'valid': 'vtime'}, inplace=True)
+    pandas_sfc = pandas_sfc.rename(columns={'valid': 'vtime'})
 
     obs = PlotObs()
     obs.data = pandas_sfc
@@ -1657,7 +1657,7 @@ def test_attribute_error_time(ccrs, pandas_sfc):
 
 def test_attribute_error_station(ccrs, pandas_sfc):
     """Make sure we get a useful error when the station variable is not found."""
-    pandas_sfc.rename(columns={'station': 'location'}, inplace=True)
+    pandas_sfc = pandas_sfc.rename(columns={'station': 'location'})
 
     obs = PlotObs()
     obs.data = pandas_sfc
