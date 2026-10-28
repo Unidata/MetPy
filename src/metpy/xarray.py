@@ -766,7 +766,7 @@ class MetPyDatasetAccessor:
         # Initialize accessor with a Dataset. (Do not use directly).
         self._dataset = dataset
 
-    def parse_cf(self, varname=None, coordinates=None):
+    def parse_cf(self, varname=None, coordinates=None, _warned_grid_mappings=None):
         """Parse dataset for coordinate system metadata according to CF conventions.
 
         Interpret the grid mapping metadata in the dataset according to the Climate and
@@ -803,13 +803,19 @@ class MetPyDatasetAccessor:
         """
         from .plots.mapping import CFProjection
 
+        if _warned_grid_mappings is None:
+            # Shared accumulator so the 'grid_mapping not found' warning is only
+            # issued once per missing variable across a whole-dataset parse (#2351)
+            _warned_grid_mappings = set()
+
         if varname is None:
             # If no varname is given, parse all variables in the dataset
             varname = list(self._dataset.data_vars)
 
         if np.iterable(varname) and not isinstance(varname, str):
             # If non-string iterable is given, apply recursively across the varnames
-            subset = xr.merge([self.parse_cf(single_varname, coordinates=coordinates)
+            subset = xr.merge([self.parse_cf(single_varname, coordinates=coordinates,
+                                           _warned_grid_mappings=_warned_grid_mappings)
                                for single_varname in varname], compat='no_conflicts')
             subset.attrs = self._dataset.attrs
             return subset
@@ -842,9 +848,11 @@ class MetPyDatasetAccessor:
             try:
                 proj_var = self._dataset.variables[proj_name]
             except KeyError:
-                log.warning(
-                    'Could not find variable corresponding to the value of grid_mapping: %s',
-                    proj_name)
+                if proj_name not in _warned_grid_mappings:
+                    _warned_grid_mappings.add(proj_name)
+                    log.warning(
+                        'Could not find variable corresponding to the value of '
+                        'grid_mapping: %s', proj_name)
             else:
                 crs = CFProjection(proj_var.attrs)
 
