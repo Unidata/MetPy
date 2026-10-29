@@ -46,6 +46,15 @@ def test_precipitable_water_bound_error():
     assert_almost_equal(pw, truth, 5)
 
 
+def test_precipitable_water_repeated_top_level():
+    """Test precipitable water when the top pressure level is repeated."""
+    pressure = np.array([1000., 950., 900., 850., 800., 700., 600., 500., 500.]) * units.hPa
+    dewpoint = np.array([20., 18., 15., 12., 9., 3., -5., -15., -15.]) * units.degC
+    pw = precipitable_water(pressure, dewpoint)
+    truth = precipitable_water(pressure[:-1], dewpoint[:-1])
+    assert_almost_equal(pw, truth, 6)
+
+
 def test_precipitable_water_nans():
     """Test that PW returns appropriate number if NaNs are present."""
     pressure = np.array([1001, 1000, 997, 977.9, 977, 957, 937.8, 925, 906, 899.3, 887, 862.5,
