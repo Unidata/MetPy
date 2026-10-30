@@ -8,7 +8,8 @@ import pytest
 import xarray as xr
 
 from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind, coriolis_parameter,
-                        curvature_vorticity, divergence, first_derivative, frontogenesis,
+                        curvature_vorticity, divergence, eady_growth_rate, first_derivative,
+                        frontogenesis,
                         geospatial_laplacian, geostrophic_wind, inertial_advective_wind,
                         lat_lon_grid_deltas, montgomery_streamfunction, potential_temperature,
                         potential_vorticity_baroclinic, potential_vorticity_barotropic,
@@ -1967,3 +1968,152 @@ def test_geospatial_laplacian_geographic(geog_data):
              - (v * my / mx) * first_derivative(mx, delta=dy, axis=0))
 
     assert_array_almost_equal(laplac, truth)
+
+
+def test_eady_growth_rate_analytic():
+    """Test Eady growth rate against a hand calculation with constant shear and N."""
+    height = np.arange(0, 6001, 1000.) * units.m
+    # Constant shear of 4 m/s per km and constant N of 0.01 1/s
+    u = 4 * (height.m / 1000) * units('m/s')
+    theta = 300 * units.K * np.exp(0.01**2 * height.m / g.m_as('m/s^2'))
+    latitude = 45 * units.degrees
+
+    f = 2 * 7.292115e-5 * np.sin(np.deg2rad(45))
+    truth = 0.3098 * f * 4e-3 / 0.01 * units('1/s')
+
+    result = eady_growth_rate(height, theta, u, latitude)
+    assert result.shape == height.shape
+    assert_array_almost_equal(result, np.full(height.shape, truth.m) * units('1/s'), 9)
+    assert result.units == units('1/s')
+
+
+def test_eady_growth_rate_textbook_magnitude():
+    """Test a typical midlatitude case gives a growth rate of about one per day."""
+    height = np.array([0., 1000., 2000.]) * units.m
+    u = np.array([0., 4., 8.]) * units('m/s')
+    # N^2 = g / theta * dtheta/dz = 1e-4 1/s^2 when dtheta/dz = 1e-4 * 300 / 9.80665 K/m
+    theta = (300 + 1e-4 * 300 / 9.80665 * height.m) * units.K
+    result = eady_growth_rate(height, theta, u, 45 * units.degrees)
+    assert_almost_equal(result.to('1/day'), np.full(3, 0.3098 * 1.0313e-4 * 4e-3 / 0.01
+                                                     * 86400) * units('1/day'), 2)
+
+
+def test_eady_growth_rate_zero_shear():
+    """Test that uniform wind produces no growth."""
+    height = np.arange(0, 5001, 1000.) * units.m
+    u = np.full(6, 15.) * units('m/s')
+    theta = (290 + 0.004 * height.m) * units.K
+    result = eady_growth_rate(height, theta, u, 40 * units.degrees)
+    assert_array_almost_equal(result, np.zeros(6) * units('1/s'), 12)
+
+
+def test_eady_growth_rate_sign_independent():
+    """Test that the result uses magnitudes of shear and Coriolis parameter."""
+    height = np.arange(0, 5001, 1000.) * units.m
+    u = (5 + 3 * height.m / 1000) * units('m/s')
+    theta = (290 + 0.004 * height.m) * units.K
+    north = eady_growth_rate(height, theta, u, 40 * units.degrees)
+    south = eady_growth_rate(height, theta, u, -40 * units.degrees)
+    reversed_shear = eady_growth_rate(height, theta, -u, 40 * units.degrees)
+    assert_array_almost_equal(north, south, 14)
+    assert_array_almost_equal(north, reversed_shear, 14)
+    assert np.all(north.m > 0)
+
+
+def test_eady_growth_rate_unit_conversion():
+    """Test that equivalent inputs in different units give the same answer."""
+    height = np.arange(0, 5001, 1000.) * units.m
+    u = (5 + 3 * height.m / 1000) * units('m/s')
+    theta = (290 + 0.004 * height.m) * units.K
+    latitude = 40 * units.degrees
+    truth = eady_growth_rate(height, theta, u, latitude)
+
+    result = eady_growth_rate(height.to('km'), theta.to('degC'), u.to('knots'),
+                              latitude.to('radians'))
+    assert_array_almost_equal(result, truth, 12)
+
+
+def test_eady_growth_rate_nonpositive_stability():
+    """Test that unstable layers give NaN rather than inf or an error."""
+    height = np.arange(0, 5001, 1000.) * units.m
+    u = (5 + 3 * height.m / 1000) * units('m/s')
+    latitude = 40 * units.degrees
+
+    theta = (300 - 0.004 * height.m) * units.K  # Unstable everywhere
+    assert np.all(np.isnan(eady_growth_rate(height, theta, u, latitude).m))
+
+    # Stable below 2 km, unstable above: only the stable levels are finite
+    theta = (300 + 0.004 * np.minimum(height.m, 2000) - 0.004 * np.maximum(height.m - 2000, 0)
+             ) * units.K
+    result = eady_growth_rate(height, theta, u, latitude)
+    assert np.isfinite(result.m[0])
+    assert np.isnan(result.m[-1])
+    assert not np.any(np.isinf(result.m))
+
+
+def test_eady_growth_rate_equator():
+    """Test that the growth rate vanishes where the Coriolis parameter does."""
+    height = np.arange(0, 5001, 1000.) * units.m
+    u = (5 + 3 * height.m / 1000) * units('m/s')
+    theta = (290 + 0.004 * height.m) * units.K
+    result = eady_growth_rate(height, theta, u, 0 * units.degrees)
+    assert_array_almost_equal(result, np.zeros(6) * units('1/s'), 15)
+
+
+def test_eady_growth_rate_vertical_dim():
+    """Test multi-dimensional input with a non-default vertical dimension."""
+    height = np.arange(0, 5001, 1000.) * units.m
+    u = (5 + 3 * height.m / 1000) * units('m/s')
+    theta = (290 + 0.004 * height.m) * units.K
+    latitude = np.array([30., 45., 60.]) * units.degrees
+    truth = np.stack([eady_growth_rate(height, theta, u, lat) for lat in latitude], axis=1)
+
+    shape = (6, 3, 2)
+    result = eady_growth_rate(
+        np.broadcast_to(height[:, None, None], shape),
+        np.broadcast_to(theta[:, None, None], shape),
+        np.broadcast_to(u[:, None, None], shape),
+        latitude[None, :, None])
+    assert result.shape == shape
+    assert_array_almost_equal(result[..., 0], truth, 12)
+
+    # Same data with vertical as the last axis
+    result_last = eady_growth_rate(
+        np.moveaxis(np.broadcast_to(height[:, None, None], shape), 0, -1),
+        np.moveaxis(np.broadcast_to(theta[:, None, None], shape), 0, -1),
+        np.moveaxis(np.broadcast_to(u[:, None, None], shape), 0, -1),
+        latitude[:, None, None], vertical_dim=-1)
+    assert_array_almost_equal(np.moveaxis(result_last, -1, 0)[:, :, 0], truth, 12)
+
+
+def test_eady_growth_rate_xarray():
+    """Test that xarray input returns a DataArray with the vertical axis found for us."""
+    height = np.arange(0, 5001, 1000.)
+    lat = [30., 45.]
+    u = (5 + 3 * height / 1000)[None, :] * np.ones((2, 1))
+    theta = (290 + 0.004 * height)[None, :] * np.ones((2, 1))
+    coords = {'latitude': ('latitude', lat, {'units': 'degrees_north'}),
+              'height': ('height', height, {'units': 'm', 'positive': 'up',
+                                            'standard_name': 'height'})}
+    dims = ('latitude', 'height')
+    h_da = xr.DataArray(np.ones((2, 1)) * height[None, :], dims=dims, coords=coords,
+                        attrs={'units': 'm'})
+    u_da = xr.DataArray(u, dims=dims, coords=coords, attrs={'units': 'm/s'})
+    theta_da = xr.DataArray(theta, dims=dims, coords=coords, attrs={'units': 'K'})
+
+    result = eady_growth_rate(h_da, theta_da, u_da, h_da.latitude)
+    assert isinstance(result, xr.DataArray)
+    assert result.dims == dims
+
+    truth = np.stack([eady_growth_rate(height * units.m, theta[i] * units.K,
+                                       u[i] * units('m/s'), lat[i] * units.degrees)
+                      for i in range(2)]).m
+    assert_array_almost_equal(result.metpy.unit_array.m_as('1/s'), truth, 12)
+
+
+def test_eady_growth_rate_bad_units():
+    """Test that wind given in the wrong dimensions is rejected."""
+    height = np.arange(0, 5001, 1000.) * units.m
+    theta = (290 + 0.004 * height.m) * units.K
+    with pytest.raises(ValueError):
+        eady_growth_rate(height, theta, np.ones(6) * units.K, 40 * units.degrees)

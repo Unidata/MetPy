@@ -72,6 +72,9 @@ References
            Parameters in Forecasting Severe Storms <https://ejssm.org/archives/2006/vol-1-3-2006/>`_.
            *Electronic J. Severe Storms Meteor.*, **1** (3), 1-22.
 
+.. [Eady1949] Eady, E. T., 1949: `Long waves and cyclone waves
+           <https://doi.org/10.3402/tellusa.v1i3.8507>`_. *Tellus*, **1** (3), 33-52.
+
 .. [Emanuel1994] Emanuel, K. A., 1994: Atmospheric Convection. Oxford University Press, 592 pp.
 
 .. [Esterheld2008] Esterheld, J. M. and D. J. Giuliano, 2008: `Discriminating between Tornadic and
@@ -154,6 +157,11 @@ References
 .. [Liang2010] Liang, L., and D. Hale, 2010: *A Stable and Fast Implementation
            of Natural Neighbor Interpolation*. Center for Wave Phenomena `CWP-657
            <https://cwp.mines.edu/wp-content/uploads/sites/112/2018/09/cwp-657.pdf>`_, 14 pp.
+
+.. [Lindzen1980] Lindzen, R. S., and B. Farrell, 1980: `A simple approximate result for the
+           maximum growth rate of baroclinic instabilities
+           <https://doi.org/10.1175/1520-0469(1980)037%3C1648:ASARFT%3E2.0.CO;2>`_.
+           *J. Atmos. Sci.*, **37** (7), 1648-1654.
 
 .. [Markowski2010] Markowski, P. and Y. Richardson, 2010: *Mesoscale Meteorology in the
            Midlatitudes*. Wiley, 430 pp.
