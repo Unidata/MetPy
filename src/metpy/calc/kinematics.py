@@ -5,9 +5,9 @@
 import numpy as np
 
 from . import coriolis_parameter
+from .thermo import brunt_vaisala_frequency_squared
 from .tools import (first_derivative, geospatial_gradient, get_layer_heights,
                     parse_grid_arguments, vector_derivative)
-from .thermo import brunt_vaisala_frequency_squared
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
