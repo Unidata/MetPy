@@ -121,6 +121,7 @@ Dynamic/Kinematic
       coriolis_parameter
       curvature_vorticity
       divergence
+      eady_growth_rate
       exner_function
       frontogenesis
       geostrophic_wind

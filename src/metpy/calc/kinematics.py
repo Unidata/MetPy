@@ -5,12 +5,13 @@
 import numpy as np
 
 from . import coriolis_parameter
+from .thermo import brunt_vaisala_frequency_squared
 from .tools import (first_derivative, geospatial_gradient, get_layer_heights,
                     parse_grid_arguments, vector_derivative)
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
-from ..xarray import preprocess_and_wrap
+from ..xarray import add_vertical_dim_from_xarray, preprocess_and_wrap
 
 exporter = Exporter(globals())
 
@@ -1603,3 +1604,75 @@ def geospatial_laplacian(f, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
                                          meridional_scale=meridional_scale)
     return divergence(grad_u, grad_y, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
                       parallel_scale=parallel_scale, meridional_scale=meridional_scale)
+
+
+@exporter.export
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(wrap_like='height',
+                     broadcast=('height', 'potential_temperature', 'u', 'latitude'))
+@check_units('[length]', '[temperature]', '[speed]', '[dimensionless]')
+def eady_growth_rate(height, potential_temperature, u, latitude, vertical_dim=0):
+    r"""Calculate the maximum Eady growth rate.
+
+    The maximum Eady growth rate is a measure of baroclinic instability, given by:
+
+    .. math:: \sigma = 0.3098 \frac{|f|}{N} \left|\frac{\partial u}{\partial z}\right|
+
+    where :math:`f` is the Coriolis parameter, :math:`N` is the Brunt-Vaisala frequency, and
+    :math:`\partial u / \partial z` is the vertical wind shear. This is the approximation to
+    the maximum growth rate of the Eady model [Eady1949]_ given by [Lindzen1980]_.
+
+    Parameters
+    ----------
+    height : `xarray.DataArray` or `pint.Quantity`
+        Atmospheric (geopotential) height
+
+    potential_temperature : `xarray.DataArray` or `pint.Quantity`
+        Atmospheric potential temperature
+
+    u : `xarray.DataArray` or `pint.Quantity`
+        x component of the wind
+
+    latitude : `xarray.DataArray` or `pint.Quantity`
+        Latitude of the data, used to calculate the Coriolis parameter. Its dimensions must be
+        broadcastable with those of `height`. Note that an argument without units is treated
+        as dimensionless, which is equivalent to radians.
+
+    vertical_dim : int, optional
+        The axis corresponding to vertical in the input arrays, defaults to 0, unless the
+        arguments are given as `xarray.DataArray`, in which case it is automatically
+        determined from the coordinate metadata.
+
+    Returns
+    -------
+    `pint.Quantity` or `xarray.DataArray`
+        Maximum Eady growth rate, in 1/s. Given as `pint.Quantity`, unless `height` is
+        given as `xarray.DataArray`, in which case will be `xarray.DataArray`.
+
+    Notes
+    -----
+    The Brunt-Vaisala frequency is calculated from `height` and `potential_temperature` with
+    `brunt_vaisala_frequency_squared`. Where the layer is neutral or unstable
+    (:math:`N^2 \le 0`) the Eady model does not apply, and the result is NaN. The vertical
+    derivatives are calculated with `first_derivative` (centered differences in the
+    interior, one-sided at the top and bottom of the profile).
+
+    The Eady growth rate is a non-linear function of the inputs, so it should be computed from
+    instantaneous (or daily) fields and then averaged, rather than applied to time-mean
+    fields. The underlying approximations assume a mid-latitude setting, so values near the
+    equator should be interpreted with care.
+
+    See Also
+    --------
+    brunt_vaisala_frequency_squared, coriolis_parameter, first_derivative
+
+    """
+    f = coriolis_parameter(latitude)
+    dudz = first_derivative(u, x=height, axis=vertical_dim)
+
+    n_squared = brunt_vaisala_frequency_squared(height, potential_temperature,
+                                                vertical_dim=vertical_dim)
+    n_squared = units.Quantity(np.where(n_squared.magnitude > 0, n_squared.magnitude, np.nan),
+                               n_squared.units)
+
+    return (0.3098 * np.abs(f) * np.abs(dudz) / np.sqrt(n_squared)).to('1/s')
