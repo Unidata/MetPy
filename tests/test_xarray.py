@@ -235,6 +235,24 @@ def test_dataset_dequantify():
     assert result.attrs == original.attrs
 
 
+@pytest.mark.parametrize('keep_attrs', [True, False])
+def test_dataset_quantify_dequantify_keep_attrs_option(keep_attrs):
+    """Test Dataset quantify/dequantify attrs do not depend on xarray's keep_attrs option."""
+    original = xr.Dataset({
+        'test': ('x', np.array([280., 290., 300.]), {'units': 'K', 'long_name': 'temp'}),
+        'x': ('x', np.arange(3), {'units': 'm'})
+    }, attrs={'title': 'test'})
+    with xr.set_options(keep_attrs=keep_attrs):
+        quantified = original.metpy.quantify()
+        dequantified = quantified.metpy.dequantify()
+
+    assert quantified['test'].attrs == {'long_name': 'temp'}
+    assert quantified.attrs == {'title': 'test'}
+    assert dequantified['test'].attrs == {'long_name': 'temp', 'units': 'kelvin'}
+    assert dequantified['x'].attrs == {'units': 'm'}
+    assert dequantified.attrs == {'title': 'test'}
+
+
 def test_radian_projection_coords():
     """Test fallback code for radian units in projection coordinate variables."""
     proj = xr.DataArray(0, attrs={'grid_mapping_name': 'geostationary',
@@ -1144,6 +1162,17 @@ def test_update_attribute_callable(test_ds_generic):
     assert 'even' not in test_ds_generic['d'].attrs
     assert 'even' not in test_ds_generic['test'].attrs
     test_ds_generic.metpy.update_attribute('even', even_ascii)
+
+
+@pytest.mark.parametrize('keep_attrs', [True, False])
+def test_update_attribute_keep_attrs_option(test_ds_generic, keep_attrs):
+    """Test update_attribute does not depend on xarray's keep_attrs option."""
+    test_ds_generic.attrs['title'] = 'generic'
+    with xr.set_options(keep_attrs=keep_attrs):
+        result = test_ds_generic.metpy.update_attribute('description', {'test': 'Filler'})
+
+    assert result['test'].attrs == {'units': 'kelvin', 'description': 'Filler'}
+    assert result.attrs == {'title': 'generic'}
 
 
 @pytest.mark.parametrize('test, other, match_unit, expected', [
