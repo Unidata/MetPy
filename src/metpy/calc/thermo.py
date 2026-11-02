@@ -1589,9 +1589,12 @@ def saturation_vapor_pressure(temperature, *, phase='liquid'):
         case 'solid':
             return _saturation_vapor_pressure_solid._nounit(temperature)
         case 'auto':
-            return np.where(temperature > mpconsts.nounit.T0,
-                            _saturation_vapor_pressure_liquid._nounit(temperature),
-                            _saturation_vapor_pressure_solid._nounit(temperature))
+            # Use masked where so that any masks on the input are carried
+            # through to the result rather than silently dropped
+            e_s = np.ma.where(temperature > mpconsts.nounit.T0,
+                              _saturation_vapor_pressure_liquid._nounit(temperature),
+                              _saturation_vapor_pressure_solid._nounit(temperature))
+            return e_s if np.ma.is_masked(e_s) else np.asarray(e_s)
         case _:
             raise ValueError(
                 f'{phase!r} is not a valid option for phase. '
@@ -1876,7 +1879,10 @@ def saturation_mixing_ratio(total_press, temperature, *, phase='liquid'):
                        'temperature combinations. Total pressure must be greater than the '
                        'water vapor saturation pressure for liquid water to be in '
                        'equilibrium.')
-    return np.where(undefined, np.nan, mixing_ratio._nounit(e_s, total_press))
+    # Use masked where so that any mask on the inputs is carried through
+    # to the result rather than silently dropped
+    ratio = np.ma.where(undefined, np.nan, mixing_ratio._nounit(e_s, total_press))
+    return ratio if np.ma.is_masked(ratio) else np.asarray(ratio)
 
 
 @exporter.export
