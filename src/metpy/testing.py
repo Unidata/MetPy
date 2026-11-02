@@ -302,23 +302,29 @@ def assert_nan(value, value_units):
     assert np.isnan(value)
 
 
-def assert_almost_equal(actual, desired, decimal=7):
+def assert_almost_equal(actual, desired, decimal=7, rtol=None, atol=None):
     """Check that values are almost equal, including units.
 
     Wrapper around :func:`numpy.testing.assert_almost_equal`
     """
     actual, desired = check_and_drop_units(actual, desired)
-    numpy.testing.assert_almost_equal(actual, desired, decimal)
+    if rtol is not None or atol is not None:
+        numpy.testing.assert_allclose(actual, desired, rtol=rtol or 0, atol=atol or 0)
+    else:
+        numpy.testing.assert_almost_equal(actual, desired, decimal)
 
 
-def assert_array_almost_equal(actual, desired, decimal=7):
+def assert_array_almost_equal(actual, desired, decimal=7, rtol=None, atol=None):
     """Check that arrays are almost equal, including units.
 
     Wrapper around :func:`numpy.testing.assert_array_almost_equal`
     """
     actual, desired = check_and_drop_units(actual, desired)
     check_mask(actual, desired)
-    numpy.testing.assert_array_almost_equal(actual, desired, decimal)
+    if rtol is not None or atol is not None:
+        numpy.testing.assert_allclose(actual, desired, rtol=rtol or 0, atol=atol or 0)
+    else:
+        numpy.testing.assert_array_almost_equal(actual, desired, decimal)
 
 
 def assert_array_equal(actual, desired):
@@ -331,9 +337,9 @@ def assert_array_equal(actual, desired):
     numpy.testing.assert_array_equal(actual, desired)
 
 
-def assert_xarray_allclose(actual, desired):
+def assert_xarray_allclose(actual, desired, rtol=1e-05, atol=1e-08):
     """Check that the xarrays are almost equal, including coordinates and attributes."""
-    xr.testing.assert_allclose(actual, desired)
+    xr.testing.assert_allclose(actual, desired, rtol=rtol, atol=atol)
     assert desired.metpy.coordinates_identical(actual)
     assert desired.attrs == actual.attrs
 
