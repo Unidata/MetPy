@@ -1274,6 +1274,47 @@ def test_laplacian_xarray_lonlat(test_da_lonlat):
     assert laplac.metpy.units == truth.metpy.units
 
 
+def test_laplacian_xarray_lonlat_implicit_axes(test_da_lonlat):
+    """Test laplacian with no axes given skips the isobaric dimension on a lonlat grid."""
+    laplac = laplacian(test_da_lonlat)
+    truth = laplacian(test_da_lonlat, axes=('lat', 'lon'))
+
+    xr.testing.assert_allclose(laplac, truth)
+    assert laplac.metpy.units == units('kelvin / meter^2')
+
+
+def test_laplacian_xarray_xy_implicit_axes(test_da_xy):
+    """Test laplacian with no axes given skips the time and isobaric dimensions."""
+    laplac = laplacian(test_da_xy)
+    truth = laplacian(test_da_xy, axes=('y', 'x'))
+
+    xr.testing.assert_allclose(laplac, truth)
+    assert laplac.metpy.units == units('kelvin / meter^2')
+
+
+def test_laplacian_xarray_height_implicit_axes():
+    """Test laplacian with no axes given uses a vertical coordinate with length units."""
+    data = xr.DataArray(
+        np.arange(60.).reshape(3, 4, 5) ** 2,
+        coords={'height': ('height', [0., 1., 2.], {'units': 'km'}),
+                'y': ('y', np.arange(4.), {'units': 'km'}),
+                'x': ('x', np.arange(5.), {'units': 'km'})},
+        dims=('height', 'y', 'x'), attrs={'units': 'K'})
+    laplac = laplacian(data)
+    truth = laplacian(data, axes=('height', 'y', 'x'))
+
+    xr.testing.assert_allclose(laplac, truth)
+
+
+def test_laplacian_xarray_no_distance_dims():
+    """Test laplacian with no axes given uses all dimensions if none are distances."""
+    data = xr.DataArray(np.arange(16.).reshape(4, 4) ** 2, dims=('a', 'b'))
+    laplac = laplacian(data)
+    truth = laplacian(data, axes=(0, 1))
+
+    xr.testing.assert_allclose(laplac, truth)
+
+
 def test_first_derivative_xarray_pint_conversion(test_da_lonlat):
     """Test first derivative with implicit xarray to pint quantity conversion."""
     dx, _ = grid_deltas_from_dataarray(test_da_lonlat)
