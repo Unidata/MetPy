@@ -11,7 +11,7 @@ import numpy as np
 import pytest
 
 from metpy.plots import Emagram, Hodograph, SkewT, Stuve
-from metpy.testing import autoclose_figure, version_check
+from metpy.testing import autoclose_figure
 from metpy.units import units
 
 
@@ -155,11 +155,8 @@ def test_skewt_units():
     skew.ax.axvline(np.array([-20]) * units.degC, color='darkred')
     skew.ax.axvline(-10, color='orange')
 
-    # On Matplotlib <= 3.6, ax[hv]line() doesn't trigger unit labels
-    assert skew.ax.get_xlabel() == (
-        'degree_Celsius' if version_check('matplotlib==3.7.0') else '')
-    assert skew.ax.get_ylabel() == (
-        'hectopascal' if version_check('matplotlib==3.7.0') else '')
+    assert skew.ax.get_xlabel() == ''
+    assert skew.ax.get_ylabel() == ''
 
     # Clear them for the image test
     skew.ax.set_xlabel('')
