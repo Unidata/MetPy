@@ -1,11 +1,11 @@
 ruff==0.17.1
 
-flake8==7.4.1
+flake8==7.5.0
 pycodestyle==2.15.0
-pyflakes==4.0.3
+pyflakes==4.1.0
 
 flake8-broken-line==1.0.0
-flake8-isort==7.0.0
+flake8-isort==7.1.0
 isort==9.0.2
 flake8-requirements==2.3.0
 
