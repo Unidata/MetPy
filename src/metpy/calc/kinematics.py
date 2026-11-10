@@ -636,17 +636,6 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
                   *, parallel_scale=None, meridional_scale=None):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
 
-    The implementation is a form of the Petterssen Frontogenesis and uses the formula
-    outlined in [Bluestein1993]_ pg.248-253
-
-    .. math:: F=\frac{1}{2}\left|\nabla \theta\right|[D cos(2\beta)-\delta]
-
-    * :math:`F` is 2D kinematic frontogenesis
-    * :math:`\theta` is potential temperature
-    * :math:`D` is the total deformation
-    * :math:`\beta` is the angle between the axis of dilatation and the isentropes
-    * :math:`\delta` is the divergence
-
     Parameters
     ----------
     potential_temperature : (..., M, N) `xarray.DataArray` or `pint.Quantity`
@@ -690,6 +679,17 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
     Notes
     -----
+    The implementation is a form of the Petterssen Frontogenesis and uses the formula
+    outlined in [Bluestein1993]_ pg.248-253
+
+    .. math:: F=\frac{1}{2}\left|\nabla \theta\right|[D cos(2\beta)-\delta]
+
+    * :math:`F` is 2D kinematic frontogenesis
+    * :math:`\theta` is potential temperature
+    * :math:`D` is the total deformation
+    * :math:`\beta` is the angle between the axis of dilatation and the isentropes
+    * :math:`\delta` is the divergence
+
     To convert from [temperature units]/m/s to [temperature units]/100km/3h, multiply by
     :math:`1.08e9`
 
@@ -932,15 +932,6 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, s
     # Partially adapted from similar SharpPy code
     r"""Calculate storm relative helicity.
 
-    Calculates storm relative helicity following [Markowski2010]_ pg.230-231
-
-    .. math:: \int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz
-
-    This is applied to the data from a hodograph with the following summation:
-
-    .. math:: \sum_{n = 1}^{N-1} [(u_{n+1} - c_{x})(v_{n} - c_{y}) -
-                                  (u_{n} - c_{x})(v_{n+1} - c_{y})]
-
     Parameters
     ----------
     u : array-like
@@ -995,6 +986,15 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, s
 
     Notes
     -----
+    Calculates storm relative helicity following [Markowski2010]_ pg.230-231
+
+    .. math:: \int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz
+
+    This is applied to the data from a hodograph with the following summation:
+
+    .. math:: \sum_{n = 1}^{N-1} [(u_{n+1} - c_{x})(v_{n} - c_{y}) -
+                                  (u_{n} - c_{x})(v_{n+1} - c_{y})]
+
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
@@ -1127,12 +1127,6 @@ def potential_vorticity_baroclinic(
 ):
     r"""Calculate the baroclinic potential vorticity.
 
-    .. math:: PV = -g \left(\frac{\partial u}{\partial p}\frac{\partial \theta}{\partial y}
-              - \frac{\partial v}{\partial p}\frac{\partial \theta}{\partial x}
-              + \frac{\partial \theta}{\partial p}(\zeta + f) \right)
-
-    This formula is based on equation 4.5.93 [Bluestein1993]_
-
     Parameters
     ----------
     potential_temperature : (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
@@ -1185,6 +1179,12 @@ def potential_vorticity_baroclinic(
 
     Notes
     -----
+    .. math:: PV = -g \left(\frac{\partial u}{\partial p}\frac{\partial \theta}{\partial y}
+              - \frac{\partial v}{\partial p}\frac{\partial \theta}{\partial x}
+              + \frac{\partial \theta}{\partial p}(\zeta + f) \right)
+
+    This formula is based on equation 4.5.93 [Bluestein1993]_
+
     The same function can be used for isobaric and isentropic PV analysis. Provide winds
     for vorticity calculations on the desired isobaric or isentropic surface. At least three
     layers of pressure/potential temperature are required in order to calculate the vertical
@@ -1252,10 +1252,6 @@ def potential_vorticity_barotropic(
 ):
     r"""Calculate the barotropic (Rossby) potential vorticity.
 
-    .. math:: PV = \frac{f + \zeta}{H}
-
-    This formula is based on equation 7.27 [Hobbs2006]_.
-
     Parameters
     ----------
     height : (..., M, N) `xarray.DataArray` or `pint.Quantity`
@@ -1301,6 +1297,11 @@ def potential_vorticity_barotropic(
         longitude, latitude, and crs are given. If otherwise omitted, calculation will be
         carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
+    Notes
+    -----
+    .. math:: PV = \frac{f + \zeta}{H}
+
+    This formula is based on equation 7.27 [Hobbs2006]_.
 
     .. versionchanged:: 1.0
        Changed signature from ``(heights, u, v, dx, dy, lats, dim_order='yx')``
@@ -1335,19 +1336,6 @@ def inertial_advective_wind(
     meridional_scale=None
 ):
     r"""Calculate the inertial advective wind.
-
-    .. math:: \frac{\hat k}{f} \times (\vec V \cdot \nabla)\hat V_g
-
-    .. math:: \frac{\hat k}{f} \times \left[ \left( u \frac{\partial u_g}{\partial x} + v
-              \frac{\partial u_g}{\partial y} \right) \hat i + \left( u \frac{\partial v_g}
-              {\partial x} + v \frac{\partial v_g}{\partial y} \right) \hat j \right]
-
-    .. math:: \left[ -\frac{1}{f}\left(u \frac{\partial v_g}{\partial x} + v
-              \frac{\partial v_g}{\partial y} \right) \right] \hat i + \left[ \frac{1}{f}
-              \left( u \frac{\partial u_g}{\partial x} + v \frac{\partial u_g}{\partial y}
-              \right) \right] \hat j
-
-    This formula is based on equation 27 of [Rochette2006]_.
 
     Parameters
     ----------
@@ -1400,6 +1388,19 @@ def inertial_advective_wind(
 
     Notes
     -----
+    .. math:: \frac{\hat k}{f} \times (\vec V \cdot \nabla)\hat V_g
+
+    .. math:: \frac{\hat k}{f} \times \left[ \left( u \frac{\partial u_g}{\partial x} + v
+              \frac{\partial u_g}{\partial y} \right) \hat i + \left( u \frac{\partial v_g}
+              {\partial x} + v \frac{\partial v_g}{\partial y} \right) \hat j \right]
+
+    .. math:: \left[ -\frac{1}{f}\left(u \frac{\partial v_g}{\partial x} + v
+              \frac{\partial v_g}{\partial y} \right) \right] \hat i + \left[ \frac{1}{f}
+              \left( u \frac{\partial u_g}{\partial x} + v \frac{\partial u_g}{\partial y}
+              \right) \right] \hat j
+
+    This formula is based on equation 27 of [Rochette2006]_.
+
     Many forms of the inertial advective wind assume the advecting and advected
     wind to both be the geostrophic wind. To do so, pass the x and y components
     of the geostrophic wind for u and u_geostrophic/v and v_geostrophic.
@@ -1450,27 +1451,6 @@ def q_vector(
 ):
     r"""Calculate Q-vector at a given pressure level using the u, v winds and temperature.
 
-    .. math:: \vec{Q} = (Q_1, Q_2)
-                      =  - \frac{R}{\sigma p}\left(
-                               \frac{\partial \vec{v}_g}{\partial x} \cdot \nabla_p T,
-                               \frac{\partial \vec{v}_g}{\partial y} \cdot \nabla_p T
-                           \right)
-
-    This formula follows equation 5.7.55 from [Bluestein1992]_, and can be used with the
-    the below form of the quasigeostrophic omega equation to assess vertical motion
-    ([Bluestein1992]_ equation 5.7.54):
-
-    .. math:: \left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2}
-                  \right) \omega =
-              - 2 \nabla_p \cdot \vec{Q} -
-                  \frac{R}{\sigma p} \beta \frac{\partial T}{\partial x}
-
-    By default, this function uses a unitless value of 1 for ``static_stability``, which
-    replicates the functionality of the GEMPAK ``QVEC`` function. If a value is given for
-    ``static_stability``, it should have dimensionality of ``energy / mass / pressure^2``, and
-    will result in behavior that matches that of GEMPAK's ``QVCL`` function;
-    `static_stability` can be used to calculate this value if desired.
-
     Parameters
     ----------
     u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
@@ -1517,13 +1497,35 @@ def q_vector(
         longitude, latitude, and crs are given. If otherwise omitted, calculation will be
         carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
 
-
-    .. versionchanged:: 1.0
-       Changed signature from ``(u, v, temperature, pressure, dx, dy, static_stability=1)``
-
     See Also
     --------
     static_stability
+
+    Notes
+    -----
+    .. math:: \vec{Q} = (Q_1, Q_2)
+                      =  - \frac{R}{\sigma p}\left(
+                               \frac{\partial \vec{v}_g}{\partial x} \cdot \nabla_p T,
+                               \frac{\partial \vec{v}_g}{\partial y} \cdot \nabla_p T
+                           \right)
+
+    This formula follows equation 5.7.55 from [Bluestein1992]_, and can be used with the
+    the below form of the quasigeostrophic omega equation to assess vertical motion
+    ([Bluestein1992]_ equation 5.7.54):
+
+    .. math:: \left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2}
+                  \right) \omega =
+              - 2 \nabla_p \cdot \vec{Q} -
+                  \frac{R}{\sigma p} \beta \frac{\partial T}{\partial x}
+
+    By default, this function uses a unitless value of 1 for ``static_stability``, which
+    replicates the functionality of the GEMPAK ``QVEC`` function. If a value is given for
+    ``static_stability``, it should have dimensionality of ``energy / mass / pressure^2``, and
+    will result in behavior that matches that of GEMPAK's ``QVCL`` function;
+    `static_stability` can be used to calculate this value if desired.
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, temperature, pressure, dx, dy, static_stability=1)``
 
     """
     dudx, dudy, dvdx, dvdy = vector_derivative(
