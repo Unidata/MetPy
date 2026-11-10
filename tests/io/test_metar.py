@@ -248,37 +248,37 @@ def test_parse_file():
 
     # Check counts (non-NaN) of various fields
     counts = df.count()
-    assert counts.station_id == 8980
-    assert counts.latitude == 8968
-    assert counts.longitude == 8968
-    assert counts.elevation == 8968
-    assert counts.date_time == 8980
-    assert counts.wind_direction == 8577
-    assert counts.wind_speed == 8844
+    assert counts.station_id == 8986
+    assert counts.latitude == 8974
+    assert counts.longitude == 8974
+    assert counts.elevation == 8974
+    assert counts.date_time == 8986
+    assert counts.wind_direction == 8583
+    assert counts.wind_speed == 8850
     assert counts.wind_gust == 347
-    assert counts.visibility == 8486
+    assert counts.visibility == 8492
     assert counts.current_wx1 == 1090
     assert counts.current_wx2 == 82
     assert counts.current_wx3 == 1
-    assert counts.low_cloud_type == 7361
-    assert counts.low_cloud_level == 3867
-    assert counts.medium_cloud_type == 1646
-    assert counts.medium_cloud_level == 1641
-    assert counts.high_cloud_type == 632
-    assert counts.high_cloud_level == 626
+    assert counts.low_cloud_type == 7367
+    assert counts.low_cloud_level == 3869
+    assert counts.medium_cloud_type == 1648
+    assert counts.medium_cloud_level == 1643
+    assert counts.high_cloud_type == 633
+    assert counts.high_cloud_level == 627
     assert counts.highest_cloud_type == 37
     assert counts.highest_cloud_level == 37
-    assert counts.cloud_coverage == 8980
-    assert counts.air_temperature == 8779
-    assert counts.dew_point_temperature == 8740
-    assert counts.altimeter == 8458
-    assert counts.remarks == 8980
+    assert counts.cloud_coverage == 8986
+    assert counts.air_temperature == 8785
+    assert counts.dew_point_temperature == 8746
+    assert counts.altimeter == 8464
+    assert counts.remarks == 8986
     assert (df.current_wx1_symbol != 0).sum() == counts.current_wx1
     assert (df.current_wx2_symbol != 0).sum() == counts.current_wx2
     assert (df.current_wx3_symbol != 0).sum() == counts.current_wx3
-    assert counts.air_pressure_at_sea_level == 8378
-    assert counts.eastward_wind == 8577
-    assert counts.northward_wind == 8577
+    assert counts.air_pressure_at_sea_level == 8384
+    assert counts.eastward_wind == 8583
+    assert counts.northward_wind == 8583
 
     # KVPZ 011156Z AUTO 27005KT 10SM CLR 23/19 A3004 RMK AO2 SLP166
     test = df[df.station_id == 'KVPZ']
@@ -311,37 +311,37 @@ def test_parse_file_bad_encoding():
 
     # Check counts (non-NaN) of various fields
     counts = df.count()
-    assert counts.station_id == 8802
-    assert counts.latitude == 8789
-    assert counts.longitude == 8789
-    assert counts.elevation == 8789
-    assert counts.date_time == 8802
-    assert counts.wind_direction == 8377
-    assert counts.wind_speed == 8673
+    assert counts.station_id == 8821
+    assert counts.latitude == 8809
+    assert counts.longitude == 8809
+    assert counts.elevation == 8807
+    assert counts.date_time == 8821
+    assert counts.wind_direction == 8396
+    assert counts.wind_speed == 8692
     assert counts.wind_gust == 1053
-    assert counts.visibility == 8312
-    assert counts.current_wx1 == 1412
+    assert counts.visibility == 8331
+    assert counts.current_wx1 == 1415
     assert counts.current_wx2 == 213
     assert counts.current_wx3 == 3
-    assert counts.low_cloud_type == 7672
-    assert counts.low_cloud_level == 3816
+    assert counts.low_cloud_type == 7691
+    assert counts.low_cloud_level == 3818
     assert counts.medium_cloud_type == 1632
     assert counts.medium_cloud_level == 1623
     assert counts.high_cloud_type == 546
     assert counts.high_cloud_level == 545
     assert counts.highest_cloud_type == 40
     assert counts.highest_cloud_level == 40
-    assert counts.cloud_coverage == 8802
-    assert counts.air_temperature == 8597
-    assert counts.dew_point_temperature == 8536
-    assert counts.altimeter == 8252
-    assert counts.remarks == 8802
+    assert counts.cloud_coverage == 8821
+    assert counts.air_temperature == 8614
+    assert counts.dew_point_temperature == 8553
+    assert counts.altimeter == 8269
+    assert counts.remarks == 8821
     assert (df.current_wx1_symbol != 0).sum() == counts.current_wx1
     assert (df.current_wx2_symbol != 0).sum() == counts.current_wx2
     assert (df.current_wx3_symbol != 0).sum() == counts.current_wx3
-    assert counts.air_pressure_at_sea_level == 8207
-    assert counts.eastward_wind == 8377
-    assert counts.northward_wind == 8377
+    assert counts.air_pressure_at_sea_level == 8225
+    assert counts.eastward_wind == 8396
+    assert counts.northward_wind == 8396
 
     # KDEN 052353Z 16014KT 10SM FEW120 FEW220 02/M07 A3008 RMK AO2 SLP190 T00171072...
     test = df[df.station_id == 'KDEN']
