@@ -123,6 +123,7 @@ def test_distances_from_cross_section_given_lonlat(test_cross_lonlat):
             'lat': test_cross_lonlat['lat'],
             'lon': test_cross_lonlat['lon'],
             'index': index,
+            'distance': test_cross_lonlat['distance'],
         },
         dims=['index']
     )
@@ -133,6 +134,7 @@ def test_distances_from_cross_section_given_lonlat(test_cross_lonlat):
             'lat': test_cross_lonlat['lat'],
             'lon': test_cross_lonlat['lon'],
             'index': index,
+            'distance': test_cross_lonlat['distance'],
         },
         dims=['index']
     )
@@ -172,6 +174,7 @@ def test_latitude_from_cross_section_given_y(test_cross_xy):
             'y': test_cross_xy['y'],
             'x': test_cross_xy['x'],
             'index': index,
+            'distance': test_cross_xy['distance'],
         },
         dims=['index']
     )

@@ -153,6 +153,10 @@ def test_cross_section_dataarray_and_linear_interp(test_ds_xy):
                                -782037.60343652, -528093.95678826, -267710.32566917,
                                -939.10769171])
     index = xr.DataArray(range(7), name='index', dims=['index'])
+    distance = xr.DataArray(
+        np.concatenate([[0.], np.cumsum(np.hypot(np.diff(truth_values_x),
+                                                 np.diff(truth_values_y)))]),
+        name='distance', dims=['index'], coords={'index': index}, attrs={'units': 'meters'})
 
     data_truth_x = xr.DataArray(
         truth_values_x,
@@ -162,6 +166,7 @@ def test_cross_section_dataarray_and_linear_interp(test_ds_xy):
             'y': (['index'], truth_values_y),
             'x': (['index'], truth_values_x),
             'index': index,
+            'distance': distance,
         },
         dims=['index']
     )
@@ -173,6 +178,7 @@ def test_cross_section_dataarray_and_linear_interp(test_ds_xy):
             'y': (['index'], truth_values_y),
             'x': (['index'], truth_values_x),
             'index': index,
+            'distance': distance,
         },
         dims=['index']
     )
@@ -183,6 +189,7 @@ def test_cross_section_dataarray_and_linear_interp(test_ds_xy):
             'time': data['time'],
             'isobaric': data['isobaric'],
             'index': index,
+            'distance': distance,
             'metpy_crs': data['metpy_crs'],
             'y': data_truth_y,
             'x': data_truth_x
@@ -215,6 +222,11 @@ def test_cross_section_dataset_and_nearest_interp(test_ds_lonlat):
     truth_values_lat = np.array([30.5, 33.02800969, 35.49306226, 37.88512911, 40.19271688,
                                  42.40267088, 44.5])
     index = xr.DataArray(range(7), name='index', dims=['index'])
+    distance = xr.DataArray(
+        np.concatenate([[0.], np.cumsum(np.hypot(np.diff(truth_values_lon),
+                                                 np.diff(truth_values_lat)))]),
+        name='distance', dims=['index'], coords={'index': index},
+        attrs={'units': 'degrees_east'})
 
     data_truth = xr.Dataset(
         {
@@ -224,6 +236,7 @@ def test_cross_section_dataset_and_nearest_interp(test_ds_lonlat):
         coords={
             'isobaric': test_ds_lonlat['isobaric'],
             'index': index,
+            'distance': distance,
             'metpy_crs': test_ds_lonlat['metpy_crs'],
             'lat': (['index'], truth_values_lat),
             'lon': (['index'], truth_values_lon)
@@ -255,3 +268,63 @@ def test_cross_section_error_on_missing_coordinate(test_ds_lonlat):
 
     with pytest.raises(ValueError):
         cross_section(data_bad, start, end)
+
+
+@pytest.mark.parametrize('quantify', [False, True])
+def test_interpolate_to_slice_distance(test_ds_xy, quantify):
+    """Test the distance coordinate against hand-computed values, with and without pint."""
+    data = test_ds_xy['temperature']
+    if not quantify:
+        data = data.metpy.dequantify()
+    # A 3-4-5 triangle leg followed by a 6-8-10 leg, in metres (parse_cf converts km)
+    path = np.array([[0., -1.0e6], [3.0e5, -1.0e6 + 4.0e5], [9.0e5, -1.0e6 + 1.2e6]])
+    result = interpolate_to_slice(data, path)
+
+    np.testing.assert_allclose(result['distance'].values, [0., 5.0e5, 1.5e6])
+    assert result['distance'].dims == ('index',)
+    assert result['distance'].attrs['units'] == 'meters'
+    # Backward compatibility: the original index coordinate is still there
+    np.testing.assert_array_equal(result['index'].values, [0, 1, 2])
+    assert 'index' in result['distance'].coords
+
+
+def test_interpolate_to_slice_distance_is_cumulative(test_ds_xy):
+    """Test that distance follows the path rather than the straight line from the start."""
+    data = test_ds_xy['temperature']
+    path = np.array([[0., -1.0e6], [1.0e6, -1.0e6], [1.0e6, -5.0e5], [0., -5.0e5]])
+    result = interpolate_to_slice(data, path)
+    np.testing.assert_allclose(result['distance'].values, [0., 1.0e6, 1.5e6, 2.5e6])
+
+
+def test_interpolate_to_slice_distance_custom_name(test_ds_xy):
+    """Test the distance_coord_name keyword, including when 'distance' already exists."""
+    data = test_ds_xy['temperature'].assign_coords(distance=('isobaric', np.arange(5.)))
+    path = np.array([[0., -1.0e6], [3.0e5, -1.0e6 + 4.0e5]])
+    result = interpolate_to_slice(data, path, distance_coord_name='along_path')
+    np.testing.assert_allclose(result['along_path'].values, [0., 5.0e5])
+    # The pre-existing coordinate with the default name is left alone
+    np.testing.assert_array_equal(result['distance'].values, np.arange(5.))
+
+
+def test_interpolate_to_slice_distance_mixed_units(test_ds_xy):
+    """Test that no units are attached if x and y units differ."""
+    data = test_ds_xy['temperature'].metpy.dequantify()
+    data['y'].attrs['units'] = 'km'
+    path = np.array([[0., -1.0e6], [3.0e5, -1.0e6 + 4.0e5]])
+    result = interpolate_to_slice(data, path)
+    assert 'units' not in result['distance'].attrs
+
+
+@needs_cartopy
+def test_cross_section_distance(test_ds_xy):
+    """Test distance in cross_section for DataArray and Dataset input and a custom name."""
+    start, end = ((36.46, -112.45), (42.95, -68.74))
+    data_cross = cross_section(test_ds_xy['temperature'], start, end, steps=7)
+    x, y = data_cross['x'].values, data_cross['y'].values
+    expected = np.concatenate([[0.], np.cumsum(np.hypot(np.diff(x), np.diff(y)))])
+    np.testing.assert_allclose(data_cross['distance'].values, expected)
+
+    ds_cross = cross_section(test_ds_xy, start, end, steps=7, distance_coord_name='dist')
+    np.testing.assert_allclose(ds_cross['dist'].values, expected)
+    assert ds_cross['dist'].attrs['units'] == 'meters'
+    assert 'distance' not in ds_cross.coords
