@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test text handling functions."""
 from datetime import datetime
+import warnings
 
 import numpy as np
 
@@ -84,6 +85,33 @@ HIGHS 1022 -3961069 1020 -3851069 1026 3750773 1022 4430845 1019 5520728 1018
 """)
     df = parse_wpc_surface_bulletin(sample)
     assert df.geometry[0] == sgeom.Point([-106.9, -39.6])
+
+
+@needs_module('shapely')
+def test_parse_wpc_surface_bulletin_stray_characters():
+    """Test parsing survives stray characters found in archived bulletins (#3921)."""
+    from io import BytesIO
+
+    import shapely.geometry as sgeom
+
+    sample = BytesIO(b"""VALID 062818Z
+COLD WK 44135 42138 411"45 37152 35155 33161
+HIGHS 1022 3961069 1020 3851069
+TROF 99x 2911100 2681082
+""")
+    with warnings.catch_warnings(record=True) as records:
+        warnings.simplefilter('always')
+        df = parse_wpc_surface_bulletin(sample, year=2000)
+    assert len(df[df.feature == 'COLD']) == 1
+    assert df.strength[0] == 'WK'
+    # The '"' was cleaned, so the third point decodes like the rest
+    assert df.geometry[0] == sgeom.LineString([[-135, 44], [-138, 42],
+                                               [-145, 41], [-152, 37],
+                                               [-155, 35], [-161, 33]])
+    # The junk TROF token was dropped with a warning but the front survived
+    assert len(df[df.feature == 'TROF']) == 1
+    assert df.geometry[3] == sgeom.LineString([[-110, 29.1], [-108.2, 26.8]])
+    assert any('unparsable' in str(r.message) for r in records)
 
 
 @needs_module('shapely')
