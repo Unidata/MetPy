@@ -5,7 +5,7 @@ MetPy
 [![NSF Unidata Logo](https://github.com/Unidata/MetPy/raw/main/docs/_static/NSF-Unidata_lockup_horizontal_2024.png)](https://www.unidata.ucar.edu)
 
 [![License](https://img.shields.io/pypi/l/metpy.svg)](https://pypi.python.org/pypi/MetPy/)
-[![Gitter](https://badges.gitter.im/Unidata/MetPy.svg)](https://gitter.im/Unidata/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=round-square)](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
 
 [![Latest Docs](https://github.com/Unidata/MetPy/workflows/Build%20Docs/badge.svg)](http://unidata.github.io/MetPy)
@@ -46,7 +46,7 @@ Important Links
 - [HTML Documentation](http://unidata.github.io/MetPy)
 - [MetPy Cookbook on Project Pythia](https://projectpythia.org/metpy-cookbook/index.html)
 - "metpy" tagged questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/metpy)
-- [Gitter chat room](https://gitter.im/Unidata/MetPy)
+- Gitter chat room
 
 Dependencies
 ------------
