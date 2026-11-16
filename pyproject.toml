@@ -125,7 +125,13 @@ filterwarnings = [
     "ignore:__array__ implementation doesn't accept a copy keyword:DeprecationWarning",
     # Needs matplotlib >=3.10.7 for fixes
     "ignore:'\\S+' deprecated - use '\\S+':DeprecationWarning:matplotlib._fontconfig_pattern",
-    "ignore:'\\S+' deprecated - use '\\S+':DeprecationWarning:matplotlib._mathtext"
+    "ignore:'\\S+' deprecated - use '\\S+':DeprecationWarning:matplotlib._mathtext",
+    # Image tests open many figures; recent matplotlib on macOS conda
+    # runners trips figure.max_open_warning which -W error escalates.
+    'ignore:More than \d+ figures have been opened:RuntimeWarning',
+    # Newer shapely emits this inside cartopy's geometry collection code
+    # on the macOS conda runners.
+    'ignore:invalid value encountered in create_collection:RuntimeWarning'
 ]
 
 [tool.ruff]

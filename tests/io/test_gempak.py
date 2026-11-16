@@ -249,7 +249,7 @@ def test_ship_surface():
     gempak = pd.read_csv(get_test_data('gem_ship.csv', as_file_obj=False))
     gempak['YYMMDD/HHMM'] = pd.to_datetime(gempak['YYMMDD/HHMM'], format='%y%m%d/%H%M')
     gempak = gempak.set_index(['STN', 'YYMMDD/HHMM'])
-    gempak.sort_index(inplace=True)
+    gempak = gempak.sort_index()
 
     uidx = gempak.index.unique()
 
