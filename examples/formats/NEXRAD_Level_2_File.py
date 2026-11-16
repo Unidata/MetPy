@@ -53,17 +53,20 @@ az = units.Quantity(az, 'degrees')
 ###########################################
 # Calculate ranges for the gates from the metadata
 
-# 5th item is a dict mapping a var name (byte string) to a tuple
-# of (header, data array)
-ref_hdr = f.sweeps[sweep][0][4][b'REF'][0]
+# Each radial is a tuple of headers followed by a dict mapping a moment name
+# (byte string) to a (header, data array) tuple. Index with -1 to pick out the
+# dict and the data array regardless of how many headers precede them; this
+# works for both modern "message 31" data and older formats that have fewer
+# header items.
+ref_hdr = f.sweeps[sweep][0][-1][b'REF'][0]
 ref_range = (np.arange(ref_hdr.num_gates + 1) - 0.5) * ref_hdr.gate_width + ref_hdr.first_gate
 ref_range = units.Quantity(ref_range, 'kilometers')
-ref = np.array([ray[4][b'REF'][1] for ray in f.sweeps[sweep]])
+ref = np.array([ray[-1][b'REF'][1] for ray in f.sweeps[sweep]])
 
-rho_hdr = f.sweeps[sweep][0][4][b'RHO'][0]
+rho_hdr = f.sweeps[sweep][0][-1][b'RHO'][0]
 rho_range = (np.arange(rho_hdr.num_gates + 1) - 0.5) * rho_hdr.gate_width + rho_hdr.first_gate
 rho_range = units.Quantity(rho_range, 'kilometers')
-rho = np.array([ray[4][b'RHO'][1] for ray in f.sweeps[sweep]])
+rho = np.array([ray[-1][b'RHO'][1] for ray in f.sweeps[sweep]])
 
 # Extract central longitude and latitude from file
 cent_lon = f.sweeps[0][0][1].lon
