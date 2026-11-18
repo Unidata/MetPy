@@ -341,3 +341,10 @@ def test_absolute_momentum_xarray_units_attr():
                                  coords=u.coords)
 
     assert_xarray_allclose(momentum, true_momentum)
+
+
+def test_absolute_momentum_keep_attrs_option(test_cross_xy):
+    """Test absolute momentum does not pick up the attributes of its inputs."""
+    with xr.set_options(keep_attrs=True):
+        momentum = absolute_momentum(test_cross_xy['u_wind'], test_cross_xy['v_wind'])
+    assert momentum.attrs == {}
