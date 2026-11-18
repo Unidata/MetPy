@@ -496,6 +496,20 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
     >>> dry_lapse(plevs, 15 * units.degC).to('degC')
     <Quantity([ 15.           8.65249458   1.92593808 -12.91786723], 'degree_Celsius')>
 
+    To calculate a profile for each of several starting temperatures, add a length-one
+    axis so that the temperatures broadcast against the pressure levels:
+
+    >>> import numpy as np
+    >>> temperatures = [15, 20] * units.degC
+    >>> profiles = dry_lapse(plevs, temperatures[:, np.newaxis],
+    ...                     reference_pressure=1000 * units.hPa)
+    >>> profiles.shape
+    (2, 4)
+
+    Each row contains one parcel's temperature profile at the four pressure levels.
+    Two one-dimensional arrays follow the usual NumPy broadcasting rules; they do not
+    automatically produce a separate profile for each starting temperature.
+
     See Also
     --------
     moist_lapse : Calculate parcel temperature assuming liquid saturation processes

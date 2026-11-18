@@ -170,6 +170,21 @@ def test_dry_lapse_2_levels():
     assert_array_almost_equal(temps, [293., 240.3583] * units.kelvin, 4)
 
 
+@pytest.mark.parametrize('transpose', [False, True])
+def test_dry_lapse_multiple_starting_temperatures(transpose):
+    """Broadcast several starting temperatures over a common pressure profile."""
+    pressure = np.array([[1000, 925, 850, 700]]) * units.hPa
+    temperature = np.array([[15], [20]]) * units.degC
+    # Independently evaluated T = T_ref * (p / 1000 hPa)**(2/7), using kelvin.
+    expected = np.array([[15, 8.65249, 1.92594, -12.91787],
+                         [20, 13.54235, 6.69908, -8.40230]]) * units.degC
+    if transpose:
+        pressure, temperature, expected = pressure.T, temperature.T, expected.T
+    result = dry_lapse(pressure, temperature, reference_pressure=1000 * units.hPa)
+    assert result.shape == expected.shape
+    assert_array_almost_equal(result, expected, 4)
+
+
 @pytest.mark.parametrize('temp_units', ['degF', 'degC', 'K'])
 def test_moist_lapse(temp_units):
     """Test moist_lapse with various temperature units."""
