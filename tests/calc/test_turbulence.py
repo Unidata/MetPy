@@ -243,6 +243,49 @@ def test_known_perturbation_nonzero_mean_2d_axis_first(pert_nonzero_mean):
 #
 # Kinematic Flux Tests
 #
+
+@pytest.mark.parametrize('quantified', [False, True])
+@pytest.mark.parametrize('axis', [-1, 0])
+@pytest.mark.parametrize('perturbation', [False, True])
+def test_kinematic_flux_xarray(quantified, axis, perturbation):
+    """Reduce DataArrays along the time axis without retaining incompatible coordinates."""
+    values = np.array([[1., 2., 3.], [2., 4., 6.]])
+    if perturbation:
+        values = np.array([[-1., 0., 1.], [-2., 0., 2.]])
+    velocity = xr.DataArray(values, dims=('station', 'time'),
+                            coords={'station': ['A', 'B'], 'time': [0, 1, 2]},
+                            attrs={'units': 'm/s'})
+    temperature = xr.DataArray(2 * values, dims=velocity.dims, coords=velocity.coords,
+                               attrs={'units': 'K'})
+    if quantified:
+        velocity = velocity.metpy.quantify()
+        temperature = temperature.metpy.quantify()
+    if axis == 0:
+        velocity = velocity.transpose()
+        temperature = temperature.transpose()
+
+    result = kinematic_flux(velocity, temperature, perturbation=perturbation, axis=axis)
+
+    assert isinstance(result, units.Quantity)
+    assert result.shape == (2,)
+    assert_array_almost_equal(result, [4 / 3, 16 / 3] * units('K m/s'))
+
+
+@pytest.mark.parametrize('quantified', [False, True])
+def test_kinematic_flux_xarray_one_dimension(quantified):
+    """Preserve the length-one output convention when reducing a DataArray time series."""
+    velocity = xr.DataArray([1., 2., 3.], dims='time', coords={'time': [0, 1, 2]},
+                            attrs={'units': 'm/s'})
+    if quantified:
+        velocity = velocity.metpy.quantify()
+
+    result = kinematic_flux(velocity, velocity)
+
+    assert isinstance(result, units.Quantity)
+    assert result.shape == (1,)
+    assert_array_almost_equal(result, [2 / 3] * units('m^2/s^2'))
+
+
 @pytest.fixture()
 def uvw_and_known_kf_zero_mean():
     """Return components and kinematic flux for zero-mean time series."""
