@@ -363,6 +363,22 @@ def test_sat_vapor_pressure_ice():
     assert_array_almost_equal(saturation_vapor_pressure(temp, phase='solid'), real_es, 2)
 
 
+@pytest.mark.parametrize('temperature, expected', [
+    (-50, 0.03935), (-40, 0.1283), (-30, 0.3798), (-20, 1.032), (-10, 2.597)
+])
+def test_sat_vapor_pressure_ice_reference(temperature, expected):
+    """Compare ice saturation vapor pressure with independent tabulated values."""
+    # Schlatter and Baker (1981), Algorithms for Thermodynamic Calculations,
+    # PDF page 13, reproducing Smithsonian Meteorological Tables, 6th revised
+    # edition, p. 360. Source attached to https://github.com/Unidata/MetPy/issues/719:
+    # https://github.com/Unidata/MetPy/files/1665844/Algorithms_For_Thermo_Calculations.pdf
+    # These historical values use a different formulation than Ambaum (2020).
+    # Allow 0.5% cross-formulation disagreement, not equality to the printed digits;
+    # this regression threshold is not a claim of 0.5% physical accuracy.
+    result = saturation_vapor_pressure(temperature * units.degC, phase='solid')
+    np.testing.assert_allclose(result.m_as('mbar'), expected, rtol=0.005, atol=0)
+
+
 def test_sat_vapor_pressure_phase_handling():
     """Test saturation_vapor_pressure phase handling calculates distinct values."""
     temp = np.array([-25, -15, -5, T0.m_as('degC'), 5, 15, 25]) * units.degC
