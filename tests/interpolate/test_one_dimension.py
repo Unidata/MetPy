@@ -185,6 +185,27 @@ def test_interpolate_end_point():
     assert_array_almost_equal(y_interp, y_interp_truth, 7)
 
 
+@pytest.mark.parametrize('xp, x_interp, truth', [
+    ([1., 1., 2., 3.], [1., 1.5], [4., 5.5]),
+    ([3., 2., 1., 1.], [1., 1.5], [6., 6.]),
+    ([1., 2., 2., 3.], [2., 2.5], [5., 6.5]),
+])
+def test_interpolate_repeated_xp(xp, x_interp, truth):
+    """Test interpolation at and next to a repeated value in xp gives no NaN."""
+    y = np.array([4., 5., 6., 7.])
+    y_interp = interpolate_1d(np.array(x_interp), np.array(xp), y)
+    assert_array_almost_equal(y_interp, np.array(truth), 7)
+
+
+def test_log_interpolate_repeated_top_level():
+    """Test interpolating to a pressure level that is repeated at the top of a profile."""
+    pressure = np.array([1000., 850., 700., 500., 500.]) * units.hPa
+    temperature = np.array([20., 12., 5., -15., -16.]) * units.degC
+    t = log_interpolate_1d(np.array([500., 600.]) * units.hPa, pressure, temperature)
+    assert not np.any(np.isnan(t))
+    assert_array_almost_equal(t[0], -15. * units.degC, 7)
+
+
 def test_interpolate_masked_units():
     """Test interpolating with masked arrays with units."""
     x = units.Quantity(np.ma.array([1., 2., 3., 4.]), units.m)
