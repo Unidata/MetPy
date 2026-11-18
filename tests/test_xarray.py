@@ -862,6 +862,43 @@ def test_auxilary_lat_lon_with_xy(test_var_multidim_full):
     assert test_var_multidim_full['lon'].identical(test_var_multidim_full.metpy.longitude)
 
 
+def test_coordinate_metadata_precedes_similar_names():
+    """CF metadata takes priority over name matches for auxiliary coordinates."""
+    var = xr.DataArray(
+        np.zeros((2, 2)), dims=('y', 'x'),
+        coords={
+            'y': ('y', [0, 1], {'standard_name': 'projection_y_coordinate'}),
+            'x': ('x', [0, 1], {'standard_name': 'projection_x_coordinate'}),
+            'latlike': (('y', 'x'), np.zeros((2, 2))),
+            'lonlike': (('y', 'x'), np.zeros((2, 2))),
+            'ylike': ('y', [0, 0]),
+            'xlike': ('x', [0, 0]),
+            'lat': (('y', 'x'), np.ones((2, 2)), {'standard_name': 'latitude'}),
+            'lon': (('y', 'x'), np.ones((2, 2)), {'standard_name': 'longitude'}),
+        },
+    )
+
+    assert var['y'].identical(var.metpy.y)
+    assert var['x'].identical(var.metpy.x)
+    assert var['lat'].identical(var.metpy.latitude)
+    assert var['lon'].identical(var.metpy.longitude)
+
+
+def test_auxiliary_lat_lon_with_similarly_named_coords(test_var_multidim_full):
+    """Other coordinate names must not hide the gridded latitude and longitude."""
+    var = test_var_multidim_full.assign_coords(
+        ylike=('y', [0, 0]),
+        latlike=(('y', 'x'), [[0, 0], [0, 0]]),
+        xlike=('x', [0, 0]),
+        lonlike=(('y', 'x'), [[0, 0], [0, 0]]),
+    )
+
+    assert var['y'].identical(var.metpy.y)
+    assert var['lat'].identical(var.metpy.latitude)
+    assert var['x'].identical(var.metpy.x)
+    assert var['lon'].identical(var.metpy.longitude)
+
+
 def test_auxilary_lat_lon_without_xy(test_var_multidim_no_xy):
     """Test that multidimensional lat/lon are recognized in absence of x/y coords."""
     assert test_var_multidim_no_xy['lat'].identical(test_var_multidim_no_xy.metpy.latitude)
