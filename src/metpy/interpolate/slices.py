@@ -14,7 +14,7 @@ exporter = Exporter(globals())
 
 
 @exporter.export
-def interpolate_to_slice(data, points, interp_type='linear'):
+def interpolate_to_slice(data, points, interp_type='linear', distance_coord_name='distance'):
     r"""Obtain an interpolated slice through data using xarray.
 
     Utilizing the interpolation functionality in xarray, this function
@@ -32,11 +32,19 @@ def interpolate_to_slice(data, points, interp_type='linear'):
     interp_type: str, optional
         The interpolation method, either 'linear' or 'nearest' (see
         `xarray.DataArray.interp()` for details). Defaults to 'linear'.
+    distance_coord_name: str, optional
+        Name of the coordinate added along the new ``index`` dimension that holds the distance
+        along the slice from the first point. Defaults to ``'distance'``. Any existing
+        coordinate with this name will be replaced.
 
     Returns
     -------
     `xarray.DataArray` or `xarray.Dataset`
-        The interpolated slice of data, with new index dimension of size N.
+        The interpolated slice of data, with new index dimension of size N. Along it are an
+        integer ``index`` coordinate and a distance coordinate (named by
+        ``distance_coord_name``) giving the cumulative length of the path through ``points``
+        in the units of the data's x and y coordinates. The distance coordinate carries a
+        ``units`` attribute only if the x and y coordinates share the same units.
 
     See Also
     --------
@@ -57,6 +65,16 @@ def interpolate_to_slice(data, points, interp_type='linear'):
         y.name: xr.DataArray(points[:, 1], dims='index', attrs=y.attrs)
     }, method=interp_type)
     data_sliced.coords['index'] = range(len(points))
+
+    # Cumulative length of the path in the (projected) x/y coordinates of the data
+    distance = np.concatenate(
+        [[0.], np.cumsum(np.linalg.norm(np.diff(points, axis=0), axis=1))])
+    distance_attrs = {}
+    if 'units' in x.attrs and x.attrs['units'] == y.attrs.get('units'):
+        distance_attrs['units'] = x.attrs['units']
+    data_sliced.coords[distance_coord_name] = xr.DataArray(
+        distance, dims='index', coords={'index': data_sliced.coords['index']},
+        attrs=distance_attrs)
 
     return data_sliced.metpy.quantify() if need_quantify else data_sliced
 
@@ -107,7 +125,8 @@ def geodesic(crs, start, end, steps):
 
 
 @exporter.export
-def cross_section(data, start, end, steps=100, interp_type='linear'):
+def cross_section(data, start, end, steps=100, interp_type='linear',
+                  distance_coord_name='distance'):
     r"""Obtain an interpolated cross-sectional slice through gridded data.
 
     Utilizing the interpolation functionality in xarray, this function takes a vertical
@@ -133,11 +152,20 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
     interp_type: str, optional
         The interpolation method, either 'linear' or 'nearest' (see
         `xarray.DataArray.interp()` for details). Defaults to 'linear'.
+    distance_coord_name: str, optional
+        Name of the coordinate added along the new ``index`` dimension that holds the distance
+        along the cross section from the start point. Defaults to ``'distance'``. Any existing
+        coordinate with this name will be replaced.
 
     Returns
     -------
     `xarray.DataArray` or `xarray.Dataset`
         The interpolated cross section, with new index dimension along the cross-section.
+        Along it are an integer ``index`` coordinate and a distance coordinate (named by
+        ``distance_coord_name``) giving the distance along the cross section in the units of
+        the data's x and y coordinates (in the data's projection, which is not necessarily
+        a physical distance). The distance coordinate carries a ``units`` attribute only if
+        the x and y coordinates share the same units.
 
     See Also
     --------
@@ -147,7 +175,7 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
     if isinstance(data, xr.Dataset):
         # Recursively apply to dataset
         return data.map(cross_section, True, (start, end), steps=steps,
-                        interp_type=interp_type)
+                        interp_type=interp_type, distance_coord_name=distance_coord_name)
     elif data.ndim == 0:
         # This has no dimensions, so it is likely a projection variable. In any case, there
         # are no data here to take the cross section with. Therefore, do nothing.
@@ -172,4 +200,5 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
             points_cross[points_cross[:, 0] < 0, 0] += 360.
 
         # Return the interpolated data
-        return interpolate_to_slice(data, points_cross, interp_type=interp_type)
+        return interpolate_to_slice(data, points_cross, interp_type=interp_type,
+                                    distance_coord_name=distance_coord_name)
