@@ -112,18 +112,23 @@ class MetPyHasTraits(HasTraits):
             dir(type(self))
         )
 
-    mpl_args = Dict(allow_none=True)
-    mpl_args.__doc__ = """Supply a dictionary of valid Matplotlib keyword arguments to modify
-    how the plot variable is drawn.
+    mpl_args = Dict(
+        allow_none=True,
+        help=(
+            """Supply a dictionary of valid Matplotlib keyword arguments to modify
+            how the plot variable is drawn.
 
-    Using this attribute you must choose the appropriate keyword arguments (kwargs) based on
-    what you are plotting (e.g., contours, color-filled contours, image plot, etc.). This is
-    available for all plot types (ContourPlot, FilledContourPlot, RasterPlot, ImagePlot,
-    BarbPlot, ArrowPlot, PlotGeometry, and PlotObs). For PlotObs, the kwargs are those to
-    specify the StationPlot object. NOTE: Setting the mpl_args trait will override
-    any other trait that corresponds to a specific kwarg for the particular plot type
-    (e.g., linecolor, linewidth).
-    """
+            Using this attribute you must choose the appropriate keyword arguments (kwargs)
+            based on what you are plotting (e.g., contours, color-filled contours,
+            image plot, etc.). This is available for all plot types
+            (ContourPlot, FilledContourPlot, RasterPlot, ImagePlot, BarbPlot, ArrowPlot,
+            PlotGeometry, and PlotObs). For PlotObs, the kwargs are those to specify the
+            StationPlot object. NOTE: Setting the mpl_args trait will override any other
+            trait that corresponds to a specific kwarg for the particular plot type
+            (e.g., linecolor, linewidth).
+            """
+        ),
+    )
 
 
 class Panel(MetPyHasTraits):
@@ -134,18 +139,33 @@ class Panel(MetPyHasTraits):
 class PanelContainer(MetPyHasTraits, ValidationMixin):
     """Collects panels and set complete figure related settings (e.g., size)."""
 
-    size = Union([Tuple(Union([Int(), Float()]), Union([Int(), Float()])),
-                 Instance(type(None))], default_value=None)
-    size.__doc__ = """This trait takes a tuple of (width, height) to set the size of the
-    figure.
+    size = Union(
+        [
+            Tuple(
+                Union([Int(), Float()]),
+                Union([Int(), Float()]),
+            ),
+            Instance(type(None)),
+        ],
+        default_value=None,
+        help=(
+            """This trait takes a tuple of (width, height) to set the size of the figure.
 
-    This trait defaults to None and will assume the default `matplotlib.pyplot.figure` size.
-    """
+            This trait defaults to None and will assume the default
+            `matplotlib.pyplot.figure` size.
+            """
+        ),
+    )
 
-    panels = List(Instance(Panel))
-    panels.__doc__ = """A list of panels to plot on the figure.
+    panels = List(
+        Instance(Panel),
+        help=(
+            """A list of panels to plot on the figure.
 
-    This trait must contain at least one panel to plot on the figure."""
+            This trait must contain at least one panel to plot on the figure.
+            """
+        ),
+    )
 
     @property
     def panel(self):
@@ -218,139 +238,234 @@ class MapPanel(Panel, ValidationMixin):
 
     parent = Instance(PanelContainer, allow_none=True)
 
-    layout = Tuple(Int(), Int(), Int(), default_value=(1, 1, 1))
-    layout.__doc__ = """A tuple that contains the description (nrows, ncols, index) of the
-    panel position; default value is (1, 1, 1).
+    layout = Tuple(
+        Int(),
+        Int(),
+        Int(),
+        default_value=(1, 1, 1),
+        help=(
+            """A tuple that contains the description (nrows, ncols, index) of the
+            panel position; default value is (1, 1, 1).
 
-    This trait is set to describe the panel position and the default is for a single panel. For
-    example, a four-panel plot will have two rows and two columns with the tuple setting for
-    the upper-left panel as (2, 2, 1), upper-right as (2, 2, 2), lower-left as (2, 2, 3), and
-    lower-right as (2, 2, 4). For more details see the documentation for
-    `matplotlib.figure.Figure.add_subplot`.
-    """
+            This trait is set to describe the panel position and the default is for a single
+            panel. For example, a four-panel plot will have two rows and two columns with the
+            tuple setting for the upper-left panel as (2, 2, 1), upper-right as (2, 2, 2),
+            lower-left as (2, 2, 3), and lower-right as (2, 2, 4). For more details see
+            the documentation for `matplotlib.figure.Figure.add_subplot`.
+            """
+        ),
+    )
 
-    plots = List(Any())
-    plots.__doc__ = """A list of handles that represent the plots (e.g., `ContourPlot`,
-    `FilledContourPlot`, `ImagePlot`) to put on a given panel.
+    plots = List(
+        Any(),
+        help=(
+            """A list of handles that represent the plots (e.g., `ContourPlot`,
+            `FilledContourPlot`, `ImagePlot`) to put on a given panel.
 
-    This trait collects the different plots, including contours and images, that are intended
-    for a given panel.
-    """
+            This trait collects the different plots, including contours and images,
+            that are intended for a given panel.
+            """
+        ),
+    )
 
     _need_redraw = Bool(default_value=True)
 
-    area = Union([Unicode(), Tuple(Float(), Float(), Float(), Float())], allow_none=True,
-                 default_value=None)
-    area.__doc__ = """A tuple or string value that indicates the graphical area of the plot.
+    area = Union(
+        [
+            Unicode(),
+            Tuple(Float(), Float(), Float(), Float()),
+        ],
+        allow_none=True,
+        default_value=None,
+        help=(
+            """A tuple or string value that indicates the graphical area of the plot.
 
-    The tuple value corresponds to longitude/latitude box based on the projection of the map
-    with the format (west-most longitude, east-most longitude, south-most latitude,
-    north-most latitude). This tuple defines a box from the lower-left to the upper-right
-    corner.
+            The tuple value corresponds to longitude/latitude box based on the projection
+            of the map with the format (west-most longitude, east-most longitude, south-most
+            latitude, north-most latitude). This tuple defines a box from the lower-left to
+            the upper-right corner.
 
-    This trait can also be set with a string value associated with the named geographic regions
-    within MetPy. The tuples associated with the names are based on a PlatteCarree projection.
-    For a CONUS region, the following strings can be used: 'us', 'spcus', 'ncus', and 'afus'.
-    For regional plots, US postal state abbreviations can be used, such as 'co', 'ny', 'ca',
-    et cetera. Providing a '+' or '-' suffix to the string value will zoom in or out,
-    respectively. Providing multiple '+' or '-' characters will zoom in or out further.
+            This trait can also be set with a string value associated with the named
+            geographic regions within MetPy. The tuples associated with the names are
+            based on a PlatteCarree projection. For a CONUS region, the following
+            strings can be used: 'us', 'spcus', 'ncus', and 'afus'. For regional
+            plots, US postal state abbreviations can be used, such as 'co', 'ny', 'ca',
+            et cetera. Providing a '+' or '-' suffix to the string value will zoom in or out,
+            respectively. Providing multiple '+' or '-' characters will zoom in or out
+            further.
+            """
+        ),
+    )
 
-    """
+    projection = Union(
+        [
+            Unicode(),
+            Instance('cartopy.crs.Projection'),
+        ],
+        default_value='data',
+        help=(
+            """A string for a pre-defined projection or a Cartopy projection
+            object.
 
-    projection = Union([Unicode(), Instance('cartopy.crs.Projection')], default_value='data')
-    projection.__doc__ = """A string for a pre-defined projection or a Cartopy projection
-    object.
+            There are three pre-defined projections that can be called with a short name:
+            Lambert conformal conic ('lcc'), Mercator ('mer'), or polar-stereographic ('ps'),
+            or 'area' to use a default projection based on the string area used.
+            Additionally, this trait can be set to a Cartopy projection object.
+            """
+        ),
+    )
 
-    There are three pre-defined projections that can be called with a short name:
-    Lambert conformal conic ('lcc'), Mercator ('mer'), or polar-stereographic ('ps'), or 'area'
-    to use a default projection based on the string area used. Additionally, this trait can be
-    set to a Cartopy projection object.
-    """
+    layers = List(
+        Union(
+            [
+                Unicode(),
+                Instance('cartopy.feature.Feature'),
+            ],
+        ),
+        default_value=['coastline'],
+        help=(
+            """A list of strings for a pre-defined feature layer or a Cartopy Feature
+            object.
 
-    layers = List(Union([Unicode(), Instance('cartopy.feature.Feature')]),
-                  default_value=['coastline'])
-    layers.__doc__ = """A list of strings for a pre-defined feature layer or a Cartopy Feature
-    object.
+            Like the projection, there are a couple of pre-defined feature layers
+            that can be called using a short name. The pre-defined layers are:
+            'coastline', 'states', 'borders', 'lakes', 'land', 'ocean', 'rivers',
+            'usstates', and 'uscounties'. Additionally, this can accept Cartopy
+            Feature objects.
+            """
+        ),
+    )
 
-    Like the projection, there are a couple of pre-defined feature layers that can be called
-    using a short name. The pre-defined layers are: 'coastline', 'states', 'borders', 'lakes',
-    'land', 'ocean', 'rivers', 'usstates', and 'uscounties'. Additionally, this can accept
-    Cartopy Feature objects.
-    """
+    layers_edgecolor = List(
+        Unicode(allow_none=True),
+        default_value=['black'],
+        help=(
+            """A list of strings for a pre-defined edgecolor for a layer.
 
-    layers_edgecolor = List(Unicode(allow_none=True), default_value=['black'])
-    layers_edgecolor.__doc__ = """A list of strings for a pre-defined edgecolor for a layer.
+            An option to set a different color for the map layer edge colors.
+            Length of list should match that of layers if not using default
+            value. Behavior is to repeat colors if not enough provided by user.
+            Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
+            """
+        ),
+    )
 
-    An option to set a different color for the map layer edge colors. Length of list should
-    match that of layers if not using default value. Behavior is to repeat colors if not enough
-    provided by user. Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
-    """
+    layers_linewidth = List(
+        Union(
+            [Int(), Float()],
+            allow_none=True,
+        ),
+        default_value=[1],
+        help=(
+            """A list of values defining the linewidth for a layer.
 
-    layers_linewidth = List(Union([Int(), Float()], allow_none=True), default_value=[1])
-    layers_linewidth.__doc__ = """A list of values defining the linewidth for a layer.
+            An option to set a different linewidth for the layer feature.
+            Length of list should match that of layers if not using default
+            value. Behavior is to repeat linewidth if not enough provided
+            by user. Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
+            """
+        ),
+    )
 
-    An option to set a different linewidth for the layer feature. Length of list should
-    match that of layers if not using default value. Behavior is to repeat linewidth if
-    not enough provided by user. Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
-    """
+    layers_linestyle = List(
+        Unicode(),
+        default_value=['solid'],
+        help=(
+            """A list of string values defining the linestyle for a layer or
+            None.
 
-    layers_linestyle = List(Unicode(), default_value=['solid'])
-    layers_linestyle.__doc__ = """A list of string values defining the linestyle for a layer or
-    None.
+            Default is `solid`, which, will use a solid lines for drawing
+            the layer. Behavior is to repeat linestyle if not enough provided by user.
 
-    Default is `solid`, which, will use a solid lines for drawing the layer. Behavior is to
-    repeat linestyle if not enough provided by user.
+            The valid string values are those of Matplotlib which are 'solid', 'dashed',
+            'dotted', and 'dashdot', as well as their short codes ('-', '--', '.', '-.').
+            The object `None`, as described above, can also be used. Use `None` value for
+            'ocean', 'lakes', 'rivers', and 'land'.
+            """
+        ),
+    )
 
-    The valid string values are those of Matplotlib which are 'solid', 'dashed', 'dotted', and
-    'dashdot', as well as their short codes ('-', '--', '.', '-.'). The object `None`, as
-    described above, can also be used. Use `None` value for 'ocean', 'lakes', 'rivers', and
-    'land'.
-    """
+    layers_zorder = List(
+        Union(
+            [Int(), Float()],
+            allow_none=True,
+        ),
+        default_value=[None],
+        help=(
+            """A list of values defining the zorder for a layer.
 
-    layers_zorder = List(Union([Int(), Float()], allow_none=True), default_value=[None])
-    layers_zorder.__doc__ = """A list of values defining the zorder for a layer.
+            An option to set a different zorder for the map layer edge colors.
+            Length of list should match that of layers if not using default
+            value. Behavior is to repeat zorder if not enough provided by user.
+            """
+        ),
+    )
 
-    An option to set a different zorder for the map layer edge colors. Length of list should
-    match that of layers if not using default value. Behavior is to repeat zorder if not enough
-    provided by user.
-    """
+    layers_alpha = List(
+        Union(
+            [Int(), Float()],
+            allow_none=True),
+        default_value=[1],
+        help=(
+            """A list of values defining the alpha for a layer.
 
-    layers_alpha = List(Union([Int(), Float()], allow_none=True), default_value=[1])
-    layers_alpha.__doc__ = """A list of values defining the alpha for a layer.
+            An option to set a different alpha for the map layer edge colors.
+            Length of list should match that of layers if not using default
+            value. Behavior is to repeat alpha if not enough provided by user.
+            """
+        ),
+    )
 
-    An option to set a different alpha for the map layer edge colors. Length of list should
-    match that of layers if not using default value. Behavior is to repeat alpha if not enough
-    provided by user.
-    """
+    title = Unicode(
+        help=(
+            """A string to set a title for the figure.
 
-    title = Unicode()
-    title.__doc__ = """A string to set a title for the figure.
+            This trait sets a user-defined title that will plot at the top
+            center of the figure.
+            """
+        ),
+    )
 
-    This trait sets a user-defined title that will plot at the top center of the figure.
-    """
+    left_title = Unicode(
+        allow_none=True,
+        default_value=None,
+        help=(
+            """A string to set a title for the figure with the location on the
+            top left of the figure.
 
-    left_title = Unicode(allow_none=True, default_value=None)
-    left_title.__doc__ = """A string to set a title for the figure with the location on the
-    top left of the figure.
+            This trait sets a user-defined title that will plot at the top left of the figure.
+            """
+        ),
+    )
 
-    This trait sets a user-defined title that will plot at the top left of the figure.
-    """
+    right_title = Unicode(
+        allow_none=True,
+        default_value=None,
+        help=(
+            """A string to set a title for the figure with the location on the
+            top right of the figure.
 
-    right_title = Unicode(allow_none=True, default_value=None)
-    right_title.__doc__ = """A string to set a title for the figure with the location on the
-    top right of the figure.
+            This trait sets a user-defined title that will plot at the top right of the
+            figure.
+            """
+        ),
+    )
 
-    This trait sets a user-defined title that will plot at the top right of the figure.
-    """
+    title_fontsize = Union(
+        [Int(), Float(), Unicode()],
+        allow_none=True,
+        default_value=None,
+        help=(
+            """An integer or string value for the font size of the title of
+            the figure.
 
-    title_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
-    title_fontsize.__doc__ = """An integer or string value for the font size of the title of
-    the figure.
-
-    This trait sets the font size for the title that will plot at the top center of the figure.
-    Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
-    'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
-    """
+            This trait sets the font size for the title that will plot at the top
+            center of the figure. Accepts size in points or relative size.
+            Allowed relative sizes are those of Matplotlib: 'xx-small',
+            'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
+            """
+        ),
+    )
 
     @validate('area')
     def _valid_area(self, proposal):
@@ -576,56 +691,114 @@ class MapPanel(Panel, ValidationMixin):
 class SubsetTraits(MetPyHasTraits):
     """Represent common traits for subsetting data."""
 
-    x = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
-    x.__doc__ = """The x coordinate of the field to be plotted.
+    x = Union(
+        [
+            Float(
+                allow_none=True,
+                default_value=None,
+            ),
+            Instance(units.Quantity),
+        ],
+        help=(
+            """The x coordinate of the field to be plotted.
 
-    This is a value with units to choose a desired x coordinate. For example, selecting a
-    point or transect through the projection origin, set this parameter to
-    ``0 * units.meter``. Note that this requires your data to have an x dimension coordinate.
-    """
+            This is a value with units to choose a desired x coordinate.
+            For example, selecting a point or transect through the projection
+            origin, set this parameter to ``0 * units.meter``.
+            Note that this requires your data to have an x dimension coordinate.
+            """
+        ),
+    )
 
-    longitude = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
-    longitude.__doc__ = """The longitude coordinate of the field to be plotted.
+    longitude = Union(
+        [
+            Float(
+                allow_none=True,
+                default_value=None,
+            ),
+            Instance(units.Quantity),
+        ],
+        help=(
+            """The longitude coordinate of the field to be plotted.
 
-    This is a value with units to choose a desired longitude coordinate. For example,
-    selecting a point or transect through 95 degrees west, set this parameter to
-    ``-95 * units.degrees_east``. Note that this requires your data to have a longitude
-    dimension coordinate.
-    """
+            This is a value with units to choose a desired longitude
+            coordinate. For example, selecting a point or transect through
+            95 degrees west, set this parameter to ``-95 * units.degrees_east``.
+            Note that this requires your data to have a longitude dimension coordinate.
+            """
+        ),
+    )
 
-    y = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
-    y.__doc__ = """The y coordinate of the field to be plotted.
+    y = Union(
+        [
+            Float(
+                allow_none=True,
+                default_value=None,
+            ),
+            Instance(units.Quantity),
+        ],
+        help=(
+            """The y coordinate of the field to be plotted.
 
-    This is a value with units to choose a desired x coordinate. For example, selecting a
-    point or transect through the projection origin, set this parameter to
-    ``0 * units.meter``. Note that this requires your data to have an y dimension coordinate.
-    """
+            This is a value with units to choose a desired x coordinate. For example,
+            selecting a point or transect through the projection origin, set this
+            parameter to ``0 * units.meter``. Note that this requires your data
+            to have an y dimension coordinate.
+            """
+        ),
+    )
 
-    latitude = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
-    latitude.__doc__ = """The latitude coordinate of the field to be plotted.
+    latitude = Union(
+        [
+            Float(
+                allow_none=True,
+                default_value=None,
+            ),
+            Instance(units.Quantity),
+        ],
+        help=(
+            """The latitude coordinate of the field to be plotted.
 
-    This is a value with units to choose a desired latitude coordinate. For example,
-    selecting a point or transect through 40 degrees north, set this parameter to
-    ``40 * units.degrees_north``. Note that this requires your data to have a latitude
-    dimension coordinate.
-    """
+            This is a value with units to choose a desired latitude coordinate. For example,
+            selecting a point or transect through 40 degrees north, set this parameter to
+            ``40 * units.degrees_north``. Note that this requires your data to have a latitude
+            dimension coordinate.
+            """
+        ),
+    )
 
-    level = Union([Int(allow_none=True, default_value=None), Instance(units.Quantity)])
-    level.__doc__ = """The level of the field to be plotted.
+    level = Union(
+        [
+            Int(
+                allow_none=True,
+                default_value=None,
+            ),
+            Instance(units.Quantity),
+        ],
+        help=(
+            """The level of the field to be plotted.
 
-    This is a value with units to choose a desired plot level. For example, selecting the
-    850-hPa level, set this parameter to ``850 * units.hPa``. Note that this requires your
-    data to have a vertical dimension coordinate.
-    """
+            This is a value with units to choose a desired plot level. For example,
+            selecting the 850-hPa level, set this parameter to ``850 * units.hPa``.
+            Note that this requires your data to have a vertical dimension coordinate.
+            """
+        ),
+    )
 
-    time = Instance(datetime, allow_none=True)
-    time.__doc__ = """Set the valid time to be plotted as a datetime object.
+    time = Instance(
+        datetime,
+        allow_none=True,
+        help=(
+            """Set the valid time to be plotted as a datetime object.
 
-    If a forecast hour is to be plotted the time should be set to the valid future time, which
-    can be done using the `~datetime.datetime` and `~datetime.timedelta` objects
-    from the Python standard library. Note that this requires your data to have a time
-    dimension coordinate.
-    """
+            If a forecast hour is to be plotted the time should be set to the
+            valid future time, which can be done using the `~datetime.datetime`
+            and `~datetime.timedelta` objects from the Python standard library.
+            Note that this requires your data to have a time
+            dimension coordinate.
+            """
+        ),
+    )
 
 
 @exporter.export
@@ -639,20 +812,29 @@ class Plots2D(SubsetTraits):
     parent = Instance(Panel)
     _need_redraw = Bool(default_value=True)
 
-    plot_units = Unicode(allow_none=True, default_value=None)
-    plot_units.__doc__ = """The desired units to plot the field in.
+    plot_units = Unicode(
+        allow_none=True,
+        default_value=None,
+        help=(
+            """The desired units to plot the field in.
 
-    Setting this attribute will convert the units of the field variable to the given units for
-    plotting using the MetPy Units module.
-    """
+            Setting this attribute will convert the units of the field variable to
+            the given units for plotting using the MetPy Units module.
+            """
+        ),
+    )
 
-    scale = Float(default_value=1e0)
-    scale.__doc__ = """Scale the field to be plotted by the value given.
+    scale = Float(
+        default_value=1e0,
+        help=(
+            """Scale the field to be plotted by the value given.
 
-    This attribute will scale the field by multiplying by the scale. For example, to
-    scale vorticity to be whole values for contouring you could set the scale to 1e5, such that
-    the data values will be multiplied by 10^5.
-    """
+            This attribute will scale the field by multiplying by the scale. For example, to
+            scale vorticity to be whole values for contouring you could set the scale to 1e5,
+            such that the data values will be multiplied by 10^5.
+            """
+        ),
+    )
 
     @property
     def _cmap_obj(self):
@@ -758,47 +940,64 @@ class PlotScalar(Plots2D):
     example. Similar issues for `ImagePlot` and `FilledContourPlot`.
     """
 
-    field = Unicode()
-    field.__doc__ = """Name of the field to be plotted.
+    field = Unicode(
+        help=(
+            """Name of the field to be plotted.
 
-    This is the name of the variable from the dataset that is to be plotted. An example,
-    from a model grid file that uses the THREDDS convention for naming would be
-    `Geopotential_height_isobaric` or `Temperature_isobaric`. For GOES-16/17 satellite data it
-    might be `Sectorized_CMI`. To check for the variables available within a dataset, list the
-    variables with the following command assuming the dataset was read using xarray as `ds`,
-    `list(ds)`
-    """
+            This is the name of the variable from the dataset that is to be plotted.
+            An example, from a model grid file that uses the THREDDS convention for
+            naming would be `Geopotential_height_isobaric` or `Temperature_isobaric`.
+            For GOES-16/17 satellite data it might be `Sectorized_CMI`. To check for the
+            variables available within a dataset, list the variables with the following
+            command assuming the dataset was read using xarray as `ds`, `list(ds)`
+            """
+        ),
+    )
 
-    smooth_field = Int(allow_none=True, default_value=None)
-    smooth_field.__doc__ = """Number of smoothing passes using 9-pt smoother.
+    smooth_field = Int(
+        allow_none=True,
+        default_value=None,
+        help=(
+            """Number of smoothing passes using 9-pt smoother.
 
-    By setting this parameter with an integer value it will call the MetPy 9-pt smoother and
-    provide a smoothed field for plotting. It is best to use this smoothing for data with
-    finer resolutions (e.g., smaller grid spacings with a lot of grid points).
+            By setting this parameter with an integer value it will call the
+            MetPy 9-pt smoother and provide a smoothed field for plotting. It is
+            best to use this smoothing for data with finer resolutions
+            (e.g., smaller grid spacings with a lot of grid points).
 
-    See Also
-    --------
-    metpy.calc.smooth_n_point, smooth_contour
-    """
+            See Also
+            --------
+            metpy.calc.smooth_n_point, smooth_contour
+            """
+        ),
+    )
 
-    smooth_contour = Union([Int(allow_none=True, default_value=None),
-                            Tuple(Int(allow_none=True, default_value=None),
-                                  Int(allow_none=True, default_value=None))])
-    smooth_contour.__doc__ = """Spline interpolation to smooth contours.
+    smooth_contour = Union(
+        [
+            Int(allow_none=True, default_value=None),
+            Tuple(
+                Int(allow_none=True, default_value=None),
+                Int(allow_none=True, default_value=None),
+            ),
+        ],
+        help=(
+            """Spline interpolation to smooth contours.
 
-    This attribute requires settings for the `metpy.calc.zoom_xarray` function, which will
-    produce a spline interpolation given an integer zoom factor. Either a single integer
-    specifying the zoom factor (e.g., 4) or a tuple containing two integers for the zoom factor
-    and the spline interpolation order can be used. The default spline interpolation order is
-    3.
+            This attribute requires settings for the `metpy.calc.zoom_xarray` function,
+            which will produce a spline interpolation given an integer zoom factor.
+            Either a single integer specifying the zoom factor (e.g., 4) or a tuple
+            containing two integers for the zoom factor and the spline interpolation
+            order can be used. The default spline interpolation order is 3.
 
-    This is best used to smooth contours when contouring a sparse grid (e.g., when your data
-    has a large grid spacing).
+            This is best used to smooth contours when contouring a sparse grid
+            (e.g., when your data has a large grid spacing).
 
-    See Also
-    --------
-    metpy.calc.zoom_xarray, smooth_field
-    """
+            See Also
+            --------
+            metpy.calc.zoom_xarray, smooth_field
+            """
+        ),
+    )
 
     @observe('field')
     def _update_data(self, _=None):
@@ -904,69 +1103,121 @@ class PlotScalar(Plots2D):
 class ContourTraits(MetPyHasTraits):
     """Represents common contour traits."""
 
-    contours = Union([List(Float()), Int(), Instance(range)], default_value=25)
-    contours.__doc__ = """A list of values to contour or an integer number of contour levels.
+    contours = Union(
+        [
+            List(Float()), Int(), Instance(range),
+        ],
+        default_value=25,
+        help=(
+            """A list of values to contour or an integer number of contour levels.
 
-    This parameter sets contour or colorfill values for a plot. Values can be entered either
-    as a Python range instance, a list of values or as an integer with the number of contours
-    to be plotted (as per matplotlib documentation). A list can be generated by using square
-    brackets or creating a numpy 1D array and converting it to a list with the
-    `~numpy.ndarray.tolist` method.
-    """
+            This parameter sets contour or colorfill values for a plot. Values can be
+            entered either as a Python range instance, a list of values or as an integer with
+            the number of contours to be plotted (as per matplotlib documentation).
+            A list can be generated by using square brackets or creating a numpy 1D array
+            and converting it to a list with the `~numpy.ndarray.tolist` method.
+            """
+        ),
+    )
 
-    clabels = Bool(default_value=False)
-    clabels.__doc__ = """A boolean (True/False) on whether to plot contour labels.
+    clabels = Bool(
+        default_value=False,
+        help=(
+            """A boolean (True/False) on whether to plot contour labels.
 
-    To plot contour labels set this trait to ``True``, the default value is ``False``.
-    """
+            To plot contour labels set this trait to ``True``, the default value is ``False``.
+            """
+        ),
+    )
 
-    label_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
-    label_fontsize.__doc__ = """An integer, float, or string value to set the font size of
-    labels for contours.
+    label_fontsize = Union(
+        [Int(), Float(), Unicode()],
+        allow_none=True,
+        default_value=None,
+        help=(
+            """An integer, float, or string value to set the font size of
+            labels for contours.
 
-    This trait sets the font size for labels that will plot along contour lines. Accepts
-    size in points or relative size. Allowed relative sizes are those of Matplotlib:
-    'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
-    """
+            This trait sets the font size for labels that will plot along contour lines.
+            Accepts size in points or relative size. Allowed relative sizes are those of
+            Matplotlib: 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large',
+            'xx-large'.
+            """
+        ),
+    )
 
 
 class ColorfillTraits(MetPyHasTraits):
     """Represent common colorfill traits."""
 
-    colormap = Unicode(allow_none=True, default_value=None)
-    colormap.__doc__ = """The string name for a Matplolib or MetPy colormap.
+    colormap = Unicode(
+        allow_none=True,
+        default_value=None,
+        help=(
+            """The string name for a Matplolib or MetPy colormap.
 
-    For example, the Blue-Purple colormap from Matplotlib can be accessed using 'BuPu'.
-    """
+            For example, the Blue-Purple colormap from Matplotlib can be accessed using
+            'BuPu'.
+            """
+        ),
+    )
 
-    image_range = Union([Tuple(Float(allow_none=True), Float(allow_none=True)),
-                         Instance(plt.Normalize)], default_value=(None, None))
-    image_range.__doc__ = """A tuple of min and max values that represent the range of values
-    to color the rasterized image.
+    image_range = Union(
+        [
+            Tuple(
+                Float(allow_none=True),
+                Float(allow_none=True),
+            ),
+            Instance(plt.Normalize),
+        ],
+        default_value=(None, None),
+        help=(
+            """A tuple of min and max values that represent the range of values
+            to color the rasterized image.
 
-    The min and max values entered as a tuple will be converted to a
-    `matplotlib.colors.Normalize` instance for plotting.
-    """
+            The min and max values entered as a tuple will be converted to a
+            `matplotlib.colors.Normalize` instance for plotting.
+            """
+        ),
+    )
 
-    colorbar = Union([Unicode(default_value=None, allow_none=True), Dict()])
-    colorbar.__doc__ = """A string (horizontal/vertical) on whether to add a colorbar to the
-    plot.
+    colorbar = Union(
+        [
+            Unicode(
+                default_value=None,
+                allow_none=True,
+            ),
+            Dict(),
+        ],
+        help=(
+            """A string (horizontal/vertical) on whether to add a colorbar to the
+            plot.
 
-    To add a colorbar associated with the plot, you can either set the trait with a string of
-    ``horizontal`` or ``vertical``, which specifies the orientation of the produced colorbar
-    and uses pre-defined defaults for aspect and pad. Alternatively, you can set a dictionary
-    of keyword argument values valid for a Matplotlib colorbar to specify how the colorbar will
-    be plotted. The default value is ``None``.
-    """
+            To add a colorbar associated with the plot, you can either set the trait with
+            a string of ``horizontal`` or ``vertical``, which specifies the orientation
+            of the produced colorbar and uses pre-defined defaults for aspect and pad.
+            Alternatively, you can set a dictionary of keyword argument values valid
+            for a Matplotlib colorbar to specify how the colorbar will be plotted.
+            The default value is ``None``.
+            """
+        ),
+    )
 
-    colorbar_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
-    colorbar_fontsize.__doc__ = """An integer, float, or string value to set the font size of
-    labels for the colorbar.
+    colorbar_fontsize = Union(
+        [Int(), Float(), Unicode()],
+        allow_none=True,
+        default_value=None,
+        help=(
+            """An integer, float, or string value to set the font size of
+                labels for the colorbar.
 
-    This trait sets the font size of labels for the colorbar. Accepts size in points or
-    relative size. Allowed relative sizes are those of Matplotlib: 'xx-small', 'x-small',
-    'small', 'medium', 'large', 'x-large', 'xx-large'.
-    """
+                This trait sets the font size of labels for the colorbar.
+                Accepts size in points or relative size. Allowed relative
+                sizes are those of Matplotlib: 'xx-small', 'x-small', 'small',
+                'medium', 'large', 'x-large', 'xx-large'.
+                """
+        ),
+    )
 
 
 @exporter.export
@@ -1027,31 +1278,44 @@ class ImagePlot(PlotScalar, ColorfillTraits, ValidationMixin):
 class ContourPlot(PlotScalar, ContourTraits, ValidationMixin):
     """Make contour plots by defining specific traits."""
 
-    linecolor = Unicode('black')
-    linecolor.__doc__ = """A string value to set the color of plotted contours; default is
-    black.
+    linecolor = Unicode(
+        'black',
+        help=(
+            """A string value to set the color of plotted contours; default is
+            black.
 
-    This trait can be set to any Matplotlib color
-    (https://matplotlib.org/3.1.0/gallery/color/named_colors.html)
-    """
+            This trait can be set to any Matplotlib color
+            (https://matplotlib.org/3.1.0/gallery/color/named_colors.html)
+            """
+        ),
+    )
 
-    linewidth = Int(2)
-    linewidth.__doc__ = """An integer value to set the width of plotted contours; default value
-    is 2.
+    linewidth = Int(
+        2,
+        help=(
+            """An integer value to set the width of plotted contours; default value
+            is 2.
 
-    This trait changes the thickness of contour lines with a higher value plotting a thicker
-    line.
-    """
+            This trait changes the thickness of contour lines with a higher value plotting
+            a thicker line.
+            """
+        ),
+    )
 
-    linestyle = Unicode(None, allow_none=True)
-    linestyle.__doc__ = """A string value to set the linestyle (e.g., dashed), or `None`;
-    default is `None`, which, when using monochrome line colors, uses solid lines for positive
-    values and dashed lines for negative values.
+    linestyle = Unicode(
+        None,
+        allow_none=True,
+        help=(
+            """A string value to set the linestyle (e.g., dashed), or `None`;
+            default is `None`, which, when using monochrome line colors, uses solid lines
+            for positive values and dashed lines for negative values.
 
-    The valid string values are those of Matplotlib which are 'solid', 'dashed', 'dotted', and
-    'dashdot', as well as their short codes ('-', '--', '.', '-.'). The object `None`, as
-    described above, can also be used.
-    """
+            The valid string values are those of Matplotlib which are 'solid', 'dashed',
+            'dotted', and 'dashdot', as well as their short codes ('-', '--', '.', '-.').
+            The object `None`, as described above, can also be used.
+            """
+        ),
+    )
 
     @observe('contours', 'linecolor', 'linewidth', 'linestyle', 'clabels', 'label_fontsize')
     def _set_need_rebuild(self, _):
@@ -1128,50 +1392,74 @@ class PlotVector(Plots2D):
     accepting two strings, for plotting 2D vector fields.
     """
 
-    field = Tuple(Unicode(), Unicode())
-    field.__doc__ = """A tuple containing the two components of the vector field from the
-    dataset in the form (east-west component, north-south component).
+    field = Tuple(
+        Unicode(),
+        Unicode(),
+        help=(
+            """A tuple containing the two components of the vector field from the
+            dataset in the form (east-west component, north-south component).
 
-    For a wind barb plot each component of the wind must be specified and should be of the form
-    (u-wind, v-wind).
-    """
+            For a wind barb plot each component of the wind must be specified and
+            should be of the form (u-wind, v-wind).
+            """
+        ),
+    )
 
-    pivot = Unicode('middle')
-    pivot.__doc__ = """A string setting the pivot point of the vector. Default value is
-    'middle'.
+    pivot = Unicode(
+        'middle',
+        help=(
+            """A string setting the pivot point of the vector. Default value is
+            'middle'.
 
-    This trait takes the values of the keyword argument from `matplotlin.pyplot.barbs`:
-    'tip' or 'middle'.
-    """
+            This trait takes the values of the keyword argument from
+            `matplotlin.pyplot.barbs`: 'tip' or 'middle'.
+            """
+        ),
+    )
 
-    skip = Tuple(Int(), Int(), default_value=(1, 1))
-    skip.__doc__ = """A tuple of integers to indicate the number of grid points to skip between
-    plotting vectors. Default is (1, 1).
+    skip = Tuple(
+        Int(),
+        Int(),
+        default_value=(1, 1),
+        help=(
+            """A tuple of integers to indicate the number of grid points to skip between
+            plotting vectors. Default is (1, 1).
 
-    This trait is to be used to reduce the number of vectors plotted in the (east-west,
-    north-south) components. The two values can be set to the same or different integer values
-    depending on what is desired.
-    """
+            This trait is to be used to reduce the number of vectors plotted in the
+            (east-west, north-south) components. The two values can be set to the
+            same or different integer values depending on what is desired.
+            """
+        ),
+    )
 
-    earth_relative = Bool(default_value=True)
-    earth_relative.__doc__ = """A boolean value to indicate whether the vector to be plotted
-    is earth- or grid-relative. Default value is `True`, indicating that vectors are
-    earth-relative.
+    earth_relative = Bool(
+        default_value=True,
+        help=(
+            """A boolean value to indicate whether the vector to be plotted
+            is earth- or grid-relative. Default value is `True`, indicating that vectors are
+            earth-relative.
 
-    Common gridded meteorological datasets including GFS and NARR output contain wind
-    components that are earth-relative. The primary exception is NAM output with wind
-    components that are grid-relative. For any grid-relative vectors set this trait to
-    `False`. This value is ignored for 2D vector fields not in the plane of the plot (e.g.,
-    cross sections).
-    """
+            Common gridded meteorological datasets including GFS and NARR output contain wind
+            components that are earth-relative. The primary exception is NAM output with wind
+            components that are grid-relative. For any grid-relative vectors set this trait to
+            `False`. This value is ignored for 2D vector fields not in the plane of the plot
+            (e.g., cross sections).
+            """
+        ),
+    )
 
-    color = Unicode(default_value='black')
-    color.__doc__ = """A string value that controls the color of the vectors. Default value is
-    black.
+    color = Unicode(
+        default_value='black',
+        help=(
+            """A string value that controls the color of the vectors. Default value is
+            black.
 
-    This trait can be set to any named color from
-    `Matplotlibs Colors <https://matplotlib.org/3.1.0/gallery/color/named_colors.html>`
-    """
+            This trait can be set to any named color from
+            `Matplotlibs Colors
+            <https://matplotlib.org/3.1.0/gallery/color/named_colors.html>`
+            """
+        ),
+    )
 
     @observe('field')
     def _update_data(self, _=None):
@@ -1276,12 +1564,16 @@ class PlotVector(Plots2D):
 class BarbPlot(PlotVector, ValidationMixin):
     """Make plots of wind barbs on a map with traits to refine the look of plotted elements."""
 
-    barblength = Float(default_value=7)
-    barblength.__doc__ = """A float value that changes the length of the wind barbs. Default
-    value is 7.
+    barblength = Float(
+        default_value=7,
+        help=(
+            """A float value that changes the length of the wind barbs. Default
+            value is 7.
 
-    This trait corresponds to the keyword length in `matplotlib.pyplot.barbs`.
-    """
+            This trait corresponds to the keyword length in `matplotlib.pyplot.barbs`.
+            """
+        ),
+    )
 
     @observe('barblength', 'pivot', 'skip', 'earth_relative', 'color')
     def _set_need_rebuild(self, _):
@@ -1316,38 +1608,53 @@ class BarbPlot(PlotVector, ValidationMixin):
 class ArrowPlot(PlotVector, ValidationMixin):
     """Make plots of wind barbs on a map with traits to refine the look of plotted elements."""
 
-    arrowscale = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
-    arrowscale.__doc__ = """Number of data units per arrow length unit, e.g., m/s per plot
-    width; a smaller scale parameter makes the arrow longer. Default is `None`.
+    arrowscale = Union(
+        [Int(), Float(), Unicode()],
+        allow_none=True,
+        default_value=None,
+        help=(
+            """Number of data units per arrow length unit, e.g., m/s per plot
+            width; a smaller scale parameter makes the arrow longer. Default is `None`.
 
-    If `None`, a simple autoscaling algorithm is used, based on the average
-    vector length and the number of vectors. The arrow length unit is given by
-    the `key_length` attribute.
+            If `None`, a simple autoscaling algorithm is used, based on the average
+            vector length and the number of vectors. The arrow length unit is given by
+            the `key_length` attribute.
 
-    This trait corresponds to the keyword length in `matplotlib.pyplot.quiver`.
-    """
+            This trait corresponds to the keyword length in `matplotlib.pyplot.quiver`.
+            """
+        ),
+    )
 
-    arrowkey = Tuple(Float(allow_none=True), Float(allow_none=True), Float(allow_none=True),
-                     Unicode(allow_none=True), Unicode(allow_none=True), default_value=None,
-                     allow_none=True)
-    arrowkey.__doc__ = """Set the characteristics of an arrow key using a tuple of values
-    representing (value, xloc, yloc, position, string).
+    arrowkey = Tuple(
+        Float(allow_none=True),
+        Float(allow_none=True),
+        Float(allow_none=True),
+        Unicode(allow_none=True),
+        Unicode(allow_none=True),
+        default_value=None,
+        allow_none=True,
+        help=(
+            """Set the characteristics of an arrow key using a tuple of values
+            representing (value, xloc, yloc, position, string).
 
-    Default is `None`.
+            Default is `None`.
 
-    If `None`, no vector key will be plotted.
+            If `None`, no vector key will be plotted.
 
-    value default is 100
-    xloc default is 0.85
-    yloc default is 1.02
-    position default is 'E' (options are 'N', 'S', 'E', 'W')
-    label default is an empty string
+            value default is 100
+            xloc default is 0.85
+            yloc default is 1.02
+            position default is 'E' (options are 'N', 'S', 'E', 'W')
+            label default is an empty string
 
-    If you wish to change a characteristic of the arrowkey you'll need to have a tuple of five
-    elements, fill in the full tuple using `None` for those characteristics you wish to use the
-    default value and put in the new values for the other elements. This trait corresponds to
-    the keyword length in `matplotlib.pyplot.quiverkey`.
-    """
+            If you wish to change a characteristic of the arrowkey you'll need to have a
+            tuple of five elements, fill in the full tuple using `None` for those
+            characteristics you wish to use the default value and put in the new values
+            for the other elements. This trait corresponds to the keyword length in
+            `matplotlib.pyplot.quiverkey`.
+            """
+        ),
+    )
 
     @observe('arrowscale', 'pivot', 'skip', 'earth_relative', 'color', 'arrowkey')
     def _set_need_rebuild(self, _):
@@ -1412,99 +1719,169 @@ class PlotObs(MetPyHasTraits, ValidationMixin):
     parent = Instance(Panel)
     _need_redraw = Bool(default_value=True)
 
-    level = Union([Int(allow_none=True), Instance(units.Quantity)], default_value=None)
-    level.__doc__ = """The level of the field to be plotted.
+    level = Union(
+        [
+            Int(allow_none=True),
+            Instance(units.Quantity),
+        ],
+        default_value=None,
+        help=(
+            """The level of the field to be plotted.
 
-    This is a value with units to choose the desired plot level. For example, selecting the
-    850-hPa level, set this parameter to ``850 * units.hPa``. For surface data, parameter
-    must be set to `None`.
-    """
+            This is a value with units to choose the desired plot level. For example,
+            selecting the 850-hPa level, set this parameter to ``850 * units.hPa``.
+            For surface data, parameter must be set to `None`.
+            """
+        ),
+    )
 
-    time = Instance(datetime, allow_none=True)
-    time.__doc__ = """Set the valid time to be plotted as a datetime object.
+    time = Instance(
+        datetime,
+        allow_none=True,
+        help=(
+            """Set the valid time to be plotted as a datetime object.
 
-    If a forecast hour is to be plotted the time should be set to the valid future time, which
-    can be done using the `~datetime.datetime` and `~datetime.timedelta` objects
-    from the Python standard library.
-    """
+            If a forecast hour is to be plotted the time should be set to the valid future
+            time, which can be done using the `~datetime.datetime` and
+            `~datetime.timedelta` objects from the Python standard library.
+            """
+        ),
+    )
 
-    time_window = Instance(timedelta, default_value=timedelta(minutes=0), allow_none=True)
-    time_window.__doc__ = """Set a range to look for data to plot as a timedelta object.
+    time_window = Instance(
+        timedelta,
+        default_value=timedelta(minutes=0),
+        allow_none=True,
+        help=(
+            """Set a range to look for data to plot as a timedelta object.
 
-    If this parameter is set, it will subset the data provided to be within the time and plus
-    or minus the range value given. If there is more than one observation from a given station
-    then it will keep only the most recent one for plotting purposes. Default value is to have
-    no range. (optional)
-    """
+            If this parameter is set, it will subset the data provided to be within the
+            time and plus or minus the range value given. If there is more than one
+            observation from a given station then it will keep only the most recent one
+            for plotting purposes. Default value is to have no range. (optional)
+            """
+        ),
+    )
 
-    fields = List(Unicode())
-    fields.__doc__ = """Name of the scalar or symbol fields to be plotted.
+    fields = List(
+        Unicode(),
+        help=(
+            """Name of the scalar or symbol fields to be plotted.
 
-    List of parameters to be plotted around station plot (e.g., temperature, dewpoint, skyc).
-    """
+            List of parameters to be plotted around station plot
+            (e.g., temperature, dewpoint, skyc).
+            """
+        ),
+    )
 
-    locations = List(default_value=['C'])
-    locations.__doc__ = """List of strings for scalar or symbol field plotting locations.
+    locations = List(
+        default_value=['C'],
+        help=(
+            """List of strings for scalar or symbol field plotting locations.
 
-    List of parameters locations for plotting parameters around the station plot (e.g.,
-    NW, NE, SW, SE, W, C). (optional)
-    """
+            List of parameters locations for plotting parameters around the station plot
+            (e.g., NW, NE, SW, SE, W, C). (optional)
+            """
+        ),
+    )
 
-    formats = List(default_value=[None])
-    formats.__doc__ = """List of the scalar, symbol, and text field data formats. (optional)
+    formats = List(
+        default_value=[None],
+        help=(
+            """List of the scalar, symbol, and text field data formats. (optional)
 
-    List of scalar parameters formatters or mapping values (if symbol) for plotting text and/or
-    symbols around the station plot (e.g., for pressure variable
-    ```lambda v: format(10 * v, '.0f')[-3:]```).
+            List of scalar parameters formatters or mapping values (if symbol) for
+            plotting text and/or symbols around the station plot (e.g., for
+            pressure variable ```lambda v: format(10 * v, '.0f')[-3:]```).
 
-    For symbol mapping the following options are available to be put in as a string:
-    current_weather, sky_cover, low_clouds, mid_clouds, high_clouds, and pressure_tendency.
+            For symbol mapping the following options are available to be put
+            in as a string: current_weather, sky_cover, low_clouds, mid_clouds,
+            high_clouds, and pressure_tendency.
 
-    For plotting text, use the format setting of 'text'.
-    """
+            For plotting text, use the format setting of 'text'.
+            """
+        ),
+    )
 
-    colors = List(Unicode(), default_value=['black'])
-    colors.__doc__ = """List of the scalar and symbol field colors.
+    colors = List(
+        Unicode(),
+        default_value=['black'],
+        help=(
+            """List of the scalar and symbol field colors.
 
-    List of strings that represent the colors to be used for the variable being plotted.
-    (optional)
-    """
+            List of strings that represent the colors to be used for the
+            variable being plotted. (optional)
+            """
+        ),
+    )
 
-    vector_field = List(default_value=[None], allow_none=True)
-    vector_field.__doc__ = """List of the vector field to be plotted.
+    vector_field = List(
+        default_value=[None],
+        allow_none=True,
+        help=(
+            """List of the vector field to be plotted.
 
-    List of vector components to combined and plotted from the center of the station plot
-    (e.g., wind components). (optional)
-    """
+            List of vector components to combined and plotted from the center of
+            the station plot (e.g., wind components). (optional)
+            """
+        ),
+    )
 
-    vector_field_color = Unicode('black', allow_none=True)
-    vector_field_color.__doc__ = """String color name to plot the vector. (optional)"""
+    vector_field_color = Unicode(
+        'black',
+        allow_none=True,
+        help=(
+            """String color name to plot the vector. (optional)"""
+        ),
+    )
 
-    vector_field_length = Int(default_value=None, allow_none=True)
-    vector_field_length.__doc__ = """Integer value to set the length of the plotted vector.
-    (optional)
-    """
+    vector_field_length = Int(
+        default_value=None,
+        allow_none=True,
+        help=(
+            """Integer value to set the length of the plotted vector.(optional)"""
+        ),
+    )
 
-    reduce_points = Float(default_value=0)
-    reduce_points.__doc__ = """Float to reduce number of points plotted. (optional)"""
+    reduce_points = Float(
+        default_value=0,
+        help=(
+            """Float to reduce number of points plotted. (optional)"""
+        ),
+    )
 
-    plot_units = List(default_value=[None], allow_none=True)
-    plot_units.__doc__ = """A list of the desired units to plot the fields in.
+    plot_units = List(
+        default_value=[None],
+        allow_none=True,
+        help=(
+            """A list of the desired units to plot the fields in.
 
-    Setting this attribute will convert the units of the field variable to the given units for
-    plotting using the MetPy Units module, provided that units are attached to the DataFrame.
-    """
+            Setting this attribute will convert the units of the field variable to the
+            given units for plotting using the MetPy Units module, provided that units
+            are attached to the DataFrame.
+            """
+        ),
+    )
 
-    vector_plot_units = Unicode(default_value=None, allow_none=True)
-    vector_plot_units.__doc__ = """The desired units to plot the vector field in.
+    vector_plot_units = Unicode(
+        default_value=None,
+        allow_none=True,
+        help=(
+            """The desired units to plot the vector field in.
 
-    Setting this attribute will convert the units of the field variable to the given units for
-    plotting using the MetPy Units module, provided that units are attached to the DataFrame.
-    """
+            Setting this attribute will convert the units of the field variable to the
+            given units for plotting using the MetPy Units module, provided that units
+            are attached to the DataFrame.
+            """
+        ),
+    )
 
-    fontsize = Int(10)
-    fontsize.__doc__ = """An integer value to set the font size of station plots. Default
-    is 10 pt."""
+    fontsize = Int(
+        10,
+        help=(
+            """An integer value to set the font size of station plots. Default is 10 pt."""
+        ),
+    )
 
     def clear(self):
         """Clear the plot.
@@ -1721,89 +2098,156 @@ class PlotGeometry(MetPyHasTraits):
     parent = Instance(Panel)
     _need_redraw = Bool(default_value=True)
 
-    geometry = Instance(collections.abc.Iterable, allow_none=False)
-    geometry.__doc__ = """A collection of Shapely objects to plot.
+    geometry = Instance(
+        collections.abc.Iterable,
+        allow_none=False,
+        help=(
+            """A collection of Shapely objects to plot.
 
-    A collection of Shapely objects, such as the 'geometry' column from a
-    ``geopandas.GeoDataFrame``. Acceptable Shapely objects are ``shapely.MultiPolygon``,
-    ``shapely.Polygon``, ``shapely.MultiLineString``, ``shapely.LineString``,
-    ``shapely.MultiPoint``, and ``shapely.Point``.
-    """
+            A collection of Shapely objects, such as the 'geometry' column from a
+            ``geopandas.GeoDataFrame``. Acceptable Shapely objects are
+            ``shapely.MultiPolygon``, ``shapely.Polygon``,
+            ``shapely.MultiLineString``, ``shapely.LineString``,
+            ``shapely.MultiPoint``, and ``shapely.Point``.
+            """
+        ),
+    )
 
-    fill = Union([Instance(collections.abc.Iterable), Unicode()], default_value=['lightgray'],
-                 allow_none=True)
-    fill.__doc__ = """Fill color(s) for polygons and points.
+    fill = Union(
+        [
+            Instance(collections.abc.Iterable),
+            Unicode(),
+        ],
+        default_value=['lightgray'],
+        allow_none=True,
+        help=(
+            """Fill color(s) for polygons and points.
 
-    A single string (color name or hex code) or collection of strings with which to fill
-    polygons and points. If a collection, the first color corresponds to the first Shapely
-    object in `geometry`, the second color corresponds to the second Shapely object, and so on.
-    If `fill` is shorter than `geometry`, `fill` cycles back to the beginning, repeating the
-    sequence of colors as needed. Default value is lightgray.
-    """
+            A single string (color name or hex code) or collection of strings with
+            which to fill polygons and points. If a collection, the first color
+            corresponds to the first Shapely object in `geometry`, the second color
+            corresponds to the second Shapely object, and so on.
+            If `fill` is shorter than `geometry`, `fill` cycles back to the beginning,
+            repeating the sequence of colors as needed. Default value is lightgray.
+            """
+        ),
+    )
 
-    stroke = Union([Instance(collections.abc.Iterable), Unicode()], default_value=['black'],
-                   allow_none=True)
-    stroke.__doc__ = """Stroke color(s) for polygons and line color(s) for lines.
+    stroke = Union(
+        [
+            Instance(collections.abc.Iterable),
+            Unicode(),
+        ],
+        default_value=['black'],
+        allow_none=True,
+        help=(
+            """Stroke color(s) for polygons and line color(s) for lines.
 
-    A single string (color name or hex code) or collection of strings with which to outline
-    polygons and color lines. If a collection, the first color corresponds to the first Shapely
-    object in `geometry`, the second color corresponds to the second Shapely object, and so on.
-    If `stroke` is shorter than `geometry`, `stroke` cycles back to the beginning, repeating
-    the sequence of colors as needed. Default value is black.
-    """
+            A single string (color name or hex code) or collection of strings with
+            which to outline polygons and color lines. If a collection, the first
+            color corresponds to the first Shapely object in `geometry`, the second
+            color corresponds to the second Shapely object, and so on. If `stroke`
+            is shorter than `geometry`, `stroke` cycles back to the beginning, repeating
+            the sequence of colors as needed. Default value is black.
+            """
+        ),
+    )
 
-    stroke_width = Union([Instance(collections.abc.Iterable), Float()], default_value=[1],
-                         allow_none=True)
-    stroke_width.__doc__ = """Stroke width(s) for polygons and lines.
+    stroke_width = Union(
+        [
+            Instance(collections.abc.Iterable),
+            Float(),
+        ],
+        default_value=[1],
+        allow_none=True,
+        help=(
+            """Stroke width(s) for polygons and lines.
 
-    A single integer or floating point value or collection of values representing the size of
-    the stroke width. If a collection, the first value corresponds to the first Shapely
-    object in `geometry`, the second value corresponds to the second Shapely object, and so on.
-    If `stroke_width` is shorter than `geometry`, `stroke_width` cycles back to the beginning,
-    repeating the sequence of values as needed. Default value is 1.
-    """
+            A single integer or floating point value or collection of values representing
+            the size of the stroke width. If a collection, the first value corresponds
+            to the first Shapely object in `geometry`, the second value corresponds to the
+            second Shapely object, and so on. If `stroke_width` is shorter than `geometry`,
+            `stroke_width` cycles back to the beginning, repeating the sequence of values
+            as needed. Default value is 1.
+            """
+        ),
+    )
 
-    marker = Unicode(default_value='.', allow_none=False)
-    marker.__doc__ = """Symbol used to denote points.
+    marker = Unicode(
+        default_value='.',
+        allow_none=False,
+        help=(
+            """Symbol used to denote points.
 
-    Accepts any matplotlib marker. Default value is '.', which plots a dot at each point.
-    """
+            Accepts any matplotlib marker. Default value is '.', which plots a dot
+            at each point.
+            """
+        ),
+    )
 
-    labels = Instance(collections.abc.Iterable, allow_none=True)
-    labels.__doc__ = """A collection of labels corresponding to plotted geometry.
+    labels = Instance(
+        collections.abc.Iterable,
+        allow_none=True,
+        help=(
+            """A collection of labels corresponding to plotted geometry.
 
-    A collection of strings to use as labels for geometry, such as a column from a
-    ``Geopandas.GeoDataFrame``. The first label corresponds to the first Shapely object in
-    `geometry`, the second label corresponds to the second Shapely object, and so on. The
-    length of `labels` must be equal to the length of `geometry`. Labels are positioned along
-    the edge of polygons, and below lines and points. No labels are plotted if this attribute
-    is left undefined, or set equal to `None`.
-    """
+            A collection of strings to use as labels for geometry, such as a column from a
+            ``Geopandas.GeoDataFrame``. The first label corresponds to the first Shapely
+            object in `geometry`, the second label corresponds to the second Shapely object,
+            and so on. The length of `labels` must be equal to the length of `geometry`.
+            Labels are positioned along the edge of polygons, and below lines and points.
+            No labels are plotted if this attribute is left undefined, or set equal to `None`.
+            """
+        ),
+    )
 
-    label_fontsize = Union([Int(), Float(), Unicode()], default_value=None, allow_none=True)
-    label_fontsize.__doc__ = """An integer or string value for the font size of labels.
+    label_fontsize = Union(
+        [Int(), Float(), Unicode()],
+        default_value=None,
+        allow_none=True,
+        help=(
+            """An integer or string value for the font size of labels.
 
-    Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
-    'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
-    """
+            Accepts size in points or relative size. Allowed relative sizes are those
+            of Matplotlib:
+            'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
+            """
+        ),
+    )
 
-    label_facecolor = Union([Instance(collections.abc.Iterable), Unicode()], allow_none=True)
-    label_facecolor.__doc__ = """Font color(s) for labels.
+    label_facecolor = Union(
+        [
+            Instance(collections.abc.Iterable),
+            Unicode(),
+        ],
+        allow_none=True,
+        help=(
+            """Font color(s) for labels.
 
-    A single string (color name or hex code) or collection of strings for the font color of
-    labels. If a collection, the first color corresponds to the label of the first Shapely
-    object in `geometry`, the second color corresponds to the label of the second Shapely
-    object, and so on. Default value is `stroke`.
-    """
+            A single string (color name or hex code) or collection of strings for the
+            font color of labels. If a collection, the first color corresponds to the
+            label of the first Shapely object in `geometry`, the second color corresponds
+            to the label of the second Shapely object, and so on. Default value is `stroke`.
+            """
+        ),
+    )
 
-    label_edgecolor = Union([Instance(collections.abc.Iterable), Unicode()], allow_none=True)
-    label_edgecolor.__doc__ = """Outline color(s) for labels.
+    label_edgecolor = Union(
+        [
+            Instance(collections.abc.Iterable),
+            Unicode(),
+        ],
+        allow_none=True,
+        help=(
+            """Outline color(s) for labels.
 
-    A single string (color name or hex code) or collection of strings for the outline color of
-    labels. If a collection, the first color corresponds to the label of the first Shapely
-    object in `geometry`, the second color corresponds to the label of the second Shapely
-    object, and so on. Default value is `fill`.
-    """
+            A single string (color name or hex code) or collection of strings for the
+            outline color of labels. If a collection, the first color corresponds to
+            the label of the first Shapely object in `geometry`, the second color corresponds
+            to the label of the second Shapely object, and so on. Default value is `fill`.
+            """
+        ),
+    )
 
     @staticmethod
     @validate('geometry')
@@ -2002,132 +2446,237 @@ class PlotSurfaceAnalysis(MetPyHasTraits):
     parent = Instance(Panel)
     _need_redraw = Bool(default_value=True)
 
-    geometry = Instance(collections.abc.Iterable, allow_none=False)
-    geometry.__doc__ = """A collection of Shapely objects to plot.
+    geometry = Instance(
+        collections.abc.Iterable,
+        allow_none=False,
+        help=(
+            """A collection of Shapely objects to plot.
 
-    A collection of Shapely objects, such as the 'geometry' column from a bulletin parsed
-    with `parse_wpc_surface_bulletin()`. Acceptable Shapely objects are
-    ``shapely.LineString``, and ``shapely.Point``.
-    """
+            A collection of Shapely objects, such as the 'geometry' column from a bulletin
+            parsed with `parse_wpc_surface_bulletin()`. Acceptable Shapely objects are
+            ``shapely.LineString``, and ``shapely.Point``.
+            """
+        ),
+    )
 
-    feature = Union([Instance(collections.abc.Iterable), Unicode()],
-                    allow_none=False)
-    feature.__doc__ = """Collection of names of features to be plotted.
+    feature = Union(
+        [
+            Instance(collections.abc.Iterable),
+            Unicode(),
+        ],
+        allow_none=False,
+        help=(
+            """Collection of names of features to be plotted.
 
-    Collection of strings, each corresponding one-to-one with geometries, such as the
-    'features' column from a bulletin parsed with `parse_wpc_surface_bulletin()`.
-    Acceptable feature names include: 'HIGH', 'LOW', 'WARM', 'COLD', 'OCFNT', 'STNRY', 'TROF'.
-    """
+            Collection of strings, each corresponding one-to-one with geometries, such as the
+            'features' column from a bulletin parsed with `parse_wpc_surface_bulletin()`.
+            Acceptable feature names include: 'HIGH', 'LOW', 'WARM', 'COLD', 'OCFNT',
+            'STNRY', 'TROF'.
+            """
+        ),
+    )
 
-    strength = Union([Instance(collections.abc.Iterable), Float()], default_value=[],
-                     allow_none=True)
-    strength.__doc__ = """Collection of strengths corresponding to pressure systems.
+    strength = Union(
+        [
+            Instance(collections.abc.Iterable),
+            Float(),
+        ],
+        default_value=[],
+        allow_none=True,
+        help=(
+            """Collection of strengths corresponding to pressure systems.
 
-    Collection of floats, each corresponding one-to-one with pressure system features. Such
-    as the 'strength' column from a bulletin parsed with `parse_wpc_surface_bulletin()`.
-    """
+            Collection of floats, each corresponding one-to-one with pressure system features.
+            Such as the 'strength' column from a bulletin parsed with
+            `parse_wpc_surface_bulletin()`.
+            """
+        ),
+    )
 
-    HIGH_color = Union([Unicode()], default_value='blue', allow_none=True)
-    HIGH_color.__doc__ = """Color for plotting high-pressure systems.
+    HIGH_color = Union(
+        [Unicode()],
+        default_value='blue',
+        allow_none=True,
+        help=(
+            """Color for plotting high-pressure systems.
 
-    A single string (color name or hex code) used to plot label of high-pressure system and
-    their strength, if provided. Default value is 'blue'.
-    """
+            A single string (color name or hex code) used to plot label of high-pressure
+            system and their strength, if provided. Default value is 'blue'.
+            """
+        ),
+    )
 
-    LOW_color = Union([Unicode()], default_value='red', allow_none=True)
-    LOW_color.__doc__ = """Color for plotting low-pressure systems.
+    LOW_color = Union(
+        [Unicode()],
+        default_value='red',
+        allow_none=True,
+        help=(
+            """Color for plotting low-pressure systems.
 
-    A single string (color name or hex code) used to plot label of low-pressure system and
-    their strength, if provided. Default value is 'red'.
-    """
+            A single string (color name or hex code) used to plot label of low-pressure
+            system and their strength, if provided. Default value is 'red'.
+            """
+        ),
+    )
 
-    WARM_color = Union([Unicode()], default_value='red', allow_none=True)
-    WARM_color.__doc__ = """Color for plotting warm fronts.
+    WARM_color = Union(
+        [Unicode()],
+        default_value='red',
+        allow_none=True,
+        help=(
+            """Color for plotting warm fronts.
 
-    A single string (color name or hex code) used to plot warm fronts. Default
-    color is 'red', which is used by `WarmFront()` class. `WARM_color` alternates
-    with `COLD_color` to plot stationary fronts.
-    """
+            A single string (color name or hex code) used to plot warm fronts. Default
+            color is 'red', which is used by `WarmFront()` class. `WARM_color` alternates
+            with `COLD_color` to plot stationary fronts.
+            """
+        ),
+    )
 
-    COLD_color = Union([Unicode()], default_value='blue', allow_none=True)
-    COLD_color.__doc__ = """Color for plotting cold fronts.
+    COLD_color = Union(
+        [Unicode()],
+        default_value='blue',
+        allow_none=True,
+        help=(
+            """Color for plotting cold fronts.
 
-    A single string (color name or hex code) used to plot cold fronts. Default
-    color is 'blue', which is used by `ColdFront()` class. `COLD_color` alternates
-    with `WARM_color` to plot stationary fronts.
-    """
+            A single string (color name or hex code) used to plot cold fronts. Default
+            color is 'blue', which is used by `ColdFront()` class. `COLD_color` alternates
+            with `WARM_color` to plot stationary fronts.
+            """
+        ),
+    )
 
-    OCFNT_color = Union([Unicode()], default_value='purple', allow_none=True)
-    OCFNT_color.__doc__ = """Color for plotting occluded fronts.
+    OCFNT_color = Union(
+        [Unicode()],
+        default_value='purple',
+        allow_none=True,
+        help=(
+            """Color for plotting occluded fronts.
 
-    A single string (color name or hex code) used to plot Occluded fronts. Default
-    color is 'purple', which is used by `OccludedFront()` class.
-    """
+            A single string (color name or hex code) used to plot Occluded fronts. Default
+            color is 'purple', which is used by `OccludedFront()` class.
+            """
+        ),
+    )
 
-    TROF_color = Union([Unicode()], default_value='darkorange', allow_none=True)
-    TROF_color.__doc__ = """Color for plotting trough lines.
+    TROF_color = Union(
+        [Unicode()],
+        default_value='darkorange',
+        allow_none=True,
+        help=(
+            """Color for plotting trough lines.
 
-    A single string (color name or hex code) used to plot trough lines. Default
-    color is 'darkorange'.
-    """
+            A single string (color name or hex code) used to plot trough lines. Default
+            color is 'darkorange'.
+            """
+        ),
+    )
 
-    HIGH_label = Union([Unicode()], default_value='H', allow_none=True)
-    HIGH_label.__doc__ = """Label used to plot high-pressure systems.
+    HIGH_label = Union(
+        [Unicode()],
+        default_value='H',
+        allow_none=True,
+        help=(
+            """Label used to plot high-pressure systems.
 
-    Single string used as marker to plot high-pressure systems. Default value is 'H'.
-    """
+            Single string used as marker to plot high-pressure systems. Default value is 'H'.
+            """
+        ),
+    )
 
-    LOW_label = Union([Unicode()], default_value='L', allow_none=True)
-    LOW_label.__doc__ = """Label used to plot low-pressure systems.
+    LOW_label = Union(
+        [Unicode()],
+        default_value='L',
+        allow_none=True,
+        help=(
+            """Label used to plot low-pressure systems.
 
-    Single string used as marker to plot low-pressure systems. Default value is 'L'.
-    """
+            Single string used as marker to plot low-pressure systems. Default value is 'L'.
+            """
+        ),
+    )
 
-    TROF_linestyle = Union([Unicode()], default_value='dashed',
-                           allow_none=True)
-    TROF_linestyle.__doc__ = """Linestyle of Trough lines.
+    TROF_linestyle = Union(
+        [Unicode()],
+        default_value='dashed',
+        allow_none=True,
+        help=(
+            """Linestyle of Trough lines.
 
-    Single string, default value is 'dashed'.
-    Accept matplotlib linestyles: 'solid', 'dotted', 'dashdot'.
-    """
+            Single string, default value is 'dashed'.
+            Accept matplotlib linestyles: 'solid', 'dotted', 'dashdot'.
+            """
+        ),
+    )
 
-    label_fontsize = Union([Int(), Float(), Unicode()], default_value=10, allow_none=True)
-    label_fontsize.__doc__ = """Font sizes of pressure systems labels.
+    label_fontsize = Union(
+        [Int(), Float(), Unicode()],
+        default_value=10,
+        allow_none=True,
+        help=(
+            """Font sizes of pressure systems labels.
 
-    Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
-    'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
-    """
+            Accepts size in points or relative size. Allowed relative sizes are those of
+            Matplotlib: 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large',
+            'xx-large'.
+            """
+        ),
+    )
 
-    TROF_linewidth = Union([Float()], default_value=2,
-                           allow_none=True)
-    TROF_linewidth.__doc__ = """Stroke width for trough lines.
+    TROF_linewidth = Union(
+        [Float()],
+        default_value=2,
+        allow_none=True,
+        help=(
+            """Stroke width for trough lines.
 
-    A single integer or floating point value representing the size of the stroke width.
-    """
+            A single integer or floating point value representing the size of the stroke
+            width.
+            """
+        ),
+    )
 
-    FRONT_linewidth = Union([Float()], default_value=1,
-                            allow_none=True)
-    TROF_linewidth.__doc__ = """Stroke width for front lines.
+    FRONT_linewidth = Union(
+        [Float()],
+        default_value=1,
+        allow_none=True,
+        help=(
+            """Stroke width for front lines.
 
-    A single floating point value representing the size of the stroke width.
-    """
+            A single floating point value representing the size of the stroke width.
+            """
+        ),
+    )
 
-    FRONT_markersize = Union([Int(), Float(), Unicode()], default_value=3, allow_none=True)
-    FRONT_markersize.__doc__ = """Size of symbols in front lines.
+    FRONT_markersize = Union(
+        [Int(), Float(), Unicode()],
+        default_value=3,
+        allow_none=True,
+        help=(
+            """Size of symbols in front lines.
 
-    Accepts size in points or relative size. Default value is 3. Allowed relative sizes are
-    those of Matplotlib: 'xx-small', 'x-small', 'small', 'medium', 'large',
-    'x-large', 'xx-large'.
-    """
+            Accepts size in points or relative size. Default value is 3. Allowed relative
+            sizes are those of Matplotlib: 'xx-small', 'x-small', 'small', 'medium',
+            'large', 'x-large', 'xx-large'.
+            """
+        ),
+    )
 
-    strength_offset = Union([Tuple()], default_value=(0, -1), allow_none=True)
-    strength_offset.__doc__ = """Offset between label of pressure system and its
-    corresponding strength.
+    strength_offset = Union(
+        [Tuple()],
+        default_value=(0, -1),
+        allow_none=True,
+        help=(
+            """Offset between label of pressure system and its
+            corresponding strength.
 
-    Tuple representing the relative position of strength value with respect to label of
-    pressure system. Default value is (0,-1). Scaled by multiplying times 80% of
-    label_fontsize value.
-    """
+            Tuple representing the relative position of strength value with respect to label
+            of pressure system. Default value is (0,-1). Scaled by multiplying times 80% of
+            label_fontsize value.
+            """
+        ),
+    )
 
     def _effect_map(self):
         return {
