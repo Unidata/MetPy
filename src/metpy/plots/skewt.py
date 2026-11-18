@@ -1026,6 +1026,12 @@ class Hodograph:
         """
         u, v, c = _delete_masked_points(u, v, c)
 
+        # LineCollection does not initialize axis units or convert its coordinates.
+        self.ax.xaxis.update_units(u)
+        self.ax.yaxis.update_units(v)
+        u = np.asarray(self.ax.convert_xunits(u))
+        v = np.asarray(self.ax.convert_yunits(v))
+
         # Plotting a color segmented hodograph
         if colors:
             cmap = mcolors.ListedColormap(colors)

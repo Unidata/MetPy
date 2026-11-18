@@ -336,6 +336,49 @@ def test_hodograph_units():
     return fig
 
 
+@pytest.mark.parametrize('unit', [None, 'knots', 'm/s'])
+@pytest.mark.parametrize('discrete', [False, True])
+def test_hodograph_colormapped_axis_units(unit, discrete):
+    """Colormapped hodographs initialize axis units and labels like ordinary lines."""
+    values = np.array([1., 2., 3.])
+    if unit is not None:
+        values = values * units(unit)
+    with autoclose_figure() as fig:
+        plain = Hodograph(fig.add_subplot(1, 2, 1))
+        colored = Hodograph(fig.add_subplot(1, 2, 2))
+        plain.plot(values, values)
+        if discrete:
+            colored.plot_colormapped(values, values, np.arange(3) * units.km,
+                                     intervals=[0, 0.5, 2] * units.km,
+                                     colors=['red', 'blue'])
+        else:
+            colored.plot_colormapped(values, values, np.arange(3))
+
+        assert colored.ax.xaxis.units == plain.ax.xaxis.units
+        assert colored.ax.yaxis.units == plain.ax.yaxis.units
+        assert colored.ax.get_xlabel() == plain.ax.get_xlabel()
+        assert colored.ax.get_ylabel() == plain.ax.get_ylabel()
+
+
+@pytest.mark.parametrize('discrete', [False, True])
+def test_hodograph_colormapped_existing_axis_units(discrete):
+    """Convert components to established axis units without replacing custom labels."""
+    with autoclose_figure() as fig:
+        hodo = Hodograph(fig.add_subplot(1, 1, 1))
+        hodo.plot(np.zeros(2) * units('m/s'), np.zeros(2) * units('m/s'))
+        hodo.ax.set_xlabel('Eastward wind')
+        hodo.ax.set_ylabel('Northward wind')
+        kwargs = {'intervals': [0, 2], 'colors': ['red']} if discrete else {}
+        line = hodo.plot_colormapped(np.array([3.6, 7.2, 10.8]) * units('km/h'),
+                                    np.array([1., 2., 3.]) * units('m/s'),
+                                    np.arange(3), **kwargs)
+
+        np.testing.assert_allclose(line.get_segments(),
+                                   [[[1., 1.], [2., 2.]], [[2., 2.], [3., 3.]]])
+        assert hodo.ax.get_xlabel() == 'Eastward wind'
+        assert hodo.ax.get_ylabel() == 'Northward wind'
+
+
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_masked_array():
     """Basic test of Hodograph API."""
@@ -453,6 +496,7 @@ def test_hodograph_plot_layers():
     ax1.set_xlim(-50, 50)
     ax1.set_ylim(-5, 50)
 
+    ax1.set(xlabel='', ylabel='')
     return fig
 
 
@@ -471,6 +515,7 @@ def test_hodograph_plot_layers_different_units():
     h.plot_colormapped(u, v, heights, colors=colors, intervals=intervals)
     ax1.set_xlim(-50, 50)
     ax1.set_ylim(-5, 50)
+    ax1.set(xlabel='', ylabel='')
     return fig
 
 
@@ -489,6 +534,7 @@ def test_hodograph_plot_layers_bound_units():
     h.plot_colormapped(u, v, heights, colors=colors, intervals=intervals)
     ax1.set_xlim(-50, 50)
     ax1.set_ylim(-5, 50)
+    ax1.set(xlabel='', ylabel='')
     return fig
 
 
@@ -554,6 +600,7 @@ def test_hodograph_plot_arbitrary_layer():
     hodo.add_grid(increment=20, color='k')
     hodo.plot_colormapped(u, v, speed, intervals=levels, colors=colors)
 
+    ax.set(xlabel='', ylabel='')
     return fig
 
 
