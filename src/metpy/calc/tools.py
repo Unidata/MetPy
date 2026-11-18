@@ -1460,7 +1460,9 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
     axes : Sequence[str] or Sequence[int], optional
         Sequence of strings (if `f` is a `xarray.DataArray` and implicit conversion to
         `pint.Quantity` is not used) or integers that specify the array axes along which to
-        take the derivatives. Defaults to all axes of `f`. If given, and used with
+        take the derivatives. Defaults to all axes of `f`, except that when `f` is an
+        `xarray.DataArray` and neither `coordinates` nor `deltas` are given, it defaults to
+        the axes along which positions are distances (see Notes). If given, and used with
         `coordinates` or `deltas`, its length must be less than or equal to that of the
         `coordinates` or `deltas` given. In general, each axis can be an axis number
         (integer), dimension coordinate name (string) or a standard axis type (string). The
@@ -1485,10 +1487,20 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
     If this function is used without the `axes` parameter, the length of `coordinates` or
     `deltas` (as applicable) should match the number of dimensions of `f`.
 
+    If `f` is an `xarray.DataArray` and none of `axes`, `coordinates` and `deltas` are
+    given, only the dimensions along which positions are distances are used: latitude and
+    longitude, and dimensions whose coordinate has units of length. Other dimensions, such
+    as time or a pressure vertical coordinate, are skipped, since adding their second
+    derivatives to those along distances is not meaningful. If no dimension is a distance,
+    all dimensions are used.
+
     .. versionchanged:: 1.0
        Changed signature from ``(f, **kwargs)``
 
     """
+    if (axes is None and coordinates is None and deltas is None
+            and isinstance(f, xr.DataArray)):
+        axes = [dim for dim in f.dims if _is_distance_dim(f, dim)] or None
     pos_kwarg, positions, axes = _process_gradient_args(f, axes, coordinates, deltas)
     derivs = [second_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
               for ind, axis in enumerate(axes)]
@@ -1701,6 +1713,17 @@ def _broadcast_to_axis(arr, axis, ndim):
         new_shape[axis] = arr.size
         arr = arr.reshape(*new_shape)
     return arr
+
+
+def _is_distance_dim(da, dim):
+    """Return whether derivatives of a DataArray along a dimension are along distances."""
+    coord = da[dim]
+    if check_axis(coord, 'latitude', 'longitude'):
+        # Converted to distances with grid deltas
+        return True
+    if check_axis(coord, 'time'):
+        return False
+    return coord.metpy.units.dimensionality == units.meter.dimensionality
 
 
 def _process_gradient_args(f, axes, coordinates, deltas):
