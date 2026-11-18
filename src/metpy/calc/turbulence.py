@@ -111,7 +111,7 @@ def tke(u, v, w, perturbation=False, axis=-1):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='vel')
+@preprocess_and_wrap()
 def kinematic_flux(vel, b, perturbation=False, axis=-1):
     r"""Compute the kinematic flux from two time series.
 
@@ -134,7 +134,8 @@ def kinematic_flux(vel, b, perturbation=False, axis=-1):
     Returns
     -------
     array-like
-        The corresponding kinematic flux
+        The corresponding kinematic flux. DataArray inputs return a `pint.Quantity`,
+        without coordinates, since the calculation reduces the time axis.
 
     Other Parameters
     ----------------
