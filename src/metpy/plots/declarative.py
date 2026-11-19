@@ -241,7 +241,10 @@ class MapPanel(Panel, ValidationMixin):
 
     area = Union([Unicode(), Tuple(Float(), Float(), Float(), Float())], allow_none=True,
                  default_value=None)
-    area.__doc__ = """A tuple or string value that indicates the graphical area of the plot.
+    area.__doc__ = """A tuple, string or None that indicates the graphical area of the plot.
+
+    Defaults to ``None``, which leaves the map extent to Matplotlib and Cartopy rather than
+    setting an explicit geographic extent.
 
     The tuple value corresponds to longitude/latitude box based on the projection of the map
     with the format (west-most longitude, east-most longitude, south-most latitude,
@@ -260,6 +263,9 @@ class MapPanel(Panel, ValidationMixin):
     projection = Union([Unicode(), Instance('cartopy.crs.Projection')], default_value='data')
     projection.__doc__ = """A string for a pre-defined projection or a Cartopy projection
     object.
+
+    Defaults to ``'data'``, which uses the coordinate reference system of the first plot's
+    gridded data.
 
     There are three pre-defined projections that can be called with a short name:
     Lambert conformal conic ('lcc'), Mercator ('mer'), or polar-stereographic ('ps'), or 'area'
