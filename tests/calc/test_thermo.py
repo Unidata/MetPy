@@ -426,6 +426,21 @@ def test_dewpoint():
     assert_almost_equal(dewpoint(6.112 * units.mbar), 0. * units.degC, 2)
 
 
+def test_dewpoint_saturation_vapor_pressure_inverse():
+    """Test that dewpoint inverts saturation_vapor_pressure (Ambaum 2020)."""
+    temperature = np.linspace(-80., 60., 141) * units.degC
+    assert_array_almost_equal(dewpoint(saturation_vapor_pressure(temperature)),
+                              temperature, 8)
+
+
+def test_dewpoint_relative_humidity_roundtrip():
+    """Test dewpoint_from_relative_humidity and relative_humidity_from_dewpoint agree."""
+    temperature = np.array([-30., 0., 20., 35.]) * units.degC
+    rh = np.array([0.1, 0.5, 0.75, 1.]) * units.dimensionless
+    td = dewpoint_from_relative_humidity(temperature, rh)
+    assert_array_almost_equal(relative_humidity_from_dewpoint(temperature, td), rh, 8)
+
+
 def test_dewpoint_weird_units():
     """Test dewpoint using non-standard units.
 
@@ -433,7 +448,7 @@ def test_dewpoint_weird_units():
     functions instead of numpy ones.
     """
     assert_almost_equal(dewpoint(15825.6 * units('g * mbar / kg')),
-                        13.8564 * units.degC, 4)
+                        13.8642 * units.degC, 4)
 
 
 def test_mixing_ratio():
@@ -518,9 +533,9 @@ def test_ccl_basic():
                          -0.4, -3.6, -3.8, -5.0, -6.0, -15.6, -13.2, -11.4, -11.0,
                          -5.8, -6.2, -14.8, -24.3, -34.7, -38.1]) * units.degC
     ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint)
-    assert_almost_equal(ccl_p, 762.819301 * units.mbar, 5)
-    assert_almost_equal(ccl_t, 15.412096 * units.degC, 5)
-    assert_almost_equal(t_c, 37.994012 * units.degC, 5)
+    assert_almost_equal(ccl_p, 762.939673 * units.mbar, 5)
+    assert_almost_equal(ccl_t, 15.423602 * units.degC, 5)
+    assert_almost_equal(t_c, 37.992392 * units.degC, 5)
 
 
 def test_ccl_nans():
@@ -535,9 +550,9 @@ def test_ccl_nans():
                          -0.4, -3.6, -3.8, -5.0, -6.0, -15.6, -13.2, -11.4, -11.0,
                          -5.8, -6.2, -14.8, -24.3, -34.7, -38.1]) * units.degC
     ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint)
-    assert_almost_equal(ccl_p, 762.819301 * units.mbar, 5)
-    assert_almost_equal(ccl_t, 15.412096 * units.degC, 5)
-    assert_almost_equal(t_c, 37.994012 * units.degC, 5)
+    assert_almost_equal(ccl_p, 762.939673 * units.mbar, 5)
+    assert_almost_equal(ccl_t, 15.423602 * units.degC, 5)
+    assert_almost_equal(t_c, 37.992392 * units.degC, 5)
 
 
 def test_ccl_unit():
@@ -553,9 +568,9 @@ def test_ccl_unit():
                           -5.8, -6.2, -14.8, -24.3, -34.7, -38.1]) + 273.15) * units.kelvin
 
     ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint)
-    assert_almost_equal(ccl_p, (762.819301 * 100) * units.Pa, 3)
-    assert_almost_equal(ccl_t, (15.412096 + 273.15) * units.kelvin, 3)
-    assert_almost_equal(t_c, (37.994012 + 273.15) * units.kelvin, 3)
+    assert_almost_equal(ccl_p, (762.939673 * 100) * units.Pa, 3)
+    assert_almost_equal(ccl_t, (15.423602 + 273.15) * units.kelvin, 3)
+    assert_almost_equal(t_c, (37.992392 + 273.15) * units.kelvin, 3)
 
     assert ccl_p.units == pressure.units
     assert ccl_t.units == temperature.units
@@ -583,19 +598,19 @@ def test_multiple_ccl():
                         -36.7, -28.9, -28.5, -22.5]) * units.degC
 
     ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint)
-    assert_almost_equal(ccl_p, 680.087037 * units.mbar, 5)
-    assert_almost_equal(ccl_t, -0.213239 * units.degC, 5)
-    assert_almost_equal(t_c, 30.871351 * units.degC, 5)
+    assert_almost_equal(ccl_p, 680.245270 * units.mbar, 5)
+    assert_almost_equal(ccl_t, -0.199883 * units.degC, 5)
+    assert_almost_equal(t_c, 30.866019 * units.degC, 5)
 
     ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint, which='bottom')
-    assert_almost_equal(ccl_p, 886.724147 * units.mbar, 5)
-    assert_almost_equal(ccl_t, 3.492138 * units.degC, 5)
-    assert_almost_equal(t_c, 12.503289 * units.degC, 5)
+    assert_almost_equal(ccl_p, 886.848770 * units.mbar, 5)
+    assert_almost_equal(ccl_t, 3.501893 * units.degC, 5)
+    assert_almost_equal(t_c, 12.501892 * units.degC, 5)
 
     ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint, which='all')
-    assert_array_almost_equal(ccl_p, np.array([886.724147, 680.087037]) * units.mbar, 5)
-    assert_array_almost_equal(ccl_t, np.array([3.492138, -0.213239]) * units.degC, 5)
-    assert_array_almost_equal(t_c, np.array([12.503289, 30.871351]) * units.degC, 5)
+    assert_array_almost_equal(ccl_p, np.array([886.848770, 680.245270]) * units.mbar, 5)
+    assert_array_almost_equal(ccl_t, np.array([3.501893, -0.199883]) * units.degC, 5)
+    assert_array_almost_equal(t_c, np.array([12.501892, 30.866019]) * units.degC, 5)
 
 
 def test_ccl_with_ml():
@@ -622,11 +637,11 @@ def test_ccl_with_ml():
                             mixed_layer_depth=500 * units.m, which='all')
 
     assert_array_almost_equal(ccl_p, np.array(
-        [850.438506, 784.136600, 782.671594, 737.637719, 647.950662]) * units.mbar, 5)
+        [850.624957, 784.374111, 737.812393, 648.144715]) * units.mbar, 5)
     assert_array_almost_equal(ccl_t, np.array(
-        [0.829278, -0.291727, -0.317424, -1.129215, -2.886271]) * units.degC, 5)
+        [0.841722, -0.277345, -1.115127, -2.869950]) * units.degC, 5)
     assert_array_almost_equal(t_c, np.array(
-        [13.151139, 18.669463, 18.797927, 22.899638, 32.086356]) * units.degC, 5)
+        [13.146210, 18.659594, 22.894942, 32.078674]) * units.degC, 5)
 
 
 def test_lfc_basic():
@@ -660,8 +675,8 @@ def test_lfc_ml():
     __, t_mixed, td_mixed = mixed_parcel(levels, temperatures, dewpoints)
     mixed_parcel_prof = parcel_profile(levels, t_mixed, td_mixed)
     lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints, mixed_parcel_prof)
-    assert_almost_equal(lfc_pressure, 596.989 * units.mbar, 2)
-    assert_almost_equal(lfc_temp, -2.32082 * units.degC, 2)
+    assert_almost_equal(lfc_pressure, 597.688 * units.mbar, 2)
+    assert_almost_equal(lfc_temp, -2.25233 * units.degC, 2)
 
 
 def test_lfc_ml2():
@@ -701,7 +716,7 @@ def test_lfc_ml2():
     __, t_mixed, td_mixed = mixed_parcel(levels, temperatures, dewpoints)
     mixed_parcel_prof = parcel_profile(levels, t_mixed, td_mixed)
     lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints, mixed_parcel_prof, td_mixed)
-    assert_almost_equal(lfc_pressure, 962.14 * units.mbar, 2)
+    assert_almost_equal(lfc_pressure, 962.27 * units.mbar, 2)
     assert_almost_equal(lfc_temp, 0.755 * units.degC, 2)
 
 
@@ -714,7 +729,7 @@ def test_lfc_intersection():
     _, mlt, mltd = mixed_parcel(p, t, td)
     ml_profile = parcel_profile(p, mlt, mltd)
     mllfc_p, mllfc_t = lfc(p, t, td, ml_profile, mltd)
-    assert_almost_equal(mllfc_p, 981.584 * units.hPa, 2)
+    assert_almost_equal(mllfc_p, 981.617 * units.hPa, 2)
     assert_almost_equal(mllfc_t, 272.045 * units.kelvin, 2)
 
 
@@ -972,8 +987,8 @@ def test_el_ml():
     __, t_mixed, td_mixed = mixed_parcel(levels, temperatures, dewpoints)
     mixed_parcel_prof = parcel_profile(levels, t_mixed, td_mixed)
     el_pressure, el_temperature = el(levels, temperatures, dewpoints, mixed_parcel_prof)
-    assert_almost_equal(el_pressure, 350.8303 * units.mbar, 3)
-    assert_almost_equal(el_temperature, -28.30588 * units.degC, 3)
+    assert_almost_equal(el_pressure, 350.7192 * units.mbar, 3)
+    assert_almost_equal(el_temperature, -28.31386 * units.degC, 3)
 
 
 def test_no_el():
@@ -1740,8 +1755,8 @@ def test_mixed_layer_cape_cin(multiple_intersections):
     """Test the calculation of mixed layer cape/cin."""
     pressure, temperature, dewpoint = multiple_intersections
     mlcape, mlcin = mixed_layer_cape_cin(pressure, temperature, dewpoint)
-    assert_almost_equal(mlcape, 1127.85110409 * units('joule / kilogram'), 2)
-    assert_almost_equal(mlcin, -16.2056458216 * units('joule / kilogram'), 2)
+    assert_almost_equal(mlcape, 1131.86896981 * units('joule / kilogram'), 2)
+    assert_almost_equal(mlcin, -16.1143296951 * units('joule / kilogram'), 2)
 
 
 def test_mixed_layer_cape_cin_bottom_pressure(multiple_intersections):
@@ -1749,8 +1764,8 @@ def test_mixed_layer_cape_cin_bottom_pressure(multiple_intersections):
     pressure, temperature, dewpoint = multiple_intersections
     mlcape_middle, mlcin_middle = mixed_layer_cape_cin(pressure, temperature, dewpoint,
                                                        parcel_start_pressure=903 * units.hPa)
-    assert_almost_equal(mlcape_middle, 1192.55 * units('joule / kilogram'), 2)
-    assert_almost_equal(mlcin_middle, -47.43 * units('joule / kilogram'), 2)
+    assert_almost_equal(mlcape_middle, 1195.88 * units('joule / kilogram'), 2)
+    assert_almost_equal(mlcin_middle, -47.07 * units('joule / kilogram'), 2)
 
 
 def test_dcape():
@@ -2025,7 +2040,7 @@ def test_dewpoint_specific_humidity():
     q = 0.012 * units.dimensionless
     with pytest.deprecated_call(match='Temperature argument'):
         td = dewpoint_from_specific_humidity(p, temperature, q)
-        assert_almost_equal(td, 17.0363429 * units.degC, 3)
+        assert_almost_equal(td, 17.0471010 * units.degC, 3)
 
 
 def test_dewpoint_specific_humidity_old_signature():
@@ -2046,7 +2061,7 @@ def test_dewpoint_specific_humidity_kwargs():
     with pytest.deprecated_call(match='Temperature argument'):
         td = dewpoint_from_specific_humidity(
             pressure=p, temperature=temperature, specific_humidity=q)
-        assert_almost_equal(td, 17.036 * units.degC, 3)
+        assert_almost_equal(td, 17.047 * units.degC, 3)
 
 
 def test_dewpoint_specific_humidity_three_mixed_args_kwargs():
@@ -2057,7 +2072,7 @@ def test_dewpoint_specific_humidity_three_mixed_args_kwargs():
     with pytest.deprecated_call(match='Temperature argument'):
         td = dewpoint_from_specific_humidity(
             p, temperature, specific_humidity=q)
-        assert_almost_equal(td, 17.036 * units.degC, 3)
+        assert_almost_equal(td, 17.047 * units.degC, 3)
 
 
 def test_dewpoint_specific_humidity_two_mixed_args_kwargs():
@@ -2066,7 +2081,7 @@ def test_dewpoint_specific_humidity_two_mixed_args_kwargs():
     q = 0.012 * units.dimensionless
     td = dewpoint_from_specific_humidity(
         p, specific_humidity=q)
-    assert_almost_equal(td, 17.036 * units.degC, 3)
+    assert_almost_equal(td, 17.047 * units.degC, 3)
 
 
 def test_dewpoint_specific_humidity_two_args():
@@ -2074,7 +2089,7 @@ def test_dewpoint_specific_humidity_two_args():
     p = 1013.25 * units.mbar
     q = 0.012 * units.dimensionless
     td = dewpoint_from_specific_humidity(p, q)
-    assert_almost_equal(td, 17.036 * units.degC, 3)
+    assert_almost_equal(td, 17.047 * units.degC, 3)
 
 
 def test_dewpoint_specific_humidity_arrays():
@@ -2082,7 +2097,7 @@ def test_dewpoint_specific_humidity_arrays():
     p = 1013.25 * units.mbar
     q = np.tile(0.012 * units.dimensionless, (3, 2))
     td = dewpoint_from_specific_humidity(p, specific_humidity=q)
-    assert_almost_equal(td, np.tile(17.036 * units.degC, (3, 2)), 3)
+    assert_almost_equal(td, np.tile(17.047 * units.degC, (3, 2)), 3)
 
 
 def test_dewpoint_specific_humidity_xarray(index_xarray_data):
