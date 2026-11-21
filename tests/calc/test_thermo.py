@@ -1304,6 +1304,21 @@ def test_isentropic_pressure():
     assert_almost_equal(isentprs[0], trueprs, 3)
 
 
+@pytest.mark.parametrize('bottom_up_search', [True, False])
+@pytest.mark.parametrize('shape, vertical_dim', [((2,), 0), ((2, 1), 0),
+                                              ((1, 2), 1), ((2, 1, 1), 0)])
+def test_isentropic_pressure_sounding(shape, vertical_dim, bottom_up_search):
+    """Test an isothermal sounding with and without singleton dimensions."""
+    pressure = [1000, 700] * units.hPa
+    temperature = np.full(shape, 300.) * units.K
+    result = isentropic_interpolation([310] * units.K, pressure, temperature,
+                                     vertical_dim=vertical_dim,
+                                     bottom_up_search=bottom_up_search)[0]
+    expected = 1000 * (300 / 310) ** 3.5 * units.hPa
+    assert result.shape == (1,) * len(shape)
+    assert_almost_equal(result, expected, 7)
+
+
 def test_isentropic_pressure_masked_column():
     """Test calculation of isentropic pressure function with a masked column (#769)."""
     lev = [100000., 95000.] * units.Pa

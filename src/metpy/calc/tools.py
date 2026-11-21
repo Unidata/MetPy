@@ -718,7 +718,7 @@ def find_bounding_indices(arr, values, axis, from_below=True):
             index = arr.shape[axis] - 1 - switches[tuple(arr_slice)].argmax(axis=axis)
 
         # Set all indices where the results are not good to 0
-        index[~good_search] = 0
+        index = np.where(good_search, index, 0)
 
         # Put the results in the proper slice
         store_slice = take(level_index)
