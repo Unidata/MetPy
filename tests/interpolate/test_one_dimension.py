@@ -32,6 +32,17 @@ def test_interpolate_nans_1d_log():
     assert_array_almost_equal(y, interpolate_nans_1d(x, y_with_nan, kind='log'), 2)
 
 
+@pytest.mark.parametrize('kind, filled', [('linear', 290.), ('log', 290.8870004882826)])
+@pytest.mark.parametrize('order', [[0, 1, 2], [0, 2, 1], [1, 0, 2],
+                                   [1, 2, 0], [2, 0, 1], [2, 1, 0]])
+def test_interpolate_nans_1d_unsorted(kind, filled, order):
+    """Test that filling NaNs preserves the original coordinate order."""
+    x = np.array([1000., 700., 850.])[order]
+    y = np.array([300., 280., np.nan])[order]
+    expected = np.array([300., 280., filled])[order]
+    assert_array_almost_equal(expected, interpolate_nans_1d(x, y, kind=kind), 7)
+
+
 def test_interpolate_nans_1d_invalid():
     """Test log interpolation with invalid parameter."""
     x = np.logspace(1, 5, 15)
