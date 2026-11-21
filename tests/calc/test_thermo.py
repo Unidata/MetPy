@@ -1557,6 +1557,28 @@ def test_isentropic_interpolation_as_dataset(xarray_isentropic_data):
     assert result['isentropic_level'].attrs == expected['isentropic_level'].attrs
 
 
+@pytest.mark.parametrize(
+    'levels', [[310., 315., 320.], [320., 315., 310.], [315., 310., 320.]]
+)
+@pytest.mark.parametrize('pressure_unit', ['hPa', 'Pa'])
+def test_isentropic_interpolation_as_dataset_level_order(levels, pressure_unit):
+    """Test that interpolated pressures match their isentropic level labels."""
+    pressure = ([1000., 700.] * units.hPa).to(pressure_unit)
+    temperature = xr.DataArray(
+        np.full((2, 1), 300.),
+        dims=('isobaric', 'x'),
+        coords={'isobaric': ('isobaric', pressure.m, {'units': str(pressure.units)})},
+        attrs={'units': 'K'}
+    )
+    result = isentropic_interpolation_as_dataset(levels * units.K, temperature)
+
+    # Poisson's equation gives the exact pressure for this isothermal column.
+    expected = 1000. * (300. / np.array(levels)) ** 3.5 * units.hPa
+    assert_array_almost_equal(
+        result.pressure.sel(isentropic_level=levels).metpy.unit_array[:, 0], expected, 7
+    )
+
+
 def test_isentropic_interpolation_as_dataset_duplicate(xarray_isentropic_data):
     """Test duplicate-level check in isentropic_interpolation_as_dataset."""
     isentlev = [296., 296.] * units.kelvin
