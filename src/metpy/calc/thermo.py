@@ -3248,6 +3248,9 @@ def isentropic_interpolation_as_dataset(
     # Ensure matching coordinates by broadcasting
     all_args = xr.broadcast(temperature, *args)
 
+    # Match the ascending level order used by isentropic_interpolation.
+    levels = np.sort(levels)
+
     # Check for duplicate isentropic levels, which can be problematic (Issue #3309)
     unique, counts = np.unique(levels.m, return_counts=True)
     if np.any(counts > 1):
