@@ -208,6 +208,31 @@ def test_metar_parser(metar, truth):
     assert parse_metar(metar, 2017, 5) == truth
 
 
+@pytest.mark.parametrize(['metar', 'expected_altimeter'], [
+    # Unidata/MetPy#4217: missing temperature/dewpoint encoded as /////
+    ('SKUC 290500Z AUTO VRB01KT CAVOK ///// Q1012',
+     units.Quantity(1012, 'hPa').m_as('inHg')),
+    ('EGLL 010000Z AUTO 00000KT 2000 ///// Q1013',
+     units.Quantity(1013, 'hPa').m_as('inHg')),
+    # Same reports with an actual temperature group still parse the altimeter
+    ('SKUC 290500Z AUTO VRB01KT CAVOK 24/20 Q1012',
+     units.Quantity(1012, 'hPa').m_as('inHg')),
+    ('EGLL 010000Z AUTO 00000KT 2000 15/10 Q1013',
+     units.Quantity(1013, 'hPa').m_as('inHg')),
+], ids=['SKUC missing temp group', 'EGLL missing temp group', 'SKUC with temp',
+        'EGLL with temp'])
+def test_missing_slash_temperature_group_keeps_altimeter(metar, expected_altimeter):
+    """A ///// temperature group must not prevent parsing the following altimeter."""
+    obs = parse_metar(metar, 2026, 10)
+    assert_almost_equal(obs.altimeter, expected_altimeter, decimal=2)
+    if '/////' in metar:
+        assert np.isnan(obs.temperature)
+        assert np.isnan(obs.dewpoint)
+    else:
+        assert not np.isnan(obs.temperature)
+        assert not np.isnan(obs.dewpoint)
+
+
 def test_date_time_given():
     """Test for when date_time is given."""
     df = parse_metar_to_dataframe('K6B0 261200Z AUTO 00000KT 10SM CLR 20/M17 A3002 RMK AO2 '
@@ -271,7 +296,7 @@ def test_parse_file():
     assert counts.cloud_coverage == 8980
     assert counts.air_temperature == 8779
     assert counts.dew_point_temperature == 8740
-    assert counts.altimeter == 8458
+    assert counts.altimeter == 8461
     assert counts.remarks == 8980
     assert (df.current_wx1_symbol != 0).sum() == counts.current_wx1
     assert (df.current_wx2_symbol != 0).sum() == counts.current_wx2
