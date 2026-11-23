@@ -44,7 +44,7 @@ def interpolate_nans_1d(x, y, kind='linear'):
         y[nans] = np.interp(np.log(x[nans]), np.log(x[~nans]), y[~nans])
     else:
         raise ValueError(f'Unknown option for kind: {kind}')
-    return y[x_sort_args]
+    return y[np.argsort(x_sort_args)]
 
 
 @exporter.export
