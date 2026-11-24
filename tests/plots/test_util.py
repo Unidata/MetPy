@@ -143,6 +143,14 @@ def test_gempak_color_quirks():
     assert mplc == truth
 
 
+def test_gempak_color_brown():
+    """Test that GEMPAK color 8 matches the RGB values in coltbl.xwp."""
+    # GEMPAK's coltbl.xwp defines color 8 (BROWN) as RGB (139, 71, 38),
+    # which is #8B4726, not the X11 sienna3 value #CD6839.
+    assert convert_gempak_color(8) == '#8B4726'
+    assert convert_gempak_color(8, style='xw') == '#8B4726'
+
+
 def test_gempak_color_scalar():
     """Test converting a single GEMPAK color."""
     mplc = convert_gempak_color(6)
