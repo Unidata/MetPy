@@ -244,7 +244,7 @@ def convert_gempak_color(c, style='psc'):
             'yellow',      # 5
             'cyan',        # 6
             'magenta',     # 7
-            '#CD6839',     # 8 (sienna3)
+            '#8B4726',     # 8 (BROWN in coltbl.xwp; RGB 139, 71, 38)
             '#FF8247',     # 9 (sienna1)
             '#FFA54F',     # 10 (tan1)
             '#FFAEB9',     # 11 (LightPink1)
