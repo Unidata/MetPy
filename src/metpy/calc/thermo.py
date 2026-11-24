@@ -4398,6 +4398,11 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     Since this function iteratively applies a parcel calculation, it should be used with
     caution on large arrays.
 
+    This function does not check for or reject inputs implying supersaturation
+    (``dewpoint > temperature``). For these inputs, the usual ordering of dewpoint,
+    wet-bulb, and dry-bulb temperatures need not hold. See `Normand's theorem
+    <https://glossary.ametsoc.org/wiki/normand-s-theorem/>`_.
+
     """
     if not getattr(pressure, 'shape', False):
         pressure = np.atleast_1d(pressure)
