@@ -608,6 +608,143 @@ def height_to_pressure_std(height):
     return p0 * (1 - (gamma / t0) * height) ** (mpconsts.g / (mpconsts.Rd * gamma))
 
 
+# Constants defining the U.S. Standard Atmosphere, 1976, in SI units. Some differ slightly from
+# the values in metpy.constants (the gas constant, the molar mass of air, and Earth's radius),
+# but are needed to reproduce the published tables.
+_STD_ATM_GAS_CONSTANT = 8.31432  # J / (mol K)
+_STD_ATM_MOLAR_MASS = 28.9644e-3  # kg / mol, mean molar mass of air below 86 km
+_STD_ATM_GRAVITY = 9.80665  # m / s^2
+_STD_ATM_EARTH_RADIUS = 6356.766e3  # m, effective Earth radius
+_STD_ATM_SURFACE_TEMPERATURE = 288.15  # K
+_STD_ATM_SURFACE_PRESSURE = 101325.  # Pa
+# Geopotential height (m) of the base of each layer and the temperature gradient (K / m) in it
+_STD_ATM_LAYER_BASES = np.array([0., 11000., 20000., 32000., 47000., 51000., 71000.])
+_STD_ATM_LAYER_GRADIENTS = np.array([-6.5e-3, 0., 1.0e-3, 2.8e-3, 0., -2.8e-3, -2.0e-3])
+# Range of geometric height (m) described by the layers above
+_STD_ATM_HEIGHT_RANGE = (-5000., 86000.)
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like=('height', 'height', 'height'))
+@check_units('[length]')
+def standard_atmosphere(height):
+    r"""Calculate pressure, temperature, and density of the U.S. Standard Atmosphere.
+
+    Evaluates the U.S. Standard Atmosphere, 1976 [NOAA1976]_ at the given height(s) above
+    mean sea level, using the seven layers that define it between -5 km and 86 km.
+
+    Parameters
+    ----------
+    height : `pint.Quantity`
+        Geometric height above mean sea level
+
+    Returns
+    -------
+    pressure : `pint.Quantity`
+        Standard atmosphere pressure at the given height(s)
+
+    temperature : `pint.Quantity`
+        Standard atmosphere temperature at the given height(s)
+
+    density : `pint.Quantity`
+        Standard atmosphere air density at the given height(s)
+
+    Examples
+    --------
+    >>> from metpy.calc import standard_atmosphere
+    >>> from metpy.units import units
+    >>> pressure, temperature, density = standard_atmosphere([0, 5, 20, 50] * units.km)
+    >>> pressure
+    <Quantity([1.01325000e+03 5.40482861e+02 5.52931189e+01 7.97790930e-01], 'hectopascal')>
+    >>> temperature
+    <Quantity([288.15       255.67554322 216.65       270.65      ], 'kelvin')>
+    >>> density
+    <Quantity([1.22499916e+00 7.36428421e-01 8.89099151e-02 1.02687803e-03],
+    'kilogram / meter ** 3')>
+
+    See Also
+    --------
+    height_to_pressure_std, pressure_to_height_std
+
+    Notes
+    -----
+    Geometric height :math:`Z` is converted to geopotential height :math:`H` with
+
+    .. math:: H = \frac{r_0 Z}{r_0 + Z}
+
+    In each layer, which begins at geopotential height :math:`H_b` with temperature
+    :math:`T_b` and pressure :math:`p_b`, temperature changes linearly with :math:`H` at the
+    rate :math:`L_b` and the air is in hydrostatic balance:
+
+    .. math:: T = T_b + L_b (H - H_b)
+
+    .. math::
+
+       p = \begin{cases}
+           p_b \left( \frac{T_b}{T} \right)^{g_0 M_0 / (R^* L_b)}, & L_b \neq 0 \\
+           p_b \exp \left[ -\frac{g_0 M_0 (H - H_b)}{R^* T_b} \right], & L_b = 0
+           \end{cases}
+
+    .. math:: \rho = \frac{p M_0}{R^* T}
+
+    starting from :math:`T = 288.15\ \text{K}` and :math:`p = 101325\ \text{Pa}` at sea level,
+    with the layers:
+
+    ====================  =====  ====  ====  ====  ====  =====  =====
+    :math:`H_b` (km)      0      11    20    32    47    51     71
+    :math:`L_b` (K/km)    -6.5   0.0   1.0   2.8   0.0   -2.8   -2.0
+    ====================  =====  ====  ====  ====  ====  =====  =====
+
+    To reproduce the published tables, this uses the constants of [NOAA1976]_ rather than
+    those in `metpy.constants`: :math:`R^* = 8.31432\ \text{J mol}^{-1}\ \text{K}^{-1}`,
+    :math:`M_0 = 28.9644\ \text{g mol}^{-1}`, :math:`g_0 = 9.80665\ \text{m s}^{-2}`, and
+    :math:`r_0 = 6356.766\ \text{km}`.
+
+    The returned temperature is the molecular-scale temperature (:math:`T_M` in the tables of
+    [NOAA1976]_), which equals the kinetic temperature below 80 km. Between 80 and 86 km, a
+    slight decrease of the mean molar mass of air makes the kinetic temperature lower than
+    :math:`T_M` by up to 0.08 K; pressure and density are not affected by this.
+
+    Above 86 km, the standard atmosphere is no longer described by these layers. Heights
+    outside of -5 to 86 km give NaN for all three values, with a warning.
+
+    """
+    height = height.m_as('m')
+    out_of_range = (height < _STD_ATM_HEIGHT_RANGE[0]) | (height > _STD_ATM_HEIGHT_RANGE[1])
+    if np.any(out_of_range):
+        warn('Height outside of the range of the U.S. Standard Atmosphere (-5 to 86 km). '
+             'Returning NaN for those values.')
+
+    # Convert to geopotential height, with NaN for heights outside of the model. Adding NaN,
+    # instead of using np.where on the heights, keeps the mask of masked arrays.
+    geopotential_height = (_STD_ATM_EARTH_RADIUS * height / (_STD_ATM_EARTH_RADIUS + height)
+                           + np.where(out_of_range, np.nan, 0.))
+
+    # Go up through the layers, adding the change of temperature and log-pressure within
+    # each one. The lowest layer also extends below sea level.
+    hydrostatic_constant = _STD_ATM_GRAVITY * _STD_ATM_MOLAR_MASS / _STD_ATM_GAS_CONSTANT
+    layer_tops = np.append(_STD_ATM_LAYER_BASES[1:], np.inf)
+    temperature = _STD_ATM_SURFACE_TEMPERATURE
+    log_pressure_ratio = 0.
+    for i, (base, top, gradient) in enumerate(zip(_STD_ATM_LAYER_BASES, layer_tops,
+                                                  _STD_ATM_LAYER_GRADIENTS, strict=True)):
+        height_in_layer = np.clip(geopotential_height - base, -np.inf if i == 0 else 0.,
+                                  top - base)
+        new_temperature = temperature + gradient * height_in_layer
+        if gradient == 0:
+            log_pressure_ratio = (log_pressure_ratio
+                                  - hydrostatic_constant * height_in_layer / temperature)
+        else:
+            log_pressure_ratio = (log_pressure_ratio - hydrostatic_constant / gradient
+                                  * np.log(new_temperature / temperature))
+        temperature = new_temperature
+
+    pressure = _STD_ATM_SURFACE_PRESSURE * np.exp(log_pressure_ratio)
+    density = pressure * _STD_ATM_MOLAR_MASS / (_STD_ATM_GAS_CONSTANT * temperature)
+    return (units.Quantity(pressure, 'Pa').to('hPa'), units.Quantity(temperature, 'K'),
+            units.Quantity(density, 'kg / m^3'))
+
+
 @exporter.export
 @preprocess_and_wrap(wrap_like='latitude')
 def coriolis_parameter(latitude):
