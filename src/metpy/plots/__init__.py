@@ -27,6 +27,8 @@ __all__.extend(['add_metpy_logo', 'add_timestamp', 'add_unidata_logo',
 
 set_module(globals())
 
+matplotlib.hatch._hatch_types.append(SPCHatch)
+
 
 def __getattr__(name):
     """Raise a proper error if something needing Cartopy is not available."""
