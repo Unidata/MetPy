@@ -212,6 +212,8 @@ class Level2File:
         self._msg_buf = {}
         self.sweeps = []
         self.rda_status = []
+        self.console_msgs = []
+        self.model_data = []
         while not self._buffer.at_end():
             # Clear old file book marks and set the start of message for
             # easy jumping to the end
@@ -557,6 +559,39 @@ class Level2File:
                 else:  # Otherwise this is just spare and we should dump
                     self.rda.pop(attr)
 
+    def _decode_msg4(self, msg_hdr):
+        # Message 4 is an RDA console message: operator-facing text,
+        # per ICD 2620002 Table VI (a size halfword then ASCII).
+        data = bytes(self._buffer.read_binary(2 * msg_hdr.size_hw
+                                              - self.msg_hdr_fmt.size))
+        text = ''.join(chr(c) if 32 <= c < 127 else ' '
+                       for c in data[2:] if c != 0).strip()
+        if text:
+            self.console_msgs.append(text)
+
+    def _decode_msg29(self, msg_hdr):
+        # Message 29 is the Level 2 metadata/model-data message found in
+        # the ``_MDM`` sidecar files -- a product header, description block
+        # and a BZIP2-compressed symbology block holding an XDR-serialized
+        # grid component (ICD 2620001 Appendix E). A size_hw of 0xFFFF
+        # means the segment fields carry the total record size instead
+        # (ICD 2620002P convention, used by the standalone _MDM files).
+        try:
+            if msg_hdr.size_hw == 0xFFFF:
+                total = (msg_hdr.num_segments << 16
+                         | msg_hdr.segment_num + self.CTM_HEADER_SIZE)
+                raw = bytes(self._buffer.read_binary(
+                    total - self.CTM_HEADER_SIZE - self.msg_hdr_fmt.size))
+            else:
+                raw = self._buffer_segment(msg_hdr)
+        except (EOFError, IndexError):
+            return
+        if not raw:
+            return
+        parsed = _parse_msg29_product(bytes(raw))
+        if parsed is not None:
+            self.model_data.append(parsed)
+
     msg31_data_hdr_fmt = NamedStruct([('stid', '4s'), ('time_ms', 'L'),
                                       ('date', 'H'), ('az_num', 'H'),
                                       ('az_angle', 'f'), ('compression', 'B'),
@@ -730,6 +765,97 @@ def float32(short1, short2):
     """Unpack a pair of 16-bit integers as a Python float."""
     # Masking below in python will properly convert signed values to unsigned
     return struct.unpack('>f', struct.pack('>HH', short1 & 0xFFFF, short2 & 0xFFFF))[0]
+
+
+class _XdrReader:
+    """Minimal XDR (RFC 4506) reader -- stdlib xdrlib is gone in 3.13."""
+
+    def __init__(self, data, pos=0):
+        self._data = data
+        self._pos = pos
+
+    def uint(self):
+        val, = struct.unpack_from('>L', self._data, self._pos)
+        self._pos += 4
+        return val
+
+    def opaque(self):
+        """Unpack a variable-length opaque/string (count + padded data)."""
+        n = self.uint()
+        end = self._pos + n
+        val = self._data[self._pos:end]
+        self._pos = (end + 3) & ~3
+        return val
+
+    def text(self):
+        return self.opaque().decode('ascii', 'replace')
+
+    def farray(self):
+        n = self.uint()
+        end = self._pos + 4 * n
+        vals = struct.unpack_from(f'>{n}f', self._data, self._pos)
+        self._pos = end
+        return vals
+
+
+def _xdr_attr_fields(spec):
+    """Parse a ``name=..;units=..;type=..;value=..;`` attribute string."""
+    return {key.strip(): val.strip()
+            for pair in spec.split(';') if '=' in pair
+            for key, val in [pair.split('=', 1)]}
+
+
+def _parse_msg29_product(raw):
+    """Parse a message 29 (model/environmental data) record body.
+
+    The body is a product header + product description block (ICD
+    2620001) followed by a BZIP2-compressed symbology block holding an
+    XDR-serialized grid component per Appendix E. In ``_MDM`` sidecar
+    files this is the 'Environmental Gridded Data' product: model
+    fields (geopotential height, temperature, humidity, wind) on a
+    Lambert-conformal grid surrounding the radar.
+
+    Returns None when the body is not a compressed grid component.
+    """
+    import bz2
+
+    start = raw.find(b'BZh')
+    if not 0 <= start <= 4096:
+        return None
+    try:
+        inner = bz2.BZ2Decompressor().decompress(raw[start:])
+        up = _XdrReader(inner, 8)             # u16 code + u16 + u32 header
+        product = up.text()
+        description = up.text()
+        meta = [up.uint() for _ in range(10)]
+        up.uint()                             # attribute array bound
+        num_attrs = min(up.uint(), 512)
+        attrs = {}
+        for _ in range(num_attrs):
+            name = up.text()
+            attrs[name] = _xdr_attr_fields(up.text())
+        up.uint()                             # grid array bound
+        num_grids = min(up.uint(), 4096)
+        grids = []
+        for _ in range(num_grids):
+            dims = [up.uint() for _ in range(9)]
+            label = up.text()
+            level = _xdr_attr_fields(up.text())
+            param = _xdr_attr_fields(up.text())
+            data = up.farray()
+            grids.append({'label': label, 'level': level.get('name'),
+                          'level_value': level.get('value'),
+                          'level_units': level.get('units'),
+                          'param': param.get('name'),
+                          'units': param.get('units'), 'dims': dims,
+                          'nx': dims[4], 'ny': dims[5], 'data': data})
+        return {'product': product, 'description': description,
+                'code': struct.unpack_from('>H', inner, 0)[0],
+                'timestamp': meta[2] if len(meta) > 2 else None,
+                'attributes': attrs, 'grids': grids}
+    except (EOFError, IndexError, KeyError, struct.error,
+            ValueError, OSError):
+        return None
 
 
 def date_elem(ind_days, ind_minutes):

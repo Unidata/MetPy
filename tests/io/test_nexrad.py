@@ -24,14 +24,14 @@ logging.getLogger('metpy.io.nexrad').setLevel(logging.CRITICAL)
 # 1999 file tests old message 1
 # KFTG tests bzip compression and newer format for a part of message 31
 # KTLX 20150530 has missing segments for message 18, which was causing exception
-# KICX has message type 29 (MDM)
+# KICX has an inline message type 29 (environmental gridded data)
 # KVWX and KLTX have some legacy "quirks"; KLTX was crashing the parser
 level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46), 17, 4, 6, 0),
                 ('KTLX19990503_235621.gz', datetime(1999, 5, 3, 23, 56, 21), 16, 1, 3, 0),
                 ('Level2_KFTG_20150430_1419.ar2v', datetime(2015, 4, 30, 14, 19, 11),
                  12, 4, 6, 0),
                 ('KTLX20150530_000802_V06.bz2', datetime(2015, 5, 30, 0, 8, 3), 14, 4, 6, 2),
-                ('KICX_20170712_1458', datetime(2017, 7, 12, 14, 58, 5), 14, 4, 6, 1),
+                ('KICX_20170712_1458', datetime(2017, 7, 12, 14, 58, 5), 14, 4, 6, 0),
                 ('TDAL20191021021543V08.raw.gz', datetime(2019, 10, 21, 2, 15, 43), 10, 1,
                  3, 0),
                 ('Level2_FOP1_20191223_003655.ar2v', datetime(2019, 12, 23, 0, 36, 55, 649000),
@@ -134,6 +134,155 @@ def test_build19_level2_additions():
     f = Level2File(get_test_data('Level2_KDDC_20200823_204121.ar2v'))
     assert f.vcp_info.vcp_version == 1
     assert f.sweeps[0][0].header.az_spacing == 0.5
+
+
+def test_level2_msg29_inline():
+    """Check that an inline message 29 decodes to environmental grids."""
+    f = Level2File(get_test_data('KICX_20170712_1458', as_file_obj=False))
+    assert len(f.model_data) == 1
+    md = f.model_data[0]
+    assert md['product'] == 'Env Grid Data'
+    assert md['attributes']['mod_name']['value'] == 'RUC 13km'
+    assert md['grids'] and md['grids'][0]['nx'] == 60
+
+
+def _level2_decoder(raw):
+    """Create a `Level2File` primed to decode a synthetic message body."""
+    from metpy.io._tools import IOBuffer
+
+    f = Level2File.__new__(Level2File)
+    f._buffer = IOBuffer(bytearray(raw))
+    f._msg_buf = {}
+    f.console_msgs = []
+    f.model_data = []
+    return f
+
+
+def _fake_msg_hdr(msg_type, size_hw, num_segments=1, segment_num=1):
+    """Build a minimal MsgHdr namedtuple for direct decoder calls."""
+    from collections import namedtuple
+
+    return namedtuple('MsgHdr',
+                      ['size_hw', 'rda_channel', 'msg_type', 'seq_num',
+                       'date', 'time_ms', 'num_segments', 'segment_num'])(
+        size_hw, 3, msg_type, 0, 0, 0, num_segments, segment_num)
+
+
+def test_msg4_console_message():
+    """Check decoding of the message 4 RDA console message."""
+    import struct
+
+    text = b'VCP 31 selected by operator'
+    body = struct.pack('>H', len(text)) + text
+    hdr_size = Level2File.msg_hdr_fmt.size
+    size_hw = (hdr_size + len(body) + 1) // 2
+    body += b'\0' * (2 * size_hw - hdr_size - len(body))
+
+    f = _level2_decoder(body)
+    f._decode_msg4(_fake_msg_hdr(4, size_hw))
+    assert f.console_msgs == ['VCP 31 selected by operator']
+
+
+def test_msg4_garbage_ignored():
+    """Check that a message 4 with no printable text records nothing."""
+    body = b'\x00\xff\x00\xff' * 8
+    hdr_size = Level2File.msg_hdr_fmt.size
+    size_hw = (hdr_size + len(body)) // 2
+
+    f = _level2_decoder(body)
+    f._decode_msg4(_fake_msg_hdr(4, size_hw))
+    assert f.console_msgs == []
+
+
+def _xdr_opaque(payload):
+    """Pack a bytes object as an XDR variable-length opaque."""
+    import struct
+
+    return struct.pack('>L', len(payload)) + payload + b'\0' * (-len(payload) % 4)
+
+
+def _synthetic_env_grid():
+    """Build the XDR payload of a minimal message 29 grid component."""
+    import struct
+
+    inner = struct.pack('>HHL', 21, 0, 0)
+    inner += _xdr_opaque(b'Env Grid Data')
+    inner += _xdr_opaque(b'Environmental Gridded Data')
+    inner += struct.pack('>10L', *range(10))
+    inner += struct.pack('>LL', 1, 1)
+    inner += _xdr_opaque(b'gridProj')
+    inner += _xdr_opaque(b'name=gridProj;type=String;value=Lambert Conformal;')
+    inner += struct.pack('>LL', 1, 1)
+    inner += struct.pack('>9L', 0, 0, 0, 0, 4, 3, 0, 0, 0)
+    inner += _xdr_opaque(b'Level')
+    inner += _xdr_opaque(b'name=Pressure Level;units=mb;value=850.000000;')
+    inner += _xdr_opaque(b'name=Temperature;units=degC;type=real;value=;')
+    inner += struct.pack('>L12f', 12, *range(12))
+    return inner
+
+
+def test_msg29_env_grid():
+    """Check decoding of a message 29 environmental grid product."""
+    import bz2
+    import struct
+
+    inner = _synthetic_env_grid()
+    body = struct.pack('>HHL', 21, 0, 0) + bz2.compress(inner)
+    hdr_size = Level2File.msg_hdr_fmt.size
+    size_hw = (hdr_size + len(body) + 1) // 2
+    body += b'\0' * (2 * size_hw - hdr_size - len(body))
+
+    f = _level2_decoder(body)
+    f._decode_msg29(_fake_msg_hdr(29, size_hw))
+    assert len(f.model_data) == 1
+    md = f.model_data[0]
+    assert md['product'] == 'Env Grid Data'
+    assert md['description'] == 'Environmental Gridded Data'
+    assert md['attributes']['gridProj']['value'] == 'Lambert Conformal'
+    assert len(md['grids']) == 1
+    grid = md['grids'][0]
+    assert grid['param'] == 'Temperature'
+    assert grid['level'] == 'Pressure Level'
+    assert grid['level_value'] == '850.000000'
+    assert grid['nx'] == 4 and grid['ny'] == 3
+    assert grid['data'] == tuple(range(12))
+
+
+def test_msg29_segmented():
+    """Check that a split message 29 reassembles before decoding."""
+    import bz2
+    import struct
+
+    inner = _synthetic_env_grid()
+    body = struct.pack('>HHL', 21, 0, 0) + bz2.compress(inner)
+    hdr_size = Level2File.msg_hdr_fmt.size
+    half = len(body) // 2 + len(body) % 2
+    seg1, seg2 = body[:half], body[half:]
+    size_hw1 = (hdr_size + len(seg1) + 1) // 2
+    size_hw2 = (hdr_size + len(seg2) + 1) // 2
+    seg1 += b'\0' * (2 * size_hw1 - hdr_size - len(seg1))
+    seg2 += b'\0' * (2 * size_hw2 - hdr_size - len(seg2))
+
+    f = _level2_decoder(seg1 + seg2)
+    assert f._decode_msg29(_fake_msg_hdr(29, size_hw1, 2, 1)) is None
+    assert f.model_data == []
+    f._decode_msg29(_fake_msg_hdr(29, size_hw2, 2, 2))
+    assert len(f.model_data) == 1
+    assert f.model_data[0]['grids'][0]['param'] == 'Temperature'
+
+
+def test_msg29_bad_data_ignored():
+    """Check that a message 29 without a compressed grid yields nothing."""
+    import struct
+
+    body = struct.pack('>HHL', 21, 0, 0) + b'not a bzip2 stream'
+    hdr_size = Level2File.msg_hdr_fmt.size
+    size_hw = (hdr_size + len(body) + 1) // 2
+    body += b'\0' * (2 * size_hw - hdr_size - len(body))
+
+    f = _level2_decoder(body)
+    f._decode_msg29(_fake_msg_hdr(29, size_hw))
+    assert f.model_data == []
 
 
 #
