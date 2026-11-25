@@ -321,10 +321,31 @@ def test_interpolate_to_isosurface_from_below():
 
     dt_theta = interpolate_to_isosurface(pv, theta, 2, bottom_up_search=False)
 
-    truth = np.array([[330., 350., 370., 385., 400.],
-                      [340., 359., 374., 389., 404.],
-                      [348., 363., 378., 393., 410.],
-                      [352., 367., 382., 400., 420.],
-                      [356., 371., 390., 410., 430.]])
+    # Columns that never cross the requested level are NaN; previous versions
+    # filled them with boundary values (see #2555)
+    truth = np.array([[np.nan, np.nan, np.nan, 385., 400.],
+                      [np.nan, 359., 374., 389., 404.],
+                      [348., 363., 378., 393., np.nan],
+                      [352., 367., 382., np.nan, np.nan],
+                      [356., 371., np.nan, np.nan, np.nan]])
 
     assert_array_almost_equal(truth, dt_theta)
+
+
+def test_interpolate_to_isosurface_out_of_bounds():
+    """Test that columns never crossing the level return NaN, not boundary values."""
+    pv = np.linspace(-2, -3, 5)
+    theta = np.linspace(200, 300, 5)
+    pv_array = np.broadcast_to(pv[:, None, None], (5, 2, 2))
+    theta_array = np.broadcast_to(theta[:, None, None], (5, 2, 2))
+
+    result = interpolate_to_isosurface(pv_array, theta_array, 2)
+    assert np.all(np.isnan(result))
+
+    # A level above the entire column should also be NaN
+    result = interpolate_to_isosurface(pv_array, theta_array, -10)
+    assert np.all(np.isnan(result))
+
+    # While a bracketed level still interpolates
+    result = interpolate_to_isosurface(pv_array, theta_array, -2.5)
+    assert_array_almost_equal(result, np.full((2, 2), 250.))

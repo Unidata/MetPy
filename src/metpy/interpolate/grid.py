@@ -352,10 +352,8 @@ def interpolate_to_isosurface(level_var, interp_var, level, bottom_up_search=Tru
     interp_level = (((level - level_var[above]) / (level_var[below] - level_var[above]))
                     * (interp_var[below] - interp_var[above])) + interp_var[above]
 
-    # Handle missing values and instances where no values for surface exist above and below
+    # Handle missing values and instances where no values for surface exist above
+    # and below -- columns that never cross the requested level return NaN rather
+    # than a boundary value (#2555)
     interp_level[~good] = np.nan
-    minvar = (np.min(level_var, axis=0) >= level)
-    maxvar = (np.max(level_var, axis=0) <= level)
-    interp_level[0][minvar] = interp_var[-1][minvar]
-    interp_level[0][maxvar] = interp_var[0][maxvar]
     return interp_level.squeeze()
