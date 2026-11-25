@@ -249,14 +249,14 @@ def water_latent_heat_melting(temperature):
     Returns
     -------
     `pint.Quantity`
-        Latent heat of vaporization
+        Latent heat of melting
 
     Examples
     --------
     >>> from metpy.calc import water_latent_heat_melting
     >>> from metpy.units import units
     >>> water_latent_heat_melting(-15 * units.degC)
-    <Quantity(365662.294, 'joule / kilogram')>
+    <Quantity(301737.706, 'joule / kilogram')>
 
     See Also
     --------
@@ -271,7 +271,7 @@ def water_latent_heat_melting(temperature):
 
     """
     return (mpconsts.nounit.Lf
-            - (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_i)
+            + (mpconsts.nounit.Cp_l - mpconsts.nounit.Cp_i)
             * (temperature - mpconsts.nounit.T0))
 
 
