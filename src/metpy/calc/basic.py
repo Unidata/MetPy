@@ -471,16 +471,6 @@ def pressure_to_height_std(pressure):
 def height_to_geopotential(height):
     r"""Compute geopotential for a given height above sea level.
 
-    Calculates the geopotential from height above mean sea level using the following formula,
-    which is derived from the definition of geopotential as given in [Hobbs2006]_ Pg. 69 Eq
-    3.21, along with an approximation for variation of gravity with altitude:
-
-    .. math:: \Phi = \frac{g R_e z}{R_e + z}
-
-    (where :math:`\Phi` is geopotential, :math:`z` is height, :math:`R_e` is average Earth
-    radius, and :math:`g` is standard gravity).
-
-
     Parameters
     ----------
     height : `pint.Quantity`
@@ -508,6 +498,15 @@ def height_to_geopotential(height):
 
     Notes
     -----
+    The geopotential is calculated using the following formula, derived from the definition
+    of geopotential in [Hobbs2006]_ Pg. 69 Eq 3.21 and an approximation for the variation of
+    gravity with altitude:
+
+    .. math:: \Phi = \frac{g R_e z}{R_e + z}
+
+    where :math:`\Phi` is geopotential, :math:`z` is height above mean sea level,
+    :math:`R_e` is average Earth radius, and :math:`g` is standard gravity.
+
     This calculation approximates :math:`g(z)` as
 
     .. math:: g(z) = g_0 \left( \frac{R_e}{R_e + z} \right)^2
@@ -528,16 +527,6 @@ def height_to_geopotential(height):
 @check_units('[length] ** 2 / [time] ** 2')
 def geopotential_to_height(geopotential):
     r"""Compute height above sea level from a given geopotential.
-
-    Calculates the height above mean sea level from geopotential using the following formula,
-    which is derived from the definition of geopotential as given in [Hobbs2006]_ Pg. 69 Eq
-    3.21, along with an approximation for variation of gravity with altitude:
-
-    .. math:: z = \frac{\Phi R_e}{gR_e - \Phi}
-
-    (where :math:`\Phi` is geopotential, :math:`z` is height, :math:`R_e` is average Earth
-    radius, and :math:`g` is standard gravity).
-
 
     Parameters
     ----------
@@ -564,6 +553,15 @@ def geopotential_to_height(geopotential):
 
     Notes
     -----
+    The height is calculated using the following formula, derived from the definition of
+    geopotential in [Hobbs2006]_ Pg. 69 Eq 3.21 and an approximation for the variation of
+    gravity with altitude:
+
+    .. math:: z = \frac{\Phi R_e}{gR_e - \Phi}
+
+    where :math:`\Phi` is geopotential, :math:`z` is height above mean sea level,
+    :math:`R_e` is average Earth radius, and :math:`g` is standard gravity.
+
     This calculation approximates :math:`g(z)` as
 
     .. math:: g(z) = g_0 \left( \frac{R_e}{R_e + z} \right)^2
