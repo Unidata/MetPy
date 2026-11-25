@@ -83,23 +83,28 @@ def parse_wpc_surface_bulletin(bulletin, year=None):
     bulletin : str or file-like object
         If str, the name of the file to be opened. If `bulletin` is a file-like object,
         this will be read from directly.
+    year : int, optional
+        Year to assume when parsing the timestamp from the bulletin. Defaults to `None`,
+        which results in the parser trying to find a year in the product header; if this
+        search fails, the current year is assumed.
 
     Returns
     -------
     dataframe : pandas.DataFrame
         A `DataFrame` where each row represents a pressure center or front. The `DataFrame`
         has four columns: 'valid', 'feature', 'strength', and 'geometry'.
-    year : int
-        Year to assume when parsing the timestamp from the bulletin. Defaults to `None`,
-        which results in the parser trying to find a year in the product header; if this
-        search fails, the current year is assumed.
 
     """
     from shapely.geometry import LineString, Point
 
     # Create list with lines of text from file
     with contextlib.closing(open_as_needed(bulletin)) as file:
-        text = file.read().decode('utf-8')
+        text = file.read()
+        # ``open_as_needed`` opens filename paths in binary mode, but a file-like object
+        # passed in directly (e.g. ``StringIO``) may already be text. Only decode bytes so
+        # that both binary and text sources work, as the docstring promises.
+        if isinstance(text, bytes):
+            text = text.decode('utf-8')
 
     parsed_text = []
     valid_time = datetime.now(UTC).replace(tzinfo=None)
