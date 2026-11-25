@@ -194,6 +194,8 @@ Standard Atmosphere
       altimeter_to_station_pressure
       height_to_pressure_std
       pressure_to_height_std
+      station_pressure_to_altimeter
+      station_to_sea_level_pressure
 
 Smoothing
 ---------

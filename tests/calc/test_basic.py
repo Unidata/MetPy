@@ -14,6 +14,7 @@ from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
                         heat_index, height_to_geopotential, height_to_pressure_std,
                         pressure_to_height_std, sigma_to_pressure, smooth_circular,
                         smooth_gaussian, smooth_n_point, smooth_rectangular, smooth_window,
+                        station_pressure_to_altimeter, station_to_sea_level_pressure,
                         wind_components, wind_direction, wind_speed, windchill, zoom_xarray)
 from metpy.cbook import get_test_data
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
@@ -788,6 +789,59 @@ def test_altimeter_to_station_pressure_hpa(array_type):
         [784.262996, 838.651657, 896.037821, 954.639265], 'hectopascal', mask=mask
     )
     assert_array_almost_equal(res, truth, 3)
+
+
+def test_station_pressure_to_altimeter_inhg():
+    """Test the station pressure to altimeter function with inches of mercury."""
+    station_pressure = 950.96498 * units.hectopascal
+    elev = 500 * units.m
+    res = station_pressure_to_altimeter(station_pressure, elev)
+    truth = 29.8 * units.inHg
+    assert_almost_equal(res, truth, 3)
+
+
+def test_station_pressure_to_altimeter_hpa(array_type):
+    """Test the station pressure to altimeter function with hectopascals."""
+    mask = [False, True, False, True]
+    station_pressure = array_type(
+        [784.262996, 838.651657, 896.037821, 954.639265], 'hectopascal', mask=mask
+    )
+    elev = array_type([2000., 1500., 1000., 500.], 'meter', mask=mask)
+    res = station_pressure_to_altimeter(station_pressure, elev)
+    truth = array_type([1000., 1005., 1010., 1013.], 'hectopascal', mask=mask)
+    assert_array_almost_equal(res, truth, 3)
+
+
+def test_station_to_sea_level_pressure_basic():
+    """Test MSLP calculation with standard values."""
+    p_station = 950.96498 * units.hPa
+    elev = 500 * units.m
+    temp = 30 * units.degC
+    # Based on the inverse of the existing test truth
+    expected_mslp = 1006.089 * units.hPa
+
+    res = station_to_sea_level_pressure(p_station, elev, temp)
+    assert_almost_equal(res, expected_mslp, 2)
+
+
+def test_altimeter_round_trip(array_type):
+    """Test that moving forward and backward returns the original value."""
+    # Use a range of values to ensure the 0.3 hPa offset is handled correctly everywhere
+    altim_start = array_type([29.92, 30.00, 31.00], 'inHg')
+    elev = array_type([0, 1000, 2000], 'meter')
+
+    # Forward then Backward
+    intermediate_p = altimeter_to_station_pressure(altim_start, elev)
+    final_altim = station_pressure_to_altimeter(intermediate_p, elev)
+
+    assert_array_almost_equal(altim_start, final_altim, 4)
+
+
+def test_station_pressure_to_altimeter_invalid_units():
+    """Verify that the decorator catches incorrect unit types."""
+    with pytest.raises(ValueError):
+        # Passing meters where a pressure unit is expected
+        station_pressure_to_altimeter(units.Quantity(100, 'm'), units.Quantity(100, 'm'))
 
 
 def test_altimiter_to_sea_level_pressure_inhg():
