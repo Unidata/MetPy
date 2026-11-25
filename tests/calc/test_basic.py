@@ -14,7 +14,8 @@ from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
                         heat_index, height_to_geopotential, height_to_pressure_std,
                         pressure_to_height_std, sigma_to_pressure, smooth_circular,
                         smooth_gaussian, smooth_n_point, smooth_rectangular, smooth_window,
-                        wind_components, wind_direction, wind_speed, windchill, zoom_xarray)
+                        standard_atmosphere, wind_components, wind_direction, wind_speed,
+                        windchill, zoom_xarray)
 from metpy.cbook import get_test_data
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
@@ -345,6 +346,89 @@ def test_heights_to_pressure_basic(array_type):
 def test_pressure_to_heights_units():
     """Test that passing non-mbar units works."""
     assert_almost_equal(pressure_to_height_std(29 * units.inHg), 262.8498 * units.meter, 3)
+
+
+def test_standard_atmosphere_table():
+    """Test standard atmosphere against the tables of the U.S. Standard Atmosphere, 1976."""
+    # Table I (geometric altitude, metric units) of NOAA (1976), with at least one height in
+    # each of the seven layers. The table gives pressure and density to five significant
+    # figures.
+    heights = units.Quantity([-5000., -1000., 0., 1000., 11000., 15000., 20000., 25000.,
+                              30000., 40000., 50000., 60000., 70000., 75000., 80000.], 'm')
+    table_temperature = units.Quantity([320.676, 294.651, 288.150, 281.651, 216.774, 216.650,
+                                        216.650, 221.552, 226.509, 250.350, 270.650, 247.021,
+                                        219.585, 208.399, 198.639], 'K')
+    table_pressure = [1.7776e5, 1.1393e5, 1.01325e5, 8.9876e4, 2.2699e4, 1.2111e4, 5.5293e3,
+                      2.5492e3, 1.1970e3, 2.8714e2, 7.9779e1, 2.1958e1, 5.2209, 2.3881,
+                      1.0524]
+    table_density = [1.9311, 1.3470, 1.2250, 1.1117, 3.6480e-1, 1.9476e-1, 8.8910e-2,
+                     4.0084e-2, 1.8410e-2, 3.9957e-3, 1.0269e-3, 3.0968e-4, 8.2829e-5,
+                     3.9921e-5, 1.8458e-5]
+
+    pressure, temperature, density = standard_atmosphere(heights)
+
+    assert_array_almost_equal(temperature, table_temperature, 3)
+    np.testing.assert_allclose(pressure.m_as('Pa'), table_pressure, rtol=1e-4)
+    np.testing.assert_allclose(density.m_as('kg/m^3'), table_density, rtol=1e-4)
+
+
+def test_standard_atmosphere_top():
+    """Test standard atmosphere at its top, 86 km."""
+    pressure, temperature, density = standard_atmosphere(units.Quantity(86, 'km'))
+
+    # Table I of NOAA (1976) lists the molecular-scale temperature here as 186.95 K, and the
+    # kinetic temperature as 186.87 K
+    assert_almost_equal(temperature, units.Quantity(186.95, 'K'), 2)
+    assert_almost_equal(pressure, units.Quantity(3.7338e-3, 'hPa'), 7)
+    assert_almost_equal(density, units.Quantity(6.958e-6, 'kg/m^3'), 9)
+
+
+def test_standard_atmosphere_array_types(array_type):
+    """Test standard atmosphere with different array types."""
+    mask = [False, True, False, True]
+    heights = array_type([0., 5., 25., 60.], 'km', mask=mask)
+
+    pressure, temperature, density = standard_atmosphere(heights)
+
+    assert_array_almost_equal(pressure,
+                              array_type([1013.25, 540.48, 25.492, 0.21958], 'hPa', mask=mask),
+                              2)
+    assert_array_almost_equal(temperature,
+                              array_type([288.150, 255.676, 221.552, 247.021], 'K', mask=mask),
+                              3)
+    assert_array_almost_equal(density,
+                              array_type([1.2250, 0.73643, 0.040084, 3.0968e-4], 'kg/m^3',
+                                         mask=mask),
+                              4)
+
+
+def test_standard_atmosphere_scalar_units():
+    """Test standard atmosphere with a scalar height in other units."""
+    pressure, temperature, density = standard_atmosphere(units.Quantity(1, 'km'))
+
+    assert pressure.shape == temperature.shape == density.shape == ()
+    assert_almost_equal(pressure, units.Quantity(898.76, 'hPa'), 2)
+    assert_almost_equal(temperature, units.Quantity(281.651, 'K'), 3)
+    assert_almost_equal(density, units.Quantity(1.1117, 'kg/m^3'), 4)
+
+
+def test_standard_atmosphere_out_of_range():
+    """Test that heights outside of the standard atmosphere give NaN, with a warning."""
+    heights = units.Quantity([-5.1, 0., 86.1, 100.], 'km')
+
+    with pytest.warns(UserWarning, match='outside of the range'):
+        pressure, temperature, density = standard_atmosphere(heights)
+
+    for result in (pressure, temperature, density):
+        assert_array_equal(np.isnan(result.m), [True, False, True, True])
+
+
+def test_standard_atmosphere_nan():
+    """Test that NaN heights give NaN, without a warning."""
+    pressure, temperature, density = standard_atmosphere(units.Quantity([np.nan, 0.], 'm'))
+
+    for result in (pressure, temperature, density):
+        assert_array_equal(np.isnan(result.m), [True, False])
 
 
 def test_coriolis_force(array_type):
