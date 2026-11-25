@@ -37,6 +37,9 @@ References
            non-uniformly spaced points. *Proc. R. Soc. A*, **461**, 1975-1997,
            doi:`10.1098/rspa.2004.1430 <https://doi.org/10.1098/rspa.2004.1430>`_.
 
+.. [Boyden1963] Boyden, C. J., 1963: A simple instability index for use as a synoptic
+           parameter. *Meteorological Magazine*, **92**, 198-210.
+
 .. [Bunkers2000] Bunkers, M. J., B. A. Klimowski, J. W. Zeitler, R. L. Thompson,
            and M. L. Weisman, 2000: Predicting supercell motion using a new hodograph
            technique. *Wea. Forecasting.*, **15**, 61–79,

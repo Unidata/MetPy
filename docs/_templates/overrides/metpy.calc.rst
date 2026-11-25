@@ -76,6 +76,7 @@ Soundings
    .. autosummary::
       :toctree: ./
 
+      boyden_index
       bulk_shear
       bunkers_storm_motion
       corfidi_storm_motion
