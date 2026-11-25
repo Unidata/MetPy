@@ -230,7 +230,11 @@ class TextCollection(Text):
             _, info, _ = self._get_layout(renderer)
             self._text = ''
 
-            for line, _, x, y in info:
+            for item in info:
+                if len(item) == 3:
+                    line, _, (x, y) = item
+                else:
+                    line, _, x, y = item
 
                 mtext = self if len(info) == 1 else None
                 x = x + posx
