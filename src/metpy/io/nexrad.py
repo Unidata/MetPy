@@ -7,10 +7,12 @@ import bz2
 from collections import defaultdict, namedtuple, OrderedDict
 import contextlib
 from datetime import datetime, UTC
+import gzip
 import logging
 import pathlib
 import re
 import struct
+import zlib
 
 import numpy as np
 from scipy.constants import day, milli
@@ -140,6 +142,11 @@ class Level2File:
         Unpacked RDA adaptation data, if present
     rda_adaptation_desc : dict, optional
         Descriptions of RDA adaptation data, if adaptation data present
+    prf_data : dict
+        Pulse repetition frequencies (Hz) by waveform type (e.g. ``CS``, ``CD``,
+        ``SPP``) from RDA PRF data messages (message 32, RDA Build 23 and later)
+    rda_log : list of dict
+        Decoded RDA log entries from message 33, if present in the volume
 
     Notes
     -----
@@ -212,6 +219,8 @@ class Level2File:
         self._msg_buf = {}
         self.sweeps = []
         self.rda_status = []
+        self.prf_data = {}
+        self.rda_log = []
         while not self._buffer.at_end():
             # Clear old file book marks and set the start of message for
             # easy jumping to the end
@@ -661,6 +670,86 @@ class Level2File:
         if data_hdr.rad_length != self._buffer.offset_from(msg_start):
             log.info('Padding detected in message. Length encoded as %d but offset when '
                      'done is %d', data_hdr.rad_length, self._buffer.offset_from(msg_start))
+
+    msg32_fmt = NamedStruct([('num_waveforms', 'H'), ('spare', 'H')], '>', 'Msg32Hdr')
+    msg32_wf_fmt = NamedStruct([('waveform_type', 'H'), ('num_prfs', 'H')],
+                               '>', 'Msg32WaveformHdr')
+
+    # Waveform type codes from ICD 2620002 Table XVIII (Message 32, added in
+    # RDA Build 23). Unknown codes are kept under their numeric value.
+    prf_waveform_map = {1: 'CS', 2: 'CD', 5: 'SPP'}
+
+    def _decode_msg32(self, msg_hdr):
+        # Message 32 is the RDA PRF Data message: the pulse repetition
+        # frequencies in use for each waveform type, stored in units of
+        # 0.001 Hz. It can arrive segmented like the other bulk messages,
+        # so reassemble the whole body before parsing.
+        data = self._msg_body(msg_hdr)
+        if data:
+            try:
+                hdr = self.msg32_fmt.unpack_from(data, 0)
+                offset = self.msg32_fmt.size
+                for _ in range(hdr.num_waveforms):
+                    wf = self.msg32_wf_fmt.unpack_from(data, offset)
+                    offset += self.msg32_wf_fmt.size
+                    prfs = [prf * 0.001 for prf in
+                            struct.unpack_from(f'>{wf.num_prfs}L', data, offset)]
+                    offset += 4 * wf.num_prfs
+                    # Merge rather than replace: if a volume carries more than
+                    # one message 32 the earlier tables must not be dropped.
+                    table = self.prf_data.setdefault(
+                        self.prf_waveform_map.get(wf.waveform_type,
+                                                 wf.waveform_type), [])
+                    table.extend(prf for prf in prfs if prf not in table)
+            except struct.error:
+                log.warning('Truncated message 32 body')
+
+    msg33_fmt = NamedStruct([('version', 'L'), ('identifier', '26s'),
+                             ('data_version', 'L'), ('compression', 'L'),
+                             ('compressed_size', 'L'), ('decompressed_size', 'L'),
+                             ('spare', '22s')], '>', 'Msg33Hdr')
+
+    def _decode_msg33(self, msg_hdr):
+        # Message 33 carries a named RDA log file (e.g. AzServoLog), optionally
+        # compressed: 0 = none, 1 = gzip, 2 = bzip2, 3 = zip. It can arrive
+        # segmented like the other bulk messages, so reassemble the whole
+        # body before parsing.
+        data = self._msg_body(msg_hdr)
+        if data:
+            try:
+                hdr = self.msg33_fmt.unpack_from(data, 0)
+            except struct.error:
+                log.warning('Truncated message 33 header')
+                return
+            payload = data[self.msg33_fmt.size:
+                           self.msg33_fmt.size + hdr.compressed_size]
+            try:
+                if hdr.compression == 1:
+                    payload = gzip.decompress(payload)
+                elif hdr.compression == 2:
+                    payload = bz2.decompress(payload)
+                # Compression type 3 is a ZIP container, which needs a member
+                # index to unpack -- keep the raw payload in that case.
+                text = payload.decode('utf-8', 'replace')
+            except (OSError, EOFError, zlib.error):
+                text = ''
+            self.rda_log.append({'identifier': hdr.identifier.decode('ascii', 'replace')
+                                                             .strip('\x00 '),
+                                 'version': hdr.version,
+                                 'data_version': hdr.data_version,
+                                 'compression': hdr.compression,
+                                 'text': text})
+
+    def _msg_body(self, msg_hdr):
+        """Return the full message body, reassembling segments when needed."""
+        if msg_hdr.size_hw == 65535:
+            # ICD 2620002P: a size_hw of 65535 means the segment fields carry
+            # the total message size in bytes -- a single record, never split.
+            total = msg_hdr.num_segments << 16 | msg_hdr.segment_num
+            if total <= self.msg_hdr_fmt.size:
+                return b''
+            return bytes(self._buffer.read(total - self.msg_hdr_fmt.size))
+        return self._buffer_segment(msg_hdr)
 
     def _buffer_segment(self, msg_hdr):
         # Add to the buffer
