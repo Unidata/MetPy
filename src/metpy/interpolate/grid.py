@@ -9,6 +9,7 @@ from .points import (interpolate_to_points, inverse_distance_to_points,
                      natural_neighbor_to_points)
 from ..package_tools import Exporter
 from ..pandas import preprocess_pandas
+from ..xarray import preprocess_and_wrap
 
 exporter = Exporter(globals())
 
@@ -307,6 +308,7 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
 
 
 @exporter.export
+@preprocess_and_wrap()
 @preprocess_pandas
 def interpolate_to_isosurface(level_var, interp_var, level, bottom_up_search=True):
     r"""Linear interpolation of a variable to a given vertical level from given values.

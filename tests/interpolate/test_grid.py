@@ -8,6 +8,7 @@ import logging
 
 import numpy as np
 import pytest
+import xarray as xr
 
 from metpy.cbook import get_test_data
 from metpy.interpolate.grid import (generate_grid, generate_grid_coords, get_boundary_coords,
@@ -328,3 +329,19 @@ def test_interpolate_to_isosurface_from_below():
                       [356., 371., 390., 410., 430.]])
 
     assert_array_almost_equal(truth, dt_theta)
+
+
+def test_interpolate_to_isosurface_xarray():
+    r"""Test interpolation to level function with xarray DataArray inputs."""
+    heights = np.array([16000., 12000., 9000., 5500., 3000., 1500., 100.])
+    z_vals = np.broadcast_to(heights[:, None, None], (7, 3, 3)).copy()
+    u_vals = z_vals / 1000.
+    coords = {'isobaric': [100., 200., 300., 500., 700., 850., 1000.],
+              'latitude': [50., 49., 48.], 'longitude': [260., 261., 262.]}
+    dims = ('isobaric', 'latitude', 'longitude')
+    z = xr.DataArray(z_vals, dims=dims, coords=coords, attrs={'units': 'gpm'})
+    u = xr.DataArray(u_vals, dims=dims, coords=coords, attrs={'units': 'm/s'})
+
+    u6km = interpolate_to_isosurface(z, u, level=6000 * units('gpm'))
+
+    assert_array_almost_equal(units.Quantity(np.full((3, 3), 6.), 'm/s'), u6km)
