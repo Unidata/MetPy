@@ -2555,6 +2555,15 @@ def test_k_index():
     assert_almost_equal(ki, 33.5 * units.degC, 2)
 
 
+def test_k_index_mixed_temperature_units():
+    """Test the K Index calculation with temperature in K and dewpoint in degC."""
+    pressure = np.array([1000., 850., 700., 500.]) * units.hPa
+    temperature = np.array([24.2, 17.2, 7., -11.3]) * units.degC
+    dewpoint = np.array([23.2, 14., -2., -32.3]) * units.degC
+    ki = k_index(pressure, temperature.to(units.K), dewpoint)
+    assert_almost_equal(ki, 33.5 * units.degC, 2)
+
+
 def test_k_index_xarray(index_xarray_data):
     """Test the K index calculation with a grid of xarray data."""
     result = k_index(index_xarray_data.isobaric, index_xarray_data.temperature,
