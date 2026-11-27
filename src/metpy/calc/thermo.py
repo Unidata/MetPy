@@ -4906,6 +4906,12 @@ def k_index(pressure, temperature, dewpoint, vertical_dim=0):
     <Quantity(35.9211365, 'degree_Celsius')>
 
     """
+    # Convert to degC first so that mixed input units (e.g. temperature in
+    # kelvin and dewpoint in degC) do not combine an offset unit with a
+    # temperature difference in the calculation below, which pint rejects
+    temperature = temperature.to(units.degC)
+    dewpoint = dewpoint.to(units.degC)
+
     # Find temperature and dewpoint at 850, 700, and 500 hPa
     (t850, t700, t500), (td850, td700, _) = interpolate_1d(
         units.Quantity([850, 700, 500], 'hPa'), pressure, temperature, dewpoint,
