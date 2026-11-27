@@ -89,8 +89,21 @@ def test_water_latent_heat_melting():
     temperature = 233 * units.K
     # Divide out sig figs in results for decimal comparison
     assert_almost_equal(water_latent_heat_melting(temperature) / 10**6,
-                        0.4192 * units('J / kg'), 4)
+                        0.2483 * units('J / kg'), 4)
     assert_almost_equal(water_latent_heat_melting(T0), Lf)
+
+
+@pytest.mark.parametrize('temperature', [233 * units.K, 258.15 * units.K, 283.15 * units.K])
+def test_water_latent_heat_melting_is_sublimation_minus_vaporization(temperature):
+    """Test that the latent heat of melting is that of sublimation minus vaporization."""
+    assert_almost_equal(water_latent_heat_melting(temperature),
+                        water_latent_heat_sublimation(temperature)
+                        - water_latent_heat_vaporization(temperature), 3)
+
+
+def test_water_latent_heat_melting_decreases_below_freezing():
+    """Test that the latent heat of melting falls with temperature below freezing."""
+    assert water_latent_heat_melting(-15 * units.degC) < Lf
 
 
 def test_relative_humidity_from_dewpoint():
